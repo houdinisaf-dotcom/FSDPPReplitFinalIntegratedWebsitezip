@@ -1,0 +1,431 @@
+# REPLIT MASTER PROMPT — FSD INTERACTIVE BANNER & COLLECTION NAVIGATION REDESIGN
+
+## PROJECT OBJECTIVE
+
+Redesign the existing FSD Fitness & Self Defence website's homepage collection banners and product discovery experience.
+
+**IMPORTANT: Do not rebuild the entire website. Do not remove existing assets, product information, images, or established branding.**
+
+The current website has a premium black, gold and white design, with the headline:
+
+**BUILT FOR THE DRIVE WITHIN.**
+
+Maintain this overall identity.
+
+The issue is that the current website displays too many large banners and product visuals stacked vertically. This makes the experience feel like a long scrolling presentation rather than a sophisticated, interactive luxury brand website.
+
+I want to replace this with a premium interactive banner system featuring:
+
+- Large cinematic category banners.
+- Liquid-glass borders and translucent overlays.
+- Subtle metallic gold accents.
+- Animated category selection.
+- Expandable pop-up collection menus.
+- Smooth transitions between product divisions.
+- Interactive product subcategory cards.
+- A clean, controlled homepage layout.
+- Mobile-responsive interactions.
+
+The overall experience should feel like a combination of a luxury performance brand, a premium automotive configurator and a futuristic technology showroom.
+
+---
+
+## 1. PRESERVE THE EXISTING HOMEPAGE HERO
+
+Keep the existing homepage hero banner and its general visual direction.
+
+Existing headline:
+
+**BUILT FOR THE DRIVE WITHIN.**
+
+Maintain:
+- FSD shield and logo.
+- Black and gold branding.
+- Existing cinematic sportswear imagery.
+- Premium typography.
+- Dark background.
+- Gold CTA styling.
+- Existing brand storytelling.
+
+Improve spacing, responsiveness and animation only where necessary.
+
+Do not replace the hero with unrelated imagery.
+
+---
+
+## 2. CREATE THE FSD INTERACTIVE COLLECTION SHOWCASE
+
+Immediately below the main hero, create a new section titled:
+
+**EXPLORE THE FSD UNIVERSE**
+
+Subtitle:
+
+"Four divisions. One philosophy. Engineered for performance, discipline and progress."
+
+Instead of displaying all product banners vertically, create four large interactive category banners.
+
+### BANNER 1 — FSD APPAREL
+
+**Title:** FSD APPAREL
+
+**Tagline:** ENGINEERED FOR UNYIELDING MOVEMENT.
+
+Visual direction:
+- Premium athletic clothing.
+- Dark cinematic photography.
+- Gold accents.
+- Men's performance apparel and women's modest combat apparel.
+
+When clicked, open an animated liquid-glass category panel with two main choices:
+
+**MEN'S LUXURY PERFORMANCE**
+- 500 GSM Heavyweight Hoodies & Tracksuits
+- 2-in-1 Combat Training Shorts & Tanks
+- Walkout Robes & Bomber Jackets
+- Volcanic Amber Capsule
+- Vector Camo Capsule
+
+**WOMEN'S MODEST COMBAT**
+- Pro Combat Magnetic Performance Hijabs
+- Modest Longline Training Tunics & Half-Zips
+- Technical Tapered Combat Trackpants
+- Full-Coverage Compression Base Layers
+
+Women's Modest Combat must be presented as a prominent independent collection, not hidden within a generic women's clothing menu.
+
+### BANNER 2 — FSD BIO-LAB™
+
+**Title:** FSD BIO-LAB™
+
+**Tagline:** INTELLIGENCE IN EVERY MOVEMENT.
+
+Visual direction:
+- Black technical fabrics.
+- Subtle gold sensor traces.
+- Premium wearable technology.
+- Minimal futuristic laboratory aesthetic.
+
+Clicking the banner opens an animated selection panel featuring:
+
+- Bio-Weave™ ECG & Hydration Compression Tops
+- FSD Aware Band™
+- Graphene-Infused Thermal Recovery Vests
+- FSD Digital Pass™
+- FSD ALIGN — Posture Awareness Wearable
+- FSD MOTION — Smart Training Apparel
+- FSD NEXUS — Smart Ring
+- FSD STRIDE — Activity Tracker
+- FSD VECTOR — Smartwatch
+- FSD CORE — Heart Rate Sensor Strap
+
+Include an additional category for future wearable concepts where appropriate.
+
+Do not present unverified technology capabilities as commercially validated.
+
+### BANNER 3 — FSD HARDWARE & RECOVERY
+
+**Title:** FSD HARDWARE
+
+**Tagline:** BUILT FOR THE DEMANDS OF PERFORMANCE.
+
+Visual direction:
+- Luxury strength equipment.
+- Black and gold metallic finishes.
+- Premium gym hardware.
+- Dramatic controlled studio lighting.
+
+On click, display four subcategory panels:
+
+**STRENGTH EQUIPMENT**
+- Aureus Forged Carbon Dumbbells
+- Obsidian Gold Dumbbells
+- Vanguard Dumbbells
+- Utility Dumbbells
+
+**COMBAT EQUIPMENT**
+- 16oz Pro Leather Boxing Gloves
+- Focus Mitts
+- Apex Ring Boots
+- Heavy Bags
+
+**RECOVERY TECHNOLOGY**
+- Cryo-Zero Recovery Chambers
+- Red Light Recovery Beds
+- 7mm Knee Sleeves
+
+**PERFORMANCE ACCESSORIES**
+- Anti-Snap Resistance Systems
+- Premium Metal Flasks
+- FSD HYDRATE Smart Bottle
+- FSD SONIC Training Earbuds
+- FSD PULSE Clip-On Step Counter
+
+Preserve the existing four-tier dumbbell pricing information as provisional product data where already supplied, including the £699.99 Aureus and £299.99 Utility reference prices. Do not invent missing prices.
+
+### BANNER 4 — FSD FLAGSHIPS & PROMOTIONS
+
+**Title:** FSD GLOBAL
+
+**Tagline:** FROM THE TRAINING FLOOR TO THE WORLD STAGE.
+
+Visual direction:
+- Premium fitness architecture.
+- Dramatic boxing arena imagery.
+- International flagship concepts.
+- Dark luxury hospitality aesthetic.
+
+On click, display:
+
+**FSD FLAGSHIPS**
+- Dublin
+- Belfast
+- Manchester
+- Islamabad
+- Future Global Locations
+
+**FSD PROMOTIONS**
+- Professional Fight Promotions
+- Live Events
+- Broadcast & PPV Concepts
+- Athlete Development
+- Academy & Grassroots Programmes
+
+These should be identified as proposed or planned developments where not operational.
+
+---
+
+## 3. LIQUID-GLASS BANNER DESIGN
+
+Every main collection banner must have a premium liquid-glass visual treatment.
+
+Use:
+- Translucent glass surfaces.
+- Backdrop blur.
+- Subtle gold-tinted glass borders.
+- Soft edge highlights.
+- Dark reflective overlays.
+- Rounded corners of approximately 20–28px.
+- Smooth hover transitions.
+- Elegant gold directional arrows.
+- Very subtle parallax or light movement.
+
+The glass effect must not make the text difficult to read.
+
+Avoid excessive neon, cartoon effects or bright gradients.
+
+The appearance should remain sophisticated, cinematic and expensive.
+
+Suggested design tokens:
+
+- Background: #08090B
+- Secondary Background: #111216
+- Metallic Gold: #C9A66B
+- Highlight Gold: #E3C68C
+- Primary Text: #F5F5F5
+- Muted Text: #A8A8AD
+
+Use these as starting points, while respecting the existing site's design tokens.
+
+---
+
+## 4. ANIMATED POP-UP CATEGORY EXPERIENCE
+
+When a user clicks a main category banner:
+
+1. The selected banner responds with a subtle gold glow.
+2. A translucent dark overlay appears over the page.
+3. A large liquid-glass collection panel opens smoothly.
+4. The category title animates into view.
+5. Subcategory cards appear with a staggered transition.
+6. The user can select a subcategory without immediately navigating away from the homepage.
+7. Selecting a subcategory updates the content inside the panel.
+8. A dedicated "Explore Collection" button can then navigate to the relevant collection page.
+
+Use a premium animation duration of approximately 250–450 milliseconds.
+
+The modal must support:
+- Close button.
+- Escape key.
+- Click outside to close.
+- Keyboard navigation.
+- Focus management.
+- Scroll locking while open.
+- Mobile full-screen presentation.
+- Reduced-motion accessibility preferences.
+
+Do not create multiple overlapping pop-ups.
+
+Use a single reusable collection modal component driven by structured category data.
+
+---
+
+## 5. INTERACTIVE PRODUCT SUBCATEGORY DISPLAY
+
+Inside each category pop-up, display elegant product cards.
+
+Each card should contain:
+
+- Product name.
+- Product category.
+- Short product description.
+- Product development status.
+- Optional product visual.
+- "Explore Concept" or "View Details" action.
+
+If a final product photograph is unavailable, use a tasteful branded placeholder.
+
+**Do not automatically fill every card with CGI renders.**
+
+The existing uploaded renders should remain available in the project asset library for future use.
+
+Use statuses such as:
+- Concept
+- In Development
+- Pre-Launch
+- Coming Soon
+
+Only use a status when supported by the project information.
+
+No checkout functionality is required.
+
+Do not add shopping carts, payment processing, fake reviews, false availability or fabricated release dates.
+
+---
+
+## 6. HOMEPAGE SCROLL ARCHITECTURE
+
+The homepage should follow this simplified structure:
+
+**SECTION 1 — MAIN HERO**
+
+BUILT FOR THE DRIVE WITHIN.
+
+Existing premium visual identity.
+
+**SECTION 2 — EXPLORE THE FSD UNIVERSE**
+
+Four large interactive liquid-glass category banners.
+
+Apparel | Bio-Lab | Hardware | Flagships & Promotions
+
+**SECTION 3 — FEATURED INNOVATIONS**
+
+A compact interactive carousel featuring selected FSD concepts.
+
+Show only a few products at a time, rather than stacking all the campaign boards vertically.
+
+**SECTION 4 — THE FSD PHILOSOPHY**
+
+Fitness. Discipline. Progress. A Stronger You.
+
+Brief brand storytelling with cinematic imagery.
+
+**SECTION 5 — VIP PRE-LAUNCH ACCESS**
+
+A premium lead-capture section.
+
+Headline:
+
+**BE PART OF WHAT COMES NEXT.**
+
+Supporting copy:
+
+"Register your interest in future FSD collections, innovation concepts and exclusive brand announcements."
+
+CTA:
+
+**REQUEST VIP ACCESS**
+
+Include an email capture form with appropriate consent and privacy messaging.
+
+**SECTION 6 — FOOTER**
+
+Retain the corporate and consumer structure, including divisions, proposed flagships, investor information and legal links.
+
+---
+
+## 7. MOBILE EXPERIENCE
+
+The mobile website must not simply shrink the desktop banners.
+
+On mobile:
+
+- Display category banners as large, premium stacked cards or a controlled swipeable carousel.
+- Keep titles readable.
+- Maintain comfortable touch targets.
+- Open category selections in full-screen or bottom-sheet panels.
+- Use smooth vertical scrolling inside the category panel.
+- Keep the close button visible.
+- Avoid heavy animation that affects performance.
+
+The mobile design must feel intentionally designed, not like a compressed desktop layout.
+
+---
+
+## 8. PERFORMANCE & TECHNICAL IMPLEMENTATION
+
+Work within the existing Replit project's framework and component architecture.
+
+Do not replace the framework or introduce unnecessary dependencies.
+
+Use reusable components, such as:
+
+- CollectionShowcase
+- LiquidGlassCategoryCard
+- CollectionModal
+- SubcategorySelector
+- ProductPreviewCard
+- FeaturedInnovationCarousel
+- VIPAccessSection
+
+Store category and product data separately from the presentation components so that future products can be added easily.
+
+Optimise images, lazy-load below-the-fold media and minimise layout shifts.
+
+Use accessible semantic HTML and responsive CSS.
+
+Preserve existing routes and assets wherever possible.
+
+---
+
+## 9. IMPORTANT BRAND & DEVELOPMENT RULES
+
+FSD is building a premium multi-division fitness, self-defence, apparel, technology and performance ecosystem.
+
+The website must reflect that ambition without suggesting that every proposed product or flagship is already commercially available.
+
+Do not:
+- Remove existing product records.
+- Rename products without approval.
+- Invent final specifications.
+- Invent selling prices.
+- Present concept facilities as operational.
+- Enable checkout.
+- Publish the website.
+- Replace the established FSD identity.
+
+All changes should remain within the existing development environment.
+
+---
+
+## 10. REQUIRED FINAL RESULT
+
+I want the homepage to feel like an interactive luxury FSD showroom.
+
+Visitors should see the main hero, discover four visually powerful collection banners, select a division, watch an elegant liquid-glass panel open, browse subcategories, and choose whether to explore further.
+
+They should NOT have to scroll through dozens of full-size promotional images to understand the FSD product ecosystem.
+
+**IMPLEMENT THE BANNER AND CATEGORY INTERACTION SYSTEM FIRST.**
+
+Do not attempt to redesign every product page, investor page or corporate section during this phase.
+
+Once implemented, provide a summary of:
+1. Components created or modified.
+2. Existing content and assets preserved.
+3. New interactive behaviours.
+4. Responsive mobile functionality.
+5. Any product information that still requires confirmation.
+
+The final design must be polished, cinematic, fast, responsive and consistent with the established FSD black-and-gold brand identity.
