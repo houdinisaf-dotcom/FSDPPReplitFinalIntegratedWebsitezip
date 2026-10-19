@@ -143,10 +143,12 @@
   background: linear-gradient(145deg, rgba(255,255,255,.16), transparent 22%, transparent 78%, rgba(231,202,151,.1));
   opacity: .55;
   z-index: 2;
+  backdrop-filter: blur(1px);
 }
 
 .fsd-showcase-banner:hover,
-.fsd-showcase-banner:focus-visible {
+.fsd-showcase-banner:focus-visible,
+.fsd-showcase-banner.is-selected {
   border-color: rgba(231, 202, 151, .72);
   transform: translateY(-3px);
 }
@@ -158,7 +160,7 @@
 
 .fsd-showcase-banner--apparel {
   --banner-accent: #d5b876;
-  background: radial-gradient(ellipse at 81% 38%, #8a7044 0%, #34302a 17%, transparent 48%), linear-gradient(125deg, #26221d, #0e1012 75%);
+  background: linear-gradient(90deg, #181613 10%, rgba(15,16,18,.1) 100%), url('/images/fsd-velocity-performance-sports-hijab.jpg') center 22% / cover;
 }
 .fsd-showcase-banner--bio-lab {
   --banner-accent: #d3bd8a;
@@ -274,6 +276,7 @@
   max-width: none;
   max-height: min(90dvh, 900px);
   padding: 0;
+  margin: 0;
   overflow: hidden;
   border: 1px solid rgba(221, 194, 143, .4);
   border-radius: 22px;
@@ -285,6 +288,7 @@
   transition: opacity .32s ease, transform .32s cubic-bezier(.18,.7,.2,1);
 }
 .fsd-showcase-dialog[open] { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+.fsd-showcase-dialog[open] { animation: fsd-fade-in .32s ease-out; }
 .fsd-showcase-dialog::backdrop { background: rgba(3,4,6,.78); backdrop-filter: blur(9px); }
 .fsd-dialog-frame { display: flex; max-height: min(90dvh, 900px); flex-direction: column; }
 .fsd-dialog-header {
@@ -356,6 +360,7 @@
 .fsd-modal-kicker { position: relative; z-index: 1; color: var(--fsd-gold); font-size: 8px; font-weight: 700; letter-spacing: .17em; }
 .fsd-modal-kicker span { padding: 0 7px; color: #6f6a60; }
 .fsd-modal-hero h2 { position: relative; z-index: 1; max-width: 80%; margin: 14px 0 8px; font: 800 clamp(30px, 5vw, 54px)/1 Manrope,sans-serif; letter-spacing: -.065em; }
+.fsd-showcase-dialog[open] .fsd-modal-hero h2 { animation: fsd-content-in .35s ease-out both; }
 .fsd-modal-hero p { position: relative; z-index: 1; margin: 0; color: #bab8b2; font-size: 10px; font-weight: 600; letter-spacing: .13em; }
 .fsd-group-nav {
   display: flex;
@@ -384,7 +389,11 @@
 }
 .fsd-group-tab > span { color: #807457; font-size: 8px; }
 .fsd-group-tab.is-active { color: #f4eee2; background: rgba(201,166,107,.08); }
+.fsd-group-tab--prominent { color: #e3c68c; box-shadow: inset 0 2px #c9a66b; }
 .fsd-group-tab.is-active::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--fsd-gold); content: ""; }
+.fsd-subcategory-nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 20px clamp(22px, 4.2vw, 48px) 0; }
+.fsd-subcategory-nav button { min-height: 44px; padding: 10px 13px; border: 1px solid #4a4235; border-radius: 24px; background: transparent; color: #b8b6b1; font-size: 10px; line-height: 1.5; cursor: pointer; }
+.fsd-subcategory-nav button[aria-pressed="true"] { background: #c9a66b; border-color: #c9a66b; color: #111216; }
 .fsd-modal-body { padding: 26px clamp(22px, 4.2vw, 48px) 34px; }
 .fsd-modal-description { display: flex; align-items: baseline; gap: 24px; margin-bottom: 26px; }
 .fsd-modal-description > span { flex: 0 0 140px; color: #b49a69; font-size: 8px; font-weight: 800; letter-spacing: .16em; }
@@ -404,6 +413,22 @@
 .fsd-product-meta { display: flex; justify-content: space-between; gap: 8px; margin-top: 13px; color: #a99877; font-size: 7px; letter-spacing: .09em; text-transform: uppercase; }
 .fsd-product-meta span:last-child { color: #82827f; text-align: right; }
 .fsd-product-card h4 { margin: 8px 0; color: #efede8; font-size: 14px; line-height: 1.35; }
+.fsd-product-description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #b8b8b5; font-size: 11px; line-height: 1.6; }
+.fsd-product-reference { color: #b8b8b5; font-size: 10px; line-height: 1.6; }
+.fsd-product-reference strong { display: block; color: #e3c68c; font-size: 14px; }
+.fsd-product-grid .fsd-product-meta { font-size: 9px; }
+.fsd-product-grid .fsd-product-status { font-size: 9px; }
+.fsd-product-grid .fsd-product-link { min-height: 44px; font-size: 10px; }
+.fsd-explore-collection { display: inline-flex; align-items: center; gap: 24px; min-height: 46px; padding: 13px 20px; border: 1px solid #c9a66b; border-radius: 5px; background: rgba(201,166,107,.12); color: #e3c68c; font-size: 10px; font-weight: 800; letter-spacing: .1em; cursor: pointer; }
+.fsd-explore-collection:hover { background: rgba(201,166,107,.22); }
+.fsd-concept-details { color: #b9b9b6; font-size: 12px; line-height: 1.7; }
+.fsd-concept-details summary { display: list-item; min-height: 44px; padding-top: 15px; color: #e3c68c; font-size: 10px; font-weight: 700; cursor: pointer; }
+.fsd-product-card, .fsd-concept-card { animation: fsd-content-in .35s both; }
+.fsd-product-card:nth-child(3n+2), .fsd-concept-card:nth-child(3n+2) { animation-delay: .04s; }
+.fsd-product-card:nth-child(3n), .fsd-concept-card:nth-child(3n) { animation-delay: .08s; }
+html.fsd-modal-open { overflow: hidden; }
+@keyframes fsd-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fsd-content-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .fsd-product-status { min-height: 24px; margin: 0; color: #898987; font-size: 7px; letter-spacing: .055em; line-height: 1.5; }
 .fsd-product-status span { color: var(--fsd-gold); }
 .fsd-product-link { display: flex; align-items: center; gap: 8px; align-self: flex-start; margin-top: auto; padding: 14px 0 3px; border: 0; background: none; color: var(--fsd-gold-bright); font-size: 8px; font-weight: 800; letter-spacing: .09em; cursor: pointer; }
@@ -491,5 +516,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fsd-showcase-banner,
-  .fsd-showcase-dialog { transition: none; }
+  .fsd-showcase-dialog { transition: none; animation: none; }
+  .fsd-product-card, .fsd-concept-card { animation: none; }
+  .fsd-showcase-dialog[open] .fsd-modal-hero h2 { animation: none; }
 }

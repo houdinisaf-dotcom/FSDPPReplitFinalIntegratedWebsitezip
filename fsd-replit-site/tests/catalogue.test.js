@@ -6,6 +6,9 @@ import additional from '../src/additional-catalog.json' with { type: 'json' };
 import { galleryProductIds, galleryProducts, gallerySection } from '../src/gallery.js';
 import { products, heldProducts, retiredProducts, categories, filterProducts, priceInfo, safe } from '../src/catalogue-data.js';
 import { catalogueSection, roadmapSection, innovationsSection, initCatalogue } from '../src/catalogue.js';
+import { collectionDivisions } from '../src/collection-divisions.js';
+import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
+import { featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
   assert.equal(master.length, 72);
@@ -264,12 +267,22 @@ test('the complete public page excludes held imagery while retaining internal so
   };
   globalThis.document = document;
   try {
-    new Function('document', 'catalogueSection', 'roadmapSection', 'innovationsSection',
-      'initCatalogue', 'gallerySection', source)(
-      document, catalogueSection, roadmapSection, innovationsSection, initCatalogue, gallerySection);
+    const dependencies = {
+      catalogueSection, initCatalogue, gallerySection, galleryProducts, products,
+      collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
+      mountCollectionShowcase() {}, initFeaturedCarousel() {}, initArchiveNavigation() {}, showProduct() {},
+    };
+    new Function('document', ...Object.keys(dependencies), source)(document, ...Object.values(dependencies));
     const page = document.querySelector('#app').innerHTML;
     assert.match(page, /74 designs/);
     assert.match(page, /PRE-LAUNCH COLLECTION/);
+    assert.match(page, /id="catalogue-archive"/);
+    assert.match(page, /id="gallery-archive"/);
+    assert.doesNotMatch(page, /in development|<form|type="email"/i);
+    assert.ok(page.indexOf('class="hero"') < page.indexOf('class="fsd-showcase"'));
+    assert.ok(page.indexOf('class="fsd-showcase"') < page.indexOf('id="innovations"'));
+    assert.ok(page.indexOf('id="innovations"') < page.indexOf('id="philosophy"'));
+    assert.ok(page.indexOf('id="philosophy"') < page.indexOf('id="contact"'));
     assert.doesNotMatch(page, /STRIDE|Shilajit|Championship Belt|Ring Corner Post|add to cart|checkout/i);
     for (const image of withheldImages) {
       assert.ok(!page.includes(image.name));

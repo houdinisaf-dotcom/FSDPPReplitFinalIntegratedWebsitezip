@@ -1,1 +1,2 @@
 - [Catalogue approval boundaries](catalogue-approval-boundaries.md) — user approval of a development brief is not manufacturer validation or permission to enable checkout.
+- [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.

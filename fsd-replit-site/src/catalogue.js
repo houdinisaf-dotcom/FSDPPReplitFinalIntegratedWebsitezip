@@ -93,7 +93,7 @@ function renderResults() {
     : '';
 }
 
-function showProduct(id) {
+export function showProduct(id) {
   const p = products.find(product => product.id === id);
   if (!p) return;
   const price = priceInfo(p);
@@ -117,6 +117,7 @@ function showProduct(id) {
     </dl><div class="dialog-price"><span>${price.label}</span><strong>${price.value}</strong></div>
     <small>This is a development record, not a product available to purchase. Specifications and launch availability are not confirmed.</small>
     </div>`;
+  document.documentElement?.classList?.add('fsd-modal-open');
   document.querySelector('#product-dialog').showModal();
 }
 
@@ -161,5 +162,6 @@ export function initCatalogue() {
     }
   });
   document.querySelector('#close-dialog').addEventListener('click', () => document.querySelector('#product-dialog').close());
+  document.querySelector('#product-dialog').addEventListener('close', () => document.documentElement?.classList?.remove('fsd-modal-open'));
   renderResults();
 }

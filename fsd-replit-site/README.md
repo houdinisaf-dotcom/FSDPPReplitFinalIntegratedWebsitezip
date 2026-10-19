@@ -16,7 +16,7 @@ A responsive premium pre-launch product catalogue, combining FSD's Signature Lux
 - No checkout or payment collection: products are not yet available to buy.
 
 ## Before publishing
-- Replace `hello@example.com` in `src/main.js` with your real business contact email.
+- Provide approved business contact, investor and legal content. VIP capture is deliberately deferred until its destination and privacy/consent wording are ready.
 - Replace the **stylised placeholder shield** with your actual FSD vector logo. The logo shown in the site is an approximation, **not the official source artwork**. Place your authorised SVG in `public/images/fsd-logo.svg` and update the header/footer markup.
 - Confirm prices, materials, claims, image rights, size charts, privacy/cookie disclosures and product availability.
 - Add further approved imagery and SKUs as production details are finalised.
@@ -33,6 +33,13 @@ Colourways are grouped into one product record. Cross-listed categories and alte
 The public design library also excludes imagery associated with held or retired records via `src/gallery.js`. STRIDE and supplement references stay in the source data and asset files for internal review, but their names and images are not rendered publicly. There are 74 public design references from 76 retained source entries. These publication-hold associations do not constitute approved product-to-image mappings.
 
 Run `npm test` for catalogue data and event-handler checks, and `npm run build` to validate the production bundle.
+
+## Interactive showroom
+The original hero leads into four data-driven divisions: Apparel, Bio-Lab, Hardware and Global. A single accessible collection dialog supports group/subcategory selection, concept disclosures and non-overlapping product-detail handoff. The complete catalogue and 74-image public reference library remain available in expandable archives; their original hash links reveal the appropriate archive. The approved Velocity photo is its primary product image and the Apparel banner visual.
+
+The feature carousel is manually controlled, swipeable and reduced-motion aware. Mobile collections open full-screen with a visible close control. There are no new dependencies, checkout actions or working VIP capture form. Proposed showroom names are navigation/concept metadata only and do not alter the authoritative master product records or publication holds.
+
+With the development workflow running, `npm run test:browser` checks desktop interactions using system Chromium (no downloaded browser or added browser package). It uses `REPLIT_DEV_DOMAIN` for the app address. Desktop and 402px mobile screenshots were reviewed. Mobile interaction automation remains unverified: changing the same Chromium session from desktop to mobile produced inconsistent layout/visual viewport measurements, so that is not counted as a passing mobile test.
 
 ## Final integrated handoff (19 October 2026)
 - All six additional archives are preserved in the `handoff/` folder, including source documents, CSV inventory, images, video and prior website mockup.

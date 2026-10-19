@@ -13,12 +13,12 @@ export const collectionDivisions = [
         title: 'MEN’S LUXURY PERFORMANCE',
         categories: ['Men’s Performance and Training', 'Training Sets', 'Combat and MMA', 'Lifestyle'],
         audiences: ['Men’s', 'Unisex'],
-        concepts: [
-          '500 GSM Heavyweight Hoodies & Tracksuits',
-          '2-in-1 Combat Training Shorts & Tanks',
-          'Walkout Robes & Bomber Jackets',
-          'Volcanic Amber Capsule',
-          'Vector Camo Capsule',
+        subcategories: [
+          { title: '500 GSM Hoodies & Tracksuits', productTerms: ['500 GSM', 'Tracksuit'] },
+          { title: '2-in-1 Combat Training Shorts & Tanks', productTerms: ['2-in-1'], concepts: ['2-in-1 Combat Training Shorts & Tanks'] },
+          { title: 'Walkout Robes & Bomber Jackets', productTerms: ['Walkout', 'Bomber'], concepts: ['Walkout Robes'] },
+          { title: 'Volcanic Amber Capsule', concepts: ['Volcanic Amber Capsule'] },
+          { title: 'Vector Camo Capsule', productTerms: ['Vector-Camo', 'Vector Camo'] },
         ],
       },
       {
@@ -26,11 +26,11 @@ export const collectionDivisions = [
         title: 'WOMEN’S MODEST COMBAT',
         categories: ['Modest Activewear', 'Sports Hijabs'],
         audiences: ['Women’s'],
-        concepts: [
-          'Pro Combat Magnetic Performance Hijabs',
-          'Modest Longline Training Tunics & Half-Zips',
-          'Technical Tapered Combat Trackpants',
-          'Full-Coverage Compression Base Layers',
+        subcategories: [
+          { title: 'Performance Hijabs', productTerms: ['Hijab'], concepts: ['Pro Combat Magnetic Performance Hijabs'] },
+          { title: 'Longline Tunics & Half-Zips', productTerms: ['Tunic', 'Longline', 'Half-Zip'] },
+          { title: 'Technical Tapered Combat Trackpants', productTerms: ['Trackpant', 'Track Pants', 'Jogger'], concepts: ['Technical Tapered Combat Trackpants'] },
+          { title: 'Full-Coverage Compression Base Layers', productTerms: ['Compression', 'Base Layer'], concepts: ['Full-Coverage Compression Base Layers'] },
         ],
         prominent: true,
       },
@@ -73,6 +73,7 @@ export const collectionDivisions = [
         id: 'combat-equipment',
         title: 'COMBAT EQUIPMENT',
         categories: ['Combat and MMA'],
+        productTerms: ['Gloves', 'Mitts', 'Mouthguard', 'Gear Kit'],
         concepts: ['16oz Pro Leather Boxing Gloves', 'Apex Ring Boots', 'Heavy Bags'],
       },
       {

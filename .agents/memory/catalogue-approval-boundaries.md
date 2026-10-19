@@ -26,3 +26,15 @@ must not be treated as approval.
 explicit approval. Consult `handoff/catalog/image-review.md` for the reviewed
 references; do not interpret the decision as an instruction to remove the
 separate design library.
+
+VIP sign-up collection is deferred until the destination and approved privacy/consent wording are ready.
+
+**Why:** The user chose to defer collection rather than use a provisional or nonfunctional sign-up form.
+
+**How to apply:** Keep VIP access informational and explicitly unavailable for registration until those details are supplied; never display a false submission-success state.
+
+Avoid the exact visible phrase “in development” across the public site.
+
+**Why:** The user asked for all instances of that wording to be removed.
+
+**How to apply:** Use honest pre-launch or proposed-concept wording instead, without implying that a product is available to buy.
