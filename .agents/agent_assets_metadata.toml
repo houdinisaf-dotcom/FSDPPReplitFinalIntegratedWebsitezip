@@ -196,3 +196,59 @@ mtime_ms = 1792432747398
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/008f92e6-d072-40fe-beac-957a596e9c67/66d4fc59-d1de-4c9d-873a-0f9e94bc952c"
 storage_version_token = "1792432824787493"
 content_type = "image/png"
+
+[[outputs]]
+id = "97kCDgj6Hsx6qeOr1TYwB"
+uri = "file://generated-artifacts/fsd-shield-refined/desktop-header-proof.jpg"
+type = "image"
+title = "Refined shield — desktop approval proof"
+description = "Before/refined headers and enlarged black/light comparisons. The actual website header remains unchanged."
+logical_id = "1ec6b70b-8373-463f-92d2-6182b3817af3"
+content_hash = "sha256:05cd5ee0997d17f3ac9fb46bcf461f3ee9f7bf35ffa3cdd6417b046848283288"
+size = 209581
+mtime_ms = 1792434251308
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/1ec6b70b-8373-463f-92d2-6182b3817af3/be77daa0-4576-4354-93bb-3faa2baa4054"
+storage_version_token = "1792434316305923"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "9EESDdajLG2g2p1E_4XoE"
+uri = "file://generated-artifacts/fsd-shield-refined/mobile-header-proof.jpg"
+type = "image"
+title = "Refined shield — mobile approval proof"
+description = "The approved shield-and-wording layout on the existing black website styling, using the refined raster edge matte."
+logical_id = "5bce4421-3ebd-4c53-a773-cf34884ffbb9"
+content_hash = "sha256:c520d7c4d4e2ddd27296b7bc0aca2f9d53058cee9fc5d1a02434138da359a0c3"
+size = 70461
+mtime_ms = 1792434252612
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5bce4421-3ebd-4c53-a773-cf34884ffbb9/35569baf-192b-496d-90a7-b7a98107c711"
+storage_version_token = "1792434317102707"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "-j3ECwfEMlLuTafwAYIGf"
+uri = "file://fsd-replit-site/brand-review/shield-refined-matte/assets/shield-refined.png"
+type = "image"
+title = "Refined shield — transparent RGBA PNG"
+description = "261 × 273 PNG. Original opaque artwork and interior preserved; partial edge matte corrected from the official references. Not a guaranteed authored master."
+logical_id = "9eceeed6-03f0-4498-bafc-29cbb1f115c4"
+content_hash = "sha256:5d06f5f39f9f6270e17d344423c155a79521173a00af2f27b72b4fdfaaeed6b9"
+size = 108504
+mtime_ms = 1792434074544
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/9eceeed6-03f0-4498-bafc-29cbb1f115c4/a6318299-485f-4200-a230-0337a7fcafe3"
+storage_version_token = "1792434318129590"
+content_type = "image/png"
+
+[[outputs]]
+id = "4ay_Rqy--kFf5UhE086Xa"
+uri = "file://fsd-replit-site/brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png"
+type = "image"
+title = "Refined website logo — transparent RGBA PNG"
+description = "400 × 204 PNG. Original shield above FITNESS & SELF-DEFENSE, without large FSD initials. Review only; not applied to the live site."
+logical_id = "4e20f973-ae30-4367-a3fb-540158f1d591"
+content_hash = "sha256:7d8ed2bf25050d0c81c5e896f4cbe65bfb7cab9bbee1f6c8ea132b651c1ebc94"
+size = 44164
+mtime_ms = 1792434074684
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4e20f973-ae30-4367-a3fb-540158f1d591/4250b885-f9df-4193-a1de-9cd5d227d9f6"
+storage_version_token = "1792434318871895"
+content_type = "image/png"

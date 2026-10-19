@@ -1,0 +1,21 @@
+{
+  "modified_edge_pixels": 5647,
+  "protected_metallic_or_interior_pixels": 24965,
+  "protected_pixels_bit_identical": true,
+  "all_opaque_source_pixels_bit_identical": true,
+  "new_foreground_outside_source_support": 0,
+  "white_reference_max_reconstruction_error_8bit": 1,
+  "source_assets_and_approved_lettering_unchanged": true,
+  "native_shield_canvas": [
+    261,
+    273
+  ],
+  "lockup_canvas": [
+    400,
+    204
+  ],
+  "filters": "No blur, sharpening, erosion, dilation or drawn replacement contour",
+  "method": "Reference-guided white-matte unmixing in boundary band",
+  "caveat": "Registered raster references estimate edge alpha; not an authored vector master",
+  "approval": "Refined review asset only; no live-site or product changes"
+}
