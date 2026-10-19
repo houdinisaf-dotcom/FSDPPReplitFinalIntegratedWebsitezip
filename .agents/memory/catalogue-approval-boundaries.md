@@ -14,3 +14,15 @@ Publication holds apply to reference galleries as well as product listings and r
 **Why:** A concept can otherwise remain publicly promoted through a named design-library image after its catalogue record is held.
 
 **How to apply:** Check all public surfaces when changing hold status; retain source files for internal review without rendering held references.
+
+The reviewed Performance/Cover hijab and HYDRATE, MOTION, NEXUS, SONIC and PULSE
+step-counter image candidates were not approved for product mappings.
+
+**Why:** The user selected “Do not add these matches” when shown the candidate
+sheet, without providing a reason. Visual similarity or a descriptive asset name
+must not be treated as approval.
+
+**How to apply:** Leave these products unmapped unless the user gives a new
+explicit approval. Consult `handoff/catalog/image-review.md` for the reviewed
+references; do not interpret the decision as an instruction to remove the
+separate design library.

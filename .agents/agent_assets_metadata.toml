@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "__5a-XhdK5GSHJjDenw-j"
+uri = "file://generated-artifacts/catalogue-image-approval.jpg"
+type = "image"
+title = "Catalogue image candidates for approval"
+description = "14 candidate references grouped under seven catalogue products. All are supplied development concepts; no production photography is implied."
+logical_id = "5dc336fc-8469-4496-8d23-2cf5b00895dd"
+content_hash = "sha256:2b12a4e65230c70fb716f104bb9dbc140fb5274e4976f3a0966a3536dbc91017"
+size = 487606
+mtime_ms = 1792422002877
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5dc336fc-8469-4496-8d23-2cf5b00895dd/d89364c7-0474-43d7-8799-55a3847eb532"
+storage_version_token = "1792422009118511"
+content_type = "image/jpeg"
