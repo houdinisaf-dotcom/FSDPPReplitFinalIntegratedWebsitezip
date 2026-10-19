@@ -7,6 +7,7 @@
 - Vite serves the preview on `0.0.0.0:5000` with proxy hosts allowed.
 - Build with `cd fsd-replit-site && npm run build`. Output is `fsd-replit-site/dist/`.
 - This is a static catalogue: no database, API credentials, or session secret is needed.
+- After task merges, `scripts/post-merge.sh` installs locked dependencies and rebuilds the app. Replit then reconciles the configured workflows.
 
 ## Existing content restrictions
 - This setup does not publish the site or approve its catalogue content.
