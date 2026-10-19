@@ -1,22 +1,91 @@
 import additional from './additional-catalog.json';
+import { catalogueSection, roadmapSection, innovationsSection, initCatalogue } from './catalogue.js';
+import { safe } from './catalogue-data.js';
 import './style.css';
-const products=[
- {name:'Ombré Slash Performance Tee',variant:'Vintage Indigo',category:'Performance',price:39.99,img:'/images/ombre-indigo.png',tag:'Training / Technical',description:'Gradient-finish performance training tee with diagonal slash artwork, raglan-inspired construction and FSD shield detail.',material:'Proposed: polyester/elastane performance knit, 150–170 GSM',features:['Athletic training silhouette','Textured knit appearance','Contrast graphic panels','Short sleeves']},
- {name:'Ombré Slash Performance Tee',variant:'Electric Blue / Black',category:'Performance',price:39.99,img:'/images/ombre-blue.png',tag:'Training / Technical',description:'Vibrant blue interpretation of the Ombré Slash training top with contrast dark shoulders and FSD shield branding.',material:'Proposed: polyester/elastane performance knit, 150–170 GSM',features:['Athletic training silhouette','Gradient colour blocking','Contrast graphic panels','Short sleeves']},
- {name:'Cheetah Windrunner',variant:'Sunshine Yellow',category:'Outerwear',price:79.99,img:'/images/windrunner-yellow.png',tag:'Statement / Outerwear',description:'Bold cheetah-inspired hooded training jacket with contrast black panels, zip pockets and signature shield emblem.',material:'Proposed: lightweight woven polyester with water-repellent finish',features:['Adjustable hood concept','Zipped pocket concept','Contrast ventilation panels','Statement print']},
- {name:'Cheetah Windrunner',variant:'Savannah Khaki',category:'Outerwear',price:79.99,img:'/images/windrunner-khaki.png',tag:'Statement / Outerwear',description:'Earth-toned cheetah-inspired windrunner designed for warm-ups, everyday movement and outdoor training.',material:'Proposed: lightweight woven polyester with water-repellent finish',features:['Adjustable hood concept','Zipped pocket concept','Contrast ventilation panels','Tonal statement print']},
- {name:'Cheetah Windrunner',variant:'Ice White',category:'Outerwear',price:79.99,img:'/images/windrunner-white.png',tag:'Statement / Outerwear',description:'Light-toned edition of the FSD Cheetah Windrunner with technical detailing and gold-accented trim.',material:'Proposed: lightweight woven polyester with water-repellent finish',features:['Adjustable hood concept','Zipped pocket concept','Contrast ventilation panels','Ice-white statement print']}
-];
-const planned=[['CORE Everyday Sports Hijab','Modest Activewear'],['FLOW Performance Running Hijab','Modest Activewear'],['COVER Extended-Coverage Hijab','Modest Activewear'],['Modest Training Top','Modest Activewear'],['Modest Training Jacket','Modest Activewear'],['Training Trousers','Modest Activewear'],['Coordinated Modest Training Set','Modest Activewear'],['Women’s Training Leggings','Women’s Performance'],['Women’s AeroForge Performance Top','Women’s Performance'],['Women’s MMA Rash Guard','Combat'],['Lightweight Modest Training Overshirt','Modest Activewear'],['FSD Training Shorts','Combat'],['FSD Long-Sleeve Training Top','Performance'],['FSD Training Joggers','Performance'],['FSD Signature Hoodie','Lifestyle'],['FSD Sports Bag','Accessories'],['FSD Performance Socks','Accessories']];
-const money=n=>'£'+n.toFixed(2);
-const app=document.querySelector('#app');let active='All';let search='';
-function icon(){return `<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg>`}
-function header(){return `<div class="announcement">FSD / THE NEXT ERA OF MOVEMENT <span>— PRE-LAUNCH COLLECTION</span></div><header class="header"><a class="brand" href="#home" aria-label="FSD Home"><span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span></a><nav aria-label="Main navigation"><a href="#collections">COLLECTIONS</a><a href="#products">PRODUCTS</a><a href="#philosophy">OUR STORY</a><a href="#innovations">INNOVATIONS</a><a href="#full-gallery">DESIGN LIBRARY</a><a href="#contact">CONTACT</a></nav><a class="header-cta" href="#products">EXPLORE COLLECTION <span>↗</span></a></header>`}
-function card(p,i){return `<article class="product-card" tabindex="0" data-product="${i}" role="button" aria-label="View ${p.name} ${p.variant}"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name} in ${p.variant}, design concept product views"/><span class="chip">IN DEVELOPMENT</span></div><div class="product-meta"><span>${p.tag}</span><span>PROPOSED RRP</span></div><h3>${p.name}</h3><div class="product-bottom"><span>${p.variant}</span><strong>${money(p.price)}</strong></div><button class="text-link" data-product="${i}">VIEW DETAILS ↗</button></article>`}
-function render(){const filtered=products.map((p,i)=>({...p,i})).filter(p=>(active==='All'||p.category===active)&&`${p.name} ${p.variant}`.toLowerCase().includes(search.toLowerCase()));app.innerHTML=`${header()}<main id="home"><section class="hero"><div class="hero-image"></div><div class="hero-shade"></div><div class="hero-content"><p class="eyebrow">THE FSD PERFORMANCE UNIVERSE <span class="gold-line"></span> EST. UNITED KINGDOM</p><h1>BUILT FOR<br/><em>THE DRIVE</em><br/>WITHIN.</h1><p class="hero-copy">Performance. Discipline. Identity. Discover technical training wear, combat-inspired design and modest activewear under one unmistakable shield.</p><div class="hero-actions"><a class="primary-btn" href="#products">EXPLORE THE COLLECTION <span>↗</span></a><a class="ghost-btn" href="#philosophy">DISCOVER FSD →</a></div><div class="hero-foot"><span>01 / 03</span><span>DESIGNED TO MOVE. BUILT TO BELONG.</span></div></div><div class="vertical-label">FITNESS & SELF DEFENCE — 2026</div></section><section class="manifesto" id="philosophy"><p class="section-kicker">THE FSD ETHOS</p><h2>ONE IDENTITY.<br/><span>EVERY WAY TO MOVE.</span></h2><p>From the training floor to everyday life, FSD brings a premium design language to performance, self-defence and inclusive movement. Our proposed product portfolio is currently in development.</p><div class="values"><span>01 / STRENGTH</span><span>02 / DISCIPLINE</span><span>03 / CONFIDENCE</span></div></section><section class="collections" id="collections"><div class="section-heading"><div><p class="section-kicker">DISCOVER THE UNIVERSE</p><h2>COLLECTIONS<span class="period">.</span></h2></div><p>Distinct disciplines.<br/>One FSD standard.</p></div><div class="collection-grid"><a href="#products" class="collection-tile signature"><span class="tile-no">01 / SIGNATURE</span><div><p>THE FOUNDATION</p><h3>FSD<br/>SIGNATURE</h3><span>DISCOVER THE EDIT ↗</span></div></a><a href="#products" class="collection-tile performance"><span class="tile-no">02 / PERFORMANCE</span><div><p>ENGINEERED FOR MOTION</p><h3>PERFORMANCE<br/>DIVISION</h3><span>DISCOVER THE EDIT ↗</span></div></a><a href="#planned" class="collection-tile modest"><span class="tile-no">03 / MODEST ACTIVEWEAR</span><div><p>STRENGTH IN EVERY FORM</p><h3>MODEST<br/>MOVEMENT</h3><span>EXPLORE THE RANGE ↗</span></div></a></div></section><section class="shop" id="products"><div class="section-heading"><div><p class="section-kicker">PRODUCT DEVELOPMENT / CURRENT SHOWCASE</p><h2>THE PRODUCT EDIT<span class="period">.</span></h2></div><p>Explore designs currently being developed.<br/>Prices shown are indicative.</p></div><div class="toolbar"><div class="filters">${['All','Performance','Outerwear'].map(x=>`<button class="filter ${active===x?'selected':''}" data-filter="${x}">${x.toUpperCase()}</button>`).join('')}</div><input id="search" placeholder="Search products..." aria-label="Search products" value="${search.replaceAll('"','&quot;')}"/></div><div class="product-grid">${filtered.length?filtered.map(p=>card(p,p.i)).join(''):'<p class="empty">No matching products.</p>'}</div><p class="disclaimer">Product images are design-stage visuals. Materials, construction, performance claims and prices are proposed and subject to sampling, verification and production approval. Not available to order yet.</p></section><section class="blue-banner"><div><p class="section-kicker">BEYOND THE EXPECTED</p><h2>PERFORMANCE<br/><em>HAS NO SINGLE COLOUR.</em></h2><p>Signature gold. Electric blue. Statement prints. One unified identity.</p><a href="#planned" class="light-btn">SEE THE FULL ROADMAP ↗</a></div></section><section class="planned" id="planned"><div class="section-heading"><div><p class="section-kicker">THE FSD DEVELOPMENT ROADMAP</p><h2>WHAT'S COMING<span class="period">.</span></h2></div><p>Every name below represents a proposed FSD product in development, not an item available for immediate purchase.</p></div><div class="planned-grid">${planned.map(([name,cat],i)=>`<div class="planned-row"><span>${String(i+1).padStart(2,'0')}</span><div><strong>${name}</strong><small>${cat}</small></div><span class="planned-status">IN DEVELOPMENT</span></div>`).join('')}</div></section>${additionalSections()}<section class="newsletter" id="contact"><p class="section-kicker">THE NEXT CHAPTER</p><h2>BE FIRST.<br/><em>BE FSD.</em></h2><p>Our collections are taking shape. For launch information and partnership enquiries, get in touch.</p><a class="primary-btn" href="mailto:hello@example.com?subject=FSD%20Enquiry" id="email-link">CONTACT FSD ↗</a><small>Replace the placeholder contact address before publishing.</small></section></main><footer><div class="footer-brand"><span class="brand-icon">${icon()}</span><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></div><div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Pre-launch website prototype.</span></div><a href="#home">BACK TO TOP ↑</a></footer><dialog id="product-dialog"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{active=b.dataset.filter;render();document.querySelector('#products').scrollIntoView()});document.querySelectorAll('[data-product]').forEach(el=>el.onclick=()=>showProduct(Number(el.dataset.product)));document.querySelector('#search').oninput=e=>{search=e.target.value;const start=e.target.selectionStart;render();const input=document.querySelector('#search');input.focus();input.setSelectionRange(start,start)};document.querySelector('#close-dialog').onclick=()=>document.querySelector('#product-dialog').close(); const gs=document.querySelector('#gallery-search');if(gs)gs.oninput=()=>{let count=0;document.querySelectorAll('[data-gallery-name]').forEach(e=>{let ok=e.dataset.galleryName.includes(gs.value.toLowerCase());e.hidden=!ok;if(ok)count++});document.querySelector('#gallery-count').textContent=count+' designs'}}
-function showProduct(i){const p=products[i];document.querySelector('#dialog-body').innerHTML=`<img src="${p.img}" alt="${p.name} ${p.variant}"/><div class="dialog-copy"><p class="section-kicker">${p.category.toUpperCase()} / IN DEVELOPMENT</p><h2>${p.name}</h2><p class="variant">${p.variant}</p><p>${p.description}</p><h4>PROPOSED MATERIAL</h4><p>${p.material}</p><h4>DESIGN FEATURES</h4><ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul><div class="dialog-price"><span>INDICATIVE UK RRP</span><strong>${money(p.price)}</strong></div><small>Specifications and price subject to confirmation. Not currently available to purchase.</small></div>`;document.querySelector('#product-dialog').showModal()}
+import './catalogue.css';
 
-function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function additionalSections(){return `<section class="fsd-expanded" id="innovations"><div class="section-heading"><div><p class="section-kicker">FUTURE INNOVATIONS / PROPOSED PRODUCTS</p><h2>BEYOND APPAREL<span class="period">.</span></h2></div><p>Wearable technology and training essentials under development. Features and specifications require validation.</p></div><div class="fsd-innovation-grid">${additional.wearables.map(w=>`<article class="fsd-innovation-card"><img loading="lazy" src="/fsd-assets/${encodeURIComponent(w.primary_image.split('/').pop())}" alt="${safe(w.name)} design illustration"><div class="fsd-innovation-info"><span class="section-kicker">${safe(w.category)}</span><h3>${safe(w.name)}</h3><p>${safe(w.notes)}</p><small>PROPOSED PRODUCT · NOT AVAILABLE TO ORDER</small></div></article>`).join('')}</div></section><section class="fsd-expanded fsd-gallery" id="full-gallery"><div class="section-heading"><div><p class="section-kicker">FSD PRODUCT DESIGN LIBRARY</p><h2>THE FULL VISUAL EDIT<span class="period">.</span></h2></div><p>Additional supplied imagery covering apparel, modest training, accessories and brand development. Image names are working titles.</p></div><div class="fsd-gallery-tools"><input id="gallery-search" aria-label="Search design library" placeholder="Search all designs and colourways..."><span id="gallery-count">${additional.gallery.length} designs</span></div><div class="fsd-gallery-grid" id="fsd-gallery-grid">${additional.gallery.map((g,i)=>`<figure class="fsd-gallery-card" data-gallery-name="${safe(g.name.toLowerCase())}"><img loading="lazy" src="${safe(g.url)}" alt="${safe(g.name)}"><figcaption>${safe(g.name)}</figcaption></figure>`).join('')}</div><p class="disclaimer">These are proposed FSD products and visual development materials. Images are design renders, not evidence of completed manufacture, stock availability or verified technical performance.</p></section>`}
+function icon() {
+  return `<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg>`;
+}
 
-render();
+function header() {
+  return `<div class="announcement">FSD / THE NEXT ERA OF MOVEMENT <span>— PRE-LAUNCH COLLECTION</span></div>
+    <header class="header"><a class="brand" href="#home" aria-label="FSD Home">
+      <span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>
+    </a><nav aria-label="Main navigation"><a href="#collections">COLLECTIONS</a><a href="#products">PRODUCTS</a>
+      <a href="#philosophy">OUR STORY</a><a href="#innovations">INNOVATIONS</a><a href="#full-gallery">DESIGN LIBRARY</a><a href="#contact">CONTACT</a>
+    </nav><a class="header-cta" href="#products">EXPLORE COLLECTION <span>↗</span></a></header>`;
+}
+
+function gallerySection() {
+  return `<section class="fsd-expanded fsd-gallery" id="full-gallery"><div class="section-heading"><div>
+    <p class="section-kicker">FSD PRODUCT DESIGN LIBRARY</p><h2>THE FULL VISUAL EDIT<span class="period">.</span></h2></div>
+    <p>Supplied imagery covering apparel, modest training, accessories and brand development.
+    These working references are not approved product-to-image mappings.</p></div>
+    <div class="fsd-gallery-tools"><input id="gallery-search" aria-label="Search design library" placeholder="Search all designs and colourways...">
+    <span id="gallery-count" role="status" aria-live="polite">${additional.gallery.length} designs</span></div>
+    <div class="fsd-gallery-grid" id="fsd-gallery-grid">${additional.gallery.map(g => `
+      <figure class="fsd-gallery-card" data-gallery-name="${safe(g.name.toLowerCase())}">
+      <img loading="lazy" src="${safe(g.url)}" alt="${safe(g.name)}"><figcaption>${safe(g.name)}</figcaption></figure>`).join('')}</div>
+    <p class="disclaimer">Design-library images are reference material, not an additional product register.
+    Images are design renders, not evidence of completed manufacture, stock availability or verified technical performance.</p>
+    </section>`;
+}
+
+document.querySelector('#app').innerHTML = `${header()}<main id="home">
+  <section class="hero"><div class="hero-image"></div><div class="hero-shade"></div><div class="hero-content">
+    <p class="eyebrow">THE FSD PERFORMANCE UNIVERSE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
+    <h1>BUILT FOR<br/><em>THE DRIVE</em><br/>WITHIN.</h1>
+    <p class="hero-copy">Performance. Discipline. Identity. Discover technical training wear, combat-inspired design and modest activewear under one unmistakable shield.</p>
+    <div class="hero-actions"><a class="primary-btn" href="#products">EXPLORE THE COLLECTION <span>↗</span></a>
+    <a class="ghost-btn" href="#philosophy">DISCOVER FSD →</a></div>
+    <div class="hero-foot"><span>01 / 03</span><span>DESIGNED TO MOVE. BUILT TO BELONG.</span></div></div>
+    <div class="vertical-label">FITNESS & SELF DEFENCE — 2026</div>
+  </section>
+  <section class="manifesto" id="philosophy"><p class="section-kicker">THE FSD ETHOS</p>
+    <h2>ONE IDENTITY.<br/><span>EVERY WAY TO MOVE.</span></h2>
+    <p>From the training floor to everyday life, FSD brings a premium design language to performance, self-defence and inclusive movement.
+    Our proposed product portfolio is currently in development.</p>
+    <div class="values"><span>01 / STRENGTH</span><span>02 / DISCIPLINE</span><span>03 / CONFIDENCE</span></div>
+  </section>
+  <section class="collections" id="collections"><div class="section-heading"><div><p class="section-kicker">DISCOVER THE UNIVERSE</p>
+    <h2>COLLECTIONS<span class="period">.</span></h2></div><p>Distinct disciplines.<br/>One FSD standard.</p></div>
+    <div class="collection-grid">
+      <a href="#products" class="collection-tile signature"><span class="tile-no">01 / SIGNATURE</span>
+      <div><p>THE FOUNDATION</p><h3>FSD<br/>SIGNATURE</h3><span>DISCOVER THE EDIT ↗</span></div></a>
+      <a href="#products" data-category-link="Men’s Performance and Training" class="collection-tile performance"><span class="tile-no">02 / PERFORMANCE</span>
+      <div><p>ENGINEERED FOR MOTION</p><h3>PERFORMANCE<br/>DIVISION</h3><span>DISCOVER THE EDIT ↗</span></div></a>
+      <a href="#products" data-category-link="Modest Activewear" class="collection-tile modest"><span class="tile-no">03 / MODEST ACTIVEWEAR</span>
+      <div><p>STRENGTH IN EVERY FORM</p><h3>MODEST<br/>MOVEMENT</h3><span>EXPLORE THE RANGE ↗</span></div></a>
+    </div>
+  </section>
+  ${catalogueSection()}
+  <section class="blue-banner"><div><p class="section-kicker">BEYOND THE EXPECTED</p>
+    <h2>PERFORMANCE<br/><em>HAS NO SINGLE COLOUR.</em></h2>
+    <p>Signature gold. Electric blue. Statement prints. One unified identity.</p>
+    <a href="#planned" class="light-btn">SEE THE FULL ROADMAP ↗</a></div>
+  </section>
+  ${roadmapSection()}
+  ${innovationsSection()}
+  ${gallerySection()}
+  <section class="newsletter" id="contact"><p class="section-kicker">THE NEXT CHAPTER</p>
+    <h2>BE FIRST.<br/><em>BE FSD.</em></h2><p>Our collections are taking shape. For launch information and partnership enquiries, get in touch.</p>
+    <a class="primary-btn" href="mailto:hello@example.com?subject=FSD%20Enquiry" id="email-link">CONTACT FSD ↗</a>
+    <small>Replace the placeholder contact address before publishing.</small>
+  </section></main>
+  <footer><div class="footer-brand"><span class="brand-icon">${icon()}</span><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></div>
+    <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Pre-launch website prototype.</span></div>
+    <a href="#home">BACK TO TOP ↑</a></footer>
+  <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
+
+initCatalogue();
+document.querySelector('#gallery-search').addEventListener('input', event => {
+  const query = event.target.value.toLowerCase().trim();
+  let count = 0;
+  document.querySelectorAll('[data-gallery-name]').forEach(element => {
+    const matches = element.dataset.galleryName.includes(query);
+    element.hidden = !matches;
+    if (matches) count++;
+  });
+  document.querySelector('#gallery-count').textContent = `${count} designs`;
+});

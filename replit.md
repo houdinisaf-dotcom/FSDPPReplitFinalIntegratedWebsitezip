@@ -10,5 +10,5 @@
 
 ## Existing content restrictions
 - This setup does not publish the site or approve its catalogue content.
-- Before publishing, review the existing notes in `fsd-replit-site/README.md` and `handoff/README.md`: the contact email and shield are placeholders, prices are provisional, and product images represent concepts.
+- Before publishing, review the existing notes in `fsd-replit-site/README.md` and `handoff/README.md`: the contact email and shield are placeholders, and product images represent concepts. The newer master list distinguishes confirmed list prices from suggestions; do not revert confirmed entries to the older blanket provisional-price labels.
 - Preserve the supplied handoff material and do not invent prices, availability, product claims, or approved branding.
