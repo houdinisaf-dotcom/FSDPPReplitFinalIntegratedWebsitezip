@@ -1,0 +1,119 @@
+// Navigation metadata is kept separate from the master product catalogue.
+// Concept-only items below are named in the supplied FSD showroom brief; no
+// prices, specifications, availability, or product-image mappings are implied.
+export const collectionDivisions = [
+  {
+    id: 'apparel',
+    title: 'FSD APPAREL',
+    tagline: 'ENGINEERED FOR UNYIELDING MOVEMENT.',
+    description: 'Performance apparel, combat training, and modest movement.',
+    groups: [
+      {
+        id: 'mens-luxury-performance',
+        title: 'MEN’S LUXURY PERFORMANCE',
+        categories: ['Men’s Performance and Training', 'Training Sets', 'Combat and MMA', 'Lifestyle'],
+        audiences: ['Men’s', 'Unisex'],
+        concepts: [
+          '500 GSM Heavyweight Hoodies & Tracksuits',
+          '2-in-1 Combat Training Shorts & Tanks',
+          'Walkout Robes & Bomber Jackets',
+          'Volcanic Amber Capsule',
+          'Vector Camo Capsule',
+        ],
+      },
+      {
+        id: 'womens-modest-combat',
+        title: 'WOMEN’S MODEST COMBAT',
+        categories: ['Modest Activewear', 'Sports Hijabs'],
+        audiences: ['Women’s'],
+        concepts: [
+          'Pro Combat Magnetic Performance Hijabs',
+          'Modest Longline Training Tunics & Half-Zips',
+          'Technical Tapered Combat Trackpants',
+          'Full-Coverage Compression Base Layers',
+        ],
+        prominent: true,
+      },
+    ],
+    visual: 'apparel',
+  },
+  {
+    id: 'bio-lab',
+    title: 'FSD BIO-LAB™',
+    tagline: 'INTELLIGENCE IN EVERY MOVEMENT.',
+    description: 'Technology concepts, presented as concepts until their capabilities are validated.',
+    groups: [{
+      id: 'bio-lab-concepts',
+      title: 'WEARABLE TECHNOLOGY & CONCEPTS',
+      categories: ['Smart Tech'],
+      concepts: [
+        'Bio-Weave™ ECG & Hydration Compression Tops',
+        'FSD Aware Band™',
+        'Graphene-Infused Thermal Recovery Vests',
+        'FSD Digital Pass™',
+        'FSD VECTOR — Smartwatch',
+        'FSD CORE — Heart Rate Sensor Strap',
+      ],
+    }],
+    visual: 'bio-lab',
+  },
+  {
+    id: 'hardware',
+    title: 'FSD HARDWARE',
+    tagline: 'BUILT FOR THE DEMANDS OF PERFORMANCE.',
+    description: 'Strength equipment, combat essentials, recovery ideas, and training accessories.',
+    groups: [
+      {
+        id: 'strength-equipment',
+        title: 'STRENGTH EQUIPMENT',
+        categories: ['Gym Hardware and Accessories'],
+        productTerms: ['Dumbbell', 'AUREUS', 'OBSIDIAN', 'VANGUARD', 'UTILITY'],
+      },
+      {
+        id: 'combat-equipment',
+        title: 'COMBAT EQUIPMENT',
+        categories: ['Combat and MMA'],
+        concepts: ['16oz Pro Leather Boxing Gloves', 'Apex Ring Boots', 'Heavy Bags'],
+      },
+      {
+        id: 'recovery-technology',
+        title: 'RECOVERY TECHNOLOGY',
+        categories: [],
+        concepts: ['Cryo-Zero Recovery Chambers', 'Red Light Recovery Beds', '7mm Knee Sleeves'],
+      },
+      {
+        id: 'performance-accessories',
+        title: 'PERFORMANCE ACCESSORIES',
+        categories: ['Gym Hardware and Accessories', 'Smart Tech'],
+        productTerms: ['COMMAND', 'CARRY', 'SOCKS', 'COLLARS', 'HYDRATE', 'SONIC', 'PULSE'],
+        concepts: ['Anti-Snap Resistance Systems', 'Premium Metal Flasks'],
+      },
+    ],
+    visual: 'hardware',
+  },
+  {
+    id: 'global',
+    title: 'FSD GLOBAL',
+    tagline: 'FROM THE TRAINING FLOOR TO THE WORLD STAGE.',
+    description: 'Flagship and promotions concepts. None of the locations or services below are represented as operational.',
+    groups: [
+      {
+        id: 'flagships',
+        title: 'FSD FLAGSHIPS',
+        concepts: ['Dublin', 'Belfast', 'Manchester', 'Islamabad', 'Future Global Locations'],
+      },
+      {
+        id: 'promotions',
+        title: 'FSD PROMOTIONS',
+        concepts: [
+          'Professional Fight Promotions',
+          'Live Events',
+          'Broadcast & PPV Concepts',
+          'Athlete Development',
+          'Academy & Grassroots Programmes',
+        ],
+      },
+    ],
+    visual: 'global',
+  },
+];
