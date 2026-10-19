@@ -29,7 +29,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
   <section class="manifesto" id="philosophy"><p class="section-kicker">THE FSD ETHOS</p>
     <h2>ONE IDENTITY.<br/><span>EVERY WAY TO MOVE.</span></h2>
     <p>From the training floor to everyday life, FSD brings a premium design language to performance, self-defence and inclusive movement.
-    Our proposed product portfolio is currently in development.</p>
+    Our product portfolio is taking shape for its next launch.</p>
     <div class="values"><span>01 / STRENGTH</span><span>02 / DISCIPLINE</span><span>03 / CONFIDENCE</span></div>
   </section>
   <section class="collections" id="collections"><div class="section-heading"><div><p class="section-kicker">DISCOVER THE UNIVERSE</p>

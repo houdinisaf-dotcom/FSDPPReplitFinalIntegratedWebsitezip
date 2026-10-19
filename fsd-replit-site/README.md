@@ -13,7 +13,7 @@ A responsive premium pre-launch product catalogue, combining FSD's Signature Lux
 - Five actual user-provided design-stage product images for the Ombré Slash tees and Cheetah Windrunners.
 - Master-list catalogue with category filters, cross-listing, alternate-name search, pagination and product details.
 - Confirmed list prices and suggested prices are labelled separately; missing prices stay unconfirmed.
-- No checkout or payment collection: products are still in development.
+- No checkout or payment collection: products are not yet available to buy.
 
 ## Before publishing
 - Replace `hello@example.com` in `src/main.js` with your real business contact email.

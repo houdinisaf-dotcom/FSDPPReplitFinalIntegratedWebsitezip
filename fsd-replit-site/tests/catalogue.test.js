@@ -40,21 +40,32 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.ok(products.filter(p => p.images.length).length === 2);
+  assert.equal(products.filter(p => p.images.length).length, 3);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
-    assert.ok(p.colourways.split(';').map(value => value.trim()).includes(image.label));
+    if (p.id === 43) {
+      assert.equal(p.colourways, 'Black / Gold');
+      assert.match(image.label, /Black and gold/i);
+    } else {
+      assert.ok(p.colourways.split(';').map(value => value.trim()).includes(image.label));
+    }
   }
 });
 
-test('unapproved review candidates cannot become product images through gallery or wearable imports', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10]);
+test('product images use only supplied assets explicitly mapped to products', () => {
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 43]);
   assert.deepEqual(products.find(p => p.id === 1).images.map(image => image.src), [
     '/images/ombre-indigo.png', '/images/ombre-blue.png',
   ]);
   assert.deepEqual(products.find(p => p.id === 10).images.map(image => image.src), [
     '/images/windrunner-yellow.png', '/images/windrunner-white.png', '/images/windrunner-khaki.png',
   ]);
+  assert.deepEqual(products.find(p => p.id === 43).images, [{
+    src: '/images/fsd-velocity-performance-sports-hijab.jpg',
+    label: 'Black and gold sports hijab with matching performance top',
+  }]);
+  assert.equal(products.find(p => p.id === 43).imageStatus, 'User-supplied main product image');
+  assert.ok(existsSync(new URL('../public/images/fsd-velocity-performance-sports-hijab.jpg', import.meta.url)));
   for (const id of [42, 45, 60, 61, 62, 63, 65]) {
     assert.deepEqual(products.find(p => p.id === id).images, []);
   }
@@ -62,7 +73,8 @@ test('unapproved review candidates cannot become product images through gallery 
 
 test('rendered sections follow the master list, escape content, and do not promote held products', () => {
   const sections = catalogueSection() + roadmapSection() + innovationsSection();
-  assert.match(sections, /66 products in development across 9 categories/);
+  assert.match(sections, /66 products across 9 categories/);
+  assert.doesNotMatch(sections, /in development/i);
   assert.doesNotMatch(sections, /STRIDE|smartwatch|Shilajit|Championship Belt|Ring Corner Post/i);
   assert.match(sections, /not available to order/);
   assert.doesNotMatch(sections, /add to (cart|basket)|buy now|checkout|payment|<form/i);
@@ -91,7 +103,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
   });
   try {
     initCatalogue();
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
+  assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
     assert.match(element('#catalogue-grid').innerHTML, /\/images\/ombre-indigo.png/);
     assert.match(element('#catalogue-grid').innerHTML, /; design concept/);
     assert.match(element('#catalogue-grid').innerHTML, /Concept image mapping pending/);

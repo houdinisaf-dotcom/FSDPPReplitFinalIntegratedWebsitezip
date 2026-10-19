@@ -9,7 +9,7 @@ function imagePlaceholder(product) {
   const label = product.imageStatus.startsWith('Image exists')
     ? 'Concept image mapping pending'
     : product.imageStatus.startsWith('Brief only') ? 'Image under review' : 'Imagery to follow';
-  return `<div class="catalogue-placeholder"><span>FSD / IN DEVELOPMENT</span>
+  return `<div class="catalogue-placeholder"><span>FSD / PRE-LAUNCH</span>
     <strong>${safe(product.category)}</strong><small>${label}</small></div>`;
 }
 
@@ -19,7 +19,7 @@ function card(product) {
   return `<article class="product-card">
     <div class="product-image">${image
       ? `<img loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept"/>`
-      : imagePlaceholder(product)}<span class="chip">IN DEVELOPMENT</span></div>
+      : imagePlaceholder(product)}<span class="chip">PRE-LAUNCH</span></div>
     <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>
     <h3>${safe(product.name)}</h3>
     <p class="catalogue-colourways">${safe(product.colourways || 'Colourways to be confirmed')}</p>
@@ -34,7 +34,7 @@ export function catalogueSection() {
   return `<section class="shop" id="products">
     <div class="section-heading"><div><p class="section-kicker">THE FSD MASTER COLLECTION</p>
       <h2>THE PRODUCT EDIT<span class="period">.</span></h2></div>
-      <p>${products.length} products in development across ${categories.length} categories.<br/>
+      <p>${products.length} products across ${categories.length} categories.<br/>
       Confirmed and suggested list prices are labelled separately.</p></div>
     <div class="toolbar catalogue-toolbar">
       <label>Collection<select id="catalogue-category" aria-label="Filter by category">
@@ -46,7 +46,7 @@ export function catalogueSection() {
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>
     <div class="product-grid" id="catalogue-grid"></div>
     <nav class="catalogue-pagination" id="catalogue-pagination" aria-label="Product catalogue pages"></nav>
-    <p class="disclaimer">All products remain in development and are not available to order.
+    <p class="disclaimer">Products are not available to order.
     Confirmed prices are those recorded in the master list; suggested prices still require approval.
     Images are concept references, not evidence of stock or verified performance. Colourways are grouped under one product.</p>
   </section>`;
@@ -59,7 +59,7 @@ export function roadmapSection() {
     Nothing shown is available for immediate purchase.</p></div><div class="planned-grid">
     ${categories.map((category, i) => `<a class="planned-row catalogue-category-link" href="#products" data-category-link="${safe(category)}">
       <span>${String(i + 1).padStart(2, '0')}</span><div><strong>${safe(category)}</strong>
-      <small>${filterProducts(category).length} products in development</small></div><span class="planned-status">EXPLORE ↗</span></a>`).join('')}
+      <small>${filterProducts(category).length} products</small></div><span class="planned-status">EXPLORE ↗</span></a>`).join('')}
     </div></section>`;
 }
 
@@ -101,7 +101,7 @@ function showProduct(id) {
   document.querySelector('#dialog-body').innerHTML = `<div class="catalogue-dialog-images">${p.images.length
     ? p.images.map(image => `<figure><img src="${safe(image.src)}" alt="${safe(p.name)} — ${safe(image.label)}; design concept"/><figcaption>${safe(image.label)}</figcaption></figure>`).join('')
     : imagePlaceholder(p)}</div><div class="dialog-copy">
-    <p class="section-kicker">${safe(p.category)} / IN DEVELOPMENT</p><h2 id="product-title">${safe(p.name)}</h2>
+    <p class="section-kicker">${safe(p.category)} / PRE-LAUNCH</p><h2 id="product-title">${safe(p.name)}</h2>
     <dl class="catalogue-details">
       ${detail('Colourways', p.colourways || 'To be confirmed')}
       ${detail('Audience', p.audience)}

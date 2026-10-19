@@ -10,6 +10,9 @@ const imageReferences = {
     { src: '/images/windrunner-white.png', label: 'Blizzard ice-white grey camo / black' },
     { src: '/images/windrunner-khaki.png', label: 'Savannah khaki camo / black' },
   ],
+  'FSD Velocity Performance Sports Hijab': [
+    { src: '/images/fsd-velocity-performance-sports-hijab.jpg', label: 'Black and gold sports hijab with matching performance top' },
+  ],
 };
 
 // Publication decisions use stable record metadata, not names that may change.
