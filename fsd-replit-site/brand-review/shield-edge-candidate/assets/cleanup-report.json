@@ -1,0 +1,15 @@
+{
+  "changed_partial_edge_pixels": 4521,
+  "opaque_pixels_unchanged": true,
+  "interior_alpha_unchanged": true,
+  "retained_visible_rgb_unchanged": true,
+  "input_assets_and_lettering_unchanged": true,
+  "native_canvas_unchanged": [
+    261,
+    273
+  ],
+  "alpha_weighted_coverage_reduction_percent": 2.263,
+  "method": "Partial-alpha attenuation in a two-native-pixel boundary band",
+  "limitation": "Cannot remove opaque matte residue without altering source pixels",
+  "approval": "Unapproved candidate; no live-site changes"
+}

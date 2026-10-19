@@ -140,3 +140,59 @@ mtime_ms = 1792432055740
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/8090803a-dad5-41ee-9cc3-c2d8543dbd35/3850ce06-238d-4e1e-be8f-04e6d8ff7883"
 storage_version_token = "1792432175625925"
 content_type = "image/png"
+
+[[outputs]]
+id = "81xT8R61LDDXCwpuNtDGb"
+uri = "file://generated-artifacts/fsd-shield-edge-candidate/desktop-comparison.jpg"
+type = "image"
+title = "Desktop — original vs edge-cleanup candidate"
+description = "Identical approved layout, with black/light edge comparisons. Review only; the live site is unchanged."
+logical_id = "e20ef85d-1e29-4262-81e1-105466b004d7"
+content_hash = "sha256:c3e980c38cbd3e2c2b21e26c96919a4134617011c8152b34a350887e7ddd76a1"
+size = 180065
+mtime_ms = 1792432780788
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e20ef85d-1e29-4262-81e1-105466b004d7/5d72d753-146d-4c3c-8cc7-00e9fba855a4"
+storage_version_token = "1792432822489123"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "b_njaTrSkY3PE1SL_WARD"
+uri = "file://generated-artifacts/fsd-shield-edge-candidate/mobile-comparison.jpg"
+type = "image"
+title = "Mobile — original vs edge-cleanup candidate"
+description = "The same approved mobile layout and wording, comparing the original crop with the separate cleanup candidate."
+logical_id = "f7388862-8674-42cf-b736-c804cc44e573"
+content_hash = "sha256:08a55c0025f3d4c60c2145423a761f756f38e38b21d3c5a9396b11b004c91b1f"
+size = 67403
+mtime_ms = 1792432782144
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/f7388862-8674-42cf-b736-c804cc44e573/4c978142-ad37-4ade-ae0d-3d51eb1f5616"
+storage_version_token = "1792432823231775"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "5Tx5-xfskGcImmCPQn0Lu"
+uri = "file://fsd-replit-site/brand-review/shield-edge-candidate/assets/website-shield-lockup-edge-candidate.png"
+type = "image"
+title = "Transparent lockup — edge-cleanup candidate"
+description = "400 × 204 RGBA PNG. Approved layout and lettering retained; conservative partial-alpha cleanup only. Not applied to the site."
+logical_id = "94b50b2b-3f38-4604-8a5d-a589891cfa3a"
+content_hash = "sha256:04a79df1d4365b8bea0fc4a301c8644ceba1f708a5ec3eff2e464476ba064af0"
+size = 43827
+mtime_ms = 1792432747516
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/94b50b2b-3f38-4604-8a5d-a589891cfa3a/2d5bf567-3188-46c1-8353-d0ccbf88f098"
+storage_version_token = "1792432824050532"
+content_type = "image/png"
+
+[[outputs]]
+id = "vMv5zLPBAIoKn5b4XlEpR"
+uri = "file://fsd-replit-site/brand-review/shield-edge-candidate/assets/shield-edge-candidate.png"
+type = "image"
+title = "Isolated shield — edge-cleanup candidate"
+description = "261 × 273 RGBA PNG. Opaque pixels and retained visible RGB unchanged. Some opaque matte residue remains."
+logical_id = "008f92e6-d072-40fe-beac-957a596e9c67"
+content_hash = "sha256:d3df53e80190a82d3793b43d2716f3d4bd925339d35d4391c6469266b9be2493"
+size = 108024
+mtime_ms = 1792432747398
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/008f92e6-d072-40fe-beac-957a596e9c67/66d4fc59-d1de-4c9d-873a-0f9e94bc952c"
+storage_version_token = "1792432824787493"
+content_type = "image/png"
