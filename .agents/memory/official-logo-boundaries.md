@@ -14,3 +14,9 @@ A transparent raster derived from a flattened reference is an estimated matte, n
 **Why:** Black/white colour keys can leave fringes or remove deep shadows/highlights; flattening has discarded unambiguous edge alpha information.
 
 **How to apply:** Show dark/light proofs, preserve native detail without claiming upscaling adds resolution, disclose matte limits, and prefer the existing genuine transparent/vector source when available.
+
+Do not apply the estimated raster-matte logo candidates to the live header; wait for an original transparent/vector master.
+
+**Why:** The user selected “Wait for an original transparent/vector master” instead of approving the proposed header.
+
+**How to apply:** Keep the existing header unchanged. Inspect the original master and obtain approval for its prepared header proof before replacement.
