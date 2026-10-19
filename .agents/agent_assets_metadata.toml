@@ -84,3 +84,59 @@ mtime_ms = 1792429820644
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c63ba026-6a00-4748-8c9d-4f845d3cf0ef/85928319-929d-48a8-b81f-26ddacf1fb1b"
 storage_version_token = "1792430048958129"
 content_type = "image/png"
+
+[[outputs]]
+id = "RbCi10mJCSLD39-u-dvH1"
+uri = "file://generated-artifacts/fsd-shield-proof/desktop-header-proof.jpg"
+type = "image"
+title = "Desktop header proof — shield and full name"
+description = "Existing versus proposed black header, with enlarged transparency and edge checks. Review only; the live site is unchanged."
+logical_id = "ced0fdb4-4578-4bfd-aa97-7e8b7ef0a8e2"
+content_hash = "sha256:c016507be661149db8c359fbef522297a6e09dd27f3f86d61859396ec25e6819"
+size = 155057
+mtime_ms = 1792432124776
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/ced0fdb4-4578-4bfd-aa97-7e8b7ef0a8e2/5b09aef3-1af5-40ad-92f2-6915ee8237dd"
+storage_version_token = "1792432173124540"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "7v-Wgti3XuVYbz-bZm7wa"
+uri = "file://generated-artifacts/fsd-shield-proof/mobile-header-proof.jpg"
+type = "image"
+title = "Mobile header proof — shield and full name"
+description = "402px-wide mobile preview. The proposed stacked treatment uses a 96px header height for legibility; no live CSS changed."
+logical_id = "ca0b5f91-cb07-4d13-a44c-9ac93cf12823"
+content_hash = "sha256:1b73857e66fb4e6b6c27f7b77cfa806662a5f13292262cbf11c3d033c06d6785"
+size = 63228
+mtime_ms = 1792432126056
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/ca0b5f91-cb07-4d13-a44c-9ac93cf12823/3dd54ece-b2be-41e6-9036-401f7d1ffabd"
+storage_version_token = "1792432174188001"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "cr7qIGFhAqe9ky7se86_f"
+uri = "file://fsd-replit-site/brand-review/shield-proof/assets/website-shield-lockup.png"
+type = "image"
+title = "Interim transparent website lockup"
+description = "400 × 204 RGBA PNG. Original shield above FITNESS & SELF-DEFENSE, without large FSD initials. Layout candidate, not a final edge-cleaned master."
+logical_id = "e088d9ee-00bd-4bad-83e3-b79a85a151e8"
+content_hash = "sha256:9822444fc90c57e3ff972173b94d963262d9816fb93d6ad638e23abb3d9d2ac8"
+size = 44106
+mtime_ms = 1792432055992
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e088d9ee-00bd-4bad-83e3-b79a85a151e8/84ef3b27-3e3e-4a18-b380-31d1ffa54090"
+storage_version_token = "1792432174920421"
+content_type = "image/png"
+
+[[outputs]]
+id = "SKRBm3XVoegL-oeTdUZo7"
+uri = "file://fsd-replit-site/brand-review/shield-proof/assets/shield-isolated.png"
+type = "image"
+title = "Isolated supplied shield — interim crop"
+description = "261 × 273 transparent PNG. Retained shield RGB and alpha are unchanged; detached remnants are removed. Pale source-edge fringe remains for review."
+logical_id = "8090803a-dad5-41ee-9cc3-c2d8543dbd35"
+content_hash = "sha256:2c583de24241f6575379b36c21df249e3dfa578c69f5d94d57f2a894a346ec13"
+size = 108857
+mtime_ms = 1792432055740
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/8090803a-dad5-41ee-9cc3-c2d8543dbd35/3850ce06-238d-4e1e-be8f-04e6d8ff7883"
+storage_version_token = "1792432175625925"
+content_type = "image/png"

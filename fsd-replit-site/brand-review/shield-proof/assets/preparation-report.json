@@ -1,0 +1,12 @@
+{
+  "source_sha256": "160a6cd8d2f64782ab7147291bba42327777e8fd1e9f536f4404db9627b76407",
+  "source_unchanged": true,
+  "source_alpha": "RGBA, fully transparent background and partial edge alpha",
+  "requested_wording": "FITNESS & SELF-DEFENSE",
+  "generic_font_used": false,
+  "lettering": "Supplied glyphs; C replaced with existing S; hyphen from F middle stroke",
+  "detached_alpha_pixels_removed": 94,
+  "shield_rgb_and_retained_alpha": "unchanged",
+  "remaining_limitation": "Pale source-matte fringe remains; not a final cleaned master",
+  "production_files_changed": false
+}

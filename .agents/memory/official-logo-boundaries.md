@@ -3,7 +3,7 @@ name: Official logo boundaries
 description: Established FSD logo fidelity and approval requirements
 ---
 
-The user identifies the metallic-gold logo on black and on white as two official references of the same established FSD identity. Preserve the exact shield, blade details, angular FSD wordmark and FITNESS & SELF DEFENCE tagline; do not redesign, redraw, regenerate or reinterpret them.
+The user identifies the metallic-gold logo on black and on white as two official references of the same established FSD identity. Preserve the exact shield and blade details; do not redesign, redraw, regenerate or reinterpret the shield. Existing wordmark/tagline artwork is the letterform reference, not a reason to override the requested website-only wording below.
 
 **Why:** The user wants the website to display the established logo accurately, not create a new identity.
 
@@ -15,8 +15,8 @@ A transparent raster derived from a flattened reference is an estimated matte, n
 
 **How to apply:** Show dark/light proofs, preserve native detail without claiming upscaling adds resolution, disclose matte limits, and prefer the existing genuine transparent/vector source when available.
 
-Do not apply the estimated raster-matte logo candidates to the live header; wait for an original transparent/vector master.
+The preferred final website identity is the original metallic-gold shield, no large FSD initials beneath it, the exact wording “FITNESS & SELF-DEFENSE” beneath the shield, premium champagne-gold styling, and a genuinely transparent background. Do not substitute generic lettering.
 
-**Why:** The user selected “Wait for an original transparent/vector master” instead of approving the proposed header.
+**Why:** The user explicitly requested this website-specific treatment while leaving FSD initials on existing products.
 
-**How to apply:** Keep the existing header unchanged. Inspect the original master and obtain approval for its prepared header proof before replacement.
+**How to apply:** Prepare desktop and mobile proofs separately from the live site. The supplied RGBA asset is interim reference material, not final logo approval. Keep the existing header unchanged until the user approves its proof; do not modify clothing, product renders, packaging or other existing FSD branding. Do not publish during logo-proof work.
