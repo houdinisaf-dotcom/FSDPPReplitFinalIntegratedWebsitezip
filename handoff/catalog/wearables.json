@@ -1,0 +1,102 @@
+[
+  {
+    "name": "FSD ALIGN",
+    "category": "Posture awareness wearable",
+    "primary_image": "assets/images/FSD ALIGN — Posture Feedback Wearable.(1).png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Branding on device reads VERULEX; confirm final identity."
+  },
+  {
+    "name": "FSD HYDRATE",
+    "category": "Smart hydration bottle",
+    "primary_image": "assets/images/FSD Hydrate_ Smart Hydration, Stronger You(1).png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Features shown in concept render; validation required."
+  },
+  {
+    "name": "FSD MOTION",
+    "category": "Smart training apparel",
+    "primary_image": "assets/images/FSD Motion Smart Training Apparel.png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Sensor capabilities are conceptual."
+  },
+  {
+    "name": "FSD NEXUS",
+    "category": "Smart ring",
+    "primary_image": "assets/images/FSD Nexus Smart Ring Campaign Board(1).png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Explicit concept/exploration disclaimer in campaign artwork."
+  },
+  {
+    "name": "FSD PULSE (clip-on)",
+    "category": "Clip-on step counter",
+    "primary_image": "assets/images/FSD Pulse_ Premium Step Counter.png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Name overlaps with smartwatch concept."
+  },
+  {
+    "name": "FSD PULSE (smartwatch)",
+    "category": "Smartwatch concept",
+    "primary_image": "assets/images/FSD Pulse_ Train, Recover, Perform.png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Name overlaps with clip-on product; confirm."
+  },
+  {
+    "name": "FSD SONIC",
+    "category": "Wireless training earbuds",
+    "primary_image": "assets/images/FSD Sonic_ Black-Gold Training Earbuds.png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Concept imagery."
+  },
+  {
+    "name": "FSD STRIDE",
+    "category": "Activity tracker",
+    "primary_image": "assets/images/FSD Stride_ Move, Track, Improve.png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Concept/exploration disclaimer in artwork."
+  },
+  {
+    "name": "FSD VECTOR",
+    "category": "Smartwatch",
+    "primary_image": "assets/images/FSD Vector Smartwatch Poster.png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Concept imagery."
+  },
+  {
+    "name": "FSD CORE",
+    "category": "Heart-rate sensor strap",
+    "primary_image": "assets/images/Unknown(10).png",
+    "status": "concept / planned; not available for purchase",
+    "price_gbp": null,
+    "sku": null,
+    "launch_date": null,
+    "notes": "Filename generic; identity from supplied visual."
+  }
+]

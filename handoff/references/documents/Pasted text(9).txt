@@ -1,0 +1,319 @@
+# FSD FITNESS & SELF DEFENCE
+## MASTER PRODUCT INVENTORY, COLLECTION STRUCTURE & WEBSITE CATALOGUE PROMPT
+
+Please review and consolidate the entire FSD – FITNESS & SELF DEFENCE product development conversation, including all product images, designs, specifications, proposed pricing, packaging concepts and collection plans created from the beginning.
+
+**Exclude the most recent Solar Amber six-panel cap and all other cap products.**
+
+The purpose of this exercise is to produce a comprehensive, professional **FSD Master Product Inventory and Website Catalogue**, suitable for importing into an e-commerce website, presenting to manufacturers and incorporating into our business and product development plans.
+
+Please begin the report with:
+
+"Please find below the consolidated FSD – Fitness & Self Defence product catalogue, bringing together the clothing, performance equipment, modest activewear, training accessories and coordinated collections developed to date. This catalogue identifies each product, its intended purpose, technical features, proposed material composition, customer benefits, suggested UK retail pricing, colourways and current development status."
+
+## SECTION 1 — FSD BRAND AND COLLECTION STRUCTURE
+
+Organise products into logical website categories:
+
+1. FSD Men's Performance Training Wear
+2. FSD Women's Performance Training Wear
+3. FSD Women's Modest Activewear
+4. FSD Sports Hijab Collection
+5. FSD Combat & MMA Performance Wear
+6. FSD Training Sets and Coordinated Outfits
+7. FSD Training Accessories
+8. FSD Premium Packaging and Gift Sets
+9. FSD Future Product Development
+
+Only include products supported by our actual conversation, uploaded references or approved product concepts. Do not invent additional completed products.
+
+## SECTION 2 — COMPLETE PRODUCT INVENTORY
+
+Include every distinct product developed, shown or proposed, while removing accidental duplicates and repeated versions of the same design.
+
+At minimum, review the following product families and reconcile them against the conversation history.
+
+### Original FSD Performance Collection
+
+- FSD Performance Training Shorts
+- FSD Long-Sleeve Performance Training Top
+- FSD Short-Sleeve Performance Training T-Shirt
+- FSD Performance Joggers / Training Trousers
+- FSD Premium Training Hoodie
+
+### FSD Women's Modest Activewear Collection
+
+- FSD CORE Everyday Sports Hijab
+- FSD FLOW Performance Running Hijab
+- FSD COVER Extended-Coverage Sports Hijab
+- FSD Modest Longline Training Top / Tunic
+- FSD Modest Longline Training Jacket
+- FSD Women's Training Trousers / Joggers
+- FSD Coordinated Modest Training Set — Tunic + Joggers
+
+### Additional Women's Performance and Accessories Collection
+
+- FSD AEROFORGE Women's Performance Training Top
+- FSD COMBAT Women's MMA-Specific Rash Guard
+- FSD FLEX Women's Performance Training Leggings
+- FSD BREEZE Lightweight Modest Training Overshirt
+- FSD CARRY Premium Performance Sports Bag
+- FSD STRIDE Performance Training Socks
+
+Check whether any further distinct products were developed earlier in the conversation and include them where supported.
+
+Where a product was designed multiple times, consolidate it into one master entry with relevant variants rather than counting repeated renders as separate products.
+
+Do not automatically classify proposed products as completed. Clearly identify their actual design stage.
+
+## SECTION 3 — DETAILED PRODUCT SPECIFICATION
+
+For every product, provide the following information:
+
+**Product identity**
+- Official product name
+- Proposed SKU / product code
+- Brand: FSD – Fitness & Self Defence
+- Main website category
+- Collection or subcollection
+- Intended customer
+- Current development status
+
+**Product description**
+- Professional website-ready product description
+- What the product is
+- What it is designed to do
+- Intended training activities
+- Main customer needs it addresses
+- Key benefits and selling points
+
+**Materials and construction**
+- Proposed primary fabric composition, expressed in percentages where justified
+- Proposed fabric weight in GSM where available
+- Stretch characteristics
+- Breathability and ventilation features
+- Moisture-management properties
+- Stitching and seam construction
+- Reinforcement areas
+- Fastenings, zips, pockets and adjusters
+- Branding application method
+- Washing and care guidance
+
+**Fit and sizing**
+- Intended fit
+- Proposed size range
+- Garment length and coverage
+- Mobility considerations
+- Modest-fit requirements where relevant
+- Available style variations
+
+**Colours**
+- Signature colourway
+- Additional proposed colourways
+- Matching FSD collection products
+- Official logo colour treatment
+
+**Pricing**
+- Proposed manufacturing cost, where actually available
+- Estimated landed cost, clearly labelled if calculated
+- Suggested UK retail price
+- Suggested promotional price where appropriate
+- Potential bundle price
+- Indicative gross margin, only where sufficient cost information exists
+
+**Packaging**
+- Packaging tier
+- Box, sleeve, bag or pouch format
+- Branding finish
+- Care card and other inserts
+- Suitable gift-packaging options
+
+**Development**
+- Concept created
+- Visual mockup created
+- Technical specification pending
+- Prototype pending
+- Sampling pending
+- Testing pending
+- Production approved, only if actually confirmed
+- Ready for sale, only if actually confirmed
+
+## SECTION 4 — WOMEN'S MODEST ACTIVEWEAR REQUIREMENTS
+
+Give particular attention to Muslim women and other customers seeking comfortable, practical modest sportswear.
+
+Clearly distinguish:
+
+- Loose-fitting modest garments
+- Technical close-fitting performance garments
+- Compression rash guards
+- Leggings intended for layering
+- Extended-coverage sports hijabs
+- Everyday sports hijabs
+- Running-specific sports hijabs
+
+Modest garments should be described according to their actual intended coverage, including the chest, waist, hips, seat, arms and legs.
+
+Do not market close-fitting leggings or compression tops as standalone modest outerwear.
+
+Explain which products can be paired together to create complete modest training outfits.
+
+## SECTION 5 — PRODUCT BENEFITS AND TECHNICAL FEATURES
+
+For each product, identify the relevant intended benefits, such as:
+
+- Breathability
+- Moisture management
+- Lightweight construction
+- Four-way stretch
+- Comfortable movement
+- Modest coverage
+- Reduced fabric friction
+- Flatlock seams
+- Adjustable waistbands
+- Secure storage
+- Ventilation panels
+- Extended garment coverage
+- Training versatility
+- Durability
+- Layering compatibility
+- Suitable fit for different exercise types
+
+Only assign benefits supported by the product's actual concept.
+
+Distinguish intended design characteristics from independently tested performance claims.
+
+## SECTION 6 — FSD PRICING STRUCTURE
+
+Create a UK pricing table showing:
+
+| Product | Category | Proposed Cost | Suggested RRP | Promotional Price | Bundle Price | Pricing Status |
+|---|---|---|---|---|---|---|
+
+Use the prices previously established in our conversation wherever available.
+
+For the newer proposed collection, the indicative retail ranges are:
+
+- FSD AEROFORGE: £39.99–£49.99
+- FSD COMBAT: £44.99–£59.99
+- FSD FLEX: £39.99–£49.99
+- FSD BREEZE: £44.99–£59.99
+- FSD CARRY: £49.99–£69.99
+- FSD STRIDE: £9.99–£14.99 per pair
+
+For other products, retrieve the previously discussed prices if available. If no price was established, state "Pricing to be confirmed" rather than presenting an invented historical price.
+
+All prices must be in GBP (£). Clearly distinguish recommended retail prices from confirmed selling prices.
+
+## SECTION 7 — WEBSITE PRODUCT LISTINGS
+
+For each product, write a ready-to-use e-commerce listing containing:
+
+- Product title
+- Short description
+- Full product description
+- Five key selling points
+- Proposed material composition
+- Fit and sizing information
+- Available colourways
+- Intended use
+- Care instructions
+- Suggested RRP
+- Packaging details
+- Development or availability status
+- SEO page title
+- Meta description
+- Suggested URL slug
+- Suggested product tags
+
+Use polished British English, with professional premium sportswear branding.
+
+Avoid unsupported claims such as "clinically proven", "certified waterproof" or "guaranteed squat-proof" unless supporting testing evidence exists.
+
+## SECTION 8 — BUNDLES AND COORDINATED OUTFITS
+
+Identify sensible combinations of existing FSD products, including:
+
+- Modest Training Tunic + Joggers
+- Modest Training Jacket + Joggers
+- CORE Hijab + Modest Training Set
+- FLOW Hijab + Running Outfit
+- COVER Hijab + Extended-Coverage Training Outfit
+- AEROFORGE Top + Training Trousers
+- COMBAT Rash Guard + Suitable Combat Training Bottoms
+- BREEZE Overshirt + FLEX Leggings
+- Sports Bag + Training Outfit
+- Performance Socks + Training Clothing
+
+Explain each bundle's purpose, compatible colours, intended audience and potential retail positioning.
+
+Provide proposed bundle pricing only when the component prices support a reasonable calculation, and label it as a proposal.
+
+## SECTION 9 — OFFICIAL FSD BRANDING
+
+Use the official FSD brand identity shown in the supplied reference image:
+
+- Original angular shield emblem
+- Original italic FSD wordmark
+- FITNESS & SELF DEFENCE supporting text
+
+Maintain one recognisable FSD logo across all collections.
+
+Signature black-and-gold branding should remain available for premium packaging and flagship products.
+
+Other collections may use complementary logo colours such as:
+
+- Navy / ice blue
+- Charcoal / electric lime
+- Olive / cream
+- Burgundy / rose
+- Grey / silver
+- Taupe / charcoal
+- Dusty pink / black
+
+Do not invent alternative FSD symbols or redesign the official logo.
+
+## SECTION 10 — MASTER INVENTORY TABLE
+
+Produce one consolidated table with these columns:
+
+| SKU | Product Name | Category | Collection | Gender / Fit | Main Colour | Proposed Materials | Key Features | Main Benefits | Suggested RRP | Packaging | Design Status |
+
+Each distinct product should appear once.
+
+Separate colourways, sizes and variations into a secondary product-variant table where appropriate.
+
+Do not invent stock quantities, barcodes, EANs, supplier details, manufacturing costs or warehouse availability.
+
+## SECTION 11 — COMPLETED VERSUS OUTSTANDING PRODUCTS
+
+Divide the final catalogue into three groups:
+
+**A. Products already visualised:** Products with actual design images created during the conversation.
+
+**B. Products conceptually specified:** Products with written briefs or proposed specifications but no confirmed final design image.
+
+**C. Products awaiting development:** Products requiring additional design work, sampling, specifications or approval.
+
+Identify any gaps in the range and explain what needs to be completed before the website can accurately advertise the products.
+
+## SECTION 12 — FINAL WEBSITE IMPORT FORMAT
+
+Finish with:
+
+1. A concise master product catalogue.
+2. A detailed technical specification for each product.
+3. A suggested retail pricing matrix.
+4. A website category structure.
+5. A product-variant structure.
+6. Recommended bundle combinations.
+7. A list of outstanding product development tasks.
+8. A clean, structured CSV-compatible product import table.
+
+**FINAL INSTRUCTION:**
+
+The catalogue must accurately reflect the products developed throughout our FSD conversation. Do not duplicate products, invent specifications or misrepresent proposed designs as manufactured stock.
+
+Where material compositions, manufacturing costs, technical performance or retail prices have not been confirmed, clearly label them as proposed, estimated or to be confirmed.
+
+The objective is to create a professional, comprehensive and commercially useful FSD product inventory that can serve as the foundation for our website, manufacturing specifications, pricing strategy and future collection development.
