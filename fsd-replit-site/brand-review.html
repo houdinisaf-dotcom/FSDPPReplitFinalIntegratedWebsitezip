@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>FSD — Logo approval proof</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: dark; font-family: "DM Sans", sans-serif; color: #eee; background: #090b0f; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    .review-top { padding: 32px 6% 25px; border-bottom: 1px solid #3c3529; }
+    .eyebrow, .caption, .label { color: #c9a66b; font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    h1 { margin: 12px 0; font: 800 clamp(30px, 4vw, 52px)/1.1 Manrope, sans-serif; letter-spacing: -.05em; }
+    .intro { max-width: 850px; color: #b7b8bd; font-size: 14px; line-height: 1.7; }
+    .status { display: inline-block; margin-top: 8px; padding: 8px 12px; border: 1px solid #5e4f35; border-radius: 4px; color: #e3c68c; font-size: 11px; }
+    .review-section { padding: 28px 0 0; }
+    .section-label { margin: 0; padding: 0 6% 14px; color: #b3b3ba; font-size: 10px; font-weight: 700; letter-spacing: .13em; }
+    .site-announcement { text-align: center; background: #c8a466; color: #0d0e11; font-size: 10px; font-weight: 800; letter-spacing: .21em; padding: 10px; }
+    .site-header { min-height: 86px; display: flex; align-items: center; justify-content: space-between; gap: 25px; padding: 0 6%; border-bottom: 1px solid #ffffff17; background: #0a0b0d; }
+    .current-brand { display: flex; align-items: center; gap: 12px; }
+    .current-shield { width: 39px; color: #d2b276; display: inline-flex; }
+    .current-type { display: flex; flex-direction: column; }
+    .current-type strong { font: italic 800 31px Manrope, sans-serif; letter-spacing: -.08em; }
+    .current-type small { font-size: 8px; letter-spacing: .18em; color: #d0b783; }
+    .site-nav { display: flex; gap: 28px; }
+    .site-nav a, .site-cta { font-size: 10px; letter-spacing: .1em; font-weight: 700; white-space: nowrap; }
+    .site-cta { border: 1px solid #a98a56; padding: 15px 20px; }
+    .site-cta span { margin-left: 16px; color: #d9b97b; }
+    .proposed-brand { display: block; flex: 0 0 250px; }
+    .proposed-brand picture { display: block; }
+    .proposed-brand img { display: block; width: 250px; height: auto; }
+    .header-note { margin: 0; padding: 13px 6%; background: #111216; color: #a5a5ad; font-size: 11px; line-height: 1.7; }
+    .asset-area { padding: 45px 6% 55px; }
+    .asset-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 25px; }
+    h2 { margin: 0 0 22px; font: 700 25px Manrope, sans-serif; letter-spacing: -.04em; }
+    .asset-heading p { margin: 0; color: #a2a3aa; font-size: 12px; }
+    .asset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .asset-card { margin: 0; overflow: hidden; border: 1px solid #39382f; border-radius: 15px; background: #111216; }
+    .asset-surface { min-height: 350px; display: grid; place-items: center; padding: 30px; }
+    .asset-surface img { display: block; width: min(100%, 530px); height: auto; }
+    .asset-surface picture { display: block; width: 100%; max-width: 530px; }
+    .surface-dark { background: #0a0b0d; }
+    .surface-light { background: #f3f2ef; }
+    figcaption { padding: 15px 20px; color: #b8b8bf; font-size: 11px; line-height: 1.6; }
+    .compact-grid { display: grid; grid-template-columns: .7fr 1.3fr; gap: 18px; margin-top: 18px; }
+    .compact-surface { min-height: 185px; display: grid; place-items: center; padding: 25px; background-color: #17191e; background-image: linear-gradient(45deg,#202228 25%,transparent 25%),linear-gradient(-45deg,#202228 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#202228 75%),linear-gradient(-45deg,transparent 75%,#202228 75%); background-size: 24px 24px; background-position: 0 0,0 12px,12px -12px,-12px 0; }
+    .compact-surface .shield { width: 115px; height: auto; }
+    .compact-surface .wordmark { width: min(100%, 440px); height: auto; }
+    .technical { margin-top: 28px; padding: 24px; border: 1px solid #3f3b32; border-radius: 12px; background: #111216; }
+    .technical h3 { margin-top: 0; font: 700 15px Manrope, sans-serif; }
+    .technical p, .technical li { color: #b5b5bd; font-size: 12px; line-height: 1.8; }
+    .technical ul { padding-left: 20px; }
+    .technical strong { color: #e1d2b7; }
+    .back-link { display: inline-block; margin-top: 18px; color: #d6b780; font-size: 12px; border-bottom: 1px solid #5e4f35; padding-bottom: 6px; }
+    @media (max-width: 1120px) {
+      .site-nav { gap: 18px; }
+      .site-nav a { font-size: 9px; }
+      .site-cta { padding: 13px; font-size: 9px; }
+      .proposed-brand { flex-basis: 225px; }
+      .proposed-brand img { width: 225px; }
+    }
+    @media (max-width: 900px) {
+      .site-nav { display: none; }
+      .site-header { min-height: 78px; padding: 0 5%; gap: 12px; }
+      .asset-surface { min-height: 260px; padding: 20px; }
+    }
+    @media (max-width: 620px) {
+      .review-top { padding: 25px 20px; }
+      .review-section { padding-top: 24px; }
+      .site-announcement { font-size: 8px; }
+      .site-header { min-height: 78px; }
+      .proposed-brand { flex: 0 1 210px; min-width: 0; }
+      .proposed-brand img { width: 100%; max-width: 210px; }
+      .site-cta { font-size: 8px; padding: 11px 9px; letter-spacing: .05em; }
+      .site-cta span { margin-left: 5px; }
+      .current-shield { width: 30px; }
+      .current-type strong { font-size: 25px; }
+      .current-type small { font-size: 6px; }
+      .asset-area { padding: 35px 20px; }
+      .asset-heading { display: block; }
+      .asset-heading p { margin: -10px 0 18px; line-height: 1.6; }
+      .asset-grid, .compact-grid { grid-template-columns: 1fr; }
+      .asset-surface { min-height: 230px; }
+      h2 { font-size: 23px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="review-top">
+    <p class="eyebrow">FSD / OFFICIAL ARTWORK REVIEW</p>
+    <h1>Logo & header approval proof</h1>
+    <p class="intro">The supplied shield, blade details, angular FSD wordmark and tagline have been retained as raster artwork. This is an isolated preview—not a replacement of the live header, favicon or product artwork.</p>
+    <span class="status">PROPOSED ASSETS · AWAITING YOUR APPROVAL</span>
+  </div>
+
+  <section class="review-section" aria-labelledby="current-label">
+    <h2 class="section-label" id="current-label">01 / CURRENT HEADER — APPROXIMATE SHIELD & TYPED WORDMARK</h2>
+    <div class="site-header">
+      <a class="current-brand" href="/" aria-label="Current FSD home">
+        <span class="current-shield"><svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg></span>
+        <span class="current-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>
+      </a>
+      <nav class="site-nav" aria-label="Current-header preview"><a href="/#collections">COLLECTIONS</a><a href="/#products">PRODUCTS</a><a href="/#philosophy">OUR STORY</a><a href="/#innovations">INNOVATIONS</a><a href="/#full-gallery">DESIGN LIBRARY</a><a href="/#contact">VIP ACCESS</a></nav>
+      <a class="site-cta" href="/#collections">EXPLORE COLLECTION <span>↗</span></a>
+    </div>
+    <p class="header-note">The current site uses an illustrative SVG shield and ordinary italic lettering. Their geometry and letterforms do not match the official references.</p>
+  </section>
+
+  <section class="review-section" aria-labelledby="proposed-label">
+    <h2 class="section-label" id="proposed-label">02 / PROPOSED HEADER — EXTRACTED OFFICIAL ARTWORK</h2>
+    <div class="site-announcement">FSD / THE NEXT ERA OF MOVEMENT — PRE-LAUNCH COLLECTION</div>
+    <div class="site-header">
+      <a class="proposed-brand" href="/" aria-label="Proposed FSD Fitness & Self Defence home">
+        <picture><source srcset="/brand-review/assets/fsd-header-lockup.webp" type="image/webp"><img src="/brand-review/assets/fsd-header-lockup.png" alt="FSD — Fitness & Self Defence" width="520" height="132"></picture>
+      </a>
+      <nav class="site-nav" aria-label="Proposed-header preview"><a href="/#collections">COLLECTIONS</a><a href="/#products">PRODUCTS</a><a href="/#philosophy">OUR STORY</a><a href="/#innovations">INNOVATIONS</a><a href="/#full-gallery">DESIGN LIBRARY</a><a href="/#contact">VIP ACCESS</a></nav>
+      <a class="site-cta" href="/#collections">EXPLORE COLLECTION <span>↗</span></a>
+    </div>
+    <p class="header-note">The header proposal places the existing shield beside the existing wordmark and tagline using separate, aspect-ratio-preserving crops. It changes placement only; it does not redraw any component. The full original stacked arrangement is preserved below.</p>
+  </section>
+
+  <main class="asset-area">
+    <div class="asset-heading"><h2>Full logo · transparent raster proposal</h2><p>Same candidate shown on dark and light surfaces for edge inspection.</p></div>
+    <div class="asset-grid">
+      <figure class="asset-card"><div class="asset-surface surface-dark"><picture><source srcset="/brand-review/assets/fsd-full-lockup.webp" type="image/webp"><img src="/brand-review/assets/fsd-full-lockup.png" width="934" height="604" alt="Proposed transparent full FSD logo on the website's dark surface"></picture></div><figcaption>Dark-site appearance · metallic highlights and shadows retained from the black reference.</figcaption></figure>
+      <figure class="asset-card"><div class="asset-surface surface-light"><img src="/brand-review/assets/fsd-full-lockup.png" width="934" height="604" alt="The same transparent FSD logo against a light surface for matte inspection"></div><figcaption>Light-surface diagnostic · inspect the soft raster edge and shadow treatment before approving.</figcaption></figure>
+    </div>
+    <div class="compact-grid">
+      <figure class="asset-card"><div class="compact-surface"><img class="shield" src="/brand-review/assets/fsd-shield.png" alt="Extracted official FSD shield only"></div><figcaption>Shield crop · existing geometry only. Checkerboard demonstrates real transparency.</figcaption></figure>
+      <figure class="asset-card"><div class="compact-surface"><img class="wordmark" src="/brand-review/assets/fsd-wordmark-tagline.png" alt="Extracted official angular FSD wordmark and Fitness & Self Defence tagline"></div><figcaption>Wordmark and tagline crop · no substituted font. A wordmark-only crop is also prepared.</figcaption></figure>
+    </div>
+    <div class="technical">
+      <h3>Source and preparation notes</h3>
+      <ul>
+        <li><strong>Neither original has transparency:</strong> the black image is a 1154 × 713 RGB JPEG; the white image is an 827 × 542 RGB PNG.</li>
+        <li>The larger black reference supplies the metallic pixels. The white reference was inspected to check the shield outline, blade details, spacing and letterforms.</li>
+        <li>A soft alpha matte removes the black canvas and unpremultiplies edge pixels. This is <strong>estimated raster transparency</strong>, not the original authored alpha. Some edge/shadow behaviour on light backgrounds remains source-limited.</li>
+        <li>No AI generation, tracing, vector reconstruction, recolouring of opaque metallic artwork, aspect-ratio distortion or upscaling was used.</li>
+        <li>The full raster is 934 × 604; the 520 × 132 header export supports up to 260 × 66 CSS pixels at 2× density. Lossless WebP alternatives accompany PNG masters. Larger print or unlimited-scale use needs the existing original vector or transparent master.</li>
+        <li>All proposed files are isolated in the review directory. The live header, favicon, uploaded originals and every clothing, hardware, packaging and product design remain untouched.</li>
+      </ul>
+      <a class="back-link" href="/">VIEW THE UNCHANGED LIVE SITE ↗</a>
+    </div>
+  </main>
+</body>
+</html>

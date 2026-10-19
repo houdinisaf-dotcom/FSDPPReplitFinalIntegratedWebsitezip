@@ -14,3 +14,73 @@ mtime_ms = 1792422002877
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5dc336fc-8469-4496-8d23-2cf5b00895dd/d89364c7-0474-43d7-8799-55a3847eb532"
 storage_version_token = "1792422009118511"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "o_sVSXgAG7XH6HQF07BrD"
+uri = "file://fsd-replit-site/brand-review/approval-proof-desktop.jpg"
+type = "image"
+title = "FSD header approval proof"
+description = "Current versus proposed header, plus dark and light logo proofs. The live header is unchanged."
+logical_id = "7c5938ca-1e1b-4d91-b32e-e74910165f7e"
+content_hash = "sha256:52155c13eeba0cd4942c25102bbf220a360027813d950dddf8e8a822c26400ab"
+size = 150984
+mtime_ms = 1792430005333
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/7c5938ca-1e1b-4d91-b32e-e74910165f7e/db0d88e8-ef91-425a-9cfd-b10d829c69eb"
+storage_version_token = "1792430045951102"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "OlQIQ6-vR1qoq_xg-5gfe"
+uri = "file://fsd-replit-site/brand-review/assets/fsd-full-lockup.png"
+type = "image"
+title = "Proposed transparent full logo"
+description = "934 × 604 PNG. Existing stacked artwork with estimated transparency; no redraw or upscaling."
+logical_id = "adaed46a-0918-437f-ba11-30db92eb29f9"
+content_hash = "sha256:0d4ace15496b25bf2d566d65bb000d612cb968c5c8314f78137c88fc39c80c64"
+size = 348848
+mtime_ms = 1792429820112
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/adaed46a-0918-437f-ba11-30db92eb29f9/38822000-f46c-44f1-98ab-ea1985b83e33"
+storage_version_token = "1792430046665573"
+content_type = "image/png"
+
+[[outputs]]
+id = "cU-81p7fCVlc5PNnc8tqO"
+uri = "file://fsd-replit-site/brand-review/assets/fsd-header-lockup.png"
+type = "image"
+title = "Proposed compact header lockup"
+description = "520 × 132 transparent PNG. Existing shield beside the existing wordmark and tagline; suitable for a 260 × 66 placement at 2× density."
+logical_id = "a87e9eab-3d2b-4f38-a0da-7a5bd7a9111d"
+content_hash = "sha256:5b930ec6cc12f4a21377bba829148e5b5e6cd4817a6db2fc285b6447b3a25eaf"
+size = 89320
+mtime_ms = 1792429820732
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/a87e9eab-3d2b-4f38-a0da-7a5bd7a9111d/130186fc-7ac4-4e5d-aa08-8fd46b6a39b5"
+storage_version_token = "1792430047437671"
+content_type = "image/png"
+
+[[outputs]]
+id = "6IhYvDxYW86QtnuEGU_zu"
+uri = "file://fsd-replit-site/brand-review/assets/fsd-shield.png"
+type = "image"
+title = "Proposed shield crop"
+description = "Transparent crop of the supplied shield and blade artwork, without reconstruction."
+logical_id = "8ac85496-09d9-4337-9342-daa50235685a"
+content_hash = "sha256:38d8c94b023a3530ef2ec88f05f6fea05863c34236ba70bd8e69d4298e7bc98b"
+size = 130338
+mtime_ms = 1792429820212
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/8ac85496-09d9-4337-9342-daa50235685a/b5a6ef16-6b95-4e6c-b38b-6a50dcf9081e"
+storage_version_token = "1792430048152470"
+content_type = "image/png"
+
+[[outputs]]
+id = "1pSmscxq_R5xPTd7rKoUL"
+uri = "file://fsd-replit-site/brand-review/assets/fsd-wordmark-tagline.png"
+type = "image"
+title = "Proposed wordmark and tagline crop"
+description = "The supplied angular FSD letterforms and FITNESS & SELF DEFENCE tagline—not a substituted font."
+logical_id = "c63ba026-6a00-4748-8c9d-4f845d3cf0ef"
+content_hash = "sha256:47ed28833eddc5d2e55a2d58f4166419c967c5717126a2062150babc116c477e"
+size = 212803
+mtime_ms = 1792429820644
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c63ba026-6a00-4748-8c9d-4f845d3cf0ef/85928319-929d-48a8-b81f-26ddacf1fb1b"
+storage_version_token = "1792430048958129"
+content_type = "image/png"

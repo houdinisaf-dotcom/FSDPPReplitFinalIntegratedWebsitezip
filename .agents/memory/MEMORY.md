@@ -1,2 +1,3 @@
 - [Catalogue approval boundaries](catalogue-approval-boundaries.md) — user approval of a development brief is not manufacturer validation or permission to enable checkout.
 - [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.
+- [Official logo boundaries](official-logo-boundaries.md) — preserve the supplied FSD artwork exactly; review derived assets before applying them to the live site.
