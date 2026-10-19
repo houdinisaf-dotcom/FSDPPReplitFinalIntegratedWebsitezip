@@ -19,4 +19,10 @@ The preferred final website identity is the original metallic-gold shield, no la
 
 **Why:** The user explicitly requested this website-specific treatment while leaving FSD initials on existing products.
 
-**How to apply:** Prepare desktop and mobile proofs separately from the live site. The supplied RGBA asset is interim reference material, not final logo approval. Keep the existing header unchanged until the user approves its proof; do not modify clothing, product renders, packaging or other existing FSD branding. Do not publish during logo-proof work.
+**How to apply:** Prepare desktop and mobile proofs separately from the live site. The supplied RGBA asset is interim reference material, not final logo approval. Keep the existing header unchanged until the user explicitly approves live replacement; do not modify clothing, product renders, packaging or other existing FSD branding. Do not publish during logo-proof work.
+
+The user approved the shield-and-wording layout only, with “keep the site unchanged.” This includes the shield above the two-line FITNESS & SELF-DEFENSE wording, without large FSD initials.
+
+**Why:** The user explicitly chose layout-only approval, not approval of the interim asset or its application.
+
+**How to apply:** Preserve that approved layout in subsequent asset proofs. Obtain separate approval for the final cleaned asset and any live-site replacement; layout approval is not implementation or publishing permission.
