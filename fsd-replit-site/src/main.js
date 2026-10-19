@@ -1,6 +1,5 @@
-import additional from './additional-catalog.json';
 import { catalogueSection, roadmapSection, innovationsSection, initCatalogue } from './catalogue.js';
-import { safe } from './catalogue-data.js';
+import { gallerySection } from './gallery.js';
 import './style.css';
 import './catalogue.css';
 
@@ -15,21 +14,6 @@ function header() {
     </a><nav aria-label="Main navigation"><a href="#collections">COLLECTIONS</a><a href="#products">PRODUCTS</a>
       <a href="#philosophy">OUR STORY</a><a href="#innovations">INNOVATIONS</a><a href="#full-gallery">DESIGN LIBRARY</a><a href="#contact">CONTACT</a>
     </nav><a class="header-cta" href="#products">EXPLORE COLLECTION <span>↗</span></a></header>`;
-}
-
-function gallerySection() {
-  return `<section class="fsd-expanded fsd-gallery" id="full-gallery"><div class="section-heading"><div>
-    <p class="section-kicker">FSD PRODUCT DESIGN LIBRARY</p><h2>THE FULL VISUAL EDIT<span class="period">.</span></h2></div>
-    <p>Supplied imagery covering apparel, modest training, accessories and brand development.
-    These working references are not approved product-to-image mappings.</p></div>
-    <div class="fsd-gallery-tools"><input id="gallery-search" aria-label="Search design library" placeholder="Search all designs and colourways...">
-    <span id="gallery-count" role="status" aria-live="polite">${additional.gallery.length} designs</span></div>
-    <div class="fsd-gallery-grid" id="fsd-gallery-grid">${additional.gallery.map(g => `
-      <figure class="fsd-gallery-card" data-gallery-name="${safe(g.name.toLowerCase())}">
-      <img loading="lazy" src="${safe(g.url)}" alt="${safe(g.name)}"><figcaption>${safe(g.name)}</figcaption></figure>`).join('')}</div>
-    <p class="disclaimer">Design-library images are reference material, not an additional product register.
-    Images are design renders, not evidence of completed manufacture, stock availability or verified technical performance.</p>
-    </section>`;
 }
 
 document.querySelector('#app').innerHTML = `${header()}<main id="home">

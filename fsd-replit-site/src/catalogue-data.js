@@ -1,12 +1,5 @@
 import masterProducts from './master-products.json' with { type: 'json' };
 
-// Keep held records in the source file, but never promote them as catalogue items.
-const heldNames = new Set([
-  'FSD Boxing & MMA Championship Belt (concept)',
-  'FSD Boxing Ring Corner Post (concept)',
-  'FSD Premium Shilajit & Lion’s Mane Gummies (60-Pack)',
-]);
-
 const imageReferences = {
   'FSD Ombré Slash Tee': [
     { src: '/images/ombre-indigo.png', label: 'Vintage indigo fading to jet black' },
@@ -19,9 +12,11 @@ const imageReferences = {
   ],
 };
 
-export const heldProducts = masterProducts.filter(p => heldNames.has(p['Product name']));
+// Publication decisions use stable record metadata, not names that may change.
+export const heldProducts = masterProducts.filter(p => p['Publication status'] === 'Hold');
+export const retiredProducts = masterProducts.filter(p => ['Merged', 'Replaced'].includes(p['Publication status']));
 export const products = masterProducts
-  .filter(p => !heldNames.has(p['Product name']))
+  .filter(p => !p['Publication status'] || p['Publication status'] === 'Active')
   .map(p => ({
     id: p.id,
     name: p['Product name'],
@@ -35,18 +30,25 @@ export const products = masterProducts
     imageStatus: p['Image status'],
     source: p.Source,
     alias: p['Also appears as'],
+    aliasStatus: p['Alias status'] ?? '',
+    coverage: p.Coverage ?? '',
+    specifications: p.Specifications ?? '',
+    specificationStatus: p['Specification status'] ?? '',
+    priceBasis: p['Price basis'] ?? '',
     notes: p.Notes.trim(),
     images: imageReferences[p['Product name']] ?? [],
   }));
 
 export const categories = [...new Set(products.flatMap(p => [p.category, ...p.alsoShowIn]))];
 
+const searchText = value => value.replace(/[‘’]/g, "'").toLocaleLowerCase('en-GB');
+
 export function filterProducts(category = 'All', query = '') {
-  const term = query.trim().toLocaleLowerCase('en-GB');
+  const term = searchText(query.trim());
   return products.filter(p =>
     (category === 'All' || p.category === category || p.alsoShowIn.includes(category)) &&
-    [p.name, p.alias, p.category, ...p.alsoShowIn, p.colourways, p.audience, p.collection]
-      .join(' ').toLocaleLowerCase('en-GB').includes(term)
+    searchText([p.name, p.alias, p.category, ...p.alsoShowIn, p.colourways, p.audience, p.collection,
+      p.coverage, p.specifications, p.specificationStatus, p.priceBasis].join(' ')).includes(term)
   );
 }
 

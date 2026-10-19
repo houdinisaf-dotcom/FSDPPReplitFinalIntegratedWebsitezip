@@ -1,0 +1,1 @@
+- [Catalogue approval boundaries](catalogue-approval-boundaries.md) — user approval of a development brief is not manufacturer validation or permission to enable checkout.

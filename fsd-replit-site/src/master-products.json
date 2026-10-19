@@ -222,22 +222,24 @@
     "Image status": "No image confirmed",
     "Source": "Review",
     "Also appears as": "",
-    "Notes": "Check overlap with the compression set."
+    "Specification status": "Not decided: relationship to the men’s compression baselayer set",
+    "Notes": "Overlap with the men’s compression set is not resolved. The approved standalone-layer decision applies to the women’s Aeroforge long-sleeve top (39), not this separate men’s record."
   },
   {
     "id": 16,
-    "Product name": "FSD Strike Men’s Training T-Shirt",
+    "Product name": "FSD Strike Men's Training T-Shirt / Short-Sleeve Top",
     "Category": "Men’s Performance and Training",
-    "Also show in": "",
+    "Also show in": "Combat and MMA",
     "Audience": "Men’s",
     "Price (£) confirmed": "39.99",
     "Suggested price (£) – to confirm": "",
-    "Colourways": "Black / Gold; Charcoal / Lime; Navy / Silver; Olive / Bronze",
+    "Colourways": "Black / Gold (Signature); Black & Gold / Forged Carbon (Signature edition); Charcoal / Lime (Pulse); Navy / Silver (Performance); Olive / Bronze (Terrain)",
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Both",
-    "Also appears as": "FSD Short-Sleeve Performance Training T-Shirt",
-    "Notes": "Likely the same product; confirm. Colourways are from the old catalogue; consider the new vivid palette."
+    "Also appears as": "FSD Strike Men’s Training T-Shirt",
+    "Alias status": "Confirmed",
+    "Notes": "Combat and striking line. Distinct from Aeroforge short-sleeve performance tops. Existing colourways retained alongside the approved Signature, Pulse, Performance and Terrain editions; materials remain subject to manufacturing verification."
   },
   {
     "id": 17,
@@ -258,7 +260,7 @@
     "id": 18,
     "Product name": "FSD Aeroforge Training Tee",
     "Category": "Men’s Performance and Training",
-    "Also show in": "",
+    "Also show in": "Women’s Performance",
     "Audience": "Unisex",
     "Price (£) confirmed": "39.99",
     "Suggested price (£) – to confirm": "",
@@ -266,8 +268,9 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Catalogue",
-    "Also appears as": "",
-    "Notes": "12 colourways is a lot; consider launching with 4 to 6."
+    "Also appears as": "FSD Aeroforge Training Tee (Unisex / Multi-Color)",
+    "Alias status": "Confirmed",
+    "Notes": "General athletic training line, distinct from Strike combat tops. All 12 supplied colourways retained."
   },
   {
     "id": 19,
@@ -281,8 +284,9 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Catalogue",
-    "Also appears as": "",
-    "Notes": ""
+    "Also appears as": "FSD Strike Training Short; FSD Aeroforge Hybrid Training Short",
+    "Alias status": "Confirmed",
+    "Notes": "Approved merge of the training short variant into this single Aeroforge Hybrid Short at £44.99. Use the six approved Aeroforge colourways; distinct from Strike Men’s Combat Shorts."
   },
   {
     "id": 20,
@@ -297,7 +301,8 @@
     "Image status": "No image confirmed",
     "Source": "Both",
     "Also appears as": "FSD Performance Training Shorts",
-    "Notes": "Likely the same product; confirm."
+    "Alias status": "Confirmed",
+    "Notes": "Confirmed as one product line with Performance Training Shorts; keep separate from the Aeroforge Hybrid Short."
   },
   {
     "id": 21,
@@ -312,7 +317,9 @@
     "Image status": "Image exists (concept board; crop single panels)",
     "Source": "Generated (not in either file)",
     "Also appears as": "",
-    "Notes": "Name clashes with FSD Strike Men’s Combat Shorts; rename one."
+    "Publication status": "Merged",
+    "Merged into": 19,
+    "Notes": "Retained as a source record only. Approved merge into FSD Aeroforge Hybrid Short (19), using its six colourways and confirmed £44.99 price. Do not display as a separate product."
   },
   {
     "id": 22,
@@ -502,12 +509,13 @@
     "Audience": "Men’s",
     "Price (£) confirmed": "49.99",
     "Suggested price (£) – to confirm": "",
-    "Colourways": "Black / Gold; Charcoal / Lime; Navy / Silver; Olive / Bronze",
+    "Colourways": "Black / Gold (Signature); Black & Gold / Forged Carbon (Signature edition); Charcoal / Lime (Pulse); Navy / Silver (Performance); Olive / Bronze (Terrain)",
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Catalogue",
-    "Also appears as": "",
-    "Notes": "Name clashes with FSD Strike Training Short; rename one."
+    "Also appears as": "FSD Strike Signature Combat Shorts - Black/Gold; FSD Strike Pulse Combat Shorts - Charcoal/Lime; FSD Strike Performance Combat Shorts - Navy/Silver; FSD Strike Terrain Combat Shorts - Olive/Bronze",
+    "Alias status": "Confirmed colourway names",
+    "Notes": "One combat/grappling product at £49.99, with named colourway variants rather than separate cards. Distinct from the merged Aeroforge Hybrid Short. Existing palettes retained alongside the approved editions; materials remain subject to manufacturing verification."
   },
   {
     "id": 35,
@@ -517,15 +525,16 @@
     "Audience": "Unisex",
     "Price (£) confirmed": "149.99",
     "Suggested price (£) – to confirm": "",
-    "Colourways": "Forest Green; Black & Gold / Cream",
+    "Colourways": "Forest green with black, gold and cream accents",
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Catalogue",
     "Also appears as": "",
-    "Notes": "Forest green is outside the new palette; confirm."
+    "Notes": "Approved forest-green palette exception: elite limited-edition colourway for this distinct premium combat kit. Limited-edition designation is not a claim of stock availability."
   },
   {
     "id": 36,
+    "Publication status": "Hold",
     "Product name": "FSD Boxing & MMA Championship Belt (concept)",
     "Category": "Combat and MMA",
     "Also show in": "",
@@ -541,6 +550,7 @@
   },
   {
     "id": 37,
+    "Publication status": "Hold",
     "Product name": "FSD Boxing Ring Corner Post (concept)",
     "Category": "Combat and MMA",
     "Also show in": "",
@@ -567,7 +577,7 @@
     "Image status": "No image confirmed",
     "Source": "Both",
     "Also appears as": "FSD AEROFORGE Women’s Performance Training Top",
-    "Notes": ""
+    "Notes": "Women’s general athletic training short-sleeve top; distinct from the men’s Strike combat/striking top."
   },
   {
     "id": 39,
@@ -582,11 +592,12 @@
     "Image status": "No image confirmed",
     "Source": "Catalogue",
     "Also appears as": "",
-    "Notes": ""
+    "Specifications": "Standalone athletic layer / base training shirt",
+    "Notes": "Categorised separately from combat rash guards and compression sets; not a component of those sets."
   },
   {
     "id": 40,
-    "Product name": "FSD FLEX Women’s Performance Leggings",
+    "Product name": "FSD Women's Performance Training Leggings",
     "Category": "Women’s Performance",
     "Also show in": "",
     "Audience": "Women’s",
@@ -596,7 +607,8 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Both",
-    "Also appears as": "FSD Women’s Performance Training Leggings",
+    "Also appears as": "FSD FLEX Women’s Performance Leggings; FSD Women’s Performance Training Leggings",
+    "Alias status": "Confirmed",
     "Notes": "Not to be marketed as modest outerwear."
   },
   {
@@ -616,9 +628,9 @@
   },
   {
     "id": 42,
-    "Product name": "FSD CORE Everyday Sports Hijab",
-    "Category": "Sports Hijabs",
-    "Also show in": "Modest Activewear",
+    "Product name": "FSD Performance Sports Hijab",
+    "Category": "Modest Activewear",
+    "Also show in": "Sports Hijabs",
     "Audience": "Women’s",
     "Price (£) confirmed": "29.99",
     "Suggested price (£) – to confirm": "",
@@ -626,14 +638,15 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Both",
-    "Also appears as": "FSD Performance Sports Hijab",
-    "Notes": "Likely the same product; confirm. Seven colourways, shown as swatches."
+    "Also appears as": "FSD CORE Everyday Sports Hijab",
+    "Alias status": "Confirmed",
+    "Notes": "Confirmed as one product. Seven approved colourways retained."
   },
   {
     "id": 43,
     "Product name": "FSD Velocity Performance Sports Hijab",
-    "Category": "Sports Hijabs",
-    "Also show in": "Modest Activewear",
+    "Category": "Modest Activewear",
+    "Also show in": "Sports Hijabs",
     "Audience": "Women’s",
     "Price (£) confirmed": "29.99",
     "Suggested price (£) – to confirm": "",
@@ -646,9 +659,9 @@
   },
   {
     "id": 44,
-    "Product name": "FSD FLOW Performance Running Hijab",
-    "Category": "Sports Hijabs",
-    "Also show in": "Modest Activewear",
+    "Product name": "FSD Flow Running Hijab (Presentation Box Edition)",
+    "Category": "Modest Activewear",
+    "Also show in": "Sports Hijabs",
     "Audience": "Women’s",
     "Price (£) confirmed": "34.99",
     "Suggested price (£) – to confirm": "",
@@ -656,14 +669,15 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Both",
-    "Also appears as": "FSD Flow Running Hijab (Presentation Box Edition)",
+    "Also appears as": "FSD FLOW Performance Running Hijab",
+    "Alias status": "Confirmed",
     "Notes": "Running-specific."
   },
   {
     "id": 45,
-    "Product name": "FSD COVER Extended-Coverage Sports Hijab",
-    "Category": "Sports Hijabs",
-    "Also show in": "Modest Activewear",
+    "Product name": "FSD Cover Extended-Coverage Sports Hijab",
+    "Category": "Modest Activewear",
+    "Also show in": "Sports Hijabs",
     "Audience": "Women’s",
     "Price (£) confirmed": "32.99",
     "Suggested price (£) – to confirm": "",
@@ -671,7 +685,8 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Both",
-    "Also appears as": "FSD Cover Extended-Coverage Sports Hijab",
+    "Also appears as": "FSD COVER Extended-Coverage Sports Hijab",
+    "Alias status": "Confirmed",
     "Notes": "Extended-coverage concept."
   },
   {
@@ -691,7 +706,7 @@
   },
   {
     "id": 47,
-    "Product name": "FSD Form Women’s Modest Training Top",
+    "Product name": "FSD Form Women's Modest Training Top",
     "Category": "Modest Activewear",
     "Also show in": "",
     "Audience": "Women’s",
@@ -702,7 +717,9 @@
     "Image status": "No image confirmed",
     "Source": "Both",
     "Also appears as": "FSD Modest Longline Training Top / Tunic",
-    "Notes": "Likely the same product; confirm. Coverage specification needs confirming."
+    "Alias status": "Confirmed",
+    "Coverage": "Mid-Hip Modest Coverage (Regular Tunic Length)",
+    "Notes": "Confirmed as one product. Coverage description approved; exact manufacturing measurements are not yet specified."
   },
   {
     "id": 48,
@@ -717,11 +734,12 @@
     "Image status": "No image confirmed",
     "Source": "Both",
     "Also appears as": "FSD Modest Longline Training Jacket",
-    "Notes": "Likely the same product; confirm."
+    "Alias status": "Confirmed",
+    "Notes": "Confirmed as one product with the modest longline training jacket."
   },
   {
     "id": 49,
-    "Product name": "FSD BREEZE Lightweight Modest Training Overshirt",
+    "Product name": "FSD Women's Lightweight Modest Training Overshirt",
     "Category": "Modest Activewear",
     "Also show in": "",
     "Audience": "Women’s",
@@ -731,7 +749,8 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Both",
-    "Also appears as": "FSD Women’s Lightweight Modest Training Overshirt",
+    "Also appears as": "FSD BREEZE Lightweight Modest Training Overshirt; FSD Women’s Lightweight Modest Training Overshirt",
+    "Alias status": "Confirmed",
     "Notes": ""
   },
   {
@@ -747,7 +766,8 @@
     "Image status": "No image confirmed",
     "Source": "Both",
     "Also appears as": "FSD Women’s Training Trousers / Joggers",
-    "Notes": "Likely the same product; confirm."
+    "Alias status": "Confirmed",
+    "Notes": "Confirmed as one product with the women’s training trousers / joggers."
   },
   {
     "id": 51,
@@ -766,7 +786,7 @@
   },
   {
     "id": 52,
-    "Product name": "FSD Precision Twist-Lock Barbell Collars (Pair)",
+    "Product name": "FSD Precision Barbell Collars (Pair)",
     "Category": "Gym Hardware and Accessories",
     "Also show in": "",
     "Audience": "Unisex",
@@ -776,11 +796,14 @@
     "Collection line": "Forged Carbon & Gold Edition Signature Line",
     "Image status": "Image exists (concept board; crop single panels)",
     "Source": "Both",
-    "Also appears as": "FSD Precision Barbell Collars",
+    "Also appears as": "FSD Precision Barbell Collars; FSD Precision Twist-Lock Barbell Collars (Pair)",
+    "Alias status": "Confirmed",
     "Notes": "Mechanical design needs engineering review."
   },
   {
     "id": 53,
+    "Publication status": "Replaced",
+    "Replaced by": [69, 70, 71, 72],
     "Product name": "FSD Premium Fixed-Weight Dumbbells (Pair)",
     "Category": "Gym Hardware and Accessories",
     "Also show in": "",
@@ -792,11 +815,11 @@
     "Image status": "Image exists (concept board; crop single panels)",
     "Source": "Both",
     "Also appears as": "",
-    "Notes": "Weights are not specified; the price needs a weight."
+    "Notes": "Historical source record only. The £129.99 pair is retired and replaced by the four approved complete-set tiers (69–72); do not display this baseline as an active product."
   },
   {
     "id": 54,
-    "Product name": "FSD Olympic Barbell & Weight Plates",
+    "Product name": "FSD Olympic Bar & 5-Cutout Bumper Plate Set",
     "Category": "Gym Hardware and Accessories",
     "Also show in": "",
     "Audience": "Unisex",
@@ -806,8 +829,10 @@
     "Collection line": "Forged Carbon & Gold Edition Signature Line",
     "Image status": "Image exists (concept board; crop single panels)",
     "Source": "Both",
-    "Also appears as": "FSD Olympic Bar & Tri-Grip Bumper Plate Set",
-    "Notes": "The catalogue says Tri-Grip, but the designed plate has five oval cutouts. Rename. Set contents are not specified."
+    "Also appears as": "FSD Olympic Barbell & Weight Plates",
+    "Alias status": "Confirmed",
+    "Specification status": "Not decided: bar weight, plate weights and quantities, and included accessories",
+    "Notes": "Five-cutout concept name approved in place of the inaccurate Tri-Grip name. £349.99 is the confirmed set list price; contents remain undecided. No bar weight, plate breakdown or accessories are implied."
   },
   {
     "id": 55,
@@ -826,9 +851,9 @@
   },
   {
     "id": 56,
-    "Product name": "FSD CARRY Performance Sports Bag",
-    "Category": "Gym Hardware and Accessories",
-    "Also show in": "",
+    "Product name": "FSD Signature Performance Sports Bag",
+    "Category": "Women’s Performance",
+    "Also show in": "Gym Hardware and Accessories",
     "Audience": "Women’s",
     "Price (£) confirmed": "79.99",
     "Suggested price (£) – to confirm": "",
@@ -836,14 +861,15 @@
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Both",
-    "Also appears as": "FSD Signature Performance Sports Bag",
-    "Notes": "Kept separate from COMMAND (different line); confirm."
+    "Also appears as": "FSD CARRY Performance Sports Bag",
+    "Alias status": "Confirmed",
+    "Notes": "Confirmed separate from COMMAND Gym Bag: Standard / Core everyday athletic duffel at £79.99, not the £89.99 Forged Carbon & Gold Edition bag."
   },
   {
     "id": 57,
-    "Product name": "FSD STRIDE Performance Training Socks (3-Pair Pack)",
-    "Category": "Gym Hardware and Accessories",
-    "Also show in": "",
+    "Product name": "FSD Performance Training Socks (3-Pair Pack)",
+    "Category": "Women’s Performance",
+    "Also show in": "Gym Hardware and Accessories",
     "Audience": "Women’s",
     "Price (£) confirmed": "19.99",
     "Suggested price (£) – to confirm": "",
@@ -852,7 +878,8 @@
     "Image status": "No image confirmed",
     "Source": "Both",
     "Also appears as": "FSD Performance Training Socks",
-    "Notes": "Name clashes with the Smart Tech STRIDE; rename one."
+    "Alias status": "Confirmed",
+    "Notes": "Approved name without STRIDE. Women’s three-pair pack at £19.99; separate from the undecided Smart Tech concept."
   },
   {
     "id": 58,
@@ -946,6 +973,7 @@
   },
   {
     "id": 64,
+    "Publication status": "Hold",
     "Product name": "FSD STRIDE (smart product, type to confirm)",
     "Category": "Smart Tech",
     "Also show in": "",
@@ -957,7 +985,7 @@
     "Image status": "No image yet",
     "Source": "Website",
     "Also appears as": "",
-    "Notes": "Name clashes with the STRIDE socks; rename one."
+    "Notes": "Not decided. Hold for a future tech release; product type, final name, specifications and price remain undecided. Separate from Performance Training Socks."
   },
   {
     "id": 65,
@@ -1006,17 +1034,90 @@
   },
   {
     "id": 68,
+    "Publication status": "Hold",
     "Product name": "FSD Premium Shilajit & Lion’s Mane Gummies (60-Pack)",
-    "Category": "Lifestyle",
+    "Category": "Supplements & Nutrition",
     "Also show in": "",
     "Audience": "Unisex",
     "Price (£) confirmed": "34.99",
     "Suggested price (£) – to confirm": "",
-    "Colourways": "Black & Gold packaging",
+    "Colourways": "Black & Gold / Green Energy packaging",
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Catalogue",
     "Also appears as": "",
     "Notes": "Food supplement. Hold until labelling is compliant; no health claims on the site."
+  },
+  {
+    "id": 69,
+    "Product name": "FSD AUREUS FORGED CARBON™ SET",
+    "Category": "Gym Hardware and Accessories",
+    "Also show in": "",
+    "Audience": "Unisex",
+    "Price (£) confirmed": "699.99",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Forged carbon with metallic gold resin veins",
+    "Collection line": "Hardware Division / Ultra Luxury",
+    "Image status": "No image confirmed",
+    "Source": "User-approved product decisions",
+    "Also appears as": "",
+    "Specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: non-directional forged carbon fiber plates with inlaid metallic gold resin veins. Proposed grip: 32mm bespoke diamond-knurled shaft with laser-etched FSD monogram endcaps.",
+    "Specification status": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+    "Price basis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+    "Notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied."
+  },
+  {
+    "id": 70,
+    "Product name": "FSD OBSIDIAN GOLD™ ELITE SET",
+    "Category": "Gym Hardware and Accessories",
+    "Also show in": "",
+    "Audience": "Unisex",
+    "Price (£) confirmed": "599.99",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Matte urethane with brushed champagne-gold rings and gold TiN accents",
+    "Collection line": "Hardware Division / High-Performance Pro",
+    "Image status": "No image confirmed",
+    "Source": "User-approved product decisions",
+    "Also appears as": "",
+    "Specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: matte-finish high-durometer urethane heads with brushed champagne-gold accent rings. Proposed grip: hard-chrome knurled ergonomic handle with gold titanium-nitride (TiN) accents.",
+    "Specification status": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+    "Price basis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+    "Notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied."
+  },
+  {
+    "id": 71,
+    "Product name": "FSD VANGUARD COMMERCIAL™ PRO SET",
+    "Category": "Gym Hardware and Accessories",
+    "Also show in": "",
+    "Audience": "Unisex",
+    "Price (£) confirmed": "399.99",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Matte black urethane with tone-on-tone FSD branding",
+    "Collection line": "Hardware Division / Commercial Workhorse",
+    "Image status": "No image confirmed",
+    "Source": "User-approved product decisions",
+    "Also appears as": "",
+    "Specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: heavy-duty solid steel core encased in shock-absorbent matte black urethane. Proposed grip: standard commercial dual-knurl grip with debossed tone-on-tone FSD branding.",
+    "Specification status": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+    "Price basis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+    "Notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied."
+  },
+  {
+    "id": 72,
+    "Product name": "FSD FOUNDATION UTILITY™ SET",
+    "Category": "Gym Hardware and Accessories",
+    "Also show in": "",
+    "Audience": "Unisex",
+    "Price (£) confirmed": "299.99",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "To be selected; vulcanized rubber heads with chrome handles",
+    "Collection line": "Hardware Division / Foundation Tier",
+    "Image status": "No image confirmed",
+    "Source": "User-approved product decisions",
+    "Also appears as": "",
+    "Specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: solid cast-iron weight heads with durable vulcanized rubber encapsulation. Proposed grip: contoured chrome handle intended for repetitive high-volume circuits.",
+    "Specification status": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+    "Price basis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+    "Notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied."
   }
 ]

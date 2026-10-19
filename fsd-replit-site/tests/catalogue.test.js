@@ -1,19 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import master from '../src/master-products.json' with { type: 'json' };
-import { products, heldProducts, categories, filterProducts, priceInfo, safe } from '../src/catalogue-data.js';
+import additional from '../src/additional-catalog.json' with { type: 'json' };
+import { galleryProductIds, galleryProducts, gallerySection } from '../src/gallery.js';
+import { products, heldProducts, retiredProducts, categories, filterProducts, priceInfo, safe } from '../src/catalogue-data.js';
 import { catalogueSection, roadmapSection, innovationsSection, initCatalogue } from '../src/catalogue.js';
 
-test('all 68 master records are retained and explicit holds are excluded', () => {
-  assert.equal(master.length, 68);
-  assert.equal(new Set(master.map(p => p.id)).size, 68);
-  assert.equal(products.length, 65);
-  assert.deepEqual(heldProducts.map(p => p.id), [36, 37, 68]);
+test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
+  assert.equal(master.length, 72);
+  assert.equal(new Set(master.map(p => p.id)).size, 72);
+  for (let id = 1; id <= 68; id++) assert.ok(master.some(p => p.id === id));
+  assert.equal(products.length, 66);
+  assert.deepEqual(heldProducts.map(p => p.id), [36, 37, 64, 68]);
+  assert.deepEqual(retiredProducts.map(p => p.id), [21, 53]);
   assert.equal(categories.length, 9);
   assert.ok(products.every(p => !heldProducts.some(h => h.id === p.id)));
-  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 34);
-  assert.equal(products.filter(p => p.suggestedPrice !== null).length, 24);
+  assert.ok(products.every(p => !retiredProducts.some(r => r.id === p.id)));
+  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 37);
+  assert.equal(products.filter(p => p.suggestedPrice !== null).length, 23);
 });
 
 test('prices distinguish confirmed, suggested and genuinely unset values', () => {
@@ -24,9 +29,9 @@ test('prices distinguish confirmed, suggested and genuinely unset values', () =>
 
 test('category cross-listing, alternate names, colourways and case-insensitive search work', () => {
   assert.ok(filterProducts('Men’s Performance and Training').some(p => p.id === 23));
-  assert.equal(filterProducts('All', '  FSD Short-Sleeve Performance Training T-Shirt  ')[0].id, 16);
+  assert.equal(filterProducts('All', '  FSD Strike Men’s Training T-Shirt  ')[0].id, 16);
   assert.ok(filterProducts('All', 'electric cobalt').some(p => p.id === 1));
-  assert.equal(filterProducts('Smart Tech').length, 7);
+  assert.equal(filterProducts('Smart Tech').length, 6);
   assert.equal(filterProducts('Sports Hijabs').length, 4);
   assert.equal(filterProducts('Smart Tech', 'training socks').length, 0);
 });
@@ -43,9 +48,10 @@ test('colourways share one record, verified image references exist, and unknown 
 
 test('rendered sections follow the master list, escape content, and do not promote held products', () => {
   const sections = catalogueSection() + roadmapSection() + innovationsSection();
-  assert.match(sections, /65 products in development across 9 categories/);
-  assert.match(sections, /FSD STRIDE \(smart product, type to confirm\)/);
-  assert.doesNotMatch(sections, /smartwatch|Shilajit|Championship Belt|Ring Corner Post/i);
+  assert.match(sections, /66 products in development across 9 categories/);
+  assert.doesNotMatch(sections, /STRIDE|smartwatch|Shilajit|Championship Belt|Ring Corner Post/i);
+  assert.match(sections, /not available to order/);
+  assert.doesNotMatch(sections, /add to (cart|basket)|buy now|checkout|payment|<form/i);
   assert.equal(safe('<script>"x"&</script>'), '&lt;script&gt;&quot;x&quot;&amp;&lt;/script&gt;');
 });
 
@@ -71,20 +77,20 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
   });
   try {
     initCatalogue();
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 65 products');
+    assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
     click('[data-page]', { dataset: { page: '2' }, disabled: false });
-    assert.equal(element('#catalogue-count').textContent, 'Showing 13–24 of 65 products');
+    assert.equal(element('#catalogue-count').textContent, 'Showing 13–24 of 66 products');
 
     element('#catalogue-category').value = 'Smart Tech';
     handlers.get('#catalogue-category:change')();
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–7 of 7 products');
+    assert.equal(element('#catalogue-count').textContent, 'Showing 1–6 of 6 products');
     assert.equal(element('#catalogue-pagination').innerHTML, '');
     element('#search').value = 'no match at all';
     handlers.get('#search:input')();
     assert.match(element('#catalogue-grid').innerHTML, /Clear filters/);
 
     click('[data-clear-filters]', {});
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 65 products');
+    assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
     click('[data-category-link]', { dataset: { categoryLink: 'Sports Hijabs' } });
     assert.equal(element('#catalogue-count').textContent, 'Showing 1–4 of 4 products');
 
@@ -97,6 +103,135 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
     click('[data-product]', { dataset: { product: '59' } });
     assert.match(element('#dialog-body').innerHTML, /To be confirmed/);
     assert.doesNotMatch(element('#dialog-body').innerHTML, /£0|undefined|null/);
+
+    click('[data-product]', { dataset: { product: '47' } });
+    assert.match(element('#dialog-body').innerHTML, /Mid-Hip Modest Coverage \(Regular Tunic Length\)/);
+    assert.match(element('#dialog-body').innerHTML, /Also appears as · Confirmed/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /identity to confirm/);
+    click('[data-product]', { dataset: { product: '69' } });
+    assert.match(element('#dialog-body').innerHTML, /£699.99/);
+    assert.match(element('#dialog-body').innerHTML, /Complete 10kg–50kg set package/);
+    assert.match(element('#dialog-body').innerHTML, /Exact weight increments, quantities and total set weight pending/);
+    assert.match(element('#dialog-body').innerHTML, /32mm/);
+    click('[data-product]', { dataset: { product: '54' } });
+    assert.match(element('#dialog-body').innerHTML, /5-Cutout/);
+    assert.match(element('#dialog-body').innerHTML, /Not decided: bar weight/);
+    const beforeHeldAttempt = element('#dialog-body').innerHTML;
+    for (const id of [21, 36, 37, 53, 64, 68]) {
+      click('[data-product]', { dataset: { product: String(id) } });
+      assert.equal(element('#dialog-body').innerHTML, beforeHeldAttempt);
+    }
+
+    click('[data-category-link]', { dataset: { categoryLink: 'Gym Hardware and Accessories' } });
+    assert.match(element('#catalogue-grid').innerHTML, /Complete 10kg–50kg set package/);
+    assert.match(element('#catalogue-grid').innerHTML, /Exact weight increments/);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£129.99/);
+  } finally {
+    delete globalThis.document;
+  }
+});
+
+test('approved aliases find unified entries without merging distinct product lines', () => {
+  for (const [alias, id] of [
+    ['FSD Strike Training Short', 19],
+    ['FSD Aeroforge Hybrid Training Short', 19],
+    ['FSD Performance Training Shorts', 20],
+    ['FSD CORE Everyday Sports Hijab', 42],
+    ['FSD Modest Longline Training Top / Tunic', 47],
+    ['FSD Modest Longline Training Jacket', 48],
+    ['FSD Women’s Training Trousers / Joggers', 50],
+    ['FSD CARRY Performance Sports Bag', 56],
+    ['FSD Strike Terrain Combat Shorts - Olive/Bronze', 34],
+  ]) assert.deepEqual(filterProducts('All', alias).map(p => p.id), [id]);
+
+  assert.ok(products.some(p => p.id === 16 && p.confirmedPrice === 39.99));
+  assert.ok(products.some(p => p.id === 38 && p.confirmedPrice === 39.99));
+  assert.ok(products.some(p => p.id === 55 && p.confirmedPrice === 89.99));
+  assert.ok(products.some(p => p.id === 56 && p.confirmedPrice === 79.99));
+  assert.equal(filterProducts('All', 'STRIDE').length, 0);
+  assert.equal(products.find(p => p.id === 19).confirmedPrice, 44.99);
+  assert.equal(products.find(p => p.id === 19).suggestedPrice, null);
+  assert.equal(products.find(p => p.id === 34).confirmedPrice, 49.99);
+  assert.equal(products.find(p => p.id === 19).colourways, 'Black/Green, Black/Red, Black/Grey, Navy/Blue, Olive/Black, White/Green');
+  assert.match(products.find(p => p.id === 34).colourways, /Signature.*Pulse.*Performance.*Terrain/);
+});
+
+test('approved category placements, coverage and palette exception are consistent', () => {
+  for (const id of [16, 34]) {
+    assert.ok(filterProducts('Combat and MMA').some(p => p.id === id));
+    assert.ok(filterProducts('Men’s Performance and Training').some(p => p.id === id));
+  }
+  for (const id of [18, 38, 39, 40, 56, 57]) {
+    assert.ok(filterProducts('Women’s Performance').some(p => p.id === id));
+  }
+  for (const id of [42, 43, 44, 45]) {
+    assert.ok(filterProducts('Modest Activewear').some(p => p.id === id));
+    assert.ok(filterProducts('Sports Hijabs').some(p => p.id === id));
+  }
+  assert.equal(products.find(p => p.id === 47).coverage, 'Mid-Hip Modest Coverage (Regular Tunic Length)');
+  assert.match(products.find(p => p.id === 39).specifications, /Standalone athletic layer/);
+  assert.ok(!filterProducts('Training Sets').some(p => p.id === 39));
+  assert.equal(products.find(p => p.id === 35).confirmedPrice, 149.99);
+  assert.match(products.find(p => p.id === 35).notes, /Approved forest-green palette exception/);
+});
+
+test('hardware prices buy complete approved set tiers without invented weight breakdowns', () => {
+  const tiers = products.filter(p => p.id >= 69);
+  assert.equal(tiers.length, 4);
+  assert.deepEqual(tiers.map(p => p.confirmedPrice), [699.99, 599.99, 399.99, 299.99]);
+  for (const p of tiers) {
+    assert.equal(p.suggestedPrice, null);
+    assert.match(p.priceBasis, /Complete 10kg–50kg set package, not a pair/);
+    assert.match(p.specificationStatus, /increments, quantities and total set weight pending/);
+    assert.match(p.notes, /not evidence of manufactured materials or verified performance/);
+    assert.deepEqual(p.images, []);
+  }
+  assert.equal(master.find(p => p.id === 21)['Merged into'], 19);
+  assert.deepEqual(master.find(p => p.id === 53)['Replaced by'], tiers.map(p => p.id));
+  assert.equal(products.find(p => p.id === 54).confirmedPrice, 349.99);
+  assert.match(products.find(p => p.id === 54).specificationStatus, /Not decided/);
+  assert.doesNotMatch(products.find(p => p.id === 54).alias, /Tri-Grip/);
+});
+
+test('the complete public page excludes held imagery while retaining internal source references', () => {
+  const withheldImages = additional.gallery.filter(g => [64, 68].includes(galleryProductIds.get(g.url)));
+  assert.equal(withheldImages.length, 2);
+  assert.equal(additional.gallery.length, 76);
+  assert.equal(galleryProducts.length, 74);
+  for (const image of withheldImages) {
+    assert.ok(existsSync(new URL(`../public${image.url}`, import.meta.url)));
+    assert.ok(!galleryProducts.includes(image));
+  }
+  // Run the real entrypoint against a minimal DOM, with only bundler imports removed.
+  // This covers the entire composed page, not just isolated catalogue sections.
+  const source = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8')
+    .replace(/^import .+;\r?\n/gm, '');
+  const elements = new Map();
+  const document = {
+    querySelector(selector) {
+      if (!elements.has(selector)) elements.set(selector, {
+        innerHTML: '', textContent: '', value: '',
+        addEventListener() {}, setAttribute() {}, scrollIntoView() {}, focus() {},
+      });
+      return elements.get(selector);
+    },
+    addEventListener() {},
+    querySelectorAll() { return []; },
+  };
+  globalThis.document = document;
+  try {
+    new Function('document', 'catalogueSection', 'roadmapSection', 'innovationsSection',
+      'initCatalogue', 'gallerySection', source)(
+      document, catalogueSection, roadmapSection, innovationsSection, initCatalogue, gallerySection);
+    const page = document.querySelector('#app').innerHTML;
+    assert.match(page, /74 designs/);
+    assert.match(page, /PRE-LAUNCH COLLECTION/);
+    assert.doesNotMatch(page, /STRIDE|Shilajit|Championship Belt|Ring Corner Post|add to cart|checkout/i);
+    for (const image of withheldImages) {
+      assert.ok(!page.includes(image.name));
+      assert.ok(!page.includes(image.url));
+    }
+    for (const image of galleryProducts) assert.ok(page.includes(image.url));
   } finally {
     delete globalThis.document;
   }

@@ -24,6 +24,8 @@ function card(product) {
     <h3>${safe(product.name)}</h3>
     <p class="catalogue-colourways">${safe(product.colourways || 'Colourways to be confirmed')}</p>
     <div class="catalogue-price"><span>${price.label}</span><strong>${price.value}</strong></div>
+    ${product.priceBasis ? `<p class="catalogue-colourways">${safe(product.priceBasis)}</p>` : ''}
+    ${product.specificationStatus ? `<p class="catalogue-colourways">${safe(product.specificationStatus)}</p>` : ''}
     <button class="text-link" data-product="${product.id}">VIEW DETAILS ↗<span class="sr-only"> for ${safe(product.name)}</span></button>
   </article>`;
 }
@@ -105,7 +107,11 @@ function showProduct(id) {
       ${detail('Audience', p.audience)}
       ${detail('Collection line', p.collection)}
       ${detail('Also shown in', p.alsoShowIn.join('; '))}
-      ${detail('Also appears as · identity to confirm', p.alias)}
+      ${detail(p.aliasStatus ? `Also appears as · ${safe(p.aliasStatus)}` : 'Also appears as · identity to confirm', p.alias)}
+      ${detail('Coverage', p.coverage)}
+      ${detail('Development specifications', p.specifications)}
+      ${detail('Specification status', p.specificationStatus)}
+      ${detail('Price basis', p.priceBasis)}
       ${detail('Image status in master list', p.imageStatus)}
       ${detail('Development notes', p.notes)}
     </dl><div class="dialog-price"><span>${price.label}</span><strong>${price.value}</strong></div>
