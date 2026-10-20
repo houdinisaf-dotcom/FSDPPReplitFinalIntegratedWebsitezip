@@ -1,0 +1,2015 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "FSD Ombré Slash Tee",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": 39.99,
+      "suggestedPrice": null,
+      "colourways": "Vintage indigo fading to jet black; Electric cobalt fading to jet black",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review + site",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "The best-rated design so far. Price is the one shown on the current site.",
+      "images": [
+        {
+          "src": "/images/ombre-indigo.png",
+          "label": "Vintage indigo fading to jet black"
+        },
+        {
+          "src": "/images/ombre-blue.png",
+          "label": "Electric cobalt fading to jet black"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "FSD Contrast-Panel Training Tee",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 39.99,
+      "colourways": "Luminous aqua / deep teal navy / white",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 3,
+      "name": "FSD 280 GSM Combat Tee",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 39.99,
+      "colourways": "Burnt terracotta / warm sand; Sunshine yellow / jet black",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 4,
+      "name": "FSD Back-Text Tee",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 39.99,
+      "colourways": "Sun-washed bone / faded tobacco brown",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Back text renders poorly; add the real text in an editor.",
+      "images": []
+    },
+    {
+      "id": 5,
+      "name": "FSD Laser-Ventilated Training Tank",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 29.99,
+      "colourways": "Electric coral / warm sand / white",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 6,
+      "name": "FSD 500 GSM Combat Hoodie",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 69.99,
+      "colourways": "Espresso brown / mocha taupe; Cherry burgundy / obsidian black; Khaki utility sand / washed black; Hyper crimson / jet black",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Deep emerald variant removed (old palette). Design reworked to a restrained single-colour look; regenerate the images before launch.",
+      "images": []
+    },
+    {
+      "id": 7,
+      "name": "FSD 600 GSM Luxury Hoodie",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 79.99,
+      "colourways": "Warm bone off-white / concrete grey",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Design reworked to a restrained single-colour look; regenerate the images before launch.",
+      "images": []
+    },
+    {
+      "id": 8,
+      "name": "FSD Technical Zip Jacket",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 89.99,
+      "colourways": "Electric mint / jet black / small white accents",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "FSD Technical Zip Jacket with Back Text",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Back text renders poorly; add the real text in an editor.",
+      "images": []
+    },
+    {
+      "id": 9,
+      "name": "FSD Hooded Running Shell",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 79.99,
+      "colourways": "Tangerine fading into burnt orange / jet black / champagne gold",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Back shield and front wordmark are to be added with the logo placer.",
+      "images": []
+    },
+    {
+      "id": 10,
+      "name": "FSD Cheetah Windrunner",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": 79.99,
+      "suggestedPrice": null,
+      "colourways": "Sunshine yellow / jet black; Blizzard ice-white grey camo / black; Savannah khaki camo / black",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review + site",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Price is the one shown on the current site. Three colours are one product, not three cards.",
+      "images": [
+        {
+          "src": "/images/windrunner-yellow.png",
+          "label": "Sunshine yellow / jet black"
+        },
+        {
+          "src": "/images/windrunner-white.png",
+          "label": "Blizzard ice-white grey camo / black"
+        },
+        {
+          "src": "/images/windrunner-khaki.png",
+          "label": "Savannah khaki camo / black"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "FSD Vector-Camo Windrunner",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 79.99,
+      "colourways": "Nardo grey vector camo / black / champagne-bronze hardware",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 12,
+      "name": "FSD Quilted Technical Gilet",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 69.99,
+      "colourways": "Bright ice-cyan / slate grey / small white accents",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 13,
+      "name": "FSD Spine-Vent Technical Gilet",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 69.99,
+      "colourways": "Army camo / jet black yoke; Hyper crimson / jet black",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 14,
+      "name": "FSD Compression Baselayer Set",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 59.99,
+      "colourways": "Electric cobalt blue / ink navy / white",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Top and tights.",
+      "images": []
+    },
+    {
+      "id": 15,
+      "name": "FSD Long-Sleeve Performance Training Top",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 44.99,
+      "colourways": "To be selected",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "Not decided: relationship to the men’s compression baselayer set",
+      "priceBasis": "",
+      "notes": "Overlap with the men’s compression set is not resolved. The approved standalone-layer decision applies to the women’s Aeroforge long-sleeve top (39), not this separate men’s record.",
+      "images": []
+    },
+    {
+      "id": 16,
+      "name": "FSD Strike Men's Training T-Shirt / Short-Sleeve Top",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [
+        "Combat and MMA"
+      ],
+      "audience": "Men’s",
+      "confirmedPrice": 39.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold (Signature); Black & Gold / Forged Carbon (Signature edition); Charcoal / Lime (Pulse); Navy / Silver (Performance); Olive / Bronze (Terrain)",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD Strike Men’s Training T-Shirt",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Combat and striking line. Distinct from Aeroforge short-sleeve performance tops. Existing colourways retained alongside the approved Signature, Pulse, Performance and Terrain editions; materials remain subject to manufacturing verification.",
+      "images": []
+    },
+    {
+      "id": 17,
+      "name": "FSD Performance Joggers",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 54.99,
+      "colourways": "To be selected",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Review",
+      "alias": "FSD Performance Joggers / Training Trousers",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 18,
+      "name": "FSD Aeroforge Training Tee",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [
+        "Women’s Performance"
+      ],
+      "audience": "Unisex",
+      "confirmedPrice": 39.99,
+      "suggestedPrice": null,
+      "colourways": "12 colourways in the catalogue (Black/Green, Black/Red, Black/Grey, White/Green, White/Grey, Navy/Blue, Sage/Black, Khaki/Tan, Charcoal/Orange, Maroon/Black, Royal/White, All Black)",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "FSD Aeroforge Training Tee (Unisex / Multi-Color)",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "General athletic training line, distinct from Strike combat tops. All 12 supplied colourways retained.",
+      "images": []
+    },
+    {
+      "id": 19,
+      "name": "FSD Aeroforge Hybrid Short",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": 44.99,
+      "suggestedPrice": null,
+      "colourways": "Black/Green, Black/Red, Black/Grey, Navy/Blue, Olive/Black, White/Green",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "FSD Strike Training Short; FSD Aeroforge Hybrid Training Short",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Approved merge of the training short variant into this single Aeroforge Hybrid Short at £44.99. Use the six approved Aeroforge colourways; distinct from Strike Men’s Combat Shorts.",
+      "images": []
+    },
+    {
+      "id": 20,
+      "name": "FSD Premium Black & Gold Athletic Shorts",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": 44.99,
+      "suggestedPrice": null,
+      "colourways": "Black & Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD Performance Training Shorts",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Confirmed as one product line with Performance Training Shorts; keep separate from the Aeroforge Hybrid Short.",
+      "images": []
+    },
+    {
+      "id": 22,
+      "name": "FSD Roadwork Short",
+      "category": "Men’s Performance and Training",
+      "alsoShowIn": [],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 39.99,
+      "colourways": "Hyper crimson; Luminous aqua; Jet black; Volt lime; Electric cobalt blue; Warm stone",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Generated (not in either file)",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Perforated, with a reflective hem tab.",
+      "images": []
+    },
+    {
+      "id": 23,
+      "name": "FSD Technical Tracksuit",
+      "category": "Training Sets",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": 99.99,
+      "colourways": "Deep ultraviolet purple / jet black / electric pink",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Deep emerald variant removed (old palette).",
+      "images": []
+    },
+    {
+      "id": 24,
+      "name": "FSD Low-Light Reflective Tracksuit",
+      "category": "Training Sets",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": 99.99,
+      "colourways": "Luminous volt lime / jet black / white",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 25,
+      "name": "FSD Gradient Compression Set",
+      "category": "Training Sets",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 59.99,
+      "colourways": "Burnt orange fading into deep burgundy / jet black / champagne gold",
+      "collection": "Core (proposed)",
+      "imageStatus": "No image yet",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Written concept only; no completed image.",
+      "images": []
+    },
+    {
+      "id": 26,
+      "name": "FSD Aeroforge Tech Set (Zip Hoodie & Joggers)",
+      "category": "Training Sets",
+      "alsoShowIn": [
+        "Lifestyle"
+      ],
+      "audience": "Unisex",
+      "confirmedPrice": 119.99,
+      "suggestedPrice": null,
+      "colourways": "Black/Green, Black/Grey, Navy/Blue, Olive/Black, Grey/Black, White/Green",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 27,
+      "name": "FSD Tiger-Slash 550 GSM Walkout Hoodie",
+      "category": "Combat and MMA",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "audience": "Men’s",
+      "confirmedPrice": null,
+      "suggestedPrice": 79.99,
+      "colourways": "Hyper crimson / jet black / champagne gold",
+      "collection": "Core (proposed)",
+      "imageStatus": "Brief only; locate or check the image",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Design reworked to a restrained single-colour look; regenerate the images before launch.",
+      "images": []
+    },
+    {
+      "id": 28,
+      "name": "FSD Championship Walkout Bomber",
+      "category": "Combat and MMA",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": 89.99,
+      "colourways": "Hyper crimson / jet black / champagne gold",
+      "collection": "Core (proposed)",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Deep emerald variant removed (old palette). Ribbing colour changed to match the new palette.",
+      "images": []
+    },
+    {
+      "id": 29,
+      "name": "FSD Signature Walkout Jacket",
+      "category": "Combat and MMA",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 79.99,
+      "suggestedPrice": null,
+      "colourways": "Matte black / forged-carbon-effect shoulder and sleeve panels / restrained gold",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "imageStatus": "Brief only; locate or check the image",
+      "source": "Both",
+      "alias": "FSD Walkout Jacket",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Carbon effect is a flexible bonded panel, not rigid carbon.",
+      "images": []
+    },
+    {
+      "id": 30,
+      "name": "FSD Signature Boxing Gloves (Pair)",
+      "category": "Combat and MMA",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 79.99,
+      "suggestedPrice": null,
+      "colourways": "Matte black / forged-carbon-effect wrist cuff / champagne-gold stitching",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "imageStatus": "Brief only; locate or check the image",
+      "source": "Both",
+      "alias": "FSD Signature 16 oz Boxing Gloves",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Carbon effect on the cuff only. Fit and protection need separate development.",
+      "images": []
+    },
+    {
+      "id": 31,
+      "name": "FSD Curved Coaching Focus Mitts",
+      "category": "Combat and MMA",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": 49.99,
+      "colourways": "Matte black leather / gold stitching",
+      "collection": "Core (proposed)",
+      "imageStatus": "Brief only; locate or check the image",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Emerald accents removed from the old brief.",
+      "images": []
+    },
+    {
+      "id": 32,
+      "name": "FSD Custom Sports Mouthguard & Protective Case",
+      "category": "Combat and MMA",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": 29.99,
+      "colourways": "Matte black / charcoal case with gold trim",
+      "collection": "Core (proposed)",
+      "imageStatus": "Brief only; locate or check the image",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Emerald bite pads removed. Do not make protection claims without testing.",
+      "images": []
+    },
+    {
+      "id": 33,
+      "name": "FSD Women’s MMA Performance Rash Guard",
+      "category": "Combat and MMA",
+      "alsoShowIn": [
+        "Women’s Performance"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 59.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold (long and short sleeve)",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD COMBAT Women’s MMA-Specific Rash Guard",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 34,
+      "name": "FSD Strike Men’s Combat Shorts",
+      "category": "Combat and MMA",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "audience": "Men’s",
+      "confirmedPrice": 49.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold (Signature); Black & Gold / Forged Carbon (Signature edition); Charcoal / Lime (Pulse); Navy / Silver (Performance); Olive / Bronze (Terrain)",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "FSD Strike Signature Combat Shorts - Black/Gold; FSD Strike Pulse Combat Shorts - Charcoal/Lime; FSD Strike Performance Combat Shorts - Navy/Silver; FSD Strike Terrain Combat Shorts - Olive/Bronze",
+      "aliasStatus": "Confirmed colourway names",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "One combat/grappling product at £49.99, with named colourway variants rather than separate cards. Distinct from the merged Aeroforge Hybrid Short. Existing palettes retained alongside the approved editions; materials remain subject to manufacturing verification.",
+      "images": []
+    },
+    {
+      "id": 35,
+      "name": "FSD Forest Green Luxury Boxing Tracksuit & Gear Kit",
+      "category": "Combat and MMA",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "audience": "Unisex",
+      "confirmedPrice": 149.99,
+      "suggestedPrice": null,
+      "colourways": "Forest green with black, gold and cream accents",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Approved forest-green palette exception: elite limited-edition colourway for this distinct premium combat kit. Limited-edition designation is not a claim of stock availability.",
+      "images": []
+    },
+    {
+      "id": 38,
+      "name": "FSD Aeroforge Women’s Performance Training Top (Short Sleeve)",
+      "category": "Women’s Performance",
+      "alsoShowIn": [],
+      "audience": "Women’s",
+      "confirmedPrice": 39.99,
+      "suggestedPrice": null,
+      "colourways": "Charcoal / Lime, Navy / Ice Blue, Black / Silver, Olive / Cream",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD AEROFORGE Women’s Performance Training Top",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Women’s general athletic training short-sleeve top; distinct from the men’s Strike combat/striking top.",
+      "images": []
+    },
+    {
+      "id": 39,
+      "name": "FSD Aeroforge Women’s Performance Top (Long Sleeve)",
+      "category": "Women’s Performance",
+      "alsoShowIn": [],
+      "audience": "Women’s",
+      "confirmedPrice": 49.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Lime",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "Standalone athletic layer / base training shirt",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Categorised separately from combat rash guards and compression sets; not a component of those sets.",
+      "images": []
+    },
+    {
+      "id": 40,
+      "name": "FSD Women's Performance Training Leggings",
+      "category": "Women’s Performance",
+      "alsoShowIn": [],
+      "audience": "Women’s",
+      "confirmedPrice": 49.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD FLEX Women’s Performance Leggings; FSD Women’s Performance Training Leggings",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Not to be marketed as modest outerwear.",
+      "images": []
+    },
+    {
+      "id": 41,
+      "name": "FSD Strikeflex Women’s Training Trousers",
+      "category": "Women’s Performance",
+      "alsoShowIn": [
+        "Combat and MMA"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 54.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 42,
+      "name": "FSD Performance Sports Hijab",
+      "category": "Modest Activewear",
+      "alsoShowIn": [
+        "Sports Hijabs"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 29.99,
+      "suggestedPrice": null,
+      "colourways": "Navy/Cyan, Black/Gold, Black/White, Olive/Lime, Dark Grey/Silver, Black/Magenta, Burgundy/Pink",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD CORE Everyday Sports Hijab",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Confirmed as one product. Seven approved colourways retained.",
+      "images": []
+    },
+    {
+      "id": 43,
+      "name": "FSD Velocity Performance Sports Hijab",
+      "category": "Modest Activewear",
+      "alsoShowIn": [
+        "Sports Hijabs"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 29.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "User-supplied main product image",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": [
+        {
+          "src": "/images/fsd-velocity-performance-sports-hijab.jpg",
+          "label": "Black and gold sports hijab with matching performance top"
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "name": "FSD Flow Running Hijab (Presentation Box Edition)",
+      "category": "Modest Activewear",
+      "alsoShowIn": [
+        "Sports Hijabs"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 34.99,
+      "suggestedPrice": null,
+      "colourways": "Navy / Cyan",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD FLOW Performance Running Hijab",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Running-specific.",
+      "images": []
+    },
+    {
+      "id": 45,
+      "name": "FSD Cover Extended-Coverage Sports Hijab",
+      "category": "Modest Activewear",
+      "alsoShowIn": [
+        "Sports Hijabs"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 32.99,
+      "suggestedPrice": null,
+      "colourways": "Navy, Black, Grey, Burgundy",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD COVER Extended-Coverage Sports Hijab",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Extended-coverage concept.",
+      "images": []
+    },
+    {
+      "id": 46,
+      "name": "FSD Aegis Modest Performance Gilet",
+      "category": "Modest Activewear",
+      "alsoShowIn": [],
+      "audience": "Women’s",
+      "confirmedPrice": 69.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 47,
+      "name": "FSD Form Women's Modest Training Top",
+      "category": "Modest Activewear",
+      "alsoShowIn": [],
+      "audience": "Women’s",
+      "confirmedPrice": 44.99,
+      "suggestedPrice": null,
+      "colourways": "Black & Gold, Navy & Light Blue, Olive & Cream, Maroon & Pink",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD Modest Longline Training Top / Tunic",
+      "aliasStatus": "Confirmed",
+      "coverage": "Mid-Hip Modest Coverage (Regular Tunic Length)",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Confirmed as one product. Coverage description approved; exact manufacturing measurements are not yet specified.",
+      "images": []
+    },
+    {
+      "id": 48,
+      "name": "FSD Titan Adaptive Training Jacket",
+      "category": "Modest Activewear",
+      "alsoShowIn": [
+        "Women’s Performance"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 89.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD Modest Longline Training Jacket",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Confirmed as one product with the modest longline training jacket.",
+      "images": []
+    },
+    {
+      "id": 49,
+      "name": "FSD Women's Lightweight Modest Training Overshirt",
+      "category": "Modest Activewear",
+      "alsoShowIn": [],
+      "audience": "Women’s",
+      "confirmedPrice": 64.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD BREEZE Lightweight Modest Training Overshirt; FSD Women’s Lightweight Modest Training Overshirt",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 50,
+      "name": "FSD Modest Flow Training Trousers",
+      "category": "Modest Activewear",
+      "alsoShowIn": [],
+      "audience": "Women’s",
+      "confirmedPrice": 54.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD Women’s Training Trousers / Joggers",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Confirmed as one product with the women’s training trousers / joggers.",
+      "images": []
+    },
+    {
+      "id": 51,
+      "name": "FSD Aeroforge Modest Tunic & Jogger Set",
+      "category": "Modest Activewear",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 89.99,
+      "suggestedPrice": null,
+      "colourways": "Black, Grey, Navy, Olive, Mauve, White",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD Coordinated Modest Training Set — Tunic + Joggers",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 52,
+      "name": "FSD Precision Barbell Collars (Pair)",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 39.99,
+      "suggestedPrice": null,
+      "colourways": "Matte black, brushed gold and gold-vein carbon-effect face",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Both",
+      "alias": "FSD Precision Barbell Collars; FSD Precision Twist-Lock Barbell Collars (Pair)",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Mechanical design needs engineering review.",
+      "images": []
+    },
+    {
+      "id": 54,
+      "name": "FSD Olympic Bar & 5-Cutout Bumper Plate Set",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 349.99,
+      "suggestedPrice": null,
+      "colourways": "Matte black, gold-vein carbon-effect sleeves and plate faces, brushed gold trim",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "imageStatus": "Image exists (concept board; crop single panels)",
+      "source": "Both",
+      "alias": "FSD Olympic Barbell & Weight Plates",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "Not decided: bar weight, plate weights and quantities, and included accessories",
+      "priceBasis": "",
+      "notes": "Five-cutout concept name approved in place of the inaccurate Tri-Grip name. £349.99 is the confirmed set list price; contents remain undecided. No bar weight, plate breakdown or accessories are implied.",
+      "images": []
+    },
+    {
+      "id": 55,
+      "name": "FSD COMMAND Gym Bag",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 89.99,
+      "suggestedPrice": null,
+      "colourways": "Matte black / gold-vein carbon-effect panel",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "imageStatus": "Brief only; locate or check the image",
+      "source": "Both",
+      "alias": "FSD COMMAND Technical Gym Duffel",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "One discreet badge.",
+      "images": []
+    },
+    {
+      "id": 56,
+      "name": "FSD Signature Performance Sports Bag",
+      "category": "Women’s Performance",
+      "alsoShowIn": [
+        "Gym Hardware and Accessories"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 79.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD CARRY Performance Sports Bag",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Confirmed separate from COMMAND Gym Bag: Standard / Core everyday athletic duffel at £79.99, not the £89.99 Forged Carbon & Gold Edition bag.",
+      "images": []
+    },
+    {
+      "id": 57,
+      "name": "FSD Performance Training Socks (3-Pair Pack)",
+      "category": "Women’s Performance",
+      "alsoShowIn": [
+        "Gym Hardware and Accessories"
+      ],
+      "audience": "Women’s",
+      "confirmedPrice": 19.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Both",
+      "alias": "FSD Performance Training Socks",
+      "aliasStatus": "Confirmed",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Approved name without STRIDE. Women’s three-pair pack at £19.99; separate from the undecided Smart Tech concept.",
+      "images": []
+    },
+    {
+      "id": 58,
+      "name": "FSD Winter Accessories Set (Beanies and Scarf)",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [
+        "Lifestyle"
+      ],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": 44.99,
+      "colourways": "Beanies and scarf in black, charcoal and gold",
+      "collection": "Core (proposed)",
+      "imageStatus": "Brief only; locate or check the image",
+      "source": "Review",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Green removed from the old brief.",
+      "images": []
+    },
+    {
+      "id": 59,
+      "name": "FSD ALIGN (posture awareness wearable)",
+      "category": "Smart Tech",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": null,
+      "colourways": "To be selected",
+      "collection": "Core (proposed)",
+      "imageStatus": "No image yet",
+      "source": "Website",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Not in either file; name from the website. Capabilities need validating.",
+      "images": []
+    },
+    {
+      "id": 60,
+      "name": "FSD HYDRATE (smart hydration bottle)",
+      "category": "Smart Tech",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": null,
+      "colourways": "To be selected",
+      "collection": "Core (proposed)",
+      "imageStatus": "No image yet",
+      "source": "Website",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Not in either file; name from the website.",
+      "images": []
+    },
+    {
+      "id": 61,
+      "name": "FSD MOTION (smart training apparel)",
+      "category": "Smart Tech",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": null,
+      "colourways": "To be selected",
+      "collection": "Core (proposed)",
+      "imageStatus": "No image yet",
+      "source": "Website",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Not in either file; sensor claims are conceptual.",
+      "images": []
+    },
+    {
+      "id": 62,
+      "name": "FSD NEXUS (smart ring)",
+      "category": "Smart Tech",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Core (proposed)",
+      "imageStatus": "No image yet",
+      "source": "Website",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Not in either file; check the image for another brand’s name.",
+      "images": []
+    },
+    {
+      "id": 63,
+      "name": "FSD SONIC (training earbuds)",
+      "category": "Smart Tech",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Core (proposed)",
+      "imageStatus": "No image yet",
+      "source": "Website",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Not in either file; name from the website.",
+      "images": []
+    },
+    {
+      "id": 65,
+      "name": "FSD PULSE (premium step counter)",
+      "category": "Smart Tech",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": null,
+      "suggestedPrice": null,
+      "colourways": "To be selected",
+      "collection": "Core (proposed)",
+      "imageStatus": "No image yet",
+      "source": "Website",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "Not in either file; name from the website.",
+      "images": []
+    },
+    {
+      "id": 66,
+      "name": "FSD Black and Gold Signature Hoodie",
+      "category": "Lifestyle",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 69.99,
+      "suggestedPrice": null,
+      "colourways": "Black / Gold",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 67,
+      "name": "FSD Whalley Range Camo Hoodie & Jogger Set",
+      "category": "Lifestyle",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "audience": "Unisex",
+      "confirmedPrice": 79.99,
+      "suggestedPrice": null,
+      "colourways": "Camo / Khaki / Black",
+      "collection": "Standard / Core",
+      "imageStatus": "No image confirmed",
+      "source": "Catalogue",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "",
+      "specificationStatus": "",
+      "priceBasis": "",
+      "notes": "",
+      "images": []
+    },
+    {
+      "id": 69,
+      "name": "FSD AUREUS FORGED CARBON™ SET",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 699.99,
+      "suggestedPrice": null,
+      "colourways": "Forged carbon with metallic gold resin veins",
+      "collection": "Hardware Division / Ultra Luxury",
+      "imageStatus": "No image confirmed",
+      "source": "User-approved product decisions",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: non-directional forged carbon fiber plates with inlaid metallic gold resin veins. Proposed grip: 32mm bespoke diamond-knurled shaft with laser-etched FSD monogram endcaps.",
+      "specificationStatus": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+      "priceBasis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+      "notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied.",
+      "images": []
+    },
+    {
+      "id": 70,
+      "name": "FSD OBSIDIAN GOLD™ ELITE SET",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 599.99,
+      "suggestedPrice": null,
+      "colourways": "Matte urethane with brushed champagne-gold rings and gold TiN accents",
+      "collection": "Hardware Division / High-Performance Pro",
+      "imageStatus": "No image confirmed",
+      "source": "User-approved product decisions",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: matte-finish high-durometer urethane heads with brushed champagne-gold accent rings. Proposed grip: hard-chrome knurled ergonomic handle with gold titanium-nitride (TiN) accents.",
+      "specificationStatus": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+      "priceBasis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+      "notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied.",
+      "images": []
+    },
+    {
+      "id": 71,
+      "name": "FSD VANGUARD COMMERCIAL™ PRO SET",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 399.99,
+      "suggestedPrice": null,
+      "colourways": "Matte black urethane with tone-on-tone FSD branding",
+      "collection": "Hardware Division / Commercial Workhorse",
+      "imageStatus": "No image confirmed",
+      "source": "User-approved product decisions",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: heavy-duty solid steel core encased in shock-absorbent matte black urethane. Proposed grip: standard commercial dual-knurl grip with debossed tone-on-tone FSD branding.",
+      "specificationStatus": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+      "priceBasis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+      "notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied.",
+      "images": []
+    },
+    {
+      "id": 72,
+      "name": "FSD FOUNDATION UTILITY™ SET",
+      "category": "Gym Hardware and Accessories",
+      "alsoShowIn": [],
+      "audience": "Unisex",
+      "confirmedPrice": 299.99,
+      "suggestedPrice": null,
+      "colourways": "To be selected; vulcanized rubber heads with chrome handles",
+      "collection": "Hardware Division / Foundation Tier",
+      "imageStatus": "No image confirmed",
+      "source": "User-approved product decisions",
+      "alias": "",
+      "aliasStatus": "",
+      "coverage": "",
+      "specifications": "Complete vertical dumbbell set package spanning 10kg–50kg. Proposed construction: solid cast-iron weight heads with durable vulcanized rubber encapsulation. Proposed grip: contoured chrome handle intended for repetitive high-volume circuits.",
+      "specificationStatus": "Exact weight increments, quantities and total set weight pending manufacturer specification",
+      "priceBasis": "Complete 10kg–50kg set package, not a pair or per-weight-tier price",
+      "notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied.",
+      "images": []
+    }
+  ],
+  "categories": [
+    "Men’s Performance and Training",
+    "Training Sets",
+    "Combat and MMA",
+    "Women’s Performance",
+    "Lifestyle",
+    "Modest Activewear",
+    "Sports Hijabs",
+    "Gym Hardware and Accessories",
+    "Smart Tech"
+  ],
+  "collectionDivisions": [
+    {
+      "id": "apparel",
+      "title": "FSD APPAREL",
+      "tagline": "ENGINEERED FOR UNYIELDING MOVEMENT.",
+      "description": "Performance apparel, combat training, and modest movement.",
+      "groups": [
+        {
+          "id": "mens-luxury-performance",
+          "title": "MEN’S LUXURY PERFORMANCE",
+          "categories": [
+            "Men’s Performance and Training",
+            "Training Sets",
+            "Combat and MMA",
+            "Lifestyle"
+          ],
+          "audiences": [
+            "Men’s",
+            "Unisex"
+          ],
+          "subcategories": [
+            {
+              "title": "500 GSM Hoodies & Tracksuits",
+              "productTerms": [
+                "500 GSM",
+                "Tracksuit"
+              ]
+            },
+            {
+              "title": "2-in-1 Combat Training Shorts & Tanks",
+              "productTerms": [
+                "2-in-1"
+              ],
+              "concepts": [
+                "2-in-1 Combat Training Shorts & Tanks"
+              ]
+            },
+            {
+              "title": "Walkout Robes & Bomber Jackets",
+              "productTerms": [
+                "Walkout",
+                "Bomber"
+              ],
+              "concepts": [
+                "Walkout Robes"
+              ]
+            },
+            {
+              "title": "Volcanic Amber Capsule",
+              "concepts": [
+                "Volcanic Amber Capsule"
+              ]
+            },
+            {
+              "title": "Vector Camo Capsule",
+              "productTerms": [
+                "Vector-Camo",
+                "Vector Camo"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "womens-modest-combat",
+          "title": "WOMEN’S MODEST COMBAT",
+          "categories": [
+            "Modest Activewear",
+            "Sports Hijabs"
+          ],
+          "audiences": [
+            "Women’s"
+          ],
+          "subcategories": [
+            {
+              "title": "Performance Hijabs",
+              "productTerms": [
+                "Hijab"
+              ],
+              "concepts": [
+                "Pro Combat Magnetic Performance Hijabs"
+              ]
+            },
+            {
+              "title": "Longline Tunics & Half-Zips",
+              "productTerms": [
+                "Tunic",
+                "Longline",
+                "Half-Zip"
+              ]
+            },
+            {
+              "title": "Technical Tapered Combat Trackpants",
+              "productTerms": [
+                "Trackpant",
+                "Track Pants",
+                "Jogger"
+              ],
+              "concepts": [
+                "Technical Tapered Combat Trackpants"
+              ]
+            },
+            {
+              "title": "Full-Coverage Compression Base Layers",
+              "productTerms": [
+                "Compression",
+                "Base Layer"
+              ],
+              "concepts": [
+                "Full-Coverage Compression Base Layers"
+              ]
+            }
+          ],
+          "prominent": true
+        }
+      ],
+      "visual": "apparel"
+    },
+    {
+      "id": "bio-lab",
+      "title": "FSD BIO-LAB™",
+      "tagline": "INTELLIGENCE IN EVERY MOVEMENT.",
+      "description": "Technology concepts, presented as concepts until their capabilities are validated.",
+      "groups": [
+        {
+          "id": "bio-lab-concepts",
+          "title": "WEARABLE TECHNOLOGY & CONCEPTS",
+          "categories": [
+            "Smart Tech"
+          ],
+          "concepts": [
+            "Bio-Weave™ ECG & Hydration Compression Tops",
+            "FSD Aware Band™",
+            "Graphene-Infused Thermal Recovery Vests",
+            "FSD Digital Pass™",
+            "FSD VECTOR — Smartwatch",
+            "FSD CORE — Heart Rate Sensor Strap"
+          ]
+        }
+      ],
+      "visual": "bio-lab"
+    },
+    {
+      "id": "hardware",
+      "title": "FSD HARDWARE",
+      "tagline": "BUILT FOR THE DEMANDS OF PERFORMANCE.",
+      "description": "Strength equipment, combat essentials, recovery ideas, and training accessories.",
+      "groups": [
+        {
+          "id": "strength-equipment",
+          "title": "STRENGTH EQUIPMENT",
+          "categories": [
+            "Gym Hardware and Accessories"
+          ],
+          "productTerms": [
+            "Dumbbell",
+            "AUREUS",
+            "OBSIDIAN",
+            "VANGUARD",
+            "UTILITY"
+          ]
+        },
+        {
+          "id": "combat-equipment",
+          "title": "COMBAT EQUIPMENT",
+          "categories": [
+            "Combat and MMA"
+          ],
+          "productTerms": [
+            "Gloves",
+            "Mitts",
+            "Mouthguard",
+            "Gear Kit"
+          ],
+          "concepts": [
+            "16oz Pro Leather Boxing Gloves",
+            "Apex Ring Boots",
+            "Heavy Bags"
+          ]
+        },
+        {
+          "id": "recovery-technology",
+          "title": "RECOVERY TECHNOLOGY",
+          "categories": [],
+          "concepts": [
+            "Cryo-Zero Recovery Chambers",
+            "Red Light Recovery Beds",
+            "7mm Knee Sleeves"
+          ]
+        },
+        {
+          "id": "performance-accessories",
+          "title": "PERFORMANCE ACCESSORIES",
+          "categories": [
+            "Gym Hardware and Accessories",
+            "Smart Tech"
+          ],
+          "productTerms": [
+            "COMMAND",
+            "CARRY",
+            "SOCKS",
+            "COLLARS",
+            "HYDRATE",
+            "SONIC",
+            "PULSE"
+          ],
+          "concepts": [
+            "Anti-Snap Resistance Systems",
+            "Premium Metal Flasks"
+          ]
+        }
+      ],
+      "visual": "hardware"
+    },
+    {
+      "id": "global",
+      "title": "FSD GLOBAL",
+      "tagline": "FROM THE TRAINING FLOOR TO THE WORLD STAGE.",
+      "description": "Flagship and promotions concepts. None of the locations or services below are represented as operational.",
+      "groups": [
+        {
+          "id": "flagships",
+          "title": "FSD FLAGSHIPS",
+          "concepts": [
+            "Dublin",
+            "Belfast",
+            "Manchester",
+            "Islamabad",
+            "Future Global Locations"
+          ]
+        },
+        {
+          "id": "promotions",
+          "title": "FSD PROMOTIONS",
+          "concepts": [
+            "Professional Fight Promotions",
+            "Live Events",
+            "Broadcast & PPV Concepts",
+            "Athlete Development",
+            "Academy & Grassroots Programmes"
+          ]
+        }
+      ],
+      "visual": "global"
+    }
+  ],
+  "galleryReferences": [
+    {
+      "name": "Athleisure Hijab in Sunlit Architecture",
+      "url": "/fsd-assets/357658ffc7f6.webp"
+    },
+    {
+      "name": "Athletic Hijab Profile in Navy and Cyan-2",
+      "url": "/fsd-assets/e6a53d9323cc.webp"
+    },
+    {
+      "name": "Athletic Hijab Profile in Navy and Cyan",
+      "url": "/fsd-assets/fc1fabf8699c.webp"
+    },
+    {
+      "name": "Athletic Hijab in Architectural Light",
+      "url": "/fsd-assets/7b80ed032e05.webp"
+    },
+    {
+      "name": "Athletic Hijab in Modern Light",
+      "url": "/fsd-assets/9c830693f6ee.webp"
+    },
+    {
+      "name": "Athletic Olive Hijab Portrait with FSD Branding",
+      "url": "/fsd-assets/5cd4f2a76dfe.webp"
+    },
+    {
+      "name": "Black and Gold Athletic Hijab Portrait",
+      "url": "/fsd-assets/8de455020fef.webp"
+    },
+    {
+      "name": "Black and Gold FSD Athletic T-Shirt",
+      "url": "/fsd-assets/a50d3dd41dd5.webp"
+    },
+    {
+      "name": "Black and Gold FSD Jersey Detail",
+      "url": "/fsd-assets/3e7e5e1e2217.webp"
+    },
+    {
+      "name": "Black and Gold Fitness Jersey Back",
+      "url": "/fsd-assets/edf5efc094df.webp"
+    },
+    {
+      "name": "Black and Magenta Athletic Hijab Profile",
+      "url": "/fsd-assets/23e10a4438aa.webp"
+    },
+    {
+      "name": "Breathable Navy Sportswear Fabric Macro",
+      "url": "/fsd-assets/1eeba2ae57b0.webp"
+    },
+    {
+      "name": "Burgundy Athletic Hijab Portrait",
+      "url": "/fsd-assets/62148fcecf4f.webp"
+    },
+    {
+      "name": "Charcoal FSD Technical Garment Detail",
+      "url": "/fsd-assets/990d86ea0e8b.webp"
+    },
+    {
+      "name": "Charcoal Performance Fabric Detail(1)",
+      "url": "/fsd-assets/b60526890d31.webp"
+    },
+    {
+      "name": "Charcoal Performance Fabric Detail",
+      "url": "/fsd-assets/de1392e98d86.webp"
+    },
+    {
+      "name": "Cinematic Black and Gold Smart Ring",
+      "url": "/fsd-assets/c3d2d5e42d94.webp"
+    },
+    {
+      "name": "Cinematic FSD Boxing Training Session",
+      "url": "/fsd-assets/694b62506e9f.webp"
+    },
+    {
+      "name": "Confident Athlete in Technical Hijab",
+      "url": "/fsd-assets/c74fc3446e74.webp"
+    },
+    {
+      "name": "Determined FSD Boxing Champion",
+      "url": "/fsd-assets/8ffe2fd45a06.webp"
+    },
+    {
+      "name": "Determined Runner in Navy Sports Hijab",
+      "url": "/fsd-assets/52e3ea168d97.webp"
+    },
+    {
+      "name": "Dynamic Navy Hijab Runner in Urban Light",
+      "url": "/fsd-assets/fd2445fd58fc.webp"
+    },
+    {
+      "name": "FSD ALIGN — Posture Feedback Wearable.(1)",
+      "url": "/fsd-assets/416919c83a8c.webp"
+    },
+    {
+      "name": "FSD ALIGN — Posture Feedback Wearable.",
+      "url": "/fsd-assets/d6ad7aa21159.webp"
+    },
+    {
+      "name": "FSD Athletic Hijab Portrait-1",
+      "url": "/fsd-assets/deb98830b1a5.webp"
+    },
+    {
+      "name": "FSD Athletic Hijab Portrait-2",
+      "url": "/fsd-assets/ffa5e704fac9.webp"
+    },
+    {
+      "name": "FSD Athletic Hijab Portrait",
+      "url": "/fsd-assets/d73c6dcf1e3f.webp"
+    },
+    {
+      "name": "FSD Charcoal Performance Hijab Features-2",
+      "url": "/fsd-assets/ab1c1ea7d7fb.webp"
+    },
+    {
+      "name": "FSD Cover Collection Colourways-2",
+      "url": "/fsd-assets/73bbf243a1db.webp"
+    },
+    {
+      "name": "FSD Cover Sports Hijab Portrait",
+      "url": "/fsd-assets/568e7b5cab2a.webp"
+    },
+    {
+      "name": "FSD Flow Hijab_ Athletic Motion",
+      "url": "/fsd-assets/8297f23d9b34.webp"
+    },
+    {
+      "name": "FSD Gold Performance Hijab Portrait",
+      "url": "/fsd-assets/4acbbfb65f79.webp"
+    },
+    {
+      "name": "FSD Gold-Accented Sports Hijab Portrait",
+      "url": "/fsd-assets/f27c11726245.webp"
+    },
+    {
+      "name": "FSD Hijab Activewear Feature Collage-1",
+      "url": "/fsd-assets/6ec9d1ec0011.webp"
+    },
+    {
+      "name": "FSD Hijab Performance Feature Graphic",
+      "url": "/fsd-assets/b41b0e05fe83.webp"
+    },
+    {
+      "name": "FSD Hydrate_ Smart Hydration, Stronger You(1)",
+      "url": "/fsd-assets/d4eb3636d6fe.webp"
+    },
+    {
+      "name": "FSD Motion Smart Training Apparel",
+      "url": "/fsd-assets/09adfb6f5ba7.webp"
+    },
+    {
+      "name": "FSD Navy Athletic Hijab Flat Lay",
+      "url": "/fsd-assets/6482d828b2a4.webp"
+    },
+    {
+      "name": "FSD Nexus Smart Ring Campaign Board(1)",
+      "url": "/fsd-assets/fa97ff10f9db.webp"
+    },
+    {
+      "name": "FSD Nexus Smart Ring in Golden Shadows",
+      "url": "/fsd-assets/3daa9883cec9.webp"
+    },
+    {
+      "name": "FSD Performance Fabric Detail",
+      "url": "/fsd-assets/fab3982bebc0.webp"
+    },
+    {
+      "name": "FSD Pulse_ Premium Step Counter",
+      "url": "/fsd-assets/174af2ffa907.webp"
+    },
+    {
+      "name": "FSD Pulse_ Train, Recover, Perform",
+      "url": "/fsd-assets/cb7fa58d0d8d.webp"
+    },
+    {
+      "name": "FSD Sonic_ Black-Gold Training Earbuds",
+      "url": "/fsd-assets/52cc94b00632.webp"
+    },
+    {
+      "name": "FSD Sports Hijab Colourway Lineup",
+      "url": "/fsd-assets/beb0390e937f.webp"
+    },
+    {
+      "name": "FSD Sports Hijab Technical Detail",
+      "url": "/fsd-assets/c6803aead652.webp"
+    },
+    {
+      "name": "FSD Technical Fabric Detail",
+      "url": "/fsd-assets/5a350f04c9a3.webp"
+    },
+    {
+      "name": "FSD Technical Hoodie Detail",
+      "url": "/fsd-assets/1f50137316e8.webp"
+    },
+    {
+      "name": "FSD Technical Sportswear Close-Up",
+      "url": "/fsd-assets/07abc61fc7ed.webp"
+    },
+    {
+      "name": "FSD Vector Smartwatch Poster",
+      "url": "/fsd-assets/1b4f4ffbc322.webp"
+    },
+    {
+      "name": "Focused Athleisure Hijab Portrait",
+      "url": "/fsd-assets/8050d88a360e.webp"
+    },
+    {
+      "name": "Focused Athlete in Gold-Branded Sports Hijab",
+      "url": "/fsd-assets/51e203943cad.webp"
+    },
+    {
+      "name": "Focused Athletic Hijab Portrait",
+      "url": "/fsd-assets/eb907d419956.webp"
+    },
+    {
+      "name": "Futuristic Navy Sports Hijab Portrait",
+      "url": "/fsd-assets/29218f01e275.webp"
+    },
+    {
+      "name": "Gold FSD Hijab Fabric Detail",
+      "url": "/fsd-assets/a1b43e2fa05b.webp"
+    },
+    {
+      "name": "Golden-Hour Urban Lunge",
+      "url": "/fsd-assets/019b709ba885.webp"
+    },
+    {
+      "name": "Luxury Black Performance Fabric with Gold FSD Logo",
+      "url": "/fsd-assets/16f286891533.webp"
+    },
+    {
+      "name": "Luxury FSD Athletic Set Unboxing(1)",
+      "url": "/fsd-assets/9a4e42ff4e13.webp"
+    },
+    {
+      "name": "Luxury FSD Athletic Set Unboxing",
+      "url": "/fsd-assets/3b2493524e75.webp"
+    },
+    {
+      "name": "Luxury FSD Fitness Unboxing(1)",
+      "url": "/fsd-assets/a8ab5db15eff.webp"
+    },
+    {
+      "name": "Luxury FSD Fitness Unboxing",
+      "url": "/fsd-assets/1a50ddda0665.webp"
+    },
+    {
+      "name": "Luxury FSD Pulse Smartwatch Showcase",
+      "url": "/fsd-assets/080ac3792922.webp"
+    },
+    {
+      "name": "Luxury FSD Sports Hijab Flat Lay(1)",
+      "url": "/fsd-assets/57d56912586b.webp"
+    },
+    {
+      "name": "Luxury FSD Sports Hijab Flat Lay",
+      "url": "/fsd-assets/6c9c826cc5f7.webp"
+    },
+    {
+      "name": "Luxury FSD Sports Hijab Unboxing",
+      "url": "/fsd-assets/ed15acb35414.webp"
+    },
+    {
+      "name": "Luxury FSD Winter Accessories Display-2",
+      "url": "/fsd-assets/2bdac01c6a70.webp"
+    },
+    {
+      "name": "Luxury FSD Winter Accessories Flat Lay-3",
+      "url": "/fsd-assets/41a65f8b9b96.webp"
+    },
+    {
+      "name": "Luxury FSD Winter Accessories Flat Lay-6",
+      "url": "/fsd-assets/2f015d3fa9be.webp"
+    },
+    {
+      "name": "Luxury FSD Winter Knit Collection-1",
+      "url": "/fsd-assets/358913ed4185.webp"
+    },
+    {
+      "name": "Luxury FSD Winter Knitwear Flat Lay-5",
+      "url": "/fsd-assets/92eee30914e6.webp"
+    },
+    {
+      "name": "Luxury Gold FSD Performance Jersey Erotiske(1)",
+      "url": "/fsd-assets/b11385897177.webp"
+    },
+    {
+      "name": "Luxury Gold FSD Performance Jersey Erotiske",
+      "url": "/fsd-assets/438178ffdf70.webp"
+    },
+    {
+      "name": "Modern Hijab Activewear in Sunlight",
+      "url": "/fsd-assets/3774d2a923da.webp"
+    },
+    {
+      "name": "Modern Navy Athletic Hijab Portrait",
+      "url": "/fsd-assets/940483cb245f.webp"
+    }
+  ]
+}

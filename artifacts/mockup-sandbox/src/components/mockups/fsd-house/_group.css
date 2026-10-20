@@ -1,0 +1,4 @@
+/* The extracted document retains its real stylesheet and font links inside its
+   own browsing context, so no original global styles leak into other proofs. */
+.fsd-current-extraction { width: 100%; height: 100svh; min-height: 100vh; background: #090b0f; }
+.fsd-current-extraction iframe { display: block; border: 0; width: 100%; height: 100%; }

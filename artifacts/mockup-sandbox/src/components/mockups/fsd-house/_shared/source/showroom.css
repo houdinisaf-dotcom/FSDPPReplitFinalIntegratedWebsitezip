@@ -1,0 +1,55 @@
+.showroom-archives { padding: 0 6% 56px; background: #090a0c; }
+.showroom-archive { border-top: 1px solid #35322c; }
+.showroom-archive > summary { display: flex; justify-content: space-between; gap: 24px; padding: 23px 0; color: #bcb4a7; font-size: 12px; cursor: pointer; list-style: none; }
+.showroom-archive > summary::-webkit-details-marker { display: none; }
+.showroom-archive > summary::after { content: "+"; color: #c9a66b; font-size: 18px; }
+.showroom-archive[open] > summary::after { content: "−"; }
+.showroom-archive[open] { padding-bottom: 30px; }
+.showroom-archive .shop, .showroom-archive .fsd-expanded { padding: 44px 4%; }
+.showroom-featured { padding: 90px 6%; background: #111216; }
+.showroom-featured .section-kicker { color: #c9a66b; }
+.showroom-featured .section-heading h2 { font-size: clamp(30px, 4vw, 56px); }
+.showroom-carousel-controls { display: flex; gap: 10px; }
+.showroom-carousel-controls button { width: 46px; height: 46px; border: 1px solid #726247; border-radius: 50%; background: transparent; color: #e3c68c; font-size: 19px; cursor: pointer; }
+.showroom-carousel-controls button:disabled { opacity: .3; cursor: not-allowed; }
+.showroom-feature-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-color: #706044 #18191c; padding-bottom: 18px; }
+.showroom-feature-card { flex: 0 0 calc((100% - 40px) / 3); min-width: 265px; scroll-snap-align: start; border: 1px solid #35332e; border-radius: 18px; overflow: hidden; background: #0c0e11; }
+.showroom-feature-media { height: 210px; overflow: hidden; }
+.showroom-feature-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.showroom-feature-placeholder { display: grid; place-content: center; gap: 10px; height: 100%; text-align: center; background: radial-gradient(ellipse at center, #3d3424, #14171d 70%); color: #c9a66b; }
+.showroom-feature-placeholder span { font: 800 48px Manrope, sans-serif; letter-spacing: -.06em; }
+.showroom-feature-placeholder small { font-size: 9px; letter-spacing: .14em; }
+.showroom-feature-copy { display: flex; flex-direction: column; padding: 25px; min-height: 260px; }
+.showroom-feature-copy .section-kicker { font-size: 9px; }
+.showroom-feature-copy h3 { font: 700 21px/1.3 Manrope, sans-serif; margin: 0; letter-spacing: -.04em; }
+.showroom-feature-copy > p:not(.section-kicker) { color: #a8a8ad; font-size: 12px; line-height: 1.7; }
+.showroom-feature-price { color: #d4c6ab; font-size: 11px; }
+.showroom-feature-copy .text-link { align-self: flex-start; margin-top: auto; padding-top: 20px; color: #e3c68c; }
+.showroom-carousel-note { color: #929299; font-size: 11px; margin-bottom: 0; }
+.showroom-vip { padding: 100px 6%; text-align: center; background: radial-gradient(ellipse at 50% 100%, #2b251b, transparent 65%), #090b0f; }
+.showroom-vip h2 { font: 800 clamp(40px, 6vw, 76px)/1.03 Manrope, sans-serif; letter-spacing: -.06em; }
+.showroom-vip h2 em { color: #c9a66b; font-style: normal; }
+.showroom-vip > p:not(.section-kicker) { max-width: 620px; margin: 22px auto; color: #b4b4b8; font-size: 14px; line-height: 1.8; }
+.showroom-vip .primary-btn { margin-top: 15px; }
+.showroom-vip .primary-btn:disabled { opacity: .55; cursor: not-allowed; }
+.showroom-vip > .showroom-vip-status { font-size: 11px !important; color: #96969c !important; max-width: 500px !important; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 12px 22px; max-width: 500px; }
+.footer-links a { color: #b3a78e; font-size: 10px; }
+.footer-pending { display: block; margin-top: 14px; max-width: 500px; line-height: 1.7; color: #8e8e94; letter-spacing: .02em; }
+.manifesto { background: linear-gradient(90deg, #0b0d11 25%, rgba(11,13,17,.93) 58%, rgba(11,13,17,.62)), url('/images/windrunner-khaki.png') right 35% / cover; }
+@media (max-width: 760px) {
+  .showroom-archives { padding: 0 20px 40px; }
+  .showroom-archive > summary { font-size: 11px; }
+  .showroom-featured { padding: 60px 20px; }
+  .showroom-featured .section-heading { display: flex; align-items: end; gap: 20px; }
+  .showroom-featured .section-heading h2 { font-size: 30px; }
+  .showroom-feature-card { flex-basis: 84%; min-width: 250px; }
+  .showroom-carousel-controls { gap: 5px; }
+  .showroom-carousel-controls button { width: 42px; height: 42px; }
+  .showroom-vip { padding: 70px 22px; }
+  .showroom-vip h2 { font-size: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .showroom-feature-track { scroll-behavior: auto; }
+}

@@ -252,3 +252,17 @@ mtime_ms = 1792434074684
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4e20f973-ae30-4367-a3fb-540158f1d591/4250b885-f9df-4193-a1de-9cd5d227d9f6"
 storage_version_token = "1792434318871895"
 content_type = "image/png"
+
+[[outputs]]
+id = "GBHgaV5S3NoxPnNwTmEnR"
+uri = "file://generated-artifacts/fsd-house/design-audit.html"
+type = "html"
+title = "FSD — Website Audit & Approval Boundaries"
+description = "Current-site audit, preserved catalogue and imagery, A/B navigation tradeoffs, asset gaps and the approval gates before implementation."
+logical_id = "80363d53-70fe-45e6-abda-f1fd15ed495e"
+content_hash = "sha256:1e2878d3b684c23d366c5aa546a5b9ead0c09debf71ea4c4c24d12edafb9c9be"
+size = 8446
+mtime_ms = 1792459496078
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/80363d53-70fe-45e6-abda-f1fd15ed495e/458ee786-19dc-4b75-9b0c-68a45894cec6"
+storage_version_token = "1792460537573679"
+content_type = "text/html"
