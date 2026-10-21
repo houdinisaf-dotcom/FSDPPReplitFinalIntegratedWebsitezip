@@ -9,6 +9,7 @@ import { catalogueSection, roadmapSection, innovationsSection, initCatalogue } f
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
 import { featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
+import { renderNavigationHeader } from '../src/site-navigation.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
   assert.equal(master.length, 72);
@@ -270,12 +271,14 @@ test('the complete public page excludes held imagery while retaining internal so
     const dependencies = {
       catalogueSection, initCatalogue, gallerySection, galleryProducts, products,
       collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
-      mountCollectionShowcase() {}, initFeaturedCarousel() {}, initArchiveNavigation() {}, showProduct() {},
+      renderNavigationHeader,
+      mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
+      initArchiveNavigation() {}, showProduct() {},
     };
     new Function('document', ...Object.keys(dependencies), source)(document, ...Object.values(dependencies));
     const page = document.querySelector('#app').innerHTML;
     assert.match(page, /74 designs/);
-    assert.match(page, /PRE-LAUNCH COLLECTION/);
+    assert.match(page, /PRE-LAUNCH DESIGN PROOF/);
     assert.match(page, /id="catalogue-archive"/);
     assert.match(page, /id="gallery-archive"/);
     assert.doesNotMatch(page, /in development|<form|type="email"/i);

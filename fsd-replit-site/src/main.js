@@ -4,22 +4,20 @@ import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
 import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initArchiveNavigation } from './showroom-sections.js';
+import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import './style.css';
 import './catalogue.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
+import './site-navigation.css';
 
 function icon() {
   return `<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg>`;
 }
 
 function header() {
-  return `<div class="announcement">FSD / THE NEXT ERA OF MOVEMENT <span>— PRE-LAUNCH COLLECTION</span></div>
-    <header class="header"><a class="brand" href="#home" aria-label="FSD Home">
-      <span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>
-    </a><nav aria-label="Main navigation"><a href="#collections">COLLECTIONS</a><a href="#products">PRODUCTS</a>
-      <a href="#philosophy">OUR STORY</a><a href="#innovations">INNOVATIONS</a><a href="#full-gallery">DESIGN LIBRARY</a><a href="#contact">VIP ACCESS</a>
-    </nav><a class="header-cta" href="#collections">EXPLORE COLLECTION <span>↗</span></a></header>`;
+  const currentBrandMarkup = `<span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>`;
+  return renderNavigationHeader(currentBrandMarkup);
 }
 
 document.querySelector('#app').innerHTML = `${header()}<main id="home">
@@ -72,6 +70,37 @@ mountCollectionShowcase({
     select.dispatchEvent(new Event('change', { bubbles: true }));
     search.dispatchEvent(new Event('input', { bubbles: true }));
     document.querySelector('#products').scrollIntoView({ block: 'start' });
+  },
+});
+mountNavigation({
+  root: document.querySelector('[data-navigation-shell]'),
+  divisions: collectionDivisions,
+  products,
+  onNavigate({ menu, group, item }) {
+    if (item?.record) {
+      showProduct(item.record.id);
+      return;
+    }
+
+    const destination = item?.href || group?.href;
+    if (destination) {
+      document.querySelector(destination)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    const divisionId = item?.sourceDivisionId || group?.sourceDivisionId || menu?.divisionId;
+    const opener = document.querySelector(`[data-division="${divisionId}"]`);
+    if (!opener) return;
+    opener.click();
+
+    const dialog = document.querySelector('#fsd-showcase-dialog');
+    if (!dialog) return;
+    const groupIndex = item?.sourceGroupIndex ?? group?.sourceGroupIndex ?? 0;
+    dialog.querySelector(`[data-group-index="${groupIndex}"]`)?.click();
+    const subcategoryIndex = item?.sourceSubcategoryIndex ?? -1;
+    if (subcategoryIndex >= 0) {
+      requestAnimationFrame(() => dialog.querySelector(`[data-subcategory-index="${subcategoryIndex}"]`)?.click());
+    }
   },
 });
 initFeaturedCarousel(document.querySelector('#innovations'));

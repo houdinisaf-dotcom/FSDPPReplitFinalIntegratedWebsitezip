@@ -1,4 +1,4 @@
 - [Catalogue approval boundaries](catalogue-approval-boundaries.md) — user approval of a development brief is not manufacturer validation or permission to enable checkout.
 - [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.
 - [Official logo boundaries](official-logo-boundaries.md) — preserve the supplied FSD artwork exactly; review derived assets before applying them to the live site.
-- [House of Performance approvals](house-of-performance-approvals.md) — homepage, mobile and both navigation proofs before site-wide implementation; preserve assets, no publishing or checkout.
+- [House of Performance approvals](house-of-performance-approvals.md) — homepage remains staged; reconstruct only the explicitly authorized nav from visual reference; preserve catalogue and assets.

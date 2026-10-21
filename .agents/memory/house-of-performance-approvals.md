@@ -9,11 +9,11 @@ FSD’s website direction is “THE HOUSE OF PERFORMANCE,” with the philosophy
 
 **How to apply:** Use the existing FSD photography and approved shield-led asset in isolated proposals. Do not generate substitute product imagery, redesign branding, rename products, overwrite originals or rebuild the site from scratch.
 
-After reviewing the two initial directions, the user chose the editorial homepage and header-attached navigation for further refinement, not implementation. They require refined desktop and mobile homepage and navigation proofs before approving changes to the existing website. Category selection must reveal subcategories without scrolling or navigation; navigation requires a deliberate destination choice.
+The user chose Homepage B and header-attached navigation for refinement. Homepage B+ remains unapproved. For the Phase 3 navigation, the user later explicitly directed a targeted reconstruction from their supplied visual recording. Category selection reveals subcategories without scrolling; navigation follows only a deliberate destination choice.
 
-**Why:** The user explicitly requires approval of both visual direction and navigation behaviour before site-wide changes.
+**Why:** The user directly authorized a targeted live navigation reconstruction from the visual reference; that authorization does not extend to a homepage or catalogue redesign.
 
-**How to apply:** Keep proposals separate from the current site until the user approves implementation. Prototype destination views are not evidence of existing production routes. Keep Women’s Modest Combat prominent and provide its dedicated landing destination when implementing the approved design. Do not publish or enable checkout.
+**How to apply:** Use the recording for navigation structure and the current site data for destinations. Keep Homepage B+ staged, preserve the existing catalogue and product assets, and do not publish or enable checkout.
 
 The homepage should combine a dark, cinematic, powerful hero with sophisticated editorial composition and generous whitespace. Obsidian black, graphite and champagne gold are primary; porcelain is selective contrast, not the dominant background. Apparel should feel like luxury fashion campaigns, while Bio-Lab™ and Hardware retain performance and engineering credibility.
 
@@ -27,11 +27,11 @@ Navigation must remain integrated with and attached to the header, using graphit
 
 **How to apply:** Keep Men’s Performance, Women’s Modest Combat, Bio-Lab™ and Hardware readily discoverable. Preserve the existing collection structure and ensure relevant subcategories are immediately available without automatic page scrolling.
 
-For navigation regression repairs, recover the exact approved implementation from project history rather than substituting a prototype or similar design. If the original source is unavailable, stop and report what is missing. Keep any recovery limited to navigation files and preserve Phase 4 catalogue and product functionality; do not revert the whole project.
+The supplied recording is a visual reference, not a Git checkpoint or source-code proof. The original implementation was not identified. The user explicitly requested a targeted reconstruction of Phase 3 navigation from the recording; do not claim source recovery.
 
-**Why:** A previous restoration did not return the intended navigation, and the user explicitly requires exact recovery without sacrificing later catalogue work.
+**Why:** The user clarified that no checkpoint containing the original source was identified, then directed an accurate reconstruction while preserving the existing website and catalogue.
 
-**How to apply:** Verify the source and checkpoint before editing. Do not claim a restoration based on visual similarity; if the exact source cannot be identified, make no replacement.
+**How to apply:** Limit changes to header navigation, use current catalogue data for destinations, do not reuse later sandbox prototypes as original source, and do not revert the whole project.
 
 The user states that Phase 4 includes an FSD weighted skipping-rope product with eight colour editions, a single primary product image at a time, and a subtle crossfade. Preserve any such implementation and derived assets; do not add or change rope data as part of navigation work.
 
