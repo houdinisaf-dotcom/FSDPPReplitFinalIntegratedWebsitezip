@@ -228,4 +228,14 @@ if (import.meta.env.DEV) {
       console.error('The private FSD NEXUS concept card could not be loaded.', error);
       throw error;
     });
+
+  import('./aeroforge-development-integration.js')
+    .then(({ createAeroForgeDevelopmentIntegration }) => {
+      const aeroforge = createAeroForgeDevelopmentIntegration();
+      collectionShowcase.setDraftProductCard(aeroforge.collectionCard, aeroforge.collectionCardPlacement);
+    })
+    .catch(error => {
+      console.error('The private AeroForge collection card could not be loaded.', error);
+      throw error;
+    });
 }

@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "collection": {
+    "id": "fsd-aeroforge-modest-activewear",
+    "name": "FSD AeroForge Modest Activewear",
+    "headline": "MOVE WITH CONFIDENCE.",
+    "supportingText": "Modest coverage. Refined athletic design.",
+    "description": "Discover the FSD AeroForge Modest Activewear Collection, where considered coverage meets contemporary athletic styling. Featuring a longline training top and coordinated joggers in six refined colourways, AeroForge brings a confident, cohesive look to your active wardrobe.",
+    "heroAssetId": "aeroforge-collection-hero",
+    "editorialStatus": "Draft",
+    "approvalStatus": "Pending approval",
+    "purchaseEnabled": false,
+    "publicationAuthorized": false,
+    "priceGbp": null
+  },
+  "products": [
+    {
+      "key": "aeroforge-training-top",
+      "id": null,
+      "name": "FSD AeroForge Modest Training Top",
+      "category": "Modest Activewear",
+      "description": "Visual reference only: the supplied crop shows long sleeves, a high neckline, quarter-zip, extended hem, side slits and thumbhole cuffs. Product construction details remain unverified.",
+      "editorialStatus": "Draft",
+      "purchaseEnabled": false,
+      "publicationAuthorized": false,
+      "priceGbp": null,
+      "inventory": null,
+      "sku": null,
+      "variants": [
+        {
+          "id": "black",
+          "colour": "Black",
+          "swatch": "#171819",
+          "assetId": "aeroforge-outfit-black",
+          "view": "front",
+          "viewStatus": "Front outfit crop supplied; rear angle pending."
+        },
+        {
+          "id": "grey",
+          "colour": "Grey",
+          "swatch": "#85868a",
+          "assetId": "aeroforge-outfit-grey",
+          "view": "front",
+          "viewStatus": "Front outfit crop supplied; rear angle pending."
+        },
+        {
+          "id": "navy",
+          "colour": "Navy",
+          "swatch": "#1d2a3e",
+          "assetId": "aeroforge-outfit-navy",
+          "view": "front",
+          "viewStatus": "Front outfit crop supplied; rear angle pending."
+        },
+        {
+          "id": "olive",
+          "colour": "Olive",
+          "swatch": "#62654a",
+          "assetId": "aeroforge-outfit-olive",
+          "view": "front",
+          "viewStatus": "Front outfit crop supplied; rear angle pending."
+        },
+        {
+          "id": "mauve",
+          "colour": "Mauve",
+          "swatch": "#a27e86",
+          "assetId": "aeroforge-outfit-mauve-rear",
+          "view": "rear",
+          "viewStatus": "Rear outfit crop supplied; front image pending approval."
+        },
+        {
+          "id": "white",
+          "colour": "White",
+          "swatch": "#e5e2dc",
+          "assetId": "aeroforge-outfit-white",
+          "view": "front",
+          "viewStatus": "Front outfit crop supplied; rear angle pending."
+        }
+      ],
+      "details": [
+        {
+          "id": "collar-zip",
+          "label": "Collar and zip",
+          "assetId": "aeroforge-detail-collar-zip",
+          "viewStatus": "Supplied crop from the original composite."
+        },
+        {
+          "id": "thumbhole-cuff",
+          "label": "Thumbhole cuff",
+          "assetId": "aeroforge-detail-thumbhole-cuff",
+          "viewStatus": "Supplied crop from the original composite."
+        },
+        {
+          "id": "fabric-texture",
+          "label": "Fabric texture",
+          "assetId": "aeroforge-detail-fabric-texture",
+          "viewStatus": "Visual reference only; composition and performance are unverified."
+        },
+        {
+          "id": "hem-side-slit",
+          "label": "Hem and side slit",
+          "assetId": "aeroforge-detail-hem-side-slit",
+          "viewStatus": "Supplied crop from the original composite."
+        }
+      ],
+      "missingViews": [
+        "Mauve front image.",
+        "Rear views for Black, Grey, Navy, Olive and White.",
+        "Standalone training-top photographs; current colour images are narrow crops from a composite."
+      ],
+      "unverifiedSpecifications": [
+        "Fabric composition",
+        "Sizing and measurements",
+        "Care instructions",
+        "Fit and performance claims",
+        "Certifications",
+        "Price, inventory and SKU"
+      ]
+    },
+    {
+      "key": "aeroforge-performance-joggers",
+      "id": null,
+      "name": "FSD AeroForge Performance Joggers",
+      "category": "Modest Activewear",
+      "description": "Visual reference only: the supplied crop shows a coordinated lower garment with a tapered silhouette, waistband and cuffed ankles. Standalone jogger photography and construction details remain pending review.",
+      "editorialStatus": "Draft",
+      "purchaseEnabled": false,
+      "publicationAuthorized": false,
+      "priceGbp": null,
+      "inventory": null,
+      "sku": null,
+      "variants": [
+        {
+          "id": "black",
+          "colour": "Black",
+          "swatch": "#171819",
+          "assetId": "aeroforge-outfit-black",
+          "view": "front",
+          "viewStatus": "Coordinated front outfit crop supplied; standalone jogger image and rear angle pending."
+        },
+        {
+          "id": "grey",
+          "colour": "Grey",
+          "swatch": "#85868a",
+          "assetId": "aeroforge-outfit-grey",
+          "view": "front",
+          "viewStatus": "Coordinated front outfit crop supplied; standalone jogger image and rear angle pending."
+        },
+        {
+          "id": "navy",
+          "colour": "Navy",
+          "swatch": "#1d2a3e",
+          "assetId": "aeroforge-outfit-navy",
+          "view": "front",
+          "viewStatus": "Coordinated front outfit crop supplied; standalone jogger image and rear angle pending."
+        },
+        {
+          "id": "olive",
+          "colour": "Olive",
+          "swatch": "#62654a",
+          "assetId": "aeroforge-outfit-olive",
+          "view": "front",
+          "viewStatus": "Coordinated front outfit crop supplied; standalone jogger image and rear angle pending."
+        },
+        {
+          "id": "mauve",
+          "colour": "Mauve",
+          "swatch": "#a27e86",
+          "assetId": "aeroforge-outfit-mauve-rear",
+          "view": "rear",
+          "viewStatus": "Coordinated rear outfit crop supplied; standalone jogger image and front view pending approval."
+        },
+        {
+          "id": "white",
+          "colour": "White",
+          "swatch": "#e5e2dc",
+          "assetId": "aeroforge-outfit-white",
+          "view": "front",
+          "viewStatus": "Coordinated front outfit crop supplied; standalone jogger image and rear angle pending."
+        }
+      ],
+      "details": [],
+      "missingViews": [
+        "Standalone jogger photographs in all six colours.",
+        "Mauve front image.",
+        "Rear views for Black, Grey, Navy, Olive and White.",
+        "Jogger-specific waistband, cuff and stitching details."
+      ],
+      "unverifiedSpecifications": [
+        "Fabric composition",
+        "Sizing and measurements",
+        "Care instructions",
+        "Fit and performance claims",
+        "Certifications",
+        "Price, inventory and SKU"
+      ]
+    }
+  ],
+  "catalogueNote": "A separate FSD Aeroforge Modest Tunic & Jogger Set already exists in the master catalogue. That record and its values are unchanged; its relationship to these two separate draft products requires approval before any catalogue merge."
+}

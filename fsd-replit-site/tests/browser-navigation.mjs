@@ -402,5 +402,6 @@ try {
   socket?.close();
   chrome.kill('SIGTERM');
   await Promise.race([new Promise(resolve => chrome.once('exit', resolve)), delay(3000)]);
-  rmSync(profile, { recursive: true, force: true });
+  await delay(250);
+  rmSync(profile, { recursive: true, force: true, maxRetries: 6, retryDelay: 100 });
 }

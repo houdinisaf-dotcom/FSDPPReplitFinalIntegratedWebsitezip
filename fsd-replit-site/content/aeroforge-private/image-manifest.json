@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "sourceArchive": {
+    "file": "attached_assets/FSD_AeroForge_Website_Images_1792596957650.zip",
+    "sha256": "dd3a7b0ad6b854cd30ea4c266e0f4c8e43627d5e96f534ef922b1bfc599d2386"
+  },
+  "sourceNote": "All supplied media are preserved unchanged. The supplied outfit and detail files are crops from one composite, not independent original photographs. No logo correction was performed.",
+  "assets": [
+    {
+      "id": "aeroforge-original-composite",
+      "file": "00_original_uploaded_composite.png",
+      "role": "Original composite retained for traceability; not used as a product main image.",
+      "width": 1672,
+      "height": 941,
+      "sha256": "bd6699d352363061ea1bb8f98bd24e6db4df4740206540ac051eddd67bb5da5b",
+      "format": "png",
+      "status": "Source reference only"
+    },
+    {
+      "id": "aeroforge-collection-hero",
+      "file": "01_collection_hero_six_colourways.jpg",
+      "role": "Fixed collection hero showing all six colourways.",
+      "width": 1672,
+      "height": 669,
+      "sha256": "26ff28819f0b29249bf24b6c18ae064b34e8521ced655e5ee44faea7889a26ba",
+      "format": "jpg",
+      "status": "Private campaign reference; branding review pending"
+    },
+    {
+      "id": "aeroforge-outfit-black",
+      "file": "02_outfit_black.jpg",
+      "role": "Black front outfit crop.",
+      "width": 325,
+      "height": 668,
+      "sha256": "355b13549fa19a12adef65467d5407a9b396b3e2edc865d76754eb21252fa6fa",
+      "format": "jpg",
+      "status": "Private outfit reference; standalone product and rear views pending"
+    },
+    {
+      "id": "aeroforge-outfit-grey",
+      "file": "03_outfit_grey.jpg",
+      "role": "Grey front outfit crop.",
+      "width": 304,
+      "height": 668,
+      "sha256": "9d5005850c970ef851076ff5796be8c1fb9a13b26ca69300e998ff196c97a104",
+      "format": "jpg",
+      "status": "Private outfit reference; standalone product and rear views pending"
+    },
+    {
+      "id": "aeroforge-outfit-mauve-rear",
+      "file": "04_outfit_mauve_rear.jpg",
+      "role": "Mauve rear outfit crop.",
+      "width": 265,
+      "height": 668,
+      "sha256": "31a76ecec51b4a484cb8ddeb0e5e2d76ef56f11cb22e30b176664cf3e7ea149f",
+      "format": "jpg",
+      "status": "Rear supplied; front view pending approval"
+    },
+    {
+      "id": "aeroforge-outfit-navy",
+      "file": "05_outfit_navy.jpg",
+      "role": "Navy front outfit crop.",
+      "width": 258,
+      "height": 668,
+      "sha256": "ca96fc6a977ac70b026a7152b343162f72454420a7ade58b2b8cdbc415791f84",
+      "format": "jpg",
+      "status": "Private outfit reference; standalone product and rear views pending"
+    },
+    {
+      "id": "aeroforge-outfit-olive",
+      "file": "06_outfit_olive.jpg",
+      "role": "Olive front outfit crop.",
+      "width": 249,
+      "height": 668,
+      "sha256": "84cc73cc2549966d80f2e2bd23eb2dc12b96817b41b240c97b90ea31128cfbab",
+      "format": "jpg",
+      "status": "Private outfit reference; standalone product and rear views pending"
+    },
+    {
+      "id": "aeroforge-outfit-white",
+      "file": "07_outfit_white.jpg",
+      "role": "White front outfit crop.",
+      "width": 249,
+      "height": 668,
+      "sha256": "91bee8a2738cce0c498d2c932a10245e01d8eb203877ee64a20635d9d0197862",
+      "format": "jpg",
+      "status": "Private outfit reference; standalone product and rear views pending"
+    },
+    {
+      "id": "aeroforge-detail-collar-zip",
+      "file": "08_detail_collar_zip.jpg",
+      "role": "Collar and zip crop.",
+      "width": 271,
+      "height": 266,
+      "sha256": "7994723ae0eaad37900632c29ee7c425cf40f64c02db215ade9aa798297b8f37",
+      "format": "jpg",
+      "status": "Private detail reference; crop from original composite"
+    },
+    {
+      "id": "aeroforge-detail-thumbhole-cuff",
+      "file": "09_detail_thumbhole_cuff.jpg",
+      "role": "Thumbhole cuff crop.",
+      "width": 231,
+      "height": 266,
+      "sha256": "0fa9278ed464fb163676e1a758bd24fc923f875aee1c860c2b6d2aa2cb9f814a",
+      "format": "jpg",
+      "status": "Private detail reference; crop from original composite"
+    },
+    {
+      "id": "aeroforge-detail-fabric-texture",
+      "file": "10_detail_fabric_texture.jpg",
+      "role": "Fabric texture crop.",
+      "width": 232,
+      "height": 266,
+      "sha256": "0e2f661286ecd4e2d597ce6343aa5166ac0f5eee9750ebba8c87f7979d558f3b",
+      "format": "jpg",
+      "status": "Visual reference only; composition and performance unverified"
+    },
+    {
+      "id": "aeroforge-detail-hem-side-slit",
+      "file": "11_detail_hem_side_slit.jpg",
+      "role": "Hem and side-slit crop.",
+      "width": 225,
+      "height": 266,
+      "sha256": "2d115b18e7336a6f9130a0105950f7a912b65803307f1fdd3de1258493aad44f",
+      "format": "jpg",
+      "status": "Private detail reference; crop from original composite"
+    },
+    {
+      "id": "aeroforge-colour-lineup",
+      "file": "12_detail_six_colour_product_lineup.jpg",
+      "role": "Small six-colour product lineup crop, retained but not used as a main product image.",
+      "width": 681,
+      "height": 266,
+      "sha256": "473745799aad037d33339656fa87b7a84f71a4356cfd00640102f62fbe5507b1",
+      "format": "jpg",
+      "status": "Supporting reference only"
+    }
+  ]
+}
