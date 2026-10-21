@@ -277,6 +277,7 @@ export function createNavigationModel({
   divisions = collectionDivisions,
   products = catalogueProducts,
   includeDraftPreviews = false,
+  draftMenuItems = [],
 } = {}) {
   const findDivision = id => divisionById(divisions, id);
   const divisionMenu = (id, label) => {
@@ -289,6 +290,15 @@ export function createNavigationModel({
         throw new Error('Hardware must contain the approved Strength Equipment group for the draft preview.');
       }
       strengthEquipment.items = [...strengthEquipment.items, makeWeightedRopeDraftMenuItem()];
+    }
+    if (includeDraftPreviews) {
+      for (const item of draftMenuItems.filter(entry => entry.sourceDivisionId === id)) {
+        const sourceGroup = groups.find(group => group.id === item.sourceGroupId);
+        if (!sourceGroup || item.kind !== 'draft-product' || item.previewOnly !== true) {
+          throw new Error(`A private draft menu entry must map to an existing ${id} collection group.`);
+        }
+        sourceGroup.items = [...sourceGroup.items, item];
+      }
     }
     return {
       id,
@@ -342,12 +352,14 @@ function groupFeatureProducts(group, item, products) {
   return groupProducts(sourceGroup, products);
 }
 
-function hasVerifiedDestination({ menu, group, item }, { root, divisions, products }) {
+function hasVerifiedDestination({
+  menu, group, item,
+}, { root, divisions, products, previewTargets = privatePreviewTargets }) {
   if (item?.navigationUnavailable || (!item && group?.navigationUnavailable)) return false;
   const ownerDocument = root.ownerDocument || document;
   if (item?.kind === 'draft-product') {
     return item.previewOnly === true
-      && privatePreviewTargets.get(item.href) === item.featureImageSrc;
+      && previewTargets.get(item.href) === item.featureImageSrc;
   }
   if (item?.record) {
     return products.some(product => product.id === item.record.id)
@@ -547,16 +559,23 @@ export function mountNavigation({
   divisions = collectionDivisions,
   products = catalogueProducts,
   includeDraftPreviews = false,
+  draftMenuItems = [],
+  draftPreviewTargets = new Map(),
   onNavigate = () => {},
 } = {}) {
   if (!root) throw new TypeError('mountNavigation requires the FSD navigation shell.');
   const panel = root.querySelector('[data-nav-panel]');
   const content = root.querySelector('[data-nav-content]');
   const mobileToggle = root.querySelector('[data-nav-mobile-toggle]');
-  const model = createNavigationModel({ divisions, products, includeDraftPreviews });
+  const model = createNavigationModel({ divisions, products, includeDraftPreviews, draftMenuItems });
   const triggers = [...root.querySelectorAll('.fsd-primary-trigger')];
   if (!panel || !content || !mobileToggle) throw new TypeError('The FSD navigation markup is incomplete.');
-  const canNavigate = selection => hasVerifiedDestination(selection, { root, divisions, products });
+  const canNavigate = selection => hasVerifiedDestination(selection, {
+    root,
+    divisions,
+    products,
+    previewTargets: new Map([...privatePreviewTargets, ...draftPreviewTargets]),
+  });
 
   let activePrimaryId = '';
   let activeGroupIndex = 0;

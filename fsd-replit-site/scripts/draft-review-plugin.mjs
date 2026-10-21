@@ -10,6 +10,8 @@ import {
 import { velocityHijabMediaPrefix, velocityHijabPreviewPath } from '../src/velocity-hijab-preview-path.js';
 import { createAegisGiletPreview } from '../src/aegis-gilet-campaign.js';
 import { aegisGiletMediaPrefix, aegisGiletPreviewPath } from '../src/aegis-gilet-preview-path.js';
+import { createAlightPreview } from '../src/alight-campaign.js';
+import { alightMediaPrefix, alightPreviewPath } from '../src/alight-preview-path.js';
 
 const appRoot = fileURLToPath(new URL('../', import.meta.url));
 const workspaceRoot = resolve(appRoot, '..');
@@ -32,6 +34,7 @@ const hijabPreviewPath = velocityHijabPreviewPath;
 const hijabMediaPrefix = velocityHijabMediaPrefix;
 const hijabAssetsById = new Map(createVelocityHijabPreview().gallery.map(asset => [asset.id, asset]));
 const aegisAssetsById = new Map(createAegisGiletPreview().gallery.map(asset => [asset.id, asset]));
+const alightAssetsById = new Map(createAlightPreview().gallery.map(asset => [asset.id, asset]));
 
 function send(response, status, contentType, body, method = 'GET') {
   response.statusCode = status;
@@ -271,6 +274,68 @@ export function draftReviewPlugin() {
           return stream.pipe(response);
         } catch {
           return send(response, 500, 'text/plain; charset=utf-8', 'The Aegis preview could not be loaded.', request.method);
+        }
+      });
+
+      server.middlewares.use(async (request, response, next) => {
+        let pathname;
+        try {
+          pathname = new URL(request.url || '/', 'http://draft.invalid').pathname;
+        } catch {
+          return next();
+        }
+
+        const normalizedPage = pathname === alightPreviewPath.slice(0, -1)
+          ? alightPreviewPath
+          : pathname;
+        if (normalizedPage !== alightPreviewPath && !pathname.startsWith(alightMediaPrefix)) {
+          return next();
+        }
+
+        response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        response.setHeader('Cache-Control', 'no-store');
+        response.setHeader('X-Content-Type-Options', 'nosniff');
+
+        if (!['GET', 'HEAD'].includes(request.method)) {
+          response.setHeader('Allow', 'GET, HEAD');
+          return send(response, 405, 'text/plain; charset=utf-8', 'Read-only product preview.', request.method);
+        }
+
+        try {
+          if (normalizedPage === alightPreviewPath) {
+            const preview = createAlightPreview();
+            if (preview.product.name !== 'FSD ALIGHT' || preview.product.price !== null) {
+              throw new Error('The ALIGHT private preview must not expose an unapproved price or product identity.');
+            }
+            const html = await readFile(resolve(appRoot, 'alight-preview.html'), 'utf8');
+            const transformed = await server.transformIndexHtml(alightPreviewPath, html);
+            return send(response, 200, 'text/html; charset=utf-8', transformed, request.method);
+          }
+
+          const assetId = pathname.slice(alightMediaPrefix.length);
+          const entry = alightAssetsById.get(assetId);
+          if (!entry
+            || !entry.file.startsWith('attached_assets/fsd-alight-reference/')
+            || entry.file.includes('..')) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown ALIGHT reference image.', request.method);
+          }
+
+          const filePath = resolve(workspaceRoot, entry.file);
+          if (!filePath.startsWith(`${allowedAssetRoot}${sep}`)) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown ALIGHT reference image.', request.method);
+          }
+          if (request.method === 'HEAD') return send(response, 200, entry.type, undefined, request.method);
+
+          response.statusCode = 200;
+          response.setHeader('Content-Type', entry.type);
+          const stream = createReadStream(filePath);
+          stream.on('error', () => {
+            if (!response.headersSent) response.statusCode = 500;
+            response.end('ALIGHT reference image unavailable.');
+          });
+          return stream.pipe(response);
+        } catch {
+          return send(response, 500, 'text/plain; charset=utf-8', 'The ALIGHT private preview could not be loaded.', request.method);
         }
       });
 

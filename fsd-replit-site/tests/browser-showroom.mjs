@@ -11,10 +11,12 @@ const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
 const mobileProofCapture = process.env.FSD_HIJAB_MOBILE_CAPTURE === '1';
 const aegisProofCapture = process.env.FSD_AEGIS_CAPTURE === '1';
+const alightProofCapture = process.env.FSD_ALIGHT_CAPTURE === '1';
+const alightMobileCapture = process.env.FSD_ALIGHT_MOBILE_CAPTURE === '1';
 const profile = mkdtempSync(join(tmpdir(), 'fsd-browser-'));
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
-  `--window-size=${mobileProofCapture ? '402,874' : '1440,1000'}`,
+  `--window-size=${mobileProofCapture || alightMobileCapture ? '402,874' : '1440,1000'}`,
   '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank',
 ], { stdio: 'ignore' });
 let socket;
@@ -94,6 +96,33 @@ try {
     writeFileSync(join(outputDir, fileName), Buffer.from(image.data, 'base64'));
     console.log(`Saved preview proof: ${join(outputDir, fileName)}`);
   };
+  const captureAlightProof = async (fileName, fullPage = false) => {
+    if (!alightProofCapture) return;
+    let clip;
+    if (fullPage) {
+      const metrics = await send('Page.getLayoutMetrics');
+      const content = metrics.cssContentSize || metrics.contentSize;
+      const viewportWidth = await evaluate('document.documentElement.clientWidth || window.innerWidth');
+      clip = { x: 0, y: 0, width: viewportWidth, height: content.height, scale: 1 };
+    } else {
+      const viewport = await evaluate(`({
+        width: document.documentElement.clientWidth || window.innerWidth,
+        height: Math.round(window.visualViewport?.height || document.documentElement.clientHeight || window.innerHeight)
+      })`);
+      clip = { x: 0, y: 0, width: viewport.width, height: viewport.height, scale: 1 };
+    }
+    const image = await send('Page.captureScreenshot', {
+      format: 'jpeg',
+      quality: 88,
+      fromSurface: true,
+      captureBeyondViewport: fullPage,
+      clip,
+    });
+    const outputDir = join(process.cwd(), '../generated-artifacts');
+    mkdirSync(outputDir, { recursive: true });
+    writeFileSync(join(outputDir, fileName), Buffer.from(image.data, 'base64'));
+    console.log(`Saved ALIGHT proof: ${join(outputDir, fileName)}`);
+  };
   const key = async value => {
     const keyCode = { Escape: 27, Tab: 9, ArrowRight: 39, ArrowLeft: 37 }[value];
     const parameters = { key: value, code: value, windowsVirtualKeyCode: keyCode, nativeVirtualKeyCode: keyCode };
@@ -172,6 +201,65 @@ try {
   assert.equal(aegisHeaders[2], 'image/webp');
   assert.ok(aegisHeaders[3].includes('noindex, nofollow, noarchive'));
   assert.equal(aegisHeaders[4], 405);
+
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('!!document.querySelector(\'[data-division="bio-lab"]\')');
+  await click('[data-division="bio-lab"]');
+  await waitFor('!!document.querySelector("[data-alight-draft-card]")');
+  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("FSD ALIGHT")'));
+  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("PENDING APPROVAL")'));
+  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("NOT AVAILABLE TO PURCHASE")'));
+  assert.ok(await evaluate('!document.querySelector("[data-alight-draft-card]").textContent.match(/£\\s?\\d|ADD TO CART|BUY NOW/i)'));
+  await evaluate('document.querySelector("[data-alight-draft-card]").scrollIntoView({ block: "center" })');
+  await captureAlightProof(alightMobileCapture ? 'fsd-alight-collection-card-mobile.jpg' : 'fsd-alight-collection-card-desktop.jpg');
+  await click('[data-alight-draft-card] .fsd-product-link--private-preview');
+  await waitFor('location.pathname === "/__catalogue-preview/fsd-alight/" && !!document.querySelector("#alight-title")');
+  assert.equal(await evaluate('document.querySelectorAll("[data-alight-thumb]").length'), 12);
+  assert.equal(await evaluate('document.querySelectorAll(".alight-feature-row").length'), 7);
+  assert.equal(await evaluate('Array.from(document.querySelectorAll(".alight-feature-status")).every(item => item.textContent === "Pending Technical Verification")'), true);
+  assert.ok(await evaluate('document.querySelector(".alight-review-panel--missing").textContent.includes("front product photograph")'));
+  assert.ok(await evaluate('document.querySelector(".alight-review-panel--missing").textContent.includes("rear product photograph")'));
+  assert.ok(await evaluate('document.querySelector(".alight-review-panel--missing").textContent.includes("side product photograph")'));
+  assert.ok(await evaluate('document.querySelector(".alight-gallery-section").textContent.includes("not an independent photograph")'));
+  assert.ok(!await evaluate('document.querySelector("form, [name=checkout], [data-checkout], [data-add-to-cart]")'));
+  assert.equal(await evaluate('document.querySelectorAll("main main").length'), 0);
+  assert.equal(await evaluate('document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1'), true);
+  if (alightProofCapture) {
+    await evaluate('window.scrollTo({ top: 0, behavior: "instant" })');
+    await captureAlightProof(alightMobileCapture ? 'fsd-alight-product-mobile.jpg' : 'fsd-alight-product-desktop.jpg');
+    await captureAlightProof(alightMobileCapture ? 'fsd-alight-product-full-mobile.jpg' : 'fsd-alight-product-full-desktop.jpg', true);
+  }
+
+  for (const imageId of await evaluate('Array.from(document.querySelectorAll("[data-alight-thumb]"), button => button.dataset.alightThumb)')) {
+    await click(`[data-alight-thumb="${imageId}"]`);
+    await waitFor(`document.querySelector("#alight-main-image").src.endsWith("/media/${imageId}")`);
+    assert.equal(await evaluate('document.querySelectorAll("[data-alight-thumb][aria-pressed=true]").length'), 1);
+  }
+  await click('[data-alight-enlarge]');
+  assert.equal(await evaluate('document.querySelector("#alight-lightbox").open'), true);
+  await key('Escape');
+  await waitFor('!document.querySelector("#alight-lightbox").open');
+
+  if (alightProofCapture) {
+    await evaluate('document.querySelector(".alight-editorial").scrollIntoView({ block: "start" })');
+    await captureAlightProof(alightMobileCapture ? 'fsd-alight-campaign-mobile.jpg' : 'fsd-alight-campaign-desktop.jpg');
+    await evaluate('document.querySelector(".alight-gallery-section").scrollIntoView({ block: "start" })');
+    await captureAlightProof(alightMobileCapture ? 'fsd-alight-gallery-mobile.jpg' : 'fsd-alight-gallery-desktop.jpg');
+  }
+
+  const alightHeaders = await evaluate(`(async () => {
+    const page = await fetch(location.href, { method: 'HEAD' });
+    const image = await fetch('/__catalogue-preview/fsd-alight/media/product-hero-crop', { method: 'HEAD' });
+    const blocked = await fetch(location.href, { method: 'POST' });
+    return [page.headers.get('x-robots-tag'), page.headers.get('cache-control'),
+      image.headers.get('content-type'), image.headers.get('x-robots-tag'), blocked.status];
+  })()`);
+  assert.ok(alightHeaders[0].includes('noindex, nofollow, noarchive'));
+  assert.equal(alightHeaders[1], 'no-store');
+  assert.equal(alightHeaders[2], 'image/jpeg');
+  assert.ok(alightHeaders[3].includes('noindex, nofollow, noarchive'));
+  assert.equal(alightHeaders[4], 405);
+
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
   await click('[data-division="apparel"]');

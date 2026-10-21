@@ -134,12 +134,13 @@ function conceptCard(concept) {
   </article>`;
 }
 
+
 export function groupProducts(group, products, subcategory = null) {
   return products.filter(product => matchesGroup(product, group) &&
     (!subcategory || matchesGroup(product, subcategory)));
 }
 
-function modalContent(division, group, products, activeGroupIndex, activeSubcategoryIndex) {
+function modalContent(division, group, products, activeGroupIndex, activeSubcategoryIndex, draftProductCard) {
   const subcategory = group.subcategories?.[activeSubcategoryIndex] || null;
   const foundProducts = groupProducts(group, products, subcategory);
   const concepts = subcategory ? (subcategory.concepts || []) :
@@ -155,6 +156,12 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     : '';
   const emptyMarkup = !foundProducts.length && !concepts.length
     ? `<div class="fsd-showcase-empty"><span>FSD / ${String(activeGroupIndex + 1).padStart(2, '0')}</span><h4>Collection details are being prepared.</h4><p>No product records or proposed concepts are currently listed for this selection.</p></div>`
+    : '';
+  const draftProductMarkup = draftProductCard
+    && division.id === 'bio-lab'
+    && group.id === 'bio-lab-concepts'
+    ? `<div class="fsd-modal-subhead fsd-modal-subhead--draft"><span>03</span><h4>PRIVATE DRAFT PRODUCT</h4><i></i></div>
+       <div class="fsd-product-grid">${draftProductCard}</div>`
     : '';
   return `<div class="fsd-modal-hero fsd-modal-hero--${escapeHTML(division.visual || division.id)}">
       <span class="fsd-modal-kicker">${escapeHTML(division.title)} <span>/</span> DIVISION ${String(activeGroupIndex + 1).padStart(2, '0')}</span>
@@ -173,7 +180,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     <div class="fsd-modal-body">
       <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(division.description)}</p></div>
       ${foundProducts.length ? '<button class="fsd-explore-collection" type="button" data-explore-collection>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button>' : ''}
-      ${productsMarkup}${conceptMarkup}${emptyMarkup}
+      ${productsMarkup}${conceptMarkup}${draftProductMarkup}${emptyMarkup}
       <p class="fsd-modal-disclaimer">FSD is a pre-launch brand. Supplied list prices are catalogue references, not an offer to sell. Proposed concepts do not confirm specifications, availability or operational status. Product visuals appear only where mapped to that product record.</p>
     </div>`;
 }
@@ -184,6 +191,7 @@ export function mountCollectionShowcase({
   products = [],
   onProductSelect = () => {},
   onExploreCollection = () => {},
+  draftProductCard = '',
 }) {
   if (!root || typeof root.insertAdjacentHTML !== 'function') {
     throw new TypeError('mountCollectionShowcase requires a DOM root element.');
@@ -215,6 +223,7 @@ export function mountCollectionShowcase({
       safeProducts,
       activeGroupIndex,
       activeSubcategoryIndex,
+      draftProductCard,
     );
     content.scrollTop = 0;
   };
