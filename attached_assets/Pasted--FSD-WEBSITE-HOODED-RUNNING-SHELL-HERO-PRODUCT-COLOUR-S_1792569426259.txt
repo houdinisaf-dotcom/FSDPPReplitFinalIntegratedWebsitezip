@@ -1,0 +1,136 @@
+# FSD WEBSITE — HOODED RUNNING SHELL HERO & PRODUCT COLOUR SELECTOR
+
+## OBJECTIVE
+
+Integrate the FSD Hooded Running Shell into the existing website with two distinct stages:
+
+**Stage 1 — Campaign hero before opening the product**
+
+Display the supplied clean model-worn image prominently in the appropriate FSD Apparel / Performance Outerwear collection.
+
+The image shows the approved female model wearing the orange FSD Hooded Running Shell against a mountain landscape.
+
+The hero image itself must contain:
+
+- No advertising text.
+- No embedded product descriptions.
+- No promotional buttons.
+- No colour-option grids.
+- No additional graphic overlays.
+
+Preserve the FSD branding physically present on the jacket.
+
+Use the clean hero image I have supplied, not the earlier collage containing promotional text.
+
+The entire product feature or a separate accessible website button may link to the product detail experience.
+
+If a product title or CTA is needed, render it as actual website text outside the image, not embedded in the image file.
+
+**Stage 2 — Product detail and colour selection**
+
+After the customer clicks the product feature, open the FSD Hooded Running Shell product page or existing approved product-selection panel.
+
+Show:
+
+- A large, clear product image.
+- Product name and description as website text.
+- Available colour swatches.
+- The selected colour name.
+- Relevant front, rear and detail views.
+- Smooth transitions when changing colours.
+
+Do not turn the product page into a promotional collage.
+
+## COLOUR EDITIONS
+
+Use the three colours from the original supplied product board:
+
+1. Performance Orange.
+2. Obsidian Black.
+3. Arctic White.
+
+Also prepare the following six additional proposed editions:
+
+4. Crimson Red.
+5. Deep Plum.
+6. Electric Cobalt Blue.
+7. Electric Fuchsia.
+8. Electric Green.
+9. Sunbeam Yellow.
+
+The six additional colours are proposed visual concepts and require approval before becoming confirmed catalogue variants.
+
+Use consistent jacket construction and branding across all colours.
+
+Do not invent extra colourways or substitute unrelated images.
+
+Do not publish an edition until its product image is approved.
+
+## PRODUCT IMAGE HANDLING
+
+The original reference board contains front, rear and material-detail views of the first three editions.
+
+Preserve the original board unchanged.
+
+For each approved colour, display one main product image at a time, with optional front, rear and detail views where accurate source images are available.
+
+Do not automatically split every board into a large gallery.
+
+Do not fabricate product details that cannot be confirmed from the supplied images.
+
+## NAVIGATION PLACEMENT
+
+Add the product to the existing apparel/outerwear category using the current catalogue taxonomy.
+
+Ensure the product can be opened from its collection feature and appropriate navigation entry.
+
+Do not create a new top-level menu.
+
+## BRAND AND DESIGN SAFEGUARDS
+
+Preserve:
+
+- Existing FSD mega-menu.
+- Current header and logo.
+- Obsidian, graphite and champagne visual theme.
+- Existing product catalogue.
+- Weighted skipping-rope product.
+- Existing approved product imagery.
+- All checkout and publishing restrictions.
+
+Do not redesign unrelated website sections.
+
+## IMPLEMENTATION SAFEGUARDS
+
+Before editing, create a recoverable checkpoint.
+
+Check whether a Hooded Running Shell product record already exists.
+
+Reuse existing approved data where available.
+
+If not, create a draft product record.
+
+Do not invent prices, sizes, stock levels, fabric specifications, waterproof ratings or product certifications.
+
+Keep the product unpublished and non-purchasable until approval.
+
+## TESTING
+
+Verify that:
+
+1. The clean model-worn hero appears in the correct collection.
+2. The hero image has no embedded advertising text.
+3. Clicking the product feature opens the correct product page or selection panel.
+4. Selecting an available colour updates the product image.
+5. The hero remains unchanged when switching colours.
+6. Unapproved colour concepts are not presented as confirmed stock.
+7. Existing navigation and other products still function.
+8. The layout works on desktop and mobile.
+
+Show the finished product preview for approval.
+
+Do not deploy or publish.
+
+## FINAL REQUIREMENT
+
+**The model-worn image is the campaign hero before clicking. The product page is where customers view the jacket details and select colours. Keep those two experiences separate.**
