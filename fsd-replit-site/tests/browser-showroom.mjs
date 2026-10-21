@@ -100,12 +100,33 @@ try {
   await click('[data-subcategory-index="0"]');
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
   await click('[data-product-id="43"]');
-  await waitFor('document.querySelector("#product-dialog").open');
-  assert.equal(await evaluate('document.querySelectorAll("dialog[open]").length'), 1);
-  assert.ok(await evaluate('document.querySelector("#product-title").textContent.includes("Velocity")'));
-  await click('#close-dialog');
-  await waitFor('!document.querySelector("#product-dialog").open && !document.documentElement.classList.contains("fsd-modal-open")');
-  assert.equal(await evaluate('document.activeElement.dataset.division'), 'apparel');
+  await waitFor('location.pathname === "/__catalogue-preview/velocity-performance-sports-hijab/" && !!document.querySelector("#velocity-hijab-title")');
+  assert.equal(await evaluate('document.querySelectorAll("[data-hijab-thumb]").length'), 5);
+  assert.ok(await evaluate('document.querySelector("#velocity-hijab-title").textContent.includes("Velocity")'));
+  assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("£29.99")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-colour").textContent.includes("Black / Champagne Gold")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-purchase-disabled").textContent.includes("PURCHASING DISABLED")'));
+  assert.ok(!await evaluate('/add to cart|checkout button|quantity selector/i.test(document.body.textContent)'));
+  assert.equal(await evaluate('document.querySelectorAll("form, input[type=number], button[name*=cart i]").length'), 0);
+  await waitFor('Array.from(document.querySelectorAll("[data-hijab-thumb] img"), image => image.complete && image.naturalWidth > 0).every(Boolean)');
+  await click('[data-hijab-thumb="fabric-detail"]');
+  await waitFor('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/fabric-detail")');
+  assert.equal(await evaluate('document.querySelector("[data-hijab-thumb=\\"fabric-detail\\"]").getAttribute("aria-pressed")'), 'true');
+  await click('.velocity-accordions summary');
+  assert.equal(await evaluate('document.querySelector(".velocity-accordions details").open'), true);
+  const privateHeaders = await evaluate(`(async () => {
+    const response = await fetch(location.href, { method: 'HEAD' });
+    return [response.headers.get('x-robots-tag'), response.headers.get('cache-control')];
+  })()`);
+  assert.ok(privateHeaders[0].includes('noindex') && privateHeaders[0].includes('nofollow'));
+  assert.equal(privateHeaders[1], 'no-store');
+
+  await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 1, mobile: true });
+  assert.ok(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'));
+  await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
 
   await click('[data-division="hardware"]');
   assert.deepEqual(await evaluate('Array.from(document.querySelectorAll("[data-product-id]"), b => Number(b.dataset.productId))'), [69, 70, 71, 72]);

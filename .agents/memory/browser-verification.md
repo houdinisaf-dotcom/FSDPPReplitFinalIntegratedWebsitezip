@@ -20,3 +20,9 @@ For navigation panels that rerender their rows, use real pointer movement—not 
 **Why:** Replacing the row under a stationary mouse can synthesize another `pointerover` and overwrite a keyboard-focused selection.
 
 **How to apply:** Preserve the selected row during subtree updates, and let keyboard focus remain active until the pointer actually moves.
+
+For browser tests of proxied development routes, check required `X-Robots-Tag` directives rather than exact header equality.
+
+**Why:** The preview proxy can append its own robots directives to the application's noindex header.
+
+**How to apply:** Assert that `noindex` and `nofollow` are present, and separately verify cache and method restrictions.

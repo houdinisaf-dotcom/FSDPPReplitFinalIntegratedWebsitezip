@@ -4,6 +4,10 @@ import { resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createWeightedRopeDraft, weightedRopeManifest } from '../src/draft-catalogue.js';
 import { createHoodedShellCampaignPreview, hoodedShellPreviewRecord } from '../src/hooded-shell-campaign.js';
+import {
+  createVelocityHijabPreview,
+} from '../src/velocity-hijab-campaign.js';
+import { velocityHijabMediaPrefix, velocityHijabPreviewPath } from '../src/velocity-hijab-preview-path.js';
 
 const appRoot = fileURLToPath(new URL('../', import.meta.url));
 const workspaceRoot = resolve(appRoot, '..');
@@ -22,6 +26,9 @@ const allowedAssetRoot = resolve(workspaceRoot, 'attached_assets');
 const shellPreviewPath = '/__catalogue-preview/hooded-running-shell/';
 const shellMediaPrefix = `${shellPreviewPath}media/`;
 const shellCampaign = hoodedShellPreviewRecord.campaign;
+const hijabPreviewPath = velocityHijabPreviewPath;
+const hijabMediaPrefix = velocityHijabMediaPrefix;
+const hijabAssetsById = new Map(createVelocityHijabPreview().gallery.map(asset => [asset.id, asset]));
 
 function send(response, status, contentType, body, method = 'GET') {
   response.statusCode = status;
@@ -150,6 +157,60 @@ export function draftReviewPlugin() {
           return stream.pipe(response);
         } catch {
           return send(response, 500, 'text/plain; charset=utf-8', 'The campaign proof could not be loaded.', request.method);
+        }
+      });
+
+      server.middlewares.use(async (request, response, next) => {
+        let pathname;
+        try {
+          pathname = new URL(request.url || '/', 'http://draft.invalid').pathname;
+        } catch {
+          return next();
+        }
+
+        const normalizedPage = pathname === hijabPreviewPath.slice(0, -1) ? hijabPreviewPath : pathname;
+        if (normalizedPage !== hijabPreviewPath && !pathname.startsWith(hijabMediaPrefix)) return next();
+
+        response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        response.setHeader('Cache-Control', 'no-store');
+        response.setHeader('X-Content-Type-Options', 'nosniff');
+
+        if (!['GET', 'HEAD'].includes(request.method)) {
+          response.setHeader('Allow', 'GET, HEAD');
+          return send(response, 405, 'text/plain; charset=utf-8', 'Read-only product preview.', request.method);
+        }
+
+        try {
+          if (normalizedPage === hijabPreviewPath) {
+            createVelocityHijabPreview();
+            const html = await readFile(resolve(appRoot, 'velocity-hijab-preview.html'), 'utf8');
+            const transformed = await server.transformIndexHtml(hijabPreviewPath, html);
+            return send(response, 200, 'text/html; charset=utf-8', transformed, request.method);
+          }
+
+          const assetId = pathname.slice(hijabMediaPrefix.length);
+          const entry = hijabAssetsById.get(assetId);
+          if (!entry || !entry.file.startsWith('attached_assets/') || entry.file.includes('..')) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown product image.', request.method);
+          }
+
+          const filePath = resolve(workspaceRoot, entry.file);
+          if (!filePath.startsWith(`${allowedAssetRoot}${sep}`)) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown product image.', request.method);
+          }
+
+          if (request.method === 'HEAD') return send(response, 200, entry.type, undefined, request.method);
+
+          response.statusCode = 200;
+          response.setHeader('Content-Type', entry.type);
+          const stream = createReadStream(filePath);
+          stream.on('error', () => {
+            if (!response.headersSent) response.statusCode = 500;
+            response.end('Product image unavailable.');
+          });
+          return stream.pipe(response);
+        } catch {
+          return send(response, 500, 'text/plain; charset=utf-8', 'The product preview could not be loaded.', request.method);
         }
       });
     },

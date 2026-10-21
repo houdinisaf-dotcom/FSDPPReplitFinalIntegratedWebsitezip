@@ -121,7 +121,7 @@ export function showProduct(id) {
   document.querySelector('#product-dialog').showModal();
 }
 
-export function initCatalogue() {
+export function initCatalogue({ onProductSelect = showProduct } = {}) {
   const category = document.querySelector('#catalogue-category');
   const search = document.querySelector('#search');
   category.addEventListener('change', () => {
@@ -136,7 +136,7 @@ export function initCatalogue() {
   });
   document.addEventListener('click', event => {
     const product = event.target.closest('[data-product]');
-    if (product) showProduct(Number(product.dataset.product));
+    if (product) onProductSelect(Number(product.dataset.product));
     const categoryLink = event.target.closest('[data-category-link]');
     if (categoryLink) {
       activeCategory = categoryLink.dataset.categoryLink;

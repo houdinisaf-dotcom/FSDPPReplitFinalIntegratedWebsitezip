@@ -1,0 +1,209 @@
+# FSD WEBSITE — AEGIS MODEST PERFORMANCE GILET
+## Campaign Hero, Product Photography and Luxury Product Page Integration
+
+### OBJECTIVE
+
+Integrate and correctly present the existing **FSD Aegis Modest Performance Gilet** using my supplied approved images and the newly created model photography.
+
+This product must have two distinct visual experiences:
+
+1. A standalone cinematic **campaign hero image** that customers see in the collection before opening the product.
+2. A luxury **product-detail page** featuring individual photographs of the woman wearing the gilet, including front, side, rear and construction details.
+
+Do not display the entire image collage as a single product photograph.
+
+Do not redesign the existing FSD website.
+
+---
+
+### 1. CORRECT PRODUCT REFERENCE
+
+The original photograph I supplied showing the woman in the black gilet is the correct garment reference.
+
+The product has:
+
+- Black modest-length performance gilet.
+- Sleeveless construction layered over a black long-sleeve performance top.
+- High stand collar.
+- Central front zipper.
+- Champagne-gold zipper hardware.
+- Adjustable waist detailing.
+- Side ventilation panels.
+- FSD shield emblem on the chest.
+- Longer, shaped hem for modest coverage.
+
+Preserve the actual garment design shown in the original photograph.
+
+Do not confuse the gilet with the FSD Velocity Sports Hijab or create a different jacket.
+
+Use the additional model photography I supplied for supporting angles, subject to consistency with the original correct gilet.
+
+### 2. CREATE A STANDALONE CAMPAIGN HERO
+
+Use the original correct photograph of the woman wearing the gilet as the primary reference.
+
+Create the collection presentation around one standalone, cinematic model-worn photograph.
+
+**Hero image requirements:**
+
+- The woman is the central subject.
+- She is wearing the correct FSD Aegis Gilet.
+- The garment is clearly visible, including its length, silhouette and chest branding.
+- Background is the approved dark luxury gym with warm champagne lighting.
+- Photography feels premium, editorial and realistic.
+- No product description, pricing, promotional graphics or text embedded in the image.
+- No mannequin.
+- No multi-panel collage.
+- No product-detail thumbnails embedded into the hero.
+
+Use the original approved hero photograph unchanged where possible. Do not generate a replacement without approval.
+
+This image should appear in the appropriate existing women's performance collection.
+
+Clicking the hero or product card must open the correct Aegis product presentation.
+
+### 3. SEPARATE THE SUPPORTING PHOTOGRAPHY
+
+I have supplied a newly created multi-view image featuring the woman wearing the gilet.
+
+Use it as a source for individual product views.
+
+Separate the individual panels cleanly into independent image assets, without adding text or changing the garment.
+
+Organise the approved views as follows:
+
+**Image 1 — Main product image**
+
+Woman wearing the correct gilet, photographed from the front or three-quarter front angle.
+
+**Image 2 — Side profile**
+
+Woman wearing the gilet, showing its collar, side ventilation and longer silhouette.
+
+**Image 3 — Full back view**
+
+Woman wearing the gilet from behind.
+
+Clearly show the back construction, modest length, waist shape and ventilation panel.
+
+**Image 4 — Rear three-quarter view**
+
+Woman looking over her shoulder, showing the garment from a different rear angle.
+
+**Additional detail images**
+
+Use the available close-ups for:
+- FSD chest shield.
+- Zipper hardware.
+- Ventilation mesh.
+- Waist adjustment.
+- Seams and garment construction.
+
+Only use details that accurately match the original approved garment.
+
+**Important:** The newly generated image is a visual reference, not automatic proof of the final garment's exact construction. If its back panel, seams or other features differ from the original design, flag them for approval rather than treating the generated details as verified specifications.
+
+Keep all original images intact. Create separate derivative assets for the product page.
+
+### 4. LUXURY PRODUCT PAGE
+
+Create the product presentation in the approved FSD black, graphite and champagne-gold aesthetic.
+
+**Desktop layout**
+
+Left:
+- One large main photograph.
+- Smaller, neatly arranged image thumbnails.
+- Click-to-change photography.
+- Smooth image transitions.
+- Image enlargement where supported.
+
+Right:
+- FSD Aegis Modest Performance Gilet.
+- Existing approved product description.
+- Existing verified product details.
+- Approved colour information.
+- Elegant expandable product information sections.
+
+Do not insert a large wall of photographs.
+
+Display one main product photograph at a time and allow customers to select the other views.
+
+**Mobile layout**
+
+- Large, well-cropped main photograph.
+- Touch-friendly thumbnail selector.
+- Product information beneath the image.
+- Clean spacing and fast image loading.
+
+### 5. IMAGE MAPPING
+
+Use the following image roles:
+
+| Website location | Required imagery |
+|---|---|
+| Women's collection | Standalone woman-worn campaign hero |
+| Product page main image | Correct original front / three-quarter gilet photograph |
+| Supporting view 1 | Side profile |
+| Supporting view 2 | Full rear view |
+| Supporting view 3 | Rear three-quarter view |
+| Detail images | Zippers, mesh, waist adjustment, FSD shield and construction |
+
+Do not place the entire composite board in any of these slots.
+
+Do not use the infographic containing product text and a price as the primary hero or as a source of verified commercial information.
+
+### 6. PRODUCT CATALOGUE AND NAVIGATION
+
+Find the existing Aegis Gilet catalogue record.
+
+Reuse its existing product identifier and route.
+
+Place it in the appropriate existing women's performance apparel collection.
+
+Ensure the collection image and product title open the correct product destination.
+
+Do not create duplicate products or new top-level menu sections.
+
+Keep the approved FSD mega-menu unchanged.
+
+### 7. STRICT SAFEGUARDS
+
+Before editing, create a recoverable checkpoint.
+
+Do not:
+- Change the FSD master logo.
+- Redesign the homepage or header.
+- Modify the approved navigation.
+- Change the other FSD products.
+- Substitute a mannequin for the woman.
+- Invent additional colours, fabric specifications or sizing.
+- Assume a price shown in reference artwork is approved.
+- Enable checkout or payments.
+- Publish or deploy.
+- Delete original image assets.
+
+Keep the product in its existing draft or private-preview state.
+
+### 8. VERIFICATION
+
+Show me the following before requesting approval:
+
+1. **Collection hero preview:** One cinematic standalone image of the woman wearing the correct gilet.
+2. **Desktop product page:** Main model photograph with individual selectable supporting views.
+3. **Mobile product page:** Correct responsive presentation.
+4. **Full back-view preview:** The woman wearing the gilet from behind.
+5. **Image mapping report:** Which image file is used for each position.
+6. **Navigation check:** Clicking the collection hero opens the correct product page.
+
+If the supplied back view does not accurately match the original correct garment, identify the discrepancy and request approval before using it.
+
+### FINAL REQUIREMENT
+
+The customer must first see a beautiful **standalone campaign hero of the woman wearing the FSD Aegis Modest Performance Gilet**.
+
+When they click into the product, they must see a luxury product page with the **front, side, back, rear three-quarter and detailed product photographs available individually**.
+
+Use the actual approved FSD imagery and design references. Preserve the rest of the website.
+
+**Do not publish. Show me the completed previews for approval first.**

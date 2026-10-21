@@ -6,6 +6,7 @@ import { renderCollectionShowcase, mountCollectionShowcase } from './collection-
 import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initArchiveNavigation } from './showroom-sections.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
+import { velocityHijabPreviewPath } from './velocity-hijab-preview-path.js';
 import './style.css';
 import './catalogue.css';
 import './collection-showcase/collection-showcase.css';
@@ -15,6 +16,14 @@ import './site-navigation.css';
 function header() {
   const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;
   return renderNavigationHeader(currentBrandMarkup);
+}
+
+function openProduct(id) {
+  if (import.meta.env.DEV && Number(id) === 43) {
+    window.location.assign(velocityHijabPreviewPath);
+    return;
+  }
+  showProduct(id);
 }
 
 function hardwareEditorialSection() {
@@ -110,12 +119,12 @@ function showCatalogueDestination({ category = 'All', query = '' } = {}) {
   return true;
 }
 
-initCatalogue();
+initCatalogue({ onProductSelect: openProduct });
 mountCollectionShowcase({
   root: document.querySelector('#collections'),
   divisions: collectionDivisions,
   products,
-  onProductSelect: showProduct,
+  onProductSelect: openProduct,
   onExploreCollection(group) {
     showCatalogueDestination({
       category: group.categories?.[0] || 'All',
@@ -135,7 +144,7 @@ mountNavigation({
     }
 
     if (item?.record) {
-      showProduct(item.record.id);
+      openProduct(item.record.id);
       return;
     }
 

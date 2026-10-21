@@ -380,6 +380,7 @@ try {
   assert.equal(await evaluate('window.scrollY'), startingScrollY);
   await key('Escape');
   await waitFor('!document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-mega-menu").hidden && !document.body.classList.contains("fsd-mobile-nav-open")');
+  await waitFor('document.activeElement.matches("[data-nav-mobile-toggle]")');
   assert.equal(await evaluate('document.activeElement.matches("[data-nav-mobile-toggle]")'), true);
 
   await click('[data-nav-mobile-toggle]');

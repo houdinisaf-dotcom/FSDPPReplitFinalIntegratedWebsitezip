@@ -2,3 +2,4 @@
 - [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.
 - [Official logo boundaries](official-logo-boundaries.md) — preserve the supplied FSD artwork exactly; review derived assets before applying them to the live site.
 - [House of Performance approvals](house-of-performance-approvals.md) — homepage remains staged; reconstruct only the explicitly authorized nav from visual reference; preserve catalogue and assets.
+- [Velocity hijab proof boundary](velocity-hijab-proof.md) — use supplied campaign/detail assets only; keep its product proof private and non-purchasable until approval.
