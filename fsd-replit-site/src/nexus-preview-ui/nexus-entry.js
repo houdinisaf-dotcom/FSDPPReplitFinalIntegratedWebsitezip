@@ -41,6 +41,7 @@ const auditActiveImage = root.querySelector('[data-nexus-audit-active-image]');
 const auditActiveCaption = root.querySelector('[data-nexus-audit-active-caption]');
 const auditActiveStatus = root.querySelector('[data-nexus-audit-active-status]');
 const auditActiveFinding = root.querySelector('[data-nexus-audit-active-finding]');
+const auditActiveContext = root.querySelector('[data-nexus-audit-active-context]');
 const auditEnlargeButton = root.querySelector('[data-nexus-audit-enlarge]');
 const lightbox = root.querySelector('[data-nexus-dialog]');
 const lightboxImage = lightbox?.querySelector('[data-nexus-dialog-image]');
@@ -79,6 +80,11 @@ function selectAuditAsset(asset, selectedButton) {
   if (auditActiveCaption) auditActiveCaption.textContent = asset.label;
   if (auditActiveStatus) auditActiveStatus.textContent = asset.status;
   if (auditActiveFinding) auditActiveFinding.textContent = asset.finding;
+  if (auditActiveContext) {
+    auditActiveContext.textContent = asset.id === 'full-campaign-reference'
+      ? 'FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO'
+      : 'UNMODIFIED CAMPAIGN SOURCE · PRIVATE REVIEW ONLY';
+  }
   auditEnlargeButton?.setAttribute(
     'aria-label',
     `Enlarge private review reference: ${asset.label}`,

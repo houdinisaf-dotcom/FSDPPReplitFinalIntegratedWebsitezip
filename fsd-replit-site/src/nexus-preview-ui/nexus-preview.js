@@ -103,6 +103,9 @@ function auditGalleryMarkup(auditAssets, brandAudit) {
   const activeStatus = auditStatusFor(active, brandAudit);
   const activeFinding = brandAudit.find(entry => String(active.file || '').split('/').pop() === entry?.file)?.finding || active.finding || '';
   const compositeNotice = active.id === 'full-campaign-reference';
+  const activeContext = compositeNotice
+    ? 'FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO'
+    : 'UNMODIFIED CAMPAIGN SOURCE · PRIVATE REVIEW ONLY';
   return `<section class="nexus-audit nexus-wrap" aria-labelledby="nexus-audit-title">
     <div class="nexus-audit-heading">
       <div>
@@ -119,7 +122,7 @@ function auditGalleryMarkup(auditAssets, brandAudit) {
     <div class="nexus-audit-gallery" data-nexus-audit-gallery>
       <div class="nexus-audit-stage">
         <div class="nexus-audit-stage-label">
-          <span>${compositeNotice ? 'FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO' : 'UNMODIFIED CAMPAIGN SOURCE · PRIVATE REVIEW ONLY'}</span>
+          <span data-nexus-audit-active-context aria-live="polite">${esc(activeContext)}</span>
           <span data-nexus-audit-active-status aria-live="polite">${esc(activeStatus)}</span>
         </div>
         <div class="nexus-audit-image-frame">

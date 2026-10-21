@@ -677,40 +677,124 @@ content_type = "image/jpeg"
 id = "FQR_GW_YI1x4SfYw3cjFk"
 uri = "file://generated-artifacts/fsd-nexus-preview/concept-gallery-desktop.jpg"
 type = "image"
-title = "FSD NEXUS — Desktop gallery proof"
-description = "Desktop gallery showing only the approved app-screen image and an unbranded reference, with unverified capabilities labeled pending."
+title = "FSD NEXUS — Approved concept gallery"
+description = "Desktop gallery containing only the previously approved app-screen candidate and unbranded references."
 logical_id = "24e9b688-66e1-4395-976a-5278f231fcd8"
-content_hash = "sha256:44a6319d525a26f01732e482bfad43492b3b263606c2a728f37c9fff1512288b"
-size = 98435
-mtime_ms = 1792592613694
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/24e9b688-66e1-4395-976a-5278f231fcd8/6a202ef9-0611-4d55-b8b2-386da994db56"
-storage_version_token = "1792592685365989"
+content_hash = "sha256:5f21e7a9c67ae49199f6fdcd691421d997714a83b4b8216761ad6fa1f5b4b2f9"
+size = 98367
+mtime_ms = 1792593851266
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/24e9b688-66e1-4395-976a-5278f231fcd8/b58747d1-a4e4-4a61-a81f-d21d6020e276"
+storage_version_token = "1792593913050905"
 content_type = "image/jpeg"
 
 [[outputs]]
 id = "i0ugBkRdwqGLwr1wJ_90H"
 uri = "file://generated-artifacts/fsd-nexus-preview/concept-gallery-mobile.jpg"
 type = "image"
-title = "FSD NEXUS — Mobile gallery proof"
-description = "Mobile gallery showing the score is illustrative and not live data; ring and lifestyle photography remain excluded."
+title = "FSD NEXUS — Mobile concept gallery"
+description = "Mobile view of the separate approved concept gallery."
 logical_id = "4a711c90-d04e-4b2a-9cf2-f0f970ed0ff7"
-content_hash = "sha256:48018e9cb0bf1cb201ca24c63c7a59afced24439593176b15135c6e434ab2a05"
-size = 46933
-mtime_ms = 1792592616146
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4a711c90-d04e-4b2a-9cf2-f0f970ed0ff7/db98081a-16e6-4080-a453-51945aa8e457"
-storage_version_token = "1792592686097092"
+content_hash = "sha256:1090c46344ed9e3b1b46e0f759602d426e8c777c9f9f4780be07e84149aa7ee4"
+size = 47528
+mtime_ms = 1792593855146
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4a711c90-d04e-4b2a-9cf2-f0f970ed0ff7/a8d8aad7-f3c5-4a87-a9aa-cfa4364b41c2"
+storage_version_token = "1792593913808484"
 content_type = "image/jpeg"
 
 [[outputs]]
 id = "ZOfwyygl7OWkltOnZAT22"
 uri = "file://generated-artifacts/fsd-nexus-preview/biolab-card-desktop.jpg"
 type = "image"
-title = "FSD NEXUS — Bio-Lab draft card"
-description = "Private draft card in the existing Bio-Lab concept showcase. The card states that the 87 score is illustrative and not live data."
+title = "FSD NEXUS — Bio-Lab draft entry"
+description = "Private draft card inside the existing Bio-Lab wearable structure."
 logical_id = "82fb8819-7287-4336-ba77-d8a45d39a630"
 content_hash = "sha256:3206a557115c55dc64638e16c42ed5b4e0caa3215fee9bd0d651c77944854258"
 size = 77093
-mtime_ms = 1792592615530
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/82fb8819-7287-4336-ba77-d8a45d39a630/4e55e79f-6b40-4a77-a30f-52bb611bd647"
-storage_version_token = "1792592686838490"
+mtime_ms = 1792593854514
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/82fb8819-7287-4336-ba77-d8a45d39a630/80f4509c-7d0f-4519-ab88-f5eb037b05c0"
+storage_version_token = "1792593917364983"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "yZ03z7iDZvemST6_GlOgN"
+uri = "file://generated-artifacts/fsd-nexus-preview/concept-desktop.jpg"
+type = "image"
+title = "FSD NEXUS — Desktop concept"
+description = "Private development proof with the existing FSD logo and unchanged website navigation."
+logical_id = "995e7e02-aca6-4190-88af-40f64d9a0136"
+content_hash = "sha256:3948c6ecd40c58a90cf3d95407058508a4c26333cafb05102a3f5157fcc355ed"
+size = 94074
+mtime_ms = 1792593850666
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/995e7e02-aca6-4190-88af-40f64d9a0136/58fc2c4c-4214-4e39-a129-16ea3f696a8e"
+storage_version_token = "1792593911606631"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "21j4UflhVWH293IEslI1N"
+uri = "file://generated-artifacts/fsd-nexus-preview/concept-mobile.jpg"
+type = "image"
+title = "FSD NEXUS — Mobile concept"
+description = "Responsive mobile concept page; no public product offer or purchase flow."
+logical_id = "380e31fe-dd2f-4b3d-8fe9-903cb893b490"
+content_hash = "sha256:a47147fb112ae08f0a2dcd7833c8316ab41ce1276156cfa205afde54219268e3"
+size = 46603
+mtime_ms = 1792593854846
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/380e31fe-dd2f-4b3d-8fe9-903cb893b490/5620325e-3f54-4111-b65b-87c850bcbef9"
+storage_version_token = "1792593912316615"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "uKmqE7435KhEiGsuI-r6C"
+uri = "file://generated-artifacts/fsd-nexus-preview/brand-audit-desktop.jpg"
+type = "image"
+title = "FSD NEXUS — Desktop source-image audit"
+description = "Unmodified campaign crop shown only as a private review reference, with the correct changing source label and brand-correction warning."
+logical_id = "4fe16368-c123-43b4-b8f6-50d783c0b54b"
+content_hash = "sha256:990472e816567e89ebedd700c2c20b7b2662cb0cf62b15cc65b65135f80555ac"
+size = 149585
+mtime_ms = 1792593852374
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4fe16368-c123-43b4-b8f6-50d783c0b54b/688ea7b1-d730-43a8-8f87-d30e361e3ec3"
+storage_version_token = "1792593914537491"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "wUEVKbJGPYdcjQQt3VOUK"
+uri = "file://generated-artifacts/fsd-nexus-preview/brand-audit-mobile.jpg"
+type = "image"
+title = "FSD NEXUS — Mobile source-image audit"
+description = "Mobile review of an unchanged ring-and-case crop, explicitly flagged for its mismatched embedded marks."
+logical_id = "2f2c7c4a-cba3-4dc9-b25c-a1ca1cf61d77"
+content_hash = "sha256:1c97d79516a491605a5e306603bac9242459aaf58081d1865259b1ad9405fbae"
+size = 53330
+mtime_ms = 1792593855710
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/2f2c7c4a-cba3-4dc9-b25c-a1ca1cf61d77/ca3a48b7-5815-4618-ac6a-bb07ffa022c3"
+storage_version_token = "1792593915247426"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "G3bC1ZR5sAVDML599f-yh"
+uri = "file://generated-artifacts/fsd-nexus-preview/brand-audit-ledger-desktop.jpg"
+type = "image"
+title = "FSD NEXUS — 11-image brand audit ledger"
+description = "Complete desktop ledger of the eight logo-bearing source crops and three other supplied assets, with findings and status."
+logical_id = "e0ad26cf-2854-4e6d-a87d-651054d3601c"
+content_hash = "sha256:aef692ebcc99ee5ec611b8f9f708d467ff18e5fd0248d457cf9836cd10a8b91a"
+size = 114852
+mtime_ms = 1792593852726
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e0ad26cf-2854-4e6d-a87d-651054d3601c/8937d663-4149-4c87-832d-bdbd8d6b9c37"
+storage_version_token = "1792593915940534"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "ck7PjqjE2jgRIiaP0joZl"
+uri = "file://generated-artifacts/fsd-nexus-preview/feature-verification-desktop.jpg"
+type = "image"
+title = "FSD NEXUS — Feature verification list"
+description = "All seven capability ideas are labeled proposed and pending technical validation."
+logical_id = "1be64da6-cb14-4147-8053-657ee1577fdd"
+content_hash = "sha256:6a483a08f9402db3e7e04878d7cf8d6dbe07942ee43914ef2f0ed160a42d0ffc"
+size = 92222
+mtime_ms = 1792593851666
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/1be64da6-cb14-4147-8053-657ee1577fdd/57899a0d-a63e-4ecd-8c07-c241d45af6a3"
+storage_version_token = "1792593916665955"
 content_type = "image/jpeg"

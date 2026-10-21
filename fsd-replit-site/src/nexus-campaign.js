@@ -217,6 +217,7 @@ export const nexusPreviewManifest = Object.freeze({
     '03_ring_product_closeup',
     '04_fitness_lifestyle',
     '05_sleep_recovery_lifestyle',
+    '06_app_interface_concept',
     '07_ring_charging_case',
     '08_ring_macro_detail',
     '10_strategic_value_concept',

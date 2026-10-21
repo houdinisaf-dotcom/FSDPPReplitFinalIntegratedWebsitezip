@@ -100,6 +100,12 @@ try {
   assert.match(await evaluate('document.body.innerText'), /FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO/);
   assert.match(await evaluate('document.body.innerText'), /11 source findings/);
   assert.match(await evaluate('document.body.innerText'), /PROPOSED — PENDING TECHNICAL VALIDATION/);
+  const featureStatuses = await evaluate(`Array.from(document.querySelectorAll(".nexus-feature-list small"), node => node.textContent.trim())`);
+  assert.equal(featureStatuses.length, 7);
+  assert.ok(featureStatuses.every(status => status === 'PROPOSED — PENDING TECHNICAL VALIDATION'));
+  const conditionStatuses = await evaluate(`Array.from(document.querySelectorAll(".nexus-gates small"), node => node.textContent.trim())`);
+  assert.equal(conditionStatuses.length, 5);
+  assert.ok(conditionStatuses.every(status => status === 'NOT VERIFIED'));
   assert.equal(await evaluate('document.querySelectorAll("button[data-purchase], button[data-checkout], .add-to-cart, form").length'), 0);
   assert.doesNotMatch(await evaluate('document.body.innerText'), /ADD TO CART|BUY NOW|CHECKOUT NOW|£\s?\d/i);
 
@@ -151,6 +157,11 @@ try {
   await evaluate('document.querySelector(".nexus-evidence")?.scrollIntoView({block:"start"})');
   await delay(250);
   await captureProof('concept-gallery-desktop.jpg');
+  await evaluate('document.querySelector(".nexus-capabilities")?.scrollIntoView({block:"start"})');
+  await delay(250);
+  await captureProof('feature-verification-desktop.jpg');
+  await evaluate('document.querySelector(".nexus-evidence")?.scrollIntoView({block:"start"})');
+  await delay(250);
   await click('[data-nexus-enlarge]');
   await waitFor('document.querySelector("[data-nexus-dialog]")?.open');
   assert.match(await evaluate('document.querySelector("[data-nexus-dialog-image]")?.src'), /proposed-features$/);
@@ -161,6 +172,7 @@ try {
   await waitFor('document.querySelector("[data-nexus-audit-active-image]")?.src.endsWith("/media/audit/ring-product-closeup")');
   assert.equal(await evaluate('document.querySelector("[data-nexus-audit-gallery-select=ring-product-closeup]")?.getAttribute("aria-pressed")'), 'true');
   assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-status]")?.textContent'), /BRAND CORRECTION REQUIRED/);
+  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-context]")?.textContent'), /UNMODIFIED CAMPAIGN SOURCE · PRIVATE REVIEW ONLY/);
   assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-finding]")?.textContent'), /differs from the approved website master/);
   await evaluate('document.querySelector(".nexus-audit")?.scrollIntoView({block:"start"})');
   await delay(250);
@@ -171,6 +183,8 @@ try {
   assert.match(await evaluate('document.querySelector("[data-nexus-dialog-caption]")?.textContent'), /PRIVATE REVIEW REFERENCE/);
   await click('[data-nexus-close]');
   await waitFor('!document.querySelector("[data-nexus-dialog]")?.open');
+  await click('[data-nexus-audit-gallery-select="full-campaign-reference"]');
+  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-context]")?.textContent'), /FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO/);
   await evaluate('document.querySelector(".nexus-audit-ledger-heading")?.scrollIntoView({block:"start"})');
   await delay(250);
   await captureProof('brand-audit-ledger-desktop.jpg');
@@ -194,7 +208,11 @@ try {
   await evaluate('document.querySelector(".nexus-evidence")?.scrollIntoView({block:"start"})');
   await delay(250);
   await captureProof('concept-gallery-mobile.jpg');
+  await evaluate('document.querySelector(".nexus-capabilities")?.scrollIntoView({block:"start"})');
+  await delay(250);
+  await captureProof('feature-verification-mobile.jpg');
   await click('[data-nexus-audit-gallery-select="ring-charging-case"]');
+  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-context]")?.textContent'), /UNMODIFIED CAMPAIGN SOURCE · PRIVATE REVIEW ONLY/);
   await evaluate('document.querySelector(".nexus-audit")?.scrollIntoView({block:"start"})');
   await delay(250);
   await captureProof('brand-audit-mobile.jpg');

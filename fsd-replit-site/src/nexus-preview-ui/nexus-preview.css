@@ -158,10 +158,10 @@ html, body { min-height: 100%; margin: 0; background: #0a0b0c; }
 .nexus-audit-ledger { margin: 0; padding: 0; list-style: none; border-top: 1px solid rgba(229,219,201,.12); }
 .nexus-audit-ledger-row { display: grid; grid-template-columns: 32px minmax(175px,.8fr) minmax(225px,.9fr) minmax(220px,1.35fr); align-items: start; gap: 13px; padding: 14px 2px; border-bottom: 1px solid rgba(229,219,201,.12); }
 .nexus-audit-ledger-index { color: #967d50; font-size: 8px; }
-.nexus-audit-ledger-name { color: #ded8cd; font-size: 9px; line-height: 1.5; }
-.nexus-audit-ledger-status { color: #e0c58f; font-size: 7px; font-weight: 700; letter-spacing: .07em; line-height: 1.6; }
-.nexus-audit-ledger-finding { color: #9c988f; font-size: 8px; line-height: 1.65; }
-.nexus-audit-ledger-note { max-width: 900px; margin: 16px 0 0; color: #a39a86; font-size: 8px; line-height: 1.7; }
+.nexus-audit-ledger-name { color: #ded8cd; font-size: 10px; line-height: 1.5; }
+.nexus-audit-ledger-status { color: #e0c58f; font-size: 8px; font-weight: 700; letter-spacing: .07em; line-height: 1.6; }
+.nexus-audit-ledger-finding { color: #9c988f; font-size: 9px; line-height: 1.65; }
+.nexus-audit-ledger-note { max-width: 900px; margin: 16px 0 0; color: #a39a86; font-size: 9px; line-height: 1.7; }
 .nexus-audit-empty { margin: 20px 0; padding: 24px; border: 1px solid var(--nexus-line); color: var(--nexus-gold); font-size: 8px; letter-spacing: .12em; }
 .nexus-review-boundary { padding: 31px 0; border-top: 1px solid var(--nexus-line); border-bottom: 1px solid var(--nexus-line); background: #111313; }
 .nexus-review-boundary .nexus-wrap { display: grid; grid-template-columns: 180px minmax(0,1fr); gap: 15px 35px; align-items: start; }
@@ -265,8 +265,8 @@ html, body { min-height: 100%; margin: 0; background: #0a0b0c; }
   .nexus-audit-ledger-heading > span { text-align: left; }
   .nexus-audit-ledger-row { grid-template-columns: 23px minmax(0,1fr); gap: 5px 9px; padding: 12px 0; }
   .nexus-audit-ledger-status, .nexus-audit-ledger-finding { grid-column: 2; }
-  .nexus-audit-ledger-status { font-size: 7px; }
-  .nexus-audit-ledger-finding { font-size: 8px; }
+  .nexus-audit-ledger-status { font-size: 8px; }
+  .nexus-audit-ledger-finding { font-size: 9px; }
   .nexus-review-boundary { padding: 25px 0; }
   .nexus-review-boundary .nexus-wrap { grid-template-columns: 1fr; gap: 10px; }
   .nexus-review-boundary p:not(.nexus-kicker), .nexus-review-boundary strong { grid-column: 1; }

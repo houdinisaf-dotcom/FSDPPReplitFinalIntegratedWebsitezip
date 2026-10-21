@@ -82,6 +82,10 @@ test('NEXUS is a concept-only draft with all technical features and progression 
   assert.equal(preview.price, null);
   assert.equal(preview.availability, null);
   assert.equal(preview.checkoutEnabled, false);
+  assert.equal(preview.category, 'WEARABLE TECHNOLOGY / SMART RING CONCEPT');
+  assert.equal(preview.headline, 'DISCREET TECHNOLOGY. DEEPER INSIGHTS.');
+  assert.equal(preview.campaignMessage, 'TRAIN. RECOVER. BALANCE. PERFORM. LIVE BETTER.');
+  assert.match(preview.description, /FSD NEXUS explores the potential of a discreet premium smart ring/);
   assert.match(preview.status, /NOT A CURRENT PRODUCT OR COMMITMENT/);
   assert.match(preview.productPhotographyStatus, /PRIVATE AUDIT REFERENCES ONLY.*BRAND CORRECTION REQUIRED/);
   assert.match(preview.staticImageStatus, /NO LIVE DATA/);
@@ -119,6 +123,7 @@ test('the rendered page separates approved artwork from the complete private bra
   assert.match(html, /data-nexus-audit-active-image/);
   assert.match(html, /data-nexus-audit-active-status/);
   assert.match(html, /data-nexus-audit-active-finding/);
+  assert.match(html, /data-nexus-audit-active-context/);
   assert.match(html, /data-nexus-dialog/);
   assert.match(html, /87 score is not live data or a verified measurement/);
   assert.match(html, /STATIC INTERFACE · 87 IS ILLUSTRATIVE, NOT LIVE DATA/);
@@ -128,6 +133,6 @@ test('the rendered page separates approved artwork from the complete private bra
   assert.match(html, /BRAND CORRECTION REQUIRED/);
   assert.match(html, /FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO/);
   assert.match(html, /unmodified source references.*not approved campaign photography/i);
-  assert.match(html, /No embedded logo has been erased, overlaid or redrawn/);
+  assert.match(html, /no embedded logo has been erased, overlaid or redrawn/i);
   assert.doesNotMatch(html, /ADD TO CART|BUY NOW|<form\b|£\s?\d/i);
 });

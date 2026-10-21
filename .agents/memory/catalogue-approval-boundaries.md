@@ -17,9 +17,11 @@ Publication holds apply to reference galleries as well as product listings and r
 
 The reviewed Performance/Cover hijab and HYDRATE, MOTION, NEXUS, SONIC and PULSE
 step-counter image candidates were not approved for product mappings. The
-logo-corrected NEXUS app screen and explicitly approved unbranded graphics may
-appear in its private concept proof only. Approval of that proof is visual only;
-other logo-bearing NEXUS crops remain flagged for correction or replacement.
+logo-corrected NEXUS app candidate and unbranded graphics may appear in the
+private concept presentation. Unmodified, logo-mismatched source crops may
+appear only in a separate private audit gallery, visibly marked BRAND CORRECTION
+REQUIRED; never present them as approved product photography. Approval of a
+concept proof is visual only.
 
 **Why:** The user selected “Do not add these matches” when shown the candidate
 sheet, without providing a reason. Visual similarity or a descriptive asset name
@@ -28,10 +30,10 @@ must not be treated as approval.
 **How to apply:** Leave these products unmapped unless the user gives a new
 explicit approval. Consult `handoff/catalog/image-review.md` for the reviewed
 references; do not interpret the decision as an instruction to remove the
-separate design library. Keep NEXUS as a noindex development-only concept, use
-only its approved screen and unbranded references, preserve the source archive,
-and keep every feature, measurement, product detail, price, and availability
-unverified. No catalogue mapping, checkout, or public release is authorized.
+separate design library. Keep NEXUS noindex and development-only, preserve
+source archives, never retouch or overlay a mismatched embedded logo, and keep
+every feature, measurement, product detail, price, and availability unverified.
+No catalogue mapping, checkout, or public release is authorized.
 
 VIP sign-up collection is deferred until the destination and approved privacy/consent wording are ready.
 
