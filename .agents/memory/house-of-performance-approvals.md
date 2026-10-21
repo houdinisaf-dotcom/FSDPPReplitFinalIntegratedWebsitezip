@@ -26,3 +26,9 @@ Navigation must remain integrated with and attached to the header, using graphit
 **Why:** The user wants the clarity of a premium technology brand with a luxury fashion-house finish, not a detached pop-up.
 
 **How to apply:** Keep Men’s Performance, Women’s Modest Combat, Bio-Lab™ and Hardware readily discoverable. Preserve the existing collection structure and ensure relevant subcategories are immediately available without automatic page scrolling.
+
+For navigation regression repairs, recover the exact approved implementation from project history rather than substituting a prototype or similar design. If the original source is unavailable, stop and report what is missing. Keep any recovery limited to navigation files and preserve Phase 4 catalogue and product functionality; do not revert the whole project.
+
+**Why:** A previous restoration did not return the intended navigation, and the user explicitly requires exact recovery without sacrificing later catalogue work.
+
+**How to apply:** Verify the source and checkpoint before editing. Do not claim a restoration based on visual similarity; if the exact source cannot be identified, make no replacement.
