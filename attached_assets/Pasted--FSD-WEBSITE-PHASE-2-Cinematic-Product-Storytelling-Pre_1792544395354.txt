@@ -1,0 +1,423 @@
+# FSD WEBSITE — PHASE 2
+## Cinematic Product Storytelling & Premium E-Commerce Interactions
+
+### PRIMARY OBJECTIVE
+
+Upgrade the existing FSD Fitness & Self Defence website with sophisticated product storytelling, cinematic transitions, responsive product interactions and an elevated luxury e-commerce experience.
+
+This is Phase 2 of the FSD Digital Experience enhancement programme.
+
+**IMPORTANT: Do not rebuild, redesign or replace the existing website.**
+
+Phase 1 introduced the shared motion system, subtle ambient lighting, navigation transitions and foundational microinteractions. Reuse those systems rather than introducing competing animations or unnecessary dependencies.
+
+The objective is to make browsing FSD products feel immersive, elegant, fluid and technically sophisticated.
+
+---
+
+## 1. PRODUCT CARD ENHANCEMENTS
+
+Enhance existing product cards across all FSD collections.
+
+### Desktop interactions
+
+On hover:
+
+- Introduce subtle product image magnification, approximately 1.025–1.045x.
+- Add a soft champagne-gold ambient backlight behind the product image, where visually appropriate.
+- Apply a gentle upward translation of approximately 2–4 pixels.
+- Reveal existing product actions with a restrained fade or slide.
+- Transition borders and shadows smoothly without creating bright gold outlines.
+- Maintain the original product image aspect ratio.
+
+Where genuine secondary product images already exist, support a smooth transition to the secondary image.
+
+Never substitute an unrelated image or automatically generate alternative product views.
+
+### Mobile interactions
+
+- Do not rely on hover.
+- Use clear, accessible product actions.
+- Preserve natural touch scrolling.
+- Avoid unnecessary animated overlays.
+- Keep product cards fast and responsive.
+
+All product cards must remain visually consistent with the existing FSD design.
+
+---
+
+## 2. CINEMATIC PRODUCT DETAIL PAGES
+
+Enhance the existing individual product pages without changing their core layouts unnecessarily.
+
+### Product imagery
+
+Implement:
+
+- Smooth transitions between gallery images.
+- Elegant thumbnail selection states.
+- Subtle crossfade when switching product photographs.
+- Responsive image zoom where useful.
+- A premium full-screen image viewer with an unobtrusive dark backdrop.
+- Keyboard and touch navigation where applicable.
+
+Image transitions should feel smooth, immediate and deliberate.
+
+Do not introduce exaggerated 3D rotations, spinning product images or artificial CGI effects.
+
+### Product information
+
+Improve the visual hierarchy of:
+
+- Product title.
+- Collection name.
+- Product description.
+- Price.
+- Colour and size options.
+- Product features.
+- Technical specifications.
+- Availability indicators.
+- Purchase-related controls.
+
+Use the existing FSD typography, spacing and colour palette.
+
+### Animated information panels
+
+Where existing product pages have expandable content, enhance the sections for:
+
+- Product technology.
+- Materials and construction.
+- Fit and sizing.
+- Care instructions.
+- Delivery information.
+
+Use smooth accordion transitions with clear open and closed states.
+
+Avoid animation that delays access to information.
+
+---
+
+## 3. IMMERSIVE PRODUCT STORYTELLING
+
+Introduce reusable editorial storytelling sections for selected flagship products.
+
+These sections should combine premium imagery with concise, meaningful product information.
+
+### Example: FSD Aeroforge Women's Performance Top
+
+Use existing approved product photography to highlight:
+
+- Sculpted athletic fit.
+- Technical stretch construction.
+- Breathable mesh ventilation.
+- Raglan shoulder design.
+- Flatlock stitching.
+- Thumbhole cuffs.
+- Signature FSD shield detailing.
+
+Create a cinematic product story using large photography, concise headings and restrained scroll-based reveals.
+
+Suggested storytelling sequence:
+
+**ENGINEERED TO MOVE**
+
+Introduce the garment with a striking full-width photograph.
+
+**PRECISION IN EVERY DETAIL**
+
+Reveal technical construction and material features.
+
+**PERFORMANCE WITHOUT COMPROMISE**
+
+Highlight comfort, fit and intended athletic applications.
+
+**THE FSD STANDARD**
+
+Conclude with the product's brand positioning and an existing product-page CTA.
+
+Only display product features that are confirmed in the catalogue or supplied specifications.
+
+Do not invent material compositions, performance certifications or technical claims.
+
+### Reusable design
+
+Build this storytelling system as reusable components so it can later support:
+
+- FSD Aeroforge.
+- FSD Velocity Performance Sports Hijab.
+- FSD Signature Performance Sports Bag.
+- FSD performance accessories.
+- Other approved flagship products.
+
+Do not automatically apply lengthy storytelling sections to every product.
+
+---
+
+## 4. INTERACTIVE PRODUCT FEATURE HOTSPOTS
+
+Where suitable, introduce subtle interactive hotspots on selected product photographs.
+
+### Interaction design
+
+- Use small, restrained champagne-coloured markers.
+- Reveal a compact information panel on click or keyboard activation.
+- Explain a specific product feature.
+- Allow the panel to close naturally.
+- Keep the original image visible and unobstructed.
+
+For example, the Aeroforge top could feature hotspots for its mesh ventilation, thumbhole cuffs and chest badge.
+
+Hotspots must be positioned accurately on the relevant product image.
+
+Do not invent feature locations or specifications.
+
+### Mobile behaviour
+
+Use tap activation with accessible dismissal.
+
+Avoid covering important product details.
+
+Do not enable hotspots on every image by default.
+
+---
+
+## 5. COLLECTION-TO-PRODUCT TRANSITIONS
+
+Improve transitions when visitors move from collection listings into individual product pages.
+
+Desired experience:
+
+- Product selection should feel immediate and connected.
+- Use subtle content fades and image reveals.
+- Preserve correct browser navigation.
+- Support browser back and forward behaviour.
+- Restore collection browsing position where appropriate.
+- Avoid blank screens, heavy loading animations or disruptive full-screen transitions.
+
+If the current application architecture supports shared-element transitions safely, consider them for selected product images.
+
+Otherwise, use lightweight route transitions that preserve reliability.
+
+Do not add complex routing libraries solely for visual effects.
+
+---
+
+## 6. PREMIUM COLOUR AND SIZE SELECTORS
+
+Enhance existing product option selectors.
+
+### Colour options
+
+- Smooth selection indicators.
+- Clear active and inactive states.
+- Subtle champagne focus treatment.
+- Correct product imagery for each available colour.
+- No artificial colour options.
+
+### Size options
+
+- Refined selection transitions.
+- Accessible keyboard interaction.
+- Clear unavailable-size indicators.
+- Existing size-guide access where available.
+- Appropriate selection feedback.
+
+Never change product availability, inventory, prices or variant data.
+
+---
+
+## 7. PREMIUM SHOPPING INTERACTIONS
+
+Prepare refined interaction states for the existing shopping interface.
+
+Where purchase functionality is already authorised and operational, enhance its presentation without altering the underlying commerce logic.
+
+Potential enhancements include:
+
+- Subtle confirmation animations.
+- Smooth mini-cart panel transitions.
+- Refined quantity controls.
+- Clear loading and success states.
+- Accessible error messaging.
+
+**CRITICAL: Preserve existing checkout restrictions.**
+
+If checkout or purchasing is currently disabled, keep it disabled.
+
+Do not enable payment processing, place orders, activate checkout or introduce a live purchasing workflow.
+
+Do not display fake order confirmations.
+
+---
+
+## 8. FSD SIGNATURE AMBIENT LIGHTING
+
+Extend the Phase 1 lighting system selectively into product storytelling.
+
+Use:
+
+- Soft champagne-gold edge illumination.
+- Subtle image backlighting.
+- Restrained shadows.
+- Dark graphite surfaces.
+- Low-intensity hover highlights.
+
+The effect should resemble precision architectural lighting.
+
+Avoid:
+
+- Neon gold borders.
+- Excessive glow.
+- Constantly pulsing elements.
+- Bright gradient backgrounds.
+- Heavy glassmorphism.
+- Distracting particle effects.
+
+The product photography must remain the focal point.
+
+---
+
+## 9. EDITORIAL SCROLL EXPERIENCES
+
+For selected collection landing pages, introduce subtle cinematic scroll reveals.
+
+Possible treatments:
+
+- Heading fade and upward reveal.
+- Product photography appearing with controlled opacity.
+- Gentle background depth changes.
+- Staggered product-feature introductions.
+- Smooth section transitions.
+
+Avoid excessive scroll-jacking or forced scroll snapping.
+
+Do not prevent users from scrolling normally.
+
+Content must remain readable and accessible with animations disabled.
+
+---
+
+## 10. PERFORMANCE AND ACCESSIBILITY
+
+All enhancements must be engineered for performance.
+
+Requirements:
+
+- Reuse Phase 1 motion tokens.
+- Prefer GPU-friendly transform and opacity animations.
+- Respect prefers-reduced-motion.
+- Avoid unnecessary JavaScript animation loops.
+- Lazy-load noncritical media.
+- Prevent cumulative layout shifts.
+- Maintain responsive image sizing.
+- Support keyboard navigation.
+- Preserve visible focus indicators.
+- Ensure adequate contrast.
+- Keep mobile interactions responsive.
+- Test on desktop, tablet and mobile.
+
+Do not introduce large animation libraries unless the existing stack genuinely requires them.
+
+Prioritise smooth interaction over visual complexity.
+
+---
+
+## 11. PRESERVATION RULES
+
+Do not:
+
+- Rebuild the existing website.
+- Replace the FSD master logo.
+- Alter product branding.
+- Delete product photographs.
+- Rename collections.
+- Modify product descriptions without approval.
+- Change prices or inventory.
+- Break existing category filters.
+- Replace floating navigation panels.
+- Introduce unnecessary new pages.
+- Enable checkout or payment processing.
+- Publish the website without approval.
+- Remove or override Phase 1 enhancements.
+
+All work must integrate with the current FSD website architecture.
+
+---
+
+## 12. IMPLEMENTATION WORKFLOW
+
+### Step 1 — Audit
+
+Inspect the current codebase and identify:
+
+- Existing product-card components.
+- Product-detail page components.
+- Image-gallery implementation.
+- Product variant selectors.
+- Collection page templates.
+- Routing architecture.
+- Phase 1 animation utilities.
+- Existing shopping controls.
+
+Explain which components can be enhanced safely.
+
+### Step 2 — Implement core product interactions
+
+Prioritise:
+
+1. Product-card hover and focus effects.
+2. Product-gallery transitions.
+3. Product-detail information animations.
+4. Colour and size selector refinements.
+
+### Step 3 — Build reusable storytelling components
+
+Create the editorial storytelling system and demonstrate it on one existing flagship product using approved imagery.
+
+### Step 4 — Add optional interactive features
+
+Implement product hotspots and enhanced collection-to-product transitions only where they improve usability.
+
+### Step 5 — Test
+
+Verify:
+
+- Desktop responsiveness.
+- Mobile performance.
+- Navigation and routing.
+- Product image accuracy.
+- Product data integrity.
+- Keyboard accessibility.
+- Reduced-motion behaviour.
+- Existing checkout restrictions.
+
+### Step 6 — Report
+
+Provide a concise implementation report covering:
+
+- Components modified.
+- New reusable components created.
+- Dependencies introduced, if any.
+- Performance implications.
+- Functionality preserved.
+- Any features requiring approval.
+
+---
+
+## FINAL DESIGN STANDARD
+
+The completed experience should feel like a fusion of:
+
+**Apple:** precision, fluidity and interaction quality.
+
+**Nike:** athletic energy and immersive product storytelling.
+
+**Luxury fashion houses:** restraint, exclusivity and editorial presentation.
+
+**FSD:** strength, discipline, confidence and performance.
+
+Every animation must have a purpose.
+
+Every interaction should make the product easier to understand or the website more enjoyable to use.
+
+**The final result must feel expensive, deliberate and effortless — never overanimated or gimmicky.**

@@ -15,6 +15,12 @@ The user approved the refined Homepage B+ and Navigation A+ desktop and mobile p
 
 **How to apply:** Keep proposals separate from the current site until the user approves implementation. Prototype destination views are not evidence of existing production routes. Keep Women’s Modest Combat prominent and provide its dedicated landing destination when implementing the approved design. Do not publish or enable checkout.
 
+Phase 1 authorizes motion and ambient-interaction enhancements to the existing website only. Preserve its current hero, editorial content, floating collection panels, filters and navigation behaviour; do not integrate the approved homepage/navigation proofs or begin a Bio-Lab dashboard.
+
+**Why:** The user explicitly scoped Phase 1 as interaction enhancement, not a redesign.
+
+**How to apply:** Treat authorization for this motion work separately from proof approval. Existing product content, pricing, logos, checkout status and deployment settings remain protected.
+
 The homepage should combine a dark, cinematic, powerful hero with sophisticated editorial composition and generous whitespace. Obsidian black, graphite and champagne gold are primary; porcelain is selective contrast, not the dominant background. Apparel should feel like luxury fashion campaigns, while Bio-Lab™ and Hardware retain performance and engineering credibility.
 
 **Why:** The user explicitly requested luxury fashion-house presentation with authentic athletic performance and technological innovation, rather than a predominantly light website.

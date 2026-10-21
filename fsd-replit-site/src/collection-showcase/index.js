@@ -177,6 +177,7 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
   let activeSubcategoryIndex = -1;
   let returnFocus = null;
   let afterClose = null;
+  let closePending = false;
   const page = root.ownerDocument?.documentElement || document.documentElement;
 
   const renderDialog = () => {
@@ -184,10 +185,11 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     const group = activeDivision.groups?.[activeGroupIndex] || { title: activeDivision.title };
     content.innerHTML = modalContent(activeDivision, group, safeProducts, activeGroupIndex, activeSubcategoryIndex);
     content.scrollTop = 0;
+    section.dispatchEvent(new CustomEvent('fsd:dialog-render', { bubbles: true }));
   };
 
   const open = (division, opener) => {
-    if (!division) return;
+    if (!division || closePending) return;
     if (returnFocus && returnFocus !== opener) {
       returnFocus.setAttribute('aria-expanded', 'false');
       returnFocus.classList.remove('is-selected');
@@ -202,18 +204,28 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     renderDialog();
     page.classList.add('fsd-modal-open');
     if (!dialog.open) dialog.showModal();
+    section.dispatchEvent(new CustomEvent('fsd:dialog-open', { bubbles: true }));
     const closeButton = dialog.querySelector('[data-close-dialog]');
     closeButton?.focus({ preventScroll: true });
   };
 
+  const requestClose = () => {
+    if (closePending || !dialog.open) return;
+    closePending = true;
+    const closeRequest = new CustomEvent('fsd:dialog-close-request', { cancelable: true });
+    document.dispatchEvent(closeRequest);
+    if (!closeRequest.defaultPrevented) dialog.close();
+  };
+
   const onClick = event => {
+    if (closePending) return;
     const opener = event.target.closest('[data-division]');
     if (opener && section.contains(opener)) {
       open(safeDivisions.find(division => division.id === opener.dataset.division), opener);
       return;
     }
     if (event.target.closest('[data-close-dialog]')) {
-      dialog.close();
+      requestClose();
       return;
     }
     const tab = event.target.closest('[data-group-index]');
@@ -236,23 +248,25 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
       const selectedProduct = safeProducts.find(product => String(product.id) === productButton.dataset.productId);
       if (!selectedProduct) return;
       afterClose = () => onProductSelect(selectedProduct.id);
-      dialog.close();
+      requestClose();
       return;
     }
     if (event.target.closest('[data-explore-collection]') && activeDivision) {
       const group = activeDivision.groups[activeGroupIndex];
       const subcategory = group.subcategories?.[activeSubcategoryIndex];
       afterClose = () => onExploreCollection({ ...group, query: subcategory?.productTerms?.[0] || '' });
-      dialog.close();
+      requestClose();
     }
   };
 
   const onDialogClick = event => {
-    if (event.target === dialog) dialog.close();
+    if (event.target === dialog) requestClose();
   };
+  const onDialogCancel = () => { closePending = true; };
   const onDialogClose = () => {
     // Native close events are queued; ignore an old event if already reopened.
     if (dialog.open) return;
+    closePending = false;
     activeDivision = null;
     page.classList.remove('fsd-modal-open');
     returnFocus?.setAttribute('aria-expanded', 'false');
@@ -264,6 +278,7 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     action?.();
   };
   const onKeyDown = event => {
+    if (closePending) return;
     const current = event.target.closest('[data-group-index]');
     if (!current || !activeDivision || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
@@ -277,12 +292,14 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
 
   section.addEventListener('click', onClick);
   dialog.addEventListener('click', onDialogClick);
+  dialog.addEventListener('cancel', onDialogCancel);
   dialog.addEventListener('close', onDialogClose);
   dialog.addEventListener('keydown', onKeyDown);
 
   return () => {
     section.removeEventListener('click', onClick);
     dialog.removeEventListener('click', onDialogClick);
+    dialog.removeEventListener('cancel', onDialogCancel);
     dialog.removeEventListener('close', onDialogClose);
     dialog.removeEventListener('keydown', onKeyDown);
     if (dialog.open) {

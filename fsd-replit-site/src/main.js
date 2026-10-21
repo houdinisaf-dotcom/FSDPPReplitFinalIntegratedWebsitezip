@@ -8,6 +8,8 @@ import './style.css';
 import './catalogue.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
+import './motion.css';
+import { initMotion } from './motion.js';
 
 function icon() {
   return `<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg>`;
@@ -76,6 +78,7 @@ mountCollectionShowcase({
 });
 initFeaturedCarousel(document.querySelector('#innovations'));
 initArchiveNavigation();
+if (typeof initMotion === 'function') initMotion();
 document.querySelector('#gallery-search').addEventListener('input', event => {
   const query = event.target.value.toLowerCase().trim();
   let count = 0;
