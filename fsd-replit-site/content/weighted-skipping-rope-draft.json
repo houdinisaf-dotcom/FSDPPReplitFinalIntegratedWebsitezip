@@ -3,7 +3,7 @@
   "sourceId": null,
   "id": null,
   "name": "FSD Weighted Skipping Rope",
-  "category": null,
+  "category": "Gym Hardware and Accessories",
   "collection": null,
   "audience": null,
   "confirmedPrice": null,
@@ -93,9 +93,9 @@
   "draftAssetManifest": "content/weighted-skipping-rope-images.json",
   "placement": {
     "division": "hardware",
-    "groupId": null,
+    "groupId": "strength-equipment",
     "subcategory": null,
-    "needsApproval": true
+    "needsApproval": false
   },
   "seo": {},
   "contentApproval": null,
@@ -104,7 +104,6 @@
   "missing": [
     "Source catalogue record and assigned product ID",
     "Price and verified specifications",
-    "Exact Hardware subcategory approval",
     "Explicit publication approval"
   ]
 }

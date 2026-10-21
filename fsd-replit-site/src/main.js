@@ -92,7 +92,13 @@ mountNavigation({
   root: document.querySelector('[data-navigation-shell]'),
   divisions: collectionDivisions,
   products,
+  includeDraftPreviews: import.meta.env.DEV,
   onNavigate({ menu, group, item }) {
+    if (item?.kind === 'draft-product') {
+      window.location.assign(item.href);
+      return;
+    }
+
     if (item?.record) {
       showProduct(item.record.id);
       return;

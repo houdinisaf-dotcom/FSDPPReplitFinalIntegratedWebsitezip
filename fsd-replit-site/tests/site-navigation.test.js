@@ -77,6 +77,28 @@ test('Bio-Lab and Hardware reuse current division groups and product records', (
   assert.ok(menu[2].groups[0].items.some(item => item.record?.name));
 });
 
+test('weighted rope is an opt-in Hardware draft preview, not a published catalogue record', () => {
+  const publicHardware = menu.find(section => section.id === 'hardware');
+  const strengthGroup = publicHardware.groups.find(group => group.title === 'STRENGTH EQUIPMENT');
+  assert.ok(strengthGroup);
+  assert.equal(strengthGroup.items.some(item => item.title === 'FSD Weighted Skipping Rope'), false);
+
+  const previewMenu = createNavigationModel({ includeDraftPreviews: true });
+  const previewHardware = previewMenu.find(section => section.id === 'hardware');
+  const previewGroup = previewHardware.groups.find(group => group.title === 'STRENGTH EQUIPMENT');
+  const ropeIndex = previewGroup.items.findIndex(item => item.title === 'FSD Weighted Skipping Rope');
+  const rope = previewGroup.items[ropeIndex];
+  assert.ok(rope);
+  assert.equal(rope.kind, 'draft-product');
+  assert.equal(rope.previewOnly, true);
+  assert.equal(rope.href, '/__catalogue-preview/weighted-skipping-rope/');
+  assert.equal(rope.featureImageSrc, `${rope.href}media/weighted-rope-campaign`);
+  assert.match(rope.description, /not for sale/i);
+  assert.equal(rope.productId, undefined);
+  assert.equal(products.some(product => product.name === rope.title), false);
+  assert.deepEqual(getNavigationFeature(previewHardware, 0, ropeIndex).imageSources, [rope.featureImageSrc]);
+});
+
 test('House destinations remain existing anchors and do not claim proposed locations are live', () => {
   const house = menu.find(item => item.id === 'house');
   assert.deepEqual(house.groups.map(group => group.title), [

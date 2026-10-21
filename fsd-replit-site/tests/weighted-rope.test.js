@@ -18,6 +18,14 @@ test('the recovered rope draft retains its key, has no public ID, and stays outs
   assert.equal(product.id, null);
   assert.equal(product.editorialStatus, 'Draft');
   assert.equal(product.purchaseEnabled, false);
+  assert.equal(product.category, 'Gym Hardware and Accessories');
+  assert.deepEqual(product.placement, {
+    division: 'hardware',
+    groupId: 'strength-equipment',
+    subcategory: null,
+    needsApproval: false,
+  });
+  assert.equal(product.missing.includes('Exact Hardware subcategory approval'), false);
   assert.equal(product.confirmedPrice, null);
   assert.equal(product.suggestedPrice, null);
   assert.equal(product.contentApproval, null);
@@ -76,6 +84,10 @@ test('the nine supplied PNG originals match their recorded hashes and dimensions
 test('draft validation rejects publication, purchase, duplicate, and split-board changes', () => {
   assert.throws(() => createWeightedRopeDraft({ ...weightedRopeRecord, id: 88 }), /unassigned, unpublished draft/);
   assert.throws(() => createWeightedRopeDraft({ ...weightedRopeRecord, purchaseEnabled: true }), /unassigned, unpublished draft/);
+  assert.throws(() => createWeightedRopeDraft({
+    ...weightedRopeRecord,
+    placement: { ...weightedRopeRecord.placement, groupId: 'combat-equipment' },
+  }), /approved Hardware placement/);
   assert.throws(() => createWeightedRopeDraft(
     { ...weightedRopeRecord, assetIds: [...weightedRopeRecord.assetIds, 'extra-detail'] },
   ), /exactly its nine supplied source images/);

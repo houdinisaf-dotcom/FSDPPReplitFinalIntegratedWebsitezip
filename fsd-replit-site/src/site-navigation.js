@@ -19,6 +19,23 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
 }[character]));
 
 const slug = value => String(value ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const weightedRopePreviewPath = '/__catalogue-preview/weighted-skipping-rope/';
+
+function makeWeightedRopeDraftMenuItem() {
+  return {
+    id: 'weighted-skipping-rope-draft-menu-entry',
+    title: 'FSD Weighted Skipping Rope',
+    kind: 'draft-product',
+    href: weightedRopePreviewPath,
+    previewOnly: true,
+    featureImageSrc: `${weightedRopePreviewPath}media/weighted-rope-campaign`,
+    featureImageAlt: 'FSD Weighted Skipping Rope campaign with the athlete and all eight colour editions.',
+    description: 'Private draft preview · eight colour editions. Not for sale; price and specifications are pending approval.',
+    sourceDivisionId: 'hardware',
+    sourceGroupIndex: 0,
+    sourceSubcategoryIndex: -1,
+  };
+}
 
 function divisionById(divisions, id) {
   return divisions.find(division => division.id === id);
@@ -230,18 +247,27 @@ function makePrivateGroups() {
 export function createNavigationModel({
   divisions = collectionDivisions,
   products = catalogueProducts,
+  includeDraftPreviews = false,
 } = {}) {
   const findDivision = id => divisionById(divisions, id);
   const divisionMenu = (id, label) => {
     const division = findDivision(id);
+    const groups = (division?.groups || []).map((group, index) =>
+      makeDivisionGroup(division, group, index, products));
+    if (id === 'hardware' && includeDraftPreviews) {
+      const strengthEquipment = groups.find(group => group.title === 'STRENGTH EQUIPMENT');
+      if (!strengthEquipment) {
+        throw new Error('Hardware must contain the approved Strength Equipment group for the draft preview.');
+      }
+      strengthEquipment.items = [...strengthEquipment.items, makeWeightedRopeDraftMenuItem()];
+    }
     return {
       id,
       label,
       title: label,
       description: division?.description || '',
       divisionId: id,
-      groups: (division?.groups || []).map((group, index) =>
-        makeDivisionGroup(division, group, index, products)),
+      groups,
     };
   };
 
@@ -290,6 +316,11 @@ function groupFeatureProducts(group, item, products) {
 function hasVerifiedDestination({ menu, group, item }, { root, divisions, products }) {
   if (item?.navigationUnavailable || (!item && group?.navigationUnavailable)) return false;
   const ownerDocument = root.ownerDocument || document;
+  if (item?.kind === 'draft-product') {
+    return item.previewOnly === true
+      && item.href === weightedRopePreviewPath
+      && item.featureImageSrc === `${weightedRopePreviewPath}media/weighted-rope-campaign`;
+  }
   if (item?.record) {
     return products.some(product => product.id === item.record.id)
       && Boolean(ownerDocument.querySelector('#product-dialog'));
@@ -329,12 +360,14 @@ function hasVerifiedDestination({ menu, group, item }, { root, divisions, produc
 }
 
 function renderFeature(menu, group, item, products, canNavigate) {
-  const imageRecords = groupFeatureProducts(group, item, products)
-    .filter(product => Array.isArray(product.images))
-    .flatMap(product => product.images.map(image => ({ ...image, product })))
-    .filter((image, index, all) => all.findIndex(other => other.src === image.src) === index)
-    .slice(0, 4);
-  const exactItemImage = Boolean(item?.record?.images?.length ||
+  const imageRecords = item?.featureImageSrc
+    ? [{ src: item.featureImageSrc, label: item.featureImageAlt, product: { name: item.title } }]
+    : groupFeatureProducts(group, item, products)
+      .filter(product => Array.isArray(product.images))
+      .flatMap(product => product.images.map(image => ({ ...image, product })))
+      .filter((image, index, all) => all.findIndex(other => other.src === image.src) === index)
+      .slice(0, 4);
+  const exactItemImage = Boolean(item?.featureImageSrc || item?.record?.images?.length ||
     (item?.source && groupProducts(item.sourceGroup || group.source, products, item.source)
       .some(product => product.images?.length)));
   const featureTitle = item?.record?.name || item?.title || group?.title || 'FSD';
@@ -356,7 +389,8 @@ function renderFeature(menu, group, item, products, canNavigate) {
 
   const available = canNavigate({ menu, group, item });
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
-    : item?.record ? 'VIEW PRODUCT RECORD'
+    : item?.kind === 'draft-product' ? 'OPEN DRAFT PREVIEW'
+      : item?.record ? 'VIEW PRODUCT RECORD'
       : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
         : menu.id === 'house' && item?.href === '#philosophy' ? 'READ THE FSD STORY'
           : item?.kind === 'concept' ? 'EXPLORE CONCEPT'
@@ -368,7 +402,7 @@ function renderFeature(menu, group, item, products, canNavigate) {
   return `<article class="fsd-feature-card">
     ${media}
     <div class="fsd-feature-copy">
-      <p class="fsd-feature-kicker">${exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
+      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? 'FSD / DRAFT PREVIEW' : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
       <h3>${escapeHTML(featureTitle)}</h3>
       <p>${escapeHTML(description)}</p>
       <button type="button" class="fsd-feature-cta" data-nav-destination
@@ -397,7 +431,9 @@ function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
 function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
   return group.items.map((item, index) => {
     const available = canNavigate({ menu, group, item });
-    const status = available ? 'Open this destination.' : 'Preview only; no verified destination is available.';
+    const status = item.kind === 'draft-product'
+      ? 'Open the private draft preview. Not for sale.'
+      : available ? 'Open this destination.' : 'Preview only; no verified destination is available.';
     return `<button type="button"
       class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"
       data-nav-item="${index}" data-nav-available="${available}"
@@ -482,13 +518,14 @@ export function mountNavigation({
   root = document.querySelector('[data-navigation-shell]'),
   divisions = collectionDivisions,
   products = catalogueProducts,
+  includeDraftPreviews = false,
   onNavigate = () => {},
 } = {}) {
   if (!root) throw new TypeError('mountNavigation requires the FSD navigation shell.');
   const panel = root.querySelector('[data-nav-panel]');
   const content = root.querySelector('[data-nav-content]');
   const mobileToggle = root.querySelector('[data-nav-mobile-toggle]');
-  const model = createNavigationModel({ divisions, products });
+  const model = createNavigationModel({ divisions, products, includeDraftPreviews });
   const triggers = [...root.querySelectorAll('.fsd-primary-trigger')];
   if (!panel || !content || !mobileToggle) throw new TypeError('The FSD navigation markup is incomplete.');
   const canNavigate = selection => hasVerifiedDestination(selection, { root, divisions, products });
@@ -863,12 +900,14 @@ export function getNavigationFeature(menu, groupIndex, itemIndex, products = cat
   const group = menu?.groups?.[groupIndex];
   const item = group?.items?.[itemIndex];
   if (!group || !item) return null;
-  const records = groupFeatureProducts(group, item, products);
+  const records = item.featureImageSrc ? [] : groupFeatureProducts(group, item, products);
   return {
     menu: menu.id,
     group: group.title,
     item: item.title,
-    imageSources: records.flatMap(record => record.images || []).map(image => image.src),
+    imageSources: item.featureImageSrc
+      ? [item.featureImageSrc]
+      : records.flatMap(record => record.images || []).map(image => image.src),
     itemKind: item.kind,
     sourceDivisionId: item.sourceDivisionId || group.sourceDivisionId || menu.divisionId || '',
   };

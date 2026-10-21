@@ -1,0 +1,147 @@
+# FSD WEBSITE — ADD WEIGHTED SKIPPING ROPE TO HARDWARE → STRENGTH EQUIPMENT
+
+## TARGETED PRODUCT & NAVIGATION INTEGRATION
+
+Please integrate the **FSD Weighted Skipping Rope** into the existing website navigation at:
+
+**Hardware → Strength Equipment → FSD Weighted Skipping Rope**
+
+This is a targeted catalogue and navigation update.
+
+The current FSD header and three-column mega-menu design are approved. Do not redesign or replace them.
+
+## 1. NAVIGATION PLACEMENT
+
+Within the existing Hardware mega-menu:
+
+1. Select **Hardware** in the main navigation.
+2. Select or hover over **Strength Equipment**.
+3. Display **FSD Weighted Skipping Rope** as an available product entry.
+4. Clicking the product entry must open the correct skipping-rope product page or product-selection experience.
+5. The right-hand featured panel may show the approved skipping-rope campaign image when this product is selected.
+6. The right-hand CTA must open the same product destination.
+
+Preserve the current hover highlights, active selection styling, transitions and menu behaviour.
+
+Do not add a new top-level navigation category.
+
+## 2. USE THE APPROVED PRODUCT IMAGES
+
+I have supplied nine approved images.
+
+### Campaign hero
+
+`Hero Product image (1).png`
+
+Use this as the main campaign image. It shows the athlete skipping with the orange rope and all eight colour editions arranged together.
+
+### Eight colour editions
+
+- `Matte Obsidian edition(1).png`
+- `Crimson Red edition(1).png`
+- `Deep Ultraviolet Plum(1).png`
+- `Electric Cobalt Blue (1).png`
+- `Electric Fuchsia(1).png`
+- `Electric Green(1).png`
+- `Hyper Flame Orange (1).png`
+- `Sunbeam Yellow (1).png`
+
+Each colour-edition image is one complete 2×2 product board.
+
+Do not split the boards into 32 images.
+
+Do not generate replacement product photography.
+
+If any files are not present in the Replit project, tell me which files need uploading rather than substituting other imagery.
+
+## 3. PRODUCT PRESENTATION
+
+The product experience should include:
+
+- The fixed campaign hero image.
+- FSD Weighted Skipping Rope product name.
+- One visible colour-edition product board at a time.
+- Eight selectable colour swatches.
+- The selected edition name.
+- Smooth, subtle image transitions.
+- Premium FSD black, graphite and champagne styling.
+
+Selecting a colour must display its corresponding approved image.
+
+The campaign hero must remain unchanged.
+
+Do not introduce a four-image gallery per colour or unnecessary thumbnails.
+
+## 4. CATALOGUE INTEGRATION
+
+Before creating anything, search the current catalogue for an existing FSD Weighted Skipping Rope record.
+
+If it exists, reuse its existing product ID and variant associations.
+
+If it does not exist, create one draft product record using the established Phase 4 catalogue schema.
+
+Assign it to:
+
+**Division:** Hardware
+
+**Category:** Strength Equipment
+
+**Product:** FSD Weighted Skipping Rope
+
+Preserve existing catalogue architecture.
+
+Do not invent prices, technical specifications, stock availability or SKU values.
+
+Keep the product in draft or pending approval.
+
+If the website has a draft-preview mechanism, use it so I can review the product without making it publicly purchasable.
+
+## 5. NAVIGATION INTERACTIONS
+
+Make sure:
+
+- Hardware opens the existing mega-menu.
+- Strength Equipment highlights when hovered or selected.
+- FSD Weighted Skipping Rope appears in the relevant submenu.
+- Clicking the rope opens the correct product destination.
+- The featured image and CTA update appropriately.
+- The customer can return to the menu normally.
+- No automatic page scrolling occurs when merely exploring menu categories.
+- Keyboard and mobile navigation also work.
+
+Do not use placeholder links.
+
+## 6. STRICT SAFEGUARDS
+
+Do not:
+
+- Redesign the mega-menu.
+- Change the approved header.
+- Replace the FSD master logo.
+- Modify other products.
+- Remove existing catalogue entries.
+- Alter existing hero sections.
+- Delete approved imagery.
+- Introduce a 32-image gallery.
+- Enable checkout or payments.
+- Publish or deploy the website.
+
+Create a recovery checkpoint before editing, where supported.
+
+## 7. TEST AND REPORT
+
+Verify:
+
+1. Hardware → Strength Equipment → FSD Weighted Skipping Rope works.
+2. The product opens correctly.
+3. All eight colour swatches show the correct images.
+4. The campaign hero remains fixed.
+5. Existing menu categories and links still function.
+6. Desktop and mobile layouts work.
+7. The product remains in draft or preview-only status.
+
+Show me the updated website preview and identify any missing assets or catalogue details.
+
+## FINAL REQUIREMENT
+
+**Add the FSD Weighted Skipping Rope to Hardware → Strength Equipment, connect it to its approved product presentation and eight colour editions, and preserve the existing website design exactly as it is.**

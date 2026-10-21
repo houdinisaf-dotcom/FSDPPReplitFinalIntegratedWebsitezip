@@ -12,8 +12,13 @@ export function createWeightedRopeDraft(record = draftRecord, manifest = imageMa
     || record.editorialStatus !== 'Draft'
     || record.purchaseEnabled !== false
     || record.contentApproval !== null
-    || record.publishAuthorisation !== null) {
-    throw new Error('Weighted skipping rope must remain an unassigned, unpublished draft.');
+    || record.publishAuthorisation !== null
+    || record.category !== 'Gym Hardware and Accessories'
+    || record.placement?.division !== 'hardware'
+    || record.placement?.groupId !== 'strength-equipment'
+    || record.placement?.subcategory !== null
+    || record.placement?.needsApproval !== false) {
+    throw new Error('Weighted skipping rope must remain an unassigned, unpublished draft with its approved Hardware placement.');
   }
 
   if (manifest.productKey !== record.key

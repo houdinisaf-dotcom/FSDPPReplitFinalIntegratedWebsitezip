@@ -10,7 +10,8 @@ import { createNavigationModel } from '../src/site-navigation.js';
 
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
-const navigationModel = createNavigationModel();
+const draftPreviewPath = '/__catalogue-preview/weighted-skipping-rope/';
+const navigationModel = createNavigationModel({ includeDraftPreviews: true });
 const profile = mkdtempSync(join(tmpdir(), 'fsd-nav-browser-'));
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
@@ -179,6 +180,7 @@ try {
 
   const routeKind = ({ group, item }) => {
     if (item?.navigationUnavailable || (!item && group.navigationUnavailable)) return 'preview';
+    if (item?.kind === 'draft-product') return 'draft';
     if (item?.record) return 'product';
     if (item?.kind === 'category') return 'category';
     if (item?.href || group.href) return 'anchor';
@@ -187,6 +189,10 @@ try {
   };
 
   const closeRouteAndReset = async () => {
+    if (await evaluate(`location.pathname === ${JSON.stringify(draftPreviewPath)}`)) {
+      await send('Page.navigate', { url: `https://${domain}/` });
+      await waitFor('!!document.querySelector(".fsd-primary-nav")');
+    }
     const openDialog = await evaluate('document.querySelector("#product-dialog").open || document.querySelector("#fsd-showcase-dialog").open');
     if (openDialog) {
       await key('Escape');
@@ -205,6 +211,21 @@ try {
     const kind = routeKind({ group, item });
     const available = await evaluate(`document.querySelector(${JSON.stringify(selector)})?.dataset.navAvailable === "true"`);
     assert.equal(available, kind !== 'preview', `${menu.label}: ${item?.title || group.title} availability metadata`);
+
+    if (kind === 'draft') {
+      await waitFor(`(() => {
+        const image = document.querySelector(".fsd-feature-media img");
+        return image?.getAttribute("src") === ${JSON.stringify(item.featureImageSrc)} && image.naturalWidth === 1672;
+      })()`);
+      assert.equal(await evaluate('document.querySelector(".fsd-feature-kicker").textContent'), 'FSD / DRAFT PREVIEW');
+      await click(selector);
+      await waitFor(`location.pathname === ${JSON.stringify(item.href)} && document.querySelector("#product-title")?.textContent.includes("FSD Weighted Skipping Rope")`);
+      await waitFor('document.querySelector("#campaign-image")?.naturalWidth === 1672 && document.querySelector("#edition-image")?.naturalWidth === 1122');
+      assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("NOT FOR SALE")'), true);
+      assert.equal(await evaluate('document.querySelectorAll("#edition-options [data-edition]").length'), 8);
+      assert.equal(await evaluate('document.querySelectorAll("form, input, [data-add-to-cart], [data-purchase]").length'), 0);
+      return;
+    }
 
     if (kind === 'preview') {
       const y = await evaluate('window.scrollY');
@@ -272,6 +293,22 @@ try {
     }
   }
 
+  // The selected draft feature card uses the same private preview destination as its menu row.
+  const hardwareMenu = navigationModel.find(menu => menu.id === 'hardware');
+  const ropeGroupIndex = hardwareMenu.groups.findIndex(group => group.title === 'STRENGTH EQUIPMENT');
+  const ropeItemIndex = hardwareMenu.groups[ropeGroupIndex].items.findIndex(item => item.kind === 'draft-product');
+  const ropeItem = hardwareMenu.groups[ropeGroupIndex].items[ropeItemIndex];
+  await closeRouteAndReset();
+  await click('.fsd-primary-trigger[data-nav-primary="hardware"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "hardware" && !document.querySelector("#fsd-mega-menu").hidden');
+  await moveTo(`#fsd-mega-menu [data-nav-group="${ropeGroupIndex}"]`);
+  await moveTo(`#fsd-mega-menu [data-nav-item="${ropeItemIndex}"]`);
+  await waitFor(`document.querySelector(".fsd-feature-copy h3")?.textContent === ${JSON.stringify(ropeItem.title)} && document.querySelector(".fsd-feature-media img")?.naturalWidth === 1672`);
+  await click('#fsd-mega-menu .fsd-feature-cta');
+  await waitFor(`location.pathname === ${JSON.stringify(ropeItem.href)} && document.querySelector("#product-title")?.textContent.includes("FSD Weighted Skipping Rope")`);
+  await waitFor('document.querySelector("#campaign-image")?.naturalWidth === 1672');
+  await closeRouteAndReset();
+
   for (const [id, heading] of [
     ['collections', 'COLLECTIONS'],
     ['bio-lab', 'BIO-LAB™'],
@@ -335,8 +372,21 @@ try {
   await waitFor('!document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-mega-menu").hidden && !document.body.classList.contains("fsd-mobile-nav-open")');
   assert.equal(await evaluate('document.activeElement.matches("[data-nav-mobile-toggle]")'), true);
 
+  await click('[data-nav-mobile-toggle]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "primary"');
+  await click('.fsd-mobile-primary-list [data-nav-primary="hardware"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
+  await click(`#fsd-mega-menu [data-nav-group="${ropeGroupIndex}"]`);
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail"');
+  await click(`#fsd-mega-menu [data-nav-item="${ropeItemIndex}"]`);
+  await waitFor(`location.pathname === ${JSON.stringify(ropeItem.href)} && document.querySelector("#product-title")?.textContent.includes("FSD Weighted Skipping Rope")`);
+  await waitFor('document.querySelector("#campaign-image")?.naturalWidth === 1672');
+  assert.equal(await evaluate('document.querySelectorAll("#edition-options [data-edition]").length'), 8);
+  await closeRouteAndReset();
+  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
+
   assert.deepEqual(browserErrors, []);
-  console.log('Navigation browser checks passed: all verified links, unavailable destinations, desktop hover/focus highlighting, category filter routing, mobile steps, Escape and overflow.');
+  console.log('Navigation browser checks passed: verified links, weighted-rope draft row and feature CTA, mobile draft routing, unavailable destinations, keyboard/focus, and overflow.');
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');

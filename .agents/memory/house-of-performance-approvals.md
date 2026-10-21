@@ -37,4 +37,10 @@ During the weighted-rope recovery request, the user explicitly authorized restor
 
 **Why:** The user approved recovering the draft from history and using the exact newly supplied artwork, while requiring an internal review before any public catalogue use.
 
-**How to apply:** Keep the historic product key, leave the public ID and unknown facts unset, preserve all source images unchanged, never crop or split edition boards, and keep purchasing/publication disabled. Do not change Phase 3 navigation or other catalogue records during this work.
+**How to apply:** Keep the historic product key, leave the public ID and unknown facts unset, preserve all source images unchanged, never crop or split edition boards, and keep purchasing/publication disabled. Do not change Phase 3 navigation or other catalogue records unless the user later explicitly authorizes a specific exception.
+
+The user subsequently authorized one targeted exception: place the FSD Weighted Skipping Rope draft under Hardware → Strength Equipment, with its menu item and feature CTA opening the existing private preview. Keep that entry and preview development-only; the active catalogue, production navigation, and purchase flow remain unchanged.
+
+**Why:** The user explicitly requested this exact navigation placement and review path while requiring the product to remain a non-purchasable draft.
+
+**How to apply:** This exception applies only to the weighted-rope preview. Keep its public ID, price, verified specifications, SKU and stock unset; do not generalize the authorization to other products or publish the website.

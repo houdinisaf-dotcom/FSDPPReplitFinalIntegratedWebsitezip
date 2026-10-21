@@ -250,10 +250,11 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.ok(existsSync(new URL(`../public${image.url}`, import.meta.url)));
     assert.ok(!galleryProducts.includes(image));
   }
-  // Run the real entrypoint against a minimal DOM, with only bundler imports removed.
+  // Run the real entrypoint against a minimal DOM, with bundler-only syntax resolved.
   // This covers the entire composed page, not just isolated catalogue sections.
   const source = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8')
-    .replace(/^import .+;\r?\n/gm, '');
+    .replace(/^import .+;\r?\n/gm, '')
+    .replaceAll('import.meta.env.DEV', 'false');
   const elements = new Map();
   const document = {
     querySelector(selector) {
