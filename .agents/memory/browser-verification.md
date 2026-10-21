@@ -14,3 +14,9 @@ Do not infer real mobile page overflow solely from measurements in a Chromium se
 **Why:** Low-level CDP testing reported a 402px visual viewport alongside 1120px layout measurements, despite no visible element wider than 405px and correct fresh mobile preview screenshots.
 
 **How to apply:** Use a dedicated fresh mobile browser context for future interaction automation. Keep mobile visual review separate from verified automated interactions until that setup is reliable; never report the inconsistent test as passing.
+
+For navigation panels that rerender their rows, use real pointer movement—not `pointerover`—to update the hover selection.
+
+**Why:** Replacing the row under a stationary mouse can synthesize another `pointerover` and overwrite a keyboard-focused selection.
+
+**How to apply:** Preserve the selected row during subtree updates, and let keyboard focus remain active until the pointer actually moves.

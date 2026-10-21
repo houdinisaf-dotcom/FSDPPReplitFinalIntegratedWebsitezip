@@ -503,6 +503,7 @@ export function mountNavigation({
   let pointerTimer = 0;
   let pointerInside = false;
   let suppressFocusPreview = false;
+  let hoveredNavigationKey = '';
 
   const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
   const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -721,11 +722,21 @@ export function mountNavigation({
     }
   };
 
-  const onPanelPointerOver = event => {
-    if (!isOpen || event.pointerType === 'touch') return;
+  const onPanelPointerMove = event => {
+    if (!isOpen || isMobile() || event.pointerType === 'touch') return;
     const row = event.target.closest('[data-nav-group], [data-nav-item]');
-    const previousRow = event.relatedTarget?.closest?.('[data-nav-group], [data-nav-item]');
-    if (!row || !panel.contains(row) || row === previousRow) return;
+    if (!row || !panel.contains(row)) {
+      hoveredNavigationKey = '';
+      return;
+    }
+    const key = row.hasAttribute('data-nav-group')
+      ? `group:${row.dataset.navGroup}`
+      : `item:${row.dataset.navItem}`;
+    const alreadySelected = row.hasAttribute('data-nav-group')
+      ? Number(row.dataset.navGroup) === activeGroupIndex
+      : Number(row.dataset.navItem) === activeItemIndex;
+    if (key === hoveredNavigationKey && alreadySelected) return;
+    hoveredNavigationKey = key;
     if (row.hasAttribute('data-nav-group')) {
       chooseGroup(Number(row.dataset.navGroup));
     } else {
@@ -738,7 +749,7 @@ export function mountNavigation({
     const row = event.target.closest('[data-nav-group], [data-nav-item]');
     if (!row || !panel.contains(row)) return;
     if (row.hasAttribute('data-nav-group')) {
-      chooseGroup(Number(row.dataset.navGroup), { mobile: isMobile() });
+      chooseGroup(Number(row.dataset.navGroup));
     } else {
       chooseItem(Number(row.dataset.navItem));
     }
@@ -824,7 +835,7 @@ export function mountNavigation({
     });
   }
   root.addEventListener('click', onClick);
-  panel.addEventListener('pointerover', onPanelPointerOver);
+  panel.addEventListener('pointermove', onPanelPointerMove);
   panel.addEventListener('focusin', onPanelFocusIn);
   document.addEventListener('keydown', onKeyDown);
   root.addEventListener('pointerenter', onRootPointerEnter);
@@ -838,7 +849,7 @@ export function mountNavigation({
     clearTimeout(closeTimer);
     clearTimeout(pointerTimer);
     root.removeEventListener('click', onClick);
-    panel.removeEventListener('pointerover', onPanelPointerOver);
+    panel.removeEventListener('pointermove', onPanelPointerMove);
     panel.removeEventListener('focusin', onPanelFocusIn);
     document.removeEventListener('keydown', onKeyDown);
     root.removeEventListener('pointerenter', onRootPointerEnter);
