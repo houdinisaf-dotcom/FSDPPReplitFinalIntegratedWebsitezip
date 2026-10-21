@@ -1,0 +1,151 @@
+# FSD WEBSITE — URGENT NAVIGATION REGRESSION REPAIR
+
+## IMPORTANT: PREVIOUS RESTORATION ATTEMPT FAILED
+
+I have already instructed you to restore the original Phase 3 navigation, but the website is still not behaving or appearing as it did before Phase 4.
+
+Do not repeat the previous restoration attempt.
+
+This is a code-level regression investigation and repair.
+
+## THE REQUIRED RESULT
+
+Restore the exact previously working Phase 3 navigation system, including:
+
+- The original FSD header.
+- Collections, Bio-Lab, Hardware, The House and Private Access.
+- The full-width dark mega-menu opening beneath the header.
+- Three-column navigation layout.
+- Left column containing collection groups.
+- Middle column containing contextual subcategories.
+- Right column containing featured imagery and descriptions.
+- Champagne-gold hover and selection effects.
+- Smooth switching between categories.
+- The original open/close behaviour.
+- No unwanted automatic page scrolling.
+
+The later navigation containing Products, Our Story, Innovations, Design Library and VIP Access is not the approved replacement.
+
+## STEP 1 — FIND THE ACTUAL SOURCE OF THE PROBLEM
+
+Inspect the current codebase and available project history.
+
+Locate:
+
+1. The component that renders the current header.
+2. The component that renders the current dropdown or mega-menu.
+3. The original Phase 3 navigation implementation.
+4. The files changed during Phase 4 that affected navigation.
+5. Any duplicate headers, navigation components or layouts.
+6. Any routing or state changes preventing the original menu from functioning.
+
+Check whether the correct navigation component still exists but is no longer being rendered.
+
+Do not assume that the original code has been deleted.
+
+If the original Phase 3 implementation exists in project history, use that actual code as the reference.
+
+If it cannot be found, explicitly report this rather than claiming it was restored.
+
+## STEP 2 — PROTECT CURRENT PHASE 4 WORK
+
+Before editing, create a recoverable checkpoint or commit where supported.
+
+Preserve:
+
+- Product catalogue architecture.
+- Weighted skipping rope product data.
+- Eight colour variants.
+- Existing product imagery.
+- Image associations.
+- Product approval statuses.
+- Product routes.
+- SEO and accessibility improvements.
+- All other approved Phase 4 functionality.
+
+Do not revert the entire project.
+
+## STEP 3 — REPAIR THE HEADER AND MEGA-MENU
+
+Restore the original navigation components from the last known working implementation wherever possible.
+
+Correct the current application's imports, layout composition, state handling and event handlers so the original navigation is actually displayed and works.
+
+Remove or disconnect duplicate navigation implementations only after confirming they are not needed elsewhere.
+
+Do not create another alternative header.
+
+Do not replace the mega-menu with ordinary links, collection cards or scroll-to-section behaviour.
+
+Do not change the rest of the homepage design.
+
+## STEP 4 — TEST THE ACTUAL INTERACTIONS
+
+Run the website and verify that:
+
+1. Collections opens the original mega-menu.
+2. Bio-Lab opens its correct menu content.
+3. Hardware opens its correct menu content.
+4. Moving between primary tabs updates the panel.
+5. Selecting a left-column category updates the middle column.
+6. Selecting a relevant subcategory updates the featured content where designed.
+7. The menu closes correctly.
+8. The menu does not trigger unwanted page scrolling.
+9. Existing product pages and colour selectors still work.
+10. Mobile navigation remains usable.
+
+Check for runtime errors, broken imports and event-handling conflicts.
+
+Do not report success solely because the code compiles.
+
+## STEP 5 — SHOW ME THE RESULT
+
+Once repaired, provide the preview of the actual running website.
+
+Explain:
+
+- Which component was causing the regression.
+- Which files were modified.
+- Whether the original Phase 3 code was recovered.
+- Which Phase 4 features were preserved.
+- Whether any part of the navigation still differs from the approved version.
+
+Do not publish or deploy.
+
+## STRICT REQUIREMENTS
+
+Do not redesign the FSD website.
+
+Do not generate a new navigation concept.
+
+Do not replace approved imagery.
+
+Do not modify the FSD logo.
+
+Do not delete catalogue records.
+
+Do not change product prices.
+
+Do not activate checkout.
+
+Do not claim the navigation is fixed without verifying its actual behaviour.
+
+## IF THE ORIGINAL NAVIGATION CANNOT BE RECOVERED
+
+Stop and tell me exactly what is missing.
+
+Identify the last available checkpoint or commit containing the approved navigation, if one exists.
+
+Explain the safest method to recover only the necessary navigation files while keeping Phase 4 catalogue changes.
+
+Do not invent a replacement and present it as the original.
+
+## FINAL INSTRUCTION
+
+The priority is to recover the exact navigation that was functioning before Phase 4, not to create something visually similar.
+
+Preserve Phase 4 product infrastructure.
+
+Repair the regression at component and application-layout level.
+
+Wait for my approval before making any unrelated design changes or deploying.
