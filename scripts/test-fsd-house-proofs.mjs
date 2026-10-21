@@ -8,7 +8,9 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'A running Replit development domain is required.');
-const output = 'generated-artifacts/fsd-house/tests';
+const components = process.argv.slice(2).length ? process.argv.slice(2) : ['Dropdown', 'Floating'];
+const refined = components.includes('HousePlus');
+const output = `generated-artifacts/fsd-house/${refined ? 'plus-tests' : 'tests'}`;
 fs.mkdirSync(output, { recursive: true });
 const findings = [];
 
@@ -88,7 +90,11 @@ async function scenario(component, width) {
       if (!navVisible) await click('button[aria-label*="menu" i], button[aria-label*="navigation" i], [data-mobile-menu]');
     }
     async function snapshot(name) {
-      const image = await send('Page.captureScreenshot', { format: 'jpeg', quality: 85 });
+      const metrics = refined && name === 'homepage' && !mobile
+        ? await send('Page.getLayoutMetrics') : null;
+      const image = await send('Page.captureScreenshot', { format: 'jpeg', quality: 85,
+        ...(metrics ? {captureBeyondViewport:true,clip:{x:0,y:0,width:Math.ceil(metrics.cssContentSize.width),height:Math.ceil(metrics.cssContentSize.height),scale:1}} : {})
+      });
       fs.writeFileSync(`${output}/${component}-${mobile ? 'mobile' : 'desktop'}-${name}.jpg`, Buffer.from(image.data, 'base64'));
     }
     await send('Page.enable');
@@ -109,7 +115,7 @@ async function scenario(component, width) {
     })()`);
     assert.deepEqual(brokenImages, [], 'Homepage has undecodable or missing imagery');
     assert.ok(await evaluate(`(()=>{
-      const button=document.querySelector('.fd-button-primary,.fh-hero-actions button');
+      const button=document.querySelector('[data-primary-action],.fd-button-primary,.fh-hero-actions button');
       const styles=getComputedStyle(button);
       const luminance=color=>{
         const channels=color.match(/[\\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
@@ -118,6 +124,11 @@ async function scenario(component, width) {
       const a=luminance(styles.color),b=luminance(styles.backgroundColor);
       return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=4.5;
     })()`), 'Hero action text contrast is too low');
+    if (refined) assert.ok(await evaluate(`(()=>{
+      const luminance=color=>color.match(/[\\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+      const base=luminance('rgb(9,10,12)');
+      return [...document.querySelectorAll('[data-collection-banner] strong')].every(element=>(luminance(getComputedStyle(element).color)+.05)/(base+.05)>=4.5);
+    })()`), 'Collection heading text lacks contrast against the dark campaign overlay');
     assert.ok(await evaluate('document.documentElement.scrollWidth<=innerWidth+1'), 'Homepage horizontal overflow');
     assert.ok(await evaluate(`!document.body.innerText.toLowerCase().includes('in development')`), 'Prohibited status wording visible');
     assert.ok(await evaluate(`!document.querySelector('input[type="email"]:not(:disabled)')`), 'Email collection unexpectedly enabled');
@@ -133,8 +144,23 @@ async function scenario(component, width) {
       if (category === 'collections') {
         assert.ok(await evaluate(`Boolean(${visible('[data-subcategory]')})`), 'Collection subcategories not immediately available');
         await snapshot('navigation-open');
+        if (refined) {
+          const milliseconds = await evaluate(`(()=>{
+            const panel=${visible('[data-category-panel]')};
+            const styles=[getComputedStyle(panel),getComputedStyle(panel.parentElement)];
+            return Math.max(...styles.flatMap(s=>[...s.animationDuration.split(','),...s.transitionDuration.split(',')]).map(s=>parseFloat(s)*1000));
+          })()`);
+          assert.ok(milliseconds >= 180 && milliseconds <= 250, `Opening duration ${milliseconds}ms is outside the requested range`);
+          if (!mobile) {
+            assert.ok(await evaluate(`Math.abs((${visible('[data-category-panel]')}).getBoundingClientRect().top-document.querySelector('header').getBoundingClientRect().bottom)<=3`), 'Dropdown is detached from the header');
+          }
+        }
       }
       await key('Escape');
+      if (refined && category === 'collections') {
+        await delay(60);
+        assert.ok(await evaluate(panelOpen), 'Closing transition unmounted the panel immediately');
+      }
       await waitFor(`!(${panelOpen})`);
       assert.ok(await evaluate('document.activeElement?.getClientRects().length>0'), 'Focus restored to an invisible trigger');
     }
@@ -153,10 +179,14 @@ async function scenario(component, width) {
       const before = await evaluate('({y:scrollY,url:location.href})');
       await click(`[data-collection-banner="${audience}"]`);
       await waitFor(panelOpen);
+      if (refined) {
+        assert.ok(await evaluate(`(()=>{const r=(${visible('[data-category-panel]')}).getBoundingClientRect(); return r.top>=0 && r.top<innerHeight && r.bottom>0;})()`), 'Banner opened a selector outside the viewport');
+      }
       assert.ok(Math.abs(await evaluate('scrollY') - before.y) < 2, `${audience} banner caused unexpected scrolling`);
       assert.equal(await evaluate('location.href'), before.url, 'Banner navigated instead of selecting');
       await click('[data-subcategory]');
       assert.equal(await evaluate('location.href'), before.url, 'Subcategory selection navigated early');
+      if (refined) assert.ok(Math.abs(await evaluate('scrollY') - before.y) < 2, 'Subcategory selection scrolled the document');
       await waitFor(`Boolean(${visible('[data-explore-collection]')})`);
       await click('[data-explore-collection]');
       await waitFor(`Boolean(${visible('[data-destination]')})`);
@@ -178,7 +208,10 @@ async function scenario(component, width) {
       }
     }
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
-    const duration = await evaluate(`getComputedStyle(${visible('[data-category-panel]')}).animationDuration`);
+    const duration = await evaluate(`(()=>{
+      const style=getComputedStyle(${visible('[data-category-panel]')});
+      return [style.animationDuration,style.transitionDuration].join(',');
+    })()`);
     assert.ok(duration.split(',').every(v => parseFloat(v) <= 0.05), 'Panel ignores reduced-motion preference');
     await key('Escape');
     await waitFor(`!(${panelOpen})`);
@@ -192,14 +225,16 @@ async function scenario(component, width) {
   }
 }
 
-for (const component of ['Dropdown', 'Floating']) {
+for (const component of components) {
   for (const width of [1280, 390]) {
     try { findings.push(await scenario(component, width)); }
     catch (error) { findings.push({ component, viewport: width, status: 'FAIL', message: error.message }); }
     console.log(findings.at(-1));
   }
 }
-const originals = JSON.parse(fs.readFileSync('generated-artifacts/fsd-house/baseline/original-sha256.json', 'utf8'));
+const originals = JSON.parse(fs.readFileSync(refined
+  ? 'generated-artifacts/fsd-house/plus-baseline.json'
+  : 'generated-artifacts/fsd-house/baseline/original-sha256.json', 'utf8'));
 for (const original of originals) {
   assert.equal(crypto.createHash('sha256').update(fs.readFileSync(original.file)).digest('hex'), original.sha256, `Original modified: ${original.file}`);
 }
