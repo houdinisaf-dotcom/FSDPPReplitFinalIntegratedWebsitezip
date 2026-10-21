@@ -59,6 +59,12 @@ FSD MOTION is a private concept proof, not a product-catalogue or commercial app
 
 **How to apply:** Keep MOTION routes development-only and noindex; show only source campaign references with clear labels, keep individual garment photography and specifications pending, and do not add catalogue values, checkout or public release without separate approval.
 
+FSD AeroForge collection and product pages are approved only as private visual/layout proofs. The supplied image set is not final product photography or verified product data.
+
+**Why:** The user approved the proof while specifically identifying plain FSD garment marks, missing rear views (including incomplete Mauve coverage), absent standalone jogger/detail photography, and unverified specifications and commercial values.
+
+**How to apply:** Preserve the approved layout and all original supplied assets; keep mismatched branding and missing views flagged for correction, leave product claims and values unverified, and keep the separate £89.99 master-catalogue set record unchanged. Do not publish, enable checkout, or make further design changes without new instructions.
+
 Avoid the exact visible phrase “in development” across the public site.
 
 **Why:** The user asked for all instances of that wording to be removed.
