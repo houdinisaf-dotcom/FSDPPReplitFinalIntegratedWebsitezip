@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "key": "hooded-running-shell-campaign-preview",
+  "sourceProductId": 9,
+  "sourceProductName": "FSD Hooded Running Shell",
+  "previewProductId": null,
+  "editorialStatus": "Private campaign proof",
+  "placement": {
+    "division": "apparel",
+    "groupId": "mens-luxury-performance",
+    "label": "FSD Apparel / Performance Outerwear"
+  },
+  "purchaseEnabled": false,
+  "colourSelection": "deferred",
+  "confirmedPrice": null,
+  "confirmedSpecifications": null,
+  "campaign": {
+    "id": "hooded-shell-campaign",
+    "file": "attached_assets/image_1792569419765.png",
+    "sha256": "759674cd9e8f9e7647ae9c5201eb418db551b85bd98229ed73de814cc2336c25",
+    "width": 1672,
+    "height": 941,
+    "alt": "Woman wearing the orange FSD Hooded Running Shell outdoors in a mountain landscape."
+  }
+}

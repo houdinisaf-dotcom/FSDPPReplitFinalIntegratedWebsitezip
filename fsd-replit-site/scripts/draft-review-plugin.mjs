@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createWeightedRopeDraft, weightedRopeManifest } from '../src/draft-catalogue.js';
+import { createHoodedShellCampaignPreview, hoodedShellPreviewRecord } from '../src/hooded-shell-campaign.js';
 
 const appRoot = fileURLToPath(new URL('../', import.meta.url));
 const workspaceRoot = resolve(appRoot, '..');
@@ -18,6 +19,9 @@ const assets = [
 }));
 const assetsById = new Map(assets.map(asset => [asset.id, asset]));
 const allowedAssetRoot = resolve(workspaceRoot, 'attached_assets');
+const shellPreviewPath = '/__catalogue-preview/hooded-running-shell/';
+const shellMediaPrefix = `${shellPreviewPath}media/`;
+const shellCampaign = hoodedShellPreviewRecord.campaign;
 
 function send(response, status, contentType, body, method = 'GET') {
   response.statusCode = status;
@@ -91,6 +95,61 @@ export function draftReviewPlugin() {
           return stream.pipe(response);
         } catch {
           return send(response, 500, 'text/plain; charset=utf-8', 'The draft preview could not be loaded.', request.method);
+        }
+      });
+
+      server.middlewares.use(async (request, response, next) => {
+        let pathname;
+        try {
+          pathname = new URL(request.url || '/', 'http://draft.invalid').pathname;
+        } catch {
+          return next();
+        }
+
+        const normalizedPage = pathname === shellPreviewPath.slice(0, -1) ? shellPreviewPath : pathname;
+        if (normalizedPage !== shellPreviewPath && !pathname.startsWith(shellMediaPrefix)) return next();
+
+        response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        response.setHeader('Cache-Control', 'no-store');
+        response.setHeader('X-Content-Type-Options', 'nosniff');
+
+        if (!['GET', 'HEAD'].includes(request.method)) {
+          response.setHeader('Allow', 'GET, HEAD');
+          return send(response, 405, 'text/plain; charset=utf-8', 'Read-only campaign proof.', request.method);
+        }
+
+        try {
+          if (normalizedPage === shellPreviewPath) {
+            createHoodedShellCampaignPreview();
+            const html = await readFile(resolve(appRoot, 'hooded-shell-campaign-preview.html'), 'utf8');
+            const transformed = await server.transformIndexHtml(shellPreviewPath, html);
+            return send(response, 200, 'text/html; charset=utf-8', transformed, request.method);
+          }
+
+          const assetId = pathname.slice(shellMediaPrefix.length);
+          if (assetId !== shellCampaign.id
+            || !shellCampaign.file.startsWith('attached_assets/')
+            || shellCampaign.file.includes('..')) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown campaign image.', request.method);
+          }
+
+          const filePath = resolve(workspaceRoot, shellCampaign.file);
+          if (!filePath.startsWith(`${allowedAssetRoot}${sep}`)) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown campaign image.', request.method);
+          }
+
+          if (request.method === 'HEAD') return send(response, 200, 'image/png', undefined, request.method);
+
+          response.statusCode = 200;
+          response.setHeader('Content-Type', 'image/png');
+          const stream = createReadStream(filePath);
+          stream.on('error', () => {
+            if (!response.headersSent) response.statusCode = 500;
+            response.end('Campaign image unavailable.');
+          });
+          return stream.pipe(response);
+        } catch {
+          return send(response, 500, 'text/plain; charset=utf-8', 'The campaign proof could not be loaded.', request.method);
         }
       });
     },

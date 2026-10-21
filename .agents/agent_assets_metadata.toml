@@ -266,3 +266,31 @@ mtime_ms = 1792459496078
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/80363d53-70fe-45e6-abda-f1fd15ed495e/458ee786-19dc-4b75-9b0c-68a45894cec6"
 storage_version_token = "1792460537573679"
 content_type = "text/html"
+
+[[outputs]]
+id = "-yJpOm7EVj2n5ds_0ubLB"
+uri = "file://generated-artifacts/hooded-shell-campaign-desktop.jpg"
+type = "image"
+title = "FSD Hooded Running Shell — Desktop Proof"
+description = "Private campaign-only preview. Original supplied hero image shown without overlays; colour selection is deferred."
+logical_id = "4806bc7a-c897-414d-84a7-34c9f8d2b965"
+content_hash = "sha256:fd344895db2ece81fe7316e4b53171802aa240944721feab7d6b242d9f35a656"
+size = 214514
+mtime_ms = 1792570575844
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4806bc7a-c897-414d-84a7-34c9f8d2b965/3d9344cf-a4f7-411c-b082-ef450b7d5215"
+storage_version_token = "1792570599846306"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "A9k9JbmZCPm-H3KvMINZN"
+uri = "file://generated-artifacts/hooded-shell-campaign-mobile.jpg"
+type = "image"
+title = "FSD Hooded Running Shell — Mobile Proof"
+description = "Private campaign-only preview on mobile. Original supplied hero image shown without overlays; colour selection is deferred."
+logical_id = "b35712a9-bb07-4eeb-80eb-0bda3740b46a"
+content_hash = "sha256:930e23e8e9a8c65d2e97957b13b727bf536a1e9c6ac2f8ffeb3b7a729c6b4291"
+size = 60954
+mtime_ms = 1792570577152
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/b35712a9-bb07-4eeb-80eb-0bda3740b46a/0fc5f3ff-73ec-4472-bab5-75756256ac20"
+storage_version_token = "1792570600622199"
+content_type = "image/jpeg"

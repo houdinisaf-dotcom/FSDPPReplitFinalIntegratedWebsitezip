@@ -131,11 +131,45 @@ try {
   assert.equal(await evaluate('window.scrollY'), initialScroll);
   await capture('fsd-rope-mobile.jpg');
 
+  await send('Emulation.setDeviceMetricsOverride', viewport);
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('!!document.querySelector(".fsd-primary-nav")');
+  await click('[data-nav-primary="collections"]');
+  await waitFor('[...document.querySelectorAll("#fsd-mega-menu [data-nav-item]")].some(button => button.textContent.includes("FSD Hooded Running Shell"))');
+  const shellItemIndex = await evaluate('[...document.querySelectorAll("#fsd-mega-menu [data-nav-item]")].find(button => button.textContent.includes("FSD Hooded Running Shell"))?.dataset.navItem');
+  assert.ok(shellItemIndex);
+  await evaluate(`document.querySelector('#fsd-mega-menu [data-nav-item="${shellItemIndex}"]').dispatchEvent(new PointerEvent("pointermove",{bubbles:true,pointerType:"mouse"}))`);
+  await waitFor('document.querySelector(".fsd-feature-kicker")?.textContent === "FSD / CAMPAIGN PROOF"');
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-cta")?.textContent.includes("OPEN CAMPAIGN PROOF")'), true);
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-cta")?.disabled'), false);
+  await click('.fsd-feature-cta');
+  await waitFor('location.pathname === "/__catalogue-preview/hooded-running-shell/"');
+  await waitFor('document.querySelector("#shell-campaign-image")?.naturalWidth === 1672 && document.querySelector("#shell-campaign-image")?.naturalHeight === 941');
+  assert.equal(await evaluate('document.querySelector("#shell-title").textContent.replace(/\\s+/g," ").trim()'), 'FSD Hooded Running Shell');
+  assert.equal(await evaluate('document.querySelector("#shell-campaign-image").alt.includes("orange FSD Hooded Running Shell")'), true);
+  assert.equal(await evaluate('document.querySelector(".shell-proof-details").innerText.includes("Colour selection is deferred.")'), true);
+  assert.equal(await evaluate('document.querySelectorAll("form, input, [data-add-to-cart], [data-purchase], [data-edition]").length'), 0);
+  assert.equal(await evaluate('document.querySelector(\'meta[name="robots"]\').content'), 'noindex, nofollow, noarchive');
+  const privateHeaders = await evaluate('fetch(location.href).then(response => ({ robots: response.headers.get("X-Robots-Tag"), cache: response.headers.get("Cache-Control") }))');
+  assert.ok(['noindex', 'nofollow', 'noarchive'].every(directive => privateHeaders.robots?.includes(directive)));
+  assert.equal(privateHeaders.cache, 'no-store');
+  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
+  await capture('fsd-shell-campaign-desktop.jpg');
+
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
+  });
+  await delay(150);
+  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
+  assert.equal(await evaluate('document.querySelector("#shell-campaign-image").naturalWidth === 1672'), true);
+  assert.equal(await evaluate('document.querySelectorAll("form, input, [data-add-to-cart], [data-purchase], [data-edition]").length'), 0);
+  await capture('fsd-shell-campaign-mobile.jpg');
+
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
   assert.equal(await evaluate('document.body.innerText.includes("FSD Weighted Skipping Rope")'), false);
   assert.deepEqual(browserErrors, []);
-  console.log('Weighted-rope browser checks passed: fixed campaign, eight intact image mappings, one selected board, keyboard swatches, no auto-scroll, responsive layout, and no public listing.');
+  console.log('Weighted-rope and hooded-shell browser checks passed: rope preview remains intact; the shell campaign is reachable from the development-only Apparel menu and has a responsive, noindex, non-purchasable proof with colour selection deferred.');
 } finally {
   socket?.close();
   const chromeExit = chrome.exitCode === null ? once(chrome, 'exit').catch(() => {}) : Promise.resolve();

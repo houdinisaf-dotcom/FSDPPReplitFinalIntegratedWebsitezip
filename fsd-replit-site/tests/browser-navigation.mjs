@@ -189,7 +189,7 @@ try {
   };
 
   const closeRouteAndReset = async () => {
-    if (await evaluate(`location.pathname === ${JSON.stringify(draftPreviewPath)}`)) {
+    if (await evaluate('location.pathname.startsWith("/__catalogue-preview/")')) {
       await send('Page.navigate', { url: `https://${domain}/` });
       await waitFor('!!document.querySelector(".fsd-primary-nav")');
     }
@@ -217,8 +217,18 @@ try {
         const image = document.querySelector(".fsd-feature-media img");
         return image?.getAttribute("src") === ${JSON.stringify(item.featureImageSrc)} && image.naturalWidth === 1672;
       })()`);
-      assert.equal(await evaluate('document.querySelector(".fsd-feature-kicker").textContent'), 'FSD / DRAFT PREVIEW');
+      assert.equal(
+        await evaluate('document.querySelector(".fsd-feature-kicker").textContent'),
+        item.previewKicker || 'FSD / DRAFT PREVIEW',
+      );
       await click(selector);
+      if (item.href === '/__catalogue-preview/hooded-running-shell/') {
+        await waitFor(`location.pathname === ${JSON.stringify(item.href)} && document.querySelector("#shell-title")?.textContent.includes("FSD Hooded Running Shell")`);
+        await waitFor('document.querySelector("#shell-campaign-image")?.naturalWidth === 1672');
+        assert.equal(await evaluate('document.querySelectorAll("form, input, [data-add-to-cart], [data-purchase], [data-edition]").length'), 0);
+        assert.equal(await evaluate('document.querySelector(".shell-proof-details").innerText.includes("Colour selection is deferred.")'), true);
+        return;
+      }
       await waitFor(`location.pathname === ${JSON.stringify(item.href)} && document.querySelector("#product-title")?.textContent.includes("FSD Weighted Skipping Rope")`);
       await waitFor('document.querySelector("#campaign-image")?.naturalWidth === 1672 && document.querySelector("#edition-image")?.naturalWidth === 1122');
       assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("NOT FOR SALE")'), true);

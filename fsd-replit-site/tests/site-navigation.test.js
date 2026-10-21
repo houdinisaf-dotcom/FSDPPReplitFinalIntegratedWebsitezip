@@ -99,6 +99,30 @@ test('weighted rope is an opt-in Hardware draft preview, not a published catalog
   assert.deepEqual(getNavigationFeature(previewHardware, 0, ropeIndex).imageSources, [rope.featureImageSrc]);
 });
 
+test('the hooded-shell campaign proof is available only in the development preview menu', () => {
+  const publicCollections = menu.find(section => section.id === 'collections');
+  const publicMens = publicCollections.groups.find(group => group.id === 'mens-luxury-performance');
+  assert.equal(publicMens.items.some(item => item.title === 'FSD Hooded Running Shell'), false);
+
+  const previewMenu = createNavigationModel({ includeDraftPreviews: true });
+  const previewCollections = previewMenu.find(section => section.id === 'collections');
+  const previewMens = previewCollections.groups.find(group => group.id === 'mens-luxury-performance');
+  const shellIndex = previewMens.items.findIndex(item => item.title === 'FSD Hooded Running Shell');
+  const shell = previewMens.items[shellIndex];
+
+  assert.ok(shell);
+  assert.equal(shell.kind, 'draft-product');
+  assert.equal(shell.previewOnly, true);
+  assert.equal(shell.href, '/__catalogue-preview/hooded-running-shell/');
+  assert.equal(shell.featureImageSrc, `${shell.href}media/hooded-shell-campaign`);
+  assert.equal(shell.previewKicker, 'FSD / CAMPAIGN PROOF');
+  assert.equal(shell.previewActionLabel, 'OPEN CAMPAIGN PROOF');
+  assert.match(shell.description, /colour selection is deferred/i);
+  assert.equal(shell.record, undefined);
+  assert.equal(shell.productId, undefined);
+  assert.deepEqual(getNavigationFeature(previewCollections, 0, shellIndex).imageSources, [shell.featureImageSrc]);
+});
+
 test('House destinations remain existing anchors and do not claim proposed locations are live', () => {
   const house = menu.find(item => item.id === 'house');
   assert.deepEqual(house.groups.map(group => group.title), [

@@ -1,6 +1,7 @@
 import { collectionDivisions } from './collection-divisions.js';
 import { products as catalogueProducts } from './catalogue-data.js';
 import { groupProducts } from './collection-showcase/index.js';
+import { hoodedShellCampaign } from './hooded-shell-campaign.js';
 
 export const primaryNavigation = [
   { id: 'collections', label: 'COLLECTIONS' },
@@ -20,6 +21,11 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
 
 const slug = value => String(value ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const weightedRopePreviewPath = '/__catalogue-preview/weighted-skipping-rope/';
+const hoodedShellPreviewPath = '/__catalogue-preview/hooded-running-shell/';
+const privatePreviewTargets = new Map([
+  [weightedRopePreviewPath, `${weightedRopePreviewPath}media/weighted-rope-campaign`],
+  [hoodedShellPreviewPath, `${hoodedShellPreviewPath}media/${hoodedShellCampaign.id}`],
+]);
 
 function makeWeightedRopeDraftMenuItem() {
   return {
@@ -32,6 +38,24 @@ function makeWeightedRopeDraftMenuItem() {
     featureImageAlt: 'FSD Weighted Skipping Rope campaign with the athlete and all eight colour editions.',
     description: 'Private draft preview · eight colour editions. Not for sale; price and specifications are pending approval.',
     sourceDivisionId: 'hardware',
+    sourceGroupIndex: 0,
+    sourceSubcategoryIndex: -1,
+  };
+}
+
+function makeHoodedShellCampaignMenuItem() {
+  return {
+    id: 'hooded-running-shell-campaign-menu-entry',
+    title: 'FSD Hooded Running Shell',
+    kind: 'draft-product',
+    href: hoodedShellPreviewPath,
+    previewOnly: true,
+    previewKicker: 'FSD / CAMPAIGN PROOF',
+    previewActionLabel: 'OPEN CAMPAIGN PROOF',
+    featureImageSrc: `${hoodedShellPreviewPath}media/${hoodedShellCampaign.id}`,
+    featureImageAlt: hoodedShellCampaign.alt,
+    description: 'FSD Apparel / Performance Outerwear · Private campaign image only. Colour selection is deferred until the original product boards are available.',
+    sourceDivisionId: 'apparel',
     sourceGroupIndex: 0,
     sourceSubcategoryIndex: -1,
   };
@@ -118,7 +142,7 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
   };
 }
 
-function makeCollectionsGroups(divisions, products) {
+function makeCollectionsGroups(divisions, products, includeDraftPreviews = false) {
   const division = divisionById(divisions, 'apparel');
   if (!division) return [];
   const mens = division.groups?.[0];
@@ -130,6 +154,11 @@ function makeCollectionsGroups(divisions, products) {
     makeDivisionGroup(division, mens, 0, products),
     makeDivisionGroup(division, womens, 1, products),
   ];
+  if (includeDraftPreviews) {
+    const mensGroup = groups.find(group => group.id === mens.id);
+    if (!mensGroup) throw new Error('FSD Apparel must contain its existing performance group for the campaign proof.');
+    mensGroup.items = [...mensGroup.items, makeHoodedShellCampaignMenuItem()];
+  }
 
   const capsuleItems = makeSubcategoryItems(
     mens,
@@ -278,7 +307,7 @@ export function createNavigationModel({
       title: 'COLLECTIONS',
       description: findDivision('apparel')?.description || '',
       divisionId: 'apparel',
-      groups: makeCollectionsGroups(divisions, products),
+      groups: makeCollectionsGroups(divisions, products, includeDraftPreviews),
       defaultItemTitle: '2-in-1 Combat Training Shorts & Tanks',
     },
     divisionMenu('bio-lab', 'BIO-LAB™'),
@@ -318,8 +347,7 @@ function hasVerifiedDestination({ menu, group, item }, { root, divisions, produc
   const ownerDocument = root.ownerDocument || document;
   if (item?.kind === 'draft-product') {
     return item.previewOnly === true
-      && item.href === weightedRopePreviewPath
-      && item.featureImageSrc === `${weightedRopePreviewPath}media/weighted-rope-campaign`;
+      && privatePreviewTargets.get(item.href) === item.featureImageSrc;
   }
   if (item?.record) {
     return products.some(product => product.id === item.record.id)
@@ -389,7 +417,7 @@ function renderFeature(menu, group, item, products, canNavigate) {
 
   const available = canNavigate({ menu, group, item });
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
-    : item?.kind === 'draft-product' ? 'OPEN DRAFT PREVIEW'
+    : item?.kind === 'draft-product' ? (item.previewActionLabel || 'OPEN DRAFT PREVIEW')
       : item?.record ? 'VIEW PRODUCT RECORD'
       : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
         : menu.id === 'house' && item?.href === '#philosophy' ? 'READ THE FSD STORY'
@@ -402,7 +430,7 @@ function renderFeature(menu, group, item, products, canNavigate) {
   return `<article class="fsd-feature-card">
     ${media}
     <div class="fsd-feature-copy">
-      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? 'FSD / DRAFT PREVIEW' : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
+      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? (item.previewKicker || 'FSD / DRAFT PREVIEW') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
       <h3>${escapeHTML(featureTitle)}</h3>
       <p>${escapeHTML(description)}</p>
       <button type="button" class="fsd-feature-cta" data-nav-destination
