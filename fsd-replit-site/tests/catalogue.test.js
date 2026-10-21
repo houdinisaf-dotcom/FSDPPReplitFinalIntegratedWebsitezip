@@ -272,7 +272,7 @@ test('the complete public page excludes held imagery while retaining internal so
     const dependencies = {
       catalogueSection, initCatalogue, gallerySection, galleryProducts, products,
       collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
-      renderNavigationHeader,
+      renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-refined.png',
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
       initArchiveNavigation() {}, showProduct() {},
     };
@@ -282,6 +282,9 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(page, /PRE-LAUNCH DESIGN PROOF/);
     assert.match(page, /id="catalogue-archive"/);
     assert.match(page, /id="gallery-archive"/);
+    assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
+    assert.match(page, /website-shield-lockup-refined\.png/);
+    assert.doesNotMatch(page, /brand-icon|brand-type/);
     assert.doesNotMatch(page, /in development|<form|type="email"/i);
     assert.ok(page.indexOf('class="hero"') < page.indexOf('class="fsd-showcase"'));
     assert.ok(page.indexOf('class="fsd-showcase"') < page.indexOf('id="innovations"'));

@@ -1,0 +1,189 @@
+# FSD WEBSITE — SEPARATE APPROVED PRODUCT IMAGES AND PLACE EACH IN ITS CORRECT LOCATION
+
+## OBJECTIVE
+
+I have supplied a combined reference image containing three different FSD products:
+
+1. FSD Performance Training Socks — Women's
+2. FSD Velocity Performance Sports Hijab
+3. FSD Signature Performance Sports Bag
+
+**Your task is to separate these images correctly and integrate them into their existing product presentations.**
+
+Do not use the entire combined collage as a single website image.
+
+This is a targeted image separation and product placement task, not a website redesign.
+
+## STEP 1 — IDENTIFY AND SEPARATE THE IMAGES
+
+Inspect the uploaded combined image and identify the three distinct product groups.
+
+The combined image contains:
+
+- Top-left: Female athlete wearing FSD performance training socks.
+- Top-middle: Female model wearing the FSD performance sports hijab.
+- Top-right: Female athlete alongside the FSD signature sports bag.
+- Lower-left: Detailed training sock images.
+- Lower-middle: Detailed sports hijab images.
+- Lower-right: Detailed sports bag images.
+
+Extract the photographs into separate image assets using their original visual content.
+
+Where possible, first locate the original full-resolution image files already uploaded to the project and use those instead of cropping the combined reference image.
+
+If originals are unavailable, crop the supplied composite carefully at the existing image boundaries.
+
+Do not generate replacement images, invent missing details, or alter the approved FSD shield branding.
+
+Preserve the original combined image as a reference file.
+
+## STEP 2 — TRAINING SOCKS
+
+**Product:** FSD Performance Training Socks — Women's
+
+### Collection / campaign hero
+
+Use the top-left image featuring the female athlete wearing the FSD socks.
+
+This is the image customers should see before opening the product.
+
+### Individual product page
+
+Separate and use the lower-left photographs:
+
+- Pair of socks from the front/angled view.
+- Rear view of the socks.
+- Close-up of the embroidered champagne-gold FSD shield.
+- Close-up of the technical knit and support construction.
+
+Place these images within the existing product presentation.
+
+Do not display the entire lower-left collage as one image if the individual originals or clean crops are available.
+
+## STEP 3 — PERFORMANCE SPORTS HIJAB
+
+**Product:** FSD Velocity Performance Sports Hijab
+
+### Collection / campaign hero
+
+Use the top-middle photograph featuring the female model wearing the black FSD sports hijab.
+
+### Individual product page
+
+Separate and use the lower-middle photographs:
+
+- Front view.
+- Side profile.
+- Rear view.
+- Detail of the fabric, ventilation area and FSD shield label.
+
+Preserve the garment's exact approved appearance, coverage, seams and branding.
+
+Do not replace it with a different hijab or model image.
+
+## STEP 4 — SIGNATURE PERFORMANCE SPORTS BAG
+
+**Product:** FSD Signature Performance Sports Bag
+
+### Collection / campaign hero
+
+Use the top-right image featuring the female athlete and FSD sports bag.
+
+### Individual product page
+
+Separate and use the lower-right photographs:
+
+- Main exterior bag view.
+- Side compartment and shoe-storage view.
+- Interior storage and organization view.
+- Close-up of the FSD badge, zippers and champagne-gold hardware.
+
+Preserve the original black-and-gold appearance and approved FSD branding.
+
+## STEP 5 — CORRECT WEBSITE PLACEMENT
+
+Each product must have its own independent catalogue record and visual presentation.
+
+**Collection page:** Show the appropriate model-worn or lifestyle hero image.
+
+**Product page:** Show the relevant detailed product images in a clean, premium image viewer.
+
+The images must never become mixed between products.
+
+For example:
+
+- Socks imagery must not appear on the hijab page.
+- Hijab imagery must not appear on the bag page.
+- Bag imagery must not appear on the socks page.
+
+The three products must remain separate, with their own product destinations.
+
+Use approved product names and existing descriptions.
+
+Do not create duplicate catalogue records.
+
+## STEP 6 — IMAGE PRESENTATION
+
+Maintain the approved FSD luxury-performance design:
+
+- Black and graphite backgrounds.
+- Champagne-gold accents.
+- Cinematic photography.
+- Large, clean hero imagery.
+- Smooth, subtle transitions.
+- Elegant product image switching.
+- Responsive desktop and mobile layouts.
+
+Use one prominent main image at a time on each product page, with restrained thumbnails or image controls where appropriate.
+
+Do not create oversized, cluttered galleries.
+
+Do not embed product descriptions into the image files. Display descriptions as separate website text.
+
+## STEP 7 — PRESERVE EXISTING WEBSITE WORK
+
+Do not modify:
+
+- The approved FSD master logo.
+- The existing header or mega-menu.
+- The homepage hero.
+- Other product imagery.
+- Weighted skipping rope products.
+- Running-shell products.
+- Existing product data or descriptions.
+- Checkout or payment restrictions.
+- Publishing status.
+
+Create a recovery checkpoint before making changes.
+
+Do not publish the website.
+
+## STEP 8 — VERIFY BEFORE COMPLETION
+
+For each of the three products, verify:
+
+1. The correct campaign hero is displayed.
+2. The detailed images are individually separated.
+3. The correct product images appear on the correct product page.
+4. The images are not stretched, distorted or mixed.
+5. The product links work from the collection page.
+6. Desktop and mobile layouts work correctly.
+7. No other product or website functionality has changed.
+
+Provide a clear list of the final image filenames and their product mappings.
+
+Show desktop and mobile previews of all three products for my approval.
+
+**Do not mark the task complete if the original image files are missing and a clean crop cannot be made. Report exactly which assets need to be supplied.**
+
+## FINAL INSTRUCTION
+
+I want the three products separated properly.
+
+**The top three lifestyle/model photographs are the campaign heroes. The detailed photographs beneath each hero belong to that specific product's individual page.**
+
+Do not place the full combined image on the website.
+
+Do not redesign the site.
+
+Do not publish anything without my approval.

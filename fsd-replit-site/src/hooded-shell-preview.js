@@ -1,12 +1,9 @@
 import { collectionDivisions } from './collection-divisions.js';
 import { products } from './catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
+import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
 
-function icon() {
-  return `<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg>`;
-}
-
-const currentBrandMarkup = `<span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>`;
+const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;
 const headerRoot = document.querySelector('#shell-site-header');
 headerRoot.innerHTML = renderNavigationHeader(currentBrandMarkup);
 

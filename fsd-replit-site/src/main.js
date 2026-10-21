@@ -5,18 +5,15 @@ import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
 import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initArchiveNavigation } from './showroom-sections.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
+import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
 import './style.css';
 import './catalogue.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
 import './site-navigation.css';
 
-function icon() {
-  return `<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg>`;
-}
-
 function header() {
-  const currentBrandMarkup = `<span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>`;
+  const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;
   return renderNavigationHeader(currentBrandMarkup);
 }
 
@@ -84,7 +81,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
   </section>
   ${vipAccessSection()}
   </main>
-  <footer><div class="footer-brand"><span class="brand-icon">${icon()}</span><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></div>
+  <footer><div class="footer-brand"><img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="FSD Fitness & Self-Defense"/></div>
     <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Pre-launch website prototype.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#collections">FOUR DIVISIONS</a><a href="#products">PRODUCT CATALOGUE</a>
       <a href="#full-gallery">DESIGN LIBRARY</a><a href="#contact">VIP ACCESS</a></nav>
