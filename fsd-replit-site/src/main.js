@@ -55,6 +55,26 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
     <a href="#home">BACK TO TOP ↑</a></footer>
   <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
 
+function showCatalogueDestination({ category = 'All', query = '' } = {}) {
+  const archive = document.querySelector('#catalogue-archive');
+  const select = document.querySelector('#catalogue-category');
+  const search = document.querySelector('#search');
+  const productSection = document.querySelector('#products');
+  if (!archive || !select || !search || !productSection) return false;
+  if (category !== 'All' && ![...select.options].some(option => option.value === category)) return false;
+
+  archive.open = true;
+  select.value = category;
+  search.value = query;
+  select.dispatchEvent(new Event('change', { bubbles: true }));
+  search.dispatchEvent(new Event('input', { bubbles: true }));
+  productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const count = document.querySelector('#catalogue-count');
+  count?.setAttribute('tabindex', '-1');
+  count?.focus({ preventScroll: true });
+  return true;
+}
+
 initCatalogue();
 mountCollectionShowcase({
   root: document.querySelector('#collections'),
@@ -62,14 +82,10 @@ mountCollectionShowcase({
   products,
   onProductSelect: showProduct,
   onExploreCollection(group) {
-    document.querySelector('#catalogue-archive').open = true;
-    const select = document.querySelector('#catalogue-category');
-    select.value = group.categories?.[0] || 'All';
-    const search = document.querySelector('#search');
-    search.value = group.query || '';
-    select.dispatchEvent(new Event('change', { bubbles: true }));
-    search.dispatchEvent(new Event('input', { bubbles: true }));
-    document.querySelector('#products').scrollIntoView({ block: 'start' });
+    showCatalogueDestination({
+      category: group.categories?.[0] || 'All',
+      query: group.query || '',
+    });
   },
 });
 mountNavigation({
@@ -79,6 +95,11 @@ mountNavigation({
   onNavigate({ menu, group, item }) {
     if (item?.record) {
       showProduct(item.record.id);
+      return;
+    }
+
+    if (item?.kind === 'category') {
+      showCatalogueDestination({ category: item.source?.categories?.[0] || item.title });
       return;
     }
 

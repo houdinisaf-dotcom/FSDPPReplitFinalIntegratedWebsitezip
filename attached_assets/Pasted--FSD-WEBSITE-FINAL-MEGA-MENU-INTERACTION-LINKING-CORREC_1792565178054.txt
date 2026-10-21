@@ -1,0 +1,100 @@
+# FSD WEBSITE — FINAL MEGA-MENU INTERACTION & LINKING CORRECTIONS
+
+## IMPORTANT — THE CURRENT DESIGN IS APPROVED
+
+The newly reconstructed FSD mega-menu is visually close to the original design I wanted.
+
+Do not redesign, rebuild, resize or replace the navigation.
+
+I only require two functional amendments.
+
+## AMENDMENT 1 — RESTORE ACTIVE MENU HIGHLIGHTING
+
+When moving the mouse over the collection groups and subcategories, the relevant row must clearly highlight, as it did in the previous approved navigation.
+
+Requirements:
+
+- Hovering over a category updates its visual highlight.
+- The active category remains highlighted when its subcategories are displayed.
+- Moving to another category updates the active state.
+- The highlighted row should use the established FSD light/champagne selection treatment, with readable contrasting text.
+- Keyboard focus must also be clearly visible.
+- The highlighted state must follow the actual selected or hovered item, not remain stuck on the first row.
+- Preserve the existing smooth transitions.
+
+Check for conflicts between hover state, selected state and CSS styling.
+
+## AMENDMENT 2 — MAKE COLLECTION AND SUBCATEGORY LINKS WORK
+
+At present, selecting menu items does not consistently navigate to the intended collection or product destination.
+
+Restore the original functional behaviour.
+
+### Left column
+
+Hovering or focusing on a collection group should preview its subcategories.
+
+Clicking a group should navigate to its existing collection page where a valid destination exists.
+
+### Middle column
+
+Hovering or focusing on a subcategory should update the relevant featured content.
+
+Clicking a subcategory should navigate to its existing collection or product page.
+
+### Right column
+
+The existing featured collection button must open the correct destination for the currently selected category or subcategory.
+
+The button must not remain linked to an unrelated or fixed collection.
+
+### Routing safeguards
+
+- Use existing verified routes and catalogue destinations.
+- Do not invent URLs.
+- Do not link everything to the homepage.
+- Do not use placeholder `#` links.
+- If a destination does not exist, keep its preview interaction but mark the navigation action as unavailable rather than pretending it works.
+- Do not create unrelated pages simply to make a link clickable.
+- Keep draft or unpublished products inaccessible to public purchasing.
+
+## PRESERVE THE APPROVED DESIGN
+
+Do not change:
+
+- Header layout or primary navigation labels.
+- Three-column mega-menu structure.
+- Existing typography and spacing.
+- Champagne-gold styling.
+- Featured imagery.
+- FSD logo.
+- Homepage.
+- Product catalogue.
+- Weighted skipping-rope data or images.
+- Other approved Phase 4 functionality.
+
+Do not change the menu's overall dimensions or animation concept.
+
+## TEST BEFORE REPORTING COMPLETION
+
+Verify on the running website:
+
+1. Hover over every left-column category and confirm the correct row highlights.
+2. Confirm the highlight follows the active category.
+3. Hover over middle-column subcategories and confirm their highlight and featured content update.
+4. Click every available collection destination and confirm it opens the correct page.
+5. Click every available subcategory destination and confirm it opens the correct page.
+6. Click the right-hand featured button and confirm it opens the currently selected destination.
+7. Confirm returning to the menu preserves correct hover and selection behaviour.
+8. Verify keyboard focus and mobile tap behaviour.
+9. Confirm no unwanted automatic scrolling or broken links.
+
+Provide a short list of any menu entries that currently lack real destination pages.
+
+Do not publish or deploy.
+
+## FINAL REQUIREMENT
+
+**Keep the new navigation exactly as it looks now. Fix only the active highlighting and the navigation destinations.**
+
+I want the original functional experience restored without any further visual redesign.

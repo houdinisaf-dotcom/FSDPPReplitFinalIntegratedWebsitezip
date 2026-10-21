@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { collectionDivisions } from '../src/collection-divisions.js';
-import { products } from '../src/catalogue-data.js';
+import { categories, products } from '../src/catalogue-data.js';
 import { createNavigationModel, getNavigationFeature, primaryNavigation } from '../src/site-navigation.js';
 
 const menu = createNavigationModel();
@@ -39,6 +39,17 @@ test('Collections reproduces the reference groups and uses existing subcategorie
   assert.ok(men.items.some(item => item.title === 'Training Sets'));
   assert.ok(collections.groups[2].items.some(item => item.title === 'Volcanic Amber Capsule'));
   assert.ok(collections.groups[2].items.some(item => item.title === 'Vector Camo Capsule'));
+  assert.equal(collections.groups[2].navigationUnavailable, true);
+  assert.equal(collections.groups[3].navigationUnavailable, true);
+});
+
+test('category menu items use exact existing catalogue categories', () => {
+  const categoryItems = menu.flatMap(section => section.groups.flatMap(group => group.items))
+    .filter(item => item.kind === 'category');
+  assert.ok(categoryItems.length > 0);
+  for (const item of categoryItems) {
+    assert.ok(categories.includes(item.source?.categories?.[0]), `${item.title} must match a catalogue category`);
+  }
 });
 
 test('feature images remain mapped to the selected collection instead of borrowing unrelated artwork', () => {
@@ -78,14 +89,24 @@ test('House destinations remain existing anchors and do not claim proposed locat
   assert.ok(house.groups.filter(group => group.href).every(group =>
     ['#philosophy', '#fsd-division-global'].includes(group.href)));
   assert.ok(house.groups[1].items.every(item => /no location or service is represented as operational/i.test(item.description)));
+  assert.equal(house.groups[1].href, '');
+  assert.equal(house.groups[1].sourceDivisionId, 'global');
+  assert.equal(house.groups[1].sourceGroupIndex, 0);
+  assert.equal(house.groups[2].href, '');
+  assert.equal(house.groups[2].sourceGroupIndex, 1);
+  assert.equal(house.groups[4].navigationUnavailable, true);
 });
 
 test('Private Access remains informational and collects no sign-ups', () => {
   const access = menu.find(item => item.id === 'private-access');
   assert.equal(access.groups.length, 3);
   assert.ok(access.description.includes('deferred'));
-  assert.ok(access.groups.every(group => group.href === '#contact'));
   assert.ok(access.groups[0].description.includes('not collecting sign-ups'));
+  assert.equal(access.groups[0].href, '');
+  assert.equal(access.groups[0].navigationUnavailable, true);
+  assert.equal(access.groups[1].href, '#contact');
+  assert.equal(access.groups[2].href, '');
+  assert.equal(access.groups[2].navigationUnavailable, true);
   assert.ok(access.groups.every(group => group.items.every(item => !item.record)));
 });
 

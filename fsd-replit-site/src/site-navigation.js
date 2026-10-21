@@ -96,6 +96,7 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
     sourceGroupIndex,
     description: options.description || division.description || '',
     href: options.href || '',
+    navigationUnavailable: options.navigationUnavailable === true,
     items,
   };
 }
@@ -124,6 +125,7 @@ function makeCollectionsGroups(divisions, products) {
     title: 'LIMITED COLLECTIONS',
     description: 'Selected FSD capsules from the existing collection brief.',
     items: capsuleItems,
+    navigationUnavailable: true,
   }));
 
   const conceptItems = (division.groups || []).flatMap((group, groupIndex) =>
@@ -138,6 +140,7 @@ function makeCollectionsGroups(divisions, products) {
     title: 'NEW & FEATURED CONCEPTS',
     description: 'Current concepts from the existing FSD collection data.',
     items: conceptItems,
+    navigationUnavailable: true,
   }));
 
   return groups;
@@ -148,7 +151,7 @@ function makeHouseGroups(divisions) {
   const flagship = global?.groups?.[0];
   const promotions = global?.groups?.[1];
 
-  const staticGroup = (id, title, href, description, sourceGroup = null, sourceGroupIndex = 0) => ({
+  const staticGroup = (id, title, href, description, sourceGroup = null, sourceGroupIndex = 0, options = {}) => ({
     id,
     title,
     href,
@@ -156,6 +159,7 @@ function makeHouseGroups(divisions) {
     sourceDivisionId: global?.id || 'global',
     sourceGroupIndex,
     description,
+    navigationUnavailable: options.navigationUnavailable === true,
     items: sourceGroup
       ? (sourceGroup.concepts || []).map((concept, index) => ({
         id: `${id}-item-${index}`,
@@ -167,42 +171,59 @@ function makeHouseGroups(divisions) {
         sourceGroupIndex,
         sourceSubcategoryIndex: -1,
         href,
+        navigationUnavailable: options.navigationUnavailable === true,
         description: 'Proposed concept. No location or service is represented as operational.',
       }))
-      : [{ id: `${id}-destination`, title, kind: 'destination', href, description }],
+      : [{
+        id: `${id}-destination`,
+        title,
+        kind: 'destination',
+        href,
+        navigationUnavailable: options.navigationUnavailable === true,
+        description,
+      }],
   });
 
   return [
     staticGroup('our-story', 'OUR STORY', '#philosophy',
       'The FSD philosophy: fitness, discipline, progress and a stronger you.'),
-    staticGroup('flagships', 'FLAGSHIPS', '#fsd-division-global',
+    staticGroup('flagships', 'FLAGSHIPS', '',
       global?.description || 'Proposed FSD flagship concepts.', flagship, 0),
-    staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '#fsd-division-global',
+    staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '',
       'Proposed promotion and event concepts.', promotions, 1),
     staticGroup('global-vision', 'GLOBAL VISION', '#fsd-division-global',
       global?.description || 'FSD Global concepts.'),
-    staticGroup('investor-relations', 'INVESTOR RELATIONS', '#fsd-division-global',
-      'Investor information requires approved content before launch.'),
+    staticGroup('investor-relations', 'INVESTOR RELATIONS', '',
+      'Investor information requires approved content before launch.', null, 0,
+      { navigationUnavailable: true }),
   ];
 }
 
 function makePrivateGroups() {
   const details = [
     ['vip-registration', 'VIP PRE-LAUNCH REGISTRATION',
-      'Registration is not collecting sign-ups yet. The destination and approved privacy and consent details are still required.'],
+      'Registration is not collecting sign-ups yet. The destination and approved privacy and consent details are still required.', false],
     ['collection-announcements', 'COLLECTION ANNOUNCEMENTS',
-      'Collection announcements are part of the pre-launch access information. No sign-up is collected here.'],
+      'Collection announcements are part of the pre-launch access information. No sign-up is collected here.', true],
     ['private-enquiries', 'PRIVATE ENQUIRIES',
-      'Private access information is not yet connected to an enquiry destination.'],
+      'Private access information is not yet connected to an enquiry destination.', false],
   ];
-  return details.map(([id, title, description]) => ({
+  return details.map(([id, title, description, hasDestination]) => ({
     id,
     title,
-    href: '#contact',
+    href: hasDestination ? '#contact' : '',
     sourceDivisionId: '',
     sourceGroupIndex: -1,
     description,
-    items: [{ id: `${id}-details`, title, kind: 'destination', href: '#contact', description }],
+    navigationUnavailable: !hasDestination,
+    items: [{
+      id: `${id}-details`,
+      title,
+      kind: 'destination',
+      href: hasDestination ? '#contact' : '',
+      navigationUnavailable: !hasDestination,
+      description,
+    }],
   }));
 }
 
@@ -266,7 +287,48 @@ function groupFeatureProducts(group, item, products) {
   return groupProducts(sourceGroup, products);
 }
 
-function renderFeature(group, item, products) {
+function hasVerifiedDestination({ menu, group, item }, { root, divisions, products }) {
+  if (item?.navigationUnavailable || (!item && group?.navigationUnavailable)) return false;
+  const ownerDocument = root.ownerDocument || document;
+  if (item?.record) {
+    return products.some(product => product.id === item.record.id)
+      && Boolean(ownerDocument.querySelector('#product-dialog'));
+  }
+  if (item?.kind === 'category') {
+    const category = item.source?.categories?.[0];
+    const select = ownerDocument.querySelector('#catalogue-category');
+    return Boolean(
+      category
+      && ownerDocument.querySelector('#catalogue-archive')
+      && ownerDocument.querySelector('#products')
+      && select
+      && [...select.options].some(option => option.value === category),
+    );
+  }
+
+  const explicitTarget = item?.href || group?.href;
+  if (explicitTarget) {
+    if (!explicitTarget.startsWith('#') || explicitTarget === '#') return false;
+    try {
+      return Boolean(ownerDocument.querySelector(explicitTarget));
+    } catch {
+      return false;
+    }
+  }
+
+  const divisionId = item?.sourceDivisionId || group?.sourceDivisionId || menu?.divisionId;
+  const division = divisions.find(entry => entry.id === divisionId);
+  const groupIndex = item?.sourceGroupIndex ?? group?.sourceGroupIndex ?? 0;
+  return Boolean(
+    division
+    && Number.isInteger(groupIndex)
+    && groupIndex >= 0
+    && groupIndex < (division.groups || []).length
+    && ownerDocument.querySelector(`[data-division="${divisionId}"]`),
+  );
+}
+
+function renderFeature(menu, group, item, products, canNavigate) {
   const imageRecords = groupFeatureProducts(group, item, products)
     .filter(product => Array.isArray(product.images))
     .flatMap(product => product.images.map(image => ({ ...image, product })))
@@ -292,10 +354,16 @@ function renderFeature(group, item, products) {
         <small>NO APPROVED IMAGE MAPPED</small>
       </div>`;
 
-  const actionLabel = item?.record ? 'VIEW PRODUCT RECORD'
-    : (item?.href || group?.href) ? 'DISCOVER THE HOUSE'
-      : item?.kind === 'concept' ? 'EXPLORE CONCEPT'
-        : 'EXPLORE COLLECTION';
+  const available = canNavigate({ menu, group, item });
+  const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
+    : item?.record ? 'VIEW PRODUCT RECORD'
+      : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
+        : menu.id === 'house' && item?.href === '#philosophy' ? 'READ THE FSD STORY'
+          : item?.kind === 'concept' ? 'EXPLORE CONCEPT'
+            : item?.kind === 'subcategory' ? 'VIEW COLLECTION'
+            : item?.kind === 'category' ? 'VIEW CATEGORY'
+              : menu.id === 'house' ? 'EXPLORE THE HOUSE'
+                : 'EXPLORE COLLECTION';
 
   return `<article class="fsd-feature-card">
     ${media}
@@ -303,34 +371,46 @@ function renderFeature(group, item, products) {
       <p class="fsd-feature-kicker">${exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
       <h3>${escapeHTML(featureTitle)}</h3>
       <p>${escapeHTML(description)}</p>
-      <button type="button" class="fsd-feature-cta" data-nav-destination>
-        ${actionLabel}<span aria-hidden="true">↗</span>
+      <button type="button" class="fsd-feature-cta" data-nav-destination
+        ${available ? '' : 'disabled aria-disabled="true" title="No verified destination is available for this selection."'}>
+        ${actionLabel}<span aria-hidden="true">${available ? '↗' : '—'}</span>
       </button>
     </div>
   </article>`;
 }
 
-function renderGroupButtons(menu, activeGroupIndex) {
-  return menu.groups.map((group, index) => `<button type="button"
+function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
+  return menu.groups.map((group, index) => {
+    const available = canNavigate({ menu, group, item: null });
+    const status = available ? 'Open this collection group.' : 'Preview only; no verified group destination is available.';
+    return `<button type="button"
       class="fsd-nav-option fsd-nav-group${index === activeGroupIndex ? ' is-active' : ''}"
-      data-nav-group="${index}" aria-pressed="${index === activeGroupIndex}">
+      data-nav-group="${index}" data-nav-available="${available}" aria-label="${escapeHTML(group.title)}. ${status}"
+      title="${status}" aria-pressed="${index === activeGroupIndex}">
     <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
     <span>${escapeHTML(group.title)}</span>
-    <span class="fsd-nav-arrow" aria-hidden="true">↗</span>
-  </button>`).join('');
+    <span class="fsd-nav-arrow" aria-hidden="true">${available ? '↗' : '—'}</span>
+  </button>`;
+  }).join('');
 }
 
-function renderItemButtons(group, activeItemIndex) {
-  return group.items.map((item, index) => `<button type="button"
+function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
+  return group.items.map((item, index) => {
+    const available = canNavigate({ menu, group, item });
+    const status = available ? 'Open this destination.' : 'Preview only; no verified destination is available.';
+    return `<button type="button"
       class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"
-      data-nav-item="${index}" aria-pressed="${index === activeItemIndex}">
+      data-nav-item="${index}" data-nav-available="${available}"
+      aria-label="${escapeHTML(item.title)}. ${status}" title="${status}"
+      aria-pressed="${index === activeItemIndex}">
     <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
     <span>${escapeHTML(item.title)}</span>
-    <span class="fsd-nav-arrow" aria-hidden="true">↗</span>
-  </button>`).join('');
+    <span class="fsd-nav-arrow" aria-hidden="true">${available ? '↗' : '—'}</span>
+  </button>`;
+  }).join('');
 }
 
-function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products) {
+function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate) {
   const group = menu.groups[activeGroupIndex] || menu.groups[0];
   const item = group?.items?.[activeItemIndex] || group?.items?.[0];
   const mobilePrimaries = primaryNavigation.map(entry => `<button type="button"
@@ -358,17 +438,17 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
       <section class="fsd-nav-column fsd-nav-column--groups" aria-labelledby="fsd-group-heading" data-nav-column="groups">
         <h3 id="fsd-group-heading">COLLECTION GROUPS</h3>
         <div class="fsd-nav-list" role="group" aria-label="Collection groups">
-          ${renderGroupButtons(menu, activeGroupIndex)}
+          ${renderGroupButtons(menu, activeGroupIndex, canNavigate)}
         </div>
       </section>
       <section class="fsd-nav-column fsd-nav-column--items" aria-labelledby="fsd-item-heading" data-nav-column="items">
         <h3 id="fsd-item-heading">SUBCATEGORIES</h3>
         <div class="fsd-nav-list" role="group" aria-label="Subcategories">
-          ${group ? renderItemButtons(group, activeItemIndex) : '<p class="fsd-nav-empty">Select a collection group.</p>'}
+          ${group ? renderItemButtons(menu, group, activeItemIndex, canNavigate) : '<p class="fsd-nav-empty">Select a collection group.</p>'}
         </div>
       </section>
       <section class="fsd-nav-column fsd-nav-column--feature" aria-label="Featured collection">
-        ${group ? renderFeature(group, item, products) : ''}
+        ${group ? renderFeature(menu, group, item, products, canNavigate) : ''}
       </section>
     </div>
   </div>`;
@@ -411,6 +491,7 @@ export function mountNavigation({
   const model = createNavigationModel({ divisions, products });
   const triggers = [...root.querySelectorAll('.fsd-primary-trigger')];
   if (!panel || !content || !mobileToggle) throw new TypeError('The FSD navigation markup is incomplete.');
+  const canNavigate = selection => hasVerifiedDestination(selection, { root, divisions, products });
 
   let activePrimaryId = '';
   let activeGroupIndex = 0;
@@ -421,6 +502,7 @@ export function mountNavigation({
   let closeTimer = 0;
   let pointerTimer = 0;
   let pointerInside = false;
+  let suppressFocusPreview = false;
 
   const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
   const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -439,8 +521,29 @@ export function mountNavigation({
     const menu = currentMenu();
     panel.dataset.primary = menu.id;
     panel.dataset.step = mobileStep;
-    content.innerHTML = renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products);
+    content.innerHTML = renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate);
     syncExpanded();
+  };
+
+  const selectorForNavigationRow = row => {
+    if (!row) return '';
+    if (row.hasAttribute('data-nav-group')) return `[data-nav-group="${row.dataset.navGroup}"]`;
+    if (row.hasAttribute('data-nav-item')) return `[data-nav-item="${row.dataset.navItem}"]`;
+    return '';
+  };
+
+  const renderPreservingFocus = focusSelector => {
+    const activeRow = panel.contains(root.ownerDocument.activeElement)
+      ? root.ownerDocument.activeElement.closest('[data-nav-group], [data-nav-item]')
+      : null;
+    const selector = focusSelector || selectorForNavigationRow(activeRow);
+    render();
+    if (!selector) return;
+    const replacement = root.querySelector(selector);
+    if (!replacement) return;
+    suppressFocusPreview = true;
+    replacement.focus({ preventScroll: true });
+    requestAnimationFrame(() => { suppressFocusPreview = false; });
   };
 
   const defaultItemIndex = menu => {
@@ -502,24 +605,30 @@ export function mountNavigation({
   const chooseGroup = (index, { focus = false, mobile = false } = {}) => {
     const menu = currentMenu();
     if (!menu.groups[index]) return;
+    const groupChanged = activeGroupIndex !== index;
+    const stepChanged = mobile && mobileStep !== 'detail';
+    if (!groupChanged && !stepChanged) {
+      if (focus) root.querySelector(`[data-nav-group="${index}"]`)?.focus({ preventScroll: true });
+      return;
+    }
     activeGroupIndex = index;
     activeItemIndex = 0;
     if (mobile) mobileStep = 'detail';
-    render();
-    if (focus) {
-      const selector = mobile
-        ? `[data-nav-item="0"]`
-        : `[data-nav-group="${index}"]`;
-      root.querySelector(selector)?.focus({ preventScroll: true });
-    }
+    const selector = focus
+      ? mobile ? '[data-nav-item="0"]' : `[data-nav-group="${index}"]`
+      : mobile ? '[data-nav-item="0"]' : '';
+    renderPreservingFocus(selector);
   };
 
   const chooseItem = (index, { focus = false } = {}) => {
     const group = currentMenu().groups[activeGroupIndex];
     if (!group?.items[index]) return;
+    if (activeItemIndex === index) {
+      if (focus) root.querySelector(`[data-nav-item="${index}"]`)?.focus({ preventScroll: true });
+      return;
+    }
     activeItemIndex = index;
-    render();
-    if (focus) root.querySelector(`[data-nav-item="${index}"]`)?.focus({ preventScroll: true });
+    renderPreservingFocus(focus ? `[data-nav-item="${index}"]` : '');
   };
 
   const schedulePointerClose = () => {
@@ -527,6 +636,13 @@ export function mountNavigation({
     pointerTimer = window.setTimeout(() => {
       if (!pointerInside && isOpen) closeMenu({ restoreFocus: panel.contains(document.activeElement) });
     }, 230);
+  };
+
+  const navigateSelection = selection => {
+    if (!canNavigate(selection)) return false;
+    closeMenu();
+    onNavigate(selection);
+    return true;
   };
 
   const onClick = event => {
@@ -573,20 +689,55 @@ export function mountNavigation({
 
     const groupButton = event.target.closest('[data-nav-group]');
     if (groupButton && panel.contains(groupButton)) {
-      chooseGroup(Number(groupButton.dataset.navGroup), { mobile: isMobile() });
+      const index = Number(groupButton.dataset.navGroup);
+      if (isMobile()) {
+        chooseGroup(index, { mobile: true });
+        return;
+      }
+      const menu = currentMenu();
+      const group = menu.groups[index];
+      const selection = { menu, group, item: null };
+      if (!navigateSelection(selection)) chooseGroup(index);
       return;
     }
     const itemButton = event.target.closest('[data-nav-item]');
     if (itemButton && panel.contains(itemButton)) {
-      chooseItem(Number(itemButton.dataset.navItem));
+      const menu = currentMenu();
+      const group = menu.groups[activeGroupIndex];
+      const itemIndex = Number(itemButton.dataset.navItem);
+      const item = group?.items[itemIndex];
+      const selection = { menu, group, item };
+      if (!navigateSelection(selection)) chooseItem(itemIndex);
       return;
     }
     if (event.target.closest('[data-nav-destination]')) {
       const menu = currentMenu();
       const group = menu.groups[activeGroupIndex];
       const item = group?.items[activeItemIndex];
-      closeMenu();
-      onNavigate({ menu, group, item });
+      navigateSelection({ menu, group, item });
+    }
+  };
+
+  const onPanelPointerOver = event => {
+    if (!isOpen || event.pointerType === 'touch') return;
+    const row = event.target.closest('[data-nav-group], [data-nav-item]');
+    const previousRow = event.relatedTarget?.closest?.('[data-nav-group], [data-nav-item]');
+    if (!row || !panel.contains(row) || row === previousRow) return;
+    if (row.hasAttribute('data-nav-group')) {
+      chooseGroup(Number(row.dataset.navGroup));
+    } else {
+      chooseItem(Number(row.dataset.navItem));
+    }
+  };
+
+  const onPanelFocusIn = event => {
+    if (!isOpen || suppressFocusPreview) return;
+    const row = event.target.closest('[data-nav-group], [data-nav-item]');
+    if (!row || !panel.contains(row)) return;
+    if (row.hasAttribute('data-nav-group')) {
+      chooseGroup(Number(row.dataset.navGroup), { mobile: isMobile() });
+    } else {
+      chooseItem(Number(row.dataset.navItem));
     }
   };
 
@@ -670,6 +821,8 @@ export function mountNavigation({
     });
   }
   root.addEventListener('click', onClick);
+  panel.addEventListener('pointerover', onPanelPointerOver);
+  panel.addEventListener('focusin', onPanelFocusIn);
   document.addEventListener('keydown', onKeyDown);
   root.addEventListener('pointerenter', onRootPointerEnter);
   root.addEventListener('pointerleave', onRootPointerLeave);
@@ -682,6 +835,8 @@ export function mountNavigation({
     clearTimeout(closeTimer);
     clearTimeout(pointerTimer);
     root.removeEventListener('click', onClick);
+    panel.removeEventListener('pointerover', onPanelPointerOver);
+    panel.removeEventListener('focusin', onPanelFocusIn);
     document.removeEventListener('keydown', onKeyDown);
     root.removeEventListener('pointerenter', onRootPointerEnter);
     root.removeEventListener('pointerleave', onRootPointerLeave);

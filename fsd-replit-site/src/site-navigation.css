@@ -296,13 +296,25 @@
   color: #c9ad78;
 }
 
+.fsd-nav-group:hover,
+.fsd-nav-group:focus-visible,
 .fsd-nav-group.is-active {
-  border-left: 1px solid #c9ad78;
-  background: rgba(255, 255, 255, 0.045);
+  border-left: 1px solid #d6bb86;
+  background: linear-gradient(90deg, rgba(201, 173, 120, 0.2), rgba(201, 173, 120, 0.055));
+  color: #f2e2c0;
 }
 
+.fsd-nav-group:hover .fsd-nav-index,
+.fsd-nav-group:focus-visible .fsd-nav-index,
+.fsd-nav-group.is-active .fsd-nav-index {
+  color: #d6bb86;
+}
+
+.fsd-nav-item:hover,
+.fsd-nav-item:focus-visible,
 .fsd-nav-item.is-active {
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(201, 173, 120, 0.105);
+  color: #f1e2c4;
 }
 
 .fsd-nav-arrow {
@@ -432,6 +444,13 @@
   border-color: #e4ce9f;
   background: #e4ce9f;
   color: #111315;
+}
+
+.fsd-feature-cta:disabled {
+  border-color: rgba(201, 173, 120, 0.28);
+  background: rgba(201, 173, 120, 0.08);
+  color: #9d9687;
+  cursor: not-allowed;
 }
 
 .fsd-mobile-stepbar,
