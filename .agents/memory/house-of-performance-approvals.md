@@ -32,3 +32,9 @@ For navigation regression repairs, recover the exact approved implementation fro
 **Why:** A previous restoration did not return the intended navigation, and the user explicitly requires exact recovery without sacrificing later catalogue work.
 
 **How to apply:** Verify the source and checkpoint before editing. Do not claim a restoration based on visual similarity; if the exact source cannot be identified, make no replacement.
+
+The user states that Phase 4 includes an FSD weighted skipping-rope product with eight colour editions, a single primary product image at a time, and a subtle crossfade. Preserve any such implementation and derived assets; do not add or change rope data as part of navigation work.
+
+**Why:** The user explicitly identified this product functionality as valuable Phase 4 work that must survive a navigation repair.
+
+**How to apply:** Verify the target source or branch contains the feature before editing or reporting it as present. If it is absent from the active project, flag the mismatch rather than recreating it without approval.
