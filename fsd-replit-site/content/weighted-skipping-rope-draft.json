@@ -1,0 +1,110 @@
+{
+  "key": "weighted-skipping-rope",
+  "sourceId": null,
+  "id": null,
+  "name": "FSD Weighted Skipping Rope",
+  "category": null,
+  "collection": null,
+  "audience": null,
+  "confirmedPrice": null,
+  "suggestedPrice": null,
+  "currency": "GBP",
+  "description": null,
+  "specifications": null,
+  "editorialStatus": "Draft",
+  "sizes": [],
+  "variants": [
+    {
+      "id": "matte-obsidian",
+      "colour": "Matte Obsidian",
+      "swatch": "#292a2d",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    },
+    {
+      "id": "crimson-red",
+      "colour": "Crimson Red",
+      "swatch": "#b61928",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    },
+    {
+      "id": "deep-ultraviolet-plum",
+      "colour": "Deep Ultraviolet Plum",
+      "swatch": "#63204e",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    },
+    {
+      "id": "electric-cobalt-blue",
+      "colour": "Electric Cobalt Blue",
+      "swatch": "#1561e7",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    },
+    {
+      "id": "electric-fuchsia",
+      "colour": "Electric Fuchsia",
+      "swatch": "#df007b",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    },
+    {
+      "id": "electric-green",
+      "colour": "Electric Green",
+      "swatch": "#55c11c",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    },
+    {
+      "id": "hyper-flame-orange",
+      "colour": "Hyper Flame Orange",
+      "swatch": "#f77708",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    },
+    {
+      "id": "sunbeam-yellow",
+      "colour": "Sunbeam Yellow",
+      "swatch": "#efcc13",
+      "sku": null,
+      "sizes": [],
+      "stock": null
+    }
+  ],
+  "assetIds": [
+    "weighted-rope-campaign",
+    "weighted-rope-matte-obsidian",
+    "weighted-rope-crimson-red",
+    "weighted-rope-deep-ultraviolet-plum",
+    "weighted-rope-electric-cobalt-blue",
+    "weighted-rope-electric-fuchsia",
+    "weighted-rope-electric-green",
+    "weighted-rope-hyper-flame-orange",
+    "weighted-rope-sunbeam-yellow"
+  ],
+  "draftAssetManifest": "content/weighted-skipping-rope-images.json",
+  "placement": {
+    "division": "hardware",
+    "groupId": null,
+    "subcategory": null,
+    "needsApproval": true
+  },
+  "seo": {},
+  "contentApproval": null,
+  "publishAuthorisation": null,
+  "purchaseEnabled": false,
+  "missing": [
+    "Source catalogue record and assigned product ID",
+    "Price and verified specifications",
+    "Exact Hardware subcategory approval",
+    "Explicit publication approval"
+  ]
+}

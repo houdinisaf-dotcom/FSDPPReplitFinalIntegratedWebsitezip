@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "productKey": "weighted-skipping-rope",
+  "approval": "The user supplied these nine images for draft review; this does not approve publication or purchasing.",
+  "imageCount": 9,
+  "campaign": {
+    "id": "weighted-rope-campaign",
+    "file": "attached_assets/Hero_Product_image__1792563286156.png",
+    "sha256": "c367229368b595b58f7dd1ad60b546ca1595e76da796e289a6e03e494fdee6cd",
+    "width": 1672,
+    "height": 941,
+    "alt": "FSD skipping-rope campaign: an athlete skips with an orange rope beside all eight colour editions arranged in a gym."
+  },
+  "boardLayout": {
+    "columns": 2,
+    "rows": 2,
+    "keepAsOneImage": true,
+    "cropped": false,
+    "split": false
+  },
+  "variants": [
+    {
+      "id": "matte-obsidian",
+      "assetId": "weighted-rope-matte-obsidian",
+      "colour": "Matte Obsidian",
+      "swatch": "#292a2d",
+      "file": "attached_assets/Matte_Obsidian_edition_1792563286156.png",
+      "sha256": "78bda5f9ffe4ae7310581037d133dd0aa767f251514669b83035f986fd31595f",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Matte Obsidian edition, complete two-by-two product board."
+    },
+    {
+      "id": "crimson-red",
+      "assetId": "weighted-rope-crimson-red",
+      "colour": "Crimson Red",
+      "swatch": "#b61928",
+      "file": "attached_assets/Crimson_Red_edition_1792563286155.png",
+      "sha256": "9ad52be6e6000b20a8b02be688ed506b4b58331dce033cc0227dbe20fb30adbe",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Crimson Red edition, complete two-by-two product board."
+    },
+    {
+      "id": "deep-ultraviolet-plum",
+      "assetId": "weighted-rope-deep-ultraviolet-plum",
+      "colour": "Deep Ultraviolet Plum",
+      "swatch": "#63204e",
+      "file": "attached_assets/Deep_Ultraviolet_Plum_1792563286155.png",
+      "sha256": "f9421a8e7516de7c447583d8a1fbc3284622117b89772e7ff93f7f92e681329c",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Deep Ultraviolet Plum edition, complete two-by-two product board."
+    },
+    {
+      "id": "electric-cobalt-blue",
+      "assetId": "weighted-rope-electric-cobalt-blue",
+      "colour": "Electric Cobalt Blue",
+      "swatch": "#1561e7",
+      "file": "attached_assets/Electric_Cobalt_Blue__1792563286155.png",
+      "sha256": "a3c8e6d3e9d9059c83a0a61297550a02a3eb50ccda0337bb35301bf27b3c0c9b",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Electric Cobalt Blue edition, complete two-by-two product board."
+    },
+    {
+      "id": "electric-fuchsia",
+      "assetId": "weighted-rope-electric-fuchsia",
+      "colour": "Electric Fuchsia",
+      "swatch": "#df007b",
+      "file": "attached_assets/Electric_Fuchsia_1792563286155.png",
+      "sha256": "403c158fad0594424b961a075ea05915d67d39303373619818b2f2b203a1bfef",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Electric Fuchsia edition, complete two-by-two product board."
+    },
+    {
+      "id": "electric-green",
+      "assetId": "weighted-rope-electric-green",
+      "colour": "Electric Green",
+      "swatch": "#55c11c",
+      "file": "attached_assets/Electric_Green_1792563286156.png",
+      "sha256": "524e3cee01312214847f09c9eaa87e8d3faf8f195954ee6027e7dce98996ae16",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Electric Green edition, complete two-by-two product board."
+    },
+    {
+      "id": "hyper-flame-orange",
+      "assetId": "weighted-rope-hyper-flame-orange",
+      "colour": "Hyper Flame Orange",
+      "swatch": "#f77708",
+      "file": "attached_assets/Hyper_Flame_Orange__1792563286156.png",
+      "sha256": "bfa25e0fce85975bafd6d59c9d237f319d36dbf28dc008cb125b8729c9d09289",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Hyper Flame Orange edition, complete two-by-two product board."
+    },
+    {
+      "id": "sunbeam-yellow",
+      "assetId": "weighted-rope-sunbeam-yellow",
+      "colour": "Sunbeam Yellow",
+      "swatch": "#efcc13",
+      "file": "attached_assets/Sunbeam_Yellow__1792563286156.png",
+      "sha256": "7c56ea99e8872435b3e96173cda488d60fea637cfb1decb2cc328c3430efafe8",
+      "width": 1122,
+      "height": 1402,
+      "alt": "FSD Weighted Skipping Rope, Sunbeam Yellow edition, complete two-by-two product board."
+    }
+  ]
+}

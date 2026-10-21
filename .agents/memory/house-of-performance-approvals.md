@@ -33,8 +33,8 @@ The supplied recording is a visual reference, not a Git checkpoint or source-cod
 
 **How to apply:** Limit changes to header navigation, use current catalogue data for destinations, do not reuse later sandbox prototypes as original source, and do not revert the whole project.
 
-The user states that Phase 4 includes an FSD weighted skipping-rope product with eight colour editions, a single primary product image at a time, and a subtle crossfade. Preserve any such implementation and derived assets; do not add or change rope data as part of navigation work.
+During the weighted-rope recovery request, the user explicitly authorized restoring the existing one-product draft with the nine supplied images: one fixed campaign image and eight complete, unsplit 2 × 2 edition boards. This approval is for an internal draft preview only; it does not supply a public product ID, verified price/specifications, stock, checkout approval or publication approval.
 
-**Why:** The user explicitly identified this product functionality as valuable Phase 4 work that must survive a navigation repair.
+**Why:** The user approved recovering the draft from history and using the exact newly supplied artwork, while requiring an internal review before any public catalogue use.
 
-**How to apply:** Verify the target source or branch contains the feature before editing or reporting it as present. If it is absent from the active project, flag the mismatch rather than recreating it without approval.
+**How to apply:** Keep the historic product key, leave the public ID and unknown facts unset, preserve all source images unchanged, never crop or split edition boards, and keep purchasing/publication disabled. Do not change Phase 3 navigation or other catalogue records during this work.
