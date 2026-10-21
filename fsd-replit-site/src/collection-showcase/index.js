@@ -136,6 +136,15 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
   const emptyMarkup = !foundProducts.length && !concepts.length
     ? `<div class="fsd-showcase-empty"><span>FSD / ${String(activeGroupIndex + 1).padStart(2, '0')}</span><h4>Collection details are being prepared.</h4><p>No product records or proposed concepts are currently listed for this selection.</p></div>`
     : '';
+  const bioLabIntroduction = division.id === 'bio-lab'
+    ? `<section class="bio-lab-introduction" aria-labelledby="bio-lab-intro-title">
+        <p class="bio-lab-intro-kicker">PRECISION <span>·</span> INTELLIGENCE <span>·</span> PERFORMANCE</p>
+        <h3 id="bio-lab-intro-title">FSD BIO-LAB<br/><em>INTELLIGENCE IN MOTION.</em></h3>
+        <p>Explore a new dimension of performance, where advanced technology, purposeful design and human potential converge.</p>
+        <button class="bio-lab-intro-cta" type="button" data-bio-lab-open>EXPLORE THE EXPERIENCE <span aria-hidden="true">↗</span></button>
+        <small>DEMONSTRATION EXPERIENCE · SIMULATED DATA ONLY</small>
+      </section>`
+    : '';
   return `<div class="fsd-modal-hero fsd-modal-hero--${escapeHTML(division.visual || division.id)}">
       <span class="fsd-modal-kicker">${escapeHTML(division.title)} <span>/</span> DIVISION ${String(activeGroupIndex + 1).padStart(2, '0')}</span>
       <h2>${escapeHTML(title)}</h2>
@@ -152,6 +161,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     </nav>` : ''}
     <div class="fsd-modal-body">
       <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(division.description)}</p></div>
+      ${bioLabIntroduction}
       ${foundProducts.length ? '<button class="fsd-explore-collection" type="button" data-explore-collection>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button>' : ''}
       ${productsMarkup}${conceptMarkup}${emptyMarkup}
       <p class="fsd-modal-disclaimer">FSD is a pre-launch brand. Supplied list prices are catalogue references, not an offer to sell. Proposed concepts do not confirm specifications, availability or operational status. Product visuals appear only where mapped to that product record.</p>
@@ -227,6 +237,14 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
       return;
     }
     if (event.target.closest('[data-close-dialog]')) {
+      requestClose();
+      return;
+    }
+    if (event.target.closest('[data-bio-lab-open]') && dialog.contains(event.target.closest('[data-bio-lab-open]'))) {
+      afterClose = () => {
+        const route = new URL(`${location.pathname}${location.search}#bio-lab/overview?period=7`, location.href);
+        location.href = route.href;
+      };
       requestClose();
       return;
     }

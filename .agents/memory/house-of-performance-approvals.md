@@ -27,6 +27,12 @@ Phase 2 authorizes product-interaction enhancements within the existing architec
 
 **How to apply:** Keep product records, descriptions, prices, source imagery and branding intact. Use only eligible approved product mappings, keep unsupported features awaiting approval and leave purchasing disabled.
 
+Phase 3 authorizes a Bio-Lab demonstration within the existing website using clearly labelled simulated data and a fictional athlete only. It does not authorize health-data collection, live monitoring, device pairing, accounts, external data transmission, paid features or publishing.
+
+**Why:** The user wants to demonstrate a possible future performance-intelligence ecosystem without implying existing product capabilities or collecting sensitive information.
+
+**How to apply:** Preserve the storefront and previous phases. Keep recovery indicators explicitly illustrative and non-medical. Real integrations require separate approval, consent, privacy and security design; product capabilities still require approved evidence.
+
 The homepage should combine a dark, cinematic, powerful hero with sophisticated editorial composition and generous whitespace. Obsidian black, graphite and champagne gold are primary; porcelain is selective contrast, not the dominant background. Apparel should feel like luxury fashion campaigns, while Bio-Lab™ and Hardware retain performance and engineering credibility.
 
 **Why:** The user explicitly requested luxury fashion-house presentation with authentic athletic performance and technological innovation, rather than a predominantly light website.
