@@ -1,3 +1,4 @@
+import { renderImageAttributes } from './product-assets.js';
 import { products, safe, priceInfo } from './catalogue-data.js';
 import { renderMappedImageChoices } from './product-card-media.js';
 
@@ -15,7 +16,7 @@ export function featuredInnovationsSection() {
         const price = priceInfo(product);
         return `<article class="showroom-feature-card">
           <div class="showroom-feature-media">${image
-            ? `<img src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept" loading="lazy" width="627" height="1003"/>`
+            ? `<img ${renderImageAttributes(image, { lazy: true, sizes: '(max-width:700px) 90vw, 420px' })}/>`
             : `<div class="showroom-feature-placeholder"><span>FSD</span><small>DESIGN CONCEPT</small></div>`}</div>
           ${renderMappedImageChoices(product.images)}
           <div class="showroom-feature-copy"><p class="section-kicker">${safe(product.category)}</p>

@@ -1,6 +1,7 @@
 import { categories, products, filterProducts, priceInfo, safe } from './catalogue-data.js';
 import { initProductExperience, showProductExperience, closeProductExperience } from './product-experience.js';
 import { initProductCardMedia, renderMappedImageChoices } from './product-card-media.js';
+import { renderImageAttributes } from './product-assets.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -20,7 +21,7 @@ function card(product) {
   const image = product.images[0];
   return `<article class="product-card">
     <div class="product-image">${image
-      ? `<img loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept"/>`
+      ? `<img ${renderImageAttributes(image, { lazy: true, sizes: '(max-width:600px) 90vw, (max-width:1000px) 45vw, 320px' })}/>`
       : imagePlaceholder(product)}<span class="chip">PRE-LAUNCH</span></div>
     ${renderMappedImageChoices(product.images)}
     <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>

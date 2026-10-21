@@ -1,3 +1,4 @@
+import { renderImageAttributes } from '../product-assets.js';
 import { priceInfo } from '../catalogue-data.js';
 import { renderMappedImageChoices } from '../product-card-media.js';
 
@@ -90,7 +91,7 @@ function productCard(product) {
   const description = product.coverage || product.priceBasis || product.specificationStatus ||
     (product.colourways ? `Colourways: ${product.colourways}` : 'Specifications and availability are not confirmed.');
   const media = image
-    ? `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>${renderMappedImageChoices(product.images)}`
+    ? `<div class="fsd-product-media"><img ${renderImageAttributes(image, { lazy: true, sizes: '(max-width:700px) 80vw, 340px' })}><span>DESIGN CONCEPT</span></div>${renderMappedImageChoices(product.images)}`
     : `<div class="fsd-product-media fsd-product-media--placeholder" aria-hidden="true"><span class="fsd-placeholder-code">FSD<br/>/ /</span><span>${escapeHTML(category)}</span></div>`;
   return `<article class="fsd-product-card">
     ${media}

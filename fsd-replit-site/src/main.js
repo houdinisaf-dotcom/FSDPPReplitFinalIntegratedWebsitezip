@@ -7,11 +7,14 @@ import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, ini
 import './style.css';
 import './catalogue.css';
 import './product-experience.css';
+import './product-options.css';
+import './signature-ui.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
 import './motion.css';
 import { initMotion } from './motion.js';
 import { initBioLab } from './bio-lab/index.js';
+import { initSignatureUI } from './signature-ui.js';
 import './bio-lab/bio-lab.css';
 
 function icon() {
@@ -19,7 +22,7 @@ function icon() {
 }
 
 function header() {
-  return `<div class="announcement">FSD / THE NEXT ERA OF MOVEMENT <span>— PRE-LAUNCH COLLECTION</span></div>
+  return `<a class="announcement-link" href="#collections">FSD / THE NEXT ERA OF MOVEMENT <span>— PRE-LAUNCH COLLECTION</span></a>
     <header class="header"><a class="brand" href="#home" aria-label="FSD Home">
       <span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>
     </a><nav aria-label="Main navigation"><a href="#collections">COLLECTIONS</a><a href="#products">PRODUCTS</a>
@@ -32,7 +35,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
     <p class="eyebrow">THE FSD PERFORMANCE UNIVERSE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
     <h1>BUILT FOR<br/><em>THE DRIVE</em><br/>WITHIN.</h1>
     <p class="hero-copy">Performance. Discipline. Identity. Discover technical training wear, combat-inspired design and modest activewear under one unmistakable shield.</p>
-    <div class="hero-actions"><a class="primary-btn" href="#collections">EXPLORE THE COLLECTION <span>↗</span></a>
+    <div class="hero-actions"><a class="primary-btn" href="#collections"><span class="primary-btn-label">EXPLORE THE COLLECTION</span><span class="primary-btn-arrow" aria-hidden="true">↗</span></a>
     <a class="ghost-btn" href="#philosophy">DISCOVER FSD →</a></div>
     <div class="hero-foot"><span>01 / 03</span><span>DESIGNED TO MOVE. BUILT TO BELONG.</span></div></div>
     <div class="vertical-label">FITNESS & SELF DEFENCE — 2026</div>
@@ -63,6 +66,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
   <dialog id="product-dialog" aria-labelledby="product-title"><div class="product-dialog-toolbar"><button id="close-dialog" aria-label="Close product details">✕</button></div><div id="dialog-body"></div></dialog>`;
 
 initCatalogue();
+if (typeof initSignatureUI === 'function') initSignatureUI();
 mountCollectionShowcase({
   root: document.querySelector('#collections'),
   divisions: collectionDivisions,

@@ -1,8 +1,10 @@
 import { priceInfo, safe } from './catalogue-data.js';
 import { revealEditorial, cancelMotion, animateWithTokens } from './motion.js';
 import { renderProductStory } from './product-story.js';
+import { applyProductSEO, restoreProductSEO, productRouteMatch, isProductPath, productPageInfo } from './product-seo.js';
+import { productVariantGallery, productVariants, renderProductOptions, renderProductSizes, productVariantSizes } from './product-options.js';
+import { applyImageSource, PRODUCT_IMAGE_SIZES, renderImageAttributes } from './product-assets.js';
 
-const PRODUCT_HASH = /^#product\/(\d+)$/;
 let config = null;
 let currentId = null;
 let opener = null;
@@ -11,6 +13,8 @@ let sourceURL = null;
 let sourceState = null;
 let context = null;
 let selectedImage = 0;
+let selectedVariantId = null;
+let activeProductImages = [];
 let imageRequest = 0;
 let touchStart = null;
 let viewer = null;
@@ -26,43 +30,97 @@ const isReduced = () => {
 };
 const detail = (label, value) => value
   ? `<dt>${safe(label)}</dt><dd>${safe(value)}</dd>` : '';
+const deferredImageAttributes = (image, alt = '') => renderImageAttributes(image, { alt, lazy: true })
+  .replace(/^src="/, 'data-src="')
+  .replace(' srcset="', ' data-srcset="')
+  .replace(' sizes="', ' data-sizes="');
+const approvedGalleryVariants = product =>
+  productVariants(product).filter(variant => productVariantGallery(product, variant.id).length > 0);
 
-function renderImageGallery(product) {
-  const images = Array.isArray(product.images) ? product.images : [];
+function galleryCounterLabel(product, images, imageIndex = 0) {
+  const variants = productVariants(product);
+  const variant = variants.find(item => String(item.id) === String(selectedVariantId));
+  if (variants.length > 1 && variant) {
+    if (images.length === 1) {
+      const available = approvedGalleryVariants(product);
+      const position = available.findIndex(item => String(item.id) === String(variant.id));
+      return `${Math.max(0, position) + 1} / ${Math.max(1, available.length)} · ${variant.colour}`;
+    }
+    return `${variant.colour} · ${imageIndex + 1} / ${images.length} · ${images[imageIndex]?.label || ''}`;
+  }
+  return `${imageIndex + 1} / ${images.length} · ${images[imageIndex]?.label || ''}`;
+}
+
+function viewerCaption(product, images, imageIndex) {
+  return `${galleryCounterLabel(product, images, imageIndex)} · DESIGN CONCEPT`;
+}
+
+function renderImageGallery(product, variantImages = null) {
+  const images = variantImages || (Array.isArray(product.images) ? product.images : []);
   if (!images.length) {
-    const label = product.imageStatus.startsWith('Image exists')
-      ? 'Concept image mapping pending'
-      : product.imageStatus.startsWith('Brief only') ? 'Image under review' : 'Imagery to follow';
-    return `<div class="catalogue-placeholder"><span>FSD / PRE-LAUNCH</span>
-      <strong>${safe(product.category)}</strong><small>${safe(label)}</small></div>`;
+    const selected = productVariants(product).find(variant => String(variant.id) === String(selectedVariantId));
+    return `<div class="product-unavailable-panel" role="status" aria-live="polite">
+      <strong>${safe(selected?.colour || 'PRODUCT IMAGE')}</strong>
+      <span>Imagery to follow. Approved imagery is not available for this colourway.<br/>No other colour image is shown as a substitute.</span>
+    </div>`;
   }
   const active = images[0];
+  const variants = productVariants(product);
+  const variantChoices = variants.length > 1;
+  const activeVariant = variants.find(variant => String(variant.id) === String(selectedVariantId));
+  const thumbnails = variantChoices
+    ? variants.map((variant, index) => {
+      const variantImages = productVariantGallery(product, variant.id);
+      const selected = String(variant.id) === String(selectedVariantId);
+      const preview = variantImages[0];
+      return `<figure>
+        <button type="button" class="product-gallery-thumb${selected ? ' is-current' : ''}" data-image-index="${index}"
+          data-variant-id="${safe(variant.id)}" aria-pressed="${selected}" aria-label="Choose ${safe(variant.colour)} colourway${preview ? '' : ', image not available'}">
+          ${preview ? `<img ${selected ? renderImageAttributes(preview, { alt: '', lazy: true }) : deferredImageAttributes(preview)}/>` : ''}
+        </button><figcaption>${safe(variant.colour)}${preview ? '' : ' · image pending'}</figcaption>
+      </figure>`;
+    }).join('')
+    : images.map((image, index) => `<figure>
+        <button type="button" class="product-gallery-thumb${index === 0 ? ' is-current' : ''}" data-image-index="${index}" data-gallery-image-src="${safe(image.src)}"
+          aria-pressed="${index === 0}" aria-label="Show ${safe(image.label)}">
+          <img ${index === 0 ? renderImageAttributes(image, { alt: '', lazy: true }) : deferredImageAttributes(image)}/>
+        </button><figcaption>${safe(image.label)}</figcaption>
+      </figure>`).join('');
+  const imageThumbnails = variantChoices && images.length > 1
+    ? `<div class="product-gallery-thumbnails product-gallery-image-thumbnails" role="group" aria-label="Choose an image for ${safe(activeVariant?.colour || 'this colourway')}">
+      ${images.map((image, index) => `<figure>
+        <button type="button" class="product-gallery-thumb${index === 0 ? ' is-current' : ''}" data-gallery-image-index="${index}" data-gallery-image-src="${safe(image.src)}"
+          aria-pressed="${index === 0}" aria-label="Show ${safe(image.label)}">
+          <img ${index === 0 ? renderImageAttributes(image, { alt: '', lazy: true }) : deferredImageAttributes(image)}/>
+        </button><figcaption>${safe(image.label)}</figcaption>
+      </figure>`).join('')}
+    </div>`
+    : '';
+  const availableVariants = approvedGalleryVariants(product);
+  const variantNavigation = variantChoices && images.length === 1 && availableVariants.length > 1;
+  const choiceCount = variantChoices && images.length === 1 ? availableVariants.length : images.length;
   return `<div class="product-gallery" data-product-gallery aria-label="Product image gallery">
     <div class="product-gallery-stage">
       <button class="product-gallery-viewer-trigger" type="button" data-open-viewer aria-label="View ${safe(active.label)} full screen">
-        <img data-gallery-main src="${safe(active.src)}" alt="${safe(product.name)} — ${safe(active.label)}; design concept" decoding="async"/>
+        <img data-gallery-main ${renderImageAttributes(active, { alt: `${product.name} — ${active.label}; design concept`, priority: true, sizes: PRODUCT_IMAGE_SIZES })}/>
         <span class="product-gallery-expand" aria-hidden="true">EXPAND ↗</span>
       </button>
-      <p data-gallery-caption>${safe(active.label)} <span>· DESIGN CONCEPT</span></p>
+      <p data-gallery-caption>${variantChoices ? `${safe(activeVariant?.colour || '')} · ` : ''}${safe(active.label)} <span>· DESIGN CONCEPT</span></p>
     </div>
-    ${images.length > 1 ? `<div class="product-gallery-thumbnails" role="group" aria-label="Choose a mapped colourway image">
-      ${images.map((image, index) => `<figure>
-        <button type="button" class="product-gallery-thumb${index === 0 ? ' is-current' : ''}" data-image-index="${index}"
-          aria-pressed="${index === 0}" aria-label="Show ${safe(image.label)}">
-          <img ${index === 0 ? `src="${safe(image.src)}"` : `data-src="${safe(image.src)}"`} alt="" loading="lazy" decoding="async"/>
-        </button><figcaption>${safe(image.label)}</figcaption>
-      </figure>`).join('')}
-    </div>` : ''}
+    ${choiceCount > 1 ? `<div class="product-gallery-thumbnails" role="group" aria-label="${variantChoices ? 'Choose a mapped colourway' : 'Choose a mapped product image'}">
+      ${thumbnails}
+    </div>` : ''}${imageThumbnails}
     <div class="product-gallery-controls">
-      ${images.length > 1 ? `<button type="button" data-gallery-prev aria-label="Previous mapped image">← PREVIOUS</button>
-        <span data-gallery-status aria-live="polite">1 / ${images.length} · ${safe(active.label)}</span>
-        <button type="button" data-gallery-next aria-label="Next mapped image">NEXT →</button>`
-        : `<span data-gallery-status aria-live="polite">1 / 1 · ${safe(active.label)}</span>`}
+      ${choiceCount > 1 ? `<button type="button" data-gallery-prev aria-label="Previous ${variantNavigation ? 'mapped colourway' : 'mapped image'}">← PREVIOUS</button>
+        <span data-gallery-status aria-live="polite">${safe(galleryCounterLabel(product, images, 0))}</span>
+        <button type="button" data-gallery-next aria-label="Next ${variantNavigation ? 'mapped colourway' : 'mapped image'}">NEXT →</button>`
+        : `<span data-gallery-status aria-live="polite">${safe(galleryCounterLabel(product, images, 0))}</span>`}
     </div>
   </div>`;
 }
 
 function renderProduct(product) {
+  applyProductSEO(product);
   const price = priceInfo(product);
   const optional = [
     ['Coverage', product.coverage],
@@ -74,10 +132,18 @@ function renderProduct(product) {
   const accordion = optional.length ? `<div class="product-record-panels">
     ${optional.map(([label, value]) => `<details><summary>${safe(label)}</summary><p>${safe(value)}</p></details>`).join('')}
   </div>` : '';
-  body().innerHTML = `<div class="catalogue-dialog-images">${renderImageGallery(product)}</div>
+  const variants = productVariants(product);
+  const firstMappedVariant = variants.find(variant => productVariantGallery(product, variant.id).length);
+  const initialVariant = firstMappedVariant || variants[0] || null;
+  selectedVariantId = initialVariant?.id ?? null;
+  activeProductImages = initialVariant
+    ? productVariantGallery(product, initialVariant.id)
+    : (Array.isArray(product.images) ? product.images : []);
+  body().innerHTML = `<div class="catalogue-dialog-images">${renderImageGallery(product, activeProductImages)}</div>
     <div class="dialog-copy">
-      <p class="section-kicker">${safe(product.category)} / PRE-LAUNCH</p><h2 id="product-title">${safe(product.name)}</h2>
+      <p class="section-kicker">${safe(product.category)} / PRE-LAUNCH</p><h1 id="product-title" class="product-detail-title">${safe(product.name)}</h1>
       <p class="product-record-label">PRODUCT RECORD · ${String(product.id).padStart(2, '0')}</p>
+      ${renderProductOptions(product, selectedVariantId)}
       <dl class="catalogue-details" id="product-details">
         ${detail('Colourways', product.colourways || 'To be confirmed')}
         ${detail('Audience', product.audience)}
@@ -93,6 +159,7 @@ function renderProduct(product) {
       </dl>
       ${accordion}
       <div class="dialog-price"><span>${safe(price.label)}</span><strong>${safe(price.value)}</strong></div>
+      <p><a class="product-permanent-link" href="${safe(productPageInfo(product).url)}">PRODUCT LINK ↗</a> · <a class="product-permanent-link" href="/#collections">COLLECTIONS ↗</a></p>
       <small class="product-prelaunch-note">This is a development record, not a product available to purchase. Specifications, sizing and launch availability are not confirmed.</small>
     </div>${renderProductStory(product, price)}`;
   selectedImage = 0;
@@ -103,10 +170,119 @@ function renderProduct(product) {
   revealEditorial(body().querySelector?.('.product-story'));
 }
 
+function setSelectedVariantControls(product, variant, images) {
+  const selectedSizeOption = body().querySelector('[data-size-option][aria-pressed="true"]');
+  const previousSize = selectedSizeOption?.dataset.sizeOption;
+  const nextSizes = productVariantSizes(product, variant.id);
+  const retainedSize = previousSize != null && nextSizes.some(size => String(size) === String(previousSize))
+    ? previousSize
+    : null;
+  const sizeContainer = body().querySelector('[data-size-options-container]');
+  if (sizeContainer) sizeContainer.innerHTML = renderProductSizes(product, variant.id, retainedSize);
+  body().querySelectorAll('[data-colour-option]').forEach(option => {
+    option.setAttribute('aria-pressed', String(String(option.dataset.variantId) === String(variant.id)));
+  });
+  const colour = body().querySelector('[data-selected-colour]');
+  if (colour) colour.textContent = variant.colour || 'To be confirmed';
+  let sku = body().querySelector('[data-selected-sku]');
+  if (variant.sku) {
+    if (!sku) {
+      sku = document.createElement('div');
+      sku.className = 'product-selected-sku';
+      sku.dataset.selectedSku = '';
+      body().querySelector('.product-options-header')?.after(sku);
+    }
+    sku.textContent = `SKU ${variant.sku}`;
+  } else sku?.remove();
+  const status = body().querySelector('[data-variant-status]');
+  const unavailable = variant.stock === 0 || variant.availability === 'unavailable';
+  if (status) status.textContent = unavailable
+    ? images.length
+      ? 'Unavailable · image preview shown for identification only. Not available to purchase.'
+      : 'Unavailable · approved imagery is not available for this colourway.'
+    : images.length
+      ? 'Development record · not available to purchase.'
+      : 'Approved imagery is not available for this colourway. Product details remain unchanged.';
+}
+
+async function selectProductVariant(variantId, focusThumb = false, keepViewerOpen = false) {
+  const product = currentProduct();
+  const variant = productVariants(product).find(item => String(item.id) === String(variantId));
+  if (!product || !variant) return;
+  const request = ++imageRequest;
+  const images = productVariantGallery(product, variant.id);
+  const options = body().querySelector('.product-options');
+  const status = options?.querySelector('[data-variant-status]');
+  if (!images.length) {
+    selectedVariantId = variant.id;
+    activeProductImages = [];
+    selectedImage = 0;
+    const gallery = body().querySelector('.catalogue-dialog-images');
+    if (gallery) gallery.innerHTML = renderImageGallery(product, []);
+    setSelectedVariantControls(product, variant, []);
+    if (keepViewerOpen && viewer?.open) {
+      viewerReturnFocus = body().querySelector('[data-open-viewer]');
+      setZoom(0, true);
+      syncViewer();
+    } else closeViewerBeforeProduct();
+    if (focusThumb) body().querySelectorAll('[data-variant-id]').forEach(button => {
+      if (String(button.dataset.variantId) === String(variant.id)) button.focus({ preventScroll: true });
+    });
+    return;
+  }
+  const candidate = new Image();
+  candidate.decoding = 'async';
+  candidate.onerror = () => {
+    if (request !== imageRequest) return;
+    const message = `Could not load ${variant.colour} imagery. Previous colour selection and image retained.`;
+    if (status) status.textContent = message;
+    const galleryStatus = body().querySelector('[data-gallery-status]');
+    if (galleryStatus) {
+      // Keep the gallery's visible failure feedback without announcing the same
+      // error twice when the options' live status is also present.
+      galleryStatus.setAttribute('aria-live', status ? 'off' : 'polite');
+      galleryStatus.textContent = `Image unavailable. ${message}`;
+    }
+  };
+  candidate.onload = async () => {
+    try { await candidate.decode?.(); } catch { /* A loaded image remains usable if decode is unsupported. */ }
+    if (request !== imageRequest || !body().isConnected) return;
+    selectedVariantId = variant.id;
+    activeProductImages = images;
+    selectedImage = 0;
+    const gallery = body().querySelector('.catalogue-dialog-images');
+    if (gallery) gallery.innerHTML = renderImageGallery(product, images);
+    setSelectedVariantControls(product, variant, images);
+    if (keepViewerOpen && viewer?.open) {
+      viewerReturnFocus = body().querySelector('[data-open-viewer]');
+      setZoom(0, true);
+      syncViewer();
+    } else closeViewerBeforeProduct();
+    if (focusThumb) body().querySelectorAll('[data-variant-id]').forEach(button => {
+      if (String(button.dataset.variantId) === String(variant.id)) button.focus({ preventScroll: true });
+    });
+  };
+  applyImageSource(candidate, images[0], PRODUCT_IMAGE_SIZES);
+}
+
 function setGalleryImage(index, focusThumb = false) {
   const product = currentProduct();
-  const images = product?.images || [];
+  const images = activeProductImages || product?.images || [];
   if (!images.length) return;
+  const variants = productVariants(product);
+  if (variants.length > 1 && images.length === 1) {
+    const selectable = approvedGalleryVariants(product);
+    if (selectable.length > 1) {
+      const current = selectable.findIndex(variant => String(variant.id) === String(selectedVariantId));
+      const direction = index >= selectedImage ? 1 : -1;
+      const targetIndex = (current + direction + selectable.length) % selectable.length;
+      const target = selectable[targetIndex];
+      if (target && targetIndex !== current) {
+        selectProductVariant(target.id, focusThumb, Boolean(viewer?.open));
+      }
+      return;
+    }
+  }
   const targetIndex = (index + images.length) % images.length;
   const request = ++imageRequest;
   cancelMotion('product-gallery-image');
@@ -126,18 +302,23 @@ function setGalleryImage(index, focusThumb = false) {
     const commit = () => {
       if (request !== imageRequest || !main.isConnected) return;
       selectedImage = targetIndex;
-      main.src = image.src;
+      applyImageSource(main, image, PRODUCT_IMAGE_SIZES);
       gallery.querySelector('.product-gallery-stage')?.classList.remove('image-failed');
       main.alt = `${product.name} — ${image.label}; design concept`;
       gallery.querySelector('[data-gallery-caption]').innerHTML = `${safe(image.label)} <span>· DESIGN CONCEPT</span>`;
       const status = gallery.querySelector('[data-gallery-status]');
-      if (status) status.textContent = `${targetIndex + 1} / ${images.length} · ${image.label}`;
+      if (status) status.textContent = galleryCounterLabel(product, images, targetIndex);
       gallery.querySelectorAll('[data-image-index]').forEach(button => {
-        const active = Number(button.dataset.imageIndex) === targetIndex;
+        const active = !button.dataset.variantId && Number(button.dataset.imageIndex) === targetIndex;
         button.classList.toggle('is-current', active);
         button.setAttribute('aria-pressed', String(active));
       });
-      if (focusThumb) gallery.querySelector(`[data-image-index="${targetIndex}"]`)?.focus({ preventScroll: true });
+      gallery.querySelectorAll('[data-gallery-image-index]').forEach(button => {
+        const active = Number(button.dataset.galleryImageIndex) === targetIndex;
+        button.classList.toggle('is-current', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      if (focusThumb) gallery.querySelector(`[data-gallery-image-index="${targetIndex}"], [data-image-index="${targetIndex}"]`)?.focus({ preventScroll: true });
       syncViewer();
     };
     const finishTransition = () => {
@@ -164,15 +345,27 @@ function setGalleryImage(index, focusThumb = false) {
     const status = gallery.querySelector('[data-gallery-status]');
     if (status) status.textContent = `Image unavailable · ${image.label}. The current image is retained.`;
   };
-  nextImage.src = image.src;
+  applyImageSource(nextImage, image, PRODUCT_IMAGE_SIZES);
 }
 
 function loadThumbnail(button) {
   const image = button?.querySelector('img[data-src]');
   if (!image) return;
+  const product = currentProduct();
+  const variantId = button.dataset.variantId;
+  const imageIndex = button.dataset.galleryImageIndex ?? button.dataset.imageIndex;
+  const source = button.dataset.galleryImageSrc;
+  const asset = variantId
+    ? productVariantGallery(product, variantId)[0]
+    : source
+      ? activeProductImages.find(item => item.src === source)
+      : activeProductImages[Number(imageIndex)];
+  if (asset) applyImageSource(image, asset, PRODUCT_IMAGE_SIZES);
+  else image.src = image.dataset.src;
   image.loading = 'eager';
-  image.src = image.dataset.src;
   image.removeAttribute('data-src');
+  image.removeAttribute('data-srcset');
+  image.removeAttribute('data-sizes');
 }
 
 function ensureViewer() {
@@ -225,24 +418,41 @@ function setZoom(delta, reset = false) {
 function syncViewer() {
   if (!viewer) return;
   const product = currentProduct();
-  const image = product?.images?.[selectedImage];
+  const images = activeProductImages || product?.images || [];
+  const image = images[selectedImage];
   if (!image) return;
   const img = viewer.querySelector('[data-viewer-image]');
   img.src = image.src;
   img.alt = `${product.name} — ${image.label}; design concept`;
-  viewer.querySelector('[data-viewer-caption]').textContent = `${image.label} · DESIGN CONCEPT`;
+  viewer.querySelector('[data-viewer-caption]').textContent = viewerCaption(product, images, selectedImage);
+  const canNavigateVariants = images.length === 1 && approvedGalleryVariants(product).length > 1;
   viewer.querySelectorAll('[data-viewer-prev], [data-viewer-next]').forEach(button => {
-    button.disabled = product.images.length < 2;
+    button.disabled = images.length < 2 && !canNavigateVariants;
   });
 }
 
 function onProductClick(event) {
+  const colourOption = event.target.closest('[data-colour-option]');
+  if (colourOption) { selectProductVariant(colourOption.dataset.variantId); return; }
+  const sizeOption = event.target.closest('[data-size-option]');
+  if (sizeOption) {
+    const group = sizeOption.closest('.product-size-options');
+    group?.querySelectorAll('[data-size-option]').forEach(option =>
+      option.setAttribute('aria-pressed', String(option === sizeOption)));
+    return;
+  }
   const thumb = event.target.closest('[data-image-index]');
-  if (thumb) { setGalleryImage(Number(thumb.dataset.imageIndex), true); return; }
+  if (thumb) {
+    if (thumb.dataset.variantId) selectProductVariant(thumb.dataset.variantId, true);
+    else setGalleryImage(Number(thumb.dataset.imageIndex), true);
+    return;
+  }
+  const galleryThumb = event.target.closest('[data-gallery-image-index]');
+  if (galleryThumb) { setGalleryImage(Number(galleryThumb.dataset.galleryImageIndex), true); return; }
   if (event.target.closest('[data-gallery-prev]')) { setGalleryImage(selectedImage - 1); return; }
   if (event.target.closest('[data-gallery-next]')) { setGalleryImage(selectedImage + 1); return; }
   if (event.target.closest('[data-open-viewer]')) {
-    const images = currentProduct()?.images || [];
+    const images = activeProductImages || currentProduct()?.images || [];
     if (!images.length) return;
     viewerReturnFocus = event.target.closest('[data-open-viewer]');
     const imageViewer = ensureViewer();
@@ -265,9 +475,11 @@ function onProductKeydown(event) {
   const tag = event.target?.tagName;
   if (['INPUT', 'TEXTAREA', 'SELECT', 'SUMMARY'].includes(tag)) return;
   if (tag === 'A') return;
-  if (tag === 'BUTTON' && !event.target.closest('[data-open-viewer], [data-image-index], [data-gallery-prev], [data-gallery-next]')) return;
-  const images = currentProduct()?.images || [];
-  if (images.length < 2 || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+  if (tag === 'BUTTON' && !event.target.closest('[data-open-viewer], [data-image-index], [data-gallery-image-index], [data-gallery-prev], [data-gallery-next]')) return;
+  const product = currentProduct();
+  const images = activeProductImages || product?.images || [];
+  const hasMultipleVariants = productVariants(product).filter(variant => productVariantGallery(product, variant.id).length).length > 1;
+  if ((images.length < 2 && !hasMultipleVariants) || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
   event.preventDefault();
   setGalleryImage(selectedImage + (event.key === 'ArrowRight' ? 1 : -1));
 }
@@ -284,7 +496,7 @@ function onDetailsToggle(event) {
 }
 
 function onGalleryIntent(event) {
-  const thumb = event.target.closest('[data-image-index]');
+  const thumb = event.target.closest('[data-image-index], [data-gallery-image-index]');
   if (thumb) loadThumbnail(thumb);
 }
 
@@ -327,7 +539,7 @@ function closeViewerBeforeProduct() {
 }
 
 function closeProduct({ fromHistory = false, restore = true } = {}) {
-  if (!fromHistory && ownedEntry && PRODUCT_HASH.test(currentLocation().hash) && typeof history !== 'undefined') {
+  if (!fromHistory && ownedEntry && productRouteMatch(currentLocation()) && typeof history !== 'undefined') {
     history.back();
     return;
   }
@@ -341,6 +553,7 @@ function closeProduct({ fromHistory = false, restore = true } = {}) {
   const restoredScrollY = sourceState?.catalogue?.scrollY;
   opener = null;
   currentId = null;
+  restoreProductSEO();
   if (restore) dispatchRestore();
   if (restore && !priorContext && sourceState?.catalogue) {
     if (typeof CustomEvent === 'function' && document.dispatchEvent) {
@@ -375,21 +588,21 @@ function closeProduct({ fromHistory = false, restore = true } = {}) {
       restoreFocus();
     }, 0);
   }
-  if (!fromHistory && PRODUCT_HASH.test(currentLocation().hash)) {
+  if (!fromHistory && productRouteMatch(currentLocation())) {
     if (typeof history !== 'undefined') history.replaceState(currentState(), '', sourceURL || `${currentLocation().pathname}${currentLocation().search}#products`);
   }
   ownedEntry = false;
 }
 
 function syncFromLocation() {
-  const match = currentLocation().hash.match(PRODUCT_HASH);
+  const match = productRouteMatch(currentLocation());
   if (match) {
     const id = Number(match[1]);
     if (config.products.some(product => product.id === id)) {
       if (currentId !== id) {
         const routeState = typeof history !== 'undefined' ? history.state : null;
         const openFromHistory = () => {
-          if (currentLocation().hash !== `#product/${id}`) return;
+          if (Number(productRouteMatch(currentLocation())?.[1]) !== id) return;
           openProduct(id, {
             fromHistory: true,
             context: routeState?.fsdProductContext || null,
@@ -418,7 +631,7 @@ function openProduct(id, options = {}) {
   const fromHistory = Boolean(options.fromHistory);
   const routeState = options.historyState || (typeof history !== 'undefined' ? history.state : null);
   const loc = currentLocation();
-  sourceURL = `${loc.pathname}${loc.search}${loc.hash && !PRODUCT_HASH.test(loc.hash) ? loc.hash : '#products'}`;
+  sourceURL = `${isProductPath(loc) ? '/' : loc.pathname}${loc.search}${loc.hash && !productRouteMatch(loc) ? loc.hash : '#products'}`;
   sourceState = { ...currentState(), catalogue: config.getCatalogueState?.() || null };
   context = options.context || null;
   opener = options.opener || document.activeElement;
@@ -427,7 +640,7 @@ function openProduct(id, options = {}) {
   renderProduct(product);
   document.documentElement?.classList?.add('fsd-modal-open');
   if (!productDialog.open) productDialog.showModal();
-  if (!fromHistory && !PRODUCT_HASH.test(loc.hash) && typeof history !== 'undefined') {
+  if (!fromHistory && !productRouteMatch(loc) && typeof history !== 'undefined') {
     const state = { ...sourceState };
     history.pushState({
       ...state,
@@ -474,7 +687,7 @@ export function initProductExperience(options) {
   });
   productDialog.addEventListener?.('close', () => {
     if (productDialog.open || currentId === null) return;
-    if (ownedEntry && PRODUCT_HASH.test(currentLocation().hash) && typeof history !== 'undefined') {
+    if (ownedEntry && productRouteMatch(currentLocation()) && typeof history !== 'undefined') {
       history.back();
       closeProduct({ fromHistory: true });
     } else closeProduct();
@@ -485,7 +698,7 @@ export function initProductExperience(options) {
     window.addEventListener?.('popstate', syncFromLocation);
     window.addEventListener?.('hashchange', syncFromLocation);
   }
-  if (PRODUCT_HASH.test(currentLocation().hash || '')) syncFromLocation();
+  if (productRouteMatch(currentLocation())) syncFromLocation();
 }
 
 export function showProductExperience(id, options = {}) {

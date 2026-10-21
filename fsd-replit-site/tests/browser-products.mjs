@@ -156,7 +156,7 @@ if (!requested.length || requested.includes('failed-media')) {
     await send('Network.enable');
     await send('Network.setCacheDisabled', { cacheDisabled: true });
     await send('Network.clearBrowserCache');
-    await send('Network.setBlockedURLs', { urls: ['*ombre-blue.png*'] });
+    await send('Network.setBlockedURLs', { urls: ['*ombre-blue.png*', '*ombre-blue-*.webp*'] });
     await click('[data-image-index="1"]');
     await waitFor('/unavailable/i.test(document.querySelector("[data-gallery-status]").textContent)');
     assert.ok(await evaluate('document.querySelector("[data-gallery-main]").src.endsWith("ombre-indigo.png")'));

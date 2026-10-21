@@ -1,5 +1,12 @@
 import { safe } from './catalogue-data.js';
 import { animateWithTokens, cancelMotion } from './motion.js';
+import { applyImageSource } from './product-assets.js';
+const cardSizes = '(max-width:600px) 90vw, (max-width:1000px) 45vw, 340px';
+const mappedSource = button => ({
+  src: button.dataset.imageSrc, srcset: button.dataset.imageSrcset || '',
+  width: Number(button.dataset.imageWidth) || null, height: Number(button.dataset.imageHeight) || null,
+  alt: button.dataset.imageAlt || button.dataset.imageLabel,
+});
 
 const pending = new Map();
 const activations = new WeakMap();
@@ -12,6 +19,7 @@ export function renderMappedImageChoices(images = []) {
   return `<div class="mapped-image-choices" role="group" aria-label="Mapped product colourway images">
     ${images.map((image, index) => `<button type="button" data-card-image-index="${index}"
       data-image-src="${safe(image.src)}" data-image-label="${safe(image.label)}"
+      data-image-srcset="${safe(image.srcset || '')}" data-image-width="${image.width || ''}" data-image-height="${image.height || ''}" data-image-alt="${safe(image.alt || image.label)}"
       aria-pressed="${index === 0}" aria-label="Show mapped image: ${safe(image.label)}">
       <span>${String(index + 1).padStart(2, '0')}</span><small>${safe(image.label)}</small>
     </button>`).join('')}
@@ -31,7 +39,7 @@ function mappedImage(button) {
         resolve(image);
       };
       image.onerror = () => { pending.delete(src); resolve(null); };
-      image.src = src;
+      applyImageSource(image, mappedSource(button), cardSizes);
     }));
   }
   return pending.get(src);
@@ -55,7 +63,7 @@ async function activate(button) {
   }
   const commit = () => {
     if (activations.get(card) !== activation) return;
-    image.src = button.dataset.imageSrc;
+    applyImageSource(image, mappedSource(button), cardSizes);
     image.closest('.product-image, .fsd-product-media, .showroom-feature-media')?.classList.remove('mapped-image-unavailable');
     image.alt = `${image.alt.split(' — ')[0]} — ${button.dataset.imageLabel}; design concept`;
     card.querySelectorAll('[data-card-image-index]').forEach(choice => {

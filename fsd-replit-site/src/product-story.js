@@ -1,4 +1,5 @@
 import { safe } from './catalogue-data.js';
+import { renderImageAttributes } from './product-assets.js';
 
 const STORY_PRODUCTS = new Set([43]);
 
@@ -17,7 +18,7 @@ export function renderProductStory(product, price) {
       <h3 id="product-story-title">${safe(product.name)}</h3>
     </header>
     <div class="product-story-lead">
-      <figure><img loading="lazy" src="${safe(lead.src)}" alt="${safe(product.name)} — ${safe(lead.label)}; design concept" decoding="async"/>
+      <figure><img ${renderImageAttributes(lead, { lazy: true, sizes: '(max-width:700px) 90vw, 640px' })}/>
         <figcaption>${safe(lead.label)} · DESIGN CONCEPT</figcaption></figure>
       <div class="product-story-sequence" aria-label="Product record details">
         ${facts.map(([label, value], index) => `<div class="product-story-fact">

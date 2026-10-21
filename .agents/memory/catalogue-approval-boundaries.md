@@ -38,3 +38,9 @@ Avoid the exact visible phrase “in development” across the public site.
 **Why:** The user asked for all instances of that wording to be removed.
 
 **How to apply:** Use honest pre-launch or proposed-concept wording instead, without implying that a product is available to buy.
+
+Catalogue maintenance should use reviewed catalogue files and preview commands, not a public browser editor or upload endpoint.
+
+**Why:** The user explicitly chose this approach instead of adding an authenticated admin.
+
+**How to apply:** Keep unapproved preparations private, provide read-only proofs, and separate image approval, content approval, publication authorisation and purchasing. Do not add an admin or upload service without a new request.
