@@ -10,9 +10,11 @@ import { setTimeout as delay } from 'node:timers/promises';
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
 const mobileProofCapture = process.env.FSD_HIJAB_MOBILE_CAPTURE === '1';
+const aegisProofCapture = process.env.FSD_AEGIS_CAPTURE === '1';
 const profile = mkdtempSync(join(tmpdir(), 'fsd-browser-'));
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
+  `--window-size=${mobileProofCapture ? '402,874' : '1440,1000'}`,
   '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank',
 ], { stdio: 'ignore' });
 let socket;
@@ -71,9 +73,13 @@ try {
     if (fullPage) {
       const metrics = await send('Page.getLayoutMetrics');
       const content = metrics.cssContentSize || metrics.contentSize;
-      clip = { x: 0, y: 0, width: content.width, height: content.height, scale: 1 };
+      const viewportWidth = await evaluate('document.documentElement.clientWidth || window.innerWidth');
+      clip = { x: 0, y: 0, width: viewportWidth, height: content.height, scale: 1 };
     } else {
-      const viewport = await evaluate('({ width: window.innerWidth, height: window.innerHeight })');
+      const viewport = await evaluate(`({
+        width: document.documentElement.clientWidth || window.innerWidth,
+        height: Math.round(window.visualViewport?.height || document.documentElement.clientHeight || window.innerHeight)
+      })`);
       clip = { x: 0, y: 0, width: viewport.width, height: viewport.height, scale: 1 };
     }
     const image = await send('Page.captureScreenshot', {
@@ -97,9 +103,11 @@ try {
   await send('Runtime.enable');
   await send('Page.enable');
   await send('Page.bringToFront');
-  await send('Emulation.setDeviceMetricsOverride', mobileProofCapture
-    ? { width: 402, height: 874, deviceScaleFactor: 1, mobile: true }
-    : { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
+  if (!mobileProofCapture) {
+    await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
+  } else {
+    await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 1, mobile: true });
+  }
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
@@ -123,8 +131,56 @@ try {
 
   await click('[data-division="apparel"]');
   await click('[data-group-index="1"]');
+  const aegisCard = '[data-product-id="46"]';
+  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector("img").src.endsWith("/media/front-three-quarter")`));
+  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Black / Gold")`));
+  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("£69.99")`));
+  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Reference only · not approved for sale")`));
+  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector(".fsd-product-media--aegis-preview").href.endsWith("/__catalogue-preview/aegis-modest-performance-gilet/")`));
+  await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").scrollIntoView({ block: "center" })`);
+  if (aegisProofCapture) {
+    await captureHijabProof(mobileProofCapture ? 'aegis-gilet-collection-mobile.jpg' : 'aegis-gilet-collection-desktop.jpg');
+  }
+  await click(aegisCard);
+  await waitFor('location.pathname === "/__catalogue-preview/aegis-modest-performance-gilet/" && !!document.querySelector("#aegis-gilet-title")');
+  assert.equal(await evaluate('document.querySelectorAll("[data-aegis-thumb]").length'), 10);
+  assert.ok(await evaluate('document.querySelector("#aegis-gilet-title").textContent.includes("Aegis Modest Performance Gilet")'));
+  assert.ok(await evaluate('document.querySelector("#aegis-main-image").src.endsWith("/media/front-three-quarter")'));
+  assert.ok(await evaluate('document.querySelector(".aegis-product-colour").textContent.includes("Black / Gold")'));
+  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("£69.99")'));
+  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("Reference only · not approved for sale")'));
+  assert.ok(await evaluate('document.querySelector(".aegis-purchase-disabled").textContent.includes("PURCHASING DISABLED")'));
+  assert.ok(!await evaluate('document.querySelector("form, [name=checkout], [data-checkout]")'));
+  if (aegisProofCapture) {
+    await captureHijabProof(mobileProofCapture ? 'aegis-gilet-product-mobile.jpg' : 'aegis-gilet-product-desktop.jpg', true);
+  }
+  await click('[data-aegis-thumb="full-rear"]');
+  await waitFor('document.querySelector("#aegis-main-image").src.endsWith("/media/full-rear")');
+  assert.ok(await evaluate('document.querySelector("#aegis-image-review-note").textContent.includes("not been verified")'));
+  if (aegisProofCapture) {
+    await captureHijabProof(mobileProofCapture ? 'aegis-gilet-back-mobile.jpg' : 'aegis-gilet-back-desktop.jpg', true);
+  }
+  const aegisHeaders = await evaluate(`(async () => {
+    const page = await fetch(location.href, { method: 'HEAD' });
+    const image = await fetch('/__catalogue-preview/aegis-modest-performance-gilet/media/full-rear', { method: 'HEAD' });
+    const blocked = await fetch(location.href, { method: 'POST' });
+    return [page.headers.get('x-robots-tag'), page.headers.get('cache-control'),
+      image.headers.get('content-type'), image.headers.get('x-robots-tag'), blocked.status];
+  })()`);
+  assert.ok(aegisHeaders[0].includes('noindex, nofollow, noarchive'));
+  assert.equal(aegisHeaders[1], 'no-store');
+  assert.equal(aegisHeaders[2], 'image/webp');
+  assert.ok(aegisHeaders[3].includes('noindex, nofollow, noarchive'));
+  assert.equal(aegisHeaders[4], 405);
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
+  await click('[data-division="apparel"]');
+  await click('[data-group-index="1"]');
   await click('[data-subcategory-index="0"]');
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
+  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector(".fsd-product-description").textContent.includes("Black / Champagne Gold")'));
+  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
+  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Reference only · not approved for sale")'));
   await evaluate('document.querySelector("[data-product-id=\\"43\\"]").scrollIntoView({ block: "center" })');
   if (mobileProofCapture) {
     console.log('Mobile collection viewport:', await evaluate('({ innerWidth: window.innerWidth, clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, visualWidth: window.visualViewport?.width, screenWidth: screen.width, pixelRatio: devicePixelRatio })'));
@@ -132,12 +188,26 @@ try {
   } else {
     await captureHijabProof('velocity-hijab-collection-desktop.jpg');
   }
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: mobileProofCapture ? 402 : 1440,
+    height: mobileProofCapture ? 874 : 1000,
+    deviceScaleFactor: 1,
+    mobile: mobileProofCapture,
+  });
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
+  await click('[data-division="apparel"]');
+  await click('[data-group-index="1"]');
+  await click('[data-subcategory-index="0"]');
   await click('[data-product-id="43"]');
   await waitFor('location.pathname === "/__catalogue-preview/velocity-performance-sports-hijab/" && !!document.querySelector("#velocity-hijab-title")');
   assert.equal(await evaluate('document.querySelectorAll("[data-hijab-thumb]").length'), 5);
   assert.ok(await evaluate('document.querySelector("#velocity-hijab-title").textContent.includes("Velocity")'));
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")'));
+  assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").alt.toLowerCase().includes("woman")'));
   assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("£29.99")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Reference only · not approved for sale")'));
+  assert.ok(!await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Confirmed list price")'));
   assert.ok(await evaluate('document.querySelector(".velocity-colour").textContent.includes("Black / Champagne Gold")'));
   assert.ok(await evaluate('document.querySelector(".velocity-purchase-disabled").textContent.includes("PURCHASING DISABLED")'));
   assert.ok(!await evaluate('/add to cart|checkout button|quantity selector/i.test(document.body.textContent)'));
@@ -154,6 +224,7 @@ try {
   }
   assert.ok(await evaluate('document.querySelector(".velocity-product-tagline").textContent.includes("PENDING VERIFICATION")'));
   assert.ok(await evaluate('document.querySelector(".velocity-gallery-note").textContent.includes("pending")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-disclaimer").textContent.includes("No technical claims are established")'));
   assert.ok(!await evaluate('/Lightweight & breathable|Stays in place|Strategic airflow/i.test(document.body.textContent)'));
   await click('[data-hijab-thumb="campaign"]');
   await waitFor('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")');

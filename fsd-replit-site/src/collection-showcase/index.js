@@ -1,4 +1,5 @@
 import { priceInfo } from '../catalogue-data.js';
+import { aegisGiletPreviewPath } from '../aegis-gilet-preview-path.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
@@ -82,19 +83,39 @@ function matchesGroup(product, group) {
 }
 
 function productCard(product) {
-  const image = Array.isArray(product.images) ? product.images[0] : null;
+  const isAegisPreview = import.meta.env.DEV && Number(product.id) === 46;
+  const catalogueImage = Array.isArray(product.images) ? product.images[0] : null;
+  const image = isAegisPreview
+    ? {
+      src: `${aegisGiletPreviewPath}media/front-three-quarter`,
+      label: 'Private campaign image from the supplied Aegis visual board',
+    }
+    : catalogueImage;
   const category = product.category || 'FSD COLLECTION';
   const audience = product.audience ? `<span>${escapeHTML(product.audience)}</span>` : '';
-  const price = priceInfo(product);
+  const masterPrice = priceInfo(product);
+  const price = isAegisPreview
+    ? { ...masterPrice, label: 'Reference only · not approved for sale' }
+    : Number(product.id) === 43 && import.meta.env.DEV
+    ? { ...masterPrice, label: 'Reference only · not approved for sale' }
+    : masterPrice;
+  const colourways = Number(product.id) === 43 && import.meta.env.DEV
+    ? 'Black / Champagne Gold'
+    : product.colourways;
   const description = product.coverage || product.priceBasis || product.specificationStatus ||
-    (product.colourways ? `Colourways: ${product.colourways}` : 'Specifications and availability are not confirmed.');
+    (colourways ? `Colourways: ${colourways}` : 'Specifications and availability are not confirmed.');
   const media = image
-    ? `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>`
+    ? isAegisPreview
+      ? `<a class="fsd-product-media fsd-product-media--aegis-preview" href="${aegisGiletPreviewPath}" aria-label="Open private preview for ${escapeHTML(product.name)}"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(image.label)}"><span>PRIVATE CAMPAIGN REVIEW</span></a>`
+      : `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>`
     : `<div class="fsd-product-media fsd-product-media--placeholder" aria-hidden="true"><span class="fsd-placeholder-code">FSD<br/>/ /</span><span>${escapeHTML(category)}</span></div>`;
+  const productTitle = isAegisPreview
+    ? `<a class="fsd-aegis-preview-title" href="${aegisGiletPreviewPath}">${escapeHTML(product.name)}</a>`
+    : escapeHTML(product.name);
   return `<article class="fsd-product-card">
     ${media}
     <div class="fsd-product-meta"><span>${escapeHTML(category)}</span>${audience}</div>
-    <h4>${escapeHTML(product.name)}</h4>
+    <h4>${productTitle}</h4>
     <p class="fsd-product-description">${escapeHTML(description)}</p>
     <p class="fsd-product-reference">${escapeHTML(price.label)} <strong>${escapeHTML(price.value)}</strong></p>
     <p class="fsd-product-status">PRE-LAUNCH RECORD <span aria-hidden="true">·</span> DETAILS SUBJECT TO CONFIRMATION</p>
@@ -157,7 +178,13 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     </div>`;
 }
 
-export function mountCollectionShowcase({ root, divisions, products = [], onProductSelect = () => {}, onExploreCollection = () => {} }) {
+export function mountCollectionShowcase({
+  root,
+  divisions,
+  products = [],
+  onProductSelect = () => {},
+  onExploreCollection = () => {},
+}) {
   if (!root || typeof root.insertAdjacentHTML !== 'function') {
     throw new TypeError('mountCollectionShowcase requires a DOM root element.');
   }
@@ -182,7 +209,13 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
   const renderDialog = () => {
     if (!activeDivision) return;
     const group = activeDivision.groups?.[activeGroupIndex] || { title: activeDivision.title };
-    content.innerHTML = modalContent(activeDivision, group, safeProducts, activeGroupIndex, activeSubcategoryIndex);
+    content.innerHTML = modalContent(
+      activeDivision,
+      group,
+      safeProducts,
+      activeGroupIndex,
+      activeSubcategoryIndex,
+    );
     content.scrollTop = 0;
   };
 

@@ -1,0 +1,302 @@
+# FSD WEBSITE — FSD HYDRATE SMART BOTTLE INTEGRATION
+
+## TASK: INTEGRATE A NEW PRODUCT USING THE SUPPLIED WEBSITE IMAGE ASSETS
+
+Integrate **FSD HYDRATE — Smart Hydration Bottle** into the existing FSD Fitness & Self Defence website as a premium, private, draft product.
+
+**This is a product integration task, not a website redesign.**
+
+Use the uploaded ZIP:
+
+`FSD_HYDRATE_Individual_Mockup_Images.zip`
+
+Also use the original FSD HYDRATE campaign artwork if it is available in the project or uploaded separately.
+
+The individual files are cropped sections of a website design mockup. They are **visual references**, not necessarily clean product photographs. Do not display cropped navigation, buttons, product descriptions or other interface elements as though they are part of the product itself.
+
+## 1. NON-NEGOTIABLE PRESERVATION RULES
+
+- Preserve the existing approved FSD website design.
+- Preserve the original full-width interactive mega-menu and its existing navigation labels, structure and interactions.
+- Preserve the black, graphite and champagne-gold visual identity.
+- Preserve all existing products, catalogue records, collections, imagery and approved product pages.
+- Preserve all Phase 2, Phase 3 and Phase 4 functionality, including the product catalogue architecture.
+- Do not modify the approved women's apparel, hijab, men's training collection or skipping-rope products.
+- Do not redesign the homepage, header, navigation, footer or existing product components.
+- Do not introduce new product-gallery systems when the existing components can be reused.
+- Do not enable checkout, payment processing or public publishing.
+- Keep FSD HYDRATE in **DRAFT / PENDING APPROVAL**.
+
+Before implementation, identify the existing product schema, image-handling system, collection structure and draft safeguards. Extend them carefully rather than replacing them.
+
+## 2. PRODUCT IDENTITY
+
+**Product name:** FSD HYDRATE
+
+**Subtitle:** Smart Hydration Bottle
+
+**Collection:** Existing appropriate equipment or accessories collection, subject to review. Do not create an unnecessary new top-level navigation item.
+
+**Product colour:** Black / Champagne Gold, as depicted in the supplied artwork.
+
+**Campaign headline:**
+
+FSD HYDRATE
+
+**Campaign subheading:**
+
+SMART HYDRATION BOTTLE
+
+**Campaign message:**
+
+FUEL YOUR BODY.  
+TRACK YOUR INTAKE.  
+A STRONGER YOU.
+
+**Introductory product copy:**
+
+"Meet FSD HYDRATE, a premium hydration bottle concept designed around the demands of training, movement and everyday performance. Presented in signature FSD black and champagne gold, it combines a commanding silhouette with a vision for a more connected hydration experience."
+
+This is concept-stage marketing copy. Do not present unverified technical capabilities as established product facts.
+
+## 3. IMAGE ASSET INTEGRATION
+
+Import and organise the individual image files supplied in the ZIP.
+
+### Asset mapping
+
+| File | Intended use |
+|---|---|
+| `01_desktop_campaign_hero.png` | Reference for campaign hero composition |
+| `02_desktop_product_detail.png` | Reference for product detail layout |
+| `03_feature_icons.png` | Reference for the feature icon treatment |
+| `04_lifestyle_gym.png` | Gym lifestyle section reference |
+| `05_lifestyle_outdoors.png` | Outdoor lifestyle section reference |
+| `06_lifestyle_work.png` | Work lifestyle section reference |
+| `07_product_design_detail.png` | Bottle design detail reference |
+| `08_insulation_detail.png` | Insulation concept reference |
+| `09_indicator_detail.png` | Intake indicator concept reference |
+| `10_lid_detail.png` | Bottle lid detail reference |
+| `11_app_concept_panel.png` | Companion app concept reference |
+| `12_mobile_page_preview.png` | Mobile layout reference only |
+
+### Important image-handling instructions
+
+1. Use the **original supplied FSD HYDRATE artwork** as the source for product photography wherever possible.
+2. Treat the individual mockup crops as design references, not automatically as final gallery assets.
+3. Where a crop contains a clean, usable image without interface text, it may be proposed for the relevant editorial section.
+4. Do not use the desktop or mobile page screenshots as customer-facing product photographs.
+5. Do not invent new product angles or replace the supplied bottle with generic stock photography.
+6. Preserve the FSD logo, bottle shape, black finish, champagne-gold detailing and visible indicator.
+7. Do not stretch imagery or aggressively crop the logo or bottle.
+8. If clean standalone bottle images cannot be extracted without compromising quality, mark the missing images as **PENDING ASSET APPROVAL** rather than fabricating them.
+9. Optimise approved images for web performance and use responsive image sizing.
+
+## 4. COLLECTION PRODUCT CARD
+
+Add FSD HYDRATE to the appropriate existing equipment/accessories collection as a draft.
+
+The card should contain:
+
+- One premium bottle image.
+- Product name: **FSD HYDRATE**.
+- Subtitle: **Smart Hydration Bottle**.
+- Colour: **Black / Champagne Gold**.
+- Status: **Coming Soon / Pending Approval**.
+- A subtle champagne-gold **Explore Product** action leading to the private preview.
+
+Do not invent a price, discount, rating, review count, inventory level or availability date.
+
+Use the existing approved product-card styling, transitions and hover effects.
+
+## 5. PRODUCT DETAIL PAGE
+
+Create a private, responsive product detail page using the existing product-page framework.
+
+### Desktop layout
+
+Use the established FSD product-page design:
+
+**Left:** One large product image at a time, with a small set of selectable approved views.
+
+**Right:**
+- Product name.
+- Product subtitle.
+- Black / Champagne Gold colour presentation.
+- Draft / Pending Approval status.
+- Short product introduction.
+- Non-purchasable **Not Available Yet** state.
+- Clearly labelled pending technical information.
+
+Avoid overcrowded galleries, duplicated imagery and unnecessary new interface patterns.
+
+### Mobile layout
+
+At approximately 402px width:
+
+- Display the bottle image prominently.
+- Keep typography legible and elegant.
+- Place product information directly beneath the image.
+- Make gallery controls touch-friendly.
+- Avoid horizontal overflow.
+- Keep the product non-purchasable.
+
+## 6. CAMPAIGN LANDING SECTION
+
+Create a premium FSD HYDRATE campaign section within the appropriate existing website structure.
+
+### Visual direction
+
+- Deep black and graphite background.
+- Champagne-gold typography and restrained accents.
+- Cinematic imagery featuring the FSD bottle.
+- Refined editorial spacing.
+- Subtle transitions consistent with the approved site.
+- No bright colours beyond those already present in the supplied artwork.
+
+### Suggested content
+
+**Eyebrow:** INTRODUCING
+
+**H1:** FSD HYDRATE
+
+**Subheading:** SMART HYDRATION BOTTLE
+
+**Supporting copy:**
+
+"Hydration meets the FSD performance mindset. Discover the design vision behind FSD HYDRATE, created for those who train with purpose and carry that discipline into every part of their day."
+
+**CTA:** EXPLORE FSD HYDRATE
+
+This CTA should open the private draft product preview. It must not initiate purchasing.
+
+## 7. LIFESTYLE STORYTELLING
+
+Use the three supplied lifestyle concepts as visual references for an editorial section.
+
+### AT THE GYM
+
+"Built around the rhythm of training, from preparation to recovery."
+
+### OUTDOORS
+
+"An everyday hydration companion for movement beyond the gym."
+
+### AT WORK
+
+"Signature FSD design for a focused, active lifestyle."
+
+Use these as lifestyle positioning statements, not as proof of specific product performance.
+
+## 8. FEATURES — PENDING TECHNICAL VERIFICATION
+
+The supplied artwork illustrates the following proposed features:
+
+- Water-intake tracking.
+- Real-time hydration information.
+- Gentle reminders.
+- Performance-focused functionality.
+- Insulated construction.
+- Companion app connectivity.
+- Intake indicator.
+- Leak-resistant lid design.
+
+**None of these features should be represented as independently verified or commercially available based on the artwork alone.**
+
+Create a refined **Concept Features / Pending Verification** section.
+
+For each proposed capability:
+
+- Display an appropriate approved image or existing FSD-style icon.
+- Label the capability clearly as a concept or pending verification.
+- Avoid unverified numerical claims.
+- Do not invent battery life, capacity, insulation duration, wireless technology, materials, certifications or app compatibility.
+- Do not link to app stores or imply that a functioning FSD HYDRATE app exists unless separately confirmed.
+
+The number shown on the concept display must not automatically become an approved bottle-capacity specification.
+
+## 9. PRODUCT INFORMATION
+
+Use existing accordion components for:
+
+- Design and construction — Pending verification.
+- Hydration technology — Pending verification.
+- Insulation and temperature retention — Pending verification.
+- App connectivity — Pending verification.
+- Capacity and dimensions — Pending verification.
+- Cleaning and care — Pending verification.
+- Availability — Not yet confirmed.
+
+Do not fill missing information with assumptions.
+
+## 10. SEO AND ACCESSIBILITY
+
+Prepare draft-only metadata.
+
+**Suggested meta title:**
+
+FSD HYDRATE Smart Hydration Bottle | FSD Fitness & Self Defence
+
+**Suggested meta description:**
+
+"Explore FSD HYDRATE, a premium black-and-gold smart hydration bottle concept from FSD Fitness & Self Defence. Discover the design and upcoming product vision."
+
+Use one clear H1, descriptive H2 sections, accessible gallery controls and meaningful image alt text.
+
+Example alt text:
+
+- "FSD HYDRATE black and champagne-gold bottle concept with illuminated front indicator."
+- "Close-up of the FSD HYDRATE bottle lid and carrying handle."
+- "Athlete holding a black FSD hydration bottle during training."
+- "FSD HYDRATE companion app interface concept."
+
+Do not create publicly indexable product URLs while the product remains private.
+
+## 11. QUALITY CONTROL
+
+Before requesting approval, confirm:
+
+1. All 12 supplied reference images were received and inventoried.
+2. The original FSD HYDRATE artwork is preserved unchanged.
+3. The product is correctly entered in the existing catalogue as a draft.
+4. The collection card and product page use consistent product naming.
+5. Only appropriate clean imagery is proposed for customer-facing use.
+6. No invented prices, specifications or technical claims have been added.
+7. Existing products and collections are unaffected.
+8. The approved original full-width mega-menu remains intact.
+9. Desktop and 402px mobile layouts work correctly.
+10. Product-gallery selections work with mouse, keyboard and touch.
+11. Checkout, payments and public publishing remain disabled.
+12. No unrelated design or navigation changes were introduced.
+
+## 12. REQUIRED PRIVATE PROOFS
+
+Before considering this task complete, show me:
+
+**Proof A — Collection card**
+
+How FSD HYDRATE appears inside the existing equipment/accessories collection.
+
+**Proof B — Desktop product page**
+
+The product gallery, description, pending-feature information and non-purchasable state.
+
+**Proof C — Mobile product page**
+
+The same product at approximately 402px width.
+
+**Proof D — Campaign section**
+
+The premium black-and-gold editorial presentation with bottle imagery and lifestyle content.
+
+**Proof E — Asset audit**
+
+A clear list of which supplied images were used, which were kept as references and which standalone product images are still missing.
+
+## FINAL INSTRUCTION
+
+Implement only the FSD HYDRATE draft integration.
+
+Do not redesign the existing website. Do not alter the approved navigation. Do not interfere with previously approved collections or product images.
+
+**Stop after presenting the private proofs and wait for my approval before making additional design changes, publishing or enabling purchasing.**

@@ -294,3 +294,143 @@ mtime_ms = 1792570577152
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/b35712a9-bb07-4eeb-80eb-0bda3740b46a/0fc5f3ff-73ec-4472-bab5-75756256ac20"
 storage_version_token = "1792570600622199"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "o9lSa6NbYZ4nfc6WrdSUz"
+uri = "file://generated-artifacts/velocity-hijab-collection-desktop.jpg"
+type = "image"
+title = "Velocity Hijab — desktop collection card, final verification"
+description = "Development-only Women's collection card showing the approved layout, Black / Champagne Gold preview text and £29.99 marked as reference only, not approved for sale."
+logical_id = "66c8adbe-e3e7-4bf8-b8b0-e7929e503c91"
+content_hash = "sha256:0de2ce48502a2df4096b3a2314a4346248f7440b8c204355129dd5812378ec3e"
+size = 103007
+mtime_ms = 1792575237246
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/66c8adbe-e3e7-4bf8-b8b0-e7929e503c91/4c2b390d-e339-4a40-99fe-ec530687304b"
+storage_version_token = "1792575317654848"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "jC6JvQDg8lqgx_A8cOUfu"
+uri = "file://generated-artifacts/velocity-hijab-collection-mobile.jpg"
+type = "image"
+title = "Velocity Hijab — mobile collection card, final verification"
+description = "Narrow-screen collection card capture. The master catalogue remains unchanged; the preview colour and reference-only price are development-only."
+logical_id = "88730f2b-50e8-432f-8a72-0cf8b2c83bdf"
+content_hash = "sha256:38738641edbcbb3e7030bc7906de4749aa7363a98a9a3425e7d20664f4d2368e"
+size = 51518
+mtime_ms = 1792575244066
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/88730f2b-50e8-432f-8a72-0cf8b2c83bdf/30e7827f-2932-43e7-9fcf-1c2103051654"
+storage_version_token = "1792575318437013"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "7XbQAUzoUvWJ9sL2-NKBX"
+uri = "file://generated-artifacts/velocity-hijab-product-desktop.jpg"
+type = "image"
+title = "Velocity Hijab — desktop product proof, final verification"
+description = "Private desktop gallery using the supplied model-worn image and individually selectable source photographs. The reference price is explicitly not approved for sale; product details and side view remain pending."
+logical_id = "5b015989-dab9-4e5d-b5ac-a9dbfc8e41d8"
+content_hash = "sha256:79eae37db600a932e089eebf7c3dd03e6080527811ba902c1ab380a9b802b8a1"
+size = 282081
+mtime_ms = 1792575237746
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5b015989-dab9-4e5d-b5ac-a9dbfc8e41d8/161ae0fe-c98e-4ffc-80b3-ca31c0ab6554"
+storage_version_token = "1792575319139392"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "4HCZyKdhbpjQZUI41za8U"
+uri = "file://generated-artifacts/velocity-hijab-product-mobile.jpg"
+type = "image"
+title = "Velocity Hijab — mobile product proof, final verification"
+description = "Private mobile product proof with the supplied gallery, pending product details, and £29.99 clearly labeled as a reference only, not approved for sale."
+logical_id = "dcd6b92f-2026-42ea-9695-cf9137857a0d"
+content_hash = "sha256:4bcbf126962b5cfdb9219b0608bea93762843d5b854830b1968f4fe4e7fde287"
+size = 126836
+mtime_ms = 1792575245034
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/dcd6b92f-2026-42ea-9695-cf9137857a0d/e0cc660c-e18c-4350-871b-dd34a892c152"
+storage_version_token = "1792575319903578"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "7_szLp-KLeNQlYLA7zpYp"
+uri = "file://generated-artifacts/aegis-gilet-collection-desktop.jpg"
+type = "image"
+title = "Aegis — desktop collection card"
+description = "The existing Women’s Modest Combat group with the Aegis card visible."
+logical_id = "e1c5f692-b0de-49e9-a4a1-3536cee198ae"
+content_hash = "sha256:736ab051efc33bd3b4c89dc72dcb783cb2ff16dfba4044a7d17edc3e8989aaad"
+size = 116143
+mtime_ms = 1792576412288
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e1c5f692-b0de-49e9-a4a1-3536cee198ae/916e997a-ab98-42d4-9778-5a28471e516b"
+storage_version_token = "1792576645134986"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "Q20x68R4AWMtB0rJpI8No"
+uri = "file://generated-artifacts/aegis-gilet-collection-mobile.jpg"
+type = "image"
+title = "Aegis — mobile collection card"
+description = "Mobile view of the existing collection group with the Aegis card visible."
+logical_id = "2fc12524-e06a-4cd9-a53f-902a4a5cf08b"
+content_hash = "sha256:7d0e42b8e4a66e057af84b7c1df5c91948cefc1608e2a425fe796815ec3f6427"
+size = 40365
+mtime_ms = 1792576419940
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/2fc12524-e06a-4cd9-a53f-902a4a5cf08b/ee976558-f4bf-4414-a5d5-a1c2199c9d1a"
+storage_version_token = "1792576645841299"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "XXNxAXRuN7OuwVbNgF-m3"
+uri = "file://generated-artifacts/aegis-gilet-desktop-fullpage.jpg"
+type = "image"
+title = "Aegis — full desktop product proof"
+description = "Private desktop product page with the supplied front image, selectable gallery, reference-only catalogue values, and pending verification labels."
+logical_id = "e57dc0cc-9941-4c56-a411-f61bd31fd42c"
+content_hash = "sha256:695a9f25bb45b6b460710a96e3cea877043fc2d16f58a2ee6cadbda85893eefd"
+size = 162585
+mtime_ms = 1792576270668
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e57dc0cc-9941-4c56-a411-f61bd31fd42c/45faf90c-3754-4a73-a283-56508dd490db"
+storage_version_token = "1792576646533062"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "7pJXawWAK-UcPT_xnqdAA"
+uri = "file://generated-artifacts/aegis-gilet-mobile-fullpage.jpg"
+type = "image"
+title = "Aegis — full mobile product proof"
+description = "Private mobile product page showing the responsive gallery and pending verification information."
+logical_id = "520ecee9-5417-45ad-8f17-c85cc827664c"
+content_hash = "sha256:713305bef92d713558e826b5abb1d434b999f6392ed7e1f022633ffdbac5a4d6"
+size = 94899
+mtime_ms = 1792576272056
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/520ecee9-5417-45ad-8f17-c85cc827664c/dc3dbc01-0235-4c8d-8191-418ffbb7ee09"
+storage_version_token = "1792576647221923"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "sTiU7rsrhUqB1UB96zYLb"
+uri = "file://generated-artifacts/aegis-gilet-back-desktop.jpg"
+type = "image"
+title = "Aegis — desktop back-view review"
+description = "The supplied rear image selected in the gallery; rear panel construction is explicitly marked unverified."
+logical_id = "a2073b00-6196-41d4-b230-ba4bc4e5b89a"
+content_hash = "sha256:abd91c45f94271602f13a7146b3d62daba04049eb5515a88a29fc97a6c5351a9"
+size = 200914
+mtime_ms = 1792576412708
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/a2073b00-6196-41d4-b230-ba4bc4e5b89a/1024137e-6fc2-40e6-b249-19366393a2f5"
+storage_version_token = "1792576647938976"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "MsZD8Mlg3u3YJRSUFelNC"
+uri = "file://generated-artifacts/aegis-gilet-back-mobile.jpg"
+type = "image"
+title = "Aegis — mobile back-view review"
+description = "The supplied rear image selected in the mobile gallery; rear panel construction is explicitly marked unverified."
+logical_id = "94fc8ee7-797b-4a2a-ab46-fd8bae34e50c"
+content_hash = "sha256:36502ed1ea841ed24b910d6f03ff2c625bd2d48eefada05631767f48ced68d2e"
+size = 112451
+mtime_ms = 1792576420304
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/94fc8ee7-797b-4a2a-ab46-fd8bae34e50c/486ad399-dab1-4c33-bcec-657e076a33d9"
+storage_version_token = "1792576648636089"
+content_type = "image/jpeg"

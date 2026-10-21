@@ -6,7 +6,10 @@ import { velocityHijabMediaPrefix, velocityHijabPreviewPath } from './velocity-h
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
 
 const preview = createVelocityHijabPreview();
-const productPrice = priceInfo(preview.product);
+const productPrice = {
+  ...priceInfo(preview.product),
+  label: 'Reference only · not approved for sale',
+};
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
   '<': '&lt;',

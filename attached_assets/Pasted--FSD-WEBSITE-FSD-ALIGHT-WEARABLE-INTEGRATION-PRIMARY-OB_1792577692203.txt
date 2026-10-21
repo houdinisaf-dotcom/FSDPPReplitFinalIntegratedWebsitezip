@@ -1,0 +1,209 @@
+# FSD WEBSITE — FSD ALIGHT WEARABLE INTEGRATION
+
+## PRIMARY OBJECTIVE
+
+Integrate the new **FSD ALIGHT — Posture Awareness Wearable** into the existing FSD Fitness & Self Defence website using the attached `FSD_ALIGHT_Individual_Website_Images.zip`.
+
+**IMPORTANT BRAND CORRECTION**
+
+The product's official working name is **FSD ALIGHT**, NOT FSD ALIGN.
+
+The revised artwork features FSD branding on the wearable device instead of VERULEX.
+
+Use the corrected ALIGHT artwork as the visual reference. Do not reuse outdated ALIGN or VERULEX imagery in the new product presentation.
+
+## 1. PRESERVE EVERYTHING ALREADY APPROVED
+
+- Preserve the existing black, graphite and champagne-gold luxury website design.
+- Preserve the original full-width interactive navigation mega-menu.
+- Preserve Phase 2, Phase 3 and Phase 4 functionality.
+- Preserve all existing products, imagery, variants and catalogue architecture.
+- Do not modify the FSD HYDRATE product, women's apparel, hijab collections, training apparel or skipping ropes.
+- Do not redesign the homepage or navigation.
+- Keep the product in DRAFT / PENDING APPROVAL.
+- Do not enable checkout, payments or public publishing.
+
+## 2. PRODUCT IDENTITY
+
+**Product name:** FSD ALIGHT
+
+**Category:** Posture Awareness Wearable
+
+**Collection:** Existing Bio-Lab / Wearable Technology collection, where appropriate.
+
+**Headline:**
+
+BETTER POSTURE.
+GREATER AWARENESS.
+A STRONGER YOU.
+
+**Introductory description:**
+
+"Meet FSD ALIGHT, a premium posture-awareness wearable concept designed around mindful movement, everyday comfort and purposeful performance. Created to complement your routine from work to training, ALIGHT brings refined design to the idea of greater body awareness."
+
+This is concept-stage marketing copy, not a verified technical specification.
+
+## 3. IMAGE IMPORT AND MAPPING
+
+Import all supplied images and keep the originals intact.
+
+Use the following assignments:
+
+- `00_full_campaign_reference.jpg` — complete campaign reference artwork.
+- `01_campaign_hero.jpg` — campaign hero.
+- `02_product_hero_crop.jpg` — product-focused visual for the collection card or product introduction.
+- `03_feature_strip.jpg` — visual reference for proposed features.
+- `04_lifestyle_woman.jpg` — lifestyle gallery selection.
+- `05_lifestyle_man.jpg` — lifestyle gallery selection.
+- `06_premium_design_detail.jpg` — design detail.
+- `07_indicator_detail.jpg` — indicator close-up.
+- `08_comfort_fit_detail.jpg` — fit and construction detail.
+- `09_at_work.jpg` — work lifestyle.
+- `10_packaging_concept.jpg` — packaging concept.
+- `11_in_training.jpg` — training lifestyle.
+
+These images were individually cropped from a campaign composition. Some include embedded captions or design text.
+
+Do not misrepresent these crops as separate original product photographs.
+
+Do not invent additional product angles, recolour the product or replace it with stock imagery.
+
+Flag missing clean standalone front, rear or side product photographs for approval.
+
+## 4. COLLECTION CARD
+
+Create a premium FSD ALIGHT product card using the existing approved card design.
+
+Display:
+
+FSD ALIGHT
+
+Posture Awareness Wearable
+
+COMING SOON
+
+Include an Explore Product interaction opening the private draft product page.
+
+Do not show an invented price, discount, inventory or customer rating.
+
+## 5. PRODUCT PAGE
+
+Build a premium product detail presentation using the existing approved FSD product components.
+
+Desktop:
+
+- One large primary image.
+- A restrained set of selectable image views.
+- Smooth transitions between images.
+- Clear product name and description.
+- Draft concept features.
+- Pending specification notice.
+- No active purchase button.
+
+Mobile:
+
+- Responsive design at approximately 402px width.
+- Touch-friendly gallery selection.
+- No image distortion.
+- No cropped or stretched logos.
+- No horizontal overflow.
+
+Use the image crops intelligently. Where a crop contains existing text, avoid duplicating that text in overlapping website elements.
+
+## 6. EDITORIAL STORYTELLING
+
+Create a cinematic campaign presentation in the approved FSD visual language.
+
+**Hero headline:**
+
+FSD ALIGHT
+
+**Subheading:**
+
+POSTURE AWARENESS WEARABLE
+
+**Campaign statement:**
+
+BETTER POSTURE.
+GREATER AWARENESS.
+A STRONGER YOU.
+
+Suggested editorial sections:
+
+**BUILD BETTER HABITS**
+
+"Explore greater awareness of your posture throughout your everyday routine."
+
+**DISCREET & VERSATILE**
+
+"A refined wearable concept intended to fit naturally into work, movement and training."
+
+**PREMIUM DESIGN**
+
+"An understated black finish, sculpted form and distinctive FSD visual identity."
+
+**AT WORK**
+
+"Explore a more posture-conscious approach to desk-based routines."
+
+**IN TRAINING**
+
+"Stay mindful of movement as part of a purposeful performance lifestyle."
+
+## 7. FEATURE VERIFICATION
+
+The campaign artwork illustrates the following proposed capabilities:
+
+- Posture awareness.
+- Gentle vibration alerts.
+- Progress tracking.
+- Lightweight construction.
+- Long-lasting battery.
+- App connectivity.
+- Visual status indicator.
+
+These claims are NOT verified product specifications.
+
+Mark them as **Pending Technical Verification**.
+
+Do not present the companion app as already operational or make medical claims about preventing injury, treating pain or correcting spinal conditions.
+
+Do not invent manufacturing materials, battery capacity, dimensions, weight, certifications or pricing.
+
+## 8. SEO AND ACCESSIBILITY
+
+Draft SEO title:
+
+FSD ALIGHT Posture Awareness Wearable | FSD
+
+Draft meta description:
+
+"Explore FSD ALIGHT, a premium posture-awareness wearable concept combining refined design with a focus on mindful movement and everyday performance."
+
+Provide accurate descriptive image alt text.
+
+Maintain accessible gallery controls, semantic headings and responsive images.
+
+Keep the draft product excluded from public search indexing until approved.
+
+## 9. REQUIRED PRIVATE PROOF
+
+Show the following before requesting final approval:
+
+1. Desktop collection card.
+2. Mobile collection card.
+3. Desktop product page.
+4. Mobile product page at 402px.
+5. Editorial campaign presentation.
+6. Gallery showing the imported individual image selections.
+7. A list of missing clean product images and unverified specifications.
+
+Verify that the original approved mega-menu works and that existing products and catalogue features remain unchanged.
+
+## FINAL INSTRUCTION
+
+This is a private draft product integration only.
+
+Do not publish, activate purchasing, redesign existing website sections or make unrelated changes.
+
+Stop and request approval after showing the private proofs.

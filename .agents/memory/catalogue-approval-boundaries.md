@@ -33,6 +33,12 @@ VIP sign-up collection is deferred until the destination and approved privacy/co
 
 **How to apply:** Keep VIP access informational and explicitly unavailable for registration until those details are supplied; never display a false submission-success state.
 
+The Aegis gilet’s supplied composite and its individual crops are visual references only. The master-record Black / Gold colour and £69.99 price are not approval to sell; rear construction and product specifications remain unverified.
+
+**Why:** The user approved only a private visual/layout proof, asked to keep master values unchanged, and explicitly withheld commercial approval.
+
+**How to apply:** Keep Aegis imagery in private review surfaces, mark rear construction and technical details as pending, and do not enable checkout or promote the catalogue values as sale terms without separate approval.
+
 Avoid the exact visible phrase “in development” across the public site.
 
 **Why:** The user asked for all instances of that wording to be removed.

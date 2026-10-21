@@ -1,0 +1,64 @@
+# FSD WEBSITE — BLACK & GOLD PERFORMANCE TRAINING COLLECTION
+
+Integrate the eight newly supplied FSD Black & Gold product images into the existing FSD Fitness & Self Defence website.
+
+## Primary objective
+Create a premium, visually cohesive men's performance training collection using the exact supplied FSD imagery.
+
+## Non-negotiable preservation rules
+- Preserve the approved website design, black/graphite/champagne-gold palette and original full-width interactive mega-menu.
+- Preserve all existing products, images, content, catalogue architecture, variant logic and Phase 4 improvements.
+- Do not redesign the homepage, header or navigation.
+- Do not overwrite the existing women's apparel or hijab collections.
+- Keep the new collection in DRAFT / PENDING APPROVAL.
+- Do not enable checkout, payments or public publishing.
+
+## Collection
+Working name: FSD Black & Gold Performance Training Collection
+
+Collection headline:
+TRAIN. DEFEND. EVOLVE.
+
+Introductory copy:
+"Precision in every detail. The FSD Black & Gold Performance Training Collection pairs an athletic silhouette with signature gold detailing, engineered styling and a commanding presence from training floor to fight preparation."
+
+## Products
+1. FSD Black & Gold Performance Jersey
+2. FSD Black & Gold Performance Training Shorts
+
+Present the coordinated outfit as a collection, while keeping the jersey and shorts as distinct catalogue products. Do not invent pricing, inventory, materials, certifications or technical specifications.
+
+## Image integration
+Use the eight exact uploaded images. Preserve their original artwork, FSD logos, colours, proportions and visual identity.
+
+Assign them as follows:
+- FSD Black and Gold Training Collection: collection campaign hero.
+- FSD Black and Gold Fitness Gear: coordinated jersey-and-shorts lifestyle flat-lay.
+- FSD Black and Gold Training Kit: shorts-focused flat-lay.
+- FSD Black and Gold Apparel Showcase: reference sheet for the product's visual details; do not use the entire contact sheet as the main product image.
+- Black and Gold FSD Athletic T-Shirt: jersey three-quarter view.
+- Black and Gold Fitness Jersey Back: jersey rear view.
+- Black and Gold FSD Jersey Detail: collar and label detail.
+- FSD Black and Gold Performance Fabric: material and construction close-up.
+
+If any required standalone front view or shorts-only view is missing, flag it for approval instead of inventing or automatically generating replacements.
+
+## Website experience
+- Collection landing: cinematic campaign hero with refined typography and one subtle champagne-gold CTA.
+- Collection grid: premium jersey and shorts product cards with consistent image framing.
+- Product detail: one large main image at a time, with a restrained set of selectable views.
+- Use smooth transitions and existing approved interactive components.
+- Keep product cards uncluttered and responsive on mobile.
+- Maintain correct image aspect ratios; no stretching or aggressive cropping of logos.
+- Use meaningful descriptive alt text and draft SEO metadata.
+
+## Quality control
+Confirm that:
+1. All eight images have been imported and assigned appropriately.
+2. No supplied imagery has been silently replaced with stock photography.
+3. The original approved navigation and mega-menu still work.
+4. Previously approved catalogue items and features remain intact.
+5. The new products remain drafts with checkout and publishing disabled.
+6. Any missing product specifications or assets are clearly listed for approval.
+
+Show me a preview of the collection landing page and both product presentations before making any additional design changes.

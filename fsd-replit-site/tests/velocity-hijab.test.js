@@ -15,6 +15,7 @@ test('private Velocity hijab preview reuses the existing product and supplied im
   assert.equal(preview.product, products.find(product => product.id === 43));
   assert.equal(preview.product.name, 'FSD Velocity Performance Sports Hijab');
   assert.equal(preview.product.confirmedPrice, 29.99);
+  assert.equal(preview.product.colourways, 'Black / Gold');
   assert.equal(preview.colour, 'Black / Champagne Gold');
   assert.equal(preview.gallery.length, 5);
   assert.deepEqual(preview.gallery.map(asset => asset.id), [
