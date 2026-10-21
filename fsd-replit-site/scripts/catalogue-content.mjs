@@ -4,6 +4,7 @@ import { resolve, dirname, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { products, safe } from '../src/catalogue-data.js';
 import { validateContentRecord, validateAssetManifest, integrateReviewedRecords } from '../src/catalogue-model.js';
+import { readRopeRecipe, plannedRopeAssets, prepareRopeImages, workspaceRoot } from './weighted-rope-images.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const outputRoot = resolve(root, '../generated-artifacts/fsd-catalogue-review');
@@ -12,6 +13,8 @@ const args = process.argv.slice(3);
 const value = name => args[args.indexOf(name) + 1];
 const manifest = JSON.parse(await readFile(resolve(root, 'src/catalogue-assets.json'), 'utf8'));
 const drafts = JSON.parse(await readFile(resolve(root, 'content/catalogue.json'), 'utf8')).records;
+const ropeRecipe = await readRopeRecipe();
+const reviewManifest = [...manifest, ...plannedRopeAssets(ropeRecipe)];
 const records = drafts.filter(record => !args.includes('--id') || String(record.id) === value('--id'))
   .filter(record => !args.includes('--key') || record.key === value('--key'));
 const exists = async path => { try { return (await stat(path)).isFile(); } catch { return false; } };
@@ -21,6 +24,10 @@ for (const record of drafts) {
   errors.push(...validateContentRecord(record, products.map(product => product.id)).map(message => `${record.key}: ${message}`));
   if (keys.has(record.key)) errors.push(`Duplicate editorial key: ${record.key}`);
   keys.add(record.key);
+  if (record.draftAssetManifest && (record.draftAssetManifest !== 'content/weighted-skipping-rope-images.json'
+    || record.key !== ropeRecipe.productKey || record.id !== null || record.editorialStatus !== 'Draft')) {
+    errors.push(`${record.key}: private image preparations must remain an unassigned draft.`);
+  }
   if (record.sourceId !== null) {
     const original = products.find(product => product.id === record.sourceId);
     if (!original || original.id !== record.id) errors.push(`Unknown original record: ${record.key}`);
@@ -29,8 +36,10 @@ for (const record of drafts) {
     }
   }
   for (const id of record.assetIds || []) {
-    const asset = manifest.find(asset => asset.id === id);
-    if (!asset || asset.productId !== record.id) errors.push(`${record.key}: missing or mismatched asset ${id}.`);
+    const asset = reviewManifest.find(asset => asset.id === id);
+    if (!asset || (record.draftAssetManifest
+      ? !asset.private || asset.productKey !== record.key
+      : asset.private || asset.productId !== record.id)) errors.push(`${record.key}: missing or mismatched asset ${id}.`);
   }
 }
 for (const asset of manifest) {
@@ -65,17 +74,28 @@ if (errors.length) {
   console.log('Review candidate exported outside the app. Nothing was copied into live records or published.');
 } else if (command === 'preview') {
   await mkdir(outputRoot, { recursive: true });
+  if (records.some(record => record.draftAssetManifest)) {
+    const privateImages = await prepareRopeImages();
+    for (const image of [privateImages.campaignHero, ...privateImages.images]) {
+      const slot = reviewManifest.findIndex(asset => asset.id === image.id);
+      const preferred = image.responsive?.at(-1)?.src || image.src;
+      const privateFile = privateImages.files.find(file => file.src === preferred)?.file;
+      if (slot >= 0) reviewManifest[slot] = {...reviewManifest[slot], ...image, privateFile};
+    }
+  }
   const imageURI = async asset => {
     if (!asset) return '';
-    const file = asset.stagedPath ? resolve(root, asset.stagedPath) : resolve(root, `public${asset.src}`);
-    if (!file.startsWith(`${root}${sep}`) || !await exists(file)) return '';
+    if (asset.privateFile && !/^generated-artifacts\/fsd-weighted-rope\/[a-z0-9-]+\.webp$/.test(asset.privateFile)) throw new Error('Unsafe private preview image.');
+    const file = asset.privateFile ? resolve(workspaceRoot,asset.privateFile)
+      : asset.stagedPath ? resolve(root, asset.stagedPath) : resolve(root, `public${asset.src}`);
+    if ((!asset.privateFile && !file.startsWith(`${root}${sep}`)) || !await exists(file)) return '';
     const mime = ({ '.png':'image/png', '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.webp':'image/webp', '.avif':'image/avif' })[extname(file).toLowerCase()];
     if (!mime) throw new Error('Only supported image files can be included in a review.');
     return `data:${mime};base64,${(await readFile(file)).toString('base64')}`;
   };
   let body = '';
   for (const record of records) {
-    const associated = manifest.filter(asset => record.assetIds.includes(asset.id));
+    const associated = reviewManifest.filter(asset => record.assetIds.includes(asset.id));
     const hero = associated.find(asset => asset.roles.includes('hero'));
     const heroURI = await imageURI(hero);
     const variants = await Promise.all(record.variants.map(async variant => {

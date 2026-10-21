@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="robots" content="noindex,nofollow"/>
+    <meta name="theme-color" content="#11110f"/>
+    <title>Draft review · FSD weighted skipping rope</title>
+  </head>
+  <body class="draft-review-page">
+    <main id="draft-review" class="draft-review">
+      <header class="draft-review-header">
+        <a class="draft-wordmark" href="#" aria-label="FSD draft review home">FSD<span> / </span>STUDIO</a>
+        <p>PRIVATE CATALOGUE REVIEW <span>·</span> DEV ONLY</p>
+      </header>
+      <section class="draft-review-intro" aria-labelledby="draft-review-title">
+        <p class="draft-eyebrow">PRODUCT EDITORIAL / REVIEW MODE</p>
+        <h1 id="draft-review-title">FSD Weighted Skipping Rope</h1>
+        <div class="draft-status"><span aria-hidden="true"></span><strong>DRAFT</strong><span>Not for sale</span></div>
+      </section>
+      <section class="draft-campaign" aria-labelledby="campaign-heading">
+        <div class="draft-campaign-image" id="campaign-image">
+          <div class="draft-skeleton" aria-hidden="true"></div>
+        </div>
+        <div class="draft-campaign-caption">
+          <div><p class="draft-eyebrow">CAMPAIGN IMAGE</p><h2 id="campaign-heading">Independent of colour selection.</h2></div>
+          <p>This approved campaign image remains fixed while colourways are reviewed.</p>
+        </div>
+      </section>
+      <section class="draft-product-section" aria-labelledby="product-section-title">
+        <div class="draft-section-heading">
+          <div><p class="draft-eyebrow">PHASE 2 / PRODUCT GALLERY</p><h2 id="product-section-title">Product views</h2></div>
+          <p>Choose a colour to review its four mapped views.</p>
+        </div>
+        <dialog id="product-dialog" open aria-labelledby="product-title">
+          <div id="dialog-body"><div class="draft-loading" aria-label="Loading draft product">
+            <span></span><span></span><span></span>
+          </div></div>
+        </dialog>
+        <div id="source-boards" class="draft-source-boards" hidden></div>
+      </section>
+      <footer class="draft-review-footer">
+        <span>FSD / PRIVATE DRAFT</span>
+        <span>Editorial review only · Purchasing disabled</span>
+      </footer>
+      <div id="draft-load-error" class="draft-load-error" role="alert" hidden>
+        <p>The draft could not be loaded.</p>
+        <button type="button" id="draft-retry">Try again</button>
+      </div>
+    </main>
+    <script type="module" src="/src/draft-preview.js"></script>
+  </body>
+</html>

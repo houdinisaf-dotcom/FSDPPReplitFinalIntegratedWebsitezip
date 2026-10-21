@@ -19,7 +19,7 @@ test('existing IDs, pricing and source records remain authoritative; private pre
   assert.equal(product(57).confirmedPrice, 19.99);
   assert.ok(!products.some(record => /weighted skipping/i.test(record.name)));
   assert.equal(records.records.find(record => record.key === 'weighted-skipping-rope').id, null);
-  assert.deepEqual(records.records.find(record => record.key === 'weighted-skipping-rope').variants, []);
+  assert.equal(records.records.find(record => record.key === 'weighted-skipping-rope').variants.length, 8);
   for (const record of products) {
     assert.equal(record.catalogue.purchaseEnabled, false);
     assert.equal(record.catalogue.legacyListed, true);

@@ -67,9 +67,10 @@ export function renderProductOptions(product, selectedVariantId = null) {
           const known = variant.sku ? `, SKU ${safe(variant.sku)}` : '';
           const imageLabel = imageState === 'available' ? '' : ', image not available';
           const availabilityLabel = unavailable ? ', unavailable' : '';
+          const swatch = /^#[\da-f]{6}$/i.test(String(variant.swatch || '')) ? variant.swatch : '';
           return `<button class="product-colour-option" type="button" data-colour-option data-variant-id="${safe(variant.id)}"
             data-image-state="${safe(imageState)}" data-availability="${unavailable ? 'unavailable' : safe(variant.availability || 'unconfirmed')}" aria-pressed="${Boolean(active)}"
-            aria-label="${safe(variant.colour)}${known}${imageLabel}${availabilityLabel}"><span>${safe(variant.colour)}</span>${unavailable ? '<small class="product-option-unavailable-label">UNAVAILABLE</small>' : ''}</button>`;
+            aria-label="${safe(variant.colour)}${known}${imageLabel}${availabilityLabel}">${swatch ? `<i class="product-option-swatch" aria-hidden="true" style="--option-swatch:${safe(swatch)}"></i>` : ''}<span>${safe(variant.colour)}</span>${unavailable ? '<small class="product-option-unavailable-label">UNAVAILABLE</small>' : ''}</button>`;
         }).join('')}
       </div>` : ''}
       <div data-size-options-container>${renderProductSizes(product, selected?.id, null)}</div>

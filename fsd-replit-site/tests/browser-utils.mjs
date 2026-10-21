@@ -86,7 +86,7 @@ export async function withBrowser(options, run) {
     }
     const navigate = path => send('Page.navigate', { url: `http://${domain}:5000${path}` });
     await navigate(options.path || '/');
-    await waitFor('!!document.querySelector("#catalogue-grid article")');
+    await waitFor(options.readyExpression || '!!document.querySelector("#catalogue-grid article")');
     await run({ send, evaluate, waitFor, click, key, navigate, delay, errors });
     assert.deepEqual(errors, [], 'No unhandled browser exceptions.');
   } finally {
