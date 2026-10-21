@@ -29,8 +29,8 @@ const suppliedGalleryAssets = [
     id: 'fabric-detail',
     file: 'attached_assets/Image_3_—_Fabric_and_ventilation_1792424767570.png',
     type: 'image/png',
-    label: 'Fabric and ventilation detail',
-    alt: 'Close view of the fabric and ventilation panel.',
+    label: 'Supplied fabric-panel close-up',
+    alt: 'Close view of the supplied fabric-panel photograph; composition and function are not confirmed.',
   },
   {
     id: 'branding-detail',
@@ -54,15 +54,15 @@ export function createVelocityHijabPreview() {
     path: velocityHijabPreviewPath,
     product,
     colour: 'Black / Champagne Gold',
-    description: 'Engineered for movement, the FSD Velocity Performance Sports Hijab is designed to keep you focused, comfortable and confident through every workout.',
+    description: 'Private review of the supplied model-worn campaign photograph and product details. Product construction, materials and performance properties have not been confirmed.',
     features: Object.freeze([
-      Object.freeze({ title: 'Lightweight & breathable', text: 'Engineered for high-performance training.' }),
-      Object.freeze({ title: 'Secure & comfortable fit', text: 'Stays in place through every movement.' }),
-      Object.freeze({ title: 'Ventilation panels', text: 'Strategic airflow for all-day comfort.' }),
-      Object.freeze({ title: 'Premium FSD details', text: 'Signature branding and refined finish.' }),
+      Object.freeze({ title: 'Fit and coverage', text: 'Pending sample review.' }),
+      Object.freeze({ title: 'Fabric and ventilation', text: 'Composition and function pending verification.' }),
+      Object.freeze({ title: 'Performance properties', text: 'Pending product testing and verification.' }),
+      Object.freeze({ title: 'Care instructions', text: 'Not supplied; pending confirmation.' }),
     ]),
     gallery: Object.freeze(suppliedGalleryAssets),
-    sideViewNote: 'No separate side-view image was supplied; this proof uses the provided campaign, front-detail, rear and close-up images.',
+    sideViewNote: 'Dedicated side-view photograph: pending. No side-view image was supplied or created.',
   });
 }
 

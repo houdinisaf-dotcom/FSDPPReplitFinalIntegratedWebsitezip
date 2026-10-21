@@ -89,21 +89,21 @@ root.innerHTML = `
       <p class="velocity-gallery-note">${escapeHTML(preview.sideViewNote)}</p>
     </div>
     <div class="velocity-product-copy">
-      <p class="velocity-product-kicker">FSD / WOMEN’S MODEST PERFORMANCE</p>
+      <p class="velocity-product-kicker">FSD / WOMEN’S MODEST ACTIVEWEAR</p>
       <h1 id="velocity-hijab-title">${escapeHTML(preview.product.name)}</h1>
-      <p class="velocity-product-tagline">Coverage. Comfort. Performance.</p>
+      <p class="velocity-product-tagline">PRIVATE PRODUCT REVIEW · DETAILS PENDING VERIFICATION</p>
       <p class="velocity-product-description">${escapeHTML(preview.description)}</p>
       <div><span class="velocity-product-label">Colour</span>
         <p class="velocity-colour"><span class="velocity-colour-swatch" aria-hidden="true"></span>${escapeHTML(preview.colour)}</p>
       </div>
       <div class="velocity-product-price"><span>${escapeHTML(productPrice.label)}</span><strong>${escapeHTML(productPrice.value)}</strong></div>
       <p class="velocity-purchase-disabled" role="status">PRIVATE PREVIEW · PURCHASING DISABLED</p>
-      <ul class="velocity-feature-list" aria-label="Product features">${featureMarkup}</ul>
+      <ul class="velocity-feature-list" aria-label="Product verification status">${featureMarkup}</ul>
       <div class="velocity-accordions">
-        <details><summary>Materials &amp; care</summary><p>Material composition and care instructions have not been supplied for this product.</p></details>
+        <details><summary>Materials &amp; care</summary><p>Material composition and care instructions have not been supplied; both remain pending verification.</p></details>
         <details><summary>Delivery &amp; returns</summary><p>Delivery and returns are not available for this private preview. Purchase and policy details are not confirmed.</p></details>
       </div>
-      <p class="velocity-product-disclaimer">Feature language is reproduced from the supplied design reference; materials and performance claims have not been independently verified. Product details remain subject to sample review.</p>
+      <p class="velocity-product-disclaimer">Product fit, coverage, materials, ventilation, performance and care details are pending sample review or verification. No technical claims are established by this proof.</p>
     </div>
   </section>
   <footer class="velocity-proof-footer"><span>FSD / PRIVATE PRODUCT REVIEW</span><span>No checkout · No publication · Supplied image files unchanged</span></footer>`;

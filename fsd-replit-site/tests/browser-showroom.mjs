@@ -2,13 +2,14 @@
 // WebSocket support, with no browser-test package or downloaded browser needed.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
+const mobileProofCapture = process.env.FSD_HIJAB_MOBILE_CAPTURE === '1';
 const profile = mkdtempSync(join(tmpdir(), 'fsd-browser-'));
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
@@ -64,6 +65,29 @@ try {
     throw new Error(`Browser condition did not become true: ${expression}`);
   };
   const click = selector => evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
+  const captureHijabProof = async (fileName, fullPage = false) => {
+    if (process.env.FSD_HIJAB_CAPTURE !== '1') return;
+    let clip;
+    if (fullPage) {
+      const metrics = await send('Page.getLayoutMetrics');
+      const content = metrics.cssContentSize || metrics.contentSize;
+      clip = { x: 0, y: 0, width: content.width, height: content.height, scale: 1 };
+    } else {
+      const viewport = await evaluate('({ width: window.innerWidth, height: window.innerHeight })');
+      clip = { x: 0, y: 0, width: viewport.width, height: viewport.height, scale: 1 };
+    }
+    const image = await send('Page.captureScreenshot', {
+      format: 'jpeg',
+      quality: 88,
+      fromSurface: true,
+      captureBeyondViewport: fullPage,
+      clip,
+    });
+    const outputDir = join(process.cwd(), '../generated-artifacts');
+    mkdirSync(outputDir, { recursive: true });
+    writeFileSync(join(outputDir, fileName), Buffer.from(image.data, 'base64'));
+    console.log(`Saved preview proof: ${join(outputDir, fileName)}`);
+  };
   const key = async value => {
     const keyCode = { Escape: 27, Tab: 9, ArrowRight: 39, ArrowLeft: 37 }[value];
     const parameters = { key: value, code: value, windowsVirtualKeyCode: keyCode, nativeVirtualKeyCode: keyCode };
@@ -73,7 +97,9 @@ try {
   await send('Runtime.enable');
   await send('Page.enable');
   await send('Page.bringToFront');
-  await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
+  await send('Emulation.setDeviceMetricsOverride', mobileProofCapture
+    ? { width: 402, height: 874, deviceScaleFactor: 1, mobile: true }
+    : { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
@@ -99,6 +125,13 @@ try {
   await click('[data-group-index="1"]');
   await click('[data-subcategory-index="0"]');
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
+  await evaluate('document.querySelector("[data-product-id=\\"43\\"]").scrollIntoView({ block: "center" })');
+  if (mobileProofCapture) {
+    console.log('Mobile collection viewport:', await evaluate('({ innerWidth: window.innerWidth, clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, visualWidth: window.visualViewport?.width, screenWidth: screen.width, pixelRatio: devicePixelRatio })'));
+    await captureHijabProof('velocity-hijab-collection-mobile.jpg');
+  } else {
+    await captureHijabProof('velocity-hijab-collection-desktop.jpg');
+  }
   await click('[data-product-id="43"]');
   await waitFor('location.pathname === "/__catalogue-preview/velocity-performance-sports-hijab/" && !!document.querySelector("#velocity-hijab-title")');
   assert.equal(await evaluate('document.querySelectorAll("[data-hijab-thumb]").length'), 5);
@@ -110,9 +143,23 @@ try {
   assert.ok(!await evaluate('/add to cart|checkout button|quantity selector/i.test(document.body.textContent)'));
   assert.equal(await evaluate('document.querySelectorAll("form, input[type=number], button[name*=cart i]").length'), 0);
   await waitFor('Array.from(document.querySelectorAll("[data-hijab-thumb] img"), image => image.complete && image.naturalWidth > 0).every(Boolean)');
-  await click('[data-hijab-thumb="fabric-detail"]');
-  await waitFor('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/fabric-detail")');
-  assert.equal(await evaluate('document.querySelector("[data-hijab-thumb=\\"fabric-detail\\"]").getAttribute("aria-pressed")'), 'true');
+  await captureHijabProof(
+    mobileProofCapture ? 'velocity-hijab-product-mobile.jpg' : 'velocity-hijab-product-desktop.jpg',
+    true,
+  );
+  for (const imageId of ['campaign', 'front-detail', 'rear-view', 'fabric-detail', 'branding-detail']) {
+    await click(`[data-hijab-thumb="${imageId}"]`);
+    await waitFor(`document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/${imageId}")`);
+    assert.equal(await evaluate(`document.querySelector('[data-hijab-thumb="${imageId}"]').getAttribute("aria-pressed")`), 'true');
+  }
+  assert.ok(await evaluate('document.querySelector(".velocity-product-tagline").textContent.includes("PENDING VERIFICATION")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-gallery-note").textContent.includes("pending")'));
+  assert.ok(!await evaluate('/Lightweight & breathable|Stays in place|Strategic airflow/i.test(document.body.textContent)'));
+  await click('[data-hijab-thumb="campaign"]');
+  await waitFor('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")');
+  await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 1, mobile: true });
+  await waitFor('document.documentElement.scrollWidth <= window.innerWidth');
+  await captureHijabProof('velocity-hijab-product-mobile.jpg', true);
   await click('.velocity-accordions summary');
   assert.equal(await evaluate('document.querySelector(".velocity-accordions details").open'), true);
   const privateHeaders = await evaluate(`(async () => {

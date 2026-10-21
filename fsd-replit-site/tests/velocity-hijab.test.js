@@ -20,10 +20,17 @@ test('private Velocity hijab preview reuses the existing product and supplied im
   assert.deepEqual(preview.gallery.map(asset => asset.id), [
     'campaign', 'front-detail', 'rear-view', 'fabric-detail', 'branding-detail',
   ]);
+  assert.deepEqual(preview.features.map(feature => feature.text), [
+    'Pending sample review.',
+    'Composition and function pending verification.',
+    'Pending product testing and verification.',
+    'Not supplied; pending confirmation.',
+  ]);
+  assert.match(preview.description, /have not been confirmed/i);
   assert.equal(preview.gallery[0].file, 'attached_assets/Main_product_listing_image_1792424117238.jpg');
   assert.equal(preview.gallery[0].src, '/__catalogue-preview/velocity-performance-sports-hijab/media/campaign');
   assert.equal(preview.product.images[0].src, '/images/fsd-velocity-performance-sports-hijab.jpg');
-  assert.equal(preview.sideViewNote.startsWith('No separate side-view image was supplied'), true);
+  assert.equal(preview.sideViewNote, 'Dedicated side-view photograph: pending. No side-view image was supplied or created.');
   assert.equal(new Set(preview.gallery.map(asset => asset.file)).size, preview.gallery.length);
   for (const asset of preview.gallery) {
     const path = fileURLToPath(new URL(`../../${asset.file}`, import.meta.url));
@@ -33,16 +40,20 @@ test('private Velocity hijab preview reuses the existing product and supplied im
   assert.equal(velocityHijabPreviewRecord.product.id, 43);
 });
 
-test('private preview copy uses supplied benefit language and defers unsupported facts', () => {
+test('private preview keeps unverified product details pending', () => {
   const preview = velocityHijabPreviewRecord;
   assert.deepEqual(preview.features.map(feature => feature.title), [
-    'Lightweight & breathable',
-    'Secure & comfortable fit',
-    'Ventilation panels',
-    'Premium FSD details',
+    'Fit and coverage',
+    'Fabric and ventilation',
+    'Performance properties',
+    'Care instructions',
   ]);
   assert.ok(preview.gallery.some(asset => asset.id === 'fabric-detail'));
   assert.ok(preview.gallery.some(asset => asset.id === 'branding-detail'));
   assert.equal('materials' in preview.product, false);
   assert.equal('careInstructions' in preview.product, false);
+  assert.doesNotMatch(
+    [...preview.features.map(feature => `${feature.title} ${feature.text}`), preview.description].join(' '),
+    /engineered for|stays in place|strategic airflow|high-performance training/i,
+  );
 });
