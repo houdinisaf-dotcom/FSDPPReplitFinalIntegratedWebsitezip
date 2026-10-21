@@ -26,3 +26,9 @@ The user approved the shield-and-wording layout and subsequently approved the re
 **Why:** The user explicitly chose “Approve the refined asset only — keep the site unchanged” after being shown the raster-matte limitations. This is asset approval, not permission to apply it or publish.
 
 **How to apply:** Preserve the approved layout and refined raster treatment. Obtain separate explicit approval before any live-header replacement or publishing. Do not reopen asset cleanup or substitute another logo merely because live application remains unapproved.
+
+Use British “Defence” spelling in FSD website text. This copy rule does not authorize altering letters embedded in approved logo artwork.
+
+**Why:** The user requested that “Defense” be corrected to “Defence” throughout website content, while logo artwork has separate preservation and approval boundaries.
+
+**How to apply:** Correct editable website text and accessible labels; preserve supplied or approved image artwork unless the user separately authorizes a logo-asset edit.
