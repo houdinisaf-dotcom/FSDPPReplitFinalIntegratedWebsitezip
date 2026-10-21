@@ -12,6 +12,10 @@ import { createAegisGiletPreview } from '../src/aegis-gilet-campaign.js';
 import { aegisGiletMediaPrefix, aegisGiletPreviewPath } from '../src/aegis-gilet-preview-path.js';
 import { createAlightPreview } from '../src/alight-campaign.js';
 import { alightMediaPrefix, alightPreviewPath } from '../src/alight-preview-path.js';
+import { createMotionPreview, motionPreviewManifest } from '../src/motion-campaign.js';
+import { motionMediaPrefix, motionPreviewPath, motionProductsPrefix } from '../src/motion-preview-path.js';
+import { createNexusPreview, nexusPreviewManifest } from '../src/nexus-campaign.js';
+import { nexusMediaPrefix, nexusPreviewPath } from '../src/nexus-preview-path.js';
 
 const appRoot = fileURLToPath(new URL('../', import.meta.url));
 const workspaceRoot = resolve(appRoot, '..');
@@ -35,6 +39,9 @@ const hijabMediaPrefix = velocityHijabMediaPrefix;
 const hijabAssetsById = new Map(createVelocityHijabPreview().gallery.map(asset => [asset.id, asset]));
 const aegisAssetsById = new Map(createAegisGiletPreview().gallery.map(asset => [asset.id, asset]));
 const alightAssetsById = new Map(createAlightPreview().gallery.map(asset => [asset.id, asset]));
+const motionAssetsById = new Map(motionPreviewManifest.assets.map(asset => [asset.id, asset]));
+const nexusAssetsById = new Map(nexusPreviewManifest.assets.map(asset => [asset.id, asset]));
+const nexusAuditAssetsById = new Map(nexusPreviewManifest.auditAssets.map(asset => [asset.id, asset]));
 
 function send(response, status, contentType, body, method = 'GET') {
   response.statusCode = status;
@@ -336,6 +343,153 @@ export function draftReviewPlugin() {
           return stream.pipe(response);
         } catch {
           return send(response, 500, 'text/plain; charset=utf-8', 'The ALIGHT private preview could not be loaded.', request.method);
+        }
+      });
+
+      server.middlewares.use(async (request, response, next) => {
+        let pathname;
+        try {
+          pathname = new URL(request.url || '/', 'http://draft.invalid').pathname;
+        } catch {
+          return next();
+        }
+
+        const normalizedPath = pathname === motionPreviewPath.slice(0, -1) ? motionPreviewPath : pathname;
+        const isMotionPage = normalizedPath === motionPreviewPath || normalizedPath.startsWith(motionProductsPrefix);
+        const isMotionAsset = pathname.startsWith(motionMediaPrefix);
+        if (!isMotionPage && !isMotionAsset) return next();
+
+        response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        response.setHeader('Cache-Control', 'no-store');
+        response.setHeader('X-Content-Type-Options', 'nosniff');
+
+        if (!['GET', 'HEAD'].includes(request.method)) {
+          response.setHeader('Allow', 'GET, HEAD');
+          return send(response, 405, 'text/plain; charset=utf-8', 'Read-only FSD MOTION concept preview.', request.method);
+        }
+
+        try {
+          if (isMotionPage) {
+            let productSlug = null;
+            if (normalizedPath !== motionPreviewPath) {
+              const encodedSlug = normalizedPath.slice(motionProductsPrefix.length).replace(/\/$/, '');
+              if (!encodedSlug || encodedSlug.includes('/')) {
+                return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD MOTION preview page.', request.method);
+              }
+              try {
+                productSlug = decodeURIComponent(encodedSlug);
+              } catch {
+                return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD MOTION preview page.', request.method);
+              }
+              if (!createMotionPreview(productSlug)) {
+                return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD MOTION product preview.', request.method);
+              }
+            }
+
+            const html = await readFile(resolve(appRoot, 'motion-preview.html'), 'utf8');
+            const transformed = await server.transformIndexHtml(normalizedPath, html);
+            return send(response, 200, 'text/html; charset=utf-8', transformed, request.method);
+          }
+
+          const assetId = pathname.slice(motionMediaPrefix.length);
+          const entry = motionAssetsById.get(assetId);
+          if (!entry
+            || !entry.file.startsWith('attached_assets/fsd-motion-reference/FSD_MOTION_Website_Images/')
+            || entry.file.includes('..')) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD MOTION campaign reference.', request.method);
+          }
+
+          const filePath = resolve(workspaceRoot, entry.file);
+          if (!filePath.startsWith(`${allowedAssetRoot}${sep}`)) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD MOTION campaign reference.', request.method);
+          }
+          if (request.method === 'HEAD') return send(response, 200, entry.type, undefined, request.method);
+
+          response.statusCode = 200;
+          response.setHeader('Content-Type', entry.type);
+          const stream = createReadStream(filePath);
+          stream.on('error', () => {
+            if (!response.headersSent) response.statusCode = 500;
+            response.end('FSD MOTION campaign reference unavailable.');
+          });
+          return stream.pipe(response);
+        } catch {
+          return send(response, 500, 'text/plain; charset=utf-8', 'The FSD MOTION private preview could not be loaded.', request.method);
+        }
+      });
+
+      server.middlewares.use(async (request, response, next) => {
+        let pathname;
+        try {
+          pathname = new URL(request.url || '/', 'http://draft.invalid').pathname;
+        } catch {
+          return next();
+        }
+
+        const basePath = nexusPreviewPath.slice(0, -1);
+        const normalizedPath = pathname === basePath ? nexusPreviewPath : pathname;
+        const isNexusRoute = pathname === basePath || pathname.startsWith(nexusPreviewPath);
+        if (!isNexusRoute) return next();
+
+        response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+        response.setHeader('Cache-Control', 'no-store');
+        response.setHeader('X-Content-Type-Options', 'nosniff');
+
+        if (!['GET', 'HEAD'].includes(request.method)) {
+          response.setHeader('Allow', 'GET, HEAD');
+          return send(response, 405, 'text/plain; charset=utf-8', 'Read-only FSD NEXUS concept preview.', request.method);
+        }
+
+        try {
+          if (normalizedPath === nexusPreviewPath) {
+            const preview = createNexusPreview();
+            if (preview.checkoutEnabled !== false
+              || preview.price !== null
+              || preview.availability !== null
+              || preview.assets.length !== 3
+              || preview.auditAssets.length !== 8
+              || preview.brandAudit.length !== 11) {
+              throw new Error('The private FSD NEXUS concept boundary is invalid.');
+            }
+            const html = await readFile(resolve(appRoot, 'nexus-preview.html'), 'utf8');
+            const transformed = await server.transformIndexHtml(nexusPreviewPath, html);
+            return send(response, 200, 'text/html; charset=utf-8', transformed, request.method);
+          }
+
+          if (!pathname.startsWith(nexusMediaPrefix)) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD NEXUS private preview route.', request.method);
+          }
+
+          const mediaPath = pathname.slice(nexusMediaPrefix.length);
+          const isAuditAsset = mediaPath.startsWith('audit/');
+          const assetId = isAuditAsset ? mediaPath.slice('audit/'.length) : mediaPath;
+          const entry = isAuditAsset
+            ? nexusAuditAssetsById.get(assetId)
+            : nexusAssetsById.get(assetId);
+          const allowedDirectory = isAuditAsset ? 'fsd-nexus-audit' : 'fsd-nexus-approved';
+          if (!entry
+            || !entry.file.startsWith(`attached_assets/${allowedDirectory}/`)
+            || entry.file.includes('..')) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD NEXUS private concept image.', request.method);
+          }
+
+          const filePath = resolve(workspaceRoot, entry.file);
+          const nexusAssetRoot = resolve(allowedAssetRoot, allowedDirectory);
+          if (!filePath.startsWith(`${nexusAssetRoot}${sep}`)) {
+            return send(response, 404, 'text/plain; charset=utf-8', 'Unknown FSD NEXUS private concept image.', request.method);
+          }
+          if (request.method === 'HEAD') return send(response, 200, entry.type, undefined, request.method);
+
+          response.statusCode = 200;
+          response.setHeader('Content-Type', entry.type);
+          const stream = createReadStream(filePath);
+          stream.on('error', () => {
+            if (!response.headersSent) response.statusCode = 500;
+            response.end('FSD NEXUS concept image unavailable.');
+          });
+          return stream.pipe(response);
+        } catch {
+          return send(response, 500, 'text/plain; charset=utf-8', 'The FSD NEXUS private concept preview could not be loaded.', request.method);
         }
       });
 

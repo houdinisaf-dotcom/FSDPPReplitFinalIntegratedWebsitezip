@@ -1,10 +1,10 @@
-import { collectionDivisions } from '../../collection-divisions.js';
-import { products } from '../../catalogue-data.js';
-import { renderNavigationHeader, mountNavigation } from '../../site-navigation.js';
+import { collectionDivisions } from '../collection-divisions.js';
+import { products } from '../catalogue-data.js';
+import { renderNavigationHeader, mountNavigation } from '../site-navigation.js';
 import { alightPreviewRecord as preview } from '../alight-campaign.js';
 import { createAlightDevelopmentIntegration } from '../alight-development-integration.js';
 import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
-import '../../site-navigation.css';
+import '../site-navigation.css';
 import './alight-preview.css';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -54,7 +54,7 @@ const galleryMarkup = preview.gallery.map((image, index) => `
     aria-label="Show reference ${String(index + 1).padStart(2, '0')}: ${escapeHTML(image.label)}"
     aria-pressed="${image.id === preview.campaign.id}">
     <span class="alight-gallery-image">
-      <img src="${escapeHTML(image.src)}" alt="" width="${image.width}" height="${image.height}" loading="lazy"/>
+      <img src="${escapeHTML(image.src)}" alt="" width="${image.width}" height="${image.height}" loading="eager"/>
     </span>
     <span class="alight-gallery-index">${String(index + 1).padStart(2, '0')}</span>
     <span class="alight-gallery-label">${escapeHTML(image.label)}</span>
@@ -65,7 +65,7 @@ const storiesMarkup = preview.editorialStories.map((story, index) => {
   const image = preview.gallery.find(entry => entry.id === story.imageId);
   return `<article class="alight-story alight-story--${index + 1}">
     <div class="alight-story-image">
-      <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" width="${image.width}" height="${image.height}" loading="lazy"/>
+      <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" width="${image.width}" height="${image.height}" loading="eager"/>
       <span>CAMPAIGN REFERENCE · NOT PRODUCT PHOTOGRAPHY</span>
     </div>
     <div class="alight-story-copy">

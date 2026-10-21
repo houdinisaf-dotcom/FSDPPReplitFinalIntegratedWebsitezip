@@ -434,3 +434,283 @@ mtime_ms = 1792576420304
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/94fc8ee7-797b-4a2a-ab46-fd8bae34e50c/486ad399-dab1-4c33-bcec-657e076a33d9"
 storage_version_token = "1792576648636089"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "zvhnxnSn72Tp86IA-cr5h"
+uri = "file://generated-artifacts/fsd-alight-collection-card-desktop.jpg"
+type = "image"
+title = "FSD ALIGHT collection card — desktop"
+description = "Private Bio-Lab draft card. No price, checkout, or purchase action."
+logical_id = "93d8e631-2155-4337-8822-a9e714e19cff"
+content_hash = "sha256:8683f3f363d469a3662bd6825051bcb4eecde0e149c099c5479214b7857ab476"
+size = 75855
+mtime_ms = 1792589397830
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/93d8e631-2155-4337-8822-a9e714e19cff/bbefcafe-8c14-4321-9335-05a0162beebf"
+storage_version_token = "1792589522751381"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "YmAn2TRsiA8JpBAQ0lb6e"
+uri = "file://generated-artifacts/fsd-alight-collection-card-mobile.jpg"
+type = "image"
+title = "FSD ALIGHT collection card — mobile"
+description = "Private Bio-Lab draft card at 402 px width."
+logical_id = "beaf506b-a6e5-49ab-84d8-17fa62747062"
+content_hash = "sha256:67b674c19f86fd6b169f27973e51b351a4f68d76a20ee07f2c40872abb590d61"
+size = 33991
+mtime_ms = 1792589413754
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/beaf506b-a6e5-49ab-84d8-17fa62747062/7b77c60c-e278-4546-af0f-24d647b17ab4"
+storage_version_token = "1792589523519602"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "VYEWKtzfbt5mRUItz5J-0"
+uri = "file://generated-artifacts/fsd-alight-product-full-desktop.jpg"
+type = "image"
+title = "FSD ALIGHT product page — desktop"
+description = "Full desktop product-page proof with campaign story, pending details, and image gallery."
+logical_id = "812e4b2b-8f72-49de-a2d6-df8efedba4e2"
+content_hash = "sha256:b70915ace011b7901699bc1512577688602d45d181008a1600a63ff5e4a42545"
+size = 783314
+mtime_ms = 1792589398474
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/812e4b2b-8f72-49de-a2d6-df8efedba4e2/bf6fed9d-b0f1-4ca6-8029-82893b477116"
+storage_version_token = "1792589524199820"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "UKDYdoD7LI3PzIDt_Kv8Q"
+uri = "file://generated-artifacts/fsd-alight-product-full-mobile.jpg"
+type = "image"
+title = "FSD ALIGHT product page — mobile"
+description = "Full 402 px mobile product-page proof, including the scrollable campaign gallery."
+logical_id = "3e2e94db-0e85-4cca-9502-52bbfadb9fe0"
+content_hash = "sha256:8dd8408627caae7ef80db14eef115e96b3cab39c5f7d5607e5f8377c40398c5c"
+size = 425173
+mtime_ms = 1792589414174
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/3e2e94db-0e85-4cca-9502-52bbfadb9fe0/2ca6071d-a477-43dc-b42d-3c4fcc8c96be"
+storage_version_token = "1792589524943538"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "XOxWcAx611232nFvpqCUF"
+uri = "file://generated-artifacts/fsd-alight-campaign-desktop.jpg"
+type = "image"
+title = "FSD ALIGHT campaign story — desktop"
+description = "Editorial campaign section; all pictured copy remains campaign artwork, not verified claims."
+logical_id = "8974b3ef-5a4c-4549-b9bd-7ea953cb8c10"
+content_hash = "sha256:891c56d7159ab2b5683c360d521c20b809d7cabcbb0ad18efc4f53e64581637b"
+size = 201207
+mtime_ms = 1792589398682
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/8974b3ef-5a4c-4549-b9bd-7ea953cb8c10/ec27c496-169c-4c8b-bbac-115c227121e7"
+storage_version_token = "1792589525749706"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "HAZzcy-x8a5BeA9l-OFzZ"
+uri = "file://generated-artifacts/fsd-alight-campaign-mobile.jpg"
+type = "image"
+title = "FSD ALIGHT campaign story — mobile"
+description = "Editorial campaign section in the 402 px mobile layout."
+logical_id = "48f5e978-69dd-474e-abf6-bd11d66a5271"
+content_hash = "sha256:ddf0818f7f4da0e1663ce68eaa7999b4e89c316ebfca786a2f4d119ddc418927"
+size = 71874
+mtime_ms = 1792589414294
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/48f5e978-69dd-474e-abf6-bd11d66a5271/ac44e787-ca69-4bc4-bfdb-a7984bdc39ef"
+storage_version_token = "1792589526451096"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "RfGfKj_Nx3s6GDHwCT_Cx"
+uri = "file://generated-artifacts/fsd-alight-gallery-desktop.jpg"
+type = "image"
+title = "FSD ALIGHT image gallery — desktop"
+description = "All 12 supplied campaign references are visible and selectable; none is presented as an independent product photograph."
+logical_id = "35392399-41ff-4324-a135-c2d416eb0c15"
+content_hash = "sha256:26cac860e4a602c6664cb0785376ffac93b1b4c8631dbacf30e681e5bf419dd5"
+size = 225268
+mtime_ms = 1792589398750
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/35392399-41ff-4324-a135-c2d416eb0c15/eaaa6046-ac19-4fff-908c-b6ed64389359"
+storage_version_token = "1792589527170340"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "KFVevZbvJuJRvu4GGR1HJ"
+uri = "file://generated-artifacts/fsd-alight-gallery-mobile.jpg"
+type = "image"
+title = "FSD ALIGHT image gallery — mobile"
+description = "Scrollable mobile gallery; all 12 references are available on the full mobile product-page proof."
+logical_id = "a472372e-e35c-4515-8f59-eb363cf27a2d"
+content_hash = "sha256:a64c36c7561b5973f1c5cf152e0c25616c6fef496f1890b30935d7d51b97574e"
+size = 84757
+mtime_ms = 1792589414326
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/a472372e-e35c-4515-8f59-eb363cf27a2d/f219963d-c7a6-4df6-91b1-989fc0fa339f"
+storage_version_token = "1792589527880518"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "wtfash4vgvkpxUMJhOQAd"
+uri = "file://generated-artifacts/fsd-motion/collection-desktop-review.jpg"
+type = "image"
+title = "FSD MOTION — desktop collection proof"
+description = "Desktop collection hero and the four private concept cards."
+logical_id = "0567dff0-6329-4fe4-b651-3f284594a04a"
+content_hash = "sha256:f78ba0129359ffb855d732b3940abbd08e7bd16cfca6ae1d7fbe9b8f802e3d72"
+size = 127449
+mtime_ms = 1792591011586
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/0567dff0-6329-4fe4-b651-3f284594a04a/2c97177c-e62d-4a83-8015-229a0cf5a69a"
+storage_version_token = "1792591036386521"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "XK-HU-cWOrxStIYVBZ6Tk"
+uri = "file://generated-artifacts/fsd-motion/collection-mobile-review.jpg"
+type = "image"
+title = "FSD MOTION — mobile collection proof"
+description = "Mobile collection hero and responsive cards for all four concepts."
+logical_id = "50368a07-70dd-44af-835e-9e610ed2804f"
+content_hash = "sha256:e844133351de09412c6579db1fb2af15e537dd04bbc13aceeaddb565d456b315"
+size = 155427
+mtime_ms = 1792591011682
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/50368a07-70dd-44af-835e-9e610ed2804f/d5b07f0b-6f1d-4975-80ac-ebb667c6694c"
+storage_version_token = "1792591037145333"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "N_1BMoodhr08m6mPa-504"
+uri = "file://generated-artifacts/fsd-motion/homepage-collection-card-desktop.jpg"
+type = "image"
+title = "FSD MOTION — Apparel collection card"
+description = "Private FSD MOTION card inside the existing Apparel collection dialog."
+logical_id = "5669b5cd-9895-48c4-a34f-bafad424ac6b"
+content_hash = "sha256:aa97159e8850d70b9764e66be7712714f8e3725bd1c85a7f3fe4435d675d9b5c"
+size = 82934
+mtime_ms = 1792590959978
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5669b5cd-9895-48c4-a34f-bafad424ac6b/786026cb-f8a3-474f-9c28-7c29070847ce"
+storage_version_token = "1792591037836100"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "lUeKGAA4yDbvpHyWCzuX3"
+uri = "file://generated-artifacts/fsd-motion/products-desktop-review.jpg"
+type = "image"
+title = "FSD MOTION — desktop product proofs"
+description = "Desktop detail previews for the men’s top, women’s sports bra, training shorts and smart arm sleeves."
+logical_id = "260184cd-7667-4a83-bc91-0454ea5cc428"
+content_hash = "sha256:5e4453bd7935eae6430136d210f276bb15132981c416884f788cea420b838067"
+size = 237002
+mtime_ms = 1792591012002
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/260184cd-7667-4a83-bc91-0454ea5cc428/6676c927-a7dd-4df3-9bc2-4e814f895639"
+storage_version_token = "1792591038553231"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "vmTsjNgioqjU6KI8LxnGw"
+uri = "file://generated-artifacts/fsd-motion/products-mobile-gallery-review.jpg"
+type = "image"
+title = "FSD MOTION — mobile product galleries"
+description = "Mobile product-image galleries for all four concepts, with technical features marked pending."
+logical_id = "8ac452a5-0a2b-4dac-b982-db8022f23ad5"
+content_hash = "sha256:53d12e5a43ea53f8d0f17a44cadab7c37f999bd0ed5fe183c1567d16e999795e"
+size = 263591
+mtime_ms = 1792591012138
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/8ac452a5-0a2b-4dac-b982-db8022f23ad5/8d5531bd-cf93-43c3-8f9e-d14943b4de9c"
+storage_version_token = "1792591039309569"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "abHWV6IEeN88OzuqCU4vG"
+uri = "file://generated-artifacts/fsd-nexus-brand-review/brand-correction-review.html"
+type = "html"
+title = "FSD NEXUS — private logo audit"
+description = "Self-contained visual comparison of the installed FSD website logo, the corrected app-screen candidate and status labels for all supplied campaign assets."
+logical_id = "3c6499a7-15c8-4e1d-bb8e-1c2bf973503e"
+content_hash = "sha256:959973c888e98b32dc9c831eaff0153fc148776a053e6ea2bf4ffb4f3a382379"
+size = 1497593
+mtime_ms = 1792591529294
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/3c6499a7-15c8-4e1d-bb8e-1c2bf973503e/1519acd0-ba91-4d45-ab3d-28290d203418"
+storage_version_token = "1792591565270909"
+content_type = "text/html"
+
+[[outputs]]
+id = "QoJpz4drnKMGqCzzq2CTn"
+uri = "file://generated-artifacts/fsd-nexus-brand-review/06_app_interface_concept-brand-candidate.png"
+type = "image"
+title = "FSD NEXUS — app logo correction candidate"
+description = "The screen wordmark is replaced with the exact existing website logo asset. The image has not been integrated into the website."
+logical_id = "86c66447-12bb-46a8-86b8-03473f97c6e4"
+content_hash = "sha256:8309351f83f7f5cf220cac164ef98202f2ef4cdbda4c78676ec4488a1b75ad01"
+size = 111513
+mtime_ms = 1792591455742
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/86c66447-12bb-46a8-86b8-03473f97c6e4/8ff35b5c-1eb0-4db1-b82a-d4e488644081"
+storage_version_token = "1792591565998529"
+content_type = "image/png"
+
+[[outputs]]
+id = "bQ29zUj0ZuRoNkwzIofiJ"
+uri = "file://generated-artifacts/fsd-nexus-preview/proof-desktop.jpg"
+type = "image"
+title = "FSD NEXUS — Desktop concept proof"
+description = "Desktop view of the private development-only concept page, using the installed FSD logo and abstract concept artwork."
+logical_id = "cddfd77a-1dc3-49fb-9f66-7ad1815c5bfc"
+content_hash = "sha256:c08f9e39217c4b3034b0d8cde0a45c9ff2f237e3b4201ba45c2f1dd092e40d3e"
+size = 94686
+mtime_ms = 1792592573926
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/cddfd77a-1dc3-49fb-9f66-7ad1815c5bfc/dd1dd218-9b27-4a7e-9885-efd526755c78"
+storage_version_token = "1792592683824484"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "mPzjupk-T9KQ5tJpgMKdv"
+uri = "file://generated-artifacts/fsd-nexus-preview/proof-mobile.jpg"
+type = "image"
+title = "FSD NEXUS — Mobile concept proof"
+description = "Mobile view of the private concept page with the existing FSD navigation and no product or purchase claims."
+logical_id = "8060e365-7ec4-4808-9bc2-e00839e2a137"
+content_hash = "sha256:1d47a65ba617c25f15191f3b2662c9a1c40ac3cbca0ac29f7fbadad4d73bc202"
+size = 37428
+mtime_ms = 1792592575282
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/8060e365-7ec4-4808-9bc2-e00839e2a137/b1138100-0300-485a-8499-9a40d808ecf9"
+storage_version_token = "1792592684616826"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "FQR_GW_YI1x4SfYw3cjFk"
+uri = "file://generated-artifacts/fsd-nexus-preview/concept-gallery-desktop.jpg"
+type = "image"
+title = "FSD NEXUS — Desktop gallery proof"
+description = "Desktop gallery showing only the approved app-screen image and an unbranded reference, with unverified capabilities labeled pending."
+logical_id = "24e9b688-66e1-4395-976a-5278f231fcd8"
+content_hash = "sha256:44a6319d525a26f01732e482bfad43492b3b263606c2a728f37c9fff1512288b"
+size = 98435
+mtime_ms = 1792592613694
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/24e9b688-66e1-4395-976a-5278f231fcd8/6a202ef9-0611-4d55-b8b2-386da994db56"
+storage_version_token = "1792592685365989"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "i0ugBkRdwqGLwr1wJ_90H"
+uri = "file://generated-artifacts/fsd-nexus-preview/concept-gallery-mobile.jpg"
+type = "image"
+title = "FSD NEXUS — Mobile gallery proof"
+description = "Mobile gallery showing the score is illustrative and not live data; ring and lifestyle photography remain excluded."
+logical_id = "4a711c90-d04e-4b2a-9cf2-f0f970ed0ff7"
+content_hash = "sha256:48018e9cb0bf1cb201ca24c63c7a59afced24439593176b15135c6e434ab2a05"
+size = 46933
+mtime_ms = 1792592616146
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4a711c90-d04e-4b2a-9cf2-f0f970ed0ff7/db98081a-16e6-4080-a453-51945aa8e457"
+storage_version_token = "1792592686097092"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "ZOfwyygl7OWkltOnZAT22"
+uri = "file://generated-artifacts/fsd-nexus-preview/biolab-card-desktop.jpg"
+type = "image"
+title = "FSD NEXUS — Bio-Lab draft card"
+description = "Private draft card in the existing Bio-Lab concept showcase. The card states that the 87 score is illustrative and not live data."
+logical_id = "82fb8819-7287-4336-ba77-d8a45d39a630"
+content_hash = "sha256:3206a557115c55dc64638e16c42ed5b4e0caa3215fee9bd0d651c77944854258"
+size = 77093
+mtime_ms = 1792592615530
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/82fb8819-7287-4336-ba77-d8a45d39a630/4e55e79f-6b40-4a77-a30f-52bb611bd647"
+storage_version_token = "1792592686838490"
+content_type = "image/jpeg"

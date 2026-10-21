@@ -16,7 +16,10 @@ Publication holds apply to reference galleries as well as product listings and r
 **How to apply:** Check all public surfaces when changing hold status; retain source files for internal review without rendering held references.
 
 The reviewed Performance/Cover hijab and HYDRATE, MOTION, NEXUS, SONIC and PULSE
-step-counter image candidates were not approved for product mappings.
+step-counter image candidates were not approved for product mappings. The
+logo-corrected NEXUS app screen and explicitly approved unbranded graphics may
+appear in its private concept proof only. Approval of that proof is visual only;
+other logo-bearing NEXUS crops remain flagged for correction or replacement.
 
 **Why:** The user selected “Do not add these matches” when shown the candidate
 sheet, without providing a reason. Visual similarity or a descriptive asset name
@@ -25,7 +28,10 @@ must not be treated as approval.
 **How to apply:** Leave these products unmapped unless the user gives a new
 explicit approval. Consult `handoff/catalog/image-review.md` for the reviewed
 references; do not interpret the decision as an instruction to remove the
-separate design library.
+separate design library. Keep NEXUS as a noindex development-only concept, use
+only its approved screen and unbranded references, preserve the source archive,
+and keep every feature, measurement, product detail, price, and availability
+unverified. No catalogue mapping, checkout, or public release is authorized.
 
 VIP sign-up collection is deferred until the destination and approved privacy/consent wording are ready.
 
@@ -38,6 +44,18 @@ The Aegis gilet’s supplied composite and its individual crops are visual refer
 **Why:** The user approved only a private visual/layout proof, asked to keep master values unchanged, and explicitly withheld commercial approval.
 
 **How to apply:** Keep Aegis imagery in private review surfaces, mark rear construction and technical details as pending, and do not enable checkout or promote the catalogue values as sale terms without separate approval.
+
+FSD ALIGHT’s supplied twelve-image archive is campaign reference artwork, not a set of independent product photographs. Its capabilities and specifications remain unverified.
+
+**Why:** The user requested a private draft proof, required the original archive to remain untouched, and identified missing clean front, rear and side images plus unverified campaign claims.
+
+**How to apply:** Treat approval of the private proof as visual/layout approval only—not product-data, claims, photography, or commercial approval. Keep ALIGHT noindex and unavailable to purchase, show only supplied campaign crops with clear reference labels, leave all claims/specifications and standalone views pending, and require separate approval before any public release.
+
+FSD MOTION is a private concept proof, not a product-catalogue or commercial approval. Its supplied image archive consists of crops from one campaign composite; technical features, garment specifications, prices and availability remain unverified.
+
+**Why:** The user requested a separate draft collection and product previews, asked to preserve the original archive, explicitly required claims and missing photos to remain pending, and approved the proof as visual/layout only.
+
+**How to apply:** Keep MOTION routes development-only and noindex; show only source campaign references with clear labels, keep individual garment photography and specifications pending, and do not add catalogue values, checkout or public release without separate approval.
 
 Avoid the exact visible phrase “in development” across the public site.
 

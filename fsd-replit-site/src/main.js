@@ -124,73 +124,108 @@ function showCatalogueDestination({ category = 'All', query = '' } = {}) {
   return true;
 }
 
-initCatalogue({ onProductSelect: openProduct });
-mountCollectionShowcase({
-  root: document.querySelector('#collections'),
-  divisions: collectionDivisions,
-  products,
-  onProductSelect: openProduct,
-  onExploreCollection(group) {
-    showCatalogueDestination({
-      category: group.categories?.[0] || 'All',
-      query: group.query || '',
-    });
-  },
-});
-mountNavigation({
-  root: document.querySelector('[data-navigation-shell]'),
-  divisions: collectionDivisions,
-  products,
-  includeDraftPreviews: import.meta.env.DEV,
-  onNavigate({ menu, group, item }) {
-    if (item?.kind === 'draft-product') {
-      window.location.assign(item.href);
-      return;
-    }
-
-    if (item?.record) {
-      openProduct(item.record.id);
-      return;
-    }
-
-    if (item?.kind === 'category') {
-      showCatalogueDestination({ category: item.source?.categories?.[0] || item.title });
-      return;
-    }
-
-    const destination = item?.href || group?.href;
-    if (destination) {
-      document.querySelector(destination)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-
-    const divisionId = item?.sourceDivisionId || group?.sourceDivisionId || menu?.divisionId;
-    const opener = document.querySelector(`[data-division="${divisionId}"]`);
-    if (!opener) return;
-    opener.click();
-
-    const dialog = document.querySelector('#fsd-showcase-dialog');
-    if (!dialog) return;
-    const groupIndex = item?.sourceGroupIndex ?? group?.sourceGroupIndex ?? 0;
-    dialog.querySelector(`[data-group-index="${groupIndex}"]`)?.click();
-    const subcategoryIndex = item?.sourceSubcategoryIndex ?? -1;
-    if (subcategoryIndex >= 0) {
-      requestAnimationFrame(() => dialog.querySelector(`[data-subcategory-index="${subcategoryIndex}"]`)?.click());
-    }
-  },
-});
-initFeaturedCarousel(document.querySelector('#innovations'));
-initArchiveNavigation();
-document.querySelector('[data-open-hardware]')?.addEventListener('click', () => {
-  document.querySelector('#fsd-division-hardware')?.click();
-});
-document.querySelector('#gallery-search').addEventListener('input', event => {
-  const query = event.target.value.toLowerCase().trim();
-  let count = 0;
-  document.querySelectorAll('[data-gallery-name]').forEach(element => {
-    const matches = element.dataset.galleryName.includes(query);
-    element.hidden = !matches;
-    if (matches) count++;
+function startMainExperience() {
+  initCatalogue({ onProductSelect: openProduct });
+  const collectionShowcase = mountCollectionShowcase({
+    root: document.querySelector('#collections'),
+    divisions: collectionDivisions,
+    products,
+    onProductSelect: openProduct,
+    onExploreCollection(group) {
+      showCatalogueDestination({
+        category: group.categories?.[0] || 'All',
+        query: group.query || '',
+      });
+    },
   });
-  document.querySelector('#gallery-count').textContent = `${count} designs`;
-});
+  mountNavigation({
+    root: document.querySelector('[data-navigation-shell]'),
+    divisions: collectionDivisions,
+    products,
+    includeDraftPreviews: import.meta.env.DEV,
+    onNavigate({ menu, group, item }) {
+      if (item?.kind === 'draft-product') {
+        window.location.assign(item.href);
+        return;
+      }
+
+      if (item?.record) {
+        openProduct(item.record.id);
+        return;
+      }
+
+      if (item?.kind === 'category') {
+        showCatalogueDestination({ category: item.source?.categories?.[0] || item.title });
+        return;
+      }
+
+      const destination = item?.href || group?.href;
+      if (destination) {
+        document.querySelector(destination)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      const divisionId = item?.sourceDivisionId || group?.sourceDivisionId || menu?.divisionId;
+      const opener = document.querySelector(`[data-division="${divisionId}"]`);
+      if (!opener) return;
+      opener.click();
+
+      const dialog = document.querySelector('#fsd-showcase-dialog');
+      if (!dialog) return;
+      const groupIndex = item?.sourceGroupIndex ?? group?.sourceGroupIndex ?? 0;
+      dialog.querySelector(`[data-group-index="${groupIndex}"]`)?.click();
+      const subcategoryIndex = item?.sourceSubcategoryIndex ?? -1;
+      if (subcategoryIndex >= 0) {
+        requestAnimationFrame(() => dialog.querySelector(`[data-subcategory-index="${subcategoryIndex}"]`)?.click());
+      }
+    },
+  });
+  initFeaturedCarousel(document.querySelector('#innovations'));
+  initArchiveNavigation();
+  document.querySelector('[data-open-hardware]')?.addEventListener('click', () => {
+    document.querySelector('#fsd-division-hardware')?.click();
+  });
+  document.querySelector('#gallery-search').addEventListener('input', event => {
+    const query = event.target.value.toLowerCase().trim();
+    let count = 0;
+    document.querySelectorAll('[data-gallery-name]').forEach(element => {
+      const matches = element.dataset.galleryName.includes(query);
+      element.hidden = !matches;
+      if (matches) count++;
+    });
+    document.querySelector('#gallery-count').textContent = `${count} designs`;
+  });
+  return collectionShowcase;
+}
+
+const collectionShowcase = startMainExperience();
+if (import.meta.env.DEV) {
+  import('./alight-development-integration.js')
+    .then(({ createAlightDevelopmentIntegration }) => {
+      collectionShowcase.setDraftProductCard(createAlightDevelopmentIntegration().draftProductCard);
+    })
+    .catch(error => {
+      console.error('The private ALIGHT collection card could not be loaded.', error);
+      throw error;
+    });
+
+  import('./motion-development-integration.js')
+    .then(({ createMotionDevelopmentIntegration }) => {
+      const motion = createMotionDevelopmentIntegration();
+      collectionShowcase.setDraftProductCard(motion.collectionCard, motion.collectionCardPlacement);
+    })
+    .catch(error => {
+      console.error('The private FSD MOTION collection card could not be loaded.', error);
+      throw error;
+    });
+
+  import('./nexus-development-integration.js')
+    .then(({ createNexusDevelopmentIntegration }) => {
+      const nexus = createNexusDevelopmentIntegration();
+      collectionShowcase.setDraftProductCard(nexus.collectionCard, nexus.collectionCardPlacement);
+    })
+    .catch(error => {
+      console.error('The private FSD NEXUS concept card could not be loaded.', error);
+      throw error;
+    });
+}

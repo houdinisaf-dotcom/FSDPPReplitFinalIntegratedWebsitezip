@@ -140,11 +140,13 @@ export function groupProducts(group, products, subcategory = null) {
     (!subcategory || matchesGroup(product, subcategory)));
 }
 
-function modalContent(division, group, products, activeGroupIndex, activeSubcategoryIndex, draftProductCard) {
+function modalContent(division, group, products, activeGroupIndex, activeSubcategoryIndex, draftProductCards) {
   const subcategory = group.subcategories?.[activeSubcategoryIndex] || null;
   const foundProducts = groupProducts(group, products, subcategory);
   const concepts = subcategory ? (subcategory.concepts || []) :
     [...(group.concepts || []), ...(group.subcategories || []).flatMap(item => item.concepts || [])];
+  const matchingDraftCards = draftProductCards.filter(card =>
+    card.divisionId === division.id && (card.groupId === '*' || card.groupId === group.id));
   const title = group.title || division.title;
   const conceptMarkup = concepts.length
     ? `<div class="fsd-modal-subhead"><span>02</span><h4>PROPOSED CONCEPTS</h4><i></i></div>
@@ -154,15 +156,12 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     ? `<div class="fsd-modal-subhead"><span>01</span><h4>PRODUCT RECORDS</h4><i></i><small>${foundProducts.length} ${foundProducts.length === 1 ? 'RECORD' : 'RECORDS'}</small></div>
        <div class="fsd-product-grid">${foundProducts.map(productCard).join('')}</div>`
     : '';
-  const emptyMarkup = !foundProducts.length && !concepts.length
+  const emptyMarkup = !foundProducts.length && !concepts.length && !matchingDraftCards.length
     ? `<div class="fsd-showcase-empty"><span>FSD / ${String(activeGroupIndex + 1).padStart(2, '0')}</span><h4>Collection details are being prepared.</h4><p>No product records or proposed concepts are currently listed for this selection.</p></div>`
     : '';
-  const draftProductMarkup = draftProductCard
-    && division.id === 'bio-lab'
-    && group.id === 'bio-lab-concepts'
-    ? `<div class="fsd-modal-subhead fsd-modal-subhead--draft"><span>03</span><h4>PRIVATE DRAFT PRODUCT</h4><i></i></div>
-       <div class="fsd-product-grid">${draftProductCard}</div>`
-    : '';
+  const draftProductMarkup = matchingDraftCards.map((card, index) => `
+    <div class="fsd-modal-subhead fsd-modal-subhead--draft"><span>${String(3 + index).padStart(2, '0')}</span><h4>${escapeHTML(card.heading)}</h4><i></i></div>
+    <div class="fsd-product-grid">${card.markup}</div>`).join('');
   return `<div class="fsd-modal-hero fsd-modal-hero--${escapeHTML(division.visual || division.id)}">
       <span class="fsd-modal-kicker">${escapeHTML(division.title)} <span>/</span> DIVISION ${String(activeGroupIndex + 1).padStart(2, '0')}</span>
       <h2>${escapeHTML(title)}</h2>
@@ -198,6 +197,15 @@ export function mountCollectionShowcase({
   }
   const safeDivisions = Array.isArray(divisions) ? divisions : [];
   const safeProducts = Array.isArray(products) ? products : [];
+  const activeDraftProductCards = draftProductCard
+    ? [{
+      id: 'initial-bio-lab-draft',
+      divisionId: 'bio-lab',
+      groupId: 'bio-lab-concepts',
+      heading: 'PRIVATE DRAFT PRODUCT',
+      markup: String(draftProductCard),
+    }]
+    : [];
   if (!root.querySelector('.fsd-showcase')) {
     root.insertAdjacentHTML('beforeend', renderCollectionShowcase(safeDivisions));
   }
@@ -223,7 +231,7 @@ export function mountCollectionShowcase({
       safeProducts,
       activeGroupIndex,
       activeSubcategoryIndex,
-      draftProductCard,
+      activeDraftProductCards,
     );
     content.scrollTop = 0;
   };
@@ -322,7 +330,7 @@ export function mountCollectionShowcase({
   dialog.addEventListener('close', onDialogClose);
   dialog.addEventListener('keydown', onKeyDown);
 
-  return () => {
+  const unmount = () => {
     section.removeEventListener('click', onClick);
     dialog.removeEventListener('click', onDialogClick);
     dialog.removeEventListener('close', onDialogClose);
@@ -333,4 +341,23 @@ export function mountCollectionShowcase({
     }
     section.remove();
   };
+  unmount.setDraftProductCard = (html, placement = {}) => {
+    const id = String(placement.id || 'bio-lab-private-draft');
+    const existingIndex = activeDraftProductCards.findIndex(card => card.id === id);
+    if (!html) {
+      if (existingIndex >= 0) activeDraftProductCards.splice(existingIndex, 1);
+    } else {
+      const card = {
+        id,
+        divisionId: String(placement.divisionId || 'bio-lab'),
+        groupId: String(placement.groupId || 'bio-lab-concepts'),
+        heading: String(placement.heading || 'PRIVATE DRAFT PRODUCT'),
+        markup: String(html),
+      };
+      if (existingIndex >= 0) activeDraftProductCards[existingIndex] = card;
+      else activeDraftProductCards.push(card);
+    }
+    if (dialog.open && activeDivision) renderDialog();
+  };
+  return unmount;
 }

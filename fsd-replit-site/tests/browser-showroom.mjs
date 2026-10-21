@@ -104,20 +104,15 @@ try {
       const content = metrics.cssContentSize || metrics.contentSize;
       const viewportWidth = await evaluate('document.documentElement.clientWidth || window.innerWidth');
       clip = { x: 0, y: 0, width: viewportWidth, height: content.height, scale: 1 };
-    } else {
-      const viewport = await evaluate(`({
-        width: document.documentElement.clientWidth || window.innerWidth,
-        height: Math.round(window.visualViewport?.height || document.documentElement.clientHeight || window.innerHeight)
-      })`);
-      clip = { x: 0, y: 0, width: viewport.width, height: viewport.height, scale: 1 };
     }
-    const image = await send('Page.captureScreenshot', {
+    const screenshotOptions = {
       format: 'jpeg',
       quality: 88,
       fromSurface: true,
       captureBeyondViewport: fullPage,
-      clip,
-    });
+    };
+    if (fullPage) screenshotOptions.clip = clip;
+    const image = await send('Page.captureScreenshot', screenshotOptions);
     const outputDir = join(process.cwd(), '../generated-artifacts');
     mkdirSync(outputDir, { recursive: true });
     writeFileSync(join(outputDir, fileName), Buffer.from(image.data, 'base64'));
@@ -132,7 +127,7 @@ try {
   await send('Runtime.enable');
   await send('Page.enable');
   await send('Page.bringToFront');
-  if (!mobileProofCapture) {
+  if (!mobileProofCapture && !alightMobileCapture) {
     await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   } else {
     await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 1, mobile: true });
@@ -215,6 +210,7 @@ try {
   await click('[data-alight-draft-card] .fsd-product-link--private-preview');
   await waitFor('location.pathname === "/__catalogue-preview/fsd-alight/" && !!document.querySelector("#alight-title")');
   assert.equal(await evaluate('document.querySelectorAll("[data-alight-thumb]").length'), 12);
+  await waitFor('Array.from(document.querySelectorAll("[data-alight-thumb] img")).every(image => image.complete && image.naturalWidth > 0)');
   assert.equal(await evaluate('document.querySelectorAll(".alight-feature-row").length'), 7);
   assert.equal(await evaluate('Array.from(document.querySelectorAll(".alight-feature-status")).every(item => item.textContent === "Pending Technical Verification")'), true);
   assert.ok(await evaluate('document.querySelector(".alight-review-panel--missing").textContent.includes("front product photograph")'));
