@@ -41,7 +41,7 @@ export const collectionDivisions = [
     id: 'bio-lab',
     title: 'FSD BIO-LAB™',
     tagline: 'INTELLIGENCE IN EVERY MOVEMENT.',
-    description: 'Technology concepts, presented as concepts until their capabilities are validated.',
+    description: 'The future of training, in development.',
     groups: [{
       id: 'bio-lab-concepts',
       title: 'WEARABLE TECHNOLOGY & CONCEPTS',

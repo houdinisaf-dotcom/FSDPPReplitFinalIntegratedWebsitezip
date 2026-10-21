@@ -430,7 +430,7 @@ function renderFeature(menu, group, item, products, canNavigate) {
   const available = canNavigate({ menu, group, item });
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
     : item?.kind === 'draft-product' ? (item.previewActionLabel || 'OPEN DRAFT PREVIEW')
-      : item?.record ? 'VIEW PRODUCT RECORD'
+      : item?.record ? 'VIEW DETAILS'
       : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
         : menu.id === 'house' && item?.href === '#philosophy' ? 'READ THE FSD STORY'
           : item?.kind === 'concept' ? 'EXPLORE CONCEPT'

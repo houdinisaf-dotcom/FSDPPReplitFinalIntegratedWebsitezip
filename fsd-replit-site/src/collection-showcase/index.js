@@ -117,9 +117,8 @@ function productCard(product) {
     <div class="fsd-product-meta"><span>${escapeHTML(category)}</span>${audience}</div>
     <h4>${productTitle}</h4>
     <p class="fsd-product-description">${escapeHTML(description)}</p>
-    <p class="fsd-product-reference">${escapeHTML(price.label)} <strong>${escapeHTML(price.value)}</strong></p>
-    <p class="fsd-product-status">PRE-LAUNCH RECORD <span aria-hidden="true">·</span> DETAILS SUBJECT TO CONFIRMATION</p>
-    <button class="fsd-product-link" type="button" data-product-id="${escapeHTML(product.id)}">VIEW PRODUCT RECORD <span aria-hidden="true">↗</span><span class="fsd-sr-only"> for ${escapeHTML(product.name)}</span></button>
+    <p class="fsd-product-reference">${price.label ? `${escapeHTML(price.label)} ` : ''}<strong>${escapeHTML(price.value)}</strong></p>
+    <button class="fsd-product-link" type="button" data-product-id="${escapeHTML(product.id)}">VIEW DETAILS <span aria-hidden="true">↗</span><span class="fsd-sr-only"> for ${escapeHTML(product.name)}</span></button>
   </article>`;
 }
 
@@ -153,7 +152,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
        <div class="fsd-concept-grid">${concepts.map(conceptCard).join('')}</div>`
     : '';
   const productsMarkup = foundProducts.length
-    ? `<div class="fsd-modal-subhead"><span>01</span><h4>PRODUCT RECORDS</h4><i></i><small>${foundProducts.length} ${foundProducts.length === 1 ? 'RECORD' : 'RECORDS'}</small></div>
+    ? `<div class="fsd-modal-subhead"><span>01</span><h4>THE COLLECTION</h4><i></i><small>${foundProducts.length} ${foundProducts.length === 1 ? 'RECORD' : 'RECORDS'}</small></div>
        <div class="fsd-product-grid">${foundProducts.map(productCard).join('')}</div>`
     : '';
   const emptyMarkup = !foundProducts.length && !concepts.length && !matchingDraftCards.length

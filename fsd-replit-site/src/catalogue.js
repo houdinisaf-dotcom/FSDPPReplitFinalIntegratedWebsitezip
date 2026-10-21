@@ -7,7 +7,7 @@ let page = 1;
 
 function imagePlaceholder(product) {
   const label = product.imageStatus.startsWith('Image exists')
-    ? 'Concept image mapping pending'
+    ? ''
     : product.imageStatus.startsWith('Brief only') ? 'Image under review' : 'Imagery to follow';
   return `<div class="catalogue-placeholder"><span>FSD / PRE-LAUNCH</span>
     <strong>${safe(product.category)}</strong><small>${label}</small></div>`;
@@ -23,7 +23,7 @@ function card(product) {
     <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>
     <h3>${safe(product.name)}</h3>
     <p class="catalogue-colourways">${safe(product.colourways || 'Colourways to be confirmed')}</p>
-    <div class="catalogue-price"><span>${price.label}</span><strong>${price.value}</strong></div>
+    <div class="catalogue-price">${price.label ? `<span>${price.label}</span>` : ''}<strong>${price.value}</strong></div>
     ${product.priceBasis ? `<p class="catalogue-colourways">${safe(product.priceBasis)}</p>` : ''}
     ${product.specificationStatus ? `<p class="catalogue-colourways">${safe(product.specificationStatus)}</p>` : ''}
     <button class="text-link" data-product="${product.id}">VIEW DETAILS ↗<span class="sr-only"> for ${safe(product.name)}</span></button>
@@ -46,9 +46,7 @@ export function catalogueSection() {
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>
     <div class="product-grid" id="catalogue-grid"></div>
     <nav class="catalogue-pagination" id="catalogue-pagination" aria-label="Product catalogue pages"></nav>
-    <p class="disclaimer">Products are not available to order.
-    Confirmed prices are those recorded in the master list; suggested prices still require approval.
-    Images are concept references, not evidence of stock or verified performance. Colourways are grouped under one product.</p>
+    <p class="disclaimer">Pre-launch collection. Prices and details may change before release. Join VIP Access to be first when it drops.</p>
   </section>`;
 }
 
@@ -114,7 +112,7 @@ export function showProduct(id) {
       ${detail('Price basis', p.priceBasis)}
       ${detail('Image status in master list', p.imageStatus)}
       ${detail('Development notes', p.notes)}
-    </dl><div class="dialog-price"><span>${price.label}</span><strong>${price.value}</strong></div>
+    </dl><div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}<strong>${price.value}</strong></div>
     <small>This is a development record, not a product available to purchase. Specifications and launch availability are not confirmed.</small>
     </div>`;
   document.documentElement?.classList?.add('fsd-modal-open');

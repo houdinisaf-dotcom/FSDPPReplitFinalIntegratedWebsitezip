@@ -12,7 +12,8 @@ test('the showroom renders four accessible division controls and one reusable di
   assert.match(markup, /id="fsd-showcase-dialog"/);
   assert.equal((markup.match(/aria-controls="fsd-showcase-dialog"/g) || []).length, 4);
   assert.equal((markup.match(/aria-expanded="false"/g) || []).length, 4);
-  assert.doesNotMatch(markup, /in development|STRIDE|Shilajit|checkout|add to cart/i);
+  assert.match(markup, /The future of training, in development\./);
+  assert.doesNotMatch(markup, /STRIDE|Shilajit|checkout|add to cart/i);
   assert.deepEqual(collectionDivisions.map(division => division.id), ['apparel', 'bio-lab', 'hardware', 'global']);
 });
 
@@ -48,7 +49,7 @@ test('features reuse active master records and the approved Velocity main image'
   const markup = featuredInnovationsSection();
   assert.match(markup, /fsd-velocity-performance-sports-hijab\.jpg/);
   assert.match(markup, /£699\.99/);
-  assert.doesNotMatch(markup, /STRIDE|Shilajit|checkout|in development/i);
+  assert.doesNotMatch(markup, /STRIDE|Shilajit|checkout/i);
 });
 
 test('deferred VIP access cannot collect or pretend to submit personal data', () => {

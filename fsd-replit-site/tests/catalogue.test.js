@@ -26,9 +26,9 @@ test('original source records and approved set tiers are retained; holds and ret
 });
 
 test('prices distinguish confirmed, suggested and genuinely unset values', () => {
-  assert.deepEqual(priceInfo(products.find(p => p.id === 1)), { label: 'Confirmed list price', value: '£39.99' });
-  assert.deepEqual(priceInfo(products.find(p => p.id === 2)), { label: 'Suggested · to confirm', value: '£39.99' });
-  assert.deepEqual(priceInfo(products.find(p => p.id === 59)), { label: 'Price not set', value: 'To be confirmed' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 1)), { label: '', value: '£39.99' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 2)), { label: 'Expected', value: '£39.99' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 59)), { label: '', value: 'Price at launch' });
 });
 
 test('category cross-listing, alternate names, colourways and case-insensitive search work', () => {
@@ -80,7 +80,7 @@ test('rendered sections follow the master list, escape content, and do not promo
   assert.match(sections, /66 products across 9 categories/);
   assert.doesNotMatch(sections, /in development/i);
   assert.doesNotMatch(sections, /STRIDE|smartwatch|Shilajit|Championship Belt|Ring Corner Post/i);
-  assert.match(sections, /not available to order/);
+  assert.match(sections, /Pre-launch collection\. Prices and details may change before release\. Join VIP Access to be first when it drops\./);
   assert.doesNotMatch(sections, /add to (cart|basket)|buy now|checkout|payment|<form/i);
   assert.equal(safe('<script>"x"&</script>'), '&lt;script&gt;&quot;x&quot;&amp;&lt;/script&gt;');
 });
@@ -110,7 +110,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
   assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
     assert.match(element('#catalogue-grid').innerHTML, /\/images\/ombre-indigo.png/);
     assert.match(element('#catalogue-grid').innerHTML, /; design concept/);
-    assert.match(element('#catalogue-grid').innerHTML, /Concept image mapping pending/);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /Concept image\s+mapping pending/);
     click('[data-page]', { dataset: { page: '2' }, disabled: false });
     assert.equal(element('#catalogue-count').textContent, 'Showing 13–24 of 66 products');
 
@@ -135,7 +135,8 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
       assert.ok(element('#dialog-body').innerHTML.includes(image.label));
     }
     assert.match(element('#dialog-body').innerHTML, /design concept/);
-    assert.match(element('#dialog-body').innerHTML, /Confirmed list price/);
+    assert.ok(element('#dialog-body').innerHTML.includes(priceInfo(products.find(p => p.id === 10)).value));
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /Confirmed list price/);
     handlers.get('#close-dialog:click')();
     assert.equal(element('#product-dialog').open, false);
     click('[data-product]', { dataset: { product: '1' } });
@@ -149,7 +150,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
       assert.doesNotMatch(element('#dialog-body').innerHTML, /<img /);
     }
     click('[data-product]', { dataset: { product: '59' } });
-    assert.match(element('#dialog-body').innerHTML, /To be confirmed/);
+    assert.match(element('#dialog-body').innerHTML, /Price at launch/);
     assert.doesNotMatch(element('#dialog-body').innerHTML, /£0|undefined|null/);
 
     click('[data-product]', { dataset: { product: '47' } });
@@ -158,7 +159,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
     assert.doesNotMatch(element('#dialog-body').innerHTML, /identity to confirm/);
     click('[data-product]', { dataset: { product: '69' } });
     assert.match(element('#dialog-body').innerHTML, /£699.99/);
-    assert.match(element('#dialog-body').innerHTML, /Complete 10kg–50kg set package/);
+    assert.match(element('#dialog-body').innerHTML, /Complete 10–50kg set\./);
     assert.match(element('#dialog-body').innerHTML, /Exact weight increments, quantities and total set weight pending/);
     assert.match(element('#dialog-body').innerHTML, /32mm/);
     click('[data-product]', { dataset: { product: '54' } });
@@ -171,7 +172,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
     }
 
     click('[data-category-link]', { dataset: { categoryLink: 'Gym Hardware and Accessories' } });
-    assert.match(element('#catalogue-grid').innerHTML, /Complete 10kg–50kg set package/);
+    assert.match(element('#catalogue-grid').innerHTML, /Complete 10–50kg set\./);
     assert.match(element('#catalogue-grid').innerHTML, /Exact weight increments/);
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£129.99/);
   } finally {
@@ -229,7 +230,7 @@ test('hardware prices buy complete approved set tiers without invented weight br
   assert.deepEqual(tiers.map(p => p.confirmedPrice), [699.99, 599.99, 399.99, 299.99]);
   for (const p of tiers) {
     assert.equal(p.suggestedPrice, null);
-    assert.match(p.priceBasis, /Complete 10kg–50kg set package, not a pair/);
+    assert.equal(p.priceBasis, 'Complete 10–50kg set.');
     assert.match(p.specificationStatus, /increments, quantities and total set weight pending/);
     assert.match(p.notes, /not evidence of manufactured materials or verified performance/);
     assert.deepEqual(p.images, []);
@@ -285,7 +286,8 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
     assert.match(page, /website-shield-lockup-refined\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
-    assert.doesNotMatch(page, /in development|<form|type="email"/i);
+    assert.match(page, /The future of training, in development\./);
+    assert.doesNotMatch(page, /<form|type="email"/i);
     assert.ok(page.indexOf('class="hero"') < page.indexOf('class="fsd-showcase"'));
     assert.ok(page.indexOf('class="fsd-showcase"') < page.indexOf('id="innovations"'));
     assert.ok(page.indexOf('id="innovations"') < page.indexOf('id="philosophy"'));

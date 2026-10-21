@@ -59,9 +59,9 @@ export function priceInfo(p) {
   const format = value => new Intl.NumberFormat('en-GB', {
     style: 'currency', currency: 'GBP',
   }).format(value);
-  if (p.confirmedPrice !== null) return { label: 'Confirmed list price', value: format(p.confirmedPrice) };
-  if (p.suggestedPrice !== null) return { label: 'Suggested · to confirm', value: format(p.suggestedPrice) };
-  return { label: 'Price not set', value: 'To be confirmed' };
+  if (p.confirmedPrice !== null) return { label: '', value: format(p.confirmedPrice) };
+  if (p.suggestedPrice !== null) return { label: 'Expected', value: format(p.suggestedPrice) };
+  return { label: '', value: 'Price at launch' };
 }
 
 export function safe(value) {

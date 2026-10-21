@@ -18,11 +18,11 @@ export function featuredInnovationsSection() {
             : `<div class="showroom-feature-placeholder"><span>FSD</span><small>DESIGN CONCEPT</small></div>`}</div>
           <div class="showroom-feature-copy"><p class="section-kicker">${safe(product.category)}</p>
           <h3>${safe(product.name)}</h3><p>${safe(product.priceBasis || product.coverage || 'Pre-launch record. Specifications and availability are subject to confirmation.')}</p>
-          <span class="showroom-feature-price">${safe(price.label)} · ${safe(price.value)}</span>
+          <span class="showroom-feature-price">${safe([price.label, price.value].filter(Boolean).join(' '))}</span>
           <button class="text-link" type="button" data-product="${product.id}">VIEW DETAILS ↗<span class="sr-only"> for ${safe(product.name)}</span></button></div>
         </article>`;
       }).join('')}
-    </div><p class="showroom-carousel-note">${featuredProducts.length} selected records. Swipe or use the arrows to explore; no autoplay.</p>
+    </div>
   </section>`;
 }
 

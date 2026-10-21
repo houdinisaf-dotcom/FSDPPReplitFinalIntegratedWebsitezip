@@ -36,7 +36,7 @@ function hardwareEditorialSection() {
     <div class="showroom-engineering-copy">
       <p class="section-kicker">FSD HARDWARE <span class="period">/</span> COMBAT SYSTEMS</p>
       <h2 id="hardware-editorial-title">ENGINEERED FOR<br/>THE DEMANDS OF<br/><span>PERFORMANCE.</span></h2>
-      <p>Equipment should earn its place in training. Where product photography is not approved, the reference stays clear — not an invented product.</p>
+       <p>Equipment that earns its place in your training.</p>
       <ol class="showroom-engineering-list">
         <li><span>01</span> Strength equipment · dumbbell collections</li>
         <li><span>02</span> Boxing and combat equipment</li>

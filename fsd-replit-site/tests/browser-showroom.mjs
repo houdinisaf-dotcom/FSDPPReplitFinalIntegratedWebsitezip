@@ -143,7 +143,7 @@ try {
     await waitFor('document.querySelector("#fsd-showcase-dialog").open');
     assert.equal(await evaluate('document.querySelectorAll("dialog[open]").length'), 1);
     assert.ok(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'));
-    assert.ok(!await evaluate('/STRIDE|Shilajit|Championship Belt|Ring Corner Post|in development/i.test(document.querySelector("[data-dialog-content]").textContent)'));
+    assert.ok(!await evaluate('/STRIDE|Shilajit|Championship Belt|Ring Corner Post/i.test(document.querySelector("[data-dialog-content]").textContent)'));
     if (division === 'apparel') {
       for (let count = 0; count < 12; count++) await key('Tab');
       assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog").contains(document.activeElement)'));
