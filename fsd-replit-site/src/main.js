@@ -20,6 +20,42 @@ function header() {
   return renderNavigationHeader(currentBrandMarkup);
 }
 
+function hardwareEditorialSection() {
+  return `<section class="showroom-engineering" id="hardware-editorial" aria-labelledby="hardware-editorial-title">
+    <div class="showroom-engineering-copy">
+      <p class="section-kicker">FSD HARDWARE <span class="period">/</span> COMBAT SYSTEMS</p>
+      <h2 id="hardware-editorial-title">ENGINEERED FOR<br/>THE DEMANDS OF<br/><span>PERFORMANCE.</span></h2>
+      <p>Equipment should earn its place in training. Where product photography is not approved, the reference stays clear — not an invented product.</p>
+      <ol class="showroom-engineering-list">
+        <li><span>01</span> Strength equipment · dumbbell collections</li>
+        <li><span>02</span> Boxing and combat equipment</li>
+        <li><span>03</span> Training accessories · weighted skipping ropes</li>
+        <li><span>04</span> Recovery equipment concepts</li>
+      </ol>
+      <button class="showroom-engineering-link" type="button" data-open-hardware>EXPLORE HARDWARE <span aria-hidden="true">↗</span></button>
+    </div>
+    <figure class="showroom-engineering-media">
+      <img src="/fsd-assets/8ffe2fd45a06.webp" alt="FSD athlete in modest combat training apparel, pictured during a boxing session." loading="eager" fetchpriority="low" width="1024" height="1024"/>
+      <figcaption><span>FSD COMBAT / TRAINING CAMPAIGN</span><span>APPAREL & MOVEMENT</span></figcaption>
+    </figure>
+  </section>`;
+}
+
+function shellCampaignEditorialSection() {
+  return `<section class="showroom-shell-campaign" id="shell-campaign" aria-labelledby="shell-campaign-title">
+    <figure class="showroom-shell-campaign-media">
+      <img src="/__catalogue-preview/hooded-running-shell/media/hooded-shell-campaign" alt="Woman wearing the orange FSD Hooded Running Shell outdoors in a mountain landscape." loading="eager" fetchpriority="low" width="1672" height="941"/>
+    </figure>
+    <div class="showroom-shell-campaign-copy">
+      <p class="section-kicker">PRIVATE CAMPAIGN REVIEW <span class="period">/</span> APPAREL</p>
+      <h2 id="shell-campaign-title">FSD Hooded<br/>Running Shell</h2>
+      <p>A private review of the supplied campaign image, presented in the same FSD editorial language. This is a campaign proof only; no product options or purchase flow are available.</p>
+      <p class="showroom-shell-campaign-note">COLOUR SELECTION DEFERRED · PRICE AND SPECIFICATIONS NOT CONFIRMED · CHECKOUT DISABLED</p>
+      <a class="showroom-shell-campaign-link" href="/__catalogue-preview/hooded-running-shell/">OPEN PRIVATE CAMPAIGN <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>`;
+}
+
 document.querySelector('#app').innerHTML = `${header()}<main id="home">
   <section class="hero"><div class="hero-image"></div><div class="hero-shade"></div><div class="hero-content">
     <p class="eyebrow">THE FSD PERFORMANCE UNIVERSE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
@@ -37,6 +73,8 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
       <details class="showroom-archive" id="gallery-archive"><summary>DESIGN REFERENCE LIBRARY · ${galleryProducts.length} IMAGES</summary>${gallerySection()}</details>
     </div>
   </div>
+  ${hardwareEditorialSection()}
+  ${import.meta.env.DEV ? shellCampaignEditorialSection() : ''}
   ${featuredInnovationsSection()}
   <section class="manifesto" id="philosophy"><p class="section-kicker">THE FSD PHILOSOPHY</p>
     <h2>FITNESS. DISCIPLINE.<br/><span>PROGRESS. A STRONGER YOU.</span></h2>
@@ -132,6 +170,9 @@ mountNavigation({
 });
 initFeaturedCarousel(document.querySelector('#innovations'));
 initArchiveNavigation();
+document.querySelector('[data-open-hardware]')?.addEventListener('click', () => {
+  document.querySelector('#fsd-division-hardware')?.click();
+});
 document.querySelector('#gallery-search').addEventListener('input', event => {
   const query = event.target.value.toLowerCase().trim();
   let count = 0;
