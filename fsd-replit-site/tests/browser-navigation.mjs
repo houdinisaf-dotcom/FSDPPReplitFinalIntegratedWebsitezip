@@ -140,8 +140,16 @@ try {
   await moveTo('#fsd-mega-menu [data-nav-group="0"]');
   await moveTo('#fsd-mega-menu [data-nav-item="1"]');
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-item=\\"1\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent === "2-in-1 Combat Training Shorts & Tanks"');
+  await evaluate('window.__focusTrace = []; document.querySelector("#fsd-mega-menu").addEventListener("focusin", event => window.__focusTrace.push({ target: event.target?.outerHTML?.slice(0, 160), active: document.activeElement?.outerHTML?.slice(0, 160) }));');
   await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"2\\"]").focus({ preventScroll: true })');
-  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-item=\\"2\\"]")?.getAttribute("aria-pressed") === "true" && document.activeElement.dataset.navItem === "2"');
+  await delay(100);
+  console.log('Navigation focus debug:', await evaluate(`({
+    pressed: document.querySelector('#fsd-mega-menu [data-nav-item="2"]')?.getAttribute('aria-pressed'),
+    active: document.activeElement?.dataset?.navItem ?? null,
+    feature: document.querySelector('.fsd-feature-copy h3')?.textContent,
+    trace: window.__focusTrace,
+  })`));
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-item=\\"2\\"]")?.getAttribute("aria-pressed") === "true"');
   assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3").textContent'), 'Walkout Robes & Bomber Jackets');
   assert.equal(await evaluate('window.scrollY'), startingScrollY);
 
