@@ -542,8 +542,11 @@ export function mountNavigation({
     const replacement = root.querySelector(selector);
     if (!replacement) return;
     suppressFocusPreview = true;
-    replacement.focus({ preventScroll: true });
-    requestAnimationFrame(() => { suppressFocusPreview = false; });
+    try {
+      replacement.focus({ preventScroll: true });
+    } finally {
+      suppressFocusPreview = false;
+    }
   };
 
   const defaultItemIndex = menu => {
