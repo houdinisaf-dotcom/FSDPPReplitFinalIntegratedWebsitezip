@@ -1,0 +1,381 @@
+# FSD WEBSITE — PHASE 4
+## Signature Interactive UI & Progressive Product Catalogue Integration
+
+### PRIMARY OBJECTIVE
+
+Enhance the existing FSD Fitness & Self Defence website with signature luxury interface interactions and a structured, scalable product catalogue system.
+
+The purpose is to allow approved products, images, colourways and specifications to be added progressively without rebuilding pages or waiting for the entire collection to be finalised.
+
+Preserve all approved functionality from Phases 1, 2 and 3.
+
+Do not redesign the website or replace existing imagery, branding, navigation or product data.
+
+---
+
+## PART A — FSD SIGNATURE ANIMATIONS
+
+### 1. Premium Liquid-Metal Hero CTA
+
+Enhance the main homepage hero CTA with an elegant interactive effect.
+
+Desired appearance:
+
+- Dark obsidian button surface.
+- Subtle satin champagne metallic highlights.
+- A soft, fluid, liquid-metal movement responding to pointer position.
+- Smooth transitions when the pointer enters or leaves.
+- Gentle directional arrow movement.
+- Crisp, readable CTA text.
+
+The animation should feel sophisticated and restrained.
+
+Do not create excessive bubbling, neon effects, flashing or distracting movement.
+
+Implement a lightweight CSS or SVG-based solution where practical. Avoid expensive continuous animation loops.
+
+Provide accessible focus and reduced-motion alternatives.
+
+### 2. Announcement Banner
+
+Enhance the existing top announcement banner with:
+
+- Smooth hover and focus transitions.
+- Subtle animated text underline.
+- Gentle champagne light sweep on interaction.
+- Clear clickable behaviour only where a valid destination exists.
+- Stable layout and readable text.
+
+Do not animate the banner continuously or make it distracting.
+
+### 3. Premium Interactive Elements
+
+Extend the signature interaction language to selected:
+
+- Collection navigation controls.
+- Featured product cards.
+- Editorial CTAs.
+- Category filters.
+- Product gallery controls.
+
+Use the existing motion tokens and ambient lighting system.
+
+Avoid applying the liquid effect to every button.
+
+---
+
+## PART B — PRODUCT CATALOGUE ARCHITECTURE
+
+### 4. Centralised Product Data
+
+Audit the existing product data structure.
+
+Create or extend a centralised product schema that supports:
+
+- Product ID.
+- Product name.
+- Collection.
+- Category and subcategory.
+- Description.
+- Product specifications.
+- Price and currency.
+- Product status.
+- Available colourways.
+- Available sizes where relevant.
+- Variant SKUs where available.
+- Product hero image.
+- Product gallery.
+- Lifestyle images.
+- Colour-specific images.
+- Technical detail images.
+- SEO metadata.
+
+Preserve existing catalogue records and identifiers.
+
+Do not duplicate products or overwrite existing information.
+
+### 5. Product Status Management
+
+Support the following editorial statuses:
+
+- Draft.
+- Awaiting Images.
+- Awaiting Approval.
+- Approved.
+- Published.
+
+These are catalogue-management statuses, not automatic checkout or sales permissions.
+
+A product must not become publicly available for purchase simply because its content is approved.
+
+Preserve all existing checkout and publishing restrictions.
+
+### 6. Colour Variant System
+
+A product with multiple colours should ordinarily have one main product page with selectable colour variants.
+
+When a visitor selects a colour:
+
+- Update the selected colour name.
+- Update the main image to the corresponding approved variant image.
+- Update the gallery where variant-specific images exist.
+- Update the selected SKU where available.
+- Preserve product details that are common to all variants.
+- Clearly identify unavailable variants.
+
+Do not invent product images, SKUs, stock levels or colourways.
+
+Do not display a photograph of one colour as though it represents another.
+
+If a variant has no approved image, retain it in draft or show an explicit unavailable-image state rather than a misleading substitute.
+
+### 7. Product Image Roles
+
+Support named image slots:
+
+1. Primary product hero.
+2. Front view.
+3. Back view.
+4. Side view.
+5. Detail close-up.
+6. Lifestyle/model image.
+7. Colour lineup.
+8. Variant-specific images.
+
+Not every slot must be populated.
+
+The interface must handle incomplete galleries gracefully.
+
+### 8. Product Asset Management
+
+Provide a maintainable way to associate uploaded images with products and variants.
+
+Use the existing application's storage and asset-management architecture where possible.
+
+Requirements:
+
+- Descriptive filenames.
+- Stable asset references.
+- Image preview.
+- Image role assignment.
+- Alt-text fields.
+- Product and variant association.
+- Missing-asset indicators.
+- Image optimisation.
+- No automatic deletion or replacement of approved assets.
+
+If an administrative interface already exists, extend it safely.
+
+If no admin interface exists, propose a lightweight, protected content-management approach before implementing one.
+
+Do not create a publicly accessible product editor.
+
+---
+
+## PART C — INITIAL FSD PRODUCT STRUCTURE
+
+### 9. Prepare Records for Existing Product Concepts
+
+Review the existing catalogue and approved assets.
+
+Where appropriate, prepare draft entries for the following previously developed FSD products:
+
+- FSD Aeroforge Women's Performance Top.
+- FSD Velocity Performance Sports Hijab.
+- FSD Signature Performance Sports Bag.
+- FSD Weighted Skipping Rope.
+- FSD Performance Training Socks.
+
+Only use confirmed product details and approved imagery.
+
+For the weighted skipping rope, support the previously defined eight colourways, subject to verification against the actual product catalogue.
+
+Do not invent missing descriptions, prices, sizes, inventory or technical specifications.
+
+Do not automatically publish these entries.
+
+### 10. Correct Collection Placement
+
+Each product must appear in its appropriate FSD collection and subcategory.
+
+Preserve the existing collection hierarchy:
+
+- FSD Apparel.
+- FSD Bio-Lab.
+- FSD Hardware.
+- FSD Global.
+
+Avoid duplicate category entries and inconsistent navigation paths.
+
+If a product's exact subcategory is unclear, flag it for approval instead of guessing.
+
+---
+
+## PART D — PRODUCT PAGE EXPERIENCE
+
+### 11. Premium Product Presentation
+
+Use the Phase 2 product detail components.
+
+Each product page should support:
+
+- A prominent approved hero image.
+- Responsive image gallery.
+- Colour selectors.
+- Size selectors where relevant.
+- Product details.
+- Technical features.
+- Optional lifestyle photography.
+- Optional editorial storytelling.
+- Clear product status.
+
+Keep the design visually consistent across the catalogue.
+
+### 12. Progressive Content Completion
+
+Allow product entries to be built in stages.
+
+Example workflow:
+
+1. Create draft product record.
+2. Assign collection and category.
+3. Enter confirmed product details.
+4. Upload approved hero image.
+5. Add colour variants.
+6. Upload variant images as they become available.
+7. Add technical and lifestyle photography.
+8. Review product-page appearance.
+9. Mark content as approved.
+10. Publish only after explicit authorisation.
+
+Missing optional images must not break the layout.
+
+---
+
+## PART E — PERFORMANCE, SEO AND ACCESSIBILITY
+
+### 13. Image Performance
+
+Implement:
+
+- Responsive image delivery.
+- Appropriate image compression.
+- Lazy loading for below-the-fold images.
+- Stable aspect ratios.
+- Optimised hero-image loading.
+- Descriptive alt text.
+- Prevention of layout shifts.
+
+### 14. Product SEO
+
+Support unique:
+
+- Product page titles.
+- Meta descriptions.
+- H1 headings.
+- Clean URLs.
+- Product descriptions.
+- Image alt text.
+- Internal collection links.
+
+Avoid duplicated descriptions and keyword stuffing.
+
+Only include product structured data when its information is accurate and applicable.
+
+### 15. Accessibility
+
+Ensure:
+
+- Keyboard-operable colour selectors.
+- Accessible image galleries.
+- Clear focus states.
+- Reduced-motion support.
+- Sufficient contrast.
+- Touch-friendly controls.
+- Descriptive labels.
+
+---
+
+## PART F — IMPLEMENTATION SAFEGUARDS
+
+Do not:
+
+- Rebuild the website.
+- Change the FSD master logo.
+- Replace existing approved images.
+- Remove Phases 1–3.
+- Modify confirmed product prices.
+- Invent product specifications.
+- Activate checkout.
+- Enable payments.
+- Publish draft products.
+- Deploy the website without approval.
+- Add unnecessary heavy animation libraries.
+- Create a public-facing administration interface.
+
+---
+
+## IMPLEMENTATION ORDER
+
+### Stage 1 — Audit
+
+Inspect the existing product catalogue, routing, image storage and Phase 2 product components.
+
+Identify reusable functionality.
+
+### Stage 2 — Signature UI
+
+Implement the hero CTA liquid-metal interaction and refined announcement banner.
+
+Verify desktop, mobile and reduced-motion behaviour.
+
+### Stage 3 — Catalogue Foundation
+
+Implement or extend the central product schema, variant handling and image-role assignments.
+
+Migrate existing records safely.
+
+### Stage 4 — Demonstration Product
+
+Select one approved existing product and demonstrate the complete workflow:
+
+- Product record.
+- Collection placement.
+- Hero image.
+- Gallery.
+- Colour options where applicable.
+- Product details.
+- Draft/approval status.
+
+Do not publish it automatically.
+
+### Stage 5 — Progressive Product Integration
+
+Prepare the remaining approved products for incremental addition.
+
+### Stage 6 — Quality Assurance
+
+Test product routes, images, variants, responsive layouts, performance and all existing site functionality.
+
+### Stage 7 — Report
+
+Provide:
+
+- Files modified.
+- Components added.
+- Catalogue structure.
+- Image upload workflow.
+- Product records prepared.
+- Missing assets.
+- Items awaiting approval.
+- Any implementation risks.
+
+## FINAL DESIGN STANDARD
+
+FSD should feel like a luxury global performance brand with a sophisticated, highly interactive digital storefront.
+
+The product catalogue must be easy to maintain, expandable and visually consistent.
+
+Signature animations should enhance the brand experience without compromising usability or performance.
+
+**The priority is to create a website that can grow product by product, without repeated redesigns or unnecessary development work.**
