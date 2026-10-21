@@ -1,0 +1,513 @@
+# FSD WEBSITE — PHASE 3
+## FSD Bio-Lab: Interactive Performance Intelligence & Luxury Digital Dashboard
+
+### PRIMARY OBJECTIVE
+
+Enhance the existing FSD Fitness & Self Defence website by developing a premium, interactive FSD Bio-Lab experience.
+
+FSD Bio-Lab will represent the technology and performance intelligence division of the brand, potentially encompassing smartwear, wearable technology, athletic monitoring, training analytics and recovery insights.
+
+The objective is to create a sophisticated, visually compelling digital experience that establishes FSD as a forward-thinking luxury performance brand.
+
+**IMPORTANT: This is an enhancement to the existing website, not a redesign or rebuild.**
+
+Preserve all approved work from Phase 1 (motion and ambient UI) and Phase 2 (cinematic product storytelling and premium e-commerce interactions).
+
+Do not introduce live health monitoring, personal-data collection, account registration, device connections or paid features without explicit approval.
+
+Initially, create a fully functional, interactive **demonstration experience using clearly labelled simulated data**.
+
+---
+
+# 1. FSD BIO-LAB EXPERIENCE
+
+Enhance the existing FSD Bio-Lab section with a premium technology-oriented landing experience.
+
+## Design language
+
+Maintain the established FSD identity:
+
+- Obsidian black.
+- Deep graphite.
+- Satin champagne gold.
+- Restrained white typography.
+- Soft ambient lighting.
+- Minimal, precise layouts.
+- Cinematic product imagery.
+
+Introduce subtle visual distinctions for Bio-Lab without creating a separate, conflicting brand identity.
+
+The experience should communicate:
+
+**PRECISION. INTELLIGENCE. PERFORMANCE.**
+
+Suggested introductory copy:
+
+"FSD BIO-LAB"
+
+"INTELLIGENCE IN MOTION."
+
+"Explore a new dimension of performance, where advanced technology, purposeful design and human potential converge."
+
+Include a clearly labelled CTA:
+
+"EXPLORE THE EXPERIENCE"
+
+This should open the Bio-Lab demonstration dashboard without requiring registration.
+
+Avoid unverified claims that FSD products currently measure or monitor particular biometrics.
+
+---
+
+# 2. INTERACTIVE PERFORMANCE DASHBOARD
+
+Create a reusable, responsive dashboard component.
+
+The dashboard should initially operate in DEMO MODE.
+
+Display a clearly visible but tasteful label:
+
+"BIO-LAB DEMO — SIMULATED DATA"
+
+## Proposed dashboard sections
+
+### A. Performance Overview
+
+Create premium metric cards for:
+
+- Training duration.
+- Session count.
+- Activity trends.
+- Training consistency.
+- Performance progress.
+
+Each card should feature:
+
+- Clean typography.
+- Subtle champagne accent.
+- Smooth entrance animation.
+- Appropriate iconography.
+- Clear measurement units.
+- Responsive layout.
+
+Use internally consistent simulated values.
+
+### B. Training Analytics
+
+Introduce interactive charts that demonstrate:
+
+- Weekly training activity.
+- Training duration over time.
+- Session intensity trends.
+- Training frequency.
+
+Allow visitors to switch between:
+
+- 7 days.
+- 30 days.
+- 90 days.
+
+Changing the selected period should update the displayed chart and summary metrics using corresponding simulated datasets.
+
+Do not simply change the period label while leaving the data unchanged.
+
+### C. Recovery Insights
+
+Create an illustrative recovery panel showing:
+
+- Recovery status.
+- Rest periods.
+- Training load.
+- Example recovery trends.
+
+Use neutral, informative terminology.
+
+Any recovery score must be clearly labelled illustrative and not presented as a validated medical or scientific assessment.
+
+Do not provide medical diagnoses or treatment recommendations.
+
+### D. Wearable Technology Overview
+
+Create a conceptual interface for future FSD smartwear and connected devices.
+
+Possible elements:
+
+- Device illustration.
+- Connection status.
+- Battery indicator.
+- Example sensor categories.
+- Device information panel.
+
+Use "Concept" or "Coming Soon" labels where appropriate.
+
+Do not claim an actual device is connected.
+
+Do not invent commercial products, specifications or release dates.
+
+---
+
+# 3. LUXURY DATA VISUALISATIONS
+
+Develop elegant, interactive data displays.
+
+## Visual components
+
+- Smooth line charts.
+- Minimal bar charts.
+- Circular progress indicators.
+- Compact performance summaries.
+- Interactive tooltips.
+- Responsive data cards.
+- Subtle animated values.
+
+## Visual styling
+
+- Dark graphite chart surfaces.
+- Champagne-gold primary highlights.
+- Soft neutral secondary data colours.
+- Minimal grid lines.
+- Refined typography.
+- Generous spacing.
+
+Charts should look like premium analytical instruments, not a gaming dashboard.
+
+## Animation
+
+Use controlled motion:
+
+- Charts reveal smoothly on first appearance.
+- Progress indicators animate once when entering view.
+- Data transitions smoothly when a period changes.
+- Tooltips appear immediately and elegantly.
+- Avoid constantly moving graphs or distracting effects.
+
+Use the existing Phase 1 motion tokens.
+
+---
+
+# 4. INTERACTIVE ATHLETE PROFILE — DEMO
+
+Create an optional demonstration athlete profile.
+
+The profile should be fictional and clearly identified as sample data.
+
+Suggested components:
+
+- Athlete profile summary.
+- Training objective.
+- Weekly activity.
+- Session history.
+- Performance trends.
+- Illustrative progress indicators.
+
+Allow users to interact with the demonstration without creating an account.
+
+Do not collect personal health information.
+
+Do not imply that demo data belongs to a real athlete.
+
+Use the athlete profile to demonstrate how a future FSD ecosystem might operate.
+
+---
+
+# 5. PREMIUM DASHBOARD NAVIGATION
+
+Build a refined dashboard navigation system.
+
+Suggested tabs:
+
+- Overview
+- Training
+- Recovery
+- Devices
+- Insights
+
+## Interaction requirements
+
+- Smooth transitions between sections.
+- Clearly highlighted active tab.
+- Subtle champagne backlighting.
+- Responsive layouts.
+- Keyboard accessibility.
+- Consistent navigation behaviour.
+- Clear mobile navigation.
+
+Preserve browser history and deep linking where appropriate.
+
+Do not interfere with the website's existing primary navigation.
+
+The Bio-Lab dashboard should feel like a distinct experience within the FSD website, not a replacement for the storefront.
+
+---
+
+# 6. ANIMATED PERFORMANCE COMPONENTS
+
+Create reusable components for:
+
+- Metric cards.
+- Circular progress rings.
+- Interactive charts.
+- Status indicators.
+- Data tooltips.
+- Device status panels.
+- Activity summaries.
+- Insight cards.
+
+## Motion guidelines
+
+- Subtle opacity and transform animations.
+- Smooth numerical transitions where useful.
+- Restrained champagne lighting.
+- No flashing effects.
+- No constant pulsating animations.
+- No excessive 3D movement.
+
+Animation must communicate state changes or improve comprehension.
+
+Respect reduced-motion settings.
+
+---
+
+# 7. FSD SMARTWEAR PRODUCT PRESENTATION
+
+Enhance the Bio-Lab product discovery experience for future approved smartwear and wearable products.
+
+Potential presentation elements:
+
+- Premium product photography.
+- Technical feature summaries.
+- Interactive feature explanations.
+- Device compatibility information.
+- Product specifications.
+- Product availability status.
+
+Use only existing approved product images, names and specifications.
+
+If a product is conceptual, clearly label it as such.
+
+Do not invent technical capabilities, certifications, biometric accuracy claims or integrations.
+
+Maintain consistency with the Phase 2 product-detail experience.
+
+---
+
+# 8. FUTURE CONNECTIVITY ARCHITECTURE
+
+Prepare the dashboard's component architecture so it could later support authorised integrations with:
+
+- FSD wearable devices.
+- Approved fitness data services.
+- Training applications.
+- User accounts.
+- Secure performance history.
+
+However, do not implement external integrations at this stage.
+
+## Architectural requirements
+
+Separate the following concerns:
+
+1. Presentation components.
+2. Dashboard state management.
+3. Demonstration data.
+4. Data formatting and validation.
+5. Future integration interfaces.
+
+Use a clearly isolated demo data provider.
+
+Avoid hard-coding simulated values directly throughout the UI.
+
+This will make it easier to replace demo data with authorised real data later.
+
+Do not create unnecessary databases or backend services for this phase.
+
+---
+
+# 9. PRIVACY, SECURITY AND DATA INTEGRITY
+
+This phase must not introduce unapproved collection of sensitive information.
+
+Requirements:
+
+- No personal health-data collection.
+- No live biometric monitoring.
+- No wearable pairing.
+- No authentication or registration changes.
+- No hidden analytics capturing health-related values.
+- No claims that simulated metrics are real.
+- No external data transmission from the demo dashboard.
+
+If future account or health-data features are proposed, document them separately for approval.
+
+Any future live integration must be designed with appropriate consent, privacy and security controls.
+
+---
+
+# 10. PERFORMANCE OPTIMISATION
+
+The dashboard must remain fast and responsive.
+
+Requirements:
+
+- Lazy-load the Bio-Lab dashboard where appropriate.
+- Reuse existing dependencies where possible.
+- Avoid unnecessary charting libraries.
+- Prevent excessive re-rendering.
+- Keep animations lightweight.
+- Avoid layout shifts.
+- Support mobile and tablet screens.
+- Ensure charts remain legible on smaller displays.
+- Respect prefers-reduced-motion.
+- Provide accessible text equivalents for important chart data.
+
+Do not compromise the main storefront's performance.
+
+---
+
+# 11. PREMIUM MOBILE EXPERIENCE
+
+Design the dashboard mobile-first where appropriate.
+
+On mobile:
+
+- Stack metric cards logically.
+- Allow charts to resize without distortion.
+- Keep navigation accessible.
+- Avoid tiny labels and cramped data points.
+- Maintain comfortable touch targets.
+- Prevent horizontal page overflow.
+- Use collapsible sections only when beneficial.
+- Keep dashboard loading lightweight.
+
+The mobile experience must feel intentional, not simply a compressed desktop dashboard.
+
+---
+
+# 12. EXISTING WEBSITE PRESERVATION
+
+Do not:
+
+- Rebuild the website.
+- Replace the homepage.
+- Change the FSD master logo.
+- Alter the four primary collection pillars.
+- Remove product imagery.
+- Modify catalogue data.
+- Change prices or inventory.
+- Replace existing navigation.
+- Remove Phase 1 animations.
+- Override Phase 2 product interactions.
+- Activate checkout or payments.
+- Enable production publishing.
+- Create real user accounts without approval.
+- Connect external health services.
+- Invent live device connectivity.
+- Introduce misleading health claims.
+
+All Phase 3 features must integrate safely with the existing website.
+
+---
+
+# 13. IMPLEMENTATION WORKFLOW
+
+## Stage 1 — Audit and Architecture
+
+Inspect the existing Replit project.
+
+Identify:
+
+- Current Bio-Lab page structure.
+- Routing system.
+- Existing UI components.
+- Phase 1 motion utilities.
+- Phase 2 product components.
+- Current charting or data visualisation dependencies.
+- Existing responsive design patterns.
+
+Present a concise implementation plan before making substantial changes.
+
+## Stage 2 — Bio-Lab Landing Experience
+
+Enhance the existing Bio-Lab landing page.
+
+Introduce the premium introduction, relevant navigation and demo dashboard entry point.
+
+Preserve existing Bio-Lab content and product listings.
+
+## Stage 3 — Dashboard Foundation
+
+Implement:
+
+- Responsive dashboard shell.
+- Navigation tabs.
+- Metric cards.
+- Demo data provider.
+- Performance overview.
+
+## Stage 4 — Interactive Analytics
+
+Implement:
+
+- Training charts.
+- Period selectors.
+- Recovery demonstration.
+- Interactive tooltips.
+- Animated data transitions.
+
+Ensure controls update the corresponding values correctly.
+
+## Stage 5 — Wearable Concept Experience
+
+Create the conceptual device overview using clearly labelled simulated or conceptual information.
+
+Do not implement live connectivity.
+
+## Stage 6 — Testing and Refinement
+
+Test:
+
+- Desktop and mobile responsiveness.
+- Chart accuracy against demo datasets.
+- Navigation.
+- Keyboard accessibility.
+- Reduced-motion support.
+- Loading performance.
+- Existing storefront functionality.
+- Checkout restrictions.
+- Preservation of Phases 1 and 2.
+
+## Stage 7 — Implementation Report
+
+Provide:
+
+- Components created.
+- Existing files modified.
+- New dependencies, if any.
+- Demonstration data structure.
+- Performance considerations.
+- Known limitations.
+- Features reserved for future approval.
+
+---
+
+# 14. FINAL EXPERIENCE STANDARD
+
+The finished FSD Bio-Lab experience should communicate:
+
+**PERFORMANCE IS MEASURABLE. PROGRESS IS PERSONAL.**
+
+It should feel like a premium technology platform developed for a world-class athletic performance brand.
+
+Visual references:
+
+- Apple's precision and clarity.
+- Elite sports science dashboards.
+- Luxury automotive digital instrumentation.
+- Premium wearable technology interfaces.
+- FSD's established black-and-champagne identity.
+
+Avoid gaming aesthetics, neon cyberpunk effects, excessive animations and generic dashboard templates.
+
+The experience must be visually impressive but remain intuitive, credible and purposeful.
+
+**Build the foundation for a future FSD performance intelligence ecosystem while keeping the existing website stable, premium and commercially focused.**

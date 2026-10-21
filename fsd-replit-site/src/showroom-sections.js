@@ -1,4 +1,5 @@
 import { products, safe, priceInfo } from './catalogue-data.js';
+import { renderMappedImageChoices } from './product-card-media.js';
 
 export const featuredProducts = products.filter(product => [43, 69, 61, 59].includes(product.id));
 
@@ -16,6 +17,7 @@ export function featuredInnovationsSection() {
           <div class="showroom-feature-media">${image
             ? `<img src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept" loading="lazy" width="627" height="1003"/>`
             : `<div class="showroom-feature-placeholder"><span>FSD</span><small>DESIGN CONCEPT</small></div>`}</div>
+          ${renderMappedImageChoices(product.images)}
           <div class="showroom-feature-copy"><p class="section-kicker">${safe(product.category)}</p>
           <h3>${safe(product.name)}</h3><p>${safe(product.priceBasis || product.coverage || 'Pre-launch record. Specifications and availability are subject to confirmation.')}</p>
           <span class="showroom-feature-price">${safe(price.label)} · ${safe(price.value)}</span>

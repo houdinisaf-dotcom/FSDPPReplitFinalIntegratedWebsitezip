@@ -188,7 +188,10 @@ for (const scenario of scenarios.filter(scenario => !requested.length || request
     assert.equal(await evaluate('document.querySelectorAll("dialog[open]").length'), 1);
     assert.ok(await evaluate('document.querySelector("#product-title").textContent.includes("Velocity")'));
     await click('#close-dialog');
-    await waitFor('!document.querySelector("#product-dialog").open && !document.documentElement.classList.contains("fsd-modal-open")');
+    await waitFor('!document.querySelector("#product-dialog").open && document.querySelector("#fsd-showcase-dialog").open');
+    assert.equal(await evaluate('document.activeElement.dataset.productId'), '43');
+    await key('Escape');
+    await waitFor('!document.querySelector("#fsd-showcase-dialog").open && !document.documentElement.classList.contains("fsd-modal-open")');
     // Explicit Explore remains the only filter-to-catalogue navigation.
     await click('[data-division="apparel"]');
     await click('[data-group-index="1"]');

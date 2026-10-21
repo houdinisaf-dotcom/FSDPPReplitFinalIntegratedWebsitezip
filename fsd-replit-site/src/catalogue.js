@@ -1,4 +1,6 @@
 import { categories, products, filterProducts, priceInfo, safe } from './catalogue-data.js';
+import { initProductExperience, showProductExperience, closeProductExperience } from './product-experience.js';
+import { initProductCardMedia, renderMappedImageChoices } from './product-card-media.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -20,6 +22,7 @@ function card(product) {
     <div class="product-image">${image
       ? `<img loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept"/>`
       : imagePlaceholder(product)}<span class="chip">PRE-LAUNCH</span></div>
+    ${renderMappedImageChoices(product.images)}
     <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>
     <h3>${safe(product.name)}</h3>
     <p class="catalogue-colourways">${safe(product.colourways || 'Colourways to be confirmed')}</p>
@@ -93,37 +96,35 @@ function renderResults() {
     : '';
 }
 
-export function showProduct(id) {
-  const p = products.find(product => product.id === id);
-  if (!p) return;
-  const price = priceInfo(p);
-  const detail = (label, value) => value ? `<dt>${label}</dt><dd>${safe(value)}</dd>` : '';
-  document.querySelector('#dialog-body').innerHTML = `<div class="catalogue-dialog-images">${p.images.length
-    ? p.images.map(image => `<figure><img src="${safe(image.src)}" alt="${safe(p.name)} — ${safe(image.label)}; design concept"/><figcaption>${safe(image.label)}</figcaption></figure>`).join('')
-    : imagePlaceholder(p)}</div><div class="dialog-copy">
-    <p class="section-kicker">${safe(p.category)} / PRE-LAUNCH</p><h2 id="product-title">${safe(p.name)}</h2>
-    <dl class="catalogue-details">
-      ${detail('Colourways', p.colourways || 'To be confirmed')}
-      ${detail('Audience', p.audience)}
-      ${detail('Collection line', p.collection)}
-      ${detail('Also shown in', p.alsoShowIn.join('; '))}
-      ${detail(p.aliasStatus ? `Also appears as · ${safe(p.aliasStatus)}` : 'Also appears as · identity to confirm', p.alias)}
-      ${detail('Coverage', p.coverage)}
-      ${detail('Development specifications', p.specifications)}
-      ${detail('Specification status', p.specificationStatus)}
-      ${detail('Price basis', p.priceBasis)}
-      ${detail('Image status in master list', p.imageStatus)}
-      ${detail('Development notes', p.notes)}
-    </dl><div class="dialog-price"><span>${price.label}</span><strong>${price.value}</strong></div>
-    <small>This is a development record, not a product available to purchase. Specifications and launch availability are not confirmed.</small>
-    </div>`;
-  document.documentElement?.classList?.add('fsd-modal-open');
-  document.querySelector('#product-dialog').showModal();
+export function showProduct(id, options = {}) {
+  showProductExperience(id, options);
 }
 
 export function initCatalogue() {
   const category = document.querySelector('#catalogue-category');
   const search = document.querySelector('#search');
+  initProductExperience({
+    products,
+    getCatalogueState: () => ({
+      category: activeCategory, query, page,
+      archiveOpen: document.querySelector('#catalogue-archive')?.open ?? true,
+      scrollY: typeof window === 'undefined' ? 0 : window.scrollY,
+    }),
+  });
+  initProductCardMedia(document);
+  document.addEventListener('fsd:restore-catalogue-state', event => {
+    const state = event.detail;
+    if (!state) return;
+    activeCategory = categories.includes(state.category) ? state.category : 'All';
+    query = String(state.query ?? '');
+    page = Math.max(1, Number(state.page) || 1);
+    category.value = activeCategory;
+    search.value = query;
+    const archive = document.querySelector('#catalogue-archive');
+    if (archive && typeof state.archiveOpen === 'boolean') archive.open = state.archiveOpen;
+    renderResults();
+    if (Number.isFinite(state.scrollY)) window.scrollTo({ top: state.scrollY, behavior: 'instant' });
+  });
   category.addEventListener('change', () => {
     activeCategory = category.value;
     page = 1;
@@ -136,7 +137,7 @@ export function initCatalogue() {
   });
   document.addEventListener('click', event => {
     const product = event.target.closest('[data-product]');
-    if (product) showProduct(Number(product.dataset.product));
+    if (product) showProduct(Number(product.dataset.product), { opener: product });
     const categoryLink = event.target.closest('[data-category-link]');
     if (categoryLink) {
       activeCategory = categoryLink.dataset.categoryLink;
@@ -161,7 +162,9 @@ export function initCatalogue() {
       search.focus();
     }
   });
-  document.querySelector('#close-dialog').addEventListener('click', () => document.querySelector('#product-dialog').close());
-  document.querySelector('#product-dialog').addEventListener('close', () => document.documentElement?.classList?.remove('fsd-modal-open'));
+  document.querySelector('#close-dialog').addEventListener('click', () => closeProductExperience());
+  document.querySelector('#product-dialog').addEventListener('close', () => {
+    if (!document.querySelector('dialog[open]')) document.documentElement?.classList?.remove('fsd-modal-open');
+  });
   renderResults();
 }

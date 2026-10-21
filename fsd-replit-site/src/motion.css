@@ -158,3 +158,76 @@
     transition-duration: .01ms !important;
   }
 }
+
+/* Product-card polish: restrained depth, factual mapped-image variants, visible actions. */
+.fsd-product-card,
+.showroom-feature-card,
+.product-card {
+  transition: transform var(--fsd-motion-micro) var(--fsd-motion-ease),
+    border-color var(--fsd-motion-micro) ease,
+    box-shadow var(--fsd-motion-micro) ease;
+}
+
+.fsd-product-card .fsd-product-media img,
+.showroom-feature-card .showroom-feature-media img,
+.product-card .product-image img {
+  transition: transform var(--fsd-motion-panel) var(--fsd-motion-ease);
+}
+
+.fsd-product-card:focus-within,
+.showroom-feature-card:focus-within,
+.product-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(201, 166, 107, .34);
+  box-shadow: inset 0 0 0 1px rgba(201, 166, 107, .08),
+    0 5px 16px rgba(0, 0, 0, .14);
+}
+
+.fsd-product-card:focus-within .fsd-product-media img,
+.showroom-feature-card:focus-within .showroom-feature-media img,
+.product-card:focus-within .product-image img {
+  transform: scale(1.03);
+}
+
+.product-card .text-link,
+.showroom-feature-card .text-link,
+.fsd-product-card .fsd-product-link {
+  opacity: 1;
+  transition: opacity var(--fsd-motion-micro) ease,
+    transform var(--fsd-motion-micro) var(--fsd-motion-ease),
+    color var(--fsd-motion-micro) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fsd-product-card:hover,
+  .showroom-feature-card:hover,
+  .product-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(201, 166, 107, .3);
+    box-shadow: inset 0 0 0 1px rgba(201, 166, 107, .07),
+      0 5px 16px rgba(0, 0, 0, .13);
+  }
+
+  .fsd-product-card:hover .fsd-product-media img,
+  .showroom-feature-card:hover .showroom-feature-media img,
+  .product-card:hover .product-image img {
+    transform: scale(1.03);
+  }
+
+  .product-card:hover .text-link,
+  .showroom-feature-card:hover .text-link,
+  .fsd-product-card:hover .fsd-product-link {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-product-card,
+  .showroom-feature-card,
+  .product-card,
+  .fsd-product-card img,
+  .showroom-feature-card img,
+  .product-card img {
+    transform: none !important;
+  }
+}

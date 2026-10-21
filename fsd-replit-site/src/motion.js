@@ -7,8 +7,12 @@ const DEFAULT_TOKENS = Object.freeze({
 let motionTokens = DEFAULT_TOKENS;
 const activeAnimations = new Map();
 let finishPanelExit = null;
+const editorialObservers = new Set();
 
-const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+const reducedMotion = () => {
+  try { return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false; }
+  catch { return false; }
+};
 const canAnimate = () =>
   typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function' && !reducedMotion();
 
@@ -42,6 +46,45 @@ function cancelAnimations(kind) {
   });
 }
 
+export function cancelMotion(kind) {
+  cancelAnimations(kind);
+  if (!kind || kind === 'product-gallery' || (Array.isArray(kind) && kind.includes('product-gallery'))) {
+    editorialObservers.forEach(observer => observer.disconnect());
+    editorialObservers.clear();
+  }
+}
+
+export function animateWithTokens(element, keyframes, kind = 'product-gallery') {
+  return animate(element, keyframes, motionTokens.micro * 0.75, 0, kind);
+}
+
+export function revealEditorial(element) {
+  if (!element) return;
+  try { if (!canAnimate()) return; } catch { return; }
+  const reveal = () => animate(element, [
+    { opacity: 0.84, transform: 'translateY(8px)' },
+    { opacity: 1, transform: 'translateY(0)' },
+  ], motionTokens.reveal * 0.78, 0, 'product-gallery');
+  if (typeof IntersectionObserver !== 'function') {
+    reveal();
+    return;
+  }
+  try {
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      observer.disconnect();
+      editorialObservers.delete(observer);
+      reveal();
+    }, { threshold: 0.08 });
+    editorialObservers.add(observer);
+    observer.observe(element);
+  } catch {
+    editorialObservers.forEach(observer => observer.disconnect());
+    editorialObservers.clear();
+    reveal();
+  }
+}
+
 const animate = (element, keyframes, duration, delay = 0, kind = 'reveal') => {
   if (!element || !canAnimate()) return null;
   try {
@@ -53,8 +96,13 @@ const animate = (element, keyframes, duration, delay = 0, kind = 'reveal') => {
     });
     activeAnimations.set(animation, kind);
     const release = () => activeAnimations.delete(animation);
-    animation.addEventListener?.('finish', release, { once: true });
-    animation.addEventListener?.('cancel', release, { once: true });
+    if (animation.addEventListener) {
+      animation.addEventListener('finish', release, { once: true });
+      animation.addEventListener('cancel', release, { once: true });
+    } else {
+      animation.onfinish = release;
+      animation.oncancel = release;
+    }
     return animation;
   } catch {
     return null;

@@ -6,6 +6,7 @@ import { renderCollectionShowcase, mountCollectionShowcase } from './collection-
 import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initArchiveNavigation } from './showroom-sections.js';
 import './style.css';
 import './catalogue.css';
+import './product-experience.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
 import './motion.css';
@@ -57,14 +58,14 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
       <nav class="footer-links" aria-label="Corporate navigation"><a href="#philosophy">FSD STORY</a><a href="#fsd-division-global">PROPOSED FLAGSHIPS & PROMOTIONS</a></nav>
       <small class="footer-pending">Investor information and legal pages require approved content before launch.</small></div>
     <a href="#home">BACK TO TOP ↑</a></footer>
-  <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
+  <dialog id="product-dialog" aria-labelledby="product-title"><div class="product-dialog-toolbar"><button id="close-dialog" aria-label="Close product details">✕</button></div><div id="dialog-body"></div></dialog>`;
 
 initCatalogue();
 mountCollectionShowcase({
   root: document.querySelector('#collections'),
   divisions: collectionDivisions,
   products,
-  onProductSelect: showProduct,
+  onProductSelect: (id, context) => showProduct(id, { context }),
   onExploreCollection(group) {
     document.querySelector('#catalogue-archive').open = true;
     const select = document.querySelector('#catalogue-category');

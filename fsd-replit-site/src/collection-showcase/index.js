@@ -1,4 +1,5 @@
 import { priceInfo } from '../catalogue-data.js';
+import { renderMappedImageChoices } from '../product-card-media.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
@@ -89,7 +90,7 @@ function productCard(product) {
   const description = product.coverage || product.priceBasis || product.specificationStatus ||
     (product.colourways ? `Colourways: ${product.colourways}` : 'Specifications and availability are not confirmed.');
   const media = image
-    ? `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>`
+    ? `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>${renderMappedImageChoices(product.images)}`
     : `<div class="fsd-product-media fsd-product-media--placeholder" aria-hidden="true"><span class="fsd-placeholder-code">FSD<br/>/ /</span><span>${escapeHTML(category)}</span></div>`;
   return `<article class="fsd-product-card">
     ${media}
@@ -188,7 +189,7 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     section.dispatchEvent(new CustomEvent('fsd:dialog-render', { bubbles: true }));
   };
 
-  const open = (division, opener) => {
+  const open = (division, opener, restore = null) => {
     if (!division || closePending) return;
     if (returnFocus && returnFocus !== opener) {
       returnFocus.setAttribute('aria-expanded', 'false');
@@ -196,8 +197,8 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     }
     afterClose = null;
     activeDivision = division;
-    activeGroupIndex = 0;
-    activeSubcategoryIndex = -1;
+    activeGroupIndex = restore ? Math.max(0, Math.min(division.groups.length - 1, Number(restore.groupIndex) || 0)) : 0;
+    activeSubcategoryIndex = restore ? Number(restore.subcategoryIndex ?? -1) : -1;
     returnFocus = opener;
     returnFocus?.setAttribute('aria-expanded', 'true');
     returnFocus?.classList.add('is-selected');
@@ -207,6 +208,7 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     section.dispatchEvent(new CustomEvent('fsd:dialog-open', { bubbles: true }));
     const closeButton = dialog.querySelector('[data-close-dialog]');
     closeButton?.focus({ preventScroll: true });
+    if (restore && Number.isFinite(Number(restore.scrollTop))) content.scrollTop = Number(restore.scrollTop);
   };
 
   const requestClose = () => {
@@ -247,7 +249,14 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     if (productButton && dialog.contains(productButton)) {
       const selectedProduct = safeProducts.find(product => String(product.id) === productButton.dataset.productId);
       if (!selectedProduct) return;
-      afterClose = () => onProductSelect(selectedProduct.id);
+       const panelContext = {
+         divisionId: activeDivision.id,
+         groupIndex: activeGroupIndex,
+         subcategoryIndex: activeSubcategoryIndex,
+         scrollTop: content.scrollTop,
+         productId: selectedProduct.id,
+       };
+       afterClose = () => onProductSelect(selectedProduct.id, panelContext);
       requestClose();
       return;
     }
@@ -295,6 +304,29 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
   dialog.addEventListener('cancel', onDialogCancel);
   dialog.addEventListener('close', onDialogClose);
   dialog.addEventListener('keydown', onKeyDown);
+  const onRestoreProductContext = event => {
+    const restore = event.detail;
+    if (!restore?.divisionId) return;
+    const division = safeDivisions.find(item => item.id === restore.divisionId);
+    const divisionOpener = [...section.querySelectorAll('[data-division]')]
+      .find(item => item.dataset.division === restore.divisionId);
+    if (!division || !divisionOpener) return;
+    closePending = false;
+    open(division, divisionOpener, restore);
+    if (restore.productId !== undefined) {
+      const productAction = content.querySelector(`[data-product-id="${restore.productId}"]`);
+      productAction?.focus({ preventScroll: true });
+    }
+  };
+  document.addEventListener('fsd:restore-collection-context', onRestoreProductContext);
+  const onProductRouteHandoff = event => {
+    const openProduct = event.detail?.openProduct;
+    if (typeof openProduct !== 'function' || !dialog.open) return;
+    event.preventDefault();
+    afterClose = openProduct;
+    if (!closePending) requestClose();
+  };
+  document.addEventListener('fsd:product-route-handoff', onProductRouteHandoff);
 
   return () => {
     section.removeEventListener('click', onClick);
@@ -302,6 +334,8 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     dialog.removeEventListener('cancel', onDialogCancel);
     dialog.removeEventListener('close', onDialogClose);
     dialog.removeEventListener('keydown', onKeyDown);
+    document.removeEventListener('fsd:restore-collection-context', onRestoreProductContext);
+    document.removeEventListener('fsd:product-route-handoff', onProductRouteHandoff);
     if (dialog.open) {
       page.classList.remove('fsd-modal-open');
       dialog.close();

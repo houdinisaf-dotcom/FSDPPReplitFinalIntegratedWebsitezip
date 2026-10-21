@@ -21,6 +21,12 @@ Phase 1 authorizes motion and ambient-interaction enhancements to the existing w
 
 **How to apply:** Treat authorization for this motion work separately from proof approval. Existing product content, pricing, logos, checkout status and deployment settings remain protected.
 
+Phase 2 authorizes product-interaction enhancements within the existing architecture and selective flagship storytelling, not a site redesign or replacement of floating navigation. Storytelling and hotspots must use approved imagery and confirmed catalogue or supplied specifications; missing size, stock or feature information must not be invented.
+
+**Why:** The user explicitly requires factual product presentation and preservation of checkout restrictions and Phase 1 enhancements.
+
+**How to apply:** Keep product records, descriptions, prices, source imagery and branding intact. Use only eligible approved product mappings, keep unsupported features awaiting approval and leave purchasing disabled.
+
 The homepage should combine a dark, cinematic, powerful hero with sophisticated editorial composition and generous whitespace. Obsidian black, graphite and champagne gold are primary; porcelain is selective contrast, not the dominant background. Apparel should feel like luxury fashion campaigns, while Bio-Lab™ and Hardware retain performance and engineering credibility.
 
 **Why:** The user explicitly requested luxury fashion-house presentation with authentic athletic performance and technological innovation, rather than a predominantly light website.

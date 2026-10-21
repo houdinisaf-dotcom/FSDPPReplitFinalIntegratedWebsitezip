@@ -104,7 +104,10 @@ try {
   assert.equal(await evaluate('document.querySelectorAll("dialog[open]").length'), 1);
   assert.ok(await evaluate('document.querySelector("#product-title").textContent.includes("Velocity")'));
   await click('#close-dialog');
-  await waitFor('!document.querySelector("#product-dialog").open && !document.documentElement.classList.contains("fsd-modal-open")');
+  await waitFor('!document.querySelector("#product-dialog").open && document.querySelector("#fsd-showcase-dialog").open');
+  assert.equal(await evaluate('document.activeElement.dataset.productId'), '43');
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog").open && !document.documentElement.classList.contains("fsd-modal-open")');
   assert.equal(await evaluate('document.activeElement.dataset.division'), 'apparel');
 
   await click('[data-division="hardware"]');
