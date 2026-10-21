@@ -9,9 +9,9 @@ FSD’s website direction is “THE HOUSE OF PERFORMANCE,” with the philosophy
 
 **How to apply:** Use the existing FSD photography and approved shield-led asset in isolated proposals. Do not generate substitute product imagery, redesign branding, rename products, overwrite originals or rebuild the site from scratch.
 
-After reviewing the two initial directions, the user chose the editorial homepage and header-attached navigation for further refinement, not implementation. They require refined desktop and mobile homepage and navigation proofs before approving changes to the existing website. Category selection must reveal subcategories without scrolling or navigation; navigation requires a deliberate destination choice.
+The user approved the refined Homepage B+ and Navigation A+ desktop and mobile proofs only, explicitly keeping the existing website unchanged. This is design approval, not permission to implement. Category selection must reveal subcategories without scrolling or navigation; navigation requires a deliberate destination choice.
 
-**Why:** The user explicitly requires approval of both visual direction and navigation behaviour before site-wide changes.
+**Why:** The user explicitly chose “Approve the refined proofs only — keep the website unchanged.”
 
 **How to apply:** Keep proposals separate from the current site until the user approves implementation. Prototype destination views are not evidence of existing production routes. Keep Women’s Modest Combat prominent and provide its dedicated landing destination when implementing the approved design. Do not publish or enable checkout.
 
