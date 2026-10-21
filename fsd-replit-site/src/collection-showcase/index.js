@@ -1,6 +1,4 @@
-import { renderImageAttributes } from '../product-assets.js';
 import { priceInfo } from '../catalogue-data.js';
-import { renderMappedImageChoices } from '../product-card-media.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
@@ -91,7 +89,7 @@ function productCard(product) {
   const description = product.coverage || product.priceBasis || product.specificationStatus ||
     (product.colourways ? `Colourways: ${product.colourways}` : 'Specifications and availability are not confirmed.');
   const media = image
-    ? `<div class="fsd-product-media"><img ${renderImageAttributes(image, { lazy: true, sizes: '(max-width:700px) 80vw, 340px' })}><span>DESIGN CONCEPT</span></div>${renderMappedImageChoices(product.images)}`
+    ? `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>`
     : `<div class="fsd-product-media fsd-product-media--placeholder" aria-hidden="true"><span class="fsd-placeholder-code">FSD<br/>/ /</span><span>${escapeHTML(category)}</span></div>`;
   return `<article class="fsd-product-card">
     ${media}
@@ -137,15 +135,6 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
   const emptyMarkup = !foundProducts.length && !concepts.length
     ? `<div class="fsd-showcase-empty"><span>FSD / ${String(activeGroupIndex + 1).padStart(2, '0')}</span><h4>Collection details are being prepared.</h4><p>No product records or proposed concepts are currently listed for this selection.</p></div>`
     : '';
-  const bioLabIntroduction = division.id === 'bio-lab'
-    ? `<section class="bio-lab-introduction" aria-labelledby="bio-lab-intro-title">
-        <p class="bio-lab-intro-kicker">PRECISION <span>·</span> INTELLIGENCE <span>·</span> PERFORMANCE</p>
-        <h3 id="bio-lab-intro-title">FSD BIO-LAB<br/><em>INTELLIGENCE IN MOTION.</em></h3>
-        <p>Explore a new dimension of performance, where advanced technology, purposeful design and human potential converge.</p>
-        <button class="bio-lab-intro-cta" type="button" data-bio-lab-open>EXPLORE THE EXPERIENCE <span aria-hidden="true">↗</span></button>
-        <small>DEMONSTRATION EXPERIENCE · SIMULATED DATA ONLY</small>
-      </section>`
-    : '';
   return `<div class="fsd-modal-hero fsd-modal-hero--${escapeHTML(division.visual || division.id)}">
       <span class="fsd-modal-kicker">${escapeHTML(division.title)} <span>/</span> DIVISION ${String(activeGroupIndex + 1).padStart(2, '0')}</span>
       <h2>${escapeHTML(title)}</h2>
@@ -162,7 +151,6 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     </nav>` : ''}
     <div class="fsd-modal-body">
       <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(division.description)}</p></div>
-      ${bioLabIntroduction}
       ${foundProducts.length ? '<button class="fsd-explore-collection" type="button" data-explore-collection>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button>' : ''}
       ${productsMarkup}${conceptMarkup}${emptyMarkup}
       <p class="fsd-modal-disclaimer">FSD is a pre-launch brand. Supplied list prices are catalogue references, not an offer to sell. Proposed concepts do not confirm specifications, availability or operational status. Product visuals appear only where mapped to that product record.</p>
@@ -189,7 +177,6 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
   let activeSubcategoryIndex = -1;
   let returnFocus = null;
   let afterClose = null;
-  let closePending = false;
   const page = root.ownerDocument?.documentElement || document.documentElement;
 
   const renderDialog = () => {
@@ -197,56 +184,36 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     const group = activeDivision.groups?.[activeGroupIndex] || { title: activeDivision.title };
     content.innerHTML = modalContent(activeDivision, group, safeProducts, activeGroupIndex, activeSubcategoryIndex);
     content.scrollTop = 0;
-    section.dispatchEvent(new CustomEvent('fsd:dialog-render', { bubbles: true }));
   };
 
-  const open = (division, opener, restore = null) => {
-    if (!division || closePending) return;
+  const open = (division, opener) => {
+    if (!division) return;
     if (returnFocus && returnFocus !== opener) {
       returnFocus.setAttribute('aria-expanded', 'false');
       returnFocus.classList.remove('is-selected');
     }
     afterClose = null;
     activeDivision = division;
-    activeGroupIndex = restore ? Math.max(0, Math.min(division.groups.length - 1, Number(restore.groupIndex) || 0)) : 0;
-    activeSubcategoryIndex = restore ? Number(restore.subcategoryIndex ?? -1) : -1;
+    activeGroupIndex = 0;
+    activeSubcategoryIndex = -1;
     returnFocus = opener;
     returnFocus?.setAttribute('aria-expanded', 'true');
     returnFocus?.classList.add('is-selected');
     renderDialog();
     page.classList.add('fsd-modal-open');
     if (!dialog.open) dialog.showModal();
-    section.dispatchEvent(new CustomEvent('fsd:dialog-open', { bubbles: true }));
     const closeButton = dialog.querySelector('[data-close-dialog]');
     closeButton?.focus({ preventScroll: true });
-    if (restore && Number.isFinite(Number(restore.scrollTop))) content.scrollTop = Number(restore.scrollTop);
-  };
-
-  const requestClose = () => {
-    if (closePending || !dialog.open) return;
-    closePending = true;
-    const closeRequest = new CustomEvent('fsd:dialog-close-request', { cancelable: true });
-    document.dispatchEvent(closeRequest);
-    if (!closeRequest.defaultPrevented) dialog.close();
   };
 
   const onClick = event => {
-    if (closePending) return;
     const opener = event.target.closest('[data-division]');
     if (opener && section.contains(opener)) {
       open(safeDivisions.find(division => division.id === opener.dataset.division), opener);
       return;
     }
     if (event.target.closest('[data-close-dialog]')) {
-      requestClose();
-      return;
-    }
-    if (event.target.closest('[data-bio-lab-open]') && dialog.contains(event.target.closest('[data-bio-lab-open]'))) {
-      afterClose = () => {
-        const route = new URL(`${location.pathname}${location.search}#bio-lab/overview?period=7`, location.href);
-        location.href = route.href;
-      };
-      requestClose();
+      dialog.close();
       return;
     }
     const tab = event.target.closest('[data-group-index]');
@@ -268,33 +235,24 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     if (productButton && dialog.contains(productButton)) {
       const selectedProduct = safeProducts.find(product => String(product.id) === productButton.dataset.productId);
       if (!selectedProduct) return;
-       const panelContext = {
-         divisionId: activeDivision.id,
-         groupIndex: activeGroupIndex,
-         subcategoryIndex: activeSubcategoryIndex,
-         scrollTop: content.scrollTop,
-         productId: selectedProduct.id,
-       };
-       afterClose = () => onProductSelect(selectedProduct.id, panelContext);
-      requestClose();
+      afterClose = () => onProductSelect(selectedProduct.id);
+      dialog.close();
       return;
     }
     if (event.target.closest('[data-explore-collection]') && activeDivision) {
       const group = activeDivision.groups[activeGroupIndex];
       const subcategory = group.subcategories?.[activeSubcategoryIndex];
       afterClose = () => onExploreCollection({ ...group, query: subcategory?.productTerms?.[0] || '' });
-      requestClose();
+      dialog.close();
     }
   };
 
   const onDialogClick = event => {
-    if (event.target === dialog) requestClose();
+    if (event.target === dialog) dialog.close();
   };
-  const onDialogCancel = () => { closePending = true; };
   const onDialogClose = () => {
     // Native close events are queued; ignore an old event if already reopened.
     if (dialog.open) return;
-    closePending = false;
     activeDivision = null;
     page.classList.remove('fsd-modal-open');
     returnFocus?.setAttribute('aria-expanded', 'false');
@@ -306,7 +264,6 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
     action?.();
   };
   const onKeyDown = event => {
-    if (closePending) return;
     const current = event.target.closest('[data-group-index]');
     if (!current || !activeDivision || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
@@ -320,41 +277,14 @@ export function mountCollectionShowcase({ root, divisions, products = [], onProd
 
   section.addEventListener('click', onClick);
   dialog.addEventListener('click', onDialogClick);
-  dialog.addEventListener('cancel', onDialogCancel);
   dialog.addEventListener('close', onDialogClose);
   dialog.addEventListener('keydown', onKeyDown);
-  const onRestoreProductContext = event => {
-    const restore = event.detail;
-    if (!restore?.divisionId) return;
-    const division = safeDivisions.find(item => item.id === restore.divisionId);
-    const divisionOpener = [...section.querySelectorAll('[data-division]')]
-      .find(item => item.dataset.division === restore.divisionId);
-    if (!division || !divisionOpener) return;
-    closePending = false;
-    open(division, divisionOpener, restore);
-    if (restore.productId !== undefined) {
-      const productAction = content.querySelector(`[data-product-id="${restore.productId}"]`);
-      productAction?.focus({ preventScroll: true });
-    }
-  };
-  document.addEventListener('fsd:restore-collection-context', onRestoreProductContext);
-  const onProductRouteHandoff = event => {
-    const openProduct = event.detail?.openProduct;
-    if (typeof openProduct !== 'function' || !dialog.open) return;
-    event.preventDefault();
-    afterClose = openProduct;
-    if (!closePending) requestClose();
-  };
-  document.addEventListener('fsd:product-route-handoff', onProductRouteHandoff);
 
   return () => {
     section.removeEventListener('click', onClick);
     dialog.removeEventListener('click', onDialogClick);
-    dialog.removeEventListener('cancel', onDialogCancel);
     dialog.removeEventListener('close', onDialogClose);
     dialog.removeEventListener('keydown', onKeyDown);
-    document.removeEventListener('fsd:restore-collection-context', onRestoreProductContext);
-    document.removeEventListener('fsd:product-route-handoff', onProductRouteHandoff);
     if (dialog.open) {
       page.classList.remove('fsd-modal-open');
       dialog.close();

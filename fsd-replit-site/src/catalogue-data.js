@@ -1,6 +1,4 @@
 import masterProducts from './master-products.json' with { type: 'json' };
-import reviewedRecords from './catalogue-records.json' with { type: 'json' };
-import { extendCatalogueProduct, integrateReviewedRecords } from './catalogue-model.js';
 
 const imageReferences = {
   'FSD Ombré Slash Tee': [
@@ -20,7 +18,7 @@ const imageReferences = {
 // Publication decisions use stable record metadata, not names that may change.
 export const heldProducts = masterProducts.filter(p => p['Publication status'] === 'Hold');
 export const retiredProducts = masterProducts.filter(p => ['Merged', 'Replaced'].includes(p['Publication status']));
-const legacyProducts = masterProducts
+export const products = masterProducts
   .filter(p => !p['Publication status'] || p['Publication status'] === 'Active')
   .map(p => ({
     id: p.id,
@@ -42,9 +40,7 @@ const legacyProducts = masterProducts
     priceBasis: p['Price basis'] ?? '',
     notes: p.Notes.trim(),
     images: imageReferences[p['Product name']] ?? [],
-  })).map(extendCatalogueProduct);
-
-export const products = integrateReviewedRecords(legacyProducts, reviewedRecords);
+  }));
 
 export const categories = [...new Set(products.flatMap(p => [p.category, ...p.alsoShowIn]))];
 

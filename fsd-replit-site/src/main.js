@@ -6,23 +6,15 @@ import { renderCollectionShowcase, mountCollectionShowcase } from './collection-
 import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initArchiveNavigation } from './showroom-sections.js';
 import './style.css';
 import './catalogue.css';
-import './product-experience.css';
-import './product-options.css';
-import './signature-ui.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
-import './motion.css';
-import { initMotion } from './motion.js';
-import { initBioLab } from './bio-lab/index.js';
-import { initSignatureUI } from './signature-ui.js';
-import './bio-lab/bio-lab.css';
 
 function icon() {
   return `<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M50 6 85 20 80 62 50 91 20 62 15 20Z" stroke="currentColor" stroke-width="5"/><path d="M20 65 68 20 51 56 83 38 36 81 49 48Z" fill="currentColor"/></svg>`;
 }
 
 function header() {
-  return `<a class="announcement-link" href="#collections">FSD / THE NEXT ERA OF MOVEMENT <span>— PRE-LAUNCH COLLECTION</span></a>
+  return `<div class="announcement">FSD / THE NEXT ERA OF MOVEMENT <span>— PRE-LAUNCH COLLECTION</span></div>
     <header class="header"><a class="brand" href="#home" aria-label="FSD Home">
       <span class="brand-icon">${icon()}</span><span class="brand-type"><strong>FSD</strong><small>FITNESS & SELF DEFENCE</small></span>
     </a><nav aria-label="Main navigation"><a href="#collections">COLLECTIONS</a><a href="#products">PRODUCTS</a>
@@ -35,7 +27,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
     <p class="eyebrow">THE FSD PERFORMANCE UNIVERSE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
     <h1>BUILT FOR<br/><em>THE DRIVE</em><br/>WITHIN.</h1>
     <p class="hero-copy">Performance. Discipline. Identity. Discover technical training wear, combat-inspired design and modest activewear under one unmistakable shield.</p>
-    <div class="hero-actions"><a class="primary-btn" href="#collections"><span class="primary-btn-label">EXPLORE THE COLLECTION</span><span class="primary-btn-arrow" aria-hidden="true">↗</span></a>
+    <div class="hero-actions"><a class="primary-btn" href="#collections">EXPLORE THE COLLECTION <span>↗</span></a>
     <a class="ghost-btn" href="#philosophy">DISCOVER FSD →</a></div>
     <div class="hero-foot"><span>01 / 03</span><span>DESIGNED TO MOVE. BUILT TO BELONG.</span></div></div>
     <div class="vertical-label">FITNESS & SELF DEFENCE — 2026</div>
@@ -63,15 +55,14 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
       <nav class="footer-links" aria-label="Corporate navigation"><a href="#philosophy">FSD STORY</a><a href="#fsd-division-global">PROPOSED FLAGSHIPS & PROMOTIONS</a></nav>
       <small class="footer-pending">Investor information and legal pages require approved content before launch.</small></div>
     <a href="#home">BACK TO TOP ↑</a></footer>
-  <dialog id="product-dialog" aria-labelledby="product-title"><div class="product-dialog-toolbar"><button id="close-dialog" aria-label="Close product details">✕</button></div><div id="dialog-body"></div></dialog>`;
+  <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
 
 initCatalogue();
-if (typeof initSignatureUI === 'function') initSignatureUI();
 mountCollectionShowcase({
   root: document.querySelector('#collections'),
   divisions: collectionDivisions,
   products,
-  onProductSelect: (id, context) => showProduct(id, { context }),
+  onProductSelect: showProduct,
   onExploreCollection(group) {
     document.querySelector('#catalogue-archive').open = true;
     const select = document.querySelector('#catalogue-category');
@@ -85,8 +76,6 @@ mountCollectionShowcase({
 });
 initFeaturedCarousel(document.querySelector('#innovations'));
 initArchiveNavigation();
-if (typeof initBioLab === 'function') initBioLab({ products });
-if (typeof initMotion === 'function') initMotion();
 document.querySelector('#gallery-search').addEventListener('input', event => {
   const query = event.target.value.toLowerCase().trim();
   let count = 0;

@@ -63,7 +63,7 @@ test('product images use only supplied assets explicitly mapped to products', ()
   assert.deepEqual(products.find(p => p.id === 10).images.map(image => image.src), [
     '/images/windrunner-yellow.png', '/images/windrunner-white.png', '/images/windrunner-khaki.png',
   ]);
-  assert.deepEqual(products.find(p => p.id === 43).images.map(({ src, label }) => ({ src, label })), [{
+  assert.deepEqual(products.find(p => p.id === 43).images, [{
     src: '/images/fsd-velocity-performance-sports-hijab.jpg',
     label: 'Black and gold sports hijab with matching performance top',
   }]);
@@ -108,7 +108,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
     initCatalogue();
   assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
     assert.match(element('#catalogue-grid').innerHTML, /\/images\/ombre-indigo.png/);
-    assert.match(element('#catalogue-grid').innerHTML, /design concept/);
+    assert.match(element('#catalogue-grid').innerHTML, /; design concept/);
     assert.match(element('#catalogue-grid').innerHTML, /Concept image mapping pending/);
     click('[data-page]', { dataset: { page: '2' }, disabled: false });
     assert.equal(element('#catalogue-count').textContent, 'Showing 13–24 of 66 products');

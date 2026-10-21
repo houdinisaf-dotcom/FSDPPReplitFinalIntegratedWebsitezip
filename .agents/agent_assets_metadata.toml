@@ -266,31 +266,3 @@ mtime_ms = 1792459496078
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/80363d53-70fe-45e6-abda-f1fd15ed495e/458ee786-19dc-4b75-9b0c-68a45894cec6"
 storage_version_token = "1792460537573679"
 content_type = "text/html"
-
-[[outputs]]
-id = "RRiujubZMMWg1jKxzlKrp"
-uri = "file://generated-artifacts/fsd-phase-four/review-report.html"
-type = "html"
-title = "FSD Phase 4 — review report and previews"
-description = "Changes, verification, pending approvals and the desktop/mobile Velocity proofs. Self-contained read-only report."
-logical_id = "a8100a71-1c23-4849-b235-f52d110d5eaa"
-content_hash = "sha256:09a864a1901d2f192fd5ce08838482d9e971897353f3e73f256999e14b53323b"
-size = 191170
-mtime_ms = 1792551659868
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/a8100a71-1c23-4849-b235-f52d110d5eaa/d4c526aa-9e86-48ef-82cb-386cee729141"
-storage_version_token = "1792551660900181"
-content_type = "text/html"
-
-[[outputs]]
-id = "OZBgFPQrW1RdyhbqsPppQ"
-uri = "file://generated-artifacts/fsd-catalogue-review/index.html"
-type = "html"
-title = "Velocity — read-only catalogue proof"
-description = "Existing approved hero, source price, colour mapping, image roles and outstanding product information. No publication or checkout."
-logical_id = "9ba92f47-7008-468d-b3ac-0aae693711da"
-content_hash = "sha256:495545a5d614301de89ce6f317efbf9d123ae1f27e11e963a6031f8c275c1cee"
-size = 529511
-mtime_ms = 1792551215244
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/9ba92f47-7008-468d-b3ac-0aae693711da/9311b63a-237d-4cb8-b6ca-e6b4e1afa371"
-storage_version_token = "1792551661593885"
-content_type = "text/html"
