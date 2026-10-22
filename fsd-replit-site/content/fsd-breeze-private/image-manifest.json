@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sourceArchive": "FSD_Breeze_Draft_Asset_Pack_1792655928492.zip",
+  "sourceContactSheet": {
+    "file": "reference/six-colour-contact-sheet_DRAFT.png",
+    "role": "review-reference-only",
+    "routeServed": false,
+    "dimensions": {
+      "width": 1536,
+      "height": 1024
+    }
+  },
+  "assetQuality": {
+    "status": "DRAFT CONCEPT CROPS",
+    "sourceWidth": 256,
+    "upscaled": false,
+    "retouched": false,
+    "notes": [
+      "The 24 individual JPEGs are crops from a contact sheet, not final full-resolution product photography.",
+      "The source pack does not include an approved Breeze campaign hero or banner.",
+      "Garment marks are unverified and must be compared with the approved FSD shield before final approval."
+    ]
+  },
+  "views": [
+    { "id": "front", "label": "Front", "width": 256, "height": 324 },
+    { "id": "side", "label": "Side", "width": 256, "height": 242 },
+    { "id": "back", "label": "Back", "width": 256, "height": 254 },
+    { "id": "detail", "label": "Detail", "width": 256, "height": 204 }
+  ],
+  "variants": [
+    {
+      "id": "onyx-black",
+      "label": "Onyx Black — Core",
+      "hex": "#0D0D0D",
+      "approvalStatus": "DRAFT — COLOUR NOT APPROVED",
+      "brandStatus": "UNVERIFIED — garment mark needs comparison with the approved FSD shield",
+      "assets": [
+        { "view": "front", "id": "breeze-onyx-black-front", "file": "onyx-black/fsd-breeze_onyx-black_front_DRAFT.jpg", "sha256": "948778a0052ab5bb378f7e99b2e3c76530cabc80c6c1c1884ab8e3f8eb463c13", "width": 256, "height": 324 },
+        { "view": "side", "id": "breeze-onyx-black-side", "file": "onyx-black/fsd-breeze_onyx-black_side_DRAFT.jpg", "sha256": "ccf8b7a3d556562b0d4bb28198fa7bff12fa5f2915158b530f02d09d110ff841", "width": 256, "height": 242 },
+        { "view": "back", "id": "breeze-onyx-black-back", "file": "onyx-black/fsd-breeze_onyx-black_back_DRAFT.jpg", "sha256": "3ac3fe634fe0304d7e8139a308a7a0a50980e718744548709ef4ddaa800e91fb", "width": 256, "height": 254 },
+        { "view": "detail", "id": "breeze-onyx-black-detail", "file": "onyx-black/fsd-breeze_onyx-black_detail_DRAFT.jpg", "sha256": "89f0d088d46e9da642957e9902b1cc9d1ac6c62ea5f624fbb9a21b237813825f", "width": 256, "height": 204 }
+      ]
+    },
+    {
+      "id": "deep-olive",
+      "label": "Deep Olive — Earth",
+      "hex": "#2B3227",
+      "approvalStatus": "DRAFT — COLOUR NOT APPROVED",
+      "brandStatus": "UNVERIFIED — garment mark needs comparison with the approved FSD shield",
+      "assets": [
+        { "view": "front", "id": "breeze-deep-olive-front", "file": "deep-olive/fsd-breeze_deep-olive_front_DRAFT.jpg", "sha256": "692c2a36695bd07685208e16735c937885327bbf0142bfd47387549dceb26ee1", "width": 256, "height": 324 },
+        { "view": "side", "id": "breeze-deep-olive-side", "file": "deep-olive/fsd-breeze_deep-olive_side_DRAFT.jpg", "sha256": "235b7937e1d3cc6c4bc74a737f7ae3a2c141c10e88389cbb05bc33576b2be772", "width": 256, "height": 242 },
+        { "view": "back", "id": "breeze-deep-olive-back", "file": "deep-olive/fsd-breeze_deep-olive_back_DRAFT.jpg", "sha256": "dc3762d56db9c607129499e3fc4c340c438cfe082b326cc2a624ff5891ddaa20", "width": 256, "height": 254 },
+        { "view": "detail", "id": "breeze-deep-olive-detail", "file": "deep-olive/fsd-breeze_deep-olive_detail_DRAFT.jpg", "sha256": "6b5463ee1afc62bc541e9e1846b64d039f3c4db8d90b36c767e1d9adb8fff9ba", "width": 256, "height": 204 }
+      ]
+    },
+    {
+      "id": "warm-taupe",
+      "label": "Warm Taupe — Modest",
+      "hex": "#8A7B70",
+      "approvalStatus": "DRAFT — COLOUR NOT APPROVED",
+      "brandStatus": "UNVERIFIED — garment mark needs comparison with the approved FSD shield",
+      "assets": [
+        { "view": "front", "id": "breeze-warm-taupe-front", "file": "warm-taupe/fsd-breeze_warm-taupe_front_DRAFT.jpg", "sha256": "7cd87d1359f5158fd1a491811f1c8b3a2bfce8daad9157d5c7a771a554847949", "width": 256, "height": 324 },
+        { "view": "side", "id": "breeze-warm-taupe-side", "file": "warm-taupe/fsd-breeze_warm-taupe_side_DRAFT.jpg", "sha256": "52db733d88191325d086380fe82e1af724b1116c7d02b20cdc650d4ca68983c1", "width": 256, "height": 242 },
+        { "view": "back", "id": "breeze-warm-taupe-back", "file": "warm-taupe/fsd-breeze_warm-taupe_back_DRAFT.jpg", "sha256": "0ce97917423bfda1997d7552e5656da634819d8ed5249d221679dd667798cb85", "width": 256, "height": 254 },
+        { "view": "detail", "id": "breeze-warm-taupe-detail", "file": "warm-taupe/fsd-breeze_warm-taupe_detail_DRAFT.jpg", "sha256": "9690aa9e29767625d40e3cc18e3fab715056f43ccf5c6e8c995cb4ab3d424d60", "width": 256, "height": 204 }
+      ]
+    },
+    {
+      "id": "slate-grey",
+      "label": "Slate Grey — Tech",
+      "hex": "#62676B",
+      "approvalStatus": "DRAFT — COLOUR NOT APPROVED",
+      "brandStatus": "UNVERIFIED — garment mark needs comparison with the approved FSD shield",
+      "assets": [
+        { "view": "front", "id": "breeze-slate-grey-front", "file": "slate-grey/fsd-breeze_slate-grey_front_DRAFT.jpg", "sha256": "8753c40b6299713f7cb25be1ad770ac9d1eb67ebbcaa9c32f1c239d28c7ec48d", "width": 256, "height": 324 },
+        { "view": "side", "id": "breeze-slate-grey-side", "file": "slate-grey/fsd-breeze_slate-grey_side_DRAFT.jpg", "sha256": "1ae7d221e61588ad5c02185ad5805f1028127d186cd0a3139de41b46e1869a80", "width": 256, "height": 242 },
+        { "view": "back", "id": "breeze-slate-grey-back", "file": "slate-grey/fsd-breeze_slate-grey_back_DRAFT.jpg", "sha256": "3d6ffeac45e28a5b2c5a718f16c19adafef5894149ceeb66a93c8fa10f578d82", "width": 256, "height": 254 },
+        { "view": "detail", "id": "breeze-slate-grey-detail", "file": "slate-grey/fsd-breeze_slate-grey_detail_DRAFT.jpg", "sha256": "e13747d39ae1bf34668bb7814290d33b4bce1285c53a58a12a76a3b1c57d2c82", "width": 256, "height": 204 }
+      ]
+    },
+    {
+      "id": "midnight-navy",
+      "label": "Midnight Navy — Performance",
+      "hex": "#1B2432",
+      "approvalStatus": "DRAFT — COLOUR NOT APPROVED",
+      "brandStatus": "UNVERIFIED — garment mark needs comparison with the approved FSD shield",
+      "assets": [
+        { "view": "front", "id": "breeze-midnight-navy-front", "file": "midnight-navy/fsd-breeze_midnight-navy_front_DRAFT.jpg", "sha256": "3e9eed067f5677529818d7cdf162b839d0a6bd4869877e2b169be6dd79db86d7", "width": 256, "height": 324 },
+        { "view": "side", "id": "breeze-midnight-navy-side", "file": "midnight-navy/fsd-breeze_midnight-navy_side_DRAFT.jpg", "sha256": "6dd13db4bb808cb22a96db7cffec0e21aebb1dedc01608bd28858068eab5c9d7", "width": 256, "height": 242 },
+        { "view": "back", "id": "breeze-midnight-navy-back", "file": "midnight-navy/fsd-breeze_midnight-navy_back_DRAFT.jpg", "sha256": "d9f044724e1df1364be5f0a07fa1f6995cfbc432f2a8fad6314da9f160a08027", "width": 256, "height": 254 },
+        { "view": "detail", "id": "breeze-midnight-navy-detail", "file": "midnight-navy/fsd-breeze_midnight-navy_detail_DRAFT.jpg", "sha256": "e6d4aa6ce986ce86d31364ade7db536a57760d035d6e27b391066843c5133461", "width": 256, "height": 204 }
+      ]
+    },
+    {
+      "id": "deep-burgundy",
+      "label": "Deep Burgundy — Combat",
+      "hex": "#4A1521",
+      "approvalStatus": "DRAFT — COLOUR NOT APPROVED",
+      "brandStatus": "UNVERIFIED — garment mark needs comparison with the approved FSD shield",
+      "assets": [
+        { "view": "front", "id": "breeze-deep-burgundy-front", "file": "deep-burgundy/fsd-breeze_deep-burgundy_front_DRAFT.jpg", "sha256": "4e142338131e7de407fa6cd50744354fc5ccd554ef8ad6a351ae19aeca2f07cb", "width": 256, "height": 324 },
+        { "view": "side", "id": "breeze-deep-burgundy-side", "file": "deep-burgundy/fsd-breeze_deep-burgundy_side_DRAFT.jpg", "sha256": "6d17ef31a2f1d01f9ecff744e2fcb8e554df160cafc5bbf43820026b41b6fda1", "width": 256, "height": 242 },
+        { "view": "back", "id": "breeze-deep-burgundy-back", "file": "deep-burgundy/fsd-breeze_deep-burgundy_back_DRAFT.jpg", "sha256": "9ce7abbd76a74c724a2166f12d39248b28093e09e34144f5166ef92fcef1a62b", "width": 256, "height": 254 },
+        { "view": "detail", "id": "breeze-deep-burgundy-detail", "file": "deep-burgundy/fsd-breeze_deep-burgundy_detail_DRAFT.jpg", "sha256": "cda1d1545645d506cd5fd11fcabaabebb2118aec5aaa8fd9a8908f130808aa6a", "width": 256, "height": 204 }
+      ]
+    }
+  ]
+}

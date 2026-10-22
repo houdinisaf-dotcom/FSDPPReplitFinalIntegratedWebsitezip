@@ -141,11 +141,18 @@ export function groupProducts(group, products, subcategory = null) {
 
 function modalContent(division, group, products, activeGroupIndex, activeSubcategoryIndex, draftProductCards) {
   const subcategory = group.subcategories?.[activeSubcategoryIndex] || null;
-  const foundProducts = groupProducts(group, products, subcategory);
+  const matchingDraftCards = draftProductCards.filter(card =>
+    card.divisionId === division.id &&
+    (card.groupId === '*' || card.groupId === group.id) &&
+    (!card.showOnlyInAllProducts || activeSubcategoryIndex === -1));
+  const replacedProductIds = new Set(matchingDraftCards
+    .map(card => card.replacesProductId)
+    .filter(id => id !== undefined && id !== null)
+    .map(String));
+  const foundProducts = groupProducts(group, products, subcategory)
+    .filter(product => !replacedProductIds.has(String(product.id)));
   const concepts = subcategory ? (subcategory.concepts || []) :
     [...(group.concepts || []), ...(group.subcategories || []).flatMap(item => item.concepts || [])];
-  const matchingDraftCards = draftProductCards.filter(card =>
-    card.divisionId === division.id && (card.groupId === '*' || card.groupId === group.id));
   const title = group.title || division.title;
   const conceptMarkup = concepts.length
     ? `<div class="fsd-modal-subhead"><span>02</span><h4>PROPOSED CONCEPTS</h4><i></i></div>
@@ -352,6 +359,10 @@ export function mountCollectionShowcase({
         groupId: String(placement.groupId || 'bio-lab-concepts'),
         heading: String(placement.heading || 'PRIVATE DRAFT PRODUCT'),
         markup: String(html),
+        ...(placement.replacesProductId !== undefined && placement.replacesProductId !== null
+          ? { replacesProductId: String(placement.replacesProductId) }
+          : {}),
+        showOnlyInAllProducts: placement.showOnlyInAllProducts === true,
       };
       if (existingIndex >= 0) activeDraftProductCards[existingIndex] = card;
       else activeDraftProductCards.push(card);

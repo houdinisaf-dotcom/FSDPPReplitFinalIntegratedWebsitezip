@@ -1,0 +1,21 @@
+.fsd-breeze-draft-card .fsd-breeze-draft-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fsd-breeze-draft-card .fsd-breeze-draft-media img {
+  width: auto;
+  height: auto;
+  max-width: min(100%, 256px);
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.fsd-breeze-draft-card .fsd-product-reference span {
+  display: block;
+  margin-top: 4px;
+  color: #a7a297;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}

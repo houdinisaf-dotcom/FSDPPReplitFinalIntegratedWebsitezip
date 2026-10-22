@@ -1,0 +1,51 @@
+{
+  "id": "fsd-breeze-modest-overshirt-private-draft",
+  "name": "FSD Breeze Lightweight Modest Overshirt",
+  "masterProductId": 49,
+  "status": "DRAFT",
+  "visibility": "development-only",
+  "collection": {
+    "divisionId": "apparel",
+    "groupId": "womens-modest-combat",
+    "category": "Modest Activewear",
+    "audience": "Women’s"
+  },
+  "relationship": {
+    "type": "private-visual-preview-of-existing-master-record",
+    "createsNewMasterProduct": false,
+    "changesMasterProduct": false
+  },
+  "description": "A visual concept preview of one modest training overshirt. The supplied images are low-resolution draft crops, not final product photography. Other clothing shown is styling context and is not included.",
+  "provisionalFeatures": [
+    "Extended modest tunic-length coverage — concept reference; measurements are unverified.",
+    "Long sleeves and thumbhole cuffs — shown in concept imagery; construction is unverified.",
+    "Concealed side zips — shown in concept imagery; function is unverified.",
+    "Lightweight modest-training silhouette — design direction only; material and performance are unverified."
+  ],
+  "unverifiedFieldsFromAssetPack": [
+    "fabric composition",
+    "GSM",
+    "sizing and measurements",
+    "price",
+    "stock",
+    "manufacturing claims",
+    "performance claims",
+    "exact garment-mark fidelity"
+  ],
+  "cataloguePriceRule": "Use only the existing confirmed price from master product 49; do not copy or change price data in this private draft.",
+  "sourcePriceConflict": "The existing master record labels its £64.99 value as confirmed; the supplied draft specification labels price unverified. Keep the master untouched and treat the displayed value as a catalogue reference only.",
+  "imagePolicy": {
+    "source": "Attached FSD Breeze draft asset pack",
+    "imageStatus": "DRAFT CONCEPT CROPS",
+    "upscaleOrRetouch": false,
+    "campaignHeroAsset": null,
+    "newCampaignBanner": false,
+    "contactSheetUse": "Review reference only; never use as a product image or gallery image.",
+    "brandStatus": "UNVERIFIED — compare garment marks against the approved FSD shield before treating any image as final."
+  },
+  "commercial": {
+    "checkoutEnabled": false,
+    "paymentsEnabled": false,
+    "published": false
+  }
+}
