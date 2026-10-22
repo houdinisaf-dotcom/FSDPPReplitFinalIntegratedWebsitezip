@@ -82,7 +82,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
     ${renderCollectionShowcase(collectionDivisions)}
     <div class="showroom-archives" id="planned">
       <details class="showroom-archive" id="catalogue-archive"><summary>FULL PRODUCT CATALOGUE · ${products.length} RECORDS</summary>${catalogueSection()}</details>
-      <details class="showroom-archive" id="gallery-archive"><summary>DESIGN REFERENCE LIBRARY · ${galleryProducts.length} IMAGES</summary>${gallerySection()}</details>
+      <details class="showroom-archive" id="gallery-archive"><summary>OPEN IMAGE ARCHIVE</summary>${gallerySection()}</details>
     </div>
   </div>
   ${hardwareEditorialSection()}

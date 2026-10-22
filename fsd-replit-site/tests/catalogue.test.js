@@ -305,6 +305,8 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(page, /PRE-LAUNCH DESIGN PROOF/);
     assert.match(page, /id="catalogue-archive"/);
     assert.match(page, /id="gallery-archive"/);
+    assert.match(page, /<summary>OPEN IMAGE ARCHIVE<\/summary>/);
+    assert.doesNotMatch(page, /DESIGN REFERENCE LIBRARY|74 IMAGES/i);
     assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
     assert.match(page, /website-shield-lockup-defence\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
