@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import master from '../src/master-products.json' with { type: 'json' };
 import additional from '../src/additional-catalog.json' with { type: 'json' };
-import { galleryProductIds, galleryProducts, gallerySection } from '../src/gallery.js';
+import { galleryProductIds, galleryProducts } from '../src/gallery.js';
 import { products, heldProducts, retiredProducts, categories, filterProducts, priceInfo, safe } from '../src/catalogue-data.js';
 import { catalogueSection, roadmapSection, innovationsSection, initCatalogue } from '../src/catalogue.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
@@ -292,21 +292,19 @@ test('the complete public page excludes held imagery while retaining internal so
   globalThis.document = document;
   try {
     const dependencies = {
-      catalogueSection, initCatalogue, gallerySection, galleryProducts, products,
+      catalogueSection, initCatalogue, products,
       collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       ourStorySection,
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
-      initArchiveNavigation() {}, showProduct() {},
+      initCatalogueNavigation() {}, showProduct() {},
     };
     new Function('document', ...Object.keys(dependencies), source)(document, ...Object.values(dependencies));
     const page = document.querySelector('#app').innerHTML;
-    assert.match(page, /74 designs/);
     assert.match(page, /PRE-LAUNCH DESIGN PROOF/);
     assert.match(page, /id="catalogue-archive"/);
-    assert.match(page, /id="gallery-archive"/);
-    assert.match(page, /<summary>OPEN IMAGE ARCHIVE<\/summary>/);
-    assert.doesNotMatch(page, /DESIGN REFERENCE LIBRARY|74 IMAGES/i);
+    assert.doesNotMatch(page, /id="gallery-archive"|id="full-gallery"|DESIGN LIBRARY|IMAGE ARCHIVE/i);
+    assert.doesNotMatch(page, /FSD PRODUCT DESIGN LIBRARY|THE FULL VISUAL EDIT|74 designs/i);
     assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
     assert.match(page, /website-shield-lockup-defence\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
@@ -324,7 +322,6 @@ test('the complete public page excludes held imagery while retaining internal so
       assert.ok(!page.includes(image.name));
       assert.ok(!page.includes(image.url));
     }
-    for (const image of galleryProducts) assert.ok(page.includes(image.url));
   } finally {
     delete globalThis.document;
   }

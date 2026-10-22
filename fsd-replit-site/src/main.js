@@ -1,9 +1,8 @@
 import { catalogueSection, initCatalogue, showProduct } from './catalogue.js';
-import { gallerySection, galleryProducts } from './gallery.js';
 import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
-import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initArchiveNavigation } from './showroom-sections.js';
+import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initCatalogueNavigation } from './showroom-sections.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import { ourStorySection } from './story-section.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
@@ -82,7 +81,6 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
     ${renderCollectionShowcase(collectionDivisions)}
     <div class="showroom-archives" id="planned">
       <details class="showroom-archive" id="catalogue-archive"><summary>FULL PRODUCT CATALOGUE · ${products.length} RECORDS</summary>${catalogueSection()}</details>
-      <details class="showroom-archive" id="gallery-archive"><summary>OPEN IMAGE ARCHIVE</summary>${gallerySection()}</details>
     </div>
   </div>
   ${hardwareEditorialSection()}
@@ -94,7 +92,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
   <footer><div class="footer-brand"><img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="FSD Fitness & Self-Defence"/></div>
     <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Pre-launch website prototype.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#collections">FOUR DIVISIONS</a><a href="#products">PRODUCT CATALOGUE</a>
-      <a href="#full-gallery">DESIGN LIBRARY</a><a href="#contact">VIP ACCESS</a></nav>
+      <a href="#contact">VIP ACCESS</a></nav>
       <nav class="footer-links" aria-label="Corporate navigation"><a href="#philosophy">FSD STORY</a><a href="#fsd-division-global">PROPOSED FLAGSHIPS & PROMOTIONS</a></nav>
       <small class="footer-pending">Investor information and legal pages require approved content before launch.</small></div>
     <a href="#home">BACK TO TOP ↑</a></footer>
@@ -177,19 +175,9 @@ function startMainExperience() {
     },
   });
   initFeaturedCarousel(document.querySelector('#innovations'));
-  initArchiveNavigation();
+  initCatalogueNavigation();
   document.querySelector('[data-open-hardware]')?.addEventListener('click', () => {
     document.querySelector('#fsd-division-hardware')?.click();
-  });
-  document.querySelector('#gallery-search').addEventListener('input', event => {
-    const query = event.target.value.toLowerCase().trim();
-    let count = 0;
-    document.querySelectorAll('[data-gallery-name]').forEach(element => {
-      const matches = element.dataset.galleryName.includes(query);
-      element.hidden = !matches;
-      if (matches) count++;
-    });
-    document.querySelector('#gallery-count').textContent = `${count} designs`;
   });
   return collectionShowcase;
 }

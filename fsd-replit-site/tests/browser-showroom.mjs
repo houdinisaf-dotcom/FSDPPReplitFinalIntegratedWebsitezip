@@ -349,15 +349,14 @@ try {
   assert.equal(await evaluate('document.querySelector("#search").value'), 'Hijab');
   const filteredNames = await evaluate('Array.from(document.querySelectorAll("#catalogue-grid h3"), heading => heading.textContent)');
   assert.ok(filteredNames.length > 0 && filteredNames.every(name => /hijab/i.test(name)));
-  await click('a[href="#full-gallery"]');
-  assert.ok(await evaluate('document.querySelector("#gallery-archive").open'));
-  assert.ok(!await evaluate('/STRIDE|Shilajit/i.test(document.querySelector("#full-gallery").textContent)'));
+  assert.ok(await evaluate('!document.querySelector("#gallery-archive, #full-gallery")'));
+  assert.equal(await evaluate('document.querySelectorAll(\'a[href="#full-gallery"]\').length'), 0);
   await click('[data-feature-next]');
   await waitFor('document.querySelector(".showroom-feature-track").scrollLeft > 0');
   assert.ok(await evaluate('document.querySelector("#contact button").disabled && !document.querySelector("#contact form, #contact input")'));
 
   assert.deepEqual(browserErrors, []);
-  console.log('Desktop browser checks passed: all divisions, subcategories, focus/closing, product handoff, catalogue navigation, gallery holds, carousel, and deferred VIP. Mobile layouts require a separate visual review.');
+  console.log('Desktop browser checks passed: all divisions, subcategories, focus/closing, product handoff, catalogue navigation, archive removal, carousel, and deferred VIP. Mobile layouts require a separate visual review.');
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');

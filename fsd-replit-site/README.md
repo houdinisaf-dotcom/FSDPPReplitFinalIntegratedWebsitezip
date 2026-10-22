@@ -30,12 +30,12 @@ The four dumbbell tier prices apply to complete 10kg–50kg set packages, not pa
 
 Colourways are grouped into one product record. Cross-listed categories and alternate names are preserved; only user-approved duplicates are merged. Publication decisions are explicit metadata, so renaming a held item cannot accidentally expose it. Only the two products already linked to the five starter images use those images. Other records display honest image-status placeholders until their concept imagery is approved and mapped. The separate design library is reference material, not a second product register.
 
-The public design library also excludes imagery associated with held or retired records via `src/gallery.js`. STRIDE and supplement references stay in the source data and asset files for internal review, but their names and images are not rendered publicly. There are 74 public design references from 76 retained source entries. These publication-hold associations do not constitute approved product-to-image mappings.
+The design-reference archive is not rendered in the website. Its source image records and files remain in the project for internal review. STRIDE and supplement references remain withheld from public pages, and the publication-hold associations do not constitute approved product-to-image mappings.
 
 Run `npm test` for catalogue data and event-handler checks, and `npm run build` to validate the production bundle.
 
 ## Interactive showroom
-The original hero leads into four data-driven divisions: Apparel, Bio-Lab, Hardware and Global. A single accessible collection dialog supports group/subcategory selection, concept disclosures and non-overlapping product-detail handoff. The complete catalogue and 74-image public reference library remain available in expandable archives; their original hash links reveal the appropriate archive. The approved Velocity photo is its primary product image and the Apparel banner visual.
+The original hero leads into four data-driven divisions: Apparel, Bio-Lab, Hardware and Global. A single accessible collection dialog supports group/subcategory selection, concept disclosures and non-overlapping product-detail handoff. The complete catalogue remains available in its expandable archive; design-reference images are retained in project files but are no longer shown on the website. The approved Velocity photo is its primary product image and the Apparel banner visual.
 
 The feature carousel is manually controlled, swipeable and reduced-motion aware. Mobile collections open full-screen with a visible close control. There are no new dependencies, checkout actions or working VIP capture form. Proposed showroom names are navigation/concept metadata only and do not alter the authoritative master product records or publication holds.
 

@@ -61,11 +61,10 @@ export function initFeaturedCarousel(root) {
   update();
 }
 
-export function initArchiveNavigation() {
+export function initCatalogueNavigation() {
   const reveal = hash => {
-    const archive = hash === '#products' ? '#catalogue-archive' : hash === '#full-gallery' ? '#gallery-archive' : null;
-    if (!archive) return;
-    document.querySelector(archive).open = true;
+    if (hash !== '#products') return;
+    document.querySelector('#catalogue-archive').open = true;
   };
   document.addEventListener('click', event => {
     const link = event.target.closest('a[href^="#"]');
