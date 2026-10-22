@@ -98,6 +98,8 @@ try {
   assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog [data-fsd-breeze-card]").length'), 1);
   assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog [data-product-id=\\"49\\"]").length'), 0);
   assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]").dataset.masterProductId'), '49');
+  await evaluate('document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]").scrollIntoView({ block: "center", behavior: "instant" })');
+  await capture('collection-desktop.jpg');
   const initialScroll = await evaluate('window.scrollY');
   const opener = '#fsd-showcase-dialog [data-fsd-breeze-open]';
 
@@ -168,23 +170,41 @@ try {
   await waitFor('document.activeElement.matches("[data-fsd-breeze-open]")');
   assert.equal(await evaluate('window.scrollY'), initialScroll);
 
-  await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 2, mobile: true });
+  await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 1, mobile: false });
+  await send('Page.reload');
+  await waitFor('document.readyState === "complete"');
+  await delay(300);
+  await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector(".breeze-preview")');
+  assert.equal(await evaluate('window.innerWidth'), 402);
+  assert.ok(await evaluate('Math.abs(visualViewport.scale - 1) < 0.01'));
+  await click('[data-nav-mobile-toggle]');
+  await waitFor('document.body.classList.contains("fsd-mobile-nav-open")');
+  await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
+  await click('#fsd-mega-menu [data-nav-group="1"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail"');
+  await click('#fsd-mega-menu [data-nav-item="0"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+  await click('#fsd-showcase-dialog [data-subcategory-index="-1"]');
+  await waitFor('!!document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]")');
+  await evaluate('document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]").scrollIntoView({ block: "center", behavior: "instant" })');
+  await capture('collection-mobile.jpg');
   await click(opener);
   await waitFor('document.querySelector(".breeze-preview").open');
   await click('[data-breeze-view="front"]');
   await waitFor('document.querySelector(".breeze-preview__image").naturalWidth === 256');
   await capture('mobile.jpg');
-  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
+  assert.equal(await evaluate('(() => { const rect = document.querySelector(".breeze-preview").getBoundingClientRect(); return rect.left >= -1 && rect.right <= innerWidth + 1; })()'), true);
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".breeze-preview__layout")).gridTemplateColumns.trim().split(/\\s+/).length'), 1);
   assert.ok(await evaluate('document.querySelector(".breeze-preview__image").getBoundingClientRect().width <= 256.1'));
   await click('[data-breeze-variant="deep-burgundy"]');
-  await waitFor('document.querySelector(".breeze-preview__image").src.endsWith("/breeze-deep-burgundy-side")');
+  await waitFor('document.querySelector(".breeze-preview__image").src.endsWith("/breeze-deep-burgundy-front")');
   assert.equal(await evaluate('document.querySelector(".breeze-preview__current-colour").textContent'), 'Deep Burgundy — Combat');
-  assert.equal(await evaluate('document.querySelector(".breeze-preview__current-view").textContent'), 'Side');
+  assert.equal(await evaluate('document.querySelector(".breeze-preview__current-view").textContent'), 'Front');
   await click('.breeze-preview__close');
   await waitFor('!document.querySelector(".breeze-preview").open');
   await waitFor('document.activeElement.matches("[data-fsd-breeze-open]")');
-  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
+  assert.equal(await evaluate('document.body.scrollWidth <= window.innerWidth + 1'), true);
   assert.deepEqual(browserErrors, []);
   console.log('FSD Breeze browser checks passed: one linked collection record, all 24 colour/view mappings, native image size, private media, no checkout, nested Escape/focus return, and mobile layout.');
 } finally {

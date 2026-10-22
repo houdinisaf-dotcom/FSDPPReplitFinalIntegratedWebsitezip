@@ -9,11 +9,11 @@ Wait for native dialog close-handler cleanup before asserting focus restoration 
 
 **How to apply:** Assert the final focus/scroll-lock cleanup state, and ignore a queued old close event if the dialog has already reopened.
 
-Do not infer real mobile page overflow solely from measurements in a Chromium session switched from desktop to mobile.
+Do not trust responsive measurements after switching an already-loaded desktop Chromium target to `mobile: true`.
 
-**Why:** Low-level CDP testing reported a 402px visual viewport alongside 1120px layout measurements, despite no visible element wider than 405px and correct fresh mobile preview screenshots.
+**Why:** In this project, mobile emulation after page load left `innerWidth` at 1120px and scaled the visual viewport, even after reload, making screenshots appear cropped or zoomed.
 
-**How to apply:** Use a dedicated fresh mobile browser context for future interaction automation. Keep mobile visual review separate from verified automated interactions until that setup is reliable; never report the inconsistent test as passing.
+**How to apply:** For reliable responsive proof capture, use a 402px CSS viewport (`mobile: false`, device scale 1), reload after resizing, and confirm `innerWidth` and `visualViewport.scale`. Use a fresh device-emulation context for true mobile/touch testing.
 
 For navigation panels that rerender their rows, use real pointer movement—not `pointerover`—to update the hover selection.
 

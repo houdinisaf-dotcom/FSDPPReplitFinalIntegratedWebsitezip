@@ -826,3 +826,59 @@ mtime_ms = 1792649747080
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/f9c84956-ae8d-4679-b8a6-127bc6ba098a/b2e4339f-4333-47cc-8725-714070202be8"
 storage_version_token = "1792649858496261"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "qK05Xclts4pRzsM2qxO1R"
+uri = "file://generated-artifacts/fsd-breeze-private/collection-desktop.jpg"
+type = "image"
+title = "FSD Breeze — Desktop Collection Card"
+description = "Private development proof of the Breeze card inside the existing Women’s Modest Combat collection."
+logical_id = "0dee72aa-8370-4418-a769-3b20aafc1de7"
+content_hash = "sha256:a9d02f788274b8389329bc7049c18e37fd42da30b458b61519ad636e63c03015"
+size = 81698
+mtime_ms = 1792658054274
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/0dee72aa-8370-4418-a769-3b20aafc1de7/2bccbf28-a0fc-4bc3-afca-37cbc7584d6e"
+storage_version_token = "1792658213313600"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "Il3JWAGjPdSsgXayGE-qu"
+uri = "file://generated-artifacts/fsd-breeze-private/desktop.jpg"
+type = "image"
+title = "FSD Breeze — Desktop Product Selector"
+description = "Private desktop proof showing the single-image product selector and pending-verification notices."
+logical_id = "ae53b392-7e59-4152-b679-0f315c2f3e2a"
+content_hash = "sha256:b02531408093b8afc3e1085260430fbb538ab78e011feb3677bee877a78520e9"
+size = 130720
+mtime_ms = 1792658054606
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/ae53b392-7e59-4152-b679-0f315c2f3e2a/34629854-1159-461f-8536-bec5c50a8b71"
+storage_version_token = "1792658214044702"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "LwGYxafogixBJ45EcG706"
+uri = "file://generated-artifacts/fsd-breeze-private/collection-mobile.jpg"
+type = "image"
+title = "FSD Breeze — Mobile Collection Card"
+description = "Responsive mobile proof of the private Breeze card in the existing collection."
+logical_id = "3148a104-8a0a-4390-b19a-e47fc979c875"
+content_hash = "sha256:f1257dc930d5ac554eeda97f8695855f81dd52864c31f272953d56a2f64f0327"
+size = 39795
+mtime_ms = 1792658058134
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/3148a104-8a0a-4390-b19a-e47fc979c875/62e0cb87-48ad-4cdb-aa64-05e66b70df8d"
+storage_version_token = "1792658214733441"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "u7d3Kg7IfguBkPmQ0RDGv"
+uri = "file://generated-artifacts/fsd-breeze-private/mobile.jpg"
+type = "image"
+title = "FSD Breeze — Mobile Product Selector"
+description = "Responsive 402px proof of the Breeze selector. Views, colours and detail controls continue below the captured viewport."
+logical_id = "db9fd7b9-c699-4de1-80e9-84901c9dd8de"
+content_hash = "sha256:64b76899290e8d1fe7fd321257f0d4cd1d98866f5463b0d9d6c94b3bc57e1654"
+size = 78350
+mtime_ms = 1792658058250
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/db9fd7b9-c699-4de1-80e9-84901c9dd8de/b9626a2c-857f-4fe8-8765-30cec6b91bea"
+storage_version_token = "1792658215447633"
+content_type = "image/jpeg"

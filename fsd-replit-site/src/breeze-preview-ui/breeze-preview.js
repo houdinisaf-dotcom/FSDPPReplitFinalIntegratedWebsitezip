@@ -276,6 +276,13 @@ export function mountBreezePreview({ root, product, variants }) {
     event.stopImmediatePropagation();
     close();
   };
+  const onWindowKeydown = event => {
+    if (event.key === 'Escape' && dialog.open) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      close();
+    }
+  };
   const onDialogKeydown = event => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     const target = event.target.closest?.('[data-breeze-view], [data-breeze-variant]');
@@ -301,6 +308,7 @@ export function mountBreezePreview({ root, product, variants }) {
   dialog.addEventListener('close', onDialogClose);
   dialog.addEventListener('cancel', onDialogCancel);
   dialog.addEventListener('keydown', onDialogKeydown);
+  window.addEventListener('keydown', onWindowKeydown, true);
 
   return {
     open,
@@ -313,6 +321,7 @@ export function mountBreezePreview({ root, product, variants }) {
       dialog.removeEventListener('close', onDialogClose);
       dialog.removeEventListener('cancel', onDialogCancel);
       dialog.removeEventListener('keydown', onDialogKeydown);
+      window.removeEventListener('keydown', onWindowKeydown, true);
       if (dialog.open) dialog.close();
       dialog.remove();
       restoreOpener();
