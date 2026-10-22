@@ -1,7 +1,7 @@
 // Browser checks for the development-only Modest Flow selector.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -9,6 +9,9 @@ import draft from '../content/modest-flow-private/draft.json' with { type: 'json
 
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
+const captureProof = process.env.FSD_MODEST_FLOW_CAPTURE === '1';
+const proofDirectory = join(process.cwd(), '../generated-artifacts/modest-flow-private');
+if (captureProof) mkdirSync(proofDirectory, { recursive: true });
 const profile = mkdtempSync(join(tmpdir(), 'fsd-modest-flow-browser-'));
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
@@ -69,6 +72,28 @@ try {
     throw new Error(`Browser condition did not become true: ${expression}`);
   };
   const click = selector => evaluate(`document.querySelector(${JSON.stringify(selector)})?.click()`);
+  const capture = async fileName => {
+    if (!captureProof) return;
+    const clip = fileName === 'mobile.jpg'
+      ? await evaluate(`(() => {
+        const rect = document.querySelector('.mf-selector').getBoundingClientRect();
+        return {
+          x: Math.max(0, rect.x - 12),
+          y: Math.max(0, rect.y - 12),
+          width: rect.width + 24,
+          height: rect.height + 24,
+        };
+      })()`)
+      : { x: 0, y: 0, ...await evaluate('({ width: window.innerWidth, height: window.innerHeight })') };
+    const screenshot = await send('Page.captureScreenshot', {
+      format: 'jpeg',
+      quality: 90,
+      fromSurface: true,
+      captureBeyondViewport: false,
+      clip: { ...clip, scale: 1 },
+    });
+    writeFileSync(join(proofDirectory, fileName), Buffer.from(screenshot.data, 'base64'));
+  };
 
   await send('Runtime.enable');
   await send('Page.enable');
@@ -97,6 +122,7 @@ try {
   assert.equal(await evaluate('document.querySelector("[data-modest-flow-draft-card] img").src'), heroSrc);
   assert.equal(await evaluate('window.scrollY'), initialScroll);
   assert.equal(await evaluate('document.querySelectorAll(".mf-selector form, .mf-selector input, .mf-selector [data-purchase], .mf-selector [data-add-to-cart]").length'), 0);
+  await capture('desktop.jpg');
 
   for (const variant of draft.product.variants) {
     await click(`[data-mf-variant="${variant.id}"]`);
@@ -126,8 +152,8 @@ try {
   await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
   await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
   await waitFor('!document.querySelector(".mf-selector").open');
-  await delay(200);
-  console.log('Focus after Escape:', await evaluate('({tag: document.activeElement.tagName, className: document.activeElement.className, id: document.activeElement.id, label: document.activeElement.getAttribute("aria-label"), expanded: document.querySelector("[data-modest-flow-open]")?.getAttribute("aria-expanded"), parentOpen: document.querySelector("#fsd-showcase-dialog").open})'));
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open');
+  await waitFor('document.activeElement.matches("[data-modest-flow-open]")');
   assert.equal(await evaluate('document.activeElement.matches("[data-modest-flow-open]")'), true);
   assert.equal(await evaluate('window.scrollY'), initialScroll);
 
@@ -135,6 +161,7 @@ try {
   await click(opener);
   await waitFor('document.querySelector(".mf-selector").open');
   await waitFor('document.querySelector(".mf-selector__image").naturalWidth === 1122');
+  await capture('mobile.jpg');
   assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".mf-selector__layout")).gridTemplateColumns.trim().split(/\\s+/).length'), 1);
   assert.equal(await evaluate('document.querySelectorAll(".mf-selector__swatch").length'), 6);

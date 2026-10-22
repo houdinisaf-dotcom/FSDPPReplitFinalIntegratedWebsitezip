@@ -3,3 +3,5 @@
 - [Official logo boundaries](official-logo-boundaries.md) — preserve the supplied FSD artwork exactly; review derived assets before applying them to the live site.
 - [House of Performance approvals](house-of-performance-approvals.md) — homepage remains staged; reconstruct only the explicitly authorized nav from visual reference; preserve catalogue and assets.
 - [Velocity hijab proof boundary](velocity-hijab-proof.md) — visual approval is not commercial approval; keep master data intact and the separate image archive untouched.
+- [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.
+- [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.

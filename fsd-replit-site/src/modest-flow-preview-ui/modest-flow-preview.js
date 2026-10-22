@@ -150,10 +150,25 @@ export function mountModestFlowSelector({ root, product, variants }) {
     if (!destroyed) restoreOpener();
   };
 
+  const onDialogCancel = event => {
+    event.preventDefault();
+    close();
+  };
+
+  const onWindowKeyDown = event => {
+    if (event.key === 'Escape' && dialog.open) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      close();
+    }
+  };
+
   root.append(dialog);
   root.addEventListener('click', onRootClick);
   dialog.addEventListener('click', onDialogClick);
   dialog.addEventListener('close', onDialogClose);
+  dialog.addEventListener('cancel', onDialogCancel);
+  window.addEventListener('keydown', onWindowKeyDown, true);
 
   return {
     open,
@@ -164,6 +179,8 @@ export function mountModestFlowSelector({ root, product, variants }) {
       root.removeEventListener('click', onRootClick);
       dialog.removeEventListener('click', onDialogClick);
       dialog.removeEventListener('close', onDialogClose);
+      dialog.removeEventListener('cancel', onDialogCancel);
+      window.removeEventListener('keydown', onWindowKeyDown, true);
       if (dialog.open) dialog.close();
       dialog.remove();
       restoreOpener();

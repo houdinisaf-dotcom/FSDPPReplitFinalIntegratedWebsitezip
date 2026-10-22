@@ -798,3 +798,31 @@ mtime_ms = 1792593851666
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/1be64da6-cb14-4147-8053-657ee1577fdd/57899a0d-a63e-4ecd-8c07-c241d45af6a3"
 storage_version_token = "1792593916665955"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "zz-IPjIGvR2PcbmSAMSfK"
+uri = "file://generated-artifacts/modest-flow-private/desktop.jpg"
+type = "image"
+title = "FSD Modest Flow — desktop private proof"
+description = "Responsive desktop colour-selector proof. Development-only; no checkout or publication."
+logical_id = "254fac65-20e4-47f2-bed6-de3ce4d9a31f"
+content_hash = "sha256:9f5668859bcf05905a2dc18f69d997538807dc1d4c253de2e44df8175c5cc372"
+size = 125475
+mtime_ms = 1792649745728
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/254fac65-20e4-47f2-bed6-de3ce4d9a31f/f34e3127-be41-4511-bfc7-eb5e452a9b9a"
+storage_version_token = "1792649857747109"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "2CUdy1ehe_pEhyb4Uk2yl"
+uri = "file://generated-artifacts/modest-flow-private/mobile.jpg"
+type = "image"
+title = "FSD Modest Flow — mobile private proof"
+description = "Responsive mobile colour-selector proof. Development-only; no checkout or publication."
+logical_id = "f9c84956-ae8d-4679-b8a6-127bc6ba098a"
+content_hash = "sha256:aac292f430a8d6893dbfae40aa8a30b5b308696293c542ede4e1daccfeaf1101"
+size = 188255
+mtime_ms = 1792649747080
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/f9c84956-ae8d-4679-b8a6-127bc6ba098a/b2e4339f-4333-47cc-8725-714070202be8"
+storage_version_token = "1792649858496261"
+content_type = "image/jpeg"
