@@ -70,3 +70,9 @@ Avoid the exact visible phrase “in development” across the public site.
 **Why:** The user asked for all instances of that wording to be removed.
 
 **How to apply:** Use honest pre-launch or proposed-concept wording instead, without implying that a product is available to buy.
+
+For the Women’s Collection, FSD FLEX leggings and the Premium Zip-Neck Performance Top are distinct products. Do not rename the top to AEROFORGE or assign it to an existing master record without confirmation. BREEZE remains tied to its existing master product; coordinated outfit references are not a new SKU unless confirmed.
+
+**Why:** The user’s collection brief explicitly distinguishes the top from AEROFORGE, calls BREEZE an existing product, and requires auditing coordinated outfit references before creating pages.
+
+**How to apply:** Keep any previews private and draft-only, preserve source imagery and master catalogue data, and leave product claims, garment-logo fidelity, and unconfirmed product identity pending. Do not enable checkout or publish.
