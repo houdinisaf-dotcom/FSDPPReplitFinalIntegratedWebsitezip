@@ -15,6 +15,14 @@ if (!headerRoot || !contentRoot) {
   throw new TypeError('The private AeroForge preview shell is missing its header or content mount.');
 }
 
+let robots = document.querySelector('meta[name="robots"]');
+if (!robots) {
+  robots = document.createElement('meta');
+  robots.name = 'robots';
+  document.head.append(robots);
+}
+robots.content = 'noindex, nofollow, noarchive';
+
 headerRoot.innerHTML = renderNavigationHeader(
   `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`,
 );

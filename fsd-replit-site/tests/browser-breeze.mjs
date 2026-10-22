@@ -111,12 +111,12 @@ try {
   assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__image").length'), 1);
   assert.equal(await evaluate('document.querySelector(".breeze-preview__image").naturalWidth'), 256);
   assert.ok(await evaluate('document.querySelector(".breeze-preview__reference").textContent.includes("£64.99")'));
-  assert.ok(await evaluate('document.querySelector(".breeze-preview__notices").textContent.toLowerCase().includes("not published")'));
-  assert.ok(await evaluate('document.querySelector(".breeze-preview__notices").textContent.includes("UNVERIFIED")'));
+  assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__notices").length'), 0);
+  assert.ok(await evaluate('document.querySelector(".breeze-preview__product-note").textContent.includes("Product details are being finalised")'));
   assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog").open'), true);
   assert.equal(await evaluate('window.scrollY'), initialScroll);
   assert.equal(await evaluate('document.querySelectorAll(".breeze-preview form, .breeze-preview [data-purchase], .breeze-preview [data-add-to-cart]").length'), 0);
-  assert.ok(await evaluate('document.querySelector(".breeze-preview__reference").textContent.toLowerCase().includes("catalogue reference only")'));
+  assert.ok(await evaluate('document.querySelector(".breeze-preview__reference").textContent.includes("Reference price")'));
   await capture('desktop.jpg');
 
   for (const variant of imageManifest.variants) {
@@ -131,7 +131,9 @@ try {
       assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__swatch[aria-pressed=\\"true\\"]").length'), 1);
       assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__view[aria-pressed=\\"true\\"]").length'), 1);
       assert.equal(await evaluate('document.querySelector(".breeze-preview__image").naturalWidth'), 256);
-      assert.ok(await evaluate('document.querySelector(".breeze-preview__image").alt.includes("Draft concept image")'));
+      assert.ok(await evaluate(`document.querySelector(".breeze-preview__image").alt.includes(${JSON.stringify(variant.label)})`));
+      assert.ok(await evaluate(`document.querySelector(".breeze-preview__image").alt.toLowerCase().includes(${JSON.stringify(asset.view)})`));
+      assert.doesNotMatch(await evaluate('document.querySelector(".breeze-preview__image").alt'), /draft concept image|source crop|unverified/i);
       assert.equal(await evaluate('window.scrollY'), initialScroll);
     }
   }

@@ -94,6 +94,9 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
       value: '', innerHTML: '', textContent: '', open: false,
       addEventListener(type, callback) { handlers.set(`${selector}:${type}`, callback); },
       setAttribute() {}, scrollIntoView() {}, focus() {},
+      contains() { return false; },
+      querySelector() { return null; },
+      querySelectorAll() { return []; },
       showModal() { this.open = true; }, close() { this.open = false; },
     });
     return elements.get(selector);
@@ -129,7 +132,8 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
 
     click('[data-product]', { dataset: { product: '10' } });
     assert.equal(element('#product-dialog').open, true);
-    assert.equal((element('#dialog-body').innerHTML.match(/<figure>/g) ?? []).length, 3);
+    assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 3);
     for (const image of products.find(p => p.id === 10).images) {
       assert.ok(element('#dialog-body').innerHTML.includes(image.src));
       assert.ok(element('#dialog-body').innerHTML.includes(image.label));
@@ -137,16 +141,32 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
     assert.match(element('#dialog-body').innerHTML, /design concept/);
     assert.ok(element('#dialog-body').innerHTML.includes(priceInfo(products.find(p => p.id === 10)).value));
     assert.doesNotMatch(element('#dialog-body').innerHTML, /Confirmed list price/);
+
+    const dialogBody = element('#dialog-body');
+    const mainImage = {};
+    const mainCaption = {};
+    const thumbnailButtons = [0, 1, 2].map(() => ({ setAttribute() {} }));
+    dialogBody.contains = () => true;
+    dialogBody.querySelector = selector => selector === '[data-catalogue-main-image]' ? mainImage : mainCaption;
+    dialogBody.querySelectorAll = () => thumbnailButtons;
+    click('[data-catalogue-image-index]', {
+      dataset: { catalogueImageIndex: '1' },
+      setAttribute() {},
+    });
+    assert.equal(mainImage.src, products.find(p => p.id === 10).images[1].src);
+    assert.equal(mainCaption.textContent, products.find(p => p.id === 10).images[1].label);
+
     handlers.get('#close-dialog:click')();
     assert.equal(element('#product-dialog').open, false);
     click('[data-product]', { dataset: { product: '1' } });
-    assert.equal((element('#dialog-body').innerHTML.match(/<figure>/g) ?? []).length, 2);
+    assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 2);
     assert.match(element('#dialog-body').innerHTML, /Vintage indigo fading to jet black/);
     assert.match(element('#dialog-body').innerHTML, /Electric cobalt fading to jet black/);
     for (const id of [42, 45, 60, 61, 62, 63, 65]) {
       click('[data-product]', { dataset: { product: String(id) } });
       assert.match(element('#dialog-body').innerHTML, /Imagery to follow/);
-      assert.match(element('#dialog-body').innerHTML, /Image status in master list/);
+      assert.doesNotMatch(element('#dialog-body').innerHTML, /Image status in master list|Development notes/);
       assert.doesNotMatch(element('#dialog-body').innerHTML, /<img /);
     }
     click('[data-product]', { dataset: { product: '59' } });
@@ -155,16 +175,16 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
 
     click('[data-product]', { dataset: { product: '47' } });
     assert.match(element('#dialog-body').innerHTML, /Mid-Hip Modest Coverage \(Regular Tunic Length\)/);
-    assert.match(element('#dialog-body').innerHTML, /Also appears as · Confirmed/);
+    assert.match(element('#dialog-body').innerHTML, /Also appears as/);
     assert.doesNotMatch(element('#dialog-body').innerHTML, /identity to confirm/);
     click('[data-product]', { dataset: { product: '69' } });
     assert.match(element('#dialog-body').innerHTML, /£699.99/);
     assert.match(element('#dialog-body').innerHTML, /Complete 10–50kg set\./);
-    assert.match(element('#dialog-body').innerHTML, /Exact weight increments, quantities and total set weight pending/);
-    assert.match(element('#dialog-body').innerHTML, /32mm/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /Exact weight increments, quantities and total set weight pending/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /32mm/);
     click('[data-product]', { dataset: { product: '54' } });
     assert.match(element('#dialog-body').innerHTML, /5-Cutout/);
-    assert.match(element('#dialog-body').innerHTML, /Not decided: bar weight/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /Not decided: bar weight/);
     const beforeHeldAttempt = element('#dialog-body').innerHTML;
     for (const id of [21, 36, 37, 53, 64, 68]) {
       click('[data-product]', { dataset: { product: String(id) } });
@@ -173,7 +193,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
 
     click('[data-category-link]', { dataset: { categoryLink: 'Gym Hardware and Accessories' } });
     assert.match(element('#catalogue-grid').innerHTML, /Complete 10–50kg set\./);
-    assert.match(element('#catalogue-grid').innerHTML, /Exact weight increments/);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /Exact weight increments/);
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£129.99/);
   } finally {
     delete globalThis.document;

@@ -185,6 +185,13 @@
   line-height: 1.8;
 }
 
+.breeze-preview__product-note {
+  margin: 11px 0 0;
+  color: #9a9386;
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+
 .breeze-preview__features {
   display: flex;
   flex-wrap: wrap;

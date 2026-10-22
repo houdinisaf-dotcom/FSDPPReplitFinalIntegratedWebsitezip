@@ -14,15 +14,14 @@ export function createModestFlowDevelopmentIntegration() {
   const collectionCard = `<article class="fsd-product-card fsd-product-card--private-preview" data-modest-flow-draft-card>
     <a class="fsd-product-media fsd-product-media--private-preview" href="#modest-flow"
       data-modest-flow-open aria-haspopup="dialog" aria-expanded="false"
-      aria-label="Open the private FSD Modest Flow colour selector">
+      aria-label="Open the FSD Modest Flow colour selector">
       <img loading="lazy" src="${escapeHTML(hero.src)}" alt="${escapeHTML(hero.alt)}" width="${hero.width}" height="${hero.height}"/>
       <span>FIXED CAMPAIGN HERO · DEEP BURGUNDY</span>
     </a>
     <div class="fsd-product-meta"><span>FSD APPAREL</span><span>MODEST ACTIVEWEAR</span></div>
     <h4>${escapeHTML(product.name)}</h4>
     <p class="fsd-product-description">${escapeHTML(product.subtitle)}</p>
-    <p class="fsd-product-status">VISUAL PROOF APPROVED · PRODUCT DETAILS PENDING</p>
-    <p class="fsd-preview-status">PRIVATE PREVIEW · NO CHECKOUT · NOT PUBLISHED</p>
+    <p class="fsd-product-status">PRE-LAUNCH CONCEPT</p>
     <a class="fsd-product-link fsd-product-link--private-preview" href="#modest-flow"
       data-modest-flow-open aria-haspopup="dialog" aria-expanded="false">
       SELECT A COLOUR <span aria-hidden="true">↗</span>
@@ -47,7 +46,7 @@ export function createModestFlowDevelopmentIntegration() {
       id: 'modest-flow-private-draft',
       divisionId: collection.divisionId,
       groupId: collection.groupId,
-      heading: 'MODEST ACTIVEWEAR · PRIVATE DRAFT',
+      heading: 'MODEST ACTIVEWEAR',
     }),
   });
 }

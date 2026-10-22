@@ -39,13 +39,23 @@ button:focus-visible, a:focus-visible {
   margin: 0 auto;
   border-bottom: 1px solid var(--rope-line);
 }
-.review-wordmark {
-  color: var(--rope-ink);
-  font: 800 11px/1.2 Manrope, Arial, sans-serif;
-  letter-spacing: .16em;
+.review-brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  max-width: 168px;
   text-decoration: none;
 }
-.review-wordmark span { color: var(--rope-gold); padding: 0 5px; }
+.review-brand img { display: block; width: 100%; height: auto; }
+.review-back {
+  color: var(--rope-muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.review-back:hover { color: var(--rope-gold); }
 .draft-badge {
   display: inline-flex;
   align-items: center;
@@ -284,9 +294,11 @@ button:focus-visible, a:focus-visible {
 }
 @media (max-width: 600px) {
   .review-header, .review-main { width: calc(100% - 32px); }
-  .review-header { min-height: 61px; }
-  .review-wordmark { font-size: 9px; }
+  .review-header { min-height: 61px; flex-wrap: wrap; gap: 8px 12px; padding: 10px 0; }
+  .review-brand { max-width: 112px; }
+  .review-back { font-size: 7px; letter-spacing: .07em; }
   .draft-badge { gap: 6px; font-size: 7px; letter-spacing: .08em; }
+  .review-back { order: 3; flex-basis: 100%; }
   .review-intro { padding: 39px 0 26px; }
   .intro-row { display: block; }
   .intro-row h1 { font-size: clamp(40px, 12vw, 58px); }

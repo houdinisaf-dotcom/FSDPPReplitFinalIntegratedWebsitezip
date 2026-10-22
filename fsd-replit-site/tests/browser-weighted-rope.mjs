@@ -91,7 +91,8 @@ try {
   await waitFor('document.querySelector("#edition-image")?.naturalWidth === 1122 && document.querySelector("#campaign-image")?.naturalWidth === 1672');
 
   assert.equal(await evaluate('document.querySelector("#product-title").textContent'), 'FSD Weighted Skipping Rope');
-  assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("DRAFT")'), true);
+  assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("PRE-LAUNCH")'), true);
+  assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("DRAFT")'), false);
   assert.equal(await evaluate('document.querySelectorAll("#edition-options [data-edition]").length'), 8);
   assert.equal(await evaluate('document.querySelectorAll(".edition-frame img").length'), 1);
   assert.equal(await evaluate('document.querySelector("#edition-image").dataset.variantId'), 'matte-obsidian');
@@ -139,15 +140,15 @@ try {
   const shellItemIndex = await evaluate('[...document.querySelectorAll("#fsd-mega-menu [data-nav-item]")].find(button => button.textContent.includes("FSD Hooded Running Shell"))?.dataset.navItem');
   assert.ok(shellItemIndex);
   await evaluate(`document.querySelector('#fsd-mega-menu [data-nav-item="${shellItemIndex}"]').dispatchEvent(new PointerEvent("pointermove",{bubbles:true,pointerType:"mouse"}))`);
-  await waitFor('document.querySelector(".fsd-feature-kicker")?.textContent === "FSD / CAMPAIGN PROOF"');
-  assert.equal(await evaluate('document.querySelector(".fsd-feature-cta")?.textContent.includes("OPEN CAMPAIGN PROOF")'), true);
+  await waitFor('document.querySelector(".fsd-feature-kicker")?.textContent === "FSD / CAMPAIGN"');
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-cta")?.textContent.includes("VIEW CAMPAIGN")'), true);
   assert.equal(await evaluate('document.querySelector(".fsd-feature-cta")?.disabled'), false);
   await click('.fsd-feature-cta');
   await waitFor('location.pathname === "/__catalogue-preview/hooded-running-shell/"');
   await waitFor('document.querySelector("#shell-campaign-image")?.naturalWidth === 1672 && document.querySelector("#shell-campaign-image")?.naturalHeight === 941');
   assert.equal(await evaluate('document.querySelector("#shell-title").textContent.replace(/\\s+/g," ").trim()'), 'FSD Hooded Running Shell');
   assert.equal(await evaluate('document.querySelector("#shell-campaign-image").alt.includes("orange FSD Hooded Running Shell")'), true);
-  assert.equal(await evaluate('document.querySelector(".shell-proof-details").innerText.includes("Colour selection is deferred.")'), true);
+  assert.equal(await evaluate('document.body.innerText.includes("Colour selection is deferred.")'), false);
   assert.equal(await evaluate('document.querySelectorAll("form, input, [data-add-to-cart], [data-purchase], [data-edition]").length'), 0);
   assert.equal(await evaluate('document.querySelector(\'meta[name="robots"]\').content'), 'noindex, nofollow, noarchive');
   const privateHeaders = await evaluate('fetch(location.href).then(response => ({ robots: response.headers.get("X-Robots-Tag"), cache: response.headers.get("Cache-Control") }))');

@@ -273,6 +273,38 @@ html, body { min-height: 100%; margin: 0; background: #0a0b0c; }
   .nexus-footer { align-items: flex-start; flex-direction: column; justify-content: center; gap: 8px; padding: 17px 0; }
   .nexus-dialog { width: 96vw; padding: 47px 10px 12px; }
 }
+.nexus-back-collection {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  margin-bottom: 2px;
+  padding: 0 13px;
+  border: 1px solid rgba(201,173,120,.38);
+  color: #d9c69b;
+  font-size: 8px;
+  letter-spacing: .14em;
+  text-decoration: none;
+  transition: border-color .18s ease, background .18s ease;
+}
+.nexus-back-collection:hover { border-color: var(--nexus-gold); background: rgba(201,173,120,.07); }
+.nexus-prelaunch-note {
+  display: grid;
+  gap: 5px;
+  margin: 27px 0 0;
+  padding: 10px 13px;
+  border-left: 1px solid var(--nexus-gold);
+  background: rgba(201,173,120,.045);
+  color: #d8c79f;
+  font-size: 8px;
+  letter-spacing: .14em;
+  line-height: 1.6;
+}
+.nexus-prelaunch-note strong { font-weight: 600; }
+.nexus-prelaunch-note small { color: #a5a198; font-size: 9px; letter-spacing: .015em; }
+@media (max-width: 650px) {
+  .nexus-back-collection { min-height: 35px; font-size: 7px; }
+  .nexus-prelaunch-note { margin-top: 20px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .nexus-preview-body *, .nexus-preview-body *::before, .nexus-preview-body *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }

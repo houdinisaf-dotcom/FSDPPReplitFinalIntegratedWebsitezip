@@ -77,32 +77,34 @@ try {
   await waitFor('document.querySelector(".af-preview") && document.querySelector("#af-collection-title")');
   assert.equal(await evaluate('document.querySelector("meta[name=robots]")?.content'), 'noindex, nofollow, noarchive');
   assert.equal(await evaluate('document.querySelectorAll(".af-product-link").length'), 2);
-  assert.equal(await evaluate('document.querySelectorAll(".af-manifest-row").length'), 13);
+  assert.equal(await evaluate('document.querySelectorAll(".af-manifest-row").length'), 0);
   const fixedHero = await evaluate('document.querySelector(".af-campaign-image img")?.src');
   assert.ok(fixedHero.includes('aeroforge-collection-hero'));
 
-  await click('[data-af-route="top"]');
-  await waitFor('document.querySelector("#af-product-title")?.textContent.includes("Training Top")');
-  assert.equal(await evaluate('document.querySelectorAll("[data-af-variant]").length'), 6);
-  await click('[data-af-variant="navy"]');
-  await waitFor('document.querySelector("[data-af-main-image]")?.src.includes("aeroforge-outfit-navy")');
-  assert.equal(await evaluate('document.querySelector("[data-af-colour]")?.textContent'), 'Navy');
-  await click('[data-af-detail="collar-zip"]');
-  await waitFor('document.querySelector("[data-af-main-image]")?.src.includes("aeroforge-detail-collar-zip")');
-  await click('[data-af-variant="mauve"]');
-  await waitFor('document.querySelector("[data-af-main-image]")?.src.includes("aeroforge-outfit-mauve-rear")');
-  assert.match(await evaluate('document.querySelector("[data-af-variant-note]")?.textContent'), /front image pending/i);
-  await click('[data-af-route="collection"]');
+  await click('[data-af-open="top"]');
+  await waitFor('document.querySelector(".af-selector[open] .af-selector__title")?.textContent.includes("Training Top")');
+  assert.equal(await evaluate('document.querySelectorAll(".af-selector[open] [data-af-variant]").length'), 6);
+  await click('.af-selector[open] [data-af-variant="navy"]');
+  await waitFor('document.querySelector(".af-selector[open] [data-af-image]")?.src.includes("aeroforge-outfit-navy")');
+  assert.equal(await evaluate('document.querySelector(".af-selector[open] [data-af-colour]")?.textContent'), 'Navy');
+  await click('.af-selector[open] [data-af-detail="collar-zip"]');
+  await waitFor('document.querySelector(".af-selector[open] [data-af-image]")?.src.includes("aeroforge-detail-collar-zip")');
+  await click('.af-selector[open] [data-af-variant="mauve"]');
+  await waitFor('document.querySelector(".af-selector[open] [data-af-image]")?.src.includes("aeroforge-outfit-mauve-rear")');
+  assert.equal(await evaluate('document.querySelectorAll("[data-af-variant-note]").length'), 0);
+  assert.doesNotMatch(await evaluate('document.body.innerText'), /front image pending|rear image pending/i);
+  await click('.af-selector[open] [data-af-close]');
+  await waitFor('!document.querySelector(".af-selector[open]")');
   await waitFor('document.querySelector("#af-collection-title")');
   assert.equal(await evaluate('document.querySelector(".af-campaign-image img")?.src'), fixedHero);
 
-  await click('[data-af-route="joggers"]');
-  await waitFor('document.querySelector("#af-product-title")?.textContent.includes("Joggers")');
-  assert.equal(await evaluate('document.querySelectorAll("[data-af-variant]").length'), 6);
-  assert.equal(await evaluate('document.querySelectorAll("[data-af-detail]").length'), 0);
-  await click('[data-af-variant="mauve"]');
-  await waitFor('document.querySelector("[data-af-main-image]")?.src.includes("aeroforge-outfit-mauve-rear")');
-  assert.match(await evaluate('document.querySelector("[data-af-image-label]")?.textContent'), /COORDINATED OUTFIT VIEW/);
+  await click('[data-af-open="joggers"]');
+  await waitFor('document.querySelector(".af-selector[open] .af-selector__title")?.textContent.includes("Joggers")');
+  assert.equal(await evaluate('document.querySelectorAll(".af-selector[open] [data-af-variant]").length'), 6);
+  assert.equal(await evaluate('document.querySelectorAll(".af-selector[open] [data-af-detail]").length'), 0);
+  await click('.af-selector[open] [data-af-variant="mauve"]');
+  await waitFor('document.querySelector(".af-selector[open] [data-af-image]")?.src.includes("aeroforge-outfit-mauve-rear")');
+  assert.match(await evaluate('document.querySelector(".af-selector[open] [data-af-image-note]")?.textContent'), /OUTFIT REFERENCE/);
   assert.equal(await evaluate('document.querySelectorAll("button").length > 0'), true);
   assert.equal(await evaluate('Array.from(document.querySelectorAll("button")).some(button => /buy now|add to cart|checkout/i.test(button.textContent))'), false);
 
@@ -111,9 +113,9 @@ try {
   });
   await delay(150);
   assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true);
-  assert.equal(await evaluate('document.querySelectorAll("[data-af-variant]").length'), 6);
+  assert.equal(await evaluate('document.querySelectorAll(".af-selector[open] [data-af-variant]").length'), 6);
   assert.deepEqual(browserErrors, []);
-  console.log('AeroForge browser checks passed: private noindex route, collection manifest, fixed hero, six-colour switching, detail switching, mauve rear/front warning, jogger outfit reference, no purchase controls, and 402px overflow check.');
+  console.log('AeroForge browser checks passed: private noindex route, fixed hero, six-colour switching, detail switching, image-gap notes kept off the page, jogger outfit reference, no purchase controls, and 402px overflow check.');
 } finally {
   socket?.close();
   const chromeExited = chrome.exitCode !== null || chrome.signalCode !== null

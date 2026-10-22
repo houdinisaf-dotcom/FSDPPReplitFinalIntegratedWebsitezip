@@ -11,18 +11,17 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
 
 export function createMotionDevelopmentIntegration() {
   const hero = motionPreviewManifest.assets.find(asset => asset.id === 'campaign-hero');
-  const collectionCard = `<article class="fsd-product-card fsd-product-card--private-preview" data-motion-draft-card>
-    <a class="fsd-product-media fsd-product-media--private-preview" href="${motionPreviewPath}"
-      aria-label="Open the private FSD MOTION collection preview">
-      <img loading="lazy" src="${escapeHTML(hero.src)}" alt="${escapeHTML(hero.alt)}" width="${hero.width}" height="${hero.height}"/>
-      <span>PRIVATE CAMPAIGN REFERENCE</span>
+  const collectionCard = `<article class="fsd-product-card" data-motion-draft-card>
+    <a class="fsd-product-media" href="${motionPreviewPath}"
+      aria-label="Explore the FSD MOTION collection">
+      <img loading="lazy" src="${escapeHTML(hero.src)}" alt="FSD MOTION campaign image" width="${hero.width}" height="${hero.height}"/>
+      <span>FSD MOTION</span>
     </a>
     <div class="fsd-product-meta"><span>FSD APPAREL</span><span>SMART TRAINING APPAREL</span></div>
     <h4>FSD MOTION</h4>
-    <p class="fsd-product-description">A connected-movement apparel concept. All technical claims remain pending verification.</p>
-    <p class="fsd-product-status">DRAFT · PENDING APPROVAL</p>
-    <p class="fsd-preview-status">PRIVATE PREVIEW · NOT AVAILABLE TO PURCHASE</p>
-    <a class="fsd-product-link fsd-product-link--private-preview" href="${motionPreviewPath}">EXPLORE COLLECTION <span aria-hidden="true">↗</span></a>
+    <p class="fsd-product-description">A connected-movement apparel concept for training.</p>
+    <p class="fsd-preview-status">PRE-LAUNCH CONCEPT</p>
+    <a class="fsd-product-link" href="${motionPreviewPath}">EXPLORE COLLECTION <span aria-hidden="true">↗</span></a>
   </article>`;
 
   return Object.freeze({
@@ -31,7 +30,7 @@ export function createMotionDevelopmentIntegration() {
       id: 'fsd-motion-private-collection',
       divisionId: 'apparel',
       groupId: '*',
-      heading: 'PRIVATE DRAFT COLLECTION',
+      heading: 'FSD MOTION',
     }),
     draftMenuItems: Object.freeze([Object.freeze({
       id: 'fsd-motion-private-collection-menu-entry',
@@ -39,11 +38,11 @@ export function createMotionDevelopmentIntegration() {
       kind: 'draft-product',
       href: motionPreviewPath,
       previewOnly: true,
-      previewKicker: 'APPAREL / PRIVATE DRAFT',
+      previewKicker: 'APPAREL / TRAINING',
       previewActionLabel: 'EXPLORE COLLECTION',
       featureImageSrc: hero.src,
-      featureImageAlt: hero.alt,
-      description: 'A four-garment campaign concept. Product photos and technical specifications are pending verification.',
+      featureImageAlt: 'FSD MOTION campaign image',
+      description: 'A four-garment campaign concept from FSD MOTION.',
       sourceDivisionId: 'apparel',
       sourceGroupIndex: 0,
       sourceSubcategoryIndex: -1,

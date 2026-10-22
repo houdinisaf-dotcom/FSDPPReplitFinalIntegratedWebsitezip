@@ -1,6 +1,7 @@
 import { collectionDivisions } from './collection-divisions.js';
 import { products } from './catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
+import { bindCollectionReturn } from './collection-return.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
 
 const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;
@@ -27,3 +28,5 @@ mountNavigation({
     window.location.assign('/#collections');
   },
 });
+
+bindCollectionReturn(document);

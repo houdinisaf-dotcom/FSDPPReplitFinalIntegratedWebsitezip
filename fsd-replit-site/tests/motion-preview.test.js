@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { createMotionPreview, motionPreviewManifest } from '../src/motion-campaign.js';
 import { motionPreviewPath, motionProductPath } from '../src/motion-preview-path.js';
 import { createMotionDevelopmentIntegration } from '../src/motion-development-integration.js';
+import { renderMotionPreview } from '../src/motion-preview-ui/motion-preview.js';
 
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -75,8 +76,37 @@ test('the draft card links into the development-only collection route without pu
   assert.equal(integration.collectionCardPlacement.divisionId, 'apparel');
   assert.equal(integration.collectionCardPlacement.groupId, '*');
   assert.match(integration.collectionCard, /FSD MOTION/);
-  assert.match(integration.collectionCard, /PENDING APPROVAL/);
-  assert.match(integration.collectionCard, /NOT AVAILABLE TO PURCHASE/);
+  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
+  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
   assert.doesNotMatch(integration.collectionCard, /£\s?\d|\bBUY\b|\bADD TO CART\b/i);
   assert.equal(integration.draftMenuItems[0].href, motionPreviewPath);
+});
+
+test('MOTION keeps campaign galleries and collection return links without customer-facing audit panels', () => {
+  const collection = createMotionPreview();
+  const collectionHtml = renderMotionPreview({
+    collection: collection.collection,
+    products: collection.products,
+    assets: collection.assets,
+    stories: collection.stories,
+  });
+  assert.match(collectionHtml, /BACK TO COLLECTION/);
+  assert.match(collectionHtml, /PRE-LAUNCH CONCEPT/);
+  assert.equal((collectionHtml.match(/data-motion-gallery-select=/g) || []).length, 15);
+  assert.equal((collectionHtml.match(/data-motion-product-link=/g) || []).length, 4);
+  assert.doesNotMatch(collectionHtml, /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|motion-review-columns|Standalone views|Awaiting confirmation/);
+  assert.doesNotMatch(collectionHtml, /ADD TO CART|BUY NOW|CHECKOUT NOW|£\s?\d/i);
+
+  const product = createMotionPreview('mens-performance-training-top');
+  const productHtml = renderMotionPreview({
+    collection: product.collection,
+    product: product.product,
+    products: product.products,
+    assets: product.assets,
+    stories: product.stories,
+  });
+  assert.match(productHtml, /BACK TO MOTION COLLECTION/);
+  assert.match(productHtml, /Product details are being finalised\./);
+  assert.ok((productHtml.match(/data-motion-gallery-select=/g) || []).length >= 3);
+  assert.doesNotMatch(productHtml, /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|motion-review-columns/);
 });

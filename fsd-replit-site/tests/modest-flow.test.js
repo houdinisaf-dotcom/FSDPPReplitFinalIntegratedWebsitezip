@@ -88,12 +88,12 @@ test('development integration places the fixed hero in the existing women’s mo
   const integration = createModestFlowDevelopmentIntegration();
   assert.equal(integration.collectionCardPlacement.divisionId, 'apparel');
   assert.equal(integration.collectionCardPlacement.groupId, 'womens-modest-combat');
-  assert.equal(integration.collectionCardPlacement.heading, 'MODEST ACTIVEWEAR · PRIVATE DRAFT');
+  assert.equal(integration.collectionCardPlacement.heading, 'MODEST ACTIVEWEAR');
   assert.equal(integration.variants.length, 6);
   assert.match(integration.collectionCard, /data-modest-flow-open/);
   assert.match(integration.collectionCard, /modest-flow-campaign-hero/);
-  assert.match(integration.collectionCard, /VISUAL PROOF APPROVED · PRODUCT DETAILS PENDING/);
-  assert.match(integration.collectionCard, /PRIVATE PREVIEW · NO CHECKOUT · NOT PUBLISHED/);
+  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
+  assert.doesNotMatch(integration.collectionCard, /PRIVATE PREVIEW|NO CHECKOUT|NOT PUBLISHED/i);
   assert.doesNotMatch(integration.collectionCard, /<(?:form|input)\b|data-(?:purchase|add-to-cart)=/i);
 });
 

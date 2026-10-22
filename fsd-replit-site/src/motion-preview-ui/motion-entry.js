@@ -1,6 +1,7 @@
 import { collectionDivisions } from '../collection-divisions.js';
 import { products } from '../catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from '../site-navigation.js';
+import { bindCollectionReturn } from '../collection-return.js';
 import { createMotionPreview } from '../motion-campaign.js';
 import { motionProductsPrefix } from '../motion-preview-path.js';
 import { createMotionDevelopmentIntegration } from '../motion-development-integration.js';
@@ -45,11 +46,13 @@ root.innerHTML = renderMotionPreview({
   missingPhotographs: preview.product?.missingPhotographs || preview.missingPhotographs,
 });
 
+bindCollectionReturn(root);
+
 document.title = preview.product
-  ? `${preview.product.name} | FSD MOTION Private Preview`
-  : `${preview.collection.name} ${preview.collection.subtitle} | Private Preview`;
+  ? `${preview.product.name} | FSD MOTION Pre-launch Concept`
+  : `${preview.collection.name} ${preview.collection.subtitle} | Pre-launch Concept`;
 document.querySelector('meta[name="description"]')
-  ?.setAttribute('content', preview.collection.seoDraft.description);
+  ?.setAttribute('content', 'Explore the FSD MOTION pre-launch apparel concept. Product details and performance statements remain under review.');
 
 mountNavigation({
   root: root.querySelector('[data-navigation-shell]'),
@@ -88,14 +91,16 @@ function updateActiveImage(asset, selectedButton = null) {
     if (request !== imageRequest) return;
     selectedAsset = asset;
     activeImage.src = asset.src;
-    activeImage.alt = asset.alt;
+    activeImage.alt = '';
     activeImage.width = asset.width;
     activeImage.height = asset.height;
     activeImageButton.dataset.motionImage = asset.id;
     if (preview.product) activeImageButton.style.aspectRatio = `${asset.width} / ${asset.height}`;
-    activeCaption?.firstChild && (activeCaption.firstChild.textContent = `${asset.label} `);
+    const selectedLabel = selectedButton?.querySelector('.motion-ref-meta strong, .motion-gallery-thumb span')?.textContent?.trim()
+      || 'FSD MOTION campaign image';
+    activeCaption?.firstChild && (activeCaption.firstChild.textContent = `${selectedLabel} `);
     const note = activeCaption?.querySelector('span');
-    if (note) note.textContent = asset.reviewNote;
+    if (note) note.textContent = 'CAMPAIGN IMAGE';
     root.querySelectorAll('[data-motion-gallery-select]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.motionGallerySelect === asset.id));
     });
@@ -119,8 +124,8 @@ root.addEventListener('click', event => {
   const enlargeButton = event.target.closest('[data-motion-enlarge]');
   if (enlargeButton && lightbox && selectedAsset) {
     lightboxImage.src = selectedAsset.src;
-    lightboxImage.alt = selectedAsset.alt;
-    lightboxCaption.textContent = `${selectedAsset.label} — ${selectedAsset.reviewNote}`;
+    lightboxImage.alt = '';
+    lightboxCaption.textContent = `${activeCaption?.firstChild?.textContent?.trim() || 'FSD MOTION campaign image'} — CAMPAIGN IMAGE`;
     if (!lightbox.open) lightbox.showModal();
     return;
   }

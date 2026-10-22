@@ -36,7 +36,7 @@ function makeWeightedRopeDraftMenuItem() {
     previewOnly: true,
     featureImageSrc: `${weightedRopePreviewPath}media/weighted-rope-campaign`,
     featureImageAlt: 'FSD Weighted Skipping Rope campaign with the athlete and all eight colour editions.',
-    description: 'Private draft preview · eight colour editions. Not for sale; price and specifications are pending approval.',
+    description: 'Eight colour editions in the FSD performance training collection.',
     sourceDivisionId: 'hardware',
     sourceGroupIndex: 0,
     sourceSubcategoryIndex: -1,
@@ -50,11 +50,11 @@ function makeHoodedShellCampaignMenuItem() {
     kind: 'draft-product',
     href: hoodedShellPreviewPath,
     previewOnly: true,
-    previewKicker: 'FSD / CAMPAIGN PROOF',
-    previewActionLabel: 'OPEN CAMPAIGN PROOF',
+    previewKicker: 'FSD / CAMPAIGN',
+    previewActionLabel: 'VIEW CAMPAIGN',
     featureImageSrc: `${hoodedShellPreviewPath}media/${hoodedShellCampaign.id}`,
     featureImageAlt: hoodedShellCampaign.alt,
-    description: 'FSD Apparel / Performance Outerwear · Private campaign image only. Colour selection is deferred until the original product boards are available.',
+    description: 'Campaign imagery for the FSD Hooded Running Shell.',
     sourceDivisionId: 'apparel',
     sourceGroupIndex: 0,
     sourceSubcategoryIndex: -1,
@@ -125,7 +125,7 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
         sourceDivisionId: division.id,
         sourceGroupIndex,
         sourceSubcategoryIndex: -1,
-        description: 'Proposed concept. Specifications and availability are not confirmed.',
+        description: 'A design direction within the FSD collection.',
       }));
   }
 
@@ -424,12 +424,12 @@ function renderFeature(menu, group, item, products, canNavigate) {
       </div>`
     : `<div class="fsd-feature-media fsd-feature-media--empty" aria-label="No approved image is mapped to this collection">
         <span>FSD / ${escapeHTML((item?.sourceDivisionId || group?.sourceDivisionId || group?.id || 'collection').toUpperCase())}</span>
-        <small>NO APPROVED IMAGE MAPPED</small>
+        <small>COLLECTION PREVIEW</small>
       </div>`;
 
   const available = canNavigate({ menu, group, item });
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
-    : item?.kind === 'draft-product' ? (item.previewActionLabel || 'OPEN DRAFT PREVIEW')
+    : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
       : item?.record ? 'VIEW DETAILS'
       : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
         : menu.id === 'house' && item?.href === '#philosophy' ? 'READ THE FSD STORY'
@@ -442,7 +442,7 @@ function renderFeature(menu, group, item, products, canNavigate) {
   return `<article class="fsd-feature-card">
     ${media}
     <div class="fsd-feature-copy">
-      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? (item.previewKicker || 'FSD / DRAFT PREVIEW') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
+      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / PRE-LAUNCH CONCEPT') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
       <h3>${escapeHTML(featureTitle)}</h3>
       <p>${escapeHTML(description)}</p>
       <button type="button" class="fsd-feature-cta" data-nav-destination
@@ -472,7 +472,7 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
   return group.items.map((item, index) => {
     const available = canNavigate({ menu, group, item });
     const status = item.kind === 'draft-product'
-      ? 'Open the private draft preview. Not for sale.'
+      ? 'Open this pre-launch product preview.'
       : available ? 'Open this destination.' : 'Preview only; no verified destination is available.';
     return `<button type="button"
       class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"

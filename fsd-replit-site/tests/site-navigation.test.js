@@ -93,7 +93,7 @@ test('weighted rope is an opt-in Hardware draft preview, not a published catalog
   assert.equal(rope.previewOnly, true);
   assert.equal(rope.href, '/__catalogue-preview/weighted-skipping-rope/');
   assert.equal(rope.featureImageSrc, `${rope.href}media/weighted-rope-campaign`);
-  assert.match(rope.description, /not for sale/i);
+  assert.match(rope.description, /Eight colour editions in the FSD performance training collection/i);
   assert.equal(rope.productId, undefined);
   assert.equal(products.some(product => product.name === rope.title), false);
   assert.deepEqual(getNavigationFeature(previewHardware, 0, ropeIndex).imageSources, [rope.featureImageSrc]);
@@ -115,9 +115,9 @@ test('the hooded-shell campaign proof is available only in the development previ
   assert.equal(shell.previewOnly, true);
   assert.equal(shell.href, '/__catalogue-preview/hooded-running-shell/');
   assert.equal(shell.featureImageSrc, `${shell.href}media/hooded-shell-campaign`);
-  assert.equal(shell.previewKicker, 'FSD / CAMPAIGN PROOF');
-  assert.equal(shell.previewActionLabel, 'OPEN CAMPAIGN PROOF');
-  assert.match(shell.description, /colour selection is deferred/i);
+  assert.equal(shell.previewKicker, 'FSD / CAMPAIGN');
+  assert.equal(shell.previewActionLabel, 'VIEW CAMPAIGN');
+  assert.match(shell.description, /Campaign imagery for the FSD Hooded Running Shell/i);
   assert.equal(shell.record, undefined);
   assert.equal(shell.productId, undefined);
   assert.deepEqual(getNavigationFeature(previewCollections, 0, shellIndex).imageSources, [shell.featureImageSrc]);

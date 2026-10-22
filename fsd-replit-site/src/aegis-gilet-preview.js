@@ -1,6 +1,7 @@
 import { collectionDivisions } from './collection-divisions.js';
 import { products, priceInfo } from './catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
+import { bindCollectionReturn } from './collection-return.js';
 import { aegisGiletPreviewRecord as preview } from './aegis-gilet-campaign.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
@@ -17,7 +18,7 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
 
 const price = {
   ...priceInfo(preview.product),
-  label: 'Reference only · not approved for sale',
+  label: 'Catalogue reference',
 };
 
 const headerRoot = document.querySelector('#aegis-site-header');
@@ -57,6 +58,9 @@ const galleryMarkup = preview.gallery.map(image => `
 
 const root = document.querySelector('#aegis-gilet-root');
 root.innerHTML = `
+  <a class="fsd-collection-return" href="/#collections" data-collection-return>
+    <span aria-hidden="true">←</span> BACK TO COLLECTION
+  </a>
   <nav class="aegis-breadcrumb" aria-label="Breadcrumb">
     <a href="/#home">Home</a><span aria-hidden="true">›</span>
     <a href="/#collections">Women</a><span aria-hidden="true">›</span>
@@ -64,15 +68,15 @@ root.innerHTML = `
     <span aria-current="page">${escapeHTML(preview.product.name)}</span>
   </nav>
   <div class="aegis-proof-label">
-    <span>FSD / PRIVATE PRODUCT REVIEW</span>
-    <span>PRE-LAUNCH · NOT AVAILABLE TO PURCHASE</span>
+    <span>FSD / AEGIS</span>
+    <span>WOMEN’S MODEST ACTIVEWEAR</span>
   </div>
   <section class="aegis-product-layout" aria-labelledby="aegis-gilet-title">
     <div class="aegis-gallery" aria-label="Aegis gilet image gallery">
       <figure class="aegis-gallery-figure">
         <button class="aegis-gallery-stage" type="button" data-aegis-enlarge aria-label="Enlarge selected Aegis visual">
           <img id="aegis-main-image" src="${escapeHTML(preview.campaign.src)}"
-            alt="${escapeHTML(preview.campaign.alt)}"
+            alt="FSD Aegis modest outerwear campaign image"
             width="${preview.campaign.width}" height="${preview.campaign.height}" fetchpriority="high"/>
           <span class="aegis-enlarge-hint">ENLARGE IMAGE ↗</span>
         </button>
@@ -81,46 +85,35 @@ root.innerHTML = `
       <div class="aegis-gallery-thumbnails" data-aegis-thumbnails role="group" aria-label="Choose a gilet image">
         ${galleryMarkup}
       </div>
-      <p id="aegis-image-review-note" class="aegis-gallery-note">${escapeHTML(preview.campaign.reviewNote)}</p>
     </div>
     <div class="aegis-product-copy">
       <p class="aegis-product-kicker">FSD / WOMEN’S MODEST ACTIVEWEAR</p>
       <h1 id="aegis-gilet-title">${escapeHTML(preview.product.name)}</h1>
-      <p class="aegis-product-status">PRIVATE VISUAL REVIEW · DETAILS PENDING VERIFICATION</p>
-      <p class="aegis-product-description">${escapeHTML(preview.description)}</p>
-      <div class="aegis-product-option">
+      <p class="aegis-product-status">PRE-LAUNCH CONCEPT</p>
+      <p class="aegis-product-description">A visual concept for the FSD modest outerwear collection.</p>
+      ${preview.product.colourways ? `<div class="aegis-product-option">
         <span class="aegis-product-label">Catalogue colour reference</span>
-        <p class="aegis-product-colour"><span aria-hidden="true"></span>${escapeHTML(preview.product.colourways || 'Not confirmed')}</p>
-      </div>
+        <p class="aegis-product-colour"><span aria-hidden="true"></span>${escapeHTML(preview.product.colourways)}</p>
+      </div>` : ''}
       <div class="aegis-product-price">
         <span>${escapeHTML(price.label)}</span><strong>${escapeHTML(price.value)}</strong>
       </div>
-      <p class="aegis-purchase-disabled" role="status">PRIVATE PREVIEW · PURCHASING DISABLED</p>
-      <ul class="aegis-verification-list" aria-label="Product information verification status">
-        <li><strong>Garment construction</strong><span>Visual references only; final construction requires confirmation.</span></li>
-        <li><strong>Materials and care</strong><span>Not supplied; pending verification.</span></li>
-        <li><strong>Fit, sizing and performance</strong><span>Not supplied or verified.</span></li>
-      </ul>
       <div class="aegis-accordions">
         <details>
-          <summary>Construction review</summary>
-          <p>${escapeHTML(preview.reviewNote)}</p>
-        </details>
-        <details>
           <summary>Materials, sizing and care</summary>
-          <p>Material composition, sizing guidance and care instructions have not been supplied. These details remain pending verification.</p>
+          <p>Product details will be updated before release.</p>
         </details>
         <details>
-          <summary>Price and availability</summary>
-          <p>The displayed master-record price is a reference only and is not approval to sell. There is no checkout, payment or availability information in this private proof.</p>
+          <summary>Price and release</summary>
+          <p>Price and release timing will be shared when confirmed.</p>
         </details>
       </div>
-      <p class="aegis-disclaimer">The supplied photographs are visual references cropped from one composite board. The back-panel insert, garment construction and all technical details are pending review against the final garment.</p>
+      <p class="aegis-disclaimer">Product details are being finalised.</p>
     </div>
   </section>
   <footer class="aegis-proof-footer">
-    <span>FSD / PRIVATE PRODUCT REVIEW</span>
-    <span>No checkout · No publication · Original composite preserved</span>
+    <span>FSD / AEGIS</span>
+    <span>WOMEN’S MODEST ACTIVEWEAR</span>
   </footer>
   <dialog class="aegis-lightbox" id="aegis-image-lightbox" aria-label="Enlarged Aegis image">
     <button class="aegis-lightbox-close" type="button" data-aegis-lightbox-close aria-label="Close enlarged image">CLOSE ×</button>
@@ -128,9 +121,10 @@ root.innerHTML = `
     <p id="aegis-lightbox-caption"></p>
   </dialog>`;
 
+bindCollectionReturn(root);
+
 const mainImage = root.querySelector('#aegis-main-image');
 const caption = root.querySelector('#aegis-image-caption');
-const reviewNote = root.querySelector('#aegis-image-review-note');
 const lightbox = root.querySelector('#aegis-image-lightbox');
 const lightboxImage = root.querySelector('#aegis-lightbox-image');
 const lightboxCaption = root.querySelector('#aegis-lightbox-caption');
@@ -154,7 +148,6 @@ root.querySelector('[data-aegis-thumbnails]').addEventListener('click', event =>
     mainImage.width = image.width;
     mainImage.height = image.height;
     caption.textContent = image.label;
-    reviewNote.textContent = image.reviewNote;
     root.querySelectorAll('[data-aegis-thumb]').forEach(thumb => {
       thumb.setAttribute('aria-pressed', String(thumb === button));
     });

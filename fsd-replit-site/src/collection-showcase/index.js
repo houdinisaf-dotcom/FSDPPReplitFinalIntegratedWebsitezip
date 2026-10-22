@@ -88,25 +88,25 @@ function productCard(product) {
   const image = isAegisPreview
     ? {
       src: `${aegisGiletPreviewPath}media/front-three-quarter`,
-      label: 'Private campaign image from the supplied Aegis visual board',
+      label: 'Aegis campaign image',
     }
     : catalogueImage;
   const category = product.category || 'FSD COLLECTION';
   const audience = product.audience ? `<span>${escapeHTML(product.audience)}</span>` : '';
   const masterPrice = priceInfo(product);
   const price = isAegisPreview
-    ? { ...masterPrice, label: 'Reference only · not approved for sale' }
+    ? { ...masterPrice, label: 'Catalogue reference' }
     : Number(product.id) === 43 && import.meta.env.DEV
-    ? { ...masterPrice, label: 'Reference only · not approved for sale' }
+    ? { ...masterPrice, label: 'Catalogue reference' }
     : masterPrice;
   const colourways = Number(product.id) === 43 && import.meta.env.DEV
     ? 'Black / Champagne Gold'
     : product.colourways;
-  const description = product.coverage || product.priceBasis || product.specificationStatus ||
-    (colourways ? `Colourways: ${colourways}` : 'Specifications and availability are not confirmed.');
+  const description = product.coverage || product.priceBasis ||
+    (colourways ? `Colourways: ${colourways}` : 'Explore product details.');
   const media = image
     ? isAegisPreview
-      ? `<a class="fsd-product-media fsd-product-media--aegis-preview" href="${aegisGiletPreviewPath}" aria-label="Open private preview for ${escapeHTML(product.name)}"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(image.label)}"><span>PRIVATE CAMPAIGN REVIEW</span></a>`
+      ? `<a class="fsd-product-media fsd-product-media--aegis-preview" href="${aegisGiletPreviewPath}" aria-label="Explore ${escapeHTML(product.name)}"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(image.label)}"><span>FSD AEGIS / CAMPAIGN</span></a>`
       : `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>`
     : `<div class="fsd-product-media fsd-product-media--placeholder" aria-hidden="true"><span class="fsd-placeholder-code">FSD<br/>/ /</span><span>${escapeHTML(category)}</span></div>`;
   const productTitle = isAegisPreview
@@ -126,9 +126,9 @@ function conceptCard(concept) {
   return `<article class="fsd-concept-card">
     <span class="fsd-concept-index" aria-hidden="true">FSD / CONCEPT</span>
     <h4>${escapeHTML(concept)}</h4>
-    <span class="fsd-concept-tag">PROPOSED CONCEPT</span>
+    <span class="fsd-concept-tag">COLLECTION CONCEPT</span>
     <details class="fsd-concept-details"><summary>EXPLORE CONCEPT ↗</summary>
-      <p>This name is part of the proposed FSD showroom brief. Specifications, prices, availability and operational status are not confirmed.</p>
+      <p>A design direction within the FSD collection.</p>
     </details>
   </article>`;
 }
@@ -158,16 +158,18 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     ? `<div class="fsd-modal-subhead"><span>02</span><h4>PROPOSED CONCEPTS</h4><i></i></div>
        <div class="fsd-concept-grid">${concepts.map(conceptCard).join('')}</div>`
     : '';
-  const productsMarkup = foundProducts.length
-    ? `<div class="fsd-modal-subhead"><span>01</span><h4>THE COLLECTION</h4><i></i><small>${foundProducts.length} ${foundProducts.length === 1 ? 'RECORD' : 'RECORDS'}</small></div>
-       <div class="fsd-product-grid">${foundProducts.map(productCard).join('')}</div>`
+  const collectionProductMarkup = [
+    ...foundProducts.map(productCard),
+    ...matchingDraftCards.map(card => card.markup),
+  ].join('');
+  const collectionProductCount = foundProducts.length + matchingDraftCards.length;
+  const productsMarkup = collectionProductCount
+    ? `<div class="fsd-modal-subhead"><span>01</span><h4>THE COLLECTION</h4><i></i><small>${collectionProductCount} ${collectionProductCount === 1 ? 'ITEM' : 'ITEMS'}</small></div>
+       <div class="fsd-product-grid">${collectionProductMarkup}</div>`
     : '';
   const emptyMarkup = !foundProducts.length && !concepts.length && !matchingDraftCards.length
-    ? `<div class="fsd-showcase-empty"><span>FSD / ${String(activeGroupIndex + 1).padStart(2, '0')}</span><h4>Collection details are being prepared.</h4><p>No product records or proposed concepts are currently listed for this selection.</p></div>`
+    ? `<div class="fsd-showcase-empty"><span>FSD / ${String(activeGroupIndex + 1).padStart(2, '0')}</span><h4>Explore the collection.</h4><p>More items from this collection will appear here.</p></div>`
     : '';
-  const draftProductMarkup = matchingDraftCards.map((card, index) => `
-    <div class="fsd-modal-subhead fsd-modal-subhead--draft"><span>${String(3 + index).padStart(2, '0')}</span><h4>${escapeHTML(card.heading)}</h4><i></i></div>
-    <div class="fsd-product-grid">${card.markup}</div>`).join('');
   return `<div class="fsd-modal-hero fsd-modal-hero--${escapeHTML(division.visual || division.id)}">
       <span class="fsd-modal-kicker">${escapeHTML(division.title)} <span>/</span> DIVISION ${String(activeGroupIndex + 1).padStart(2, '0')}</span>
       <h2>${escapeHTML(title)}</h2>
@@ -185,7 +187,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     <div class="fsd-modal-body">
       <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(division.description)}</p></div>
       ${foundProducts.length ? '<button class="fsd-explore-collection" type="button" data-explore-collection>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button>' : ''}
-      ${productsMarkup}${conceptMarkup}${draftProductMarkup}${emptyMarkup}
+      ${productsMarkup}${conceptMarkup}${emptyMarkup}
       <p class="fsd-modal-disclaimer">FSD is a pre-launch brand. Supplied list prices are catalogue references, not an offer to sell. Proposed concepts do not confirm specifications, availability or operational status. Product visuals appear only where mapped to that product record.</p>
     </div>`;
 }
@@ -208,7 +210,7 @@ export function mountCollectionShowcase({
       id: 'initial-bio-lab-draft',
       divisionId: 'bio-lab',
       groupId: 'bio-lab-concepts',
-      heading: 'PRIVATE DRAFT PRODUCT',
+      heading: 'FSD COLLECTION',
       markup: String(draftProductCard),
     }]
     : [];
@@ -357,7 +359,7 @@ export function mountCollectionShowcase({
         id,
         divisionId: String(placement.divisionId || 'bio-lab'),
         groupId: String(placement.groupId || 'bio-lab-concepts'),
-        heading: String(placement.heading || 'PRIVATE DRAFT PRODUCT'),
+        heading: String(placement.heading || 'FSD COLLECTION'),
         markup: String(html),
         ...(placement.replacesProductId !== undefined && placement.replacesProductId !== null
           ? { replacesProductId: String(placement.replacesProductId) }

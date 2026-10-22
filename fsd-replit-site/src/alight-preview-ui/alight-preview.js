@@ -3,6 +3,7 @@ import { products } from '../catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from '../site-navigation.js';
 import { alightPreviewRecord as preview } from '../alight-campaign.js';
 import { createAlightDevelopmentIntegration } from '../alight-development-integration.js';
+import { bindCollectionReturn } from '../collection-return.js';
 import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
 import '../site-navigation.css';
 import './alight-preview.css';
@@ -65,8 +66,8 @@ const storiesMarkup = preview.editorialStories.map((story, index) => {
   const image = preview.gallery.find(entry => entry.id === story.imageId);
   return `<article class="alight-story alight-story--${index + 1}">
     <div class="alight-story-image">
-      <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" width="${image.width}" height="${image.height}" loading="eager"/>
-      <span>CAMPAIGN REFERENCE · NOT PRODUCT PHOTOGRAPHY</span>
+      <img src="${escapeHTML(image.src)}" alt="" width="${image.width}" height="${image.height}" loading="eager"/>
+      <span>CAMPAIGN IMAGE</span>
     </div>
     <div class="alight-story-copy">
       <span class="alight-micro-index">0${index + 1} / CONCEPT STUDY</span>
@@ -76,26 +77,15 @@ const storiesMarkup = preview.editorialStories.map((story, index) => {
   </article>`;
 }).join('');
 
-const featureMarkup = preview.pendingFeatures.map((feature, index) => `
-  <li class="alight-feature-row">
-    <span class="alight-feature-number">${String(index + 1).padStart(2, '0')}</span>
-    <span class="alight-feature-name">${escapeHTML(feature.label)}</span>
-    <span class="alight-feature-status">${escapeHTML(feature.status)}</span>
-  </li>`).join('');
-
 root.innerHTML = `
   <main class="alight-page">
     <div class="alight-main-wrap">
       <nav class="alight-breadcrumb" aria-label="Breadcrumb">
         <a href="/#home">FSD</a><span aria-hidden="true">/</span>
+        <a class="alight-back-collection fsd-collection-return" href="/#collections" data-collection-return>← BACK TO COLLECTION</a><span aria-hidden="true">/</span>
         <span>BIO-LAB / WEARABLE TECHNOLOGY</span><span aria-hidden="true">/</span>
         <span aria-current="page">${escapeHTML(preview.product.name)}</span>
       </nav>
-
-      <div class="alight-proof-ribbon">
-        <span><i aria-hidden="true"></i> PRIVATE PRODUCT PROOF</span>
-        <span>${escapeHTML(preview.product.status)}</span>
-      </div>
 
       <section class="alight-intro" aria-labelledby="alight-title">
         <div class="alight-intro-copy">
@@ -108,22 +98,18 @@ root.innerHTML = `
             <span class="alight-colour-swatch" aria-hidden="true"></span>
             <span><small>DEPICTED PALETTE</small><strong>${escapeHTML(preview.product.colour)}</strong></span>
           </div>
-          <div class="alight-unavailable" role="status">
-            <span class="alight-unavailable-mark" aria-hidden="true">—</span>
-            <span><strong>NOT AVAILABLE YET</strong><small>Product status and all information remain subject to approval.</small></span>
-          </div>
+           <p class="alight-prelaunch-note"><strong>PRE-LAUNCH CONCEPT</strong><small>Product details are being finalised.</small></p>
         </div>
         <div class="alight-hero-artwork">
           <button class="alight-hero-image" type="button" data-alight-enlarge aria-label="Enlarge selected campaign reference">
             <img id="alight-main-image" src="${escapeHTML(preview.campaign.src)}"
-              alt="${escapeHTML(preview.campaign.alt)}" width="${preview.campaign.width}" height="${preview.campaign.height}" fetchpriority="high"/>
+              alt="FSD ALIGHT campaign image" width="${preview.campaign.width}" height="${preview.campaign.height}" fetchpriority="high"/>
             <span class="alight-expand">OPEN REFERENCE <span aria-hidden="true">↗</span></span>
           </button>
           <div class="alight-image-meta">
             <span id="alight-image-caption" aria-live="polite">${escapeHTML(preview.campaign.label)}</span>
-            <span>SUPPLIED CAMPAIGN CROP</span>
+             <span>CAMPAIGN IMAGE</span>
           </div>
-          <p id="alight-image-review-note" class="alight-review-note">${escapeHTML(preview.campaign.reviewNote)}</p>
         </div>
       </section>
     </div>
@@ -132,7 +118,7 @@ root.innerHTML = `
       <div class="alight-campaign-inner">
         <span class="alight-section-index">ARTWORK / 01</span>
         <p>${escapeHTML(preview.campaignMessage)}</p>
-        <span class="alight-campaign-caveat">CAMPAIGN WORDING ONLY · NOT A VERIFIED CLAIM</span>
+         <span class="alight-campaign-caveat">CAMPAIGN DIRECTION</span>
       </div>
     </section>
 
@@ -142,54 +128,19 @@ root.innerHTML = `
           <p class="alight-eyebrow">THE IDEA / IN CONTEXT</p>
           <h2 id="alight-editorial-title">Movement, in the<br><em>moments between.</em></h2>
         </div>
-        <p class="alight-section-intro">Lifestyle concepts explore how ALIGHT might sit within work and training. Every frame is campaign artwork; fit, performance, comfort and outcomes are not verified.</p>
+         <p class="alight-section-intro">An early editorial study exploring how ALIGHT might sit within work and training.</p>
       </div>
       <div class="alight-stories">${storiesMarkup}</div>
-      <p class="alight-visual-boundary"><span>VISUAL NOTE</span> All visuals on this page are supplied crops or a composite campaign reference—not independent product photography.</p>
-    </section>
-
-    <section class="alight-features" aria-labelledby="alight-features-title">
-      <div class="alight-main-wrap alight-features-layout">
-        <div class="alight-features-lead">
-          <p class="alight-eyebrow">CONCEPT FEATURES / UNVERIFIED</p>
-          <h2 id="alight-features-title">A proposal,<br><em>not a promise.</em></h2>
-          <p>${escapeHTML(preview.campaignSupport)}</p>
-          <div class="alight-pending-stamp">PENDING<br>TECHNICAL<br>VERIFICATION</div>
-        </div>
-        <ul class="alight-feature-list" aria-label="Proposed features pending verification">${featureMarkup}</ul>
-      </div>
-    </section>
-
-    <section class="alight-review alight-main-wrap" aria-labelledby="alight-review-title">
-      <div class="alight-review-heading">
-        <span class="alight-section-index">ASSET & PRODUCT REVIEW / 02</span>
-        <h2 id="alight-review-title">What’s shown.<br><em>What’s still open.</em></h2>
-        <p>${escapeHTML(preview.reviewBoundary)}</p>
-      </div>
-      <div class="alight-review-grid">
-        <article class="alight-review-panel alight-review-panel--missing">
-          <span class="alight-panel-index">01 / IMAGE GAPS</span>
-          <h3>Standalone views</h3>
-          <p>No clean independent product photography has been supplied. Approval is still required for:</p>
-          <ul>${preview.missingPhotography.map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ul>
-        </article>
-        <article class="alight-review-panel">
-          <span class="alight-panel-index">02 / PRODUCT DETAIL</span>
-          <h3>Specifications to confirm</h3>
-          <p>All product and technical information remains pending verification:</p>
-          <ul>${preview.pendingSpecifications.map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ul>
-        </article>
-      </div>
     </section>
 
     <section class="alight-gallery-section" aria-labelledby="alight-gallery-title">
       <div class="alight-main-wrap">
         <div class="alight-gallery-heading">
           <div>
-            <p class="alight-eyebrow">SOURCE MATERIAL / 12 REFERENCES</p>
+             <p class="alight-eyebrow">CAMPAIGN IMAGERY / 12 FRAMES</p>
             <h2 id="alight-gallery-title">Campaign <em>archive.</em></h2>
           </div>
-          <p>Choose any reference to inspect it above. Each image is a crop or composite from the supplied campaign set—not an independent photograph.</p>
+           <p>Choose a frame to explore the ALIGHT campaign direction.</p>
         </div>
         <div class="alight-gallery-grid" role="group" aria-label="Select one of twelve campaign image references">
           ${galleryMarkup}
@@ -200,8 +151,8 @@ root.innerHTML = `
     <footer class="alight-footer">
       <div class="alight-main-wrap">
         <span class="alight-footer-brand">FSD <i>/</i> ALIGHT</span>
-        <span>PRIVATE CONCEPT REVIEW <i>·</i> NOT AVAILABLE YET</span>
-        <span>CAMPAIGN VISUALS ONLY <i>·</i> ALL DETAILS PENDING APPROVAL</span>
+         <span>PRE-LAUNCH CONCEPT</span>
+        <span>PRE-LAUNCH CONCEPT</span>
       </div>
     </footer>
   </main>
@@ -211,13 +162,14 @@ root.innerHTML = `
     <img id="alight-lightbox-image" alt=""/>
     <div class="alight-lightbox-caption">
       <p id="alight-lightbox-title"></p>
-      <span>CAMPAIGN REFERENCE · NOT PRODUCT PHOTOGRAPHY</span>
+      <span>CAMPAIGN IMAGE</span>
     </div>
   </dialog>`;
 
+bindCollectionReturn(root);
+
 const mainImage = root.querySelector('#alight-main-image');
 const caption = root.querySelector('#alight-image-caption');
-const reviewNote = root.querySelector('#alight-image-review-note');
 const lightbox = root.querySelector('#alight-lightbox');
 const lightboxImage = root.querySelector('#alight-lightbox-image');
 const lightboxTitle = root.querySelector('#alight-lightbox-title');
@@ -240,7 +192,6 @@ root.querySelector('.alight-gallery-grid').addEventListener('click', event => {
     mainImage.width = image.width;
     mainImage.height = image.height;
     caption.textContent = image.label;
-    reviewNote.textContent = image.reviewNote;
     root.querySelectorAll('[data-alight-thumb]').forEach(thumb => {
       thumb.setAttribute('aria-pressed', String(thumb === button));
     });

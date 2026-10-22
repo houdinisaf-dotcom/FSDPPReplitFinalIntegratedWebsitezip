@@ -58,11 +58,10 @@ function shellCampaignEditorialSection() {
       <img src="/__catalogue-preview/hooded-running-shell/media/hooded-shell-campaign" alt="Woman wearing the orange FSD Hooded Running Shell outdoors in a mountain landscape." loading="eager" fetchpriority="low" width="1672" height="941"/>
     </figure>
     <div class="showroom-shell-campaign-copy">
-      <p class="section-kicker">PRIVATE CAMPAIGN REVIEW <span class="period">/</span> APPAREL</p>
+      <p class="section-kicker">APPAREL CAMPAIGN <span class="period">/</span> OUTERWEAR</p>
       <h2 id="shell-campaign-title">FSD Hooded<br/>Running Shell</h2>
-      <p>A private review of the supplied campaign image, presented in the same FSD editorial language. This is a campaign proof only; no product options or purchase flow are available.</p>
-      <p class="showroom-shell-campaign-note">COLOUR SELECTION DEFERRED · PRICE AND SPECIFICATIONS NOT CONFIRMED · CHECKOUT DISABLED</p>
-      <a class="showroom-shell-campaign-link" href="/__catalogue-preview/hooded-running-shell/">OPEN PRIVATE CAMPAIGN <span aria-hidden="true">↗</span></a>
+      <p>A campaign image of the FSD Hooded Running Shell, presented in the FSD performance setting.</p>
+      <a class="showroom-shell-campaign-link" href="/__catalogue-preview/hooded-running-shell/">VIEW CAMPAIGN <span aria-hidden="true">↗</span></a>
     </div>
   </section>`;
 }
@@ -202,7 +201,8 @@ const collectionShowcase = startMainExperience();
 if (import.meta.env.DEV) {
   import('./alight-development-integration.js')
     .then(({ createAlightDevelopmentIntegration }) => {
-      collectionShowcase.setDraftProductCard(createAlightDevelopmentIntegration().draftProductCard);
+      const alight = createAlightDevelopmentIntegration();
+      collectionShowcase.setDraftProductCard(alight.draftProductCard, alight.collectionCardPlacement);
     })
     .catch(error => {
       console.error('The private ALIGHT collection card could not be loaded.', error);

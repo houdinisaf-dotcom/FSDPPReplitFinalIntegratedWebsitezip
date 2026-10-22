@@ -86,26 +86,24 @@ try {
   const previewPath = '/__catalogue-preview/fsd-nexus/';
   await navigate(previewPath);
   await waitFor('document.querySelectorAll("[data-nexus-gallery-select]").length === 3');
-  await waitFor('document.querySelectorAll("[data-nexus-audit-gallery-select]").length === 8');
-  await waitFor('document.querySelectorAll(".nexus-audit-ledger-row").length === 11');
   await waitFor('document.querySelector("[data-nexus-active-image]")?.complete && document.querySelector("[data-nexus-active-image]")?.naturalWidth > 0');
-  await waitFor('document.querySelector("[data-nexus-audit-active-image]")?.complete && document.querySelector("[data-nexus-audit-active-image]")?.naturalWidth > 0');
   await captureProof('concept-desktop.jpg');
-  assert.match(await evaluate('document.title'), /FSD NEXUS.*Private Concept Preview/);
+  assert.match(await evaluate('document.title'), /FSD NEXUS.*Pre-launch Concept/);
   assert.match(await evaluate('document.querySelector("meta[name=robots]")?.content'), /noindex/);
-  assert.match(await evaluate('document.body.innerText'), /CONCEPT FOR EXPLORATION — NOT A CURRENT PRODUCT OR COMMITMENT/);
-  assert.match(await evaluate('document.body.innerText'), /87 score is not live data or a verified measurement/);
-  assert.match(await evaluate('document.querySelector("[data-nexus-active-note]")?.textContent'), /87 IS ILLUSTRATIVE, NOT LIVE DATA/);
-  assert.match(await evaluate('document.body.innerText'), /PRIVATE AUDIT REFERENCES ONLY/);
-  assert.match(await evaluate('document.body.innerText'), /FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO/);
-  assert.match(await evaluate('document.body.innerText'), /11 source findings/);
-  assert.match(await evaluate('document.body.innerText'), /PROPOSED — PENDING TECHNICAL VALIDATION/);
+  assert.match(await evaluate('document.body.innerText'), /FSD NEXUS CONCEPT/);
+  assert.match(await evaluate('document.body.innerText'), /FSD NEXUS CONCEPT/);
+  assert.ok(await evaluate('document.querySelector(".nexus-back-collection")'));
+  assert.equal(await evaluate('document.querySelectorAll("[data-nexus-audit-gallery-select], .nexus-audit-ledger-row").length'), 0);
+  assert.match(await evaluate('document.querySelector(".nexus-app-warning")?.textContent'), /Scores shown are concept artwork, not live data/);
+  assert.doesNotMatch(await evaluate('document.body.innerText'), /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|BRAND CORRECTION REQUIRED|PRIVATE REVIEW REFERENCE/);
+  assert.match(await evaluate('document.body.innerText'), /CONCEPT DIRECTION/);
   const featureStatuses = await evaluate(`Array.from(document.querySelectorAll(".nexus-feature-list small"), node => node.textContent.trim())`);
   assert.equal(featureStatuses.length, 7);
-  assert.ok(featureStatuses.every(status => status === 'PROPOSED — PENDING TECHNICAL VALIDATION'));
+  assert.ok(featureStatuses.every(status => status === 'CONCEPT DIRECTION'));
   const conditionStatuses = await evaluate(`Array.from(document.querySelectorAll(".nexus-gates small"), node => node.textContent.trim())`);
   assert.equal(conditionStatuses.length, 5);
-  assert.ok(conditionStatuses.every(status => status === 'NOT VERIFIED'));
+  assert.ok(conditionStatuses.every(status => status === 'KEY CONSIDERATION'));
+  assert.doesNotMatch(await evaluate('document.body.innerText'), /FUTURE REVIEW|CONCEPT REFERENCE|PENDING TECHNICAL VALIDATION|NOT VERIFIED/i);
   assert.equal(await evaluate('document.querySelectorAll("button[data-purchase], button[data-checkout], .add-to-cart, form").length'), 0);
   assert.doesNotMatch(await evaluate('document.body.innerText'), /ADD TO CART|BUY NOW|CHECKOUT NOW|£\s?\d/i);
 
@@ -153,7 +151,7 @@ try {
   await click('[data-nexus-gallery-select="proposed-features"]');
   await waitFor('document.querySelector("[data-nexus-active-image]")?.src.endsWith("/media/proposed-features")');
   assert.equal(await evaluate('document.querySelector("[data-nexus-gallery-select=proposed-features]")?.getAttribute("aria-pressed")'), 'true');
-  assert.match(await evaluate('document.querySelector("[data-nexus-active-note]")?.textContent'), /PENDING TECHNICAL VALIDATION/);
+  assert.match(await evaluate('document.querySelector("[data-nexus-active-note]")?.textContent'), /FEATURE CONCEPT/);
   await evaluate('document.querySelector(".nexus-evidence")?.scrollIntoView({block:"start"})');
   await delay(250);
   await captureProof('concept-gallery-desktop.jpg');
@@ -167,27 +165,6 @@ try {
   assert.match(await evaluate('document.querySelector("[data-nexus-dialog-image]")?.src'), /proposed-features$/);
   await click('[data-nexus-close]');
   await waitFor('!document.querySelector("[data-nexus-dialog]")?.open');
-
-  await click('[data-nexus-audit-gallery-select="ring-product-closeup"]');
-  await waitFor('document.querySelector("[data-nexus-audit-active-image]")?.src.endsWith("/media/audit/ring-product-closeup")');
-  assert.equal(await evaluate('document.querySelector("[data-nexus-audit-gallery-select=ring-product-closeup]")?.getAttribute("aria-pressed")'), 'true');
-  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-status]")?.textContent'), /BRAND CORRECTION REQUIRED/);
-  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-context]")?.textContent'), /UNMODIFIED CAMPAIGN SOURCE · PRIVATE REVIEW ONLY/);
-  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-finding]")?.textContent'), /differs from the approved website master/);
-  await evaluate('document.querySelector(".nexus-audit")?.scrollIntoView({block:"start"})');
-  await delay(250);
-  await captureProof('brand-audit-desktop.jpg');
-  await click('[data-nexus-audit-enlarge]');
-  await waitFor('document.querySelector("[data-nexus-dialog]")?.open');
-  assert.match(await evaluate('document.querySelector("[data-nexus-dialog-image]")?.src'), /media\/audit\/ring-product-closeup$/);
-  assert.match(await evaluate('document.querySelector("[data-nexus-dialog-caption]")?.textContent'), /PRIVATE REVIEW REFERENCE/);
-  await click('[data-nexus-close]');
-  await waitFor('!document.querySelector("[data-nexus-dialog]")?.open');
-  await click('[data-nexus-audit-gallery-select="full-campaign-reference"]');
-  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-context]")?.textContent'), /FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO/);
-  await evaluate('document.querySelector(".nexus-audit-ledger-heading")?.scrollIntoView({block:"start"})');
-  await delay(250);
-  await captureProof('brand-audit-ledger-desktop.jpg');
 
   await navigate('/');
   await waitFor('document.querySelector("[data-division=\\\"bio-lab\\\"]")');
@@ -203,7 +180,6 @@ try {
   await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 1, mobile: true });
   await navigate(previewPath);
   await waitFor('document.querySelectorAll("[data-nexus-gallery-select]").length === 3');
-  await waitFor('document.querySelectorAll("[data-nexus-audit-gallery-select]").length === 8');
   await captureProof('concept-mobile.jpg');
   await evaluate('document.querySelector(".nexus-evidence")?.scrollIntoView({block:"start"})');
   await delay(250);
@@ -211,15 +187,6 @@ try {
   await evaluate('document.querySelector(".nexus-capabilities")?.scrollIntoView({block:"start"})');
   await delay(250);
   await captureProof('feature-verification-mobile.jpg');
-  await click('[data-nexus-audit-gallery-select="ring-charging-case"]');
-  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-context]")?.textContent'), /UNMODIFIED CAMPAIGN SOURCE · PRIVATE REVIEW ONLY/);
-  await evaluate('document.querySelector(".nexus-audit")?.scrollIntoView({block:"start"})');
-  await delay(250);
-  await captureProof('brand-audit-mobile.jpg');
-  assert.match(await evaluate('document.querySelector("[data-nexus-audit-active-status]")?.textContent'), /BRAND CORRECTION REQUIRED/);
-  await evaluate('document.querySelector(".nexus-audit-ledger-heading")?.scrollIntoView({block:"start"})');
-  await delay(250);
-  await captureProof('brand-audit-ledger-mobile.jpg');
   const dimensions = await evaluate(`({
     width: document.documentElement.clientWidth,
     scrollWidth: document.documentElement.scrollWidth

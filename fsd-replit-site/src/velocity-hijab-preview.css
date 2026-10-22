@@ -69,6 +69,10 @@ body.velocity-hijab-page {
   gap: 7px;
   min-height: clamp(420px, 52vw, 660px);
 }
+.velocity-gallery-mosaic--single {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
 .velocity-gallery-main,
 .velocity-gallery-support {
   position: relative;
@@ -80,6 +84,7 @@ body.velocity-hijab-page {
   background: #101114;
 }
 .velocity-gallery-main { grid-row: 1 / 3; }
+.velocity-gallery-mosaic--single .velocity-gallery-main { grid-row: auto; }
 .velocity-gallery-main img,
 .velocity-gallery-support img {
   display: block;
@@ -89,6 +94,7 @@ body.velocity-hijab-page {
   background: #101114;
 }
 .velocity-gallery-main img { object-position: center 25%; transition: opacity 220ms ease; }
+.velocity-gallery-mosaic--single .velocity-gallery-main img { object-fit: contain; object-position: center; }
 .velocity-gallery-main img.is-switching { opacity: .12; }
 .velocity-gallery-support img { object-position: center 24%; }
 .velocity-gallery-main figcaption,

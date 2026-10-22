@@ -33,13 +33,6 @@ function validateData(product, variants) {
   }
 }
 
-function renderFeatures(features) {
-  if (!Array.isArray(features) || !features.length) return '';
-  return `<ul class="breeze-preview__features" aria-label="Provisional features">
-    ${features.map(feature => `<li>${escapeHTML(feature)}</li>`).join('')}
-  </ul>`;
-}
-
 export function mountBreezePreview({ root, product, variants }) {
   if (!root || typeof root.append !== 'function' || !root.ownerDocument) {
     throw new TypeError('mountBreezePreview requires a DOM root element.');
@@ -69,29 +62,24 @@ export function mountBreezePreview({ root, product, variants }) {
       <section class="breeze-preview__visual" aria-label="Garment view">
         <img class="breeze-preview__image" data-breeze-image
           src="${escapeHTML(activeView.src)}"
-          alt="${escapeHTML(activeView.alt || `${activeVariant.label} — ${activeView.label}`)}" />
+          alt="${escapeHTML(`${product.name}, ${activeVariant.label} colourway, ${activeView.label} view`)}" />
         <span class="breeze-preview__visual-note" data-breeze-image-note aria-live="polite">
           ${escapeHTML(activeView.label)}
         </span>
       </section>
       <section class="breeze-preview__details">
-        <button class="breeze-preview__close" type="button" data-breeze-close aria-label="Close preview">
+        <button class="breeze-preview__close" type="button" data-breeze-close aria-label="Close product selector and return to collection">
           <span aria-hidden="true">×</span>
         </button>
-        <p class="breeze-preview__eyebrow">FSD <span aria-hidden="true">/</span> PRIVATE CONCEPT PREVIEW</p>
+        <p class="breeze-preview__eyebrow">FSD <span aria-hidden="true">/</span> WOMEN’S MODEST ACTIVEWEAR</p>
         <h2 class="breeze-preview__title" id="${instanceId}-title">${escapeHTML(product.name)}</h2>
-        ${product.priceLabel || product.priceNote ? `<p class="breeze-preview__reference">
-          ${product.priceLabel ? `<span>Reference only · ${escapeHTML(product.priceLabel)}</span>` : ''}
-          ${product.priceNote ? `<span class="breeze-preview__price-note">${escapeHTML(product.priceNote)}</span>` : ''}
+        ${product.priceLabel ? `<p class="breeze-preview__reference">
+          <span>Reference price · ${escapeHTML(product.priceLabel)}</span>
         </p>` : ''}
-        <p class="breeze-preview__description" id="${instanceId}-description">${escapeHTML(product.description)}</p>
-        ${renderFeatures(product.provisionalFeatures)}
-        <div class="breeze-preview__notices" role="note">
-          <p><span aria-hidden="true">01</span> Draft status: ${escapeHTML(product.draftStatus || 'Not provided')}.</p>
-          <p><span aria-hidden="true">02</span> Image status: ${escapeHTML(product.imageStatus || 'Not provided')}.</p>
-          <p><span aria-hidden="true">03</span> Commercial status: ${escapeHTML(product.commercialStatus || 'Not provided')}.</p>
-          <p><span aria-hidden="true">04</span> Brand status is unverified${product.brandStatus ? ` — ${escapeHTML(product.brandStatus)}` : ''}.</p>
-        </div>
+        <p class="breeze-preview__description" id="${instanceId}-description">
+          A pre-launch overshirt concept for FSD Women’s Modest Activewear. The overshirt is the item shown; other garments are styling context.
+        </p>
+        <p class="breeze-preview__product-note">Product details are being finalised.</p>
         <hr class="breeze-preview__rule" />
         <div class="breeze-preview__section-heading">
           <span>View</span>
@@ -109,14 +97,12 @@ export function mountBreezePreview({ root, product, variants }) {
         <div class="breeze-preview__swatches" role="group" aria-label="Choose one of six colour concepts">
           ${options.map((variant, index) => `<button class="breeze-preview__swatch"
             type="button" data-breeze-variant="${escapeHTML(variant.id)}"
-            aria-label="${escapeHTML(variant.label)}${variant.approvalStatus ? ` — ${escapeHTML(variant.approvalStatus)}` : ''}"
+            aria-label="${escapeHTML(variant.label)}"
             aria-pressed="${String(index === 0)}">
             <span class="breeze-preview__swatch-dot" aria-hidden="true"></span>
             <span class="breeze-preview__swatch-name">${escapeHTML(variant.label)}</span>
-            ${variant.approvalStatus ? `<span class="breeze-preview__swatch-status">${escapeHTML(variant.approvalStatus)}</span>` : ''}
           </button>`).join('')}
         </div>
-        <p class="breeze-preview__view-status">${escapeHTML(activeView.approvalStatus || 'Draft view')}</p>
         <span class="breeze-preview__live" data-breeze-live aria-live="polite" aria-atomic="true"></span>
       </section>
     </div>`;
@@ -125,7 +111,6 @@ export function mountBreezePreview({ root, product, variants }) {
   const imageNote = dialog.querySelector('[data-breeze-image-note]');
   const colourLabel = dialog.querySelector('[data-breeze-colour]');
   const viewLabel = dialog.querySelector('[data-breeze-view-label]');
-  const viewStatus = dialog.querySelector('.breeze-preview__view-status');
   const liveRegion = dialog.querySelector('[data-breeze-live]');
   const closeButton = dialog.querySelector('[data-breeze-close]');
 
@@ -155,11 +140,10 @@ export function mountBreezePreview({ root, product, variants }) {
       const apply = () => {
         if (changeId !== imageChangeId) return;
         image.src = view.src;
-        image.alt = view.alt || `${variant.label} — ${view.label}`;
+        image.alt = `${product.name}, ${variant.label} colourway, ${view.label} view`;
         imageNote.textContent = view.label;
         colourLabel.textContent = variant.label;
         viewLabel.textContent = view.label;
-        viewStatus.textContent = view.approvalStatus || variant.approvalStatus || 'Draft view';
         activeVariant = variant;
         activeView = view;
         dialog.querySelectorAll('[data-breeze-variant]').forEach(button => {

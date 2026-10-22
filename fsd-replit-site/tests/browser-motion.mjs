@@ -98,12 +98,13 @@ try {
   await delay(250);
   await captureProof('collection-products-desktop.jpg');
   await evaluate('window.scrollTo(0, 0)');
-  assert.match(await evaluate('document.title'), /FSD MOTION.*Private Preview/);
+  assert.match(await evaluate('document.title'), /FSD MOTION.*Pre-launch Concept/);
   assert.match(await evaluate('document.querySelector("meta[name=robots]")?.content'), /noindex/);
   assert.equal(await evaluate('document.querySelectorAll("[data-motion-gallery-select]").length'), 15);
   assert.equal(await evaluate('document.querySelectorAll("[data-motion-product-link]").length'), 4);
-  assert.match(await evaluate('document.body.innerText'), /DRAFT \/ PENDING APPROVAL/);
-  assert.match(await evaluate('document.body.innerText'), /PENDING TECHNICAL VERIFICATION/);
+  assert.match(await evaluate('document.body.innerText'), /PRE-LAUNCH CONCEPT/);
+  assert.ok(await evaluate('document.querySelector(".motion-back-collection")'));
+  assert.doesNotMatch(await evaluate('document.body.innerText'), /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL/);
 
   await click('[data-motion-gallery-select="smart-sensors"]');
   await waitFor('document.querySelector("[data-motion-active-image]")?.src.endsWith("/media/smart-sensors")');
@@ -124,7 +125,10 @@ try {
     await navigate(`/__catalogue-preview/fsd-motion/products/${slug}/`);
     await waitFor('document.querySelector("[data-motion-active-image]")');
     await captureProof(`product-${slug}-desktop.jpg`);
-    assert.match(await evaluate('document.body.innerText'), /DRAFT \/ PENDING APPROVAL/);
+    assert.match(await evaluate('document.body.innerText'), /BACK TO MOTION COLLECTION/);
+    assert.match(await evaluate('document.body.innerText'), /A visual concept for the FSD MOTION collection/);
+    assert.match(await evaluate('document.body.innerText'), /PRE-LAUNCH CONCEPT/);
+    assert.doesNotMatch(await evaluate('document.body.innerText'), /Capabilities and performance statements are unverified|private visual preview|CLEAN PRODUCT PHOTOGRAPHY PENDING|MEN’S APPAREL CROP/i);
     assert.match(await evaluate('document.querySelector("[data-motion-active-image]")?.src'), new RegExp(`/media/${firstImageId}$`));
     assert.ok(await evaluate('document.querySelectorAll("[data-motion-gallery-select]").length >= 3'));
     assert.equal(await evaluate('document.querySelectorAll("[data-motion-product-link]").length'), 4);

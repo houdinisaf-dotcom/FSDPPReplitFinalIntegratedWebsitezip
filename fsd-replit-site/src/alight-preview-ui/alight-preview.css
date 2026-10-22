@@ -216,3 +216,34 @@
 @media (prefers-reduced-motion: reduce) {
   .alight-gallery-card, .alight-hero-image img { transition-duration: .01ms !important; }
 }
+.alight-back-collection {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  padding: 0 13px;
+  border: 1px solid rgba(203,178,125,.35);
+  color: #d4c49f !important;
+  font-size: 8px;
+  letter-spacing: .13em;
+  text-decoration: none;
+  transition: background .18s ease, border-color .18s ease;
+}
+.alight-back-collection:hover { border-color: var(--alight-gold); background: rgba(203,178,125,.07); }
+.alight-prelaunch-note {
+  display: grid;
+  gap: 5px;
+  margin: 28px 0 0;
+  padding: 11px 13px;
+  border-left: 1px solid var(--alight-gold);
+  background: rgba(203,178,125,.045);
+  color: #d8c79f;
+  font-size: 8px;
+  letter-spacing: .14em;
+  line-height: 1.6;
+}
+.alight-prelaunch-note strong { font-weight: 600; }
+.alight-prelaunch-note small { color: #a5a198; font-size: 9px; letter-spacing: .015em; }
+@media (max-width: 650px) {
+  .alight-back-collection { min-height: 32px; padding-inline: 9px; font-size: 7px; }
+  .alight-prelaunch-note { margin-top: 19px; }
+}

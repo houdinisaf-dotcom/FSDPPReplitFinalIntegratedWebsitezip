@@ -1,4 +1,5 @@
 import './draft-preview.css';
+import { bindCollectionReturn } from './collection-return.js';
 
 const previewApi = '/__catalogue-preview/weighted-skipping-rope/data.json';
 const campaignImage = document.querySelector('#campaign-image');
@@ -9,6 +10,7 @@ const selectedEdition = document.querySelector('#selected-edition');
 const selectionStatus = document.querySelector('#selection-status');
 const previewError = document.querySelector('#preview-error');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+bindCollectionReturn(document);
 let activeVariantId = null;
 let selectionSequence = 0;
 let variants = [];
@@ -125,7 +127,7 @@ async function loadPreview() {
     installKeyboardSelection();
     await selectEdition(variants[0], { initial: true });
   } catch {
-    setError('The draft preview could not be loaded. No product data or checkout has been changed.');
+    setError('This product preview is temporarily unavailable. Return to the collection and try again.');
   }
 }
 

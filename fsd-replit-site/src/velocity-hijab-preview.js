@@ -1,6 +1,7 @@
 import { collectionDivisions } from './collection-divisions.js';
 import { products, priceInfo } from './catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
+import { bindCollectionReturn } from './collection-return.js';
 import { createVelocityHijabPreview } from './velocity-hijab-campaign.js';
 import { velocityHijabMediaPrefix, velocityHijabPreviewPath } from './velocity-hijab-preview-path.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
@@ -8,7 +9,7 @@ import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/w
 const preview = createVelocityHijabPreview();
 const productPrice = {
   ...priceInfo(preview.product),
-  label: 'Reference only · not approved for sale',
+  label: 'Catalogue reference',
 };
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
@@ -53,63 +54,49 @@ const galleryMarkup = preview.gallery.map(image => `
     <img src="${imageSource(image)}" alt="" loading="${image.id === 'campaign' ? 'eager' : 'lazy'}"/>
     <span>${escapeHTML(image.label)}</span>
   </button>`).join('');
-const featureMarkup = preview.features.map(feature => `
-  <li class="velocity-feature">
-    <span class="velocity-feature-mark" aria-hidden="true"></span>
-    <div><strong>${escapeHTML(feature.title)}</strong><p>${escapeHTML(feature.text)}</p></div>
-  </li>`).join('');
 const campaign = asset('campaign');
-const frontDetail = asset('front-detail');
-const rearView = asset('rear-view');
 const root = document.querySelector('#velocity-hijab-root');
 
 root.innerHTML = `
+  <a class="fsd-collection-return" href="/#collections" data-collection-return>
+    <span aria-hidden="true">←</span> BACK TO COLLECTION
+  </a>
   <nav class="velocity-hijab-breadcrumb" aria-label="Breadcrumb">
     <a href="/#home">Home</a><span aria-hidden="true">›</span>
     <a href="/#collections">Women</a><span aria-hidden="true">›</span>
     <span>Accessories</span><span aria-hidden="true">›</span>
     <span aria-current="page">${escapeHTML(preview.product.name)}</span>
   </nav>
-  <div class="velocity-hijab-proof-label"><span>FSD / PRIVATE PRODUCT PREVIEW</span><span>PRE-LAUNCH · NOT AVAILABLE TO PURCHASE</span></div>
+  <div class="velocity-hijab-proof-label"><span>FSD / WOMEN’S PERFORMANCE</span><span>FSD VELOCITY</span></div>
   <section class="velocity-hijab-layout" aria-labelledby="velocity-hijab-title">
     <div class="velocity-gallery" aria-label="Product image gallery">
-      <div class="velocity-gallery-mosaic">
+      <div class="velocity-gallery-mosaic velocity-gallery-mosaic--single">
         <figure class="velocity-gallery-main">
           <img id="velocity-gallery-main-image" src="${imageSource(campaign)}"
             alt="${escapeHTML(campaign.alt)}" fetchpriority="high"/>
           <figcaption id="velocity-gallery-caption" aria-live="polite">${escapeHTML(campaign.label)}</figcaption>
         </figure>
-        <figure class="velocity-gallery-support">
-          <img src="${imageSource(frontDetail)}" alt="${escapeHTML(frontDetail.alt)}" loading="lazy"/>
-          <figcaption>${escapeHTML(frontDetail.label)}</figcaption>
-        </figure>
-        <figure class="velocity-gallery-support">
-          <img src="${imageSource(rearView)}" alt="${escapeHTML(rearView.alt)}" loading="lazy"/>
-          <figcaption>${escapeHTML(rearView.label)}</figcaption>
-        </figure>
       </div>
       <div class="velocity-gallery-thumbnails" role="group" aria-label="Choose a product image">${galleryMarkup}</div>
-      <p class="velocity-gallery-note">${escapeHTML(preview.sideViewNote)}</p>
     </div>
     <div class="velocity-product-copy">
       <p class="velocity-product-kicker">FSD / WOMEN’S MODEST ACTIVEWEAR</p>
       <h1 id="velocity-hijab-title">${escapeHTML(preview.product.name)}</h1>
-      <p class="velocity-product-tagline">PRIVATE PRODUCT REVIEW · DETAILS PENDING VERIFICATION</p>
-      <p class="velocity-product-description">${escapeHTML(preview.description)}</p>
+      <p class="velocity-product-tagline">PRE-LAUNCH CONCEPT</p>
+      <p class="velocity-product-description">A pre-launch FSD performance sports hijab concept in ${escapeHTML(preview.colour)}.</p>
       <div><span class="velocity-product-label">Colour</span>
         <p class="velocity-colour"><span class="velocity-colour-swatch" aria-hidden="true"></span>${escapeHTML(preview.colour)}</p>
       </div>
       <div class="velocity-product-price"><span>${escapeHTML(productPrice.label)}</span><strong>${escapeHTML(productPrice.value)}</strong></div>
-      <p class="velocity-purchase-disabled" role="status">PRIVATE PREVIEW · PURCHASING DISABLED</p>
-      <ul class="velocity-feature-list" aria-label="Product verification status">${featureMarkup}</ul>
       <div class="velocity-accordions">
-        <details><summary>Materials &amp; care</summary><p>Material composition and care instructions have not been supplied; both remain pending verification.</p></details>
-        <details><summary>Delivery &amp; returns</summary><p>Delivery and returns are not available for this private preview. Purchase and policy details are not confirmed.</p></details>
+        <details><summary>Product details</summary><p>Product information will be shared before release.</p></details>
       </div>
-      <p class="velocity-product-disclaimer">Product fit, coverage, materials, ventilation, performance and care details are pending sample review or verification. No technical claims are established by this proof.</p>
+      <p class="velocity-product-disclaimer">Product details will be shared before release.</p>
     </div>
   </section>
-  <footer class="velocity-proof-footer"><span>FSD / PRIVATE PRODUCT REVIEW</span><span>No checkout · No publication · Supplied image files unchanged</span></footer>`;
+  <footer class="velocity-proof-footer"><span>FSD / VELOCITY</span><span>WOMEN’S MODEST ACTIVEWEAR</span></footer>`;
+
+bindCollectionReturn(root);
 
 const mainImage = root.querySelector('#velocity-gallery-main-image');
 const caption = root.querySelector('#velocity-gallery-caption');

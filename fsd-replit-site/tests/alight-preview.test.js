@@ -68,7 +68,7 @@ test('ALIGHT is a private concept preview and does not alter the master catalogu
   assert.ok(preview.pendingSpecifications.length >= 5);
 });
 
-test('ALIGHT appears only as a development-menu draft, separate from the catalogue', () => {
+test('ALIGHT appears in the private Bio-Lab collection while remaining separate from the master catalogue', () => {
   const publicBioLab = createNavigationModel().find(section => section.id === 'bio-lab');
   assert.ok(publicBioLab);
   assert.equal(publicBioLab.groups.some(group => group.items.some(item => /FSD ALIGHT/.test(item.title))), false);
@@ -88,24 +88,35 @@ test('ALIGHT appears only as a development-menu draft, separate from the catalog
   assert.equal(draft.href, alightPreviewPath);
   assert.equal(draft.featureImageSrc, alightPreviewRecord.productVisual.src);
   assert.equal(integration.draftPreviewTargets.get(draft.href), draft.featureImageSrc);
-  assert.match(integration.draftProductCard, /NOT AVAILABLE TO PURCHASE/);
-  assert.match(draft.description, /specifications are pending approval/i);
+  assert.match(integration.draftProductCard, /data-alight-draft-card/);
+  assert.equal(integration.collectionCardPlacement.divisionId, 'bio-lab');
+  assert.equal(integration.collectionCardPlacement.groupId, 'bio-lab-concepts');
+  assert.match(integration.draftProductCard, /PRE-LAUNCH CONCEPT/);
+  assert.doesNotMatch(integration.draftProductCard, /PRIVATE DRAFT|NO CHECKOUT|NOT AVAILABLE TO PURCHASE/);
+  const mainSource = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+  assert.ok(mainSource.includes('setDraftProductCard(alight.draftProductCard, alight.collectionCardPlacement)'));
+  assert.match(mainSource, /if \(import\.meta\.env\.DEV\)[\s\S]*setDraftProductCard\(alight\.draftProductCard/);
+  assert.match(draft.description, /posture-awareness wearable concept/i);
   assert.equal(draft.record, undefined);
   assert.equal(draft.productId, undefined);
   assert.equal(products.some(product => product.name === draft.title), false);
   assert.deepEqual(getNavigationFeature(previewBioLab, 0, index).imageSources, [draft.featureImageSrc]);
 });
 
-test('ALIGHT source artwork is explicitly marked as a private, unverified campaign reference', () => {
+test('ALIGHT keeps its campaign gallery while presenting a restrained pre-launch note', () => {
   const html = readFileSync(new URL('../alight-preview.html', import.meta.url), 'utf8');
   const previewSource = readFileSync(new URL('../src/alight-preview-ui/alight-preview.js', import.meta.url), 'utf8');
   const pluginSource = readFileSync(new URL('../scripts/draft-review-plugin.mjs', import.meta.url), 'utf8');
 
   assert.match(html, /noindex, nofollow, noarchive/);
   assert.match(html, /FSD ALIGHT/);
-  assert.match(previewSource, /CAMPAIGN REFERENCE/);
-  assert.match(previewSource, /NOT PRODUCT PHOTOGRAPHY/);
-  assert.match(previewSource, /All product and technical information remains pending verification/i);
+  assert.match(previewSource, /CAMPAIGN IMAGE/);
+  assert.doesNotMatch(previewSource, /NOT PRODUCT PHOTOGRAPHY/);
+  assert.match(previewSource, /PRE-LAUNCH CONCEPT/);
+  assert.match(previewSource, /BACK TO COLLECTION/);
+  assert.match(previewSource, /data-alight-enlarge/);
+  assert.match(previewSource, /data-alight-thumb=/);
+  assert.doesNotMatch(previewSource, /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|alight-review-panel|IMAGE GAPS|Specifications to confirm/);
   assert.doesNotMatch(previewSource, /ADD TO CART|BUY NOW|CHECKOUT|£\d/i);
   assert.match(pluginSource, /name: 'fsd-weighted-rope-private-draft-review'[\s\S]*apply: 'serve'/);
   assert.match(pluginSource, /alightPreviewPath/);

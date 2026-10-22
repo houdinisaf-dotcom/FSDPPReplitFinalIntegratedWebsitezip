@@ -159,7 +159,7 @@ try {
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector("img").src.endsWith("/media/front-three-quarter")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Black / Gold")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("£69.99")`));
-  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Reference only · not approved for sale")`));
+  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Catalogue reference")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector(".fsd-product-media--aegis-preview").href.endsWith("/__catalogue-preview/aegis-modest-performance-gilet/")`));
   await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").scrollIntoView({ block: "center" })`);
   if (aegisProofCapture) {
@@ -172,15 +172,14 @@ try {
   assert.ok(await evaluate('document.querySelector("#aegis-main-image").src.endsWith("/media/front-three-quarter")'));
   assert.ok(await evaluate('document.querySelector(".aegis-product-colour").textContent.includes("Black / Gold")'));
   assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("£69.99")'));
-  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("Reference only · not approved for sale")'));
-  assert.ok(await evaluate('document.querySelector(".aegis-purchase-disabled").textContent.includes("PURCHASING DISABLED")'));
+  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("Catalogue reference")'));
   assert.ok(!await evaluate('document.querySelector("form, [name=checkout], [data-checkout]")'));
   if (aegisProofCapture) {
     await captureHijabProof(mobileProofCapture ? 'aegis-gilet-product-mobile.jpg' : 'aegis-gilet-product-desktop.jpg', true);
   }
   await click('[data-aegis-thumb="full-rear"]');
   await waitFor('document.querySelector("#aegis-main-image").src.endsWith("/media/full-rear")');
-  assert.ok(await evaluate('document.querySelector("#aegis-image-review-note").textContent.includes("not been verified")'));
+  assert.ok(!await evaluate('document.querySelector("#aegis-image-review-note")'));
   if (aegisProofCapture) {
     await captureHijabProof(mobileProofCapture ? 'aegis-gilet-back-mobile.jpg' : 'aegis-gilet-back-desktop.jpg', true);
   }
@@ -202,21 +201,19 @@ try {
   await click('[data-division="bio-lab"]');
   await waitFor('!!document.querySelector("[data-alight-draft-card]")');
   assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("FSD ALIGHT")'));
-  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("PENDING APPROVAL")'));
-  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("NOT AVAILABLE TO PURCHASE")'));
+  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("PRE-LAUNCH CONCEPT")'));
+  assert.ok(await evaluate('!document.querySelector("[data-alight-draft-card]").textContent.match(/PENDING APPROVAL|NOT AVAILABLE TO PURCHASE/i)'));
   assert.ok(await evaluate('!document.querySelector("[data-alight-draft-card]").textContent.match(/£\\s?\\d|ADD TO CART|BUY NOW/i)'));
   await evaluate('document.querySelector("[data-alight-draft-card]").scrollIntoView({ block: "center" })');
   await captureAlightProof(alightMobileCapture ? 'fsd-alight-collection-card-mobile.jpg' : 'fsd-alight-collection-card-desktop.jpg');
-  await click('[data-alight-draft-card] .fsd-product-link--private-preview');
+  await click('[data-alight-draft-card] .fsd-product-link');
   await waitFor('location.pathname === "/__catalogue-preview/fsd-alight/" && !!document.querySelector("#alight-title")');
   assert.equal(await evaluate('document.querySelectorAll("[data-alight-thumb]").length'), 12);
   await waitFor('Array.from(document.querySelectorAll("[data-alight-thumb] img")).every(image => image.complete && image.naturalWidth > 0)');
-  assert.equal(await evaluate('document.querySelectorAll(".alight-feature-row").length'), 7);
-  assert.equal(await evaluate('Array.from(document.querySelectorAll(".alight-feature-status")).every(item => item.textContent === "Pending Technical Verification")'), true);
-  assert.ok(await evaluate('document.querySelector(".alight-review-panel--missing").textContent.includes("front product photograph")'));
-  assert.ok(await evaluate('document.querySelector(".alight-review-panel--missing").textContent.includes("rear product photograph")'));
-  assert.ok(await evaluate('document.querySelector(".alight-review-panel--missing").textContent.includes("side product photograph")'));
-  assert.ok(await evaluate('document.querySelector(".alight-gallery-section").textContent.includes("not an independent photograph")'));
+  assert.equal(await evaluate('document.querySelectorAll(".alight-feature-row").length'), 0);
+  assert.equal(await evaluate('document.querySelectorAll(".alight-feature-status").length'), 0);
+  assert.equal(await evaluate('document.querySelectorAll(".alight-review-panel--missing").length'), 0);
+  assert.ok(await evaluate('document.querySelector(".alight-gallery-section").textContent.includes("CAMPAIGN IMAGE")'));
   assert.ok(!await evaluate('document.querySelector("form, [name=checkout], [data-checkout], [data-add-to-cart]")'));
   assert.equal(await evaluate('document.querySelectorAll("main main").length'), 0);
   assert.equal(await evaluate('document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1'), true);
@@ -264,7 +261,7 @@ try {
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector(".fsd-product-description").textContent.includes("Black / Champagne Gold")'));
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
-  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Reference only · not approved for sale")'));
+  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Catalogue reference")'));
   await evaluate('document.querySelector("[data-product-id=\\"43\\"]").scrollIntoView({ block: "center" })');
   if (mobileProofCapture) {
     console.log('Mobile collection viewport:', await evaluate('({ innerWidth: window.innerWidth, clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, visualWidth: window.visualViewport?.width, screenWidth: screen.width, pixelRatio: devicePixelRatio })'));
@@ -290,10 +287,9 @@ try {
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")'));
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").alt.toLowerCase().includes("woman")'));
   assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("£29.99")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Reference only · not approved for sale")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Catalogue reference")'));
   assert.ok(!await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Confirmed list price")'));
   assert.ok(await evaluate('document.querySelector(".velocity-colour").textContent.includes("Black / Champagne Gold")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-purchase-disabled").textContent.includes("PURCHASING DISABLED")'));
   assert.ok(!await evaluate('/add to cart|checkout button|quantity selector/i.test(document.body.textContent)'));
   assert.equal(await evaluate('document.querySelectorAll("form, input[type=number], button[name*=cart i]").length'), 0);
   await waitFor('Array.from(document.querySelectorAll("[data-hijab-thumb] img"), image => image.complete && image.naturalWidth > 0).every(Boolean)');
@@ -306,9 +302,9 @@ try {
     await waitFor(`document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/${imageId}")`);
     assert.equal(await evaluate(`document.querySelector('[data-hijab-thumb="${imageId}"]').getAttribute("aria-pressed")`), 'true');
   }
-  assert.ok(await evaluate('document.querySelector(".velocity-product-tagline").textContent.includes("PENDING VERIFICATION")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-gallery-note").textContent.includes("pending")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-product-disclaimer").textContent.includes("No technical claims are established")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-tagline").textContent.includes("PRE-LAUNCH CONCEPT")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-disclaimer").textContent.includes("Product details will be shared before release")'));
+  assert.ok(!await evaluate('/PENDING VERIFICATION|No technical claims are established/i.test(document.body.textContent)'));
   assert.ok(!await evaluate('/Lightweight & breathable|Stays in place|Strategic airflow/i.test(document.body.textContent)'));
   await click('[data-hijab-thumb="campaign"]');
   await waitFor('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")');

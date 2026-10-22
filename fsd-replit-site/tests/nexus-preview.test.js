@@ -99,40 +99,34 @@ test('NEXUS is a concept-only draft with all technical features and progression 
   assert.equal('slug' in preview, false);
 });
 
-test('the Bio-Lab draft card links to the private concept without changing navigation or catalogue data', () => {
+test('the Bio-Lab draft card links to the concept without changing navigation or catalogue data', () => {
   const integration = createNexusDevelopmentIntegration();
   assert.equal(integration.collectionCardPlacement.divisionId, 'bio-lab');
   assert.equal(integration.collectionCardPlacement.groupId, 'bio-lab-concepts');
   assert.match(integration.collectionCard, /data-nexus-draft-card/);
   assert.match(integration.collectionCard, new RegExp(nexusPreviewPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(integration.collectionCard, /FSD NEXUS/);
-  assert.match(integration.collectionCard, /NOT A CURRENT PRODUCT/);
+  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
   assert.doesNotMatch(integration.collectionCard, /£\s?\d|\bBUY\b|ADD TO CART|CHECKOUT NOW/i);
   assert.equal('draftMenuItems' in integration, false);
 });
 
-test('the rendered page separates approved artwork from the complete private brand audit', () => {
+test('the rendered page shows approved concept artwork only and keeps the product limitations clear', () => {
   const html = renderNexusPreview({
     headerHtml: '<header class="header fsd-header"><a class="fsd-brand"><img class="fsd-brand-logo"></a></header>',
     preview: createNexusPreview(),
   });
   assert.equal((html.match(/data-nexus-gallery-select=/g) || []).length, 3);
-  assert.equal((html.match(/data-nexus-audit-gallery-select=/g) || []).length, 8);
-  assert.equal((html.match(/class="nexus-audit-ledger-row"/g) || []).length, 11);
+  assert.doesNotMatch(html, /data-nexus-audit|nexus-audit-ledger|ring-product-closeup|ring-charging-case|BRAND CORRECTION REQUIRED|PRIVATE REVIEW REFERENCE|11 source findings/);
   assert.match(html, /data-nexus-active-image/);
-  assert.match(html, /data-nexus-audit-active-image/);
-  assert.match(html, /data-nexus-audit-active-status/);
-  assert.match(html, /data-nexus-audit-active-finding/);
-  assert.match(html, /data-nexus-audit-active-context/);
   assert.match(html, /data-nexus-dialog/);
-  assert.match(html, /87 score is not live data or a verified measurement/);
-  assert.match(html, /STATIC INTERFACE · 87 IS ILLUSTRATIVE, NOT LIVE DATA/);
+  assert.match(html, /BACK TO COLLECTION/);
+  assert.match(html, /FSD NEXUS CONCEPT/);
+  assert.match(html, /Scores shown are concept artwork, not live data/);
+  assert.match(html, /STATIC INTERFACE CONCEPT/);
   assert.match(html, /data-nexus-active-note/);
-  assert.match(html, /PROPOSED — PENDING TECHNICAL VALIDATION/);
-  assert.match(html, /PRIVATE REVIEW REFERENCE/);
-  assert.match(html, /BRAND CORRECTION REQUIRED/);
-  assert.match(html, /FULL COMPOSITE BOARD · REFERENCE ONLY · NOT A PRODUCT PHOTO/);
-  assert.match(html, /unmodified source references.*not approved campaign photography/i);
-  assert.match(html, /no embedded logo has been erased, overlaid or redrawn/i);
+  assert.match(html, /CONCEPT DIRECTION/);
+  assert.match(html, /Product imagery will be shared as the design develops/);
+  assert.doesNotMatch(html, /PRE-LAUNCH CONCEPT · DETAILS UNDER REVIEW|Not a current product or commercial commitment|PROPOSED — PENDING TECHNICAL VALIDATION|No approved ring or packaging photography is available/);
   assert.doesNotMatch(html, /ADD TO CART|BUY NOW|<form\b|£\s?\d/i);
 });

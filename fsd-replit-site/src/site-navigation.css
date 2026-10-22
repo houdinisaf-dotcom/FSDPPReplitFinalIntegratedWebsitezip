@@ -8,6 +8,22 @@
   letter-spacing: 0.25em;
 }
 
+.fsd-collection-return {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  margin: 0 0 12px;
+  padding: 4px 0;
+  color: #d0b67d;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+.fsd-collection-return:hover { color: #f1e5c5; }
+.fsd-collection-return:focus-visible { outline: 2px solid #e7d3a8; outline-offset: 4px; }
+
 .announcement.fsd-announcement span {
   color: #8d8b86;
 }

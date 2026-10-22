@@ -82,15 +82,30 @@ test('private preview data maps one fixed hero, six true colour assets, restrain
   assert.ok(preview.specificationNotes.some(note => /composition/i.test(note)));
 });
 
-test('the development-only collection card links to the private proof without a purchase action', () => {
+test('the development-only collection entry is normal discovery with no purchase action', () => {
   const integration = createAeroForgeDevelopmentIntegration();
   assert.match(integration.collectionCard, /data-aeroforge-draft-card/);
-  assert.match(integration.collectionCard, /DRAFT · PENDING APPROVAL/);
-  assert.match(integration.collectionCard, /NO CHECKOUT · NOT PUBLISHED/);
+  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
+  assert.match(integration.collectionCard, /EXPLORE COLLECTION/);
   assert.match(integration.collectionCard, /\/__catalogue-preview\/aeroforge\//);
   assert.doesNotMatch(integration.collectionCard, /ADD TO CART|BUY NOW|£\d/i);
+  assert.doesNotMatch(integration.collectionCard, /PRIVATE COLLECTION REFERENCE|PENDING APPROVAL/);
   assert.equal(integration.collectionCardPlacement.divisionId, 'apparel');
   assert.equal(integration.collectionCardPlacement.groupId, 'womens-modest-combat');
+  assert.equal(integration.collectionCardPlacement.heading, 'AEROFORGE');
+});
+
+test('AeroForge browsing uses separate modal product selectors and labels jogger images only as outfit references', () => {
+  const source = readFileSync(resolve(projectRoot, 'src/aeroforge-preview-ui/aeroforge-preview.js'), 'utf8');
+  assert.match(source, /createElement\('dialog'\)/);
+  assert.match(source, /data-af-open="\$\{kind\}"/);
+  assert.match(source, /coordinated outfit/i);
+  assert.match(source, /OUTFIT REFERENCE/);
+  assert.match(source, /Product details are being finalised\./);
+  assert.doesNotMatch(source, /standalone jogger photography and product details are pending/i);
+  assert.doesNotMatch(source, /01_collection_hero|suppliedOutfitAssets|af-proof-ledger|PRIVATE DRAFT/);
+  assert.match(source, /dialog\.addEventListener\('cancel'/);
+  assert.match(source, /opener\.focus\(\{ preventScroll: true \}\)/);
 });
 
 test('the private asset/page route is dev-serve-only', () => {

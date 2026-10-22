@@ -18,14 +18,14 @@ function approvedAssets(preview) {
 }
 
 function featureStatus(feature) {
-  return feature?.status || 'PROPOSED — PENDING TECHNICAL VALIDATION';
+  return 'CONCEPT DIRECTION';
 }
 
 function galleryNote(asset) {
-  if (asset?.id === 'app-interface') return 'STATIC INTERFACE · 87 IS ILLUSTRATIVE, NOT LIVE DATA';
-  if (asset?.id === 'proposed-features') return 'UNBRANDED CONCEPT · ALL CAPABILITIES PENDING TECHNICAL VALIDATION';
-  if (asset?.id === 'progression-conditions') return 'UNBRANDED CHECKLIST · NO VALIDATION GATE CONFIRMED';
-  return 'CONCEPT REFERENCE · NOT PRODUCT PHOTOGRAPHY';
+  if (asset?.id === 'app-interface') return 'STATIC INTERFACE CONCEPT';
+  if (asset?.id === 'proposed-features') return 'FEATURE CONCEPT';
+  if (asset?.id === 'progression-conditions') return 'RESPONSIBLE DEVELOPMENT';
+  return 'CAMPAIGN IMAGE';
 }
 
 function galleryMarkup(assets, active) {
@@ -154,8 +154,6 @@ function auditGalleryMarkup(auditAssets, brandAudit) {
 
 export function renderNexusPreview({ headerHtml, preview } = {}) {
   const assets = approvedAssets(preview);
-  const auditAssets = list(preview?.auditAssets);
-  const brandAudit = list(preview?.brandAudit);
   const active = assets.find(asset => asset.id === 'app-interface') || assets[0];
   const appImage = assets.find(asset => asset.id === 'app-interface');
   const featureArt = assets.find(asset => asset.id === 'proposed-features');
@@ -168,22 +166,14 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
     <img data-nexus-dialog-image alt="">
     <p data-nexus-dialog-caption>${esc(dialogCaption)}</p>
   </dialog>`;
-  const status = preview?.status || 'CONCEPT FOR EXPLORATION — NOT A CURRENT PRODUCT OR COMMITMENT.';
-  const photographyStatus = preview?.productPhotographyStatus ||
-    'RING AND PACKAGING PHOTOGRAPHY WITHHELD — BRAND CORRECTION REQUIRED.';
-  const reviewBoundary = preview?.reviewBoundary || '';
-
   return `<div class="nexus-preview-body">
     ${headerHtml ?? ''}
     <main class="nexus-page">
       <div class="nexus-wrap">
         <nav class="nexus-crumb" aria-label="Breadcrumb">
-          <span>FSD</span><span aria-hidden="true">/</span><span>PRIVATE CONCEPT PREVIEW</span><span aria-hidden="true">/</span><span>NEXUS</span>
+          <span>FSD</span><span aria-hidden="true">/</span><span>COLLECTION</span><span aria-hidden="true">/</span><span>NEXUS</span>
         </nav>
-        <div class="nexus-proof">
-          <span><i aria-hidden="true"></i> PRIVATE SMART-RING CONCEPT</span>
-          <strong>${esc(preview?.draftStatus || 'PRIVATE CONCEPT · DRAFT / PENDING APPROVAL')}</strong>
-        </div>
+        <a class="nexus-back-collection fsd-collection-return" href="/#collections" data-collection-return>← BACK TO COLLECTION</a>
 
         <section class="nexus-hero" aria-labelledby="nexus-title">
           <div class="nexus-hero-copy">
@@ -192,10 +182,7 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
             <h1 id="nexus-title" aria-label="FSD NEXUS"><em>NEXUS</em></h1>
             <p class="nexus-hero-line">${esc(preview?.headline || 'DISCREET TECHNOLOGY. DEEPER INSIGHTS.')}</p>
             <p class="nexus-intro">${esc(preview?.description || '')}</p>
-            <div class="nexus-concept-note">
-              <span class="nexus-note-mark" aria-hidden="true">01</span>
-              <div><strong>RESEARCH CONCEPT</strong><small>${esc(status)}</small></div>
-            </div>
+            <p class="nexus-prelaunch-note"><strong>FSD NEXUS CONCEPT</strong><small>A visual exploration for the FSD Bio-Lab.</small></p>
           </div>
           <div class="nexus-hero-visual" aria-label="Concept presentation artwork">
             <div class="nexus-orbit nexus-orbit--one" aria-hidden="true"></div>
@@ -203,7 +190,7 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
             <div class="nexus-hero-visual-copy">
                <span>NEXUS / CONCEPT</span>
               <strong>01<span>—</span>03</strong>
-              <small>CONCEPT STUDY<br>NOT A PRODUCT RENDER</small>
+               <small>FSD NEXUS<br>CONCEPT STUDY</small>
             </div>
             <div class="nexus-hero-index" aria-hidden="true">N / 01</div>
           </div>
@@ -212,13 +199,13 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
         <section class="nexus-manifesto" aria-label="Concept direction">
           <div class="nexus-manifesto-index">01 / THE ENQUIRY</div>
           <p>${esc(preview?.campaignMessage || 'TRAIN. RECOVER. BALANCE. PERFORM. LIVE BETTER.')}</p>
-          <small>AN EXPLORATION OF A POSSIBLE DIRECTION<br>NOT A HEALTH OR PERFORMANCE OUTCOME</small>
+          <small>FSD NEXUS / CONCEPT DIRECTION</small>
         </section>
 
         <section class="nexus-evidence nexus-wrap" aria-labelledby="nexus-evidence-title">
           <div class="nexus-section-head">
             <div><p class="nexus-kicker">CONCEPT MATERIAL / 01</p><h2 id="nexus-evidence-title">A direction, <em>not a device.</em></h2></div>
-            <p>The approved concept gallery uses only the corrected app-screen candidate and unbranded references. Supplied branded crops appear separately below for private audit only.</p>
+            <p>A visual exploration of the FSD NEXUS direction.</p>
           </div>
           ${galleryMarkup(assets, active)}
         </section>
@@ -228,23 +215,23 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
             <div class="nexus-app-copy">
               <p class="nexus-kicker">02 / INTERFACE STUDY</p>
               <h2 id="nexus-app-title">An interface<br>in <em>exploration.</em></h2>
-              <p>The supplied screen is a static concept illustration. It does not demonstrate a functional app, connected device or verified measurement.</p>
-              <p class="nexus-app-warning">Static concept illustration only; the displayed 87 score is not live data or a verified measurement.</p>
-              <span class="nexus-validation">PROPOSED — PENDING TECHNICAL VALIDATION</span>
+              <p>A visual study of a potential FSD NEXUS interface.</p>
+              <p class="nexus-app-warning">Illustrative interface. Scores shown are concept artwork, not live data.</p>
+              <span class="nexus-validation">CONCEPT DIRECTION</span>
             </div>
             <figure class="nexus-app-figure">
-              ${appImage ? `<img src="${esc(appImage.src)}" alt="${esc(appImage.alt || appImage.label)}" loading="lazy">` : '<div class="nexus-gallery-empty">APP CONCEPT ARTWORK NOT PROVIDED</div>'}
-              <figcaption><span>APP INTERFACE CONCEPT</span><span>STATIC ARTWORK / NOT FUNCTIONAL</span></figcaption>
+              ${appImage ? `<img src="${esc(appImage.src)}" alt="${esc(appImage.alt || appImage.label)}" loading="lazy">` : ''}
+              <figcaption><span>APP INTERFACE CONCEPT</span><span>STATIC INTERFACE STUDY</span></figcaption>
             </figure>
           </div>
         </section>
 
         <section class="nexus-capabilities nexus-wrap" aria-labelledby="nexus-capabilities-title">
           <div class="nexus-capabilities-intro">
-            <p class="nexus-kicker">03 / CAPABILITY HYPOTHESES</p>
+            <p class="nexus-kicker">03 / FUTURE DIRECTIONS</p>
             <h2 id="nexus-capabilities-title">Ideas under<br><em>examination.</em></h2>
-            <p>These are research prompts only. No sensor, software or result is confirmed.</p>
-            ${featureArt ? `<figure class="nexus-feature-art"><img src="${esc(featureArt.src)}" alt="${esc(featureArt.alt || featureArt.label)}" loading="lazy"><figcaption>UNBRANDED CONCEPT REFERENCE · NOT EVIDENCE OF CAPABILITY</figcaption></figure>` : ''}
+            <p>Possible directions for a future FSD NEXUS experience.</p>
+            ${featureArt ? `<figure class="nexus-feature-art"><img src="${esc(featureArt.src)}" alt="${esc(featureArt.alt || featureArt.label)}" loading="lazy"><figcaption>FEATURE CONCEPT</figcaption></figure>` : ''}
           </div>
           <ul class="nexus-feature-list">
             ${features.map((feature, index) => `<li>
@@ -258,42 +245,32 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
         <section class="nexus-boundary">
           <div class="nexus-wrap nexus-boundary-layout">
             <div>
-              <p class="nexus-kicker">04 / BEFORE ANY PROGRESSION</p>
+              <p class="nexus-kicker">04 / RESPONSIBLE DEVELOPMENT</p>
               <h2>Open questions.<br><em>Clear boundaries.</em></h2>
-              <p>Progression depends on future review. The checklist artwork is an unverified concept reference, not evidence that any gate is complete.</p>
+              <p>Each idea is a starting point for careful research and evaluation.</p>
             </div>
             <div class="nexus-gates">
               ${conditions.map((condition, index) => `<div class="nexus-gate">
-                <span>0${index + 1}</span><strong>${esc(condition.name ?? condition.label ?? condition)}</strong><small>${esc(condition.status || 'NOT VERIFIED')}</small>
+                <span>0${index + 1}</span><strong>${esc(condition.name ?? condition.label ?? condition)}</strong><small>KEY CONSIDERATION</small>
               </div>`).join('')}
             </div>
-            ${progressionArt ? `<figure class="nexus-progression-art"><img src="${esc(progressionArt.src)}" alt="${esc(progressionArt.alt || progressionArt.label)}" loading="lazy"><figcaption>UNBRANDED CHECKLIST CONCEPT · NOT A COMPLETED VALIDATION RECORD</figcaption></figure>` : ''}
+            ${progressionArt ? `<figure class="nexus-progression-art"><img src="${esc(progressionArt.src)}" alt="${esc(progressionArt.alt || progressionArt.label)}" loading="lazy"><figcaption>RESPONSIBLE DEVELOPMENT</figcaption></figure>` : ''}
           </div>
         </section>
 
         <section class="nexus-photography nexus-wrap" aria-labelledby="nexus-photo-title">
           <div class="nexus-photo-mark" aria-hidden="true"><span></span><span></span><span></span></div>
           <div>
-            <p class="nexus-kicker">05 / IMAGE BOUNDARY</p>
-            <h2 id="nexus-photo-title">The product<br>remains <em>unpictured.</em></h2>
-            <p>${esc(photographyStatus)} These original composite-board crops remain unmodified and are not approved product photographs. They are shown only in the clearly labelled owner-review audit below; no embedded logo has been erased, overlaid or redrawn.</p>
+            <p class="nexus-kicker">05 / THE DESIGN</p>
+            <h2 id="nexus-photo-title">A vision<br>still <em>evolving.</em></h2>
+            <p>Product imagery will be shared as the design develops.</p>
           </div>
-          <span class="nexus-photo-stamp">PHOTOGRAPHY<br>WITHHELD</span>
+          <span class="nexus-photo-stamp">CONCEPT<br>ONLY</span>
         </section>
 
-        ${auditGalleryMarkup(auditAssets, brandAudit)}
-
-        <section class="nexus-review-boundary">
-          <div class="nexus-wrap">
-            <p class="nexus-kicker">REVIEW BOUNDARY / PRIVATE</p>
-            <p>${esc(reviewBoundary)}</p>
-            <strong>${esc(status)}</strong>
-          </div>
-        </section>
         <footer class="nexus-footer nexus-wrap">
           <strong>FSD / NEXUS</strong>
-          <span>PRIVATE CONCEPT REVIEW</span>
-          <span>DRAFT / PENDING APPROVAL</span>
+          <span>PRE-LAUNCH CONCEPT</span>
         </footer>
       </div>
     </main>
