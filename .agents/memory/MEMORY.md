@@ -1,6 +1,6 @@
 - [Catalogue approval boundaries](catalogue-approval-boundaries.md) — user approval of a development brief is not manufacturer validation or permission to enable checkout.
 - [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.
-- [Official logo boundaries](official-logo-boundaries.md) — preserve the supplied FSD artwork exactly; review derived assets before applying them to the live site.
+- [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
 - [House of Performance approvals](house-of-performance-approvals.md) — homepage remains staged; reconstruct only the explicitly authorized nav from visual reference; preserve catalogue and assets.
 - [Velocity hijab proof boundary](velocity-hijab-proof.md) — visual approval is not commercial approval; keep master data intact and the separate image archive untouched.
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.

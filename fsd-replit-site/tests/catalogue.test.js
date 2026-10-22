@@ -293,7 +293,7 @@ test('the complete public page excludes held imagery while retaining internal so
     const dependencies = {
       catalogueSection, initCatalogue, gallerySection, galleryProducts, products,
       collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
-      renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-refined.png',
+      renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
       initArchiveNavigation() {}, showProduct() {},
     };
@@ -304,7 +304,7 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(page, /id="catalogue-archive"/);
     assert.match(page, /id="gallery-archive"/);
     assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
-    assert.match(page, /website-shield-lockup-refined\.png/);
+    assert.match(page, /website-shield-lockup-defence\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
     assert.match(page, /The future of training, in development\./);
     assert.doesNotMatch(page, /<form|type="email"/i);

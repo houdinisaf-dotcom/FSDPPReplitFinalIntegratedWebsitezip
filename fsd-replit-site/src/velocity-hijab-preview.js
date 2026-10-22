@@ -4,7 +4,7 @@ import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import { bindCollectionReturn } from './collection-return.js';
 import { createVelocityHijabPreview } from './velocity-hijab-campaign.js';
 import { velocityHijabMediaPrefix, velocityHijabPreviewPath } from './velocity-hijab-preview-path.js';
-import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
+import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 
 const preview = createVelocityHijabPreview();
 const productPrice = {

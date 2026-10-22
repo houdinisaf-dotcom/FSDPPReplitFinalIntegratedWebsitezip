@@ -3,7 +3,7 @@ import { products } from './catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import { aeroforgeDataPath } from './aeroforge-preview-path.js';
 import { mountAeroForgePreview } from './aeroforge-preview-ui/aeroforge-preview.js';
-import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
+import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import './style.css';
 import './site-navigation.css';
 import './aeroforge-preview-ui/aeroforge-preview.css';

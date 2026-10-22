@@ -4,7 +4,7 @@ import { renderNavigationHeader, mountNavigation } from '../site-navigation.js';
 import { alightPreviewRecord as preview } from '../alight-campaign.js';
 import { createAlightDevelopmentIntegration } from '../alight-development-integration.js';
 import { bindCollectionReturn } from '../collection-return.js';
-import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
+import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import '../site-navigation.css';
 import './alight-preview.css';
 

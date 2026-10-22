@@ -6,7 +6,7 @@ import { createMotionPreview } from '../motion-campaign.js';
 import { motionProductsPrefix } from '../motion-preview-path.js';
 import { createMotionDevelopmentIntegration } from '../motion-development-integration.js';
 import { renderMotionPreview } from './motion-preview.js';
-import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
+import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import '../site-navigation.css';
 import './motion-preview.css';
 

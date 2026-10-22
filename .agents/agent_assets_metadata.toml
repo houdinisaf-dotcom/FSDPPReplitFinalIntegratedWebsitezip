@@ -882,3 +882,17 @@ mtime_ms = 1792658058250
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/db9fd7b9-c699-4de1-80e9-84901c9dd8de/b9626a2c-857f-4fe8-8765-30cec6b91bea"
 storage_version_token = "1792658215447633"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "sDCKh102u_XEsIMMgbAHn"
+uri = "file://fsd-replit-site/brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png"
+type = "image"
+title = "FSD website logo — Defence"
+description = "Corrected website lockup with the British Defence spelling. The supplied original logo remains unchanged."
+logical_id = "e3923cf9-2f51-41a9-a61b-e4db9aed4cd8"
+content_hash = "sha256:7654c38bd1b9a3439df6f9f3af0812e6fb9b487489a357008524b8bf0a6b4df4"
+size = 45718
+mtime_ms = 1792683627446
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e3923cf9-2f51-41a9-a61b-e4db9aed4cd8/712af0ca-2dc8-4e54-b714-927e78f1160b"
+storage_version_token = "1792683911622019"
+content_type = "image/png"

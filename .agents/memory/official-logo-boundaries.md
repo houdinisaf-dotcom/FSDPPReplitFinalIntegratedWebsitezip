@@ -15,20 +15,20 @@ A real RGBA channel does not prove an edge-clean master. A transparent raster de
 
 **How to apply:** Show dark/light proofs, protect original highlights and fine tips, avoid blanket edge fading or smoothing, disclose matte limits, and prefer the genuine transparent/vector source when available. Never claim estimated cleanup certifies every original edge pixel.
 
-The preferred final website identity is the original metallic-gold shield, no large FSD initials beneath it, the exact wording “FITNESS & SELF-DEFENSE” beneath the shield in refined, widely spaced champagne-gold uppercase lettering, and a genuinely transparent background. Do not substitute generic lettering.
+The preferred final website identity is the original metallic-gold shield, no large FSD initials beneath it, the wording “FITNESS & SELF-DEFENCE” beneath the shield in refined, widely spaced champagne-gold uppercase lettering, and a genuinely transparent background. Do not substitute generic lettering.
 
 **Why:** The user explicitly requested this website-specific treatment while leaving FSD initials on existing products.
 
-**How to apply:** Prepare desktop and mobile proofs separately from the live site. The supplied RGBA asset is interim reference material, not final logo approval. Keep the existing header unchanged until the user explicitly approves live replacement; do not modify clothing, product renders, packaging or other existing FSD branding. Do not publish during logo-proof work.
+**How to apply:** Preserve the approved shield-and-wording layout. The supplied RGBA asset is still an interim raster reference, not an authored vector master. Do not modify clothing, product renders, packaging or other existing FSD branding. Do not publish during logo work.
 
 The user approved the shield-and-wording layout and subsequently approved the refined raster asset only, with “keep the site unchanged.” The approved treatment has the shield above the two-line FITNESS & SELF-DEFENSE wording, without large FSD initials.
 
 **Why:** The user explicitly chose “Approve the refined asset only — keep the site unchanged” after being shown the raster-matte limitations. This is asset approval, not permission to apply it or publish.
 
-**How to apply:** Preserve the approved layout and refined raster treatment. Obtain separate explicit approval before any live-header replacement or publishing. Do not reopen asset cleanup or substitute another logo merely because live application remains unapproved.
+**How to apply:** Preserve the approved layout and refined raster treatment. The later authorization permits only a website-specific spelling correction; it does not authorize broader redesign, product-image edits or publishing.
 
-Use British “Defence” spelling in FSD website text. This copy rule does not authorize altering letters embedded in approved logo artwork.
+The user explicitly authorized correcting the website logo to British “DEFENCE” spelling. A website-only derivative replaces the S in “SELF-DEFENSE” with a matching C sourced from the supplied FSD Defence artwork; the original source image remains untouched.
 
-**Why:** The user requested that “Defense” be corrected to “Defence” throughout website content, while logo artwork has separate preservation and approval boundaries.
+**Why:** The user directly asked to correct the spelling on the logo to English “Defence,” while preserving the established shield and brand identity.
 
-**How to apply:** Correct editable website text and accessible labels; preserve supplied or approved image artwork unless the user separately authorizes a logo-asset edit.
+**How to apply:** Use the corrected derivative in website headers and development preview headers. Keep the original logo asset, product branding, clothing, packaging and campaign imagery unchanged; do not publish.

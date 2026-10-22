@@ -4,7 +4,7 @@ import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import { bindCollectionReturn } from './collection-return.js';
 import { aegisGiletPreviewRecord as preview } from './aegis-gilet-campaign.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
-import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
+import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import './site-navigation.css';
 import './aegis-gilet-preview.css';
 

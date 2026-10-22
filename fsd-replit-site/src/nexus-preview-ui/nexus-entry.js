@@ -4,7 +4,7 @@ import { renderNavigationHeader, mountNavigation } from '../site-navigation.js';
 import { bindCollectionReturn } from '../collection-return.js';
 import { createNexusPreview } from '../nexus-campaign.js';
 import { renderNexusPreview } from './nexus-preview.js';
-import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-refined.png';
+import approvedFsdHeaderLogo from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import '../site-navigation.css';
 import './nexus-preview.css';
 
