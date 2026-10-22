@@ -5,6 +5,7 @@ import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
 import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initArchiveNavigation } from './showroom-sections.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
+import { ourStorySection } from './story-section.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import { velocityHijabPreviewPath } from './velocity-hijab-preview-path.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
@@ -12,6 +13,7 @@ import './style.css';
 import './catalogue.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
+import './story-section.css';
 import './site-navigation.css';
 
 function header() {
@@ -86,12 +88,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
   ${hardwareEditorialSection()}
   ${import.meta.env.DEV ? shellCampaignEditorialSection() : ''}
   ${featuredInnovationsSection()}
-  <section class="manifesto" id="philosophy"><p class="section-kicker">THE FSD PHILOSOPHY</p>
-    <h2>FITNESS. DISCIPLINE.<br/><span>PROGRESS. A STRONGER YOU.</span></h2>
-    <p>From the training floor to everyday life, FSD brings a premium design language to performance, self-defence and inclusive movement.
-    Our product portfolio is taking shape for its next launch.</p>
-    <div class="values"><span>01 / STRENGTH</span><span>02 / DISCIPLINE</span><span>03 / CONFIDENCE</span></div>
-  </section>
+  ${ourStorySection()}
   ${vipAccessSection()}
   </main>
   <footer><div class="footer-brand"><img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="FSD Fitness & Self-Defence"/></div>

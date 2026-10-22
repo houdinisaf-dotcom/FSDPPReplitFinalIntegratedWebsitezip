@@ -10,6 +10,7 @@ import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
 import { featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
 import { renderNavigationHeader } from '../src/site-navigation.js';
+import { ourStorySection } from '../src/story-section.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
   assert.equal(master.length, 72);
@@ -294,6 +295,7 @@ test('the complete public page excludes held imagery while retaining internal so
       catalogueSection, initCatalogue, gallerySection, galleryProducts, products,
       collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
+      ourStorySection,
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
       initArchiveNavigation() {}, showProduct() {},
     };
@@ -307,6 +309,9 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(page, /website-shield-lockup-defence\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
     assert.match(page, /The future of training, in development\./);
+    assert.match(page, /Engineered for<br\/><span>the Work\.<\/span>/);
+    assert.match(page, /AEROFORGE, is in development/);
+    assert.doesNotMatch(page, /Sign up today/i);
     assert.doesNotMatch(page, /<form|type="email"/i);
     assert.ok(page.indexOf('class="hero"') < page.indexOf('class="fsd-showcase"'));
     assert.ok(page.indexOf('class="fsd-showcase"') < page.indexOf('id="innovations"'));
