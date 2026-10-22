@@ -21,7 +21,7 @@ export function createModestFlowDevelopmentIntegration() {
     <div class="fsd-product-meta"><span>FSD APPAREL</span><span>MODEST ACTIVEWEAR</span></div>
     <h4>${escapeHTML(product.name)}</h4>
     <p class="fsd-product-description">${escapeHTML(product.subtitle)}</p>
-    <p class="fsd-product-status">DRAFT · PENDING VISUAL APPROVAL</p>
+    <p class="fsd-product-status">VISUAL PROOF APPROVED · PRODUCT DETAILS PENDING</p>
     <p class="fsd-preview-status">PRIVATE PREVIEW · NO CHECKOUT · NOT PUBLISHED</p>
     <a class="fsd-product-link fsd-product-link--private-preview" href="#modest-flow"
       data-modest-flow-open aria-haspopup="dialog" aria-expanded="false">

@@ -30,10 +30,12 @@ test('Modest Flow is a six-colour, no-price private draft with a separate fixed 
   assert.equal(data.collection.divisionId, 'apparel');
   assert.equal(data.collection.groupId, 'womens-modest-combat');
   assert.equal(data.collection.status, 'Draft');
+  assert.equal(data.collection.approvalStatus, 'Approved as visual/layout proof only; private and unpublished');
   assert.equal(data.collection.purchaseEnabled, false);
   assert.equal(data.collection.publicationAuthorized, false);
   assert.equal(data.collection.priceGbp, null);
   assert.equal(data.product.editorialStatus, 'Draft');
+  assert.equal(data.product.approvalStatus, 'Approved as visual/layout proof only; private and unpublished');
   assert.equal(data.product.priceGbp, null);
   assert.equal(data.product.inventory, null);
   assert.equal(data.product.sku, null);
@@ -90,6 +92,7 @@ test('development integration places the fixed hero in the existing women’s mo
   assert.equal(integration.variants.length, 6);
   assert.match(integration.collectionCard, /data-modest-flow-open/);
   assert.match(integration.collectionCard, /modest-flow-campaign-hero/);
+  assert.match(integration.collectionCard, /VISUAL PROOF APPROVED · PRODUCT DETAILS PENDING/);
   assert.match(integration.collectionCard, /PRIVATE PREVIEW · NO CHECKOUT · NOT PUBLISHED/);
   assert.doesNotMatch(integration.collectionCard, /<(?:form|input)\b|data-(?:purchase|add-to-cart)=/i);
 });
