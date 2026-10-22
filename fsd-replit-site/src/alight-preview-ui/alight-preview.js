@@ -98,7 +98,7 @@ root.innerHTML = `
             <span class="alight-colour-swatch" aria-hidden="true"></span>
             <span><small>DEPICTED PALETTE</small><strong>${escapeHTML(preview.product.colour)}</strong></span>
           </div>
-           <p class="alight-prelaunch-note"><strong>PRE-LAUNCH CONCEPT</strong><small>Product details are being finalised.</small></p>
+           <p class="alight-prelaunch-note"><strong>CONCEPT</strong><small>Product details are being finalised.</small></p>
         </div>
         <div class="alight-hero-artwork">
           <button class="alight-hero-image" type="button" data-alight-enlarge aria-label="Enlarge selected campaign reference">
@@ -151,8 +151,8 @@ root.innerHTML = `
     <footer class="alight-footer">
       <div class="alight-main-wrap">
         <span class="alight-footer-brand">FSD <i>/</i> ALIGHT</span>
-         <span>PRE-LAUNCH CONCEPT</span>
-        <span>PRE-LAUNCH CONCEPT</span>
+         <span>CONCEPT</span>
+        <span>CONCEPT</span>
       </div>
     </footer>
   </main>

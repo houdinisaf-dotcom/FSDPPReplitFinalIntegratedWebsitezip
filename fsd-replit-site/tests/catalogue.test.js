@@ -81,7 +81,7 @@ test('rendered sections follow the master list, escape content, and do not promo
   assert.match(sections, /66 products across 9 categories/);
   assert.doesNotMatch(sections, /in development/i);
   assert.doesNotMatch(sections, /STRIDE|smartwatch|Shilajit|Championship Belt|Ring Corner Post/i);
-  assert.match(sections, /Pre-launch collection\. Prices and details may change before release\. Join VIP Access to be first when it drops\./);
+  assert.doesNotMatch(sections, /Upcoming collection|Prices and details|Join VIP Access/);
   assert.doesNotMatch(sections, /add to (cart|basket)|buy now|checkout|payment|<form/i);
   assert.equal(safe('<script>"x"&</script>'), '&lt;script&gt;&quot;x&quot;&amp;&lt;/script&gt;');
 });
@@ -301,7 +301,7 @@ test('the complete public page excludes held imagery while retaining internal so
     };
     new Function('document', ...Object.keys(dependencies), source)(document, ...Object.values(dependencies));
     const page = document.querySelector('#app').innerHTML;
-    assert.match(page, /PRE-LAUNCH DESIGN PROOF/);
+    assert.match(page, /DESIGN PREVIEW/);
     assert.match(page, /id="catalogue-archive"/);
     assert.doesNotMatch(page, /id="gallery-archive"|id="full-gallery"|DESIGN LIBRARY|IMAGE ARCHIVE/i);
     assert.doesNotMatch(page, /FSD PRODUCT DESIGN LIBRARY|THE FULL VISUAL EDIT|74 designs/i);

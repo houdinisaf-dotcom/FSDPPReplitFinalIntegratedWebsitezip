@@ -98,11 +98,11 @@ try {
   await delay(250);
   await captureProof('collection-products-desktop.jpg');
   await evaluate('window.scrollTo(0, 0)');
-  assert.match(await evaluate('document.title'), /FSD MOTION.*Pre-launch Concept/);
+  assert.match(await evaluate('document.title'), /FSD MOTION.*Concept/);
   assert.match(await evaluate('document.querySelector("meta[name=robots]")?.content'), /noindex/);
   assert.equal(await evaluate('document.querySelectorAll("[data-motion-gallery-select]").length'), 15);
   assert.equal(await evaluate('document.querySelectorAll("[data-motion-product-link]").length'), 4);
-  assert.match(await evaluate('document.body.innerText'), /PRE-LAUNCH CONCEPT/);
+  assert.match(await evaluate('document.body.innerText'), /CONCEPT/);
   assert.ok(await evaluate('document.querySelector(".motion-back-collection")'));
   assert.doesNotMatch(await evaluate('document.body.innerText'), /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL/);
 
@@ -127,7 +127,7 @@ try {
     await captureProof(`product-${slug}-desktop.jpg`);
     assert.match(await evaluate('document.body.innerText'), /BACK TO MOTION COLLECTION/);
     assert.match(await evaluate('document.body.innerText'), /A visual concept for the FSD MOTION collection/);
-    assert.match(await evaluate('document.body.innerText'), /PRE-LAUNCH CONCEPT/);
+    assert.match(await evaluate('document.body.innerText'), /CONCEPT/);
     assert.doesNotMatch(await evaluate('document.body.innerText'), /Capabilities and performance statements are unverified|private visual preview|CLEAN PRODUCT PHOTOGRAPHY PENDING|MEN’S APPAREL CROP/i);
     assert.match(await evaluate('document.querySelector("[data-motion-active-image]")?.src'), new RegExp(`/media/${firstImageId}$`));
     assert.ok(await evaluate('document.querySelectorAll("[data-motion-gallery-select]").length >= 3'));
@@ -142,8 +142,8 @@ try {
   assert.equal(invalidRouteStatus, 404);
 
   await navigate('/');
-  await waitFor('document.querySelector("[data-division=apparel]")');
-  await click('[data-division="apparel"]');
+  await waitFor('document.querySelector("[data-division=bio-lab]")');
+  await click('[data-division="bio-lab"]');
   await waitFor('document.querySelector("[data-showcase-dialog]")?.open');
   await waitFor('document.querySelector("[data-motion-draft-card]")');
   assert.equal(await evaluate('document.querySelector("[data-motion-draft-card] a")?.getAttribute("href")'), '/__catalogue-preview/fsd-motion/');

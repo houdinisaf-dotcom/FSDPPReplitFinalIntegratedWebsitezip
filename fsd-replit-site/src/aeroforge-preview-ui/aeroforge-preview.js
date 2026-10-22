@@ -50,7 +50,7 @@ export function mountAeroForgePreview(root, data) {
       <main class="af-main" id="af-main"></main>
       <footer class="af-footer"><div class="af-shell">
         <span class="af-footer-brand">FSD <i>/</i> AEROFORGE</span>
-        <span>PRE-LAUNCH CONCEPT</span>
+        <span>CONCEPT</span>
       </div></footer>
     </div>`;
 
@@ -70,7 +70,7 @@ export function mountAeroForgePreview(root, data) {
           <h1 id="af-collection-title"><span>${escapeHTML(headlineLead)}</span><br><em>${escapeHTML(headlineHighlight)}</em></h1>
           <p class="af-tagline">${escapeHTML(collection.supportingText || '')}</p>
           <p class="af-description">${escapeHTML(collection.description || '')}</p>
-          <p class="af-prelaunch-note"><span aria-hidden="true">—</span><span><strong>PRE-LAUNCH</strong><small>Product details are being finalised.</small></span></p>
+          <p class="af-prelaunch-note"><span aria-hidden="true">—</span><span><strong>DEVELOPMENT</strong><small>Product details are being finalised.</small></span></p>
         </div>
         <figure class="af-campaign">
           <div class="af-campaign-image"><img src="${escapeHTML(hero.src || '')}" alt="FSD AeroForge collection campaign image" loading="eager"></div>

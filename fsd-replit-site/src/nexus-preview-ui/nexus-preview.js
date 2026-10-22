@@ -270,7 +270,7 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
 
         <footer class="nexus-footer nexus-wrap">
           <strong>FSD / NEXUS</strong>
-          <span>PRE-LAUNCH CONCEPT</span>
+          <span>CONCEPT</span>
         </footer>
       </div>
     </main>

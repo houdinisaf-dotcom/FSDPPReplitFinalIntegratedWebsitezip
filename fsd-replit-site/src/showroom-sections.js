@@ -28,7 +28,7 @@ export function featuredInnovationsSection() {
 
 export function vipAccessSection() {
   return `<section class="showroom-vip" id="contact" aria-labelledby="vip-title">
-    <p class="section-kicker">VIP PRE-LAUNCH ACCESS</p><h2 id="vip-title">BE PART OF<br/><em>WHAT COMES NEXT.</em></h2>
+    <p class="section-kicker">VIP ACCESS</p><h2 id="vip-title">BE PART OF<br/><em>WHAT COMES NEXT.</em></h2>
     <p>Register your interest in future FSD collections, innovation concepts and exclusive brand announcements.</p>
     <button class="primary-btn" type="button" disabled aria-describedby="vip-status">REQUEST VIP ACCESS <span aria-hidden="true">↗</span></button>
     <p class="showroom-vip-status" id="vip-status">Registration is not collecting sign-ups yet. It will open once the sign-up destination and approved privacy and consent details are ready.</p>

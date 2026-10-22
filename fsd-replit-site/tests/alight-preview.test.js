@@ -91,7 +91,7 @@ test('ALIGHT appears in the private Bio-Lab collection while remaining separate 
   assert.match(integration.draftProductCard, /data-alight-draft-card/);
   assert.equal(integration.collectionCardPlacement.divisionId, 'bio-lab');
   assert.equal(integration.collectionCardPlacement.groupId, 'bio-lab-concepts');
-  assert.match(integration.draftProductCard, /PRE-LAUNCH CONCEPT/);
+  assert.match(integration.draftProductCard, /CONCEPT/);
   assert.doesNotMatch(integration.draftProductCard, /PRIVATE DRAFT|NO CHECKOUT|NOT AVAILABLE TO PURCHASE/);
   const mainSource = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.ok(mainSource.includes('setDraftProductCard(alight.draftProductCard, alight.collectionCardPlacement)'));
@@ -103,7 +103,7 @@ test('ALIGHT appears in the private Bio-Lab collection while remaining separate 
   assert.deepEqual(getNavigationFeature(previewBioLab, 0, index).imageSources, [draft.featureImageSrc]);
 });
 
-test('ALIGHT keeps its campaign gallery while presenting a restrained pre-launch note', () => {
+test('ALIGHT keeps its campaign gallery while presenting a restrained development note', () => {
   const html = readFileSync(new URL('../alight-preview.html', import.meta.url), 'utf8');
   const previewSource = readFileSync(new URL('../src/alight-preview-ui/alight-preview.js', import.meta.url), 'utf8');
   const pluginSource = readFileSync(new URL('../scripts/draft-review-plugin.mjs', import.meta.url), 'utf8');
@@ -112,7 +112,7 @@ test('ALIGHT keeps its campaign gallery while presenting a restrained pre-launch
   assert.match(html, /FSD ALIGHT/);
   assert.match(previewSource, /CAMPAIGN IMAGE/);
   assert.doesNotMatch(previewSource, /NOT PRODUCT PHOTOGRAPHY/);
-  assert.match(previewSource, /PRE-LAUNCH CONCEPT/);
+  assert.match(previewSource, /CONCEPT/);
   assert.match(previewSource, /BACK TO COLLECTION/);
   assert.match(previewSource, /data-alight-enlarge/);
   assert.match(previewSource, /data-alight-thumb=/);

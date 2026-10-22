@@ -92,7 +92,7 @@ test('development integration places the fixed hero in the existing women’s mo
   assert.equal(integration.variants.length, 6);
   assert.match(integration.collectionCard, /data-modest-flow-open/);
   assert.match(integration.collectionCard, /modest-flow-campaign-hero/);
-  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
+  assert.match(integration.collectionCard, /CONCEPT/);
   assert.doesNotMatch(integration.collectionCard, /PRIVATE PREVIEW|NO CHECKOUT|NOT PUBLISHED/i);
   assert.doesNotMatch(integration.collectionCard, /<(?:form|input)\b|data-(?:purchase|add-to-cart)=/i);
 });

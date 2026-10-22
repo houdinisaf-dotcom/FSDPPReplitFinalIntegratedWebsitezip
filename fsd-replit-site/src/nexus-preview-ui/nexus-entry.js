@@ -15,7 +15,7 @@ const preview = createNexusPreview();
 const headerHtml = renderNavigationHeader(
   `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`,
 );
-document.title = `${preview.name} | Pre-launch Concept`;
+document.title = `${preview.name} | Concept`;
 document.querySelector('meta[name="description"]')
   ?.setAttribute('content', 'Explore the FSD NEXUS wearable-technology concept. Not a current product or commercial commitment.');
 document.querySelector('.fsd-brand')?.setAttribute('href', '/');

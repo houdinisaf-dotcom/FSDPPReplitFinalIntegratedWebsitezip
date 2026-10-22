@@ -22,7 +22,7 @@ export function createNexusDevelopmentIntegration() {
     <div class="fsd-product-meta"><span>FSD BIO-LAB™</span><span>WEARABLE TECHNOLOGY</span></div>
     <h4>FSD NEXUS</h4>
     <p class="fsd-product-description">A smart ring concept with an illustrative app interface.</p>
-    <p class="fsd-preview-status">PRE-LAUNCH CONCEPT</p>
+    <p class="fsd-preview-status">CONCEPT</p>
     <a class="fsd-product-link" href="${nexusPreviewPath}">EXPLORE CONCEPT <span aria-hidden="true">↗</span></a>
   </article>`;
 

@@ -49,10 +49,10 @@ root.innerHTML = renderMotionPreview({
 bindCollectionReturn(root);
 
 document.title = preview.product
-  ? `${preview.product.name} | FSD MOTION Pre-launch Concept`
-  : `${preview.collection.name} ${preview.collection.subtitle} | Pre-launch Concept`;
+  ? `${preview.product.name} | FSD MOTION Concept`
+  : `${preview.collection.name} ${preview.collection.subtitle} | Concept`;
 document.querySelector('meta[name="description"]')
-  ?.setAttribute('content', 'Explore the FSD MOTION pre-launch apparel concept. Product details and performance statements remain under review.');
+  ?.setAttribute('content', 'Explore the FSD MOTION apparel concept. Product details and performance statements remain under review.');
 
 mountNavigation({
   root: root.querySelector('[data-navigation-shell]'),

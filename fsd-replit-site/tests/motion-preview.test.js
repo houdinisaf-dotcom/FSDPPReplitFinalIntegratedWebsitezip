@@ -73,13 +73,17 @@ test('each supported concept has a separate private proof and an image-matched g
 test('the draft card links into the development-only collection route without purchase details', () => {
   const integration = createMotionDevelopmentIntegration();
   assert.equal(motionPreviewPath, '/__catalogue-preview/fsd-motion/');
-  assert.equal(integration.collectionCardPlacement.divisionId, 'apparel');
-  assert.equal(integration.collectionCardPlacement.groupId, '*');
+  assert.equal(integration.collectionCardPlacement.divisionId, 'bio-lab');
+  assert.equal(integration.collectionCardPlacement.groupId, 'bio-lab-concepts');
+  assert.match(integration.collectionCard, /FSD BIO-LAB™/);
   assert.match(integration.collectionCard, /FSD MOTION/);
-  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
-  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
+  assert.match(integration.collectionCard, /CONCEPT/);
+  assert.match(integration.collectionCard, /CONCEPT/);
   assert.doesNotMatch(integration.collectionCard, /£\s?\d|\bBUY\b|\bADD TO CART\b/i);
   assert.equal(integration.draftMenuItems[0].href, motionPreviewPath);
+  assert.equal(integration.draftMenuItems[0].previewKicker, 'BIO-LAB™ / WEARABLE TECHNOLOGY');
+  assert.equal(integration.draftMenuItems[0].sourceDivisionId, 'bio-lab');
+  assert.equal(integration.draftMenuItems[0].sourceGroupId, 'bio-lab-concepts');
 });
 
 test('MOTION keeps campaign galleries and collection return links without customer-facing audit panels', () => {
@@ -91,7 +95,7 @@ test('MOTION keeps campaign galleries and collection return links without custom
     stories: collection.stories,
   });
   assert.match(collectionHtml, /BACK TO COLLECTION/);
-  assert.match(collectionHtml, /PRE-LAUNCH CONCEPT/);
+  assert.match(collectionHtml, /CONCEPT/);
   assert.equal((collectionHtml.match(/data-motion-gallery-select=/g) || []).length, 15);
   assert.equal((collectionHtml.match(/data-motion-product-link=/g) || []).length, 4);
   assert.doesNotMatch(collectionHtml, /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|motion-review-columns|Standalone views|Awaiting confirmation/);

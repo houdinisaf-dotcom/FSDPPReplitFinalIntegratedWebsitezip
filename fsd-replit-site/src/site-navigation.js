@@ -247,10 +247,10 @@ function makeHouseGroups(divisions) {
 
 function makePrivateGroups() {
   const details = [
-    ['vip-registration', 'VIP PRE-LAUNCH REGISTRATION',
+    ['vip-registration', 'VIP ACCESS REGISTRATION',
       'Registration is not collecting sign-ups yet. The destination and approved privacy and consent details are still required.', false],
     ['collection-announcements', 'COLLECTION ANNOUNCEMENTS',
-      'Collection announcements are part of the pre-launch access information. No sign-up is collected here.', true],
+      'Collection announcements are part of VIP Access. No sign-up is collected here.', true],
     ['private-enquiries', 'PRIVATE ENQUIRIES',
       'Private access information is not yet connected to an enquiry destination.', false],
   ];
@@ -334,7 +334,7 @@ export function createNavigationModel({
       id: 'private-access',
       label: 'PRIVATE ACCESS',
       title: 'PRIVATE ACCESS',
-      description: 'Pre-launch access information. Sign-ups remain deferred.',
+      description: 'VIP Access information. Sign-ups remain deferred.',
       divisionId: '',
       groups: makePrivateGroups(),
     },
@@ -442,7 +442,7 @@ function renderFeature(menu, group, item, products, canNavigate) {
   return `<article class="fsd-feature-card">
     ${media}
     <div class="fsd-feature-copy">
-      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / PRE-LAUNCH CONCEPT') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
+      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / CONCEPT') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
       <h3>${escapeHTML(featureTitle)}</h3>
       <p>${escapeHTML(description)}</p>
       <button type="button" class="fsd-feature-cta" data-nav-destination
@@ -472,7 +472,7 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
   return group.items.map((item, index) => {
     const available = canNavigate({ menu, group, item });
     const status = item.kind === 'draft-product'
-      ? 'Open this pre-launch product preview.'
+      ? 'Open this FSD product concept.'
       : available ? 'Open this destination.' : 'Preview only; no verified destination is available.';
     return `<button type="button"
       class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"
@@ -535,7 +535,7 @@ export function renderNavigationHeader(brandMarkup) {
       class="fsd-primary-trigger" data-nav-primary="${item.id}" aria-controls="fsd-mega-menu"
       aria-expanded="false">${escapeHTML(item.label)}</button>`).join('');
 
-  return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE <span>— PRE-LAUNCH DESIGN PROOF</span></div>
+  return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE <span>— DESIGN PREVIEW</span></div>
     <div class="fsd-navigation-shell" data-navigation-shell>
       <header class="header fsd-header">
         <a class="brand fsd-brand" href="#home" aria-label="FSD Home">

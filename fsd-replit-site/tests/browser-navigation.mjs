@@ -219,7 +219,7 @@ try {
       })()`);
       assert.equal(
         await evaluate('document.querySelector(".fsd-feature-kicker").textContent'),
-        item.previewKicker || 'FSD / PRE-LAUNCH CONCEPT',
+        item.previewKicker || 'FSD / CONCEPT',
       );
       await click(selector);
       if (item.href === '/__catalogue-preview/hooded-running-shell/') {
@@ -231,7 +231,7 @@ try {
       }
       await waitFor(`location.pathname === ${JSON.stringify(item.href)} && document.querySelector("#product-title")?.textContent.includes("FSD Weighted Skipping Rope")`);
       await waitFor('document.querySelector("#campaign-image")?.naturalWidth === 1672 && document.querySelector("#edition-image")?.naturalWidth === 1122');
-      assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("PRE-LAUNCH")'), true);
+      assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("CONCEPT")'), true);
       assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("NOT FOR SALE")'), false);
       assert.equal(await evaluate('document.querySelectorAll("#edition-options [data-edition]").length'), 8);
       assert.equal(await evaluate('document.querySelectorAll("form, input, [data-add-to-cart], [data-purchase]").length'), 0);

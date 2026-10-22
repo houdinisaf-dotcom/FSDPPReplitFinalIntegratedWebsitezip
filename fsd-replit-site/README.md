@@ -1,6 +1,6 @@
 # FSD — Fitness & Self Defence | Replit Website Starter
 
-A responsive premium pre-launch product catalogue, combining FSD's Signature Luxury and Performance Collection visual styles.
+A responsive premium product catalogue, combining FSD's Signature Luxury and Performance Collection visual styles.
 
 ## Import into Replit
 1. Create a new Replit project by importing/uploading this ZIP (or upload and extract it into a Node.js Repl).

@@ -17,10 +17,10 @@ export function createMotionDevelopmentIntegration() {
       <img loading="lazy" src="${escapeHTML(hero.src)}" alt="FSD MOTION campaign image" width="${hero.width}" height="${hero.height}"/>
       <span>FSD MOTION</span>
     </a>
-    <div class="fsd-product-meta"><span>FSD APPAREL</span><span>SMART TRAINING APPAREL</span></div>
+    <div class="fsd-product-meta"><span>FSD BIO-LAB™</span><span>WEARABLE TECHNOLOGY</span></div>
     <h4>FSD MOTION</h4>
     <p class="fsd-product-description">A connected-movement apparel concept for training.</p>
-    <p class="fsd-preview-status">PRE-LAUNCH CONCEPT</p>
+    <p class="fsd-preview-status">CONCEPT</p>
     <a class="fsd-product-link" href="${motionPreviewPath}">EXPLORE COLLECTION <span aria-hidden="true">↗</span></a>
   </article>`;
 
@@ -28,8 +28,8 @@ export function createMotionDevelopmentIntegration() {
     collectionCard,
     collectionCardPlacement: Object.freeze({
       id: 'fsd-motion-private-collection',
-      divisionId: 'apparel',
-      groupId: '*',
+      divisionId: 'bio-lab',
+      groupId: 'bio-lab-concepts',
       heading: 'FSD MOTION',
     }),
     draftMenuItems: Object.freeze([Object.freeze({
@@ -38,12 +38,13 @@ export function createMotionDevelopmentIntegration() {
       kind: 'draft-product',
       href: motionPreviewPath,
       previewOnly: true,
-      previewKicker: 'APPAREL / TRAINING',
+      previewKicker: 'BIO-LAB™ / WEARABLE TECHNOLOGY',
       previewActionLabel: 'EXPLORE COLLECTION',
       featureImageSrc: hero.src,
       featureImageAlt: 'FSD MOTION campaign image',
       description: 'A four-garment campaign concept from FSD MOTION.',
-      sourceDivisionId: 'apparel',
+      sourceDivisionId: 'bio-lab',
+      sourceGroupId: 'bio-lab-concepts',
       sourceGroupIndex: 0,
       sourceSubcategoryIndex: -1,
     })]),

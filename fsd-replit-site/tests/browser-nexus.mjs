@@ -88,7 +88,7 @@ try {
   await waitFor('document.querySelectorAll("[data-nexus-gallery-select]").length === 3');
   await waitFor('document.querySelector("[data-nexus-active-image]")?.complete && document.querySelector("[data-nexus-active-image]")?.naturalWidth > 0');
   await captureProof('concept-desktop.jpg');
-  assert.match(await evaluate('document.title'), /FSD NEXUS.*Pre-launch Concept/);
+  assert.match(await evaluate('document.title'), /FSD NEXUS.*Concept/);
   assert.match(await evaluate('document.querySelector("meta[name=robots]")?.content'), /noindex/);
   assert.match(await evaluate('document.body.innerText'), /FSD NEXUS CONCEPT/);
   assert.match(await evaluate('document.body.innerText'), /FSD NEXUS CONCEPT/);

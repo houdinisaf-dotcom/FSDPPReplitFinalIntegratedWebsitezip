@@ -10,7 +10,7 @@ function imagePlaceholder(product) {
   const label = product.imageStatus.startsWith('Image exists')
     ? ''
     : product.imageStatus.startsWith('Brief only') ? 'Visuals being finalised' : 'Imagery to follow';
-  return `<div class="catalogue-placeholder"><span>FSD / PRE-LAUNCH</span>
+  return `<div class="catalogue-placeholder"><span>FSD / COLLECTION</span>
     <strong>${safe(product.category)}</strong><small>${label}</small></div>`;
 }
 
@@ -20,7 +20,7 @@ function card(product) {
   return `<article class="product-card">
     <div class="product-image">${image
       ? `<img loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept"/>`
-      : imagePlaceholder(product)}<span class="chip">PRE-LAUNCH</span></div>
+      : imagePlaceholder(product)}<span class="chip">PREVIEW</span></div>
     <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>
     <h3>${safe(product.name)}</h3>
      ${product.colourways ? `<p class="catalogue-colourways">${safe(product.colourways)}</p>` : ''}
@@ -46,15 +46,13 @@ export function catalogueSection() {
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>
     <div class="product-grid" id="catalogue-grid"></div>
     <nav class="catalogue-pagination" id="catalogue-pagination" aria-label="Product catalogue pages"></nav>
-    <p class="disclaimer">Pre-launch collection. Prices and details may change before release. Join VIP Access to be first when it drops.</p>
   </section>`;
 }
 
 export function roadmapSection() {
   return `<section class="planned" id="planned"><div class="section-heading"><div>
     <p class="section-kicker">THE FSD DEVELOPMENT ROADMAP</p><h2>WHAT'S COMING<span class="period">.</span></h2>
-    </div><p>Explore the collection by category. Cross-listed products remain a single product record.<br/>
-     Pre-launch collection. Prices and details may change before release.</p></div><div class="planned-grid">
+    </div><p>Explore the collection by category. Cross-listed products remain a single product record.</p></div><div class="planned-grid">
     ${categories.map((category, i) => `<a class="planned-row catalogue-category-link" href="#products" data-category-link="${safe(category)}">
       <span>${String(i + 1).padStart(2, '0')}</span><div><strong>${safe(category)}</strong>
       <small>${filterProducts(category).length} products</small></div><span class="planned-status">EXPLORE ↗</span></a>`).join('')}
@@ -119,7 +117,7 @@ export function showProduct(id) {
     : `<div class="catalogue-selector__visual catalogue-selector__visual--empty">${imagePlaceholder(p)}</div>`;
   document.querySelector('#dialog-body').innerHTML = `${imageExperience}<div class="dialog-copy">
     <button class="catalogue-back" type="button" data-catalogue-back><span aria-hidden="true">←</span> BACK TO COLLECTION</button>
-    <p class="section-kicker">${safe(p.category)} / PRE-LAUNCH</p><h2 id="product-title">${safe(p.name)}</h2>
+     <p class="section-kicker">${safe(p.category)} / COLLECTION</p><h2 id="product-title">${safe(p.name)}</h2>
     <dl class="catalogue-details">
       ${detail('Colourways', p.colourways)}
       ${detail('Audience', p.audience)}
@@ -130,7 +128,6 @@ export function showProduct(id) {
       ${detail('Specifications', displaySpecifications)}
       ${detail('Price basis', p.priceBasis)}
      </dl><div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}<strong>${price.value}</strong></div>
-      <small>Pre-launch collection. Prices and details may change before release. Join VIP Access to be first when it drops.</small>
     </div>`;
   document.documentElement?.classList?.add('fsd-modal-open');
   document.querySelector('#product-dialog').showModal();

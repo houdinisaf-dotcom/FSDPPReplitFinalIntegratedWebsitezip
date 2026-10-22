@@ -37,7 +37,7 @@ export function createAlightDevelopmentIntegration() {
     <div class="fsd-product-meta"><span>FSD BIO-LAB™</span><span>WEARABLE TECHNOLOGY</span></div>
     <h4>FSD ALIGHT</h4>
     <p class="fsd-product-description">Posture Awareness Wearable · concept design.</p>
-    <p class="fsd-preview-status">PRE-LAUNCH CONCEPT</p>
+    <p class="fsd-preview-status">CONCEPT</p>
     <a class="fsd-product-link" href="${alightPreviewPath}">EXPLORE PRODUCT <span aria-hidden="true">↗</span></a>
   </article>`;
 

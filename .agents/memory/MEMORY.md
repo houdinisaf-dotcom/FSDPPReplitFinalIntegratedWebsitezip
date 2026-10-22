@@ -6,3 +6,4 @@
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.
 - [Breeze draft boundary](breeze-draft-boundary.md) — keep Breeze separate from Modest Flow and master data; treat its existing £64.99 only as a catalogue reference.
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.
+- [Customer-facing terminology](customer-facing-terminology.md) — avoid the retired release-stage label in FSD site copy while preserving internal draft and no-purchase safeguards.

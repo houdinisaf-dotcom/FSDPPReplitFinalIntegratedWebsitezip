@@ -91,7 +91,7 @@ try {
   await waitFor('document.querySelector("#edition-image")?.naturalWidth === 1122 && document.querySelector("#campaign-image")?.naturalWidth === 1672');
 
   assert.equal(await evaluate('document.querySelector("#product-title").textContent'), 'FSD Weighted Skipping Rope');
-  assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("PRE-LAUNCH")'), true);
+  assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("CONCEPT")'), true);
   assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("DRAFT")'), false);
   assert.equal(await evaluate('document.querySelectorAll("#edition-options [data-edition]").length'), 8);
   assert.equal(await evaluate('document.querySelectorAll(".edition-frame img").length'), 1);

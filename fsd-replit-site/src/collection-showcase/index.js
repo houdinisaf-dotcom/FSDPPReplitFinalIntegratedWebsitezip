@@ -46,11 +46,11 @@ export function renderCollectionShowcase(divisions) {
     <div class="fsd-showcase-grid">
       ${list.map(renderBanner).join('')}
     </div>
-    <p class="fsd-showcase-note"><span>PRE-LAUNCH</span> Products, technologies and locations shown may be proposed concepts and are not represented as operational or available to purchase.</p>
+    <p class="fsd-showcase-note"><span>FSD</span> Products, technologies and locations shown may be proposed concepts and are not represented as operational or available to purchase.</p>
     <dialog id="fsd-showcase-dialog" class="fsd-showcase-dialog" aria-label="FSD collection details" data-showcase-dialog>
       <div class="fsd-dialog-frame">
         <header class="fsd-dialog-header">
-          <div class="fsd-dialog-brandline"><span class="fsd-dialog-mark" aria-hidden="true">F</span><span>FSD / COLLECTIONS</span><span class="fsd-dialog-live">PRE-LAUNCH SHOWROOM</span></div>
+          <div class="fsd-dialog-brandline"><span class="fsd-dialog-mark" aria-hidden="true">F</span><span>FSD / COLLECTIONS</span><span class="fsd-dialog-live">COLLECTION PREVIEW</span></div>
           <button class="fsd-dialog-close" type="button" data-close-dialog aria-label="Close collection">CLOSE <span aria-hidden="true">×</span></button>
         </header>
         <div class="fsd-dialog-content" data-dialog-content></div>
@@ -188,7 +188,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
       <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(division.description)}</p></div>
       ${foundProducts.length ? '<button class="fsd-explore-collection" type="button" data-explore-collection>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button>' : ''}
       ${productsMarkup}${conceptMarkup}${emptyMarkup}
-      <p class="fsd-modal-disclaimer">FSD is a pre-launch brand. Supplied list prices are catalogue references, not an offer to sell. Proposed concepts do not confirm specifications, availability or operational status. Product visuals appear only where mapped to that product record.</p>
+      <p class="fsd-modal-disclaimer">FSD is developing its collection. Supplied list prices are catalogue references, not an offer to sell. Proposed concepts do not confirm specifications, availability or operational status. Product visuals appear only where mapped to that product record.</p>
     </div>`;
 }
 

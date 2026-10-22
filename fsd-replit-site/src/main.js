@@ -90,7 +90,7 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
   ${vipAccessSection()}
   </main>
   <footer><div class="footer-brand"><img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="FSD Fitness & Self-Defence"/></div>
-    <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Pre-launch website prototype.</span>
+    <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Website prototype.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#collections">FOUR DIVISIONS</a><a href="#products">PRODUCT CATALOGUE</a>
       <a href="#contact">VIP ACCESS</a></nav>
       <nav class="footer-links" aria-label="Corporate navigation"><a href="#philosophy">FSD STORY</a><a href="#fsd-division-global">PROPOSED FLAGSHIPS & PROMOTIONS</a></nav>

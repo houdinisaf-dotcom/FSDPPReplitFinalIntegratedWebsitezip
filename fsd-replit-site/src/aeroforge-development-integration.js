@@ -21,7 +21,7 @@ export function createAeroForgeDevelopmentIntegration() {
     <div class="fsd-product-meta"><span>FSD APPAREL</span><span>MODEST ACTIVEWEAR</span></div>
     <h4>FSD AEROFORGE</h4>
     <p class="fsd-product-description">Training Top and Joggers · six colourways.</p>
-    <p class="fsd-preview-status">PRE-LAUNCH CONCEPT</p>
+    <p class="fsd-preview-status">CONCEPT</p>
     <a class="fsd-product-link" href="${aeroforgePreviewPath}">EXPLORE COLLECTION <span aria-hidden="true">↗</span></a>
   </article>`;
 

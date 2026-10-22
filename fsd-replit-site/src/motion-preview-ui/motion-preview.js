@@ -98,7 +98,7 @@ export function renderMotionPreview({ headerHtml, collection, product, products,
             <div class="motion-hero-copy"><p class="motion-kicker">FSD / TRAINING APPAREL</p><p class="motion-overline">GYM · OUTDOORS · SELF-DEFENCE</p>
               <h1>FSD<br><em>MOTION</em></h1><p class="motion-hero-subtitle">${esc(collection?.subtitle ?? title)}</p>
               ${collection?.introduction ? `<p class="motion-hero-introduction">${esc(collection.introduction)}</p>` : ''}
-              <p class="motion-prelaunch-note"><strong>PRE-LAUNCH CONCEPT</strong><small>Product details are being finalised.</small></p>
+              <p class="motion-prelaunch-note"><strong>CONCEPT</strong><small>Product details are being finalised.</small></p>
             </div>
             <div class="motion-hero-art">
               ${heroSrc ? `<button class="motion-hero-image motion-hero-image--campaign" type="button" data-motion-image="${esc(hero.id ?? '')}" data-motion-enlarge aria-label="Enlarge campaign image"><img data-motion-active-image src="${esc(heroSrc)}" alt=""><span>ENLARGE IMAGE</span></button>` : `<div class="motion-no-photo">FSD MOTION</div>`}
@@ -114,7 +114,7 @@ export function renderMotionPreview({ headerHtml, collection, product, products,
         </section>
         ${stories?.length ? `<section class="motion-stories motion-wrap"><div class="motion-section-head"><div><p class="motion-kicker">CAMPAIGN CONTEXT</p><h2>Built around <em>movement.</em></h2></div></div><div class="motion-story-grid">${list(stories).map((story, index) => `<article class="motion-story"><span>0${index + 1} / ${esc(story.context ?? story.label ?? 'CONCEPT')}</span><h3>${esc(story.title ?? story.name ?? '')}</h3><p>${esc(story.copy ?? story.description ?? '')}</p></article>`).join('')}</div></section>` : ''}
         ${renderReferences(sourceAssets, hero?.id)}
-        <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong><span>PRE-LAUNCH CONCEPT</span></footer>
+        <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong><span>CONCEPT</span></footer>
       </main>${dialog}</div>`;
   }
 
@@ -134,12 +134,12 @@ export function renderMotionPreview({ headerHtml, collection, product, products,
           <div class="motion-detail-copy"><p class="motion-kicker">FSD MOTION / CONCEPT</p><p class="motion-overline">${esc(product.category ?? product.type ?? 'SMART TRAINING APPAREL')}</p>
             <h1>${esc(product.name ?? product.title ?? '')}</h1>
             <p class="motion-description">A visual concept for the FSD MOTION collection.</p>
-            <p class="motion-prelaunch-note"><strong>PRE-LAUNCH CONCEPT</strong><small>Product details are being finalised.</small></p>
+            <p class="motion-prelaunch-note"><strong>CONCEPT</strong><small>Product details are being finalised.</small></p>
           </div>
         </section>
       </div>
       ${stories?.length ? `<section class="motion-stories motion-wrap"><div class="motion-section-head"><div><p class="motion-kicker">CAMPAIGN CONTEXT</p><h2>In the <em>field.</em></h2></div></div><div class="motion-story-grid">${list(stories).map((story, index) => `<article class="motion-story"><span>0${index + 1} / ${esc(story.context ?? story.label ?? 'CONCEPT')}</span><h3>${esc(story.title ?? story.name ?? '')}</h3><p>${esc(story.copy ?? story.description ?? '')}</p></article>`).join('')}</div></section>` : ''}
       <section class="motion-next motion-wrap"><p class="motion-kicker">MORE MOTION CONCEPTS</p><div>${allProducts.filter(item => item.slug !== product.slug).map((item, index) => productLink(item, index, sourceAssets)).join('')}</div></section>
-      <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong><span>PRE-LAUNCH CONCEPT</span></footer>
+      <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong><span>CONCEPT</span></footer>
     </main>${dialog}</div>`;
 }

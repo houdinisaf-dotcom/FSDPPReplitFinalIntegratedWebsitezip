@@ -201,7 +201,7 @@ try {
   await click('[data-division="bio-lab"]');
   await waitFor('!!document.querySelector("[data-alight-draft-card]")');
   assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("FSD ALIGHT")'));
-  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("PRE-LAUNCH CONCEPT")'));
+  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("CONCEPT")'));
   assert.ok(await evaluate('!document.querySelector("[data-alight-draft-card]").textContent.match(/PENDING APPROVAL|NOT AVAILABLE TO PURCHASE/i)'));
   assert.ok(await evaluate('!document.querySelector("[data-alight-draft-card]").textContent.match(/£\\s?\\d|ADD TO CART|BUY NOW/i)'));
   await evaluate('document.querySelector("[data-alight-draft-card]").scrollIntoView({ block: "center" })');
@@ -302,7 +302,7 @@ try {
     await waitFor(`document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/${imageId}")`);
     assert.equal(await evaluate(`document.querySelector('[data-hijab-thumb="${imageId}"]').getAttribute("aria-pressed")`), 'true');
   }
-  assert.ok(await evaluate('document.querySelector(".velocity-product-tagline").textContent.includes("PRE-LAUNCH CONCEPT")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-tagline").textContent.includes("CONCEPT")'));
   assert.ok(await evaluate('document.querySelector(".velocity-product-disclaimer").textContent.includes("Product details will be shared before release")'));
   assert.ok(!await evaluate('/PENDING VERIFICATION|No technical claims are established/i.test(document.body.textContent)'));
   assert.ok(!await evaluate('/Lightweight & breathable|Stays in place|Strategic airflow/i.test(document.body.textContent)'));

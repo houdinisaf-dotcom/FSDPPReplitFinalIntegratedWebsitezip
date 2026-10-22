@@ -106,7 +106,7 @@ test('the Bio-Lab draft card links to the concept without changing navigation or
   assert.match(integration.collectionCard, /data-nexus-draft-card/);
   assert.match(integration.collectionCard, new RegExp(nexusPreviewPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(integration.collectionCard, /FSD NEXUS/);
-  assert.match(integration.collectionCard, /PRE-LAUNCH CONCEPT/);
+  assert.match(integration.collectionCard, /CONCEPT/);
   assert.doesNotMatch(integration.collectionCard, /£\s?\d|\bBUY\b|ADD TO CART|CHECKOUT NOW/i);
   assert.equal('draftMenuItems' in integration, false);
 });
@@ -127,6 +127,6 @@ test('the rendered page shows approved concept artwork only and keeps the produc
   assert.match(html, /data-nexus-active-note/);
   assert.match(html, /CONCEPT DIRECTION/);
   assert.match(html, /Product imagery will be shared as the design develops/);
-  assert.doesNotMatch(html, /PRE-LAUNCH CONCEPT · DETAILS UNDER REVIEW|Not a current product or commercial commitment|PROPOSED — PENDING TECHNICAL VALIDATION|No approved ring or packaging photography is available/);
+  assert.doesNotMatch(html, /CONCEPT · DETAILS UNDER REVIEW|Not a current product or commercial commitment|PROPOSED — PENDING TECHNICAL VALIDATION|No approved ring or packaging photography is available/);
   assert.doesNotMatch(html, /ADD TO CART|BUY NOW|<form\b|£\s?\d/i);
 });

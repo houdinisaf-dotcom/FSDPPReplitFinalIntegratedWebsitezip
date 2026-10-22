@@ -77,7 +77,7 @@ export function mountBreezePreview({ root, product, variants }) {
           <span>Reference price · ${escapeHTML(product.priceLabel)}</span>
         </p>` : ''}
         <p class="breeze-preview__description" id="${instanceId}-description">
-          A pre-launch overshirt concept for FSD Women’s Modest Activewear. The overshirt is the item shown; other garments are styling context.
+          A draft overshirt concept for FSD Women’s Modest Activewear. The overshirt is the item shown; other garments are styling context.
         </p>
         <p class="breeze-preview__product-note">Product details are being finalised.</p>
         <hr class="breeze-preview__rule" />
