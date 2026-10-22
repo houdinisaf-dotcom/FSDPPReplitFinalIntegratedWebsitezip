@@ -34,7 +34,7 @@ function renderBanner(division, index) {
 
 export function renderCollectionShowcase(divisions) {
   const list = Array.isArray(divisions) ? divisions : [];
-  return `<section class="fsd-showcase" aria-labelledby="fsd-showcase-title">
+  return `<section class="fsd-showcase" id="universe" aria-labelledby="fsd-showcase-title">
     <div class="fsd-showcase-heading">
       <div>
         <p class="fsd-showcase-kicker"><span></span> THE FSD COLLECTION SYSTEM</p>

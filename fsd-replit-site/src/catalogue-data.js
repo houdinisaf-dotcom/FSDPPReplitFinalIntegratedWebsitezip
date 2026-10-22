@@ -1,4 +1,5 @@
 import masterProducts from './master-products.json' with { type: 'json' };
+import { collectionDivisions } from './collection-divisions.js';
 
 const imageReferences = {
   'FSD Ombré Slash Tee': [
@@ -43,13 +44,30 @@ export const products = masterProducts
   }));
 
 export const categories = [...new Set(products.flatMap(p => [p.category, ...p.alsoShowIn]))];
+export const audiences = [...new Set(products.map(product => product.audience).filter(Boolean))];
+
+const apparelDivision = collectionDivisions.find(division => division.id === 'apparel');
+export const shopCollections = (apparelDivision?.groups || [])
+  .filter(group => ['mens-luxury-performance', 'womens-modest-combat'].includes(group.id))
+  .map(group => ({
+    id: group.id,
+    label: group.title,
+    categories: group.categories || [],
+    audiences: group.audiences || [],
+  }));
 
 const searchText = value => value.replace(/[‘’]/g, "'").toLocaleLowerCase('en-GB');
 
-export function filterProducts(category = 'All', query = '') {
+export function filterProducts(category = 'All', query = '', audience = 'All', collection = 'All') {
   const term = searchText(query.trim());
+  const selectedCollection = shopCollections.find(item => item.id === collection);
   return products.filter(p =>
     (category === 'All' || p.category === category || p.alsoShowIn.includes(category)) &&
+    (audience === 'All' || p.audience === audience) &&
+    (!selectedCollection || (
+      selectedCollection.categories.some(value => p.category === value || p.alsoShowIn.includes(value)) &&
+      selectedCollection.audiences.includes(p.audience)
+    )) &&
     searchText([p.name, p.alias, p.category, ...p.alsoShowIn, p.colourways, p.audience, p.collection,
       p.coverage, p.specifications, p.specificationStatus, p.priceBasis].join(' ')).includes(term)
   );

@@ -4,7 +4,8 @@ import { groupProducts } from './collection-showcase/index.js';
 import { hoodedShellCampaign } from './hooded-shell-campaign.js';
 
 export const primaryNavigation = [
-  { id: 'collections', label: 'COLLECTIONS' },
+  { id: 'collections', label: 'SHOP' },
+  { id: 'universe', label: 'UNIVERSE' },
   { id: 'bio-lab', label: 'BIO-LAB™' },
   { id: 'hardware', label: 'HARDWARE' },
   { id: 'house', label: 'THE HOUSE' },
@@ -151,6 +152,20 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     makeDivisionGroup(division, group, index, products));
 
   const groups = [
+    {
+      id: 'shop-all-products',
+      title: 'ALL PRODUCTS',
+      description: 'Browse the full FSD product catalogue with collection, category and audience filters.',
+      href: '#products',
+      navigationUnavailable: false,
+      items: [{
+        id: 'shop-all-products-entry',
+        title: 'Browse all products',
+        kind: 'shop-all',
+        href: '#products',
+        description: 'Open the complete FSD catalogue.',
+      }],
+    },
     makeDivisionGroup(division, mens, 0, products),
     makeDivisionGroup(division, womens, 1, products),
   ];
@@ -190,6 +205,30 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
   }));
 
   return groups;
+}
+
+function makeUniverseGroups(divisions, products) {
+  return divisions.map(division => {
+    const sourceGroup = division.groups?.[0];
+    const item = {
+      id: `universe-explore-${division.id}`,
+      title: `Explore ${division.title.replace(/^FSD\s+/i, '')}`,
+      kind: 'universe-division',
+      description: division.description,
+      source: sourceGroup,
+      sourceGroup,
+      sourceDivisionId: division.id,
+      sourceGroupIndex: 0,
+      sourceSubcategoryIndex: -1,
+    };
+    return makeDivisionGroup(division, sourceGroup, 0, products, {
+      id: `universe-${division.id}`,
+      title: division.title,
+      description: division.description,
+      navigationUnavailable: true,
+      items: sourceGroup ? [item] : [],
+    });
+  });
 }
 
 function makeHouseGroups(divisions) {
@@ -313,12 +352,21 @@ export function createNavigationModel({
   return [
     {
       id: 'collections',
-      label: 'COLLECTIONS',
-      title: 'COLLECTIONS',
+      label: 'SHOP',
+      title: 'SHOP',
       description: findDivision('apparel')?.description || '',
       divisionId: 'apparel',
       groups: makeCollectionsGroups(divisions, products, includeDraftPreviews),
-      defaultItemTitle: '2-in-1 Combat Training Shorts & Tanks',
+      defaultItemTitle: 'Browse all products',
+    },
+    {
+      id: 'universe',
+      label: 'UNIVERSE',
+      title: 'FSD UNIVERSE',
+      description: 'Explore FSD apparel, Bio-Lab™, Hardware, and the wider FSD Global vision.',
+      divisionId: '',
+      groups: makeUniverseGroups(divisions, products),
+      defaultItemTitle: 'Explore Apparel',
     },
     divisionMenu('bio-lab', 'BIO-LAB™'),
     divisionMenu('hardware', 'HARDWARE'),
@@ -364,6 +412,22 @@ function hasVerifiedDestination({
   if (item?.record) {
     return products.some(product => product.id === item.record.id)
       && Boolean(ownerDocument.querySelector('#product-dialog'));
+  }
+  if (menu?.id === 'collections') {
+    const hasShopDestination = Boolean(
+      ownerDocument.querySelector('#catalogue-archive')
+      && ownerDocument.querySelector('#products'),
+    );
+    if (group?.id === 'shop-all-products' || item?.kind === 'shop-all') {
+      return hasShopDestination;
+    }
+    if (!item && ['mens-luxury-performance', 'womens-modest-combat'].includes(group?.id)) {
+      return hasShopDestination && groupProducts(group.source, products).length > 0;
+    }
+    if (item?.kind === 'subcategory') {
+      return hasShopDestination
+        && groupProducts(item.sourceGroup || group?.source, products, item.source).length > 0;
+    }
   }
   if (item?.kind === 'category') {
     const category = item.source?.categories?.[0];
@@ -430,6 +494,7 @@ function renderFeature(menu, group, item, products, canNavigate) {
   const available = canNavigate({ menu, group, item });
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
     : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
+      : item?.kind === 'shop-all' ? 'SHOP ALL PRODUCTS'
       : item?.record ? 'VIEW DETAILS'
       : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
         : menu.id === 'house' && item?.href === '#philosophy' ? 'READ THE FSD STORY'
@@ -491,7 +556,8 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
   const item = group?.items?.[activeItemIndex] || group?.items?.[0];
   const mobilePrimaries = primaryNavigation.map(entry => `<button type="button"
       class="fsd-mobile-primary${entry.id === menu.id ? ' is-active' : ''}"
-      data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}">
+      data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}"
+      ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>
     ${escapeHTML(entry.label)}<span aria-hidden="true">↗</span>
   </button>`).join('');
 
@@ -578,6 +644,7 @@ export function mountNavigation({
   });
 
   let activePrimaryId = '';
+  let currentPrimaryId = '';
   let activeGroupIndex = 0;
   let activeItemIndex = 0;
   let mobileStep = 'primary';
@@ -596,11 +663,29 @@ export function mountNavigation({
     for (const trigger of triggers) {
       trigger.setAttribute('aria-expanded', String(isOpen && trigger.dataset.navPrimary === activePrimaryId));
       trigger.classList.toggle('is-active', isOpen && trigger.dataset.navPrimary === activePrimaryId);
+      trigger.classList.toggle('is-current', trigger.dataset.navPrimary === currentPrimaryId);
+      if (trigger.dataset.navPrimary === currentPrimaryId) trigger.setAttribute('aria-current', 'page');
+      else trigger.removeAttribute('aria-current');
     }
     mobileToggle.setAttribute('aria-expanded', String(isOpen));
     mobileToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
     mobileToggle.classList.toggle('is-active', isOpen);
   };
+  const hashNavigation = new Map([
+    ['#products', 'collections'],
+    ['#universe', 'universe'],
+    ['#fsd-division-global', 'universe'],
+    ['#hardware-editorial', 'hardware'],
+    ['#innovations', 'bio-lab'],
+    ['#philosophy', 'house'],
+    ['#contact', 'private-access'],
+  ]);
+  const setCurrentPrimary = id => {
+    currentPrimaryId = model.some(menu => menu.id === id) ? id : '';
+    syncExpanded();
+  };
+  const updateCurrentFromHash = () => setCurrentPrimary(hashNavigation.get(window.location.hash) || '');
+  currentPrimaryId = hashNavigation.get(window.location.hash) || '';
 
   const render = () => {
     const menu = currentMenu();
@@ -728,6 +813,7 @@ export function mountNavigation({
 
   const navigateSelection = selection => {
     if (!canNavigate(selection)) return false;
+    setCurrentPrimary(selection.menu.id);
     closeMenu();
     onNavigate(selection);
     return true;
@@ -925,6 +1011,26 @@ export function mountNavigation({
   root.addEventListener('pointerenter', onRootPointerEnter);
   root.addEventListener('pointerleave', onRootPointerLeave);
   document.addEventListener('click', onDocumentClick);
+  const onCurrentNavigation = event => setCurrentPrimary(event.detail?.id || '');
+  document.addEventListener('fsd:navigation-active', onCurrentNavigation);
+  window.addEventListener('hashchange', updateCurrentFromHash);
+  window.addEventListener('popstate', updateCurrentFromHash);
+  const sectionObserver = typeof IntersectionObserver === 'function'
+    ? new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (!visible.length) return;
+      const hash = `#${visible[0].target.id}`;
+      const id = hashNavigation.get(hash);
+      if (id) setCurrentPrimary(id);
+    }, { rootMargin: '-18% 0px -64% 0px', threshold: [0, .15, .4, .7] })
+    : null;
+  if (sectionObserver) {
+    for (const hash of hashNavigation.keys()) {
+      const target = root.ownerDocument.querySelector(hash);
+      if (target) sectionObserver.observe(target);
+    }
+  }
   window.addEventListener('resize', () => {
     if (isOpen) closeMenu({ immediate: true });
   }, { passive: true });
@@ -936,9 +1042,13 @@ export function mountNavigation({
     panel.removeEventListener('pointermove', onPanelPointerMove);
     panel.removeEventListener('focusin', onPanelFocusIn);
     document.removeEventListener('keydown', onKeyDown);
+    document.removeEventListener('fsd:navigation-active', onCurrentNavigation);
     root.removeEventListener('pointerenter', onRootPointerEnter);
     root.removeEventListener('pointerleave', onRootPointerLeave);
     document.removeEventListener('click', onDocumentClick);
+    window.removeEventListener('hashchange', updateCurrentFromHash);
+    window.removeEventListener('popstate', updateCurrentFromHash);
+    sectionObserver?.disconnect();
     document.body.classList.remove('fsd-mobile-nav-open');
   };
 }

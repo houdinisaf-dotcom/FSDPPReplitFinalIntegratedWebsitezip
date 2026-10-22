@@ -76,3 +76,9 @@ For the Women’s Collection, FSD FLEX leggings and the Premium Zip-Neck Perform
 **Why:** The user’s collection brief explicitly distinguishes the top from AEROFORGE, calls BREEZE an existing product, and requires auditing coordinated outfit references before creating pages.
 
 **How to apply:** Keep any previews private and draft-only, preserve source imagery and master catalogue data, and leave product claims, garment-logo fidelity, and unconfirmed product identity pending. Do not enable checkout or publish.
+
+Additional Women’s Collection images must not be assigned to BREEZE or Modest Flow by default. Exact duplicates of existing Modest Flow photos remain reference duplicates, and composite boards stay out of product galleries and verified product copy.
+
+**Why:** The user explicitly asked for a complete audit of the remaining images and rejected automatic grouping as either BREEZE or Modest Flow.
+
+**How to apply:** Keep uncertain outfit and campaign images in a separate private audit, state the evidence for any grouping, and leave logo marks and embedded product claims pending until verified.

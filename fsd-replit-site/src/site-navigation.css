@@ -110,13 +110,15 @@
 
 .fsd-primary-trigger:hover,
 .fsd-primary-trigger:focus-visible,
-.fsd-primary-trigger.is-active {
+.fsd-primary-trigger.is-active,
+.fsd-primary-trigger.is-current {
   color: #e5c99a;
 }
 
 .fsd-primary-trigger:hover::after,
 .fsd-primary-trigger:focus-visible::after,
-.fsd-primary-trigger.is-active::after {
+.fsd-primary-trigger.is-active::after,
+.fsd-primary-trigger.is-current::after {
   transform: scaleX(1);
 }
 

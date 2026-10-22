@@ -1,14 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { collectionDivisions } from '../src/collection-divisions.js';
-import { categories, products } from '../src/catalogue-data.js';
+import { categories, filterProducts, products } from '../src/catalogue-data.js';
 import { createNavigationModel, getNavigationFeature, primaryNavigation } from '../src/site-navigation.js';
 
 const menu = createNavigationModel();
 
-test('primary navigation matches the five approved sections', () => {
+test('primary navigation makes Shop and the FSD Universe clear destinations', () => {
   assert.deepEqual(primaryNavigation.map(item => item.label), [
-    'COLLECTIONS',
+    'SHOP',
+    'UNIVERSE',
     'BIO-LAB™',
     'HARDWARE',
     'THE HOUSE',
@@ -16,6 +17,7 @@ test('primary navigation matches the five approved sections', () => {
   ]);
   assert.deepEqual(menu.map(item => item.id), [
     'collections',
+    'universe',
     'bio-lab',
     'hardware',
     'house',
@@ -23,24 +25,45 @@ test('primary navigation matches the five approved sections', () => {
   ]);
 });
 
-test('Collections reproduces the reference groups and uses existing subcategories', () => {
+test('Shop exposes All Products and keeps the existing apparel groups and subcategories', () => {
   const collections = menu[0];
   assert.deepEqual(collections.groups.map(group => group.title), [
+    'ALL PRODUCTS',
     'MEN’S LUXURY PERFORMANCE',
     'WOMEN’S MODEST COMBAT',
     'LIMITED COLLECTIONS',
     'NEW & FEATURED CONCEPTS',
   ]);
 
-  const men = collections.groups[0];
+  const allProducts = collections.groups[0];
+  assert.equal(allProducts.href, '#products');
+  assert.equal(allProducts.items[0].kind, 'shop-all');
+  const men = collections.groups.find(group => group.id === 'mens-luxury-performance');
   assert.equal(men.items[1].title, '2-in-1 Combat Training Shorts & Tanks');
   assert.equal(men.items[1].kind, 'subcategory');
   assert.equal(men.items[1].sourceSubcategoryIndex, 1);
   assert.ok(men.items.some(item => item.title === 'Training Sets'));
-  assert.ok(collections.groups[2].items.some(item => item.title === 'Volcanic Amber Capsule'));
-  assert.ok(collections.groups[2].items.some(item => item.title === 'Vector Camo Capsule'));
-  assert.equal(collections.groups[2].navigationUnavailable, true);
-  assert.equal(collections.groups[3].navigationUnavailable, true);
+  const limited = collections.groups.find(group => group.id === 'limited-collections');
+  const featured = collections.groups.find(group => group.id === 'new-featured-concepts');
+  assert.ok(limited.items.some(item => item.title === 'Volcanic Amber Capsule'));
+  assert.ok(limited.items.some(item => item.title === 'Vector Camo Capsule'));
+  assert.equal(limited.navigationUnavailable, true);
+  assert.equal(featured.navigationUnavailable, true);
+});
+
+test('Shop collection filters contain current products and preserve audience scope', () => {
+  const mens = filterProducts('All', '', 'All', 'mens-luxury-performance');
+  const womens = filterProducts('All', '', 'All', 'womens-modest-combat');
+  assert.ok(mens.length > 0);
+  assert.ok(womens.length > 0);
+  assert.ok(womens.every(product => product.audience === 'Women’s'));
+});
+
+test('Universe links to all four existing divisions without adding product records', () => {
+  const universe = menu.find(item => item.id === 'universe');
+  assert.deepEqual(universe.groups.map(group => group.sourceDivisionId), ['apparel', 'bio-lab', 'hardware', 'global']);
+  assert.deepEqual(universe.groups.map(group => group.items[0].kind), Array(4).fill('universe-division'));
+  assert.ok(universe.groups.every(group => group.navigationUnavailable === true));
 });
 
 test('category menu items use exact existing catalogue categories', () => {
@@ -53,13 +76,15 @@ test('category menu items use exact existing catalogue categories', () => {
 });
 
 test('feature images remain mapped to the selected collection instead of borrowing unrelated artwork', () => {
-  const conceptFeature = getNavigationFeature(menu[0], 0, 1);
+  const mensIndex = menu[0].groups.findIndex(group => group.id === 'mens-luxury-performance');
+  const conceptFeature = getNavigationFeature(menu[0], mensIndex, 1);
   assert.equal(conceptFeature.item, '2-in-1 Combat Training Shorts & Tanks');
   assert.deepEqual(conceptFeature.imageSources, []);
 
-  const women = menu[0].groups[1];
+  const women = menu[0].groups.find(group => group.id === 'womens-modest-combat');
   const hijabIndex = women.items.findIndex(item => item.title === 'Performance Hijabs');
-  const hijabFeature = getNavigationFeature(menu[0], 1, hijabIndex);
+  const womenIndex = menu[0].groups.indexOf(women);
+  const hijabFeature = getNavigationFeature(menu[0], womenIndex, hijabIndex);
   assert.ok(hijabFeature.imageSources.includes('/images/fsd-velocity-performance-sports-hijab.jpg'));
   for (const imagePath of hijabFeature.imageSources) {
     assert.ok(products.some(product => product.images?.some(image => image.src === imagePath)));
@@ -70,11 +95,13 @@ test('feature images remain mapped to the selected collection instead of borrowi
 });
 
 test('Bio-Lab and Hardware reuse current division groups and product records', () => {
-  assert.deepEqual(menu[1].groups.map(group => group.title), ['WEARABLE TECHNOLOGY & CONCEPTS']);
-  assert.ok(menu[1].groups[0].items.length > 0);
-  assert.deepEqual(menu[2].groups.map(group => group.title), collectionDivisions
+  const bioLab = menu.find(item => item.id === 'bio-lab');
+  const hardware = menu.find(item => item.id === 'hardware');
+  assert.deepEqual(bioLab.groups.map(group => group.title), ['WEARABLE TECHNOLOGY & CONCEPTS']);
+  assert.ok(bioLab.groups[0].items.length > 0);
+  assert.deepEqual(hardware.groups.map(group => group.title), collectionDivisions
     .find(division => division.id === 'hardware').groups.map(group => group.title));
-  assert.ok(menu[2].groups[0].items.some(item => item.record?.name));
+  assert.ok(hardware.groups[0].items.some(item => item.record?.name));
 });
 
 test('weighted rope is an opt-in Hardware draft preview, not a published catalogue record', () => {
@@ -120,7 +147,7 @@ test('the hooded-shell campaign proof is available only in the development previ
   assert.match(shell.description, /Campaign imagery for the FSD Hooded Running Shell/i);
   assert.equal(shell.record, undefined);
   assert.equal(shell.productId, undefined);
-  assert.deepEqual(getNavigationFeature(previewCollections, 0, shellIndex).imageSources, [shell.featureImageSrc]);
+  assert.deepEqual(getNavigationFeature(previewCollections, previewCollections.groups.indexOf(previewMens), shellIndex).imageSources, [shell.featureImageSrc]);
 });
 
 test('House destinations remain existing anchors and do not claim proposed locations are live', () => {

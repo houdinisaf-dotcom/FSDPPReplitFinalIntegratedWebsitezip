@@ -1,4 +1,4 @@
-import { catalogueSection, initCatalogue, showProduct } from './catalogue.js';
+import { catalogueSection, initCatalogue, navigateCatalogue, showProduct } from './catalogue.js';
 import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
@@ -72,15 +72,15 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
     <p class="eyebrow">THE FSD PERFORMANCE UNIVERSE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
     <h1>BUILT FOR<br/><em>THE DRIVE</em><br/>WITHIN.</h1>
     <p class="hero-copy">Performance. Discipline. Identity. Discover technical training wear, combat-inspired design and modest activewear under one unmistakable shield.</p>
-    <div class="hero-actions"><a class="primary-btn" href="#collections">EXPLORE THE COLLECTION <span>↗</span></a>
-    <a class="ghost-btn" href="#philosophy">DISCOVER FSD →</a></div>
+    <div class="hero-actions"><a class="primary-btn" href="#products">SHOP ALL PRODUCTS <span>↗</span></a>
+    <a class="ghost-btn" href="#universe">DISCOVER THE FSD UNIVERSE →</a></div>
     <div class="hero-foot"><span>01 / 03</span><span>DESIGNED TO MOVE. BUILT TO BELONG.</span></div></div>
     <div class="vertical-label">FITNESS & SELF DEFENCE — 2026</div>
   </section>
   <div id="collections">
     ${renderCollectionShowcase(collectionDivisions)}
     <div class="showroom-archives" id="planned">
-      <details class="showroom-archive" id="catalogue-archive"><summary>FULL PRODUCT CATALOGUE · ${products.length} RECORDS</summary>${catalogueSection()}</details>
+      <details class="showroom-archive" id="catalogue-archive"><summary>SHOP / ALL PRODUCTS · ${products.length} RECORDS</summary>${catalogueSection()}</details>
     </div>
   </div>
   ${hardwareEditorialSection()}
@@ -91,31 +91,15 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
   </main>
   <footer><div class="footer-brand"><img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="FSD Fitness & Self-Defence"/></div>
     <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Website prototype.</span>
-      <nav class="footer-links" aria-label="Footer navigation"><a href="#collections">FOUR DIVISIONS</a><a href="#products">PRODUCT CATALOGUE</a>
+      <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD UNIVERSE</a><a href="#products">SHOP / ALL PRODUCTS</a>
       <a href="#contact">VIP ACCESS</a></nav>
-      <nav class="footer-links" aria-label="Corporate navigation"><a href="#philosophy">FSD STORY</a><a href="#fsd-division-global">PROPOSED FLAGSHIPS & PROMOTIONS</a></nav>
+      <nav class="footer-links" aria-label="Corporate navigation"><a href="#philosophy">THE HOUSE / OUR STORY</a><a href="#fsd-division-global">FSD GLOBAL</a></nav>
       <small class="footer-pending">Investor information and legal pages require approved content before launch.</small></div>
     <a href="#home">BACK TO TOP ↑</a></footer>
   <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
 
-function showCatalogueDestination({ category = 'All', query = '' } = {}) {
-  const archive = document.querySelector('#catalogue-archive');
-  const select = document.querySelector('#catalogue-category');
-  const search = document.querySelector('#search');
-  const productSection = document.querySelector('#products');
-  if (!archive || !select || !search || !productSection) return false;
-  if (category !== 'All' && ![...select.options].some(option => option.value === category)) return false;
-
-  archive.open = true;
-  select.value = category;
-  search.value = query;
-  select.dispatchEvent(new Event('change', { bubbles: true }));
-  search.dispatchEvent(new Event('input', { bubbles: true }));
-  productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  const count = document.querySelector('#catalogue-count');
-  count?.setAttribute('tabindex', '-1');
-  count?.focus({ preventScroll: true });
-  return true;
+function showCatalogueDestination(state = {}) {
+  return navigateCatalogue(state);
 }
 
 function startMainExperience() {
@@ -127,7 +111,10 @@ function startMainExperience() {
     onProductSelect: openProduct,
     onExploreCollection(group) {
       showCatalogueDestination({
-        category: group.categories?.[0] || 'All',
+        collection: ['mens-luxury-performance', 'womens-modest-combat'].includes(group.id) ? group.id : 'All',
+        category: ['mens-luxury-performance', 'womens-modest-combat'].includes(group.id)
+          ? 'All'
+          : group.categories?.[0] || 'All',
         query: group.query || '',
       });
     },
@@ -148,8 +135,43 @@ function startMainExperience() {
         return;
       }
 
+      if (menu?.id === 'collections') {
+        const shopCollection = ['mens-luxury-performance', 'womens-modest-combat'].includes(group?.id)
+          ? group.id
+          : 'All';
+        if (group?.id === 'shop-all-products' || item?.kind === 'shop-all') {
+          showCatalogueDestination();
+          return;
+        }
+        if (shopCollection !== 'All') {
+          if (!item) {
+            showCatalogueDestination({ collection: shopCollection });
+            return;
+          }
+          if (item.kind === 'subcategory' || item.kind === 'category') {
+            showCatalogueDestination({
+              collection: shopCollection,
+              category: item.kind === 'category' ? item.source?.categories?.[0] || 'All' : 'All',
+              audience: 'All',
+              query: item.kind === 'subcategory' ? item.source?.productTerms?.[0] || '' : '',
+            });
+            return;
+          }
+        }
+        if (item?.kind === 'category') {
+          showCatalogueDestination({
+            category: item.source?.categories?.[0] || item.title,
+            audience: item.source?.audiences?.[0] || 'All',
+          });
+          return;
+        }
+      }
+
       if (item?.kind === 'category') {
-        showCatalogueDestination({ category: item.source?.categories?.[0] || item.title });
+        showCatalogueDestination({
+          category: item.source?.categories?.[0] || item.title,
+          audience: item.source?.audiences?.[0] || 'All',
+        });
         return;
       }
 
