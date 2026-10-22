@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "collection": {
+    "id": "fsd-modest-flow-private",
+    "name": "FSD Modest Flow",
+    "category": "Modest Activewear",
+    "divisionId": "apparel",
+    "groupId": "womens-modest-combat",
+    "status": "Draft",
+    "approvalStatus": "Pending visual proof approval",
+    "purchaseEnabled": false,
+    "publicationAuthorized": false,
+    "priceGbp": null,
+    "heroAssetId": "modest-flow-campaign-hero"
+  },
+  "product": {
+    "key": "fsd-modest-flow-set",
+    "masterProductId": null,
+    "relatedMasterRecord": {
+      "id": 50,
+      "name": "FSD Modest Flow Training Trousers",
+      "relationship": "Related component record; distinct coordinated set. No merge or master-catalogue changes authorized."
+    },
+    "name": "FSD Modest Flow",
+    "subtitle": "Women's Modest Performance Activewear Set",
+    "category": "Modest Activewear",
+    "audience": "Women’s",
+    "description": "A coordinated modest activewear outfit featuring an extended-length long-sleeve tunic, relaxed wide-leg trousers and matching hijab.",
+    "editorialStatus": "Draft",
+    "approvalStatus": "Pending visual proof approval",
+    "purchaseEnabled": false,
+    "publicationAuthorized": false,
+    "priceGbp": null,
+    "inventory": null,
+    "sku": null,
+    "variants": [
+      {
+        "id": "onyx-black-core",
+        "colour": "Onyx Black (Core)",
+        "swatch": "#0D0D0D",
+        "assetId": "modest-flow-onyx-black",
+        "approvalStatus": "Approved source image; product remains draft"
+      },
+      {
+        "id": "deep-olive-earth",
+        "colour": "Deep Olive (Earth)",
+        "swatch": "#2B3227",
+        "assetId": "modest-flow-deep-olive",
+        "approvalStatus": "Approved source image; product remains draft"
+      },
+      {
+        "id": "warm-taupe-modest",
+        "colour": "Warm Taupe (Modest)",
+        "swatch": "#8A7B70",
+        "assetId": "modest-flow-warm-taupe",
+        "approvalStatus": "Approved source image; product remains draft"
+      },
+      {
+        "id": "slate-grey-tech",
+        "colour": "Slate Grey (Tech)",
+        "swatch": "#666B70",
+        "assetId": "modest-flow-slate-grey",
+        "approvalStatus": "Approved source image; product remains draft"
+      },
+      {
+        "id": "midnight-navy-performance",
+        "colour": "Midnight Navy (Performance)",
+        "swatch": "#1B2432",
+        "assetId": "modest-flow-midnight-navy",
+        "approvalStatus": "Approved source image; product remains draft"
+      },
+      {
+        "id": "deep-burgundy-combat",
+        "colour": "Deep Burgundy (Combat)",
+        "swatch": "#4A1521",
+        "assetId": "modest-flow-deep-burgundy",
+        "approvalStatus": "Approved source image; product remains draft"
+      }
+    ],
+    "unverifiedSpecifications": [
+      "Price",
+      "Inventory and SKU",
+      "Fabric composition",
+      "Sizing and manufacturing measurements",
+      "Care instructions",
+      "Fit and performance claims"
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "sourceSet": "Seven original user-supplied PNGs: one fixed campaign hero and six individual colour images.",
+  "assets": [
+    {
+      "id": "modest-flow-campaign-hero",
+      "file": "modest-flow-campaign-hero.png",
+      "role": "Fixed Deep Burgundy campaign hero",
+      "source": "attached_assets/image_1792642572506.png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "b175c56f8ba039d2f17446c6e5901c402854d92a99e8d3f3624cc20f85a1dab4"
+    },
+    {
+      "id": "modest-flow-deep-burgundy",
+      "file": "modest-flow-deep-burgundy.png",
+      "role": "Deep Burgundy (Combat) individual colour image",
+      "source": "attached_assets/image_1792642589682.png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "366aee156b1359c3efb76a6f2e842bf52fb4fde9efe2ae1a57b38c60f7b171fb"
+    },
+    {
+      "id": "modest-flow-midnight-navy",
+      "file": "modest-flow-midnight-navy.png",
+      "role": "Midnight Navy (Performance) individual colour image",
+      "source": "attached_assets/image_1792642598063.png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "2d11d4accefd280c29fe9ba0bd9424b3ccc9cc581a0d2e6d5ffb630d834c8ef0"
+    },
+    {
+      "id": "modest-flow-slate-grey",
+      "file": "modest-flow-slate-grey.png",
+      "role": "Slate Grey (Tech) individual colour image",
+      "source": "attached_assets/image_1792642605270.png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "14bb8e2281f591ddfba17754a1ed88fe6359c732f4ccba98da45a995acf204e0"
+    },
+    {
+      "id": "modest-flow-warm-taupe",
+      "file": "modest-flow-warm-taupe.png",
+      "role": "Warm Taupe (Modest) individual colour image",
+      "source": "attached_assets/image_1792642614981.png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "bc6aae30c40b667a852fc48e9730f5f9353caedc23f97e7863d37a03f094273e"
+    },
+    {
+      "id": "modest-flow-deep-olive",
+      "file": "modest-flow-deep-olive.png",
+      "role": "Deep Olive (Earth) individual colour image",
+      "source": "attached_assets/image_1792642622223.png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "fa2679dac69de0c919cabd78a55fe19754bdeb6d825fc98028dc1c599aa429ed"
+    },
+    {
+      "id": "modest-flow-onyx-black",
+      "file": "modest-flow-onyx-black.png",
+      "role": "Onyx Black (Core) individual colour image",
+      "source": "attached_assets/image_1792642629247.png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "5466825b83a82a4df7c936b255ad14bf2e35304417f697fc60ac9e4c1022d74a"
+    }
+  ]
+}

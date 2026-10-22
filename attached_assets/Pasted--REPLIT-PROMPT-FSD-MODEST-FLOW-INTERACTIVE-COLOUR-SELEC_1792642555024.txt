@@ -1,0 +1,303 @@
+# REPLIT PROMPT — FSD MODEST FLOW INTERACTIVE COLOUR SELECTOR
+
+## OBJECTIVE
+
+Implement the approved interactive product-selection experience for **FSD Modest Flow — Women's Modest Performance Activewear Set**, allowing customers to explore all six approved colour editions through a sophisticated, luxury-style floating product panel.
+
+**COLLECTION PLACEMENT: Apparel → Women's → Modest Activewear**
+
+The interaction must match the existing FSD Fitness & Self Defence website aesthetic: matte black, graphite, subtle champagne-gold accents, elegant typography and smooth, understated animations.
+
+**IMPORTANT: This is a targeted product interaction enhancement, not a website redesign.**
+
+Preserve the existing website, approved interactive mega-menu, navigation, product catalogue, imagery, layouts and Phase 2–4 improvements.
+
+Do not publish or activate checkout.
+
+---
+
+## 1. PRODUCT DISCOVERY EXPERIENCE
+
+Add **FSD Modest Flow** to the existing **Modest Activewear** collection within the Women's Apparel section.
+
+The product consists of the approved coordinated modest activewear outfit:
+
+- Extended-length performance tunic/overshirt.
+- Long sleeves with thumbhole cuffs.
+- Concealed side-zip openings.
+- Relaxed wide-leg performance trousers.
+- Coordinated performance hijab as shown in the approved imagery.
+- Small matte champagne-gold Serene Monogram details on the wrist cuff and trouser thigh area.
+
+**Use the approved product imagery. Do not redesign the outfit or replace its logo.**
+
+Display **one approved campaign hero image** for this product.
+
+Use the separate hero photograph featuring the model in the Deep Burgundy Modest Flow outfit in the alternative warm architectural gym setting, with the large window and softer editorial background.
+
+This campaign hero is a fixed promotional image.
+
+**Do not change the hero photograph when a customer selects another colour.**
+
+When the customer clicks the FSD Modest Flow product, open a premium floating product-selection panel rather than redirecting them unnecessarily.
+
+The panel should feel like an extension of the website's existing full-width interactive mega-menu.
+
+---
+
+## 2. FLOATING PRODUCT-SELECTION PANEL
+
+Create a refined, responsive overlay with:
+
+### Left section
+
+- One large product image.
+- Clean presentation against a charcoal or near-black background.
+- Subtle fade transition when a colour is selected.
+- Preserve the original image aspect ratio.
+- Display the full outfit without awkward cropping.
+
+### Right section
+
+- Product title: **FSD Modest Flow**.
+- Subtitle: **Women's Modest Performance Activewear Set**.
+- Short approved product description.
+- Selected colour name.
+- Six colour-selection swatches.
+- Approved product information, where available.
+- A restrained close button.
+
+Use subtle champagne-gold borders or highlights to indicate the selected colour.
+
+Avoid oversized cards, excessive shadows, heavy animations or cluttered galleries.
+
+The overlay must be easy to close and work correctly on desktop, tablet and mobile.
+
+---
+
+## 3. SIX APPROVED COLOUR EDITIONS
+
+Create these exact selectable options:
+
+1. **Onyx Black (Core)** — `#0D0D0D`
+2. **Deep Olive (Earth)** — `#2B3227`
+3. **Warm Taupe (Modest)** — `#8A7B70`
+4. **Slate Grey (Tech)** — `#666B70`
+5. **Midnight Navy (Performance)** — `#1B2432`
+6. **Deep Burgundy (Combat)** — `#4A1521`
+
+Each option must have:
+
+- Its own colour swatch.
+- Its exact colour name.
+- Its corresponding approved individual product image.
+- A clear selected state.
+
+The selected colour name must update immediately when a swatch is clicked.
+
+The swatches should be keyboard accessible and have descriptive accessibility labels.
+
+**Use the six individual colour photographs already generated and approved for this product.**
+
+Do not use the six-colour comparison board as the changing main product image.
+
+---
+
+## 4. CRITICAL IMAGE BEHAVIOUR
+
+**SHOW ONLY ONE MAIN PRODUCT IMAGE AT A TIME.**
+
+When a customer clicks a colour swatch:
+
+1. Update the selected colour state.
+2. Replace the currently displayed product image with the approved individual photograph for that colour.
+3. Apply a smooth, subtle crossfade.
+4. Update the selected colour label.
+5. Highlight the active swatch.
+
+**Do not:**
+
+- Generate additional image galleries automatically.
+- Split the six-colour comparison board into gallery entries.
+- Display a carousel of multiple product images for each colour.
+- Stack all six product photographs on the screen.
+- Use artificial CSS recolouring of the garments.
+- Change the model's pose or gym background when switching between the six approved images.
+- Alter the approved outfit, fabric appearance, Serene Monogram, hijab or garment construction.
+- Replace the fixed campaign hero when a colour changes.
+
+The six approved colour photographs already exist and should be treated as **six individual image assets, one per colour**.
+
+If additional front, back, side or detail images are required later, prepare those separately for approval. Do not generate them as part of this implementation.
+
+---
+
+## 5. IMAGE AND PRODUCT DATA STRUCTURE
+
+Use the existing Phase 4 centralized product catalogue architecture.
+
+Create or update the existing **FSD Modest Flow** product record without unnecessary duplication.
+
+Associate the six colour variants with their corresponding approved images through the existing product data schema.
+
+Each variant should contain, at minimum:
+
+- Unique variant ID.
+- Display colour name.
+- Swatch colour value.
+- Approved image asset reference.
+- Approval/draft status.
+
+Suggested asset organisation, adapted to the existing project structure:
+
+```text
+/assets/products/modest-flow/
+    modest-flow-hero.jpg
+    modest-flow-onyx-black.jpg
+    modest-flow-deep-olive.jpg
+    modest-flow-warm-taupe.jpg
+    modest-flow-slate-grey.jpg
+    modest-flow-midnight-navy.jpg
+    modest-flow-deep-burgundy.jpg
+```
+
+These are suggested destination filenames, not confirmation that the files already exist in the project.
+
+Map the actual uploaded image files to the corresponding colour records.
+
+Do not invent prices, stock quantities, fabric percentages, technical specifications or availability.
+
+Do not overwrite or delete existing approved product images.
+
+Keep any previously generated extra images archived or unused until explicitly reviewed.
+
+---
+
+## 6. VISUAL INTERACTION DESIGN
+
+The interaction should feel luxurious and effortless.
+
+### Opening the product panel
+
+- Soft fade and restrained slide.
+- No page jump.
+- No automatic scrolling.
+- Background page remains in position.
+
+### Selecting a colour
+
+- Immediate responsive feedback.
+- Gentle image crossfade.
+- Champagne-gold active indicator.
+- No distracting zoom or spin animations.
+
+### Closing the panel
+
+- Smooth fade out.
+- Restore focus to the product that opened it.
+- Keep the underlying page position unchanged.
+
+Support Escape-key closing, accessible focus management and reduced-motion preferences.
+
+The Serene Monogram should remain a **small, flat matte champagne-gold garment emblem**, not a large chrome-style logo.
+
+---
+
+## 7. MOBILE RESPONSIVENESS
+
+On smaller screens:
+
+- Display the main product image above the product information.
+- Keep all six colour swatches easy to tap.
+- Allow the panel content to scroll naturally if required.
+- Keep the close control visible and accessible.
+- Avoid horizontal overflow or clipped product imagery.
+- Preserve the full-body composition wherever practical.
+
+The mobile experience must retain the same refined aesthetic as desktop.
+
+---
+
+## 8. CORRECT COLLECTION PLACEMENT
+
+**FSD Modest Flow belongs in Modest Activewear.**
+
+Ensure the product can be discovered through the existing Women's Apparel navigation and the Modest Activewear collection.
+
+Do not place it in Hardware, Bio-Lab or an unrelated product category.
+
+Do not rename, remove or restructure the existing main navigation or mega-menu to accommodate this product.
+
+If Modest Activewear already exists, use that existing collection.
+
+If a suitable collection record does not exist, create only the minimum catalogue association required, without introducing new top-level navigation.
+
+---
+
+## 9. PRESERVE EXISTING WEBSITE AND PHASE 4 WORK
+
+**Do not modify or replace:**
+
+- The approved FSD website header.
+- The original navigation labels.
+- The full-width interactive mega-menu.
+- The homepage design.
+- Other product pages or collections.
+- The Weighted Skipping Rope selector.
+- Existing approved imagery.
+- Phase 4 catalogue architecture.
+- Existing product SEO and image optimisation.
+- Draft and approval controls.
+
+Do not restore an older project checkpoint or roll back Phase 4 work.
+
+Make only the changes required to implement this specific product-selection interaction.
+
+---
+
+## 10. PRE-LAUNCH SAFEGUARDS
+
+Keep the product in its existing draft or approval state.
+
+Do not activate:
+
+- Live checkout.
+- Payment processing.
+- Public purchasing.
+- Unapproved pricing.
+- Production deployment or publishing.
+
+If the interface requires a purchase button but purchasing is not approved, retain the existing disabled or preview-only behaviour.
+
+---
+
+## 11. REQUIRED VERIFICATION
+
+Before declaring completion, test and confirm:
+
+1. FSD Modest Flow appears within **Modest Activewear**.
+2. The approved campaign hero remains unchanged.
+3. Clicking the product opens the floating selection panel.
+4. Exactly six colour swatches are available.
+5. Every swatch displays its correct approved individual image.
+6. Only one main product image is visible at a time.
+7. No unnecessary multi-image gallery is created.
+8. The selected colour name updates correctly.
+9. The panel opens and closes without moving the page.
+10. Desktop and mobile layouts work correctly.
+11. The original mega-menu and all existing navigation remain intact.
+12. The Weighted Skipping Rope selector remains functional.
+13. Phase 4 catalogue data and approval safeguards remain intact.
+14. Nothing has been published or made purchasable.
+
+---
+
+## FINAL INSTRUCTION
+
+**Implement FSD Modest Flow as one elegant, interactive product experience within Modest Activewear: one fixed campaign hero, one floating product panel, one displayed product image at a time, and six selectable colour editions.**
+
+Preserve everything else on the website.
+
+Use the supplied approved photographs rather than generating replacements.
+
+After implementation, provide a concise summary of the files changed, how the six images are mapped, the product's collection placement, and the results of the verification tests.

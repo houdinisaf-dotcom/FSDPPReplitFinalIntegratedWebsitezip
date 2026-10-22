@@ -238,4 +238,22 @@ if (import.meta.env.DEV) {
       console.error('The private AeroForge collection card could not be loaded.', error);
       throw error;
     });
+
+  Promise.all([
+    import('./modest-flow-development-integration.js'),
+    import('./modest-flow-preview-ui/modest-flow-preview.js'),
+  ])
+    .then(([{ createModestFlowDevelopmentIntegration }, { mountModestFlowSelector }]) => {
+      const modestFlow = createModestFlowDevelopmentIntegration();
+      collectionShowcase.setDraftProductCard(modestFlow.collectionCard, modestFlow.collectionCardPlacement);
+      mountModestFlowSelector({
+        root: document.body,
+        product: modestFlow.productData,
+        variants: modestFlow.variants,
+      });
+    })
+    .catch(error => {
+      console.error('The private FSD Modest Flow selector could not be loaded.', error);
+      throw error;
+    });
 }
