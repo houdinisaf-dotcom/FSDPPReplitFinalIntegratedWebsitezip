@@ -181,12 +181,13 @@ try {
   assert.ok(await evaluate('Math.abs(visualViewport.scale - 1) < 0.01'));
   await click('[data-nav-mobile-toggle]');
   await waitFor('document.body.classList.contains("fsd-mobile-nav-open")');
-  await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
+  await click('.fsd-mobile-primary-list [data-nav-primary="universe"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
-  await click('#fsd-mega-menu [data-nav-group="1"]');
+  await click('#fsd-mega-menu [data-nav-group="0"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail"');
   await click('#fsd-mega-menu [data-nav-item="0"]');
   await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+  await click('#fsd-showcase-dialog [data-group-index="1"]');
   await click('#fsd-showcase-dialog [data-subcategory-index="-1"]');
   await waitFor('!!document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]")');
   await evaluate('document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]").scrollIntoView({ block: "center", behavior: "instant" })');

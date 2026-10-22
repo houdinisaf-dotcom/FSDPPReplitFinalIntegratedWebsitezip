@@ -152,20 +152,6 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     makeDivisionGroup(division, group, index, products));
 
   const groups = [
-    {
-      id: 'shop-all-products',
-      title: 'ALL PRODUCTS',
-      description: 'Browse the full FSD product catalogue with collection, category and audience filters.',
-      href: '#products',
-      navigationUnavailable: false,
-      items: [{
-        id: 'shop-all-products-entry',
-        title: 'Browse all products',
-        kind: 'shop-all',
-        href: '#products',
-        description: 'Open the complete FSD catalogue.',
-      }],
-    },
     makeDivisionGroup(division, mens, 0, products),
     makeDivisionGroup(division, womens, 1, products),
   ];
@@ -203,6 +189,20 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     items: conceptItems,
     navigationUnavailable: true,
   }));
+  groups.push({
+    id: 'shop-all-products',
+    title: 'ALL PRODUCTS',
+    description: 'Browse the full FSD product catalogue with collection, category and audience filters.',
+    href: '#products',
+    navigationUnavailable: false,
+    items: [{
+      id: 'shop-all-products-entry',
+      title: 'Browse all products',
+      kind: 'shop-all',
+      href: '#products',
+      description: 'Open the complete FSD catalogue.',
+    }],
+  });
 
   return groups;
 }
@@ -357,7 +357,7 @@ export function createNavigationModel({
       description: findDivision('apparel')?.description || '',
       divisionId: 'apparel',
       groups: makeCollectionsGroups(divisions, products, includeDraftPreviews),
-      defaultItemTitle: 'Browse all products',
+      defaultItemTitle: '2-in-1 Combat Training Shorts & Tanks',
     },
     {
       id: 'universe',
@@ -484,11 +484,11 @@ function renderFeature(menu, group, item, products, canNavigate) {
   const media = imageRecords.length
     ? `<div class="fsd-feature-media fsd-feature-media--${imageRecords.length}">
         ${imageRecords.map(({ src, label, product }) =>
-    `<img src="${escapeHTML(src)}" alt="${escapeHTML(label || product.name)}" loading="eager" decoding="async">`).join('')}
+    `<img src="${escapeHTML(src)}" alt="${escapeHTML(label || product.name)}" loading="lazy" fetchpriority="low" decoding="async">`).join('')}
       </div>`
     : `<div class="fsd-feature-media fsd-feature-media--empty" aria-label="No approved image is mapped to this collection">
         <span>FSD / ${escapeHTML((item?.sourceDivisionId || group?.sourceDivisionId || group?.id || 'collection').toUpperCase())}</span>
-        <small>COLLECTION PREVIEW</small>
+        <small>COLLECTIONS</small>
       </div>`;
 
   const available = canNavigate({ menu, group, item });
@@ -551,7 +551,7 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
   }).join('');
 }
 
-function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate) {
+function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId = '') {
   const group = menu.groups[activeGroupIndex] || menu.groups[0];
   const item = group?.items?.[activeItemIndex] || group?.items?.[0];
   const mobilePrimaries = primaryNavigation.map(entry => `<button type="button"
@@ -603,7 +603,7 @@ export function renderNavigationHeader(brandMarkup) {
 
   return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE <span>— DESIGN PREVIEW</span></div>
     <div class="fsd-navigation-shell" data-navigation-shell>
-      <header class="header fsd-header">
+      <header class="header fsd-header fsd-glass-surface">
         <a class="brand fsd-brand" href="#home" aria-label="FSD Home">
           ${brandMarkup}
         </a>
@@ -614,7 +614,7 @@ export function renderNavigationHeader(brandMarkup) {
           <span>MENU</span><i aria-hidden="true"></i><i aria-hidden="true"></i>
         </button>
       </header>
-      <section class="fsd-mega-menu" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
+      <section class="fsd-mega-menu fsd-glass-surface" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
         <div data-nav-content></div>
       </section>
     </div>`;
@@ -691,7 +691,7 @@ export function mountNavigation({
     const menu = currentMenu();
     panel.dataset.primary = menu.id;
     panel.dataset.step = mobileStep;
-    content.innerHTML = renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate);
+    content.innerHTML = renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId);
     syncExpanded();
   };
 

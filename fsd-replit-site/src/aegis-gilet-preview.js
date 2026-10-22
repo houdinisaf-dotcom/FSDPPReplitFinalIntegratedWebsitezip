@@ -18,7 +18,7 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
 
 const price = {
   ...priceInfo(preview.product),
-  label: 'Catalogue reference',
+  label: 'Reference only · not for sale',
 };
 
 const headerRoot = document.querySelector('#aegis-site-header');
@@ -92,7 +92,7 @@ root.innerHTML = `
       <p class="aegis-product-status">CONCEPT</p>
       <p class="aegis-product-description">A visual concept for the FSD modest outerwear collection.</p>
       ${preview.product.colourways ? `<div class="aegis-product-option">
-        <span class="aegis-product-label">Catalogue colour reference</span>
+        <span class="aegis-product-label">Colour</span>
         <p class="aegis-product-colour"><span aria-hidden="true"></span>${escapeHTML(preview.product.colourways)}</p>
       </div>` : ''}
       <div class="aegis-product-price">

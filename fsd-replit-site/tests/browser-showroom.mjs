@@ -41,7 +41,7 @@ try {
       if (!request) return;
       pending.delete(message.id);
       clearTimeout(request.timeout);
-      if (message.error) request.reject(new Error(JSON.stringify(message.error)));
+      if (message.error) request.reject(new Error(`${request.method}: ${JSON.stringify(message.error)}`));
       else request.resolve(message.result);
     } else if (message.method === 'Runtime.exceptionThrown') {
       browserErrors.push(message.params.exceptionDetails.text);
@@ -53,7 +53,7 @@ try {
       pending.delete(id);
       reject(new Error(`CDP timed out: ${method}`));
     }, 15000);
-    pending.set(id, { resolve, reject, timeout });
+    pending.set(id, { resolve, reject, timeout, method });
     socket.send(JSON.stringify({ id, method, params }));
   });
   const evaluate = async expression => {
@@ -159,7 +159,7 @@ try {
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector("img").src.endsWith("/media/front-three-quarter")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Black / Gold")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("£69.99")`));
-  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Catalogue reference")`));
+  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Reference only · not for sale")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector(".fsd-product-media--aegis-preview").href.endsWith("/__catalogue-preview/aegis-modest-performance-gilet/")`));
   await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").scrollIntoView({ block: "center" })`);
   if (aegisProofCapture) {
@@ -172,7 +172,7 @@ try {
   assert.ok(await evaluate('document.querySelector("#aegis-main-image").src.endsWith("/media/front-three-quarter")'));
   assert.ok(await evaluate('document.querySelector(".aegis-product-colour").textContent.includes("Black / Gold")'));
   assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("£69.99")'));
-  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("Catalogue reference")'));
+  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("Reference only · not for sale")'));
   assert.ok(!await evaluate('document.querySelector("form, [name=checkout], [data-checkout]")'));
   if (aegisProofCapture) {
     await captureHijabProof(mobileProofCapture ? 'aegis-gilet-product-mobile.jpg' : 'aegis-gilet-product-desktop.jpg', true);
@@ -261,7 +261,7 @@ try {
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector(".fsd-product-description").textContent.includes("Black / Champagne Gold")'));
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
-  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Catalogue reference")'));
+  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Reference only · not for sale")'));
   await evaluate('document.querySelector("[data-product-id=\\"43\\"]").scrollIntoView({ block: "center" })');
   if (mobileProofCapture) {
     console.log('Mobile collection viewport:', await evaluate('({ innerWidth: window.innerWidth, clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, visualWidth: window.visualViewport?.width, screenWidth: screen.width, pixelRatio: devicePixelRatio })'));
@@ -287,7 +287,7 @@ try {
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")'));
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").alt.toLowerCase().includes("woman")'));
   assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("£29.99")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Catalogue reference")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Reference only · not for sale")'));
   assert.ok(!await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Confirmed list price")'));
   assert.ok(await evaluate('document.querySelector(".velocity-colour").textContent.includes("Black / Champagne Gold")'));
   assert.ok(!await evaluate('/add to cart|checkout button|quantity selector/i.test(document.body.textContent)'));

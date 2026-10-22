@@ -6,7 +6,7 @@
 .showroom-archive[open] > summary::after { content: "−"; }
 .showroom-archive[open] { padding-bottom: 30px; }
 .showroom-archive .shop, .showroom-archive .fsd-expanded { padding: 44px 4%; }
-.showroom-featured { padding: 90px 6%; background: #111216; }
+.showroom-featured { padding: 90px 6%; background: #111216; overflow-x: hidden; }
 .showroom-featured .section-kicker { color: #c9a66b; }
 .showroom-featured .section-heading h2 { font-size: clamp(30px, 4vw, 56px); }
 .showroom-carousel-controls { display: flex; gap: 10px; }
@@ -246,6 +246,8 @@
 @media (prefers-reduced-motion: reduce) {
   .showroom-engineering-link, .showroom-shell-campaign-link { transition: none; }
 }
+
+html, body { overflow-x: clip; }
 @media (max-width: 760px) {
   .showroom-archives { padding: 0 20px 40px; }
   .showroom-archive > summary { font-size: 11px; }

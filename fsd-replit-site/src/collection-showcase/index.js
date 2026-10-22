@@ -9,11 +9,25 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
   "'": '&#39;',
 }[character]));
 
+function hasProductImage(product) {
+  const status = String(product.imageStatus ?? '');
+  const isCompositeOnly = /\bconcept board\b|crop single panels|contact sheet|collage/i.test(status);
+  return !isCompositeOnly && Array.isArray(product.images) &&
+    product.images.some(image => typeof image?.src === 'string' && image.src.trim().length > 0);
+}
+
 const divisionNotes = {
   apparel: 'Performance apparel & modest movement',
   'bio-lab': 'Wearable technology concepts',
   hardware: 'Strength, combat & recovery',
   global: 'Proposed flagships & fight culture',
+};
+
+const divisionDestinations = {
+  apparel: 'EXPLORE APPAREL',
+  'bio-lab': 'EXPLORE BIO-LAB™',
+  hardware: 'EXPLORE HARDWARE',
+  global: 'EXPLORE GLOBAL',
 };
 
 function renderBanner(division, index) {
@@ -22,13 +36,13 @@ function renderBanner(division, index) {
   return `<button id="fsd-division-${id}" class="fsd-showcase-banner fsd-showcase-banner--${id}" type="button"
       data-division="${id}" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog" aria-expanded="false">
     <span class="fsd-banner-art" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span class="fsd-banner-top"><span class="fsd-banner-number">${count} / 04</span><span class="fsd-banner-open">OPEN DIVISION <b aria-hidden="true">↗</b></span></span>
+    <span class="fsd-banner-top"><span class="fsd-banner-number">${count} / 04</span><span class="fsd-banner-open">${escapeHTML(divisionDestinations[division.id] || 'EXPLORE COLLECTION')} <b aria-hidden="true">↗</b></span></span>
     <span class="fsd-banner-copy">
       <span class="fsd-banner-overline">${escapeHTML(divisionNotes[division.id] || 'FSD / PERFORMANCE')}</span>
       <strong>${escapeHTML(division.title)}</strong>
       <span class="fsd-banner-tagline">${escapeHTML(division.tagline)}</span>
     </span>
-    <span class="fsd-banner-bottom"><span>${escapeHTML(division.description)}</span><span class="fsd-banner-index" aria-hidden="true">${count}</span></span>
+    <span class="fsd-banner-bottom fsd-glass-surface"><span>${escapeHTML(division.description)}</span></span>
   </button>`;
 }
 
@@ -41,7 +55,6 @@ export function renderCollectionShowcase(divisions) {
         <h2 id="fsd-showcase-title">EXPLORE THE FSD<br/><em>UNIVERSE.</em></h2>
       </div>
       <p class="fsd-showcase-intro">Four divisions. One philosophy.<br/>Engineered for performance, discipline and progress.</p>
-      <span class="fsd-showcase-index" aria-hidden="true">FSD / 01—04</span>
     </div>
     <div class="fsd-showcase-grid">
       ${list.map(renderBanner).join('')}
@@ -49,8 +62,8 @@ export function renderCollectionShowcase(divisions) {
     <p class="fsd-showcase-note"><span>FSD</span> Products, technologies and locations shown may be proposed concepts and are not represented as operational or available to purchase.</p>
     <dialog id="fsd-showcase-dialog" class="fsd-showcase-dialog" aria-label="FSD collection details" data-showcase-dialog>
       <div class="fsd-dialog-frame">
-        <header class="fsd-dialog-header">
-          <div class="fsd-dialog-brandline"><span class="fsd-dialog-mark" aria-hidden="true">F</span><span>FSD / COLLECTIONS</span><span class="fsd-dialog-live">COLLECTION PREVIEW</span></div>
+        <header class="fsd-dialog-header fsd-glass-surface">
+          <div class="fsd-dialog-brandline"><span class="fsd-dialog-mark" aria-hidden="true">F</span><span>FSD / COLLECTIONS</span></div>
           <button class="fsd-dialog-close" type="button" data-close-dialog aria-label="Close collection">CLOSE <span aria-hidden="true">×</span></button>
         </header>
         <div class="fsd-dialog-content" data-dialog-content></div>
@@ -95,9 +108,9 @@ function productCard(product) {
   const audience = product.audience ? `<span>${escapeHTML(product.audience)}</span>` : '';
   const masterPrice = priceInfo(product);
   const price = isAegisPreview
-    ? { ...masterPrice, label: 'Catalogue reference' }
-    : Number(product.id) === 43 && import.meta.env.DEV
-    ? { ...masterPrice, label: 'Catalogue reference' }
+    ? { ...masterPrice, label: 'Reference only · not for sale' }
+    : Number(product.id) === 43
+    ? { ...masterPrice, label: 'Reference only · not for sale' }
     : masterPrice;
   const colourways = Number(product.id) === 43 && import.meta.env.DEV
     ? 'Black / Champagne Gold'
@@ -108,7 +121,7 @@ function productCard(product) {
     ? isAegisPreview
       ? `<a class="fsd-product-media fsd-product-media--aegis-preview" href="${aegisGiletPreviewPath}" aria-label="Explore ${escapeHTML(product.name)}"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(image.label)}"><span>FSD AEGIS / CAMPAIGN</span></a>`
       : `<div class="fsd-product-media"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)} — ${escapeHTML(image.label || 'design concept')}"><span>DESIGN CONCEPT</span></div>`
-    : `<div class="fsd-product-media fsd-product-media--placeholder" aria-hidden="true"><span class="fsd-placeholder-code">FSD<br/>/ /</span><span>${escapeHTML(category)}</span></div>`;
+    : `<div class="fsd-product-media fsd-product-media--placeholder" aria-hidden="true"></div>`;
   const productTitle = isAegisPreview
     ? `<a class="fsd-aegis-preview-title" href="${aegisGiletPreviewPath}">${escapeHTML(product.name)}</a>`
     : escapeHTML(product.name);
@@ -150,7 +163,8 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     .filter(id => id !== undefined && id !== null)
     .map(String));
   const foundProducts = groupProducts(group, products, subcategory)
-    .filter(product => !replacedProductIds.has(String(product.id)));
+    .filter(product => !replacedProductIds.has(String(product.id)) &&
+      (hasProductImage(product) || (import.meta.env.DEV && Number(product.id) === 46)));
   const concepts = subcategory ? (subcategory.concepts || []) :
     [...(group.concepts || []), ...(group.subcategories || []).flatMap(item => item.concepts || [])];
   const title = group.title || division.title;
@@ -168,7 +182,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
        <div class="fsd-product-grid">${collectionProductMarkup}</div>`
     : '';
   const emptyMarkup = !foundProducts.length && !concepts.length && !matchingDraftCards.length
-    ? `<div class="fsd-showcase-empty"><span>FSD / ${String(activeGroupIndex + 1).padStart(2, '0')}</span><h4>Explore the collection.</h4><p>More items from this collection will appear here.</p></div>`
+    ? `<div class="fsd-showcase-empty"><h4>Explore the collection.</h4><p>There are no visual items to show in this section.</p></div>`
     : '';
   return `<div class="fsd-modal-hero fsd-modal-hero--${escapeHTML(division.visual || division.id)}">
       <span class="fsd-modal-kicker">${escapeHTML(division.title)} <span>/</span> DIVISION ${String(activeGroupIndex + 1).padStart(2, '0')}</span>
@@ -188,7 +202,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
       <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(division.description)}</p></div>
       ${foundProducts.length ? '<button class="fsd-explore-collection" type="button" data-explore-collection>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button>' : ''}
       ${productsMarkup}${conceptMarkup}${emptyMarkup}
-      <p class="fsd-modal-disclaimer">FSD is developing its collection. Supplied list prices are catalogue references, not an offer to sell. Proposed concepts do not confirm specifications, availability or operational status. Product visuals appear only where mapped to that product record.</p>
+      <p class="fsd-modal-disclaimer">Prices shown are for reference only and are not offers to sell. Concepts do not confirm specifications, availability or operational status. Images are shown only with their mapped products.</p>
     </div>`;
 }
 
@@ -322,6 +336,26 @@ export function mountCollectionShowcase({
     action?.();
   };
   const onKeyDown = event => {
+    if (event.key === 'Tab' && dialog.open) {
+      const focusable = [...dialog.querySelectorAll(
+        'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])',
+      )].filter(element => !element.hidden && element.getClientRects().length);
+      if (!focusable.length) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialog)) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+      return;
+    }
     const current = event.target.closest('[data-group-index]');
     if (!current || !activeDivision || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();

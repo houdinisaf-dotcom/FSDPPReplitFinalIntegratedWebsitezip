@@ -9,7 +9,7 @@ import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/w
 const preview = createVelocityHijabPreview();
 const productPrice = {
   ...priceInfo(preview.product),
-  label: 'Catalogue reference',
+  label: 'Reference only · not for sale',
 };
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',

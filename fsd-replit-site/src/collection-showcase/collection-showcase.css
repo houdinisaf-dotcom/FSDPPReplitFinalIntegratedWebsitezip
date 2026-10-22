@@ -41,7 +41,7 @@
 .fsd-banner-top,
 .fsd-banner-bottom,
 .fsd-showcase-note,
-.fsd-showcase-index {
+.fsd-banner-number {
   font-size: 9px;
   font-weight: 700;
   letter-spacing: .17em;
@@ -79,13 +79,6 @@
   color: #c4c3c0;
   font-size: 13px;
   line-height: 1.8;
-}
-
-.fsd-showcase-index {
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: #747478;
 }
 
 .fsd-showcase-grid {
@@ -164,15 +157,23 @@
 }
 .fsd-showcase-banner--bio-lab {
   --banner-accent: #d3bd8a;
-  background: radial-gradient(ellipse at 78% 43%, #45524e 0%, #202827 23%, transparent 52%), linear-gradient(125deg, #181d1e, #0c0f12 76%);
+  background: radial-gradient(ellipse at 78% 43%, #60716b 0%, #2d3835 25%, transparent 56%), linear-gradient(125deg, #202726, #101416 76%);
 }
 .fsd-showcase-banner--hardware {
   --banner-accent: #d1ad69;
-  background: radial-gradient(ellipse at 76% 40%, #695a42 0%, #29251f 23%, transparent 53%), linear-gradient(125deg, #211e1a, #0b0d0f 76%);
+  background: radial-gradient(ellipse at 76% 40%, #827253 0%, #3a3226 26%, transparent 57%), linear-gradient(125deg, #28231b, #101214 76%);
 }
 .fsd-showcase-banner--global {
   --banner-accent: #d8bf8c;
-  background: linear-gradient(90deg, transparent 49.8%, rgba(224,202,163,.18) 50%, transparent 50.2%), linear-gradient(0deg, transparent 43%, rgba(224,202,163,.15) 43.2%, transparent 43.5%), radial-gradient(ellipse at 70% 47%, #45403a, #18191a 56%, #0b0d0e);
+  background: linear-gradient(90deg, transparent 49.8%, rgba(224,202,163,.3) 50%, transparent 50.2%), linear-gradient(0deg, transparent 43%, rgba(224,202,163,.26) 43.2%, transparent 43.5%), radial-gradient(ellipse at 70% 47%, #5b554b, #202020 58%, #101214);
+}
+
+.fsd-showcase-banner--bio-lab::before,
+.fsd-showcase-banner--hardware::before,
+.fsd-showcase-banner--global::before {
+  background:
+    linear-gradient(112deg, rgba(7, 8, 10, .72) 0%, rgba(8, 9, 11, .38) 49%, rgba(8, 9, 11, .08) 100%),
+    linear-gradient(0deg, rgba(5, 6, 8, .68) 0%, transparent 60%);
 }
 
 .fsd-banner-art {
@@ -242,18 +243,17 @@
 .fsd-banner-top,
 .fsd-banner-bottom { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .fsd-banner-number { color: var(--banner-accent); }
-.fsd-banner-open { color: #b3b0a9; font-size: 8px; white-space: nowrap; }
+.fsd-banner-open { color: #e1ddd4; font-size: 10px; white-space: nowrap; }
 .fsd-banner-open b { margin-left: 9px; color: var(--banner-accent); font-size: 15px; font-weight: 400; }
 .fsd-banner-copy { display: flex; max-width: 80%; flex-direction: column; align-items: flex-start; margin: auto 0; padding: 36px 0 26px; }
-.fsd-banner-overline { margin-bottom: 11px; color: var(--banner-accent); font-size: 8px; }
+.fsd-banner-overline { margin-bottom: 11px; color: var(--banner-accent); font-size: 10px; }
 .fsd-banner-copy strong {
   max-width: 620px;
   font: 800 clamp(28px, 3.7vw, 53px)/.99 Manrope, sans-serif;
   letter-spacing: -.065em;
 }
-.fsd-banner-tagline { margin-top: 13px; color: #dedbd5; font-size: 9px; font-weight: 700; letter-spacing: .16em; }
-.fsd-banner-bottom { color: #a8a8a8; font-size: 9px; font-weight: 500; letter-spacing: .04em; }
-.fsd-banner-index { color: rgba(236,221,195,.5); font: italic 24px/1 Manrope, sans-serif; letter-spacing: -.1em; }
+.fsd-banner-tagline { margin-top: 13px; color: #edeae3; font-size: 10px; font-weight: 700; letter-spacing: .12em; line-height: 1.55; }
+.fsd-banner-bottom { color: #dedbd3; font-size: 11px; font-weight: 500; letter-spacing: .02em; line-height: 1.55; }
 
 .fsd-showcase-note {
   display: flex;
@@ -466,7 +466,6 @@ html.fsd-modal-open { overflow: hidden; }
   .fsd-showcase-heading { grid-template-columns: 1fr; gap: 17px; margin-bottom: 27px; }
   .fsd-showcase-heading h2 { font-size: clamp(43px, 11vw, 68px); }
   .fsd-showcase-intro { font-size: 12px; }
-  .fsd-showcase-index { top: 4px; font-size: 8px; }
   .fsd-showcase-grid { grid-template-columns: 1fr; gap: 11px; }
   .fsd-showcase-banner,
   .fsd-showcase-banner:nth-child(2),
@@ -482,8 +481,8 @@ html.fsd-modal-open { overflow: hidden; }
   .fsd-showcase-banner::after { border-radius: 17px; }
   .fsd-banner-copy { max-width: 86%; padding: 28px 0 20px; }
   .fsd-banner-copy strong { font-size: clamp(28px, 8vw, 42px); }
-  .fsd-banner-tagline { font-size: 8px; line-height: 1.6; }
-  .fsd-banner-bottom { font-size: 8px; }
+  .fsd-banner-tagline { font-size: 9px; line-height: 1.55; }
+  .fsd-banner-bottom { font-size: 10px; }
   .fsd-banner-art { right: 2%; top: 13%; width: 39%; opacity: .72; }
   .fsd-showcase-note { align-items: flex-start; font-size: 8px; }
   .fsd-showcase-dialog {
@@ -519,7 +518,7 @@ html.fsd-modal-open { overflow: hidden; }
 }
 
 @media (max-width: 380px) {
-  .fsd-banner-open { font-size: 7px; }
+  .fsd-banner-open { font-size: 9px; }
   .fsd-banner-bottom > span:first-child { max-width: 82%; }
   .fsd-product-grid { grid-template-columns: 1fr; }
   .fsd-product-media { height: 180px; }

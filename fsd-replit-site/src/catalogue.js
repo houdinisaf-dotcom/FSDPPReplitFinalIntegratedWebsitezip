@@ -1,4 +1,4 @@
-import { audiences, categories, products, filterProducts, priceInfo, safe, shopCollections } from './catalogue-data.js';
+import { audiences, categories, products, productsWithUsableImages, filterProducts, priceInfo, safe, shopCollections } from './catalogue-data.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -20,7 +20,12 @@ const sortOptions = [
   ['price-desc', 'Price: high to low'],
 ];
 const viewOptions = ['grid', 'visual'];
+const imageReadyProductIds = new Set(productsWithUsableImages.map(product => String(product.id)));
+const failedProductImageIds = new Set();
 const isBrowser = () => typeof window !== 'undefined' && Boolean(window.history && window.location);
+const scrollBehavior = () => typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  ? 'auto'
+  : 'smooth';
 
 function currentState() {
   return {
@@ -165,16 +170,21 @@ function activeFilterMarkup() {
     : '';
 }
 
-function imagePlaceholder(product) {
-  const label = product.imageStatus.startsWith('Image exists')
-    ? ''
-    : product.imageStatus.startsWith('Brief only') ? 'Visuals being finalised' : 'Imagery to follow';
-  return `<div class="catalogue-placeholder"><span>FSD / COLLECTION</span>
-    <strong>${safe(product.category)}</strong><small>${label}</small></div>`;
+function imagePlaceholder(product, failed = false) {
+  return `<div class="catalogue-placeholder" role="status">
+    <strong>${failed ? 'This product image could not be loaded.' : 'A product image is not shown for this item.'}</strong>
+    <small>${safe(product.category)}</small></div>`;
+}
+
+function displayPrice(product) {
+  const price = priceInfo(product);
+  return Number(product.id) === 43
+    ? { ...price, label: 'Reference only · not for sale' }
+    : price;
 }
 
 function card(product) {
-  const price = priceInfo(product);
+  const price = displayPrice(product);
   const image = product.images[0];
   return `<article class="product-card">
     <div class="product-image">${image
@@ -191,11 +201,11 @@ function card(product) {
 
 export function catalogueSection() {
   return `<section class="shop" id="products">
-    <div class="section-heading"><div><p class="section-kicker">THE FSD MASTER COLLECTION</p>
+    <div class="section-heading"><div><p class="section-kicker">THE FSD COLLECTION</p>
       <h2>SHOP / ALL PRODUCTS<span class="period">.</span></h2></div>
-      <p>${products.length} products across ${categories.length} categories.<br/>
-       Browse the existing collection by audience, category and product.</p></div>
-    <div class="toolbar catalogue-toolbar">
+      <p>Find FSD products by collection, category and audience.</p></div>
+    <div class="catalogue-control-panel">
+      <div class="toolbar catalogue-toolbar">
       <label>Collection<select id="catalogue-collection" aria-label="Filter by collection">
         <option value="All">All collections</option>
         ${shopCollections.map(collection => `<option value="${safe(collection.id)}">${safe(collection.label)}</option>`).join('')}
@@ -212,13 +222,16 @@ export function catalogueSection() {
         ${sortOptions.map(([value, label]) => `<option value="${value}">${safe(label)}</option>`).join('')}
       </select></label>
       <label>Find a product<input id="search" type="search" placeholder="Name, colourway or alternate name…" aria-label="Search products"/></label>
+      </div>
+      <div class="catalogue-control-bottom">
+        <div class="catalogue-view-controls" role="group" aria-label="Product display">
+          <span>VIEW</span>
+          <button type="button" data-catalogue-view="grid" aria-pressed="true">Grid</button>
+          <button type="button" data-catalogue-view="visual" aria-pressed="false">Visual</button>
+        </div>
+        <div id="catalogue-active-filters"></div>
+      </div>
     </div>
-    <div class="catalogue-view-controls" role="group" aria-label="Product display">
-      <span>VIEW</span>
-      <button type="button" data-catalogue-view="grid" aria-pressed="true">Grid</button>
-      <button type="button" data-catalogue-view="visual" aria-pressed="false">Visual</button>
-    </div>
-    <div id="catalogue-active-filters"></div>
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>
     <div class="product-grid" id="catalogue-grid" data-view="grid"></div>
     <nav class="catalogue-pagination" id="catalogue-pagination" aria-label="Product catalogue pages"></nav>
@@ -227,8 +240,8 @@ export function catalogueSection() {
 
 export function roadmapSection() {
   return `<section class="planned" id="planned"><div class="section-heading"><div>
-    <p class="section-kicker">THE FSD DEVELOPMENT ROADMAP</p><h2>WHAT'S COMING<span class="period">.</span></h2>
-    </div><p>Explore the collection by category. Cross-listed products remain a single product record.</p></div><div class="planned-grid">
+    <p class="section-kicker">SHOP BY CATEGORY</p><h2>BROWSE THE COLLECTION<span class="period">.</span></h2>
+    </div><p>Explore FSD apparel, training and technology by category.</p></div><div class="planned-grid">
     ${categories.map((category, i) => `<a class="planned-row catalogue-category-link" href="#products" data-category-link="${safe(category)}">
       <span>${String(i + 1).padStart(2, '0')}</span><div><strong>${safe(category)}</strong>
       <small>${filterProducts(category).length} products</small></div><span class="planned-status">EXPLORE ↗</span></a>`).join('')}
@@ -248,18 +261,19 @@ export function innovationsSection() {
 }
 
 function renderResults() {
-  const filtered = sortedProducts(filterProducts(activeCategory, query, activeAudience, activeCollection));
+  const filtered = sortedProducts(filterProducts(activeCategory, query, activeAudience, activeCollection)
+    .filter(product => imageReadyProductIds.has(String(product.id)) && !failedProductImageIds.has(String(product.id))));
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   page = Math.min(page, totalPages);
   updateControls();
   activeFilterMarkup();
   const start = (page - 1) * pageSize;
   document.querySelector('#catalogue-count').textContent = filtered.length
-    ? `Showing ${start + 1}–${Math.min(start + pageSize, filtered.length)} of ${filtered.length} products`
+    ? `Showing ${start + 1}–${Math.min(start + pageSize, filtered.length)} of ${filtered.length} ${filtered.length === 1 ? 'product' : 'products'}`
     : 'No matching products';
   document.querySelector('#catalogue-grid').innerHTML = filtered.length
     ? filtered.slice(start, start + pageSize).map(card).join('')
-    : '<div class="empty"><p>No products match these filters.</p><button class="filter" data-clear-filters>Clear all filters</button></div>';
+    : '<div class="empty"><p>No visual matches for these filters. Try another selection.</p><button class="filter" data-clear-filters>Clear all filters</button></div>';
   document.querySelector('#catalogue-pagination').innerHTML = filtered.length && totalPages > 1
     ? `<button class="filter" data-page="${page - 1}" ${page === 1 ? 'disabled' : ''}>Previous</button>
       <span>Page ${page} of ${totalPages}</span>
@@ -301,7 +315,7 @@ export function navigateCatalogue({
   if (typeof CustomEvent === 'function') {
     document.dispatchEvent?.(new CustomEvent('fsd:navigation-active', { detail: { id: 'collections' } }));
   }
-  document.querySelector('#products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelector('#products')?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
   focusResultCount();
   return true;
 }
@@ -319,7 +333,7 @@ export function showProduct(id, { fromHistory = false } = {}) {
   }
   if (!activeDialogProduct) dialogReturnFocus = document.activeElement;
   activeDialogProduct = p;
-  const price = priceInfo(p);
+  const price = displayPrice(p);
   const detail = (label, value) => value ? `<dt>${label}</dt><dd>${safe(value)}</dd>` : '';
   const confirmedAlias = /^confirmed\b/i.test(p.aliasStatus) ? p.alias : '';
   const displaySpecifications = p.specificationStatus ? '' : p.specifications;
@@ -510,7 +524,7 @@ export function initCatalogue({ onProductSelect = showProduct } = {}) {
     if (homeBreadcrumb) {
       event.preventDefault?.();
       closeProductFromUI();
-      document.querySelector('#home')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelector('#home')?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
       return;
     }
     const product = event.target.closest('[data-product]');
@@ -563,9 +577,8 @@ export function initCatalogue({ onProductSelect = showProduct } = {}) {
   document.addEventListener('error', event => {
     const image = event.target.closest?.('[data-catalogue-card-image]');
     if (!image) return;
-    const product = products.find(item => item.id === Number(image.dataset.catalogueCardImage));
-    const container = image.closest('.product-image');
-    if (product && container) container.innerHTML = imagePlaceholder(product);
+    failedProductImageIds.add(String(image.dataset.catalogueCardImage));
+    renderResults();
   }, true);
   document.querySelector('#close-dialog').addEventListener('click', closeProductFromUI);
   dialog.addEventListener('cancel', event => {
@@ -576,9 +589,15 @@ export function initCatalogue({ onProductSelect = showProduct } = {}) {
     if (event.target === dialog) closeProductFromUI();
   });
   dialog.addEventListener('close', () => {
+    const productId = activeDialogProduct?.id;
+    const focusTarget = dialogReturnFocus?.isConnected
+      ? dialogReturnFocus
+      : productId
+        ? document.querySelector(`#catalogue-grid [data-product="${productId}"]`)
+        : null;
     activeDialogProduct = null;
     document.documentElement?.classList?.remove('fsd-modal-open');
-    if (dialogReturnFocus?.isConnected) dialogReturnFocus.focus?.({ preventScroll: true });
+    focusTarget?.focus?.({ preventScroll: true });
     dialogReturnFocus = null;
   });
   if (isBrowser()) window.addEventListener('popstate', event => restoreFromURL({

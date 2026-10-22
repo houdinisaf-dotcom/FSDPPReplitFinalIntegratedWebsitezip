@@ -14,6 +14,7 @@ import './collection-showcase/collection-showcase.css';
 import './showroom.css';
 import './story-section.css';
 import './site-navigation.css';
+import './visual-system.css';
 
 function header() {
   const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;
@@ -47,7 +48,7 @@ function hardwareEditorialSection() {
       <button class="showroom-engineering-link" type="button" data-open-hardware>EXPLORE HARDWARE <span aria-hidden="true">↗</span></button>
     </div>
     <figure class="showroom-engineering-media">
-      <img src="/fsd-assets/8ffe2fd45a06.webp" alt="FSD athlete in modest combat training apparel, pictured during a boxing session." loading="eager" fetchpriority="low" width="1024" height="1024"/>
+      <img src="/fsd-assets/8ffe2fd45a06.webp" alt="FSD athlete in modest combat training apparel, pictured during a boxing session." loading="lazy" fetchpriority="low" width="1024" height="1024"/>
       <figcaption><span>FSD COMBAT / TRAINING CAMPAIGN</span><span>APPAREL & MOVEMENT</span></figcaption>
     </figure>
   </section>`;
@@ -56,7 +57,7 @@ function hardwareEditorialSection() {
 function shellCampaignEditorialSection() {
   return `<section class="showroom-shell-campaign" id="shell-campaign" aria-labelledby="shell-campaign-title">
     <figure class="showroom-shell-campaign-media">
-      <img src="/__catalogue-preview/hooded-running-shell/media/hooded-shell-campaign" alt="Woman wearing the orange FSD Hooded Running Shell outdoors in a mountain landscape." loading="eager" fetchpriority="low" width="1672" height="941"/>
+      <img src="/__catalogue-preview/hooded-running-shell/media/hooded-shell-campaign" alt="Woman wearing the orange FSD Hooded Running Shell outdoors in a mountain landscape." loading="lazy" fetchpriority="low" width="1672" height="941"/>
     </figure>
     <div class="showroom-shell-campaign-copy">
       <p class="section-kicker">APPAREL CAMPAIGN <span class="period">/</span> OUTERWEAR</p>
@@ -69,22 +70,23 @@ function shellCampaignEditorialSection() {
 
 document.querySelector('#app').innerHTML = `${header()}<main id="home">
   <section class="hero"><div class="hero-image"></div><div class="hero-shade"></div><div class="hero-content">
-    <p class="eyebrow">THE FSD PERFORMANCE UNIVERSE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
+    <p class="eyebrow">THE HOUSE OF PERFORMANCE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
     <h1>BUILT FOR<br/><em>THE DRIVE</em><br/>WITHIN.</h1>
+    <p class="hero-signature">Luxury in its expression. Performance in its purpose.</p>
     <p class="hero-copy">Performance. Discipline. Identity. Discover technical training wear, combat-inspired design and modest activewear under one unmistakable shield.</p>
     <div class="hero-actions"><a class="primary-btn" href="#products">SHOP ALL PRODUCTS <span>↗</span></a>
     <a class="ghost-btn" href="#universe">DISCOVER THE FSD UNIVERSE →</a></div>
     <div class="hero-foot"><span>01 / 03</span><span>DESIGNED TO MOVE. BUILT TO BELONG.</span></div></div>
     <div class="vertical-label">FITNESS & SELF DEFENCE — 2026</div>
   </section>
+  ${import.meta.env.DEV ? shellCampaignEditorialSection() : ''}
   <div id="collections">
     ${renderCollectionShowcase(collectionDivisions)}
     <div class="showroom-archives" id="planned">
-      <details class="showroom-archive" id="catalogue-archive"><summary>SHOP / ALL PRODUCTS · ${products.length} RECORDS</summary>${catalogueSection()}</details>
+      <details class="showroom-archive" id="catalogue-archive"><summary>SHOP / ALL PRODUCTS</summary>${catalogueSection()}</details>
     </div>
   </div>
   ${hardwareEditorialSection()}
-  ${import.meta.env.DEV ? shellCampaignEditorialSection() : ''}
   ${featuredInnovationsSection()}
   ${ourStorySection()}
   ${vipAccessSection()}
@@ -100,6 +102,10 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
 
 function showCatalogueDestination(state = {}) {
   return navigateCatalogue(state);
+}
+
+function scrollBehavior() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 }
 
 function startMainExperience() {
@@ -177,7 +183,7 @@ function startMainExperience() {
 
       const destination = item?.href || group?.href;
       if (destination) {
-        document.querySelector(destination)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector(destination)?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
         return;
       }
 

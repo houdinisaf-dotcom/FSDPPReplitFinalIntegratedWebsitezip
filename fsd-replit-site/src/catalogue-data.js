@@ -58,6 +58,18 @@ export const shopCollections = (apparelDivision?.groups || [])
 
 const searchText = value => value.replace(/[‘’]/g, "'").toLocaleLowerCase('en-GB');
 
+const hasStandaloneProductImage = product => {
+  const imageStatus = String(product.imageStatus ?? '');
+  if (/\bconcept board\b|crop single panels|contact sheet|collage/i.test(imageStatus)) {
+    return false;
+  }
+  return Array.isArray(product.images) &&
+    product.images.some(image => typeof image?.src === 'string' && image.src.trim().length > 0);
+};
+
+export const productsWithUsableImages = Object.freeze(products.filter(hasStandaloneProductImage));
+export const productsMissingUsableImages = Object.freeze(products.filter(product => !hasStandaloneProductImage(product)));
+
 export function filterProducts(category = 'All', query = '', audience = 'All', collection = 'All') {
   const term = searchText(query.trim());
   const selectedCollection = shopCollections.find(item => item.id === collection);

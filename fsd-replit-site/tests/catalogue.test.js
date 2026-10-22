@@ -5,7 +5,7 @@ import master from '../src/master-products.json' with { type: 'json' };
 import additional from '../src/additional-catalog.json' with { type: 'json' };
 import { galleryProductIds, galleryProducts } from '../src/gallery.js';
 import { products, heldProducts, retiredProducts, categories, filterProducts, priceInfo, safe } from '../src/catalogue-data.js';
-import { catalogueSection, roadmapSection, innovationsSection, initCatalogue } from '../src/catalogue.js';
+import { catalogueSection, roadmapSection, innovationsSection, initCatalogue, navigateCatalogue } from '../src/catalogue.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
 import { featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
@@ -78,21 +78,24 @@ test('product images use only supplied assets explicitly mapped to products', ()
 
 test('rendered sections follow the master list, escape content, and do not promote held products', () => {
   const sections = catalogueSection() + roadmapSection() + innovationsSection();
-  assert.match(sections, /66 products across 9 categories/);
-  assert.doesNotMatch(sections, /in development/i);
+  assert.match(sections, /Find FSD products by collection, category and audience/);
+  assert.match(sections, /SHOP BY CATEGORY/);
+  assert.doesNotMatch(sections, /66 products across 9 categories|Browse the existing collection|FSD DEVELOPMENT ROADMAP/i);
+  assert.doesNotMatch(sections, /in development|pre-launch/i);
   assert.doesNotMatch(sections, /STRIDE|smartwatch|Shilajit|Championship Belt|Ring Corner Post/i);
   assert.doesNotMatch(sections, /Upcoming collection|Prices and details|Join VIP Access/);
   assert.doesNotMatch(sections, /add to (cart|basket)|buy now|checkout|payment|<form/i);
   assert.equal(safe('<script>"x"&</script>'), '&lt;script&gt;&quot;x&quot;&amp;&lt;/script&gt;');
 });
 
-test('catalogue UI handlers paginate, filter, reset, open details and close the dialog', () => {
+test('catalogue UI handlers filter, reset, open details and close the dialog', () => {
   // Minimal DOM surface checks the real event handlers without a browser dependency.
   const elements = new Map();
   const handlers = new Map();
   const element = selector => {
     if (!elements.has(selector)) elements.set(selector, {
       value: '', innerHTML: '', textContent: '', open: false,
+      dataset: {},
       addEventListener(type, callback) { handlers.set(`${selector}:${type}`, callback); },
       setAttribute() {}, scrollIntoView() {}, focus() {},
       contains() { return false; },
@@ -111,25 +114,25 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
   });
   try {
     initCatalogue();
-  assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
-    assert.match(element('#catalogue-grid').innerHTML, /\/images\/ombre-indigo.png/);
-    assert.match(element('#catalogue-grid').innerHTML, /; design concept/);
-    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /Concept image\s+mapping pending/);
-    click('[data-page]', { dataset: { page: '2' }, disabled: false });
-    assert.equal(element('#catalogue-count').textContent, 'Showing 13–24 of 66 products');
+  assert.equal(element('#catalogue-count').textContent, 'Showing 1–1 of 1 product');
+  assert.match(element('#catalogue-grid').innerHTML, /fsd-velocity-performance-sports-hijab\.jpg/);
+  assert.match(element('#catalogue-grid').innerHTML, /Reference only · not for sale/);
+  assert.match(element('#catalogue-grid').innerHTML, /£29\.99/);
+  assert.doesNotMatch(element('#catalogue-grid').innerHTML, /ombre-indigo|cheetah-windrunner/i);
+  assert.equal(element('#catalogue-pagination').innerHTML, '');
 
     element('#catalogue-category').value = 'Smart Tech';
     handlers.get('#catalogue-category:change')();
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–6 of 6 products');
     assert.equal(element('#catalogue-pagination').innerHTML, '');
+    assert.match(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
     element('#search').value = 'no match at all';
     handlers.get('#search:input')();
-    assert.match(element('#catalogue-grid').innerHTML, /Clear filters/);
+    assert.match(element('#catalogue-active-filters').innerHTML, /Clear all/);
 
     click('[data-clear-filters]', {});
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–12 of 66 products');
+    assert.equal(element('#catalogue-count').textContent, 'Showing 1–1 of 1 product');
     click('[data-category-link]', { dataset: { categoryLink: 'Sports Hijabs' } });
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–4 of 4 products');
+    assert.equal(element('#catalogue-count').textContent, 'Showing 1–1 of 1 product');
 
     click('[data-product]', { dataset: { product: '10' } });
     assert.equal(element('#product-dialog').open, true);
@@ -166,7 +169,7 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
     assert.match(element('#dialog-body').innerHTML, /Electric cobalt fading to jet black/);
     for (const id of [42, 45, 60, 61, 62, 63, 65]) {
       click('[data-product]', { dataset: { product: String(id) } });
-      assert.match(element('#dialog-body').innerHTML, /Imagery to follow/);
+      assert.match(element('#dialog-body').innerHTML, /A product image is not shown for this item/);
       assert.doesNotMatch(element('#dialog-body').innerHTML, /Image status in master list|Development notes/);
       assert.doesNotMatch(element('#dialog-body').innerHTML, /<img /);
     }
@@ -193,9 +196,10 @@ test('catalogue UI handlers paginate, filter, reset, open details and close the 
     }
 
     click('[data-category-link]', { dataset: { categoryLink: 'Gym Hardware and Accessories' } });
-    assert.match(element('#catalogue-grid').innerHTML, /Complete 10–50kg set\./);
+    assert.match(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /Complete 10–50kg set\./);
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /Exact weight increments/);
-    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£129.99/);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£129\.99|£699\.99/);
   } finally {
     delete globalThis.document;
   }
@@ -292,7 +296,7 @@ test('the complete public page excludes held imagery while retaining internal so
   globalThis.document = document;
   try {
     const dependencies = {
-      catalogueSection, initCatalogue, products,
+      catalogueSection, initCatalogue, navigateCatalogue, products,
       collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       ourStorySection,
@@ -308,9 +312,10 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
     assert.match(page, /website-shield-lockup-defence\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
-    assert.match(page, /The future of training, in development\./);
+    assert.match(page, /Training technology concepts\./);
     assert.match(page, /Engineered for<br\/><span>the Work\.<\/span>/);
-    assert.match(page, /AEROFORGE, is in development/);
+    assert.match(page, /AEROFORGE represents FSD’s direction in technical training apparel/);
+    assert.doesNotMatch(page, /IN DEVELOPMENT|PRE-LAUNCH|FSD DEVELOPMENT ROADMAP/i);
     assert.doesNotMatch(page, /Sign up today/i);
     assert.doesNotMatch(page, /<form|type="email"/i);
     assert.ok(page.indexOf('class="hero"') < page.indexOf('class="fsd-showcase"'));

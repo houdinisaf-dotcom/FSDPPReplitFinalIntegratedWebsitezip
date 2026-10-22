@@ -6,6 +6,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { collectionDivisions } from '../src/collection-divisions.js';
+import { products } from '../src/catalogue-data.js';
+import { groupProducts } from '../src/collection-showcase/index.js';
 import { createNavigationModel } from '../src/site-navigation.js';
 
 const domain = process.env.REPLIT_DEV_DOMAIN;
@@ -75,6 +77,12 @@ try {
     }
     throw new Error(`Browser condition did not become true: ${expression}`);
   };
+  const assertNoHorizontalPageScroll = async () => {
+    const overflow = await evaluate('({ html: getComputedStyle(document.documentElement).overflowX, body: getComputedStyle(document.body).overflowX })');
+    assert.ok(['hidden', 'clip'].includes(overflow.html) || ['hidden', 'clip'].includes(overflow.body),
+      `The site must prevent horizontal page scrolling: ${JSON.stringify(overflow)}`);
+    await evaluate('window.scrollTo({ left: 0, top: window.scrollY, behavior: "instant" })');
+  };
   const click = selector => evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
   const moveTo = async selector => {
     const rect = await evaluate(`(() => {
@@ -115,24 +123,38 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("[data-division=\\"apparel\\"]")');
 
+  assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
+  assert.ok(await evaluate('parseFloat(getComputedStyle(document.querySelector(".hero h1")).animationDuration) < .001'));
+  assert.equal(await evaluate('document.querySelector(".header.fsd-header").classList.contains("fsd-glass-surface")'), true);
+  assert.equal(await evaluate('document.querySelector(".fsd-mega-menu").classList.contains("fsd-glass-surface")'), true);
+  await evaluate('window.scrollTo(0, document.querySelector("#universe").getBoundingClientRect().top + window.scrollY + 120)');
+  await waitFor('window.scrollY > 0');
+  assert.ok(await evaluate('Math.abs(document.querySelector(".fsd-navigation-shell").getBoundingClientRect().top) < 1'));
+  await evaluate('window.scrollTo(0, 0)');
+  await waitFor('window.scrollY === 0');
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
+  assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'smooth');
+  assert.ok(await evaluate('parseFloat(getComputedStyle(document.querySelector(".hero h1")).animationDuration) >= .5'));
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
+
   assert.deepEqual(await evaluate('Array.from(document.querySelectorAll(".fsd-primary-nav [data-nav-primary]"), button => button.textContent.trim())'), [
-    'COLLECTIONS', 'BIO-LAB™', 'HARDWARE', 'THE HOUSE', 'PRIVATE ACCESS',
+    'SHOP', 'UNIVERSE', 'BIO-LAB™', 'HARDWARE', 'THE HOUSE', 'PRIVATE ACCESS',
   ]);
   const startingUrl = await evaluate('location.href');
   const startingScrollY = await evaluate('window.scrollY');
-  const startingDocumentWidth = await evaluate('document.documentElement.scrollWidth');
-
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "desktop" && document.querySelector(".fsd-navigation-shell").classList.contains("is-open")');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").hidden'), false);
   assert.equal(await evaluate('document.querySelectorAll("#fsd-mega-menu .fsd-nav-column").length'), 3);
+  assert.equal(await evaluate('Array.from(document.querySelectorAll("#fsd-mega-menu .fsd-feature-media img")).every(image => image.loading === "lazy")'), true);
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"1\\"]").textContent.includes("2-in-1 Combat Training Shorts & Tanks")'), true);
   assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3").textContent'), '2-in-1 Combat Training Shorts & Tanks');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group]").textContent.includes("MEN’S LUXURY PERFORMANCE")'), true);
   assert.equal(await evaluate('Math.abs(document.querySelector("#fsd-mega-menu").getBoundingClientRect().top - document.querySelector(".fsd-header").getBoundingClientRect().bottom) < 2'), true);
   assert.equal(await evaluate('location.href'), startingUrl);
   assert.equal(await evaluate('window.scrollY'), startingScrollY);
-  assert.equal(await evaluate('document.documentElement.scrollWidth'), startingDocumentWidth);
+  await assertNoHorizontalPageScroll();
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").getBoundingClientRect().right <= document.documentElement.clientWidth + 1'), true);
   await capture('fsd-navigation-desktop.jpg');
 
@@ -154,34 +176,40 @@ try {
   assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3").textContent'), 'Walkout Robes & Bomber Jackets');
   assert.equal(await evaluate('window.scrollY'), startingScrollY);
 
-  // Group clicks use the existing collection dialog; item clicks use its exact subcategory.
+  // Shop group and subcategory selections open the shared product catalogue with the right scope.
   await click('#fsd-mega-menu [data-nav-group="1"]');
-  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"1\\"][aria-pressed=\\"true\\"]")');
-  await key('Escape');
-  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat"');
+  assert.equal(await evaluate('document.querySelector("#catalogue-count").textContent.includes("of ")'), true);
 
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await waitFor('!document.querySelector("#fsd-mega-menu").hidden');
-  await moveTo('#fsd-mega-menu [data-nav-group="0"]');
-  await moveTo('#fsd-mega-menu [data-nav-item="1"]');
-  await click('#fsd-mega-menu [data-nav-item="1"]');
-  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"0\\"][aria-pressed=\\"true\\"]") && document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"1\\"][aria-pressed=\\"true\\"]")');
-  await key('Escape');
-  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
+  await click('#fsd-mega-menu [data-nav-item="0"]');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "mens-luxury-performance" && document.querySelector("#search").value === "500 GSM"');
 
-  // The featured action follows the selected category, rather than a fixed collection.
+  // The featured action opens the selected women's collection rather than a fixed destination.
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
-  await moveTo('#fsd-mega-menu [data-nav-group="1"]');
-  await moveTo('#fsd-mega-menu [data-nav-item="0"]');
+  await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group=\\"1\\"]").focus({ preventScroll: true })');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"1\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent === "Performance Hijabs"');
+  await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]").focus({ preventScroll: true })');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent === "Performance Hijabs"');
   await click('#fsd-mega-menu .fsd-feature-cta');
-  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"1\\"][aria-pressed=\\"true\\"]") && document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"0\\"][aria-pressed=\\"true\\"]")');
-  await key('Escape');
-  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#search").value === "Hijab"');
 
-  const routeKind = ({ group, item }) => {
+  const routeKind = ({ menu, group, item }) => {
     if (item?.navigationUnavailable || (!item && group.navigationUnavailable)) return 'preview';
     if (item?.kind === 'draft-product') return 'draft';
     if (item?.record) return 'product';
+    if (menu.id === 'collections' && item?.kind === 'subcategory'
+      && !groupProducts(item.sourceGroup || group.source, products, item.source).length) return 'preview';
+    if (menu.id === 'collections' && (
+      (!item && ['mens-luxury-performance', 'womens-modest-combat', 'shop-all-products'].includes(group.id))
+      || item?.kind === 'shop-all'
+      || (item?.kind === 'subcategory'
+        && ['mens-luxury-performance', 'womens-modest-combat'].includes(group.id)
+        && groupProducts(item.sourceGroup || group.source, products, item.source).length > 0)
+      || item?.kind === 'category'
+    )) return 'shop';
+    if (menu.id === 'collections' && item?.kind === 'category') return 'shop';
     if (item?.kind === 'category') return 'category';
     if (item?.href || group.href) return 'anchor';
     if (item?.sourceDivisionId || group.sourceDivisionId) return 'showcase';
@@ -203,13 +231,17 @@ try {
       await key('Escape');
       await waitFor('document.querySelector("#fsd-mega-menu").hidden');
     }
+    if (await evaluate('location.search || location.hash')) {
+      await evaluate('history.replaceState({}, "", "/"); window.dispatchEvent(new PopStateEvent("popstate", { state: {} }))');
+      await delay(80);
+    }
     await evaluate('window.scrollTo({ top: 0, behavior: "instant" })');
     await delay(80);
   };
 
   const verifySelectionRoute = async ({ menu, group, item }, selector) => {
-    const kind = routeKind({ group, item });
     const available = await evaluate(`document.querySelector(${JSON.stringify(selector)})?.dataset.navAvailable === "true"`);
+    const kind = routeKind({ menu, group, item });
     assert.equal(available, kind !== 'preview', `${menu.label}: ${item?.title || group.title} availability metadata`);
 
     if (kind === 'draft') {
@@ -254,6 +286,22 @@ try {
     if (kind === 'product') {
       await waitFor('document.querySelector("#product-dialog").open');
       assert.equal(await evaluate('document.querySelector("#product-title").textContent.trim()'), item.record.name);
+    } else if (kind === 'shop') {
+      const collection = ['mens-luxury-performance', 'womens-modest-combat'].includes(group.id)
+        ? group.id
+        : 'All';
+      try {
+        await waitFor(`document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === ${JSON.stringify(collection)}`);
+      } catch {
+        throw new Error(`${menu.label} selection ${group.title} / ${item?.title || 'group'} did not set collection=${collection}: ${JSON.stringify(await evaluate('({ url: location.href, open: document.querySelector("#catalogue-archive")?.open, collection: document.querySelector("#catalogue-collection")?.value, menu: document.querySelector("#fsd-mega-menu")?.hidden })'))}`);
+      }
+      if (item?.kind === 'subcategory') {
+        const productTerm = item.source?.productTerms?.[0] || '';
+        assert.equal(await evaluate('document.querySelector("#search").value'), productTerm);
+      }
+      if (item?.kind === 'category') {
+        assert.equal(await evaluate('document.querySelector("#catalogue-category").value'), item.source.categories[0]);
+      }
     } else if (kind === 'category') {
       const category = item.source.categories[0];
       await waitFor(`document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-category").value === ${JSON.stringify(category)}`);
@@ -304,6 +352,100 @@ try {
     }
   }
 
+  // Home → Shop → Men’s Performance, with URL-backed filters and result restoration.
+  await closeRouteAndReset();
+  await click('.hero .primary-btn');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "All"');
+  await click('.fsd-primary-trigger[data-nav-primary="collections"]');
+  await click('#fsd-mega-menu [data-nav-group="0"]');
+  await waitFor('document.querySelector("#catalogue-collection").value === "mens-luxury-performance"');
+  await waitFor('document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"collections\\"]").getAttribute("aria-current") === "page"');
+  await evaluate(`(() => {
+    const category = document.querySelector("#catalogue-category");
+    category.value = "Combat and MMA";
+    category.dispatchEvent(new Event("change", { bubbles: true }));
+    const audience = document.querySelector("#catalogue-audience");
+    audience.value = "Men’s";
+    audience.dispatchEvent(new Event("change", { bubbles: true }));
+    const sort = document.querySelector("#catalogue-sort");
+    sort.value = "price-asc";
+    sort.dispatchEvent(new Event("change", { bubbles: true }));
+    const search = document.querySelector("#search");
+    search.value = "FSD Strike Men's Training T-Shirt";
+    search.dispatchEvent(new Event("input", { bubbles: true }));
+  })()`);
+  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of 1 products") && document.querySelector("#catalogue-grid [data-product=\\"16\\"]")');
+  await click('[data-catalogue-view="visual"]');
+  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelector("[data-catalogue-view=\\"visual\\"]").getAttribute("aria-pressed") === "true"');
+  assert.deepEqual(await evaluate('Object.fromEntries(new URLSearchParams(location.search))'), {
+    category: 'Combat and MMA',
+    audience: 'Men’s',
+    collection: 'mens-luxury-performance',
+    q: "FSD Strike Men's Training T-Shirt",
+    sort: 'price-asc',
+    view: 'visual',
+  });
+  await click('#catalogue-active-filters [data-remove-filter="audience"]');
+  await waitFor('document.querySelector("#catalogue-audience").value === "All" && !new URLSearchParams(location.search).has("audience")');
+  await evaluate(`(() => {
+    const audience = document.querySelector("#catalogue-audience");
+    audience.value = "Men’s";
+    audience.dispatchEvent(new Event("change", { bubbles: true }));
+  })()`);
+  await click('[data-catalogue-view="visual"]');
+  await send('Page.reload');
+  await waitFor('performance.getEntriesByType("navigation")[0]?.type === "reload" && document.readyState === "complete" && document.querySelector("#catalogue-count")');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "mens-luxury-performance" && document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelector("#catalogue-count")?.textContent.includes("of 1 products")');
+  const resultScrollY = await evaluate('window.scrollY');
+  await evaluate('(() => { const opener = document.querySelector("#catalogue-grid [data-product=\\"16\\"]"); opener.focus(); opener.click(); })()');
+  await waitFor('document.querySelector("#product-dialog").open && new URLSearchParams(location.search).get("product") === "16"');
+  await waitFor('document.querySelector("#dialog-body .catalogue-breadcrumbs")');
+  assert.equal(await evaluate('document.querySelector("#dialog-body .catalogue-breadcrumbs a[data-shop-breadcrumb]")?.textContent.trim()'), 'Shop');
+  await evaluate('history.back()');
+  await waitFor('!document.querySelector("#product-dialog").open && !new URLSearchParams(location.search).has("product")');
+  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of 1 products") && document.querySelector("#catalogue-grid").dataset.view === "visual"');
+  assert.ok(Math.abs((await evaluate('window.scrollY')) - resultScrollY) <= 2, 'Returning from product details restores the result scroll position.');
+  assert.equal(await evaluate('document.activeElement.matches("#catalogue-grid [data-product=\\"16\\"]")'), true, 'Closing a product dialog restores focus to its opener.');
+  await evaluate('history.forward()');
+  await waitFor('document.querySelector("#product-dialog").open && new URLSearchParams(location.search).get("product") === "16"');
+  await click('#close-dialog');
+  await waitFor('!document.querySelector("#product-dialog").open && !new URLSearchParams(location.search).has("product")');
+
+  await evaluate(`(() => {
+    const search = document.querySelector("#search");
+    search.value = "FSD product that does not exist";
+    search.dispatchEvent(new Event("input", { bubbles: true }));
+  })()`);
+  await waitFor('document.querySelector("#catalogue-count").textContent === "No matching products" && document.querySelector("#catalogue-grid [data-clear-filters]")');
+  await click('#catalogue-grid [data-clear-filters]');
+  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "grid"');
+  await assertNoHorizontalPageScroll();
+  const brokenImage = await evaluate(`(() => {
+    const image = document.querySelector("#catalogue-grid [data-catalogue-card-image]");
+    if (!image) return false;
+    const container = image.closest(".product-image");
+    image.dispatchEvent(new Event("error", { bubbles: true }));
+    return Boolean(container.querySelector(".catalogue-placeholder"));
+  })()`);
+  assert.equal(brokenImage, true, 'A failed catalogue image should fall back to an explicit placeholder.');
+
+  await click('.hero .ghost-btn');
+  await waitFor('location.hash === "#universe" && document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"universe\\"]").getAttribute("aria-current") === "page"');
+  await click('.fsd-primary-trigger[data-nav-primary="universe"]');
+  await click('#fsd-mega-menu [data-nav-group="1"]');
+  await click('#fsd-mega-menu [data-nav-item="0"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"0\\"][aria-pressed=\\"true\\"]")');
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
+  await waitFor('document.querySelector("[data-division=\\"bio-lab\\"]") === document.activeElement');
+  assert.equal(await evaluate('document.querySelector("[data-division=\\"bio-lab\\"]") === document.activeElement'), true);
+  assert.equal(await evaluate('document.querySelector(".fsd-brand").getAttribute("href")'), '#home');
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-header form, .fsd-header input, [data-cart], [data-account]").length'), 0);
+  assert.equal(await evaluate('Array.from(document.querySelectorAll("footer a[href^=\\"#\\"]")).every(link => document.querySelector(link.getAttribute("href")))'), true);
+  await click('footer .footer-brand');
+  await waitFor('location.hash === "#home"');
+  await closeRouteAndReset();
+
   // The selected draft feature card uses the same private preview destination as its menu row.
   const hardwareMenu = navigationModel.find(menu => menu.id === 'hardware');
   const ropeGroupIndex = hardwareMenu.groups.findIndex(group => group.title === 'STRENGTH EQUIPMENT');
@@ -321,7 +463,8 @@ try {
   await closeRouteAndReset();
 
   for (const [id, heading] of [
-    ['collections', 'COLLECTIONS'],
+    ['collections', 'SHOP'],
+    ['universe', 'FSD UNIVERSE'],
     ['bio-lab', 'BIO-LAB™'],
     ['hardware', 'HARDWARE'],
     ['house', 'THE HOUSE'],
@@ -358,15 +501,18 @@ try {
     width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
   });
   await delay(150);
+  if (await evaluate('CSS.supports("backdrop-filter: blur(1px)")')) {
+    assert.match(await evaluate('getComputedStyle(document.querySelector(".header.fsd-header")).backdropFilter'), /blur\(6px\)/);
+  }
   assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-nav-mobile-toggle]")).display !== "none"'), true);
   await click('[data-nav-mobile-toggle]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "primary" && document.body.classList.contains("fsd-mobile-nav-open")');
-  assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-primary-list [data-nav-primary]").length'), 5);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-primary-list [data-nav-primary]").length'), 6);
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'groups');
   await click('#fsd-mega-menu [data-nav-group="0"]');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'detail');
-  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
+  await assertNoHorizontalPageScroll();
   assert.equal(await evaluate('window.scrollY'), startingScrollY);
   await capture('fsd-navigation-mobile.jpg');
   await click('#fsd-mega-menu [data-nav-back]');
@@ -375,12 +521,15 @@ try {
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'primary');
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
   await click('#fsd-mega-menu [data-nav-group="0"]');
-  await click('#fsd-mega-menu [data-nav-item="1"]');
-  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-mega-menu").hidden && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"0\\"][aria-pressed=\\"true\\"]") && document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"1\\"][aria-pressed=\\"true\\"]")');
-  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
-  assert.equal(await evaluate('window.scrollY'), startingScrollY);
+  await click('#fsd-mega-menu [data-nav-item="0"]');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#fsd-mega-menu").hidden && document.querySelector("#catalogue-collection").value === "mens-luxury-performance" && document.querySelector("#search").value === "500 GSM"');
+  await assertNoHorizontalPageScroll();
+  await waitFor('(() => { const rect = document.querySelector("#products").getBoundingClientRect(); return rect.bottom > 0 && rect.top < window.innerHeight; })()');
+  assert.equal(await evaluate('document.querySelector("#catalogue-count").textContent !== "No matching products"'), true);
+  await click('[data-nav-mobile-toggle]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "primary"');
   await key('Escape');
-  await waitFor('!document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-mega-menu").hidden && !document.body.classList.contains("fsd-mobile-nav-open")');
+  await waitFor('document.querySelector("#fsd-mega-menu").hidden && !document.body.classList.contains("fsd-mobile-nav-open")');
   await waitFor('document.activeElement.matches("[data-nav-mobile-toggle]")');
   assert.equal(await evaluate('document.activeElement.matches("[data-nav-mobile-toggle]")'), true);
 
@@ -395,7 +544,7 @@ try {
   await waitFor('document.querySelector("#campaign-image")?.naturalWidth === 1672');
   assert.equal(await evaluate('document.querySelectorAll("#edition-options [data-edition]").length'), 8);
   await closeRouteAndReset();
-  assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), true);
+  await assertNoHorizontalPageScroll();
 
   assert.deepEqual(browserErrors, []);
   console.log('Navigation browser checks passed: verified links, weighted-rope draft row and feature CTA, mobile draft routing, unavailable destinations, keyboard/focus, and overflow.');

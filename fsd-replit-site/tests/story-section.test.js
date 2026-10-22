@@ -8,7 +8,8 @@ test('Our Story presents the supplied FSD narrative without opening sign-ups or 
   assert.match(html, /Engineered for<br\/><span>the Work\.<\/span>/);
   assert.match(html, /founded by a lifelong athlete/);
   assert.match(html, /What We Stand For/);
-  assert.match(html, /AEROFORGE, is in development/);
+  assert.match(html, /AEROFORGE represents FSD’s direction in technical training apparel/);
+  assert.doesNotMatch(html, /in development|pre-launch/i);
   assert.match(html, /The Road Ahead/);
   assert.match(html, /A NOTE ON HONESTY/);
   assert.match(html, /VIP Access will be shared when they are ready/);

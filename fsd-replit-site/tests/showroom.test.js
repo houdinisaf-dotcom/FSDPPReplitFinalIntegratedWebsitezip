@@ -12,7 +12,11 @@ test('the showroom renders four accessible division controls and one reusable di
   assert.match(markup, /id="fsd-showcase-dialog"/);
   assert.equal((markup.match(/aria-controls="fsd-showcase-dialog"/g) || []).length, 4);
   assert.equal((markup.match(/aria-expanded="false"/g) || []).length, 4);
-  assert.match(markup, /The future of training, in development\./);
+  assert.match(markup, /Training technology concepts\./);
+  for (const label of ['EXPLORE APPAREL', 'EXPLORE BIO-LAB™', 'EXPLORE HARDWARE', 'EXPLORE GLOBAL']) {
+    assert.ok(markup.includes(label));
+  }
+  assert.doesNotMatch(markup, /fsd-showcase-index|fsd-banner-index|OPEN DIVISION/);
   assert.doesNotMatch(markup, /STRIDE|Shilajit|checkout|add to cart/i);
   assert.deepEqual(collectionDivisions.map(division => division.id), ['apparel', 'bio-lab', 'hardware', 'global']);
 });

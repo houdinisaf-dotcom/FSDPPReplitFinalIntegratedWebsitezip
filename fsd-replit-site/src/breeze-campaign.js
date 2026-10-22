@@ -79,7 +79,7 @@ export function createBreezeDraftData() {
       masterProductId: Number(masterProduct.id),
       description: draft.description,
       priceLabel,
-      priceNote: priceLabel ? 'Existing catalogue reference only; not an offer to sell.' : '',
+      priceNote: priceLabel ? 'Reference only · not for sale.' : '',
       provisionalFeatures: Object.freeze([...draft.provisionalFeatures]),
       brandStatus: draft.imagePolicy.brandStatus,
       draftStatus: 'PRIVATE DRAFT · VISUAL CONCEPT ONLY',

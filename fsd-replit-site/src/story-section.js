@@ -45,9 +45,9 @@ export function ourStorySection() {
 
       <div class="story-development">
         <section aria-labelledby="story-today-title">
-          <p class="story-index">02 / IN DEVELOPMENT</p>
+          <p class="story-index">02 / THE HOUSE</p>
           <h3 id="story-today-title">Where We Are Today</h3>
-          <p>Our first collection, AEROFORGE, is in development — a focused range of technical training apparel shaped around fit, construction and real movement. We are testing and refining the direction before confirming final product details or availability.</p>
+          <p>AEROFORGE represents FSD’s direction in technical training apparel: considered fit, purposeful construction and movement in focus. Product details remain to be confirmed.</p>
         </section>
         <section aria-labelledby="story-road-title">
           <p class="story-index">03 / THE ROAD AHEAD</p>

@@ -15,7 +15,7 @@ export function createBreezeDevelopmentIntegration() {
   const escapedSrc = escapeHTML(front.src);
   const escapedAlt = escapeHTML(`${product.name}, ${variants[0].label} colourway, ${front.label} view`);
   const priceMarkup = product.priceLabel
-    ? `<p class="fsd-product-reference"><strong>${escapeHTML(product.priceLabel)}</strong><span>Catalogue reference only</span></p>`
+    ? `<p class="fsd-product-reference"><strong>${escapeHTML(product.priceLabel)}</strong><span>Reference only · not for sale</span></p>`
     : '<p class="fsd-product-reference">Price at launch</p>';
 
   const collectionCard = `<article class="fsd-product-card fsd-breeze-draft-card" data-fsd-breeze-card data-master-product-id="${product.masterProductId}">

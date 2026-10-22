@@ -28,14 +28,14 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
 test('Shop exposes All Products and keeps the existing apparel groups and subcategories', () => {
   const collections = menu[0];
   assert.deepEqual(collections.groups.map(group => group.title), [
-    'ALL PRODUCTS',
     'MEN’S LUXURY PERFORMANCE',
     'WOMEN’S MODEST COMBAT',
     'LIMITED COLLECTIONS',
     'NEW & FEATURED CONCEPTS',
+    'ALL PRODUCTS',
   ]);
 
-  const allProducts = collections.groups[0];
+  const allProducts = collections.groups.find(group => group.id === 'shop-all-products');
   assert.equal(allProducts.href, '#products');
   assert.equal(allProducts.items[0].kind, 'shop-all');
   const men = collections.groups.find(group => group.id === 'mens-luxury-performance');

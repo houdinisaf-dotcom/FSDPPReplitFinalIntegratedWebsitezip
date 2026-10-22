@@ -8,7 +8,7 @@ const suppliedGalleryAssets = [
     id: 'campaign',
     file: 'attached_assets/Main_product_listing_image_1792424117238.jpg',
     type: 'image/jpeg',
-    label: 'Approved campaign image',
+    label: 'Campaign image',
     alt: 'Woman wearing the black FSD Velocity Performance Sports Hijab in a training setting.',
   },
   {
@@ -29,8 +29,8 @@ const suppliedGalleryAssets = [
     id: 'fabric-detail',
     file: 'attached_assets/Image_3_—_Fabric_and_ventilation_1792424767570.png',
     type: 'image/png',
-    label: 'Supplied fabric-panel close-up',
-    alt: 'Close view of the supplied fabric-panel photograph; composition and function are not confirmed.',
+    label: 'Fabric detail',
+    alt: 'Close-up view of a fabric panel.',
   },
   {
     id: 'branding-detail',
