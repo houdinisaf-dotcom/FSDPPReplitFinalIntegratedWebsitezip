@@ -100,7 +100,7 @@ test('ALIGHT appears in the private Bio-Lab collection while remaining separate 
   assert.equal(draft.record, undefined);
   assert.equal(draft.productId, undefined);
   assert.equal(products.some(product => product.name === draft.title), false);
-  assert.deepEqual(getNavigationFeature(previewBioLab, 0, index).imageSources, [draft.featureImageSrc]);
+  assert.deepEqual(getNavigationFeature(previewBioLab, 0, index).imageSources, []);
 });
 
 test('ALIGHT keeps its campaign gallery while presenting a restrained development note', () => {

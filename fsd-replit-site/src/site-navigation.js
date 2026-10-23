@@ -28,6 +28,25 @@ const privatePreviewTargets = new Map([
   [hoodedShellPreviewPath, `${hoodedShellPreviewPath}media/${hoodedShellCampaign.id}`],
 ]);
 
+export const navigationAssetBindings = Object.freeze({
+  'FSD NEXUS (smart ring)': Object.freeze({
+    src: '/fsd-assets/3daa9883cec9.webp',
+    alt: 'FSD Nexus smart ring in golden shadows.',
+  }),
+});
+
+function featureImageForItem(item) {
+  const explicitSource = item?.featureImageSrc;
+  if (typeof explicitSource === 'string' && /^\/fsd-assets\/[^/]+\.webp$/i.test(explicitSource)) {
+    return {
+      src: explicitSource,
+      alt: item.featureImageAlt || item.title || item.record?.name || 'FSD product image',
+    };
+  }
+  const productName = item?.record?.name || item?.title;
+  return navigationAssetBindings[productName] || null;
+}
+
 function makeWeightedRopeDraftMenuItem() {
   return {
     id: 'weighted-skipping-rope-draft-menu-entry',
@@ -106,17 +125,21 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
   } else {
     const records = groupProducts(sourceGroup, products);
     items = records.length
-      ? records.map(record => ({
-        id: `${sourceGroup.id}-product-${record.id}`,
-        title: record.name,
-        kind: 'product',
-        record,
-        source: { productTerms: [record.name] },
-        sourceGroup,
-        sourceDivisionId: division.id,
-        sourceGroupIndex,
-        sourceSubcategoryIndex: -1,
-      }))
+      ? records.map(record => {
+        const binding = navigationAssetBindings[record.name];
+        return {
+          id: `${sourceGroup.id}-product-${record.id}`,
+          title: record.name,
+          kind: 'product',
+          record,
+          source: { productTerms: [record.name] },
+          sourceGroup,
+          sourceDivisionId: division.id,
+          sourceGroupIndex,
+          sourceSubcategoryIndex: -1,
+          ...(binding ? { featureImageSrc: binding.src, featureImageAlt: binding.alt } : {}),
+        };
+      })
       : (sourceGroup.concepts || []).map((concept, index) => ({
         id: `${sourceGroup.id}-concept-${index}`,
         title: concept,
@@ -389,17 +412,6 @@ export function createNavigationModel({
   ];
 }
 
-function groupFeatureProducts(group, item, products) {
-  const sourceGroup = item?.sourceGroup || group?.source;
-  if (!sourceGroup) return [];
-
-  if (item?.record) return [item.record];
-  if (item?.source) {
-    return groupProducts(sourceGroup, products, item.source);
-  }
-  return groupProducts(sourceGroup, products);
-}
-
 function hasVerifiedDestination({
   menu, group, item,
 }, { root, divisions, products, previewTargets = privatePreviewTargets }) {
@@ -463,17 +475,9 @@ function hasVerifiedDestination({
   );
 }
 
-function renderFeature(menu, group, item, products, canNavigate) {
-  const imageRecords = item?.featureImageSrc
-    ? [{ src: item.featureImageSrc, label: item.featureImageAlt, product: { name: item.title } }]
-    : groupFeatureProducts(group, item, products)
-      .filter(product => Array.isArray(product.images))
-      .flatMap(product => product.images.map(image => ({ ...image, product })))
-      .filter((image, index, all) => all.findIndex(other => other.src === image.src) === index)
-      .slice(0, 4);
-  const exactItemImage = Boolean(item?.featureImageSrc || item?.record?.images?.length ||
-    (item?.source && groupProducts(item.sourceGroup || group.source, products, item.source)
-      .some(product => product.images?.length)));
+function renderFeature(menu, group, item, canNavigate) {
+  const image = featureImageForItem(item);
+  const exactItemImage = Boolean(image);
   const featureTitle = item?.record?.name || item?.title || group?.title || 'FSD';
   const description = item?.description ||
     item?.record?.coverage ||
@@ -481,15 +485,11 @@ function renderFeature(menu, group, item, products, canNavigate) {
     group?.description ||
     'Details and availability are subject to confirmation.';
 
-  const media = imageRecords.length
-    ? `<div class="fsd-feature-media fsd-feature-media--${imageRecords.length}">
-        ${imageRecords.map(({ src, label, product }) =>
-    `<img src="${escapeHTML(src)}" alt="${escapeHTML(label || product.name)}" loading="lazy" fetchpriority="low" decoding="async">`).join('')}
+  const media = image
+    ? `<div class="fsd-feature-media fsd-feature-media--1" data-feature-image="${escapeHTML(image.src)}">
+        <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" loading="eager" fetchpriority="low" decoding="async">
       </div>`
-    : `<div class="fsd-feature-media fsd-feature-media--empty" aria-label="No approved image is mapped to this collection">
-        <span>FSD / ${escapeHTML((item?.sourceDivisionId || group?.sourceDivisionId || group?.id || 'collection').toUpperCase())}</span>
-        <small>COLLECTIONS</small>
-      </div>`;
+    : '<div class="fsd-feature-media fsd-feature-media--unmapped" aria-hidden="true"></div>';
 
   const available = canNavigate({ menu, group, item });
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
@@ -590,7 +590,7 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
         </div>
       </section>
       <section class="fsd-nav-column fsd-nav-column--feature" aria-label="Featured collection">
-        ${group ? renderFeature(menu, group, item, products, canNavigate) : ''}
+        ${group ? renderFeature(menu, group, item, canNavigate) : ''}
       </section>
     </div>
   </div>`;
@@ -609,6 +609,14 @@ export function renderNavigationHeader(brandMarkup) {
         </a>
         <nav class="fsd-primary-nav" aria-label="Main navigation">${primaryItems}</nav>
         <span class="fsd-header-note">UNITED KINGDOM <i aria-hidden="true">·</i> FSD</span>
+        <button type="button" class="fsd-bag-toggle" data-bag-open aria-controls="fsd-bag-dialog"
+          aria-expanded="false" aria-label="Open bag, 0 items">
+          <svg viewBox="0 0 20 20" aria-hidden="true" fill="none">
+            <path d="M4.5 7.2h11l.9 10H3.6l.9-10Z" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M7 7.2V5.7a3 3 0 0 1 6 0v1.5" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+          <span>BAG</span><span class="fsd-bag-count" data-bag-count>0</span>
+        </button>
         <button type="button" class="fsd-mobile-toggle" data-nav-mobile-toggle
           aria-controls="fsd-mega-menu" aria-expanded="false" aria-label="Open navigation">
           <span>MENU</span><i aria-hidden="true"></i><i aria-hidden="true"></i>
@@ -655,6 +663,7 @@ export function mountNavigation({
   let pointerInside = false;
   let suppressFocusPreview = false;
   let hoveredNavigationKey = '';
+  let featureTransitionTimer = 0;
 
   const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
   const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -688,10 +697,70 @@ export function mountNavigation({
   currentPrimaryId = hashNavigation.get(window.location.hash) || '';
 
   const render = () => {
+    clearTimeout(featureTransitionTimer);
+    const oldMedia = content.querySelector('.fsd-feature-media');
+    const oldImage = oldMedia?.querySelector('img:not(.fsd-feature-image--outgoing)');
+    const oldSource = oldImage?.getAttribute('src') || '';
+    const outgoingImage = oldImage?.cloneNode(false) || null;
     const menu = currentMenu();
     panel.dataset.primary = menu.id;
     panel.dataset.step = mobileStep;
     content.innerHTML = renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId);
+    const media = content.querySelector('.fsd-feature-media');
+    const incomingImage = media?.querySelector('img');
+    const incomingSource = incomingImage?.getAttribute('src') || '';
+    if (!media || oldSource === incomingSource || (!oldSource && !incomingSource)) {
+      syncExpanded();
+      return;
+    }
+
+    media.classList.add('fsd-feature-media--transitioning');
+    if (outgoingImage) {
+      outgoingImage.className = 'fsd-feature-image--outgoing';
+      outgoingImage.alt = '';
+      outgoingImage.removeAttribute('loading');
+      outgoingImage.setAttribute('aria-hidden', 'true');
+      media.append(outgoingImage);
+    }
+    if (incomingImage) incomingImage.classList.add('fsd-feature-image--incoming');
+
+    const finishTransition = () => {
+      if (!media.isConnected) return;
+      if (prefersReducedMotion()) {
+        outgoingImage?.remove();
+        incomingImage?.classList.remove('fsd-feature-image--incoming', 'is-visible');
+        media.classList.remove('fsd-feature-media--transitioning');
+        return;
+      }
+      requestAnimationFrame(() => {
+        if (!media.isConnected) return;
+        incomingImage?.classList.add('is-visible');
+        outgoingImage?.classList.add('is-fading');
+        featureTransitionTimer = window.setTimeout(() => {
+          outgoingImage?.remove();
+          incomingImage?.classList.remove('fsd-feature-image--incoming', 'is-visible');
+          media.classList.remove('fsd-feature-media--transitioning');
+        }, 200);
+      });
+    };
+    const handleIncomingError = () => {
+      incomingImage?.remove();
+      media.classList.remove('fsd-feature-media--1');
+      media.classList.add('fsd-feature-media--unmapped');
+      media.removeAttribute('data-feature-image');
+      finishTransition();
+    };
+    if (incomingImage) {
+      if (incomingImage.complete) {
+        if (incomingImage.naturalWidth > 0) finishTransition();
+        else handleIncomingError();
+      } else {
+        incomingImage.addEventListener('load', finishTransition, { once: true });
+        incomingImage.addEventListener('error', handleIncomingError, { once: true });
+      }
+    } else {
+      finishTransition();
+    }
     syncExpanded();
   };
 
@@ -1057,14 +1126,12 @@ export function getNavigationFeature(menu, groupIndex, itemIndex, products = cat
   const group = menu?.groups?.[groupIndex];
   const item = group?.items?.[itemIndex];
   if (!group || !item) return null;
-  const records = item.featureImageSrc ? [] : groupFeatureProducts(group, item, products);
+  const image = featureImageForItem(item);
   return {
     menu: menu.id,
     group: group.title,
     item: item.title,
-    imageSources: item.featureImageSrc
-      ? [item.featureImageSrc]
-      : records.flatMap(record => record.images || []).map(image => image.src),
+    imageSources: image ? [image.src] : [],
     itemKind: item.kind,
     sourceDivisionId: item.sourceDivisionId || group.sourceDivisionId || menu.divisionId || '',
   };

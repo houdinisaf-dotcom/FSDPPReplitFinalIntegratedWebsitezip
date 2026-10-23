@@ -66,11 +66,6 @@ export function createBreezeDraftData() {
   assert(imageManifest.assetQuality?.upscaled === false, 'source images must not be upscaled');
   assert(draft.imagePolicy?.campaignHeroAsset === null && draft.imagePolicy?.newCampaignBanner === false, 'no unapproved campaign hero or banner may be added');
 
-  const confirmedPrice = Number(masterProduct['Price (£) confirmed']);
-  const priceLabel = Number.isFinite(confirmedPrice) && confirmedPrice > 0
-    ? `£${confirmedPrice.toFixed(2)}`
-    : '';
-
   return Object.freeze({
     draft,
     masterProduct,
@@ -78,8 +73,6 @@ export function createBreezeDraftData() {
       name: draft.name,
       masterProductId: Number(masterProduct.id),
       description: draft.description,
-      priceLabel,
-      priceNote: priceLabel ? 'Reference only · not for sale.' : '',
       provisionalFeatures: Object.freeze([...draft.provisionalFeatures]),
       brandStatus: draft.imagePolicy.brandStatus,
       draftStatus: 'PRIVATE DRAFT · VISUAL CONCEPT ONLY',

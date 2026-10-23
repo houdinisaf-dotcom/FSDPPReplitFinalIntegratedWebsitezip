@@ -1,4 +1,5 @@
 import { audiences, categories, products, productsWithUsableImages, filterProducts, priceInfo, safe, shopCollections } from './catalogue-data.js';
+import { canAddToBag } from './bag.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -136,8 +137,8 @@ function sortedProducts(filtered) {
   } else if (sort === 'price-asc' || sort === 'price-desc') {
     const direction = sort === 'price-asc' ? 1 : -1;
     list.sort((a, b) => {
-      const aPrice = a.confirmedPrice ?? a.suggestedPrice;
-      const bPrice = b.confirmedPrice ?? b.suggestedPrice;
+      const aPrice = a.confirmedPrice;
+      const bPrice = b.confirmedPrice;
       if (aPrice === null && bPrice === null) return a.id - b.id;
       if (aPrice === null) return 1;
       if (bPrice === null) return -1;
@@ -177,24 +178,23 @@ function imagePlaceholder(product, failed = false) {
 }
 
 function displayPrice(product) {
-  const price = priceInfo(product);
-  return Number(product.id) === 43
-    ? { ...price, label: 'Reference only · not for sale' }
-    : price;
+  return priceInfo(product);
 }
 
 function card(product) {
   const price = displayPrice(product);
   const image = product.images[0];
+  const imageFailed = failedProductImageIds.has(String(product.id));
   return `<article class="product-card">
-    <div class="product-image">${image
+    <div class="product-image">${image && !imageFailed
       ? `<img data-catalogue-card-image="${product.id}" loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept"/>`
-      : imagePlaceholder(product)}<span class="chip">PREVIEW</span></div>
+      : imagePlaceholder(product, imageFailed)}<span class="chip">PREVIEW</span></div>
     <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>
     <h3>${safe(product.name)}</h3>
      ${product.colourways ? `<p class="catalogue-colourways">${safe(product.colourways)}</p>` : ''}
-    <div class="catalogue-price">${price.label ? `<span>${price.label}</span>` : ''}<strong>${price.value}</strong></div>
+    ${price.label || price.value ? `<div class="catalogue-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
     ${product.priceBasis ? `<p class="catalogue-colourways">${safe(product.priceBasis)}</p>` : ''}
+    ${canAddToBag(product) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${product.id}" aria-label="Add ${safe(product.name)} to bag">ADD TO BAG</button>` : ''}
     <button class="text-link" data-product="${product.id}">VIEW DETAILS ↗<span class="sr-only"> for ${safe(product.name)}</span></button>
   </article>`;
 }
@@ -262,7 +262,7 @@ export function innovationsSection() {
 
 function renderResults() {
   const filtered = sortedProducts(filterProducts(activeCategory, query, activeAudience, activeCollection)
-    .filter(product => imageReadyProductIds.has(String(product.id)) && !failedProductImageIds.has(String(product.id))));
+    .filter(product => imageReadyProductIds.has(String(product.id))));
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   page = Math.min(page, totalPages);
   updateControls();
@@ -372,8 +372,9 @@ export function showProduct(id, { fromHistory = false } = {}) {
       ${detail('Also appears as', confirmedAlias)}
       ${detail('Coverage', p.coverage)}
       ${detail('Specifications', displaySpecifications)}
-      ${detail('Price basis', p.priceBasis)}
-     </dl><div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}<strong>${price.value}</strong></div>
+       ${detail('Set configuration', p.priceBasis)}
+      </dl>${price.label || price.value ? `<div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
+     ${canAddToBag(p) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${p.id}" aria-label="Add ${safe(p.name)} to bag">ADD TO BAG</button>` : ''}
     </div>`;
   document.documentElement?.classList?.add('fsd-modal-open');
   if (dialog && !dialog.open) dialog.showModal();
@@ -437,7 +438,7 @@ function restoreFromURL({ scrollY } = {}) {
   }
 }
 
-export function initCatalogue({ onProductSelect = showProduct } = {}) {
+export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () => {} } = {}) {
   const category = document.querySelector('#catalogue-category');
   const audience = document.querySelector('#catalogue-audience');
   const collection = document.querySelector('#catalogue-collection');
@@ -525,6 +526,11 @@ export function initCatalogue({ onProductSelect = showProduct } = {}) {
       event.preventDefault?.();
       closeProductFromUI();
       document.querySelector('#home')?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
+      return;
+    }
+    const bagButton = event.target.closest('[data-bag-add]');
+    if (bagButton) {
+      onAddToBag(Number(bagButton.dataset.bagAdd));
       return;
     }
     const product = event.target.closest('[data-product]');

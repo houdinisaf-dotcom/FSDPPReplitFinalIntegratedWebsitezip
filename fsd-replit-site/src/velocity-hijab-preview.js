@@ -1,5 +1,5 @@
 import { collectionDivisions } from './collection-divisions.js';
-import { products, priceInfo } from './catalogue-data.js';
+import { products } from './catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import { bindCollectionReturn } from './collection-return.js';
 import { createVelocityHijabPreview } from './velocity-hijab-campaign.js';
@@ -7,10 +7,6 @@ import { velocityHijabMediaPrefix, velocityHijabPreviewPath } from './velocity-h
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 
 const preview = createVelocityHijabPreview();
-const productPrice = {
-  ...priceInfo(preview.product),
-  label: 'Reference only · not for sale',
-};
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
   '<': '&lt;',
@@ -87,7 +83,6 @@ root.innerHTML = `
       <div><span class="velocity-product-label">Colour</span>
         <p class="velocity-colour"><span class="velocity-colour-swatch" aria-hidden="true"></span>${escapeHTML(preview.colour)}</p>
       </div>
-      <div class="velocity-product-price"><span>${escapeHTML(productPrice.label)}</span><strong>${escapeHTML(productPrice.value)}</strong></div>
       <div class="velocity-accordions">
         <details><summary>Product details</summary><p>Product information will be shared before release.</p></details>
       </div>

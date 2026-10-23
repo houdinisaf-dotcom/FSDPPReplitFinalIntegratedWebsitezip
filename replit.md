@@ -1,12 +1,12 @@
 # FSD website
 
 ## Run on Replit
-- The existing app is in `fsd-replit-site/`; keep its Vite and vanilla JavaScript structure.
+- The existing app is in `fsd-replit-site/` and uses React + Vite + Tailwind. Preserve the established storefront layout, navigation, catalogue, and styling when continuing the migration; keep existing page modules working until they are intentionally converted.
 - Install dependencies from that directory with `npm ci` (or `npm install` when updating dependencies).
 - Click **Run** to start the `Start application` workflow, which executes `cd fsd-replit-site && npm run dev`.
 - Vite serves the preview on `0.0.0.0:5000` with proxy hosts allowed.
 - Build with `cd fsd-replit-site && npm run build`. Output is `fsd-replit-site/dist/`.
-- This is a static catalogue: no database, API credentials, or session secret is needed.
+- The public catalogue remains static and checkout stays disabled until product readiness is confirmed. A secure members portal requires managed authentication to be provisioned before implementation.
 - After task merges, `scripts/post-merge.sh` installs locked dependencies and rebuilds the app. Replit then reconciles the configured workflows.
 
 ## Existing content restrictions

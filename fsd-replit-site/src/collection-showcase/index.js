@@ -108,9 +108,7 @@ function productCard(product) {
   const audience = product.audience ? `<span>${escapeHTML(product.audience)}</span>` : '';
   const masterPrice = priceInfo(product);
   const price = isAegisPreview
-    ? { ...masterPrice, label: 'Reference only · not for sale' }
-    : Number(product.id) === 43
-    ? { ...masterPrice, label: 'Reference only · not for sale' }
+    ? { label: 'Reference only · not for sale', value: '' }
     : masterPrice;
   const colourways = Number(product.id) === 43 && import.meta.env.DEV
     ? 'Black / Champagne Gold'
@@ -130,7 +128,7 @@ function productCard(product) {
     <div class="fsd-product-meta"><span>${escapeHTML(category)}</span>${audience}</div>
     <h4>${productTitle}</h4>
     <p class="fsd-product-description">${escapeHTML(description)}</p>
-    <p class="fsd-product-reference">${price.label ? `${escapeHTML(price.label)} ` : ''}<strong>${escapeHTML(price.value)}</strong></p>
+     ${price.label || price.value ? `<p class="fsd-product-reference">${price.label ? `${escapeHTML(price.label)} ` : ''}${price.value ? `<strong>${escapeHTML(price.value)}</strong>` : ''}</p>` : ''}
     <button class="fsd-product-link" type="button" data-product-id="${escapeHTML(product.id)}">VIEW DETAILS <span aria-hidden="true">↗</span><span class="fsd-sr-only"> for ${escapeHTML(product.name)}</span></button>
   </article>`;
 }

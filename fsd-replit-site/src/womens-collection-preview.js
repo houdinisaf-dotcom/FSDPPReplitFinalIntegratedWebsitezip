@@ -66,11 +66,9 @@ function renderProduct(data) {
           <p class="selection-copy">Choose an image colour reference. Appearance and variant availability are not confirmed.</p>
           <div id="variant-options" class="edition-options womens-swatch-list" role="group" aria-label="Visual colour references"></div>
           <p id="variant-note" class="selection-status" role="status" aria-live="polite"></p>
-          <div class="womens-price-box">
-            <span class="eyebrow">PRICE</span>
-            <strong>${escapeHtml(price.display)}</strong>
-            <p>${escapeHtml(price.note)}</p>
-          </div>
+          ${price.approvedForSale && price.display
+            ? `<div class="womens-price-box"><span class="eyebrow">PRICE</span><strong>${escapeHtml(price.display)}</strong></div>`
+            : ''}
           <p class="womens-no-order">Private review only · checkout and payments are disabled.</p>
         </aside>
       </div>

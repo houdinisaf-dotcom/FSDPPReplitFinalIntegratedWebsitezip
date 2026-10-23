@@ -41,7 +41,7 @@ test('Breeze draft links to the existing master record without changing it', () 
   assert.equal(returnedDraft.visibility, 'development-only');
   assert.equal(product.name, 'FSD Breeze Lightweight Modest Overshirt');
   assert.equal(product.masterProductId, 49);
-  assert.equal(product.priceLabel, '£64.99');
+  assert.equal(product.priceLabel, undefined);
   assert.match(returnedDraft.sourcePriceConflict, /draft specification labels price unverified/i);
   assert.equal(masterProduct['Price (£) confirmed'], '64.99');
   assert.equal(masterProduct.Colourways, 'Black / Gold');

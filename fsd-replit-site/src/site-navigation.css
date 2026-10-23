@@ -101,7 +101,7 @@
   bottom: 11px;
   left: 0;
   height: 1px;
-  background: #c9ad78;
+  background: #C8AA72;
   content: "";
   transform: scaleX(0);
   transform-origin: left center;
@@ -132,7 +132,7 @@
 
 .fsd-header-note i {
   padding: 0 4px;
-  color: #c9ad78;
+  color: #C8AA72;
   font-style: normal;
 }
 
@@ -158,7 +158,7 @@
   display: block;
   width: 25px;
   height: 1px;
-  background: #c9ad78;
+  background: #C8AA72;
   transition: width 200ms ease, transform 200ms ease;
 }
 
@@ -179,8 +179,8 @@
   width: auto;
   max-height: min(580px, calc(100dvh - 105px));
   overflow: auto;
-  border-top: 1px solid rgba(201, 173, 120, 0.3);
-  border-bottom: 1px solid rgba(201, 173, 120, 0.22);
+  border-top: 1px solid rgba(200, 170, 114, 0.3);
+  border-bottom: 1px solid rgba(200, 170, 114, 0.22);
   background: rgba(13, 14, 16, 0.985);
   box-shadow: 0 22px 52px rgba(0, 0, 0, 0.48);
   color: #efede8;
@@ -216,7 +216,7 @@
 .fsd-nav-column > h3,
 .fsd-feature-kicker {
   margin: 0;
-  color: #c9ad78;
+  color: #C8AA72;
   font-size: 8px;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -325,14 +325,14 @@
 }
 
 .fsd-nav-option.is-active .fsd-nav-index {
-  color: #c9ad78;
+  color: #C8AA72;
 }
 
 .fsd-nav-group:hover,
 .fsd-nav-group:focus-visible,
 .fsd-nav-group.is-active {
   border-left: 1px solid #d6bb86;
-  background: linear-gradient(90deg, rgba(201, 173, 120, 0.2), rgba(201, 173, 120, 0.055));
+  background: linear-gradient(90deg, rgba(200, 170, 114, 0.2), rgba(200, 170, 114, 0.055));
   color: #f2e2c0;
 }
 
@@ -345,7 +345,7 @@
 .fsd-nav-item:hover,
 .fsd-nav-item:focus-visible,
 .fsd-nav-item.is-active {
-  background: rgba(201, 173, 120, 0.105);
+  background: rgba(200, 170, 114, 0.105);
   color: #f1e2c4;
 }
 
@@ -378,6 +378,7 @@
 }
 
 .fsd-feature-media {
+  position: relative;
   display: grid;
   min-width: 0;
   min-height: 218px;
@@ -391,6 +392,11 @@
   grid-template-columns: 1fr;
 }
 
+.fsd-feature-media--unmapped {
+  display: block;
+  background: #0b0c0e;
+}
+
 .fsd-feature-media img {
   display: block;
   width: 100%;
@@ -400,25 +406,35 @@
   object-position: center;
 }
 
-.fsd-feature-media--empty {
-  display: flex;
-  min-height: 218px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  background:
-    radial-gradient(ellipse at 50% 45%, rgba(201, 173, 120, 0.1), transparent 57%),
-    linear-gradient(145deg, #17191c, #0b0c0e 68%);
-  color: #c9ad78;
-  font-size: 14px;
-  letter-spacing: 0.22em;
+.fsd-feature-media--transitioning {
+  display: block;
+  overflow: hidden;
 }
 
-.fsd-feature-media--empty small {
-  color: #77736b;
-  font-size: 7px;
-  letter-spacing: 0.16em;
+.fsd-feature-media--transitioning img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 200ms ease;
+}
+
+.fsd-feature-image--incoming {
+  opacity: 0;
+}
+
+.fsd-feature-image--incoming.is-visible,
+.fsd-feature-image--outgoing {
+  opacity: 1;
+}
+
+.fsd-feature-image--outgoing {
+  z-index: 1;
+}
+
+.fsd-feature-image--outgoing.is-fading {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .fsd-feature-copy {
@@ -460,8 +476,8 @@
   gap: 16px;
   margin-top: 13px;
   padding: 0 13px;
-  border: 1px solid #c9ad78;
-  background: #c9ad78;
+  border: 1px solid #C8AA72;
+  background: #C8AA72;
   color: #111315;
   cursor: pointer;
   font: inherit;
@@ -479,8 +495,8 @@
 }
 
 .fsd-feature-cta:disabled {
-  border-color: rgba(201, 173, 120, 0.28);
-  background: rgba(201, 173, 120, 0.08);
+  border-color: rgba(200, 170, 114, 0.28);
+  background: rgba(200, 170, 114, 0.08);
   color: #9d9687;
   cursor: not-allowed;
 }
@@ -492,7 +508,7 @@
 
 .fsd-header :focus-visible,
 .fsd-mega-menu :focus-visible {
-  outline: 2px solid #c9ad78;
+  outline: 2px solid #C8AA72;
   outline-offset: 3px;
 }
 
@@ -553,7 +569,7 @@ body.fsd-mobile-nav-open {
 
   .fsd-mega-menu {
     max-height: calc(100dvh - 93px);
-    border-top-color: rgba(201, 173, 120, 0.32);
+    border-top-color: rgba(200, 170, 114, 0.32);
   }
 
   .fsd-mega-inner {
@@ -633,7 +649,7 @@ body.fsd-mobile-nav-open {
   .fsd-mobile-primary.is-active,
   .fsd-mobile-primary:hover,
   .fsd-mobile-primary:focus-visible {
-    border-color: rgba(201, 173, 120, 0.53);
+    border-color: rgba(200, 170, 114, 0.53);
     color: #e7cb98;
   }
 
@@ -682,7 +698,7 @@ body.fsd-mobile-nav-open {
   }
 
   .fsd-feature-media,
-  .fsd-feature-media--empty {
+  .fsd-feature-media--unmapped {
     min-height: 190px;
     max-height: 36vh;
   }

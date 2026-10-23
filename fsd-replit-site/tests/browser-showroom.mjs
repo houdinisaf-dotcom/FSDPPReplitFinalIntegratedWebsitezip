@@ -158,7 +158,7 @@ try {
   const aegisCard = '[data-product-id="46"]';
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector("img").src.endsWith("/media/front-three-quarter")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Black / Gold")`));
-  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("£69.99")`));
+  assert.ok(!await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("£69.99")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Reference only · not for sale")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector(".fsd-product-media--aegis-preview").href.endsWith("/__catalogue-preview/aegis-modest-performance-gilet/")`));
   await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").scrollIntoView({ block: "center" })`);
@@ -171,8 +171,8 @@ try {
   assert.ok(await evaluate('document.querySelector("#aegis-gilet-title").textContent.includes("Aegis Modest Performance Gilet")'));
   assert.ok(await evaluate('document.querySelector("#aegis-main-image").src.endsWith("/media/front-three-quarter")'));
   assert.ok(await evaluate('document.querySelector(".aegis-product-colour").textContent.includes("Black / Gold")'));
-  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("£69.99")'));
-  assert.ok(await evaluate('document.querySelector(".aegis-product-price").textContent.includes("Reference only · not for sale")'));
+  assert.ok(!await evaluate('document.querySelector(".aegis-product-price")'));
+  assert.ok(!await evaluate('document.querySelector(".aegis-product-price")'));
   assert.ok(!await evaluate('document.querySelector("form, [name=checkout], [data-checkout]")'));
   if (aegisProofCapture) {
     await captureHijabProof(mobileProofCapture ? 'aegis-gilet-product-mobile.jpg' : 'aegis-gilet-product-desktop.jpg', true);
@@ -260,7 +260,7 @@ try {
   await click('[data-subcategory-index="0"]');
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector(".fsd-product-description").textContent.includes("Black / Champagne Gold")'));
-  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
+  assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Reference only · not for sale")'));
   await evaluate('document.querySelector("[data-product-id=\\"43\\"]").scrollIntoView({ block: "center" })');
   if (mobileProofCapture) {
@@ -286,9 +286,8 @@ try {
   assert.ok(await evaluate('document.querySelector("#velocity-hijab-title").textContent.includes("Velocity")'));
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/campaign")'));
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").alt.toLowerCase().includes("woman")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("£29.99")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Reference only · not for sale")'));
-  assert.ok(!await evaluate('document.querySelector(".velocity-product-price").textContent.includes("Confirmed list price")'));
+  assert.ok(!await evaluate('document.querySelector(".velocity-product-price")'));
+  assert.ok(!await evaluate('document.body.textContent.includes("£29.99")'));
   assert.ok(await evaluate('document.querySelector(".velocity-colour").textContent.includes("Black / Champagne Gold")'));
   assert.ok(!await evaluate('/add to cart|checkout button|quantity selector/i.test(document.body.textContent)'));
   assert.equal(await evaluate('document.querySelectorAll("form, input[type=number], button[name*=cart i]").length'), 0);

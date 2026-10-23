@@ -1,4 +1,6 @@
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { draftReviewPlugin } from './scripts/draft-review-plugin.mjs';
 import { aeroforgePrivatePreviewPlugin } from './scripts/aeroforge-private-preview-plugin.mjs';
 import { modestFlowPrivatePreviewPlugin } from './scripts/modest-flow-private-preview-plugin.mjs';
@@ -7,6 +9,8 @@ import { womensCollectionPrivatePreviewPlugin } from './scripts/womens-collectio
 
 export default defineConfig({
   plugins: [
+    react(),
+    tailwindcss(),
     draftReviewPlugin(),
     aeroforgePrivatePreviewPlugin(),
     modestFlowPrivatePreviewPlugin(),

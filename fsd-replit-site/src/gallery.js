@@ -7,7 +7,17 @@ export const galleryProductIds = new Map([
   ['/fsd-assets/631f50075012.webp', 68], // Named supplement reference
 ]);
 const excludedIds = new Set([...heldProducts, ...retiredProducts].map(p => p.id));
-export const galleryProducts = additional.gallery.filter(g => !excludedIds.has(galleryProductIds.get(g.url)));
+const duplicateAssetAliases = new Map([
+  ['/fsd-assets/a8ab5db15eff.webp', '/fsd-assets/1a50ddda0665.webp'],
+  ['/fsd-assets/9a4e42ff4e13.webp', '/fsd-assets/3b2493524e75.webp'],
+  ['/fsd-assets/d6ad7aa21159.webp', '/fsd-assets/416919c83a8c.webp'],
+  ['/fsd-assets/b11385897177.webp', '/fsd-assets/438178ffdf70.webp'],
+  ['/fsd-assets/6c9c826cc5f7.webp', '/fsd-assets/57d56912586b.webp'],
+  ['/fsd-assets/de1392e98d86.webp', '/fsd-assets/b60526890d31.webp'],
+]);
+export const galleryProducts = additional.gallery
+  .filter(g => !excludedIds.has(galleryProductIds.get(g.url)))
+  .map(g => ({ ...g, url: duplicateAssetAliases.get(g.url) ?? g.url }));
 
 export function gallerySection() {
   return `<section class="fsd-expanded fsd-gallery" id="full-gallery"><div class="section-heading"><div>

@@ -71,14 +71,32 @@ Avoid the exact visible phrase “in development” across the public site.
 
 **How to apply:** Use honest pre-launch or proposed-concept wording instead, without implying that a product is available to buy.
 
-For the Women’s Collection, FSD FLEX leggings and the Premium Zip-Neck Performance Top are distinct products. Do not rename the top to AEROFORGE or assign it to an existing master record without confirmation. BREEZE remains tied to its existing master product; coordinated outfit references are not a new SKU unless confirmed.
+For the Women’s Collection, FSD FLEX leggings and the Premium Zip-Neck Performance Top are distinct products. The user explicitly identified separate supplied image groups as the Premium Zip-Neck Performance Top and “FSD FLEX — High-Waisted Sculpt Leggings”; treat these as image-group identities only, not verified product data or authorization to replace/map a master record. The sports bra shown with FLEX leggings is not thereby confirmed as a bundle. Do not rename the top to AEROFORGE or assign either group to an existing master record without separate confirmation. BREEZE remains tied to its existing master product; coordinated outfit references are not a new SKU unless confirmed.
 
-**Why:** The user’s collection brief explicitly distinguishes the top from AEROFORGE, calls BREEZE an existing product, and requires auditing coordinated outfit references before creating pages.
+**Why:** The user’s collection brief explicitly distinguishes the top from AEROFORGE, calls BREEZE an existing product, and requires auditing coordinated outfit references before creating pages. Later captions identify separate image groups as the top and FLEX leggings but do not approve master-record changes or a product bundle.
 
-**How to apply:** Keep any previews private and draft-only, preserve source imagery and master catalogue data, and leave product claims, garment-logo fidelity, and unconfirmed product identity pending. Do not enable checkout or publish.
+**How to apply:** Use the user-provided names for their respective image groups only. Keep previews private and draft-only, preserve source imagery and master catalogue data, and leave product claims, garment-logo fidelity, bundle status, and master-record association pending. Do not enable checkout or publish.
+
+Mega-menu previews may use only one clean, standalone image with an explicit exact item match from the uploaded asset library. Items without an exact verified match stay image-free; do not use category-derived, visually similar, collage, or generic placeholder imagery. This navigation rule does not approve catalogue photography or product claims.
+
+**Why:** The user chose exact matches only and explicitly preferred no image over an unverified fallback.
+
+**How to apply:** Add only evidence-backed menu bindings. Keep previously rejected or ambiguous candidates unmapped unless the user approves the exact asset separately.
 
 Additional Women’s Collection images must not be assigned to BREEZE or Modest Flow by default. Exact duplicates of existing Modest Flow photos remain reference duplicates, and composite boards stay out of product galleries and verified product copy.
 
 **Why:** The user explicitly asked for a complete audit of the remaining images and rejected automatic grouping as either BREEZE or Modest Flow.
 
 **How to apply:** Keep uncertain outfit and campaign images in a separate private audit, state the evidence for any grouping, and leave logo marks and embedded product claims pending until verified.
+
+The user identified the supplied weighted-skipping-rope image group as “Weighted Skipping Rope.” This confirms the intended image grouping only, not the rope’s weight, construction, performance or commercial readiness.
+
+**Why:** The user explicitly captioned the supplied colourway and hero images with the product name.
+
+**How to apply:** Use this name for the image group, but keep technical specifications and sale approval pending separate verification.
+
+All landed costs, COGS, projected gross profit and margin figures are internal-only financial data. Never place them in customer-facing UI or client-delivered product data. Customer-visible pricing must use an explicitly approved public RRP; only approved product compositions, descriptions and colourways may accompany it.
+
+**Why:** The user explicitly set this as a critical boundary for product cards, detail views and checkout.
+
+**How to apply:** Keep internal financial metrics in private/backend-only systems. Audit data rendered or shipped to the browser, hide unapproved suggested prices, and never expose financial breakdowns. Do not change master product records from a planning matrix alone.

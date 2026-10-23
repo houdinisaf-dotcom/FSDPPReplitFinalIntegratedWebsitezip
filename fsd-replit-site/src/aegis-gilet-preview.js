@@ -1,5 +1,5 @@
 import { collectionDivisions } from './collection-divisions.js';
-import { products, priceInfo } from './catalogue-data.js';
+import { products } from './catalogue-data.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import { bindCollectionReturn } from './collection-return.js';
 import { aegisGiletPreviewRecord as preview } from './aegis-gilet-campaign.js';
@@ -15,11 +15,6 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
   '"': '&quot;',
   "'": '&#39;',
 }[character]));
-
-const price = {
-  ...priceInfo(preview.product),
-  label: 'Reference only · not for sale',
-};
 
 const headerRoot = document.querySelector('#aegis-site-header');
 headerRoot.innerHTML = renderNavigationHeader(
@@ -95,9 +90,6 @@ root.innerHTML = `
         <span class="aegis-product-label">Colour</span>
         <p class="aegis-product-colour"><span aria-hidden="true"></span>${escapeHTML(preview.product.colourways)}</p>
       </div>` : ''}
-      <div class="aegis-product-price">
-        <span>${escapeHTML(price.label)}</span><strong>${escapeHTML(price.value)}</strong>
-      </div>
       <div class="aegis-accordions">
         <details>
           <summary>Materials, sizing and care</summary>

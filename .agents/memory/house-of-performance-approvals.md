@@ -44,3 +44,9 @@ The user subsequently authorized one targeted exception: place the FSD Weighted 
 **Why:** The user explicitly requested this exact navigation placement and review path while requiring the product to remain a non-purchasable draft.
 
 **How to apply:** This exception applies only to the weighted-rope preview. Keep its public ID, price, verified specifications, SKU and stock unset; do not generalize the authorization to other products or publish the website.
+
+The user authorized a React + Tailwind migration while preserving the current flagship layout, six-tab navigation, catalogue, and approved asset boundaries. For this build, use Obsidian `#090A0C`, Champagne Gold `#C8AA72`, and 16px glass blur. Checkout remains disabled until product readiness is confirmed; internal financial metrics must stay off customer-facing pages.
+
+**Why:** The user directly selected React + Tailwind and specified that the primary flagship design must remain intact; they also explicitly chose to keep checkout disabled and financial data internal.
+
+**How to apply:** Keep new UI work inside the existing visual system. Do not replace the flagship template, publish unverified product information, activate checkout, or show COGS, margins, or projected profit to customers.

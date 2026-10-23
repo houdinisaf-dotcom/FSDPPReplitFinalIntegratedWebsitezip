@@ -110,13 +110,14 @@ try {
   assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__view").length'), 4);
   assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__image").length'), 1);
   assert.equal(await evaluate('document.querySelector(".breeze-preview__image").naturalWidth'), 256);
-  assert.ok(await evaluate('document.querySelector(".breeze-preview__reference").textContent.includes("£64.99")'));
+  assert.ok(!await evaluate('document.querySelector(".breeze-preview__reference")'));
+  assert.ok(!await evaluate('document.body.textContent.includes("£64.99")'));
   assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__notices").length'), 0);
   assert.ok(await evaluate('document.querySelector(".breeze-preview__product-note").textContent.includes("Product details are being finalised")'));
   assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog").open'), true);
   assert.equal(await evaluate('window.scrollY'), initialScroll);
   assert.equal(await evaluate('document.querySelectorAll(".breeze-preview form, .breeze-preview [data-purchase], .breeze-preview [data-add-to-cart]").length'), 0);
-  assert.ok(await evaluate('document.querySelector(".breeze-preview__reference").textContent.includes("Reference price")'));
+  assert.ok(!await evaluate('document.querySelector(".breeze-preview__reference")'));
   await capture('desktop.jpg');
 
   for (const variant of imageManifest.variants) {

@@ -5,6 +5,7 @@ import { renderCollectionShowcase, mountCollectionShowcase } from './collection-
 import { featuredInnovationsSection, vipAccessSection, initFeaturedCarousel, initCatalogueNavigation } from './showroom-sections.js';
 import { renderNavigationHeader, mountNavigation } from './site-navigation.js';
 import { ourStorySection } from './story-section.js';
+import { mountClientBag } from './bag.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import { velocityHijabPreviewPath } from './velocity-hijab-preview-path.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
@@ -15,6 +16,7 @@ import './showroom.css';
 import './story-section.css';
 import './site-navigation.css';
 import './visual-system.css';
+import './bag.css';
 
 function header() {
   const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;
@@ -68,7 +70,8 @@ function shellCampaignEditorialSection() {
   </section>`;
 }
 
-document.querySelector('#app').innerHTML = `${header()}<main id="home">
+export function renderStorefrontMarkup() {
+  return `${header()}<main id="home">
   <section class="hero"><div class="hero-image"></div><div class="hero-shade"></div><div class="hero-content">
     <p class="eyebrow">THE HOUSE OF PERFORMANCE <span class="gold-line"></span> EST. UNITED KINGDOM</p>
     <h1>BUILT FOR<br/><em>THE DRIVE</em><br/>WITHIN.</h1>
@@ -96,9 +99,11 @@ document.querySelector('#app').innerHTML = `${header()}<main id="home">
       <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD UNIVERSE</a><a href="#products">SHOP / ALL PRODUCTS</a>
       <a href="#contact">VIP ACCESS</a></nav>
       <nav class="footer-links" aria-label="Corporate navigation"><a href="#philosophy">THE HOUSE / OUR STORY</a><a href="#fsd-division-global">FSD GLOBAL</a></nav>
+      <div id="fsd-react-footer-utilities"></div>
       <small class="footer-pending">Investor information and legal pages require approved content before launch.</small></div>
     <a href="#home">BACK TO TOP ↑</a></footer>
   <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
+}
 
 function showCatalogueDestination(state = {}) {
   return navigateCatalogue(state);
@@ -108,8 +113,8 @@ function scrollBehavior() {
   return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 }
 
-function startMainExperience() {
-  initCatalogue({ onProductSelect: openProduct });
+function startMainExperience(clientBag) {
+  initCatalogue({ onProductSelect: openProduct, onAddToBag: clientBag.addToBag });
   const collectionShowcase = mountCollectionShowcase({
     root: document.querySelector('#collections'),
     divisions: collectionDivisions,
@@ -210,8 +215,11 @@ function startMainExperience() {
   return collectionShowcase;
 }
 
-const collectionShowcase = startMainExperience();
-if (import.meta.env.DEV) {
+export function mountStorefrontRuntime() {
+  const clientBag = mountClientBag({ products });
+  const collectionShowcase = startMainExperience(clientBag);
+
+  if (import.meta.env.DEV) {
   import('./alight-development-integration.js')
     .then(({ createAlightDevelopmentIntegration }) => {
       const alight = createAlightDevelopmentIntegration();
@@ -287,4 +295,7 @@ if (import.meta.env.DEV) {
       console.error('The private FSD Breeze selector could not be loaded.', error);
       throw error;
     });
+  }
+
+  return collectionShowcase;
 }

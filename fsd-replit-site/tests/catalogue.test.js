@@ -23,13 +23,21 @@ test('original source records and approved set tiers are retained; holds and ret
   assert.ok(products.every(p => !heldProducts.some(h => h.id === p.id)));
   assert.ok(products.every(p => !retiredProducts.some(r => r.id === p.id)));
   assert.equal(products.filter(p => p.confirmedPrice !== null).length, 37);
-  assert.equal(products.filter(p => p.suggestedPrice !== null).length, 23);
+  assert.ok(products.every(p => !Object.hasOwn(p, 'suggestedPrice')));
 });
 
-test('prices distinguish confirmed, suggested and genuinely unset values', () => {
+test('customer-facing prices use approved RRPs only', () => {
   assert.deepEqual(priceInfo(products.find(p => p.id === 1)), { label: '', value: '£39.99' });
-  assert.deepEqual(priceInfo(products.find(p => p.id === 2)), { label: 'Expected', value: '£39.99' });
-  assert.deepEqual(priceInfo(products.find(p => p.id === 59)), { label: '', value: 'Price at launch' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 2)), { label: '', value: '' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 59)), { label: '', value: '' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 43)), {
+    label: 'Reference only · not for sale',
+    value: '',
+  });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 49)), {
+    label: 'Reference only · not for sale',
+    value: '',
+  });
 });
 
 test('category cross-listing, alternate names, colourways and case-insensitive search work', () => {
@@ -84,7 +92,7 @@ test('rendered sections follow the master list, escape content, and do not promo
   assert.doesNotMatch(sections, /in development|pre-launch/i);
   assert.doesNotMatch(sections, /STRIDE|smartwatch|Shilajit|Championship Belt|Ring Corner Post/i);
   assert.doesNotMatch(sections, /Upcoming collection|Prices and details|Join VIP Access/);
-  assert.doesNotMatch(sections, /add to (cart|basket)|buy now|checkout|payment|<form/i);
+  assert.doesNotMatch(sections, /buy now|checkout|payment|<form/i);
   assert.equal(safe('<script>"x"&</script>'), '&lt;script&gt;&quot;x&quot;&amp;&lt;/script&gt;');
 });
 
@@ -117,7 +125,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
   assert.equal(element('#catalogue-count').textContent, 'Showing 1–1 of 1 product');
   assert.match(element('#catalogue-grid').innerHTML, /fsd-velocity-performance-sports-hijab\.jpg/);
   assert.match(element('#catalogue-grid').innerHTML, /Reference only · not for sale/);
-  assert.match(element('#catalogue-grid').innerHTML, /£29\.99/);
+  assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£29\.99/);
   assert.doesNotMatch(element('#catalogue-grid').innerHTML, /ombre-indigo|cheetah-windrunner/i);
   assert.equal(element('#catalogue-pagination').innerHTML, '');
 
@@ -174,7 +182,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
       assert.doesNotMatch(element('#dialog-body').innerHTML, /<img /);
     }
     click('[data-product]', { dataset: { product: '59' } });
-    assert.match(element('#dialog-body').innerHTML, /Price at launch/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /Price at launch|£\d/);
     assert.doesNotMatch(element('#dialog-body').innerHTML, /£0|undefined|null/);
 
     click('[data-product]', { dataset: { product: '47' } });
@@ -224,7 +232,7 @@ test('approved aliases find unified entries without merging distinct product lin
   assert.ok(products.some(p => p.id === 56 && p.confirmedPrice === 79.99));
   assert.equal(filterProducts('All', 'STRIDE').length, 0);
   assert.equal(products.find(p => p.id === 19).confirmedPrice, 44.99);
-  assert.equal(products.find(p => p.id === 19).suggestedPrice, null);
+  assert.equal(Object.hasOwn(products.find(p => p.id === 19), 'suggestedPrice'), false);
   assert.equal(products.find(p => p.id === 34).confirmedPrice, 49.99);
   assert.equal(products.find(p => p.id === 19).colourways, 'Black/Green, Black/Red, Black/Grey, Navy/Blue, Olive/Black, White/Green');
   assert.match(products.find(p => p.id === 34).colourways, /Signature.*Pulse.*Performance.*Terrain/);
@@ -254,7 +262,7 @@ test('hardware prices buy complete approved set tiers without invented weight br
   assert.equal(tiers.length, 4);
   assert.deepEqual(tiers.map(p => p.confirmedPrice), [699.99, 599.99, 399.99, 299.99]);
   for (const p of tiers) {
-    assert.equal(p.suggestedPrice, null);
+    assert.equal(Object.hasOwn(p, 'suggestedPrice'), false);
     assert.equal(p.priceBasis, 'Complete 10–50kg set.');
     assert.match(p.specificationStatus, /increments, quantities and total set weight pending/);
     assert.match(p.notes, /not evidence of manufactured materials or verified performance/);
@@ -280,6 +288,7 @@ test('the complete public page excludes held imagery while retaining internal so
   // This covers the entire composed page, not just isolated catalogue sections.
   const source = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8')
     .replace(/^import .+;\r?\n/gm, '')
+    .replace(/^export /gm, '')
     .replaceAll('import.meta.env.DEV', 'false');
   const elements = new Map();
   const document = {
@@ -301,10 +310,14 @@ test('the complete public page excludes held imagery while retaining internal so
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       ourStorySection,
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
-      initCatalogueNavigation() {}, showProduct() {},
+      initCatalogueNavigation() {}, showProduct() {}, mountClientBag() { return { addToBag() {} }; },
     };
-    new Function('document', ...Object.keys(dependencies), source)(document, ...Object.values(dependencies));
-    const page = document.querySelector('#app').innerHTML;
+    const renderPage = new Function(
+      'document',
+      ...Object.keys(dependencies),
+      `${source}\nreturn renderStorefrontMarkup;`,
+    )(document, ...Object.values(dependencies));
+    const page = renderPage();
     assert.match(page, /DESIGN PREVIEW/);
     assert.match(page, /id="catalogue-archive"/);
     assert.doesNotMatch(page, /id="gallery-archive"|id="full-gallery"|DESIGN LIBRARY|IMAGE ARCHIVE/i);

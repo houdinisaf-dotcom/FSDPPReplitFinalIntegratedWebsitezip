@@ -73,9 +73,6 @@ export function mountBreezePreview({ root, product, variants }) {
         </button>
         <p class="breeze-preview__eyebrow">FSD <span aria-hidden="true">/</span> WOMEN’S MODEST ACTIVEWEAR</p>
         <h2 class="breeze-preview__title" id="${instanceId}-title">${escapeHTML(product.name)}</h2>
-        ${product.priceLabel ? `<p class="breeze-preview__reference">
-          <span>Reference price · ${escapeHTML(product.priceLabel)}</span>
-        </p>` : ''}
         <p class="breeze-preview__description" id="${instanceId}-description">
           A draft overshirt concept for FSD Women’s Modest Activewear. The overshirt is the item shown; other garments are styling context.
         </p>

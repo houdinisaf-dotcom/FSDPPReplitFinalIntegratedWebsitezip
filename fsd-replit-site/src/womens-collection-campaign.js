@@ -233,28 +233,10 @@ function resolveImage(id, context) {
 }
 
 function priceFor(product) {
-  if (!product.masterProductId) {
-    return {
-      display: 'Price at launch',
-      type: 'unset',
-      note: 'No price has been confirmed for this distinct product.',
-      approvedForSale: false,
-    };
-  }
-  const record = masterById.get(product.masterProductId);
-  if (!record || !record['Price (£) confirmed']) {
-    return {
-      display: 'Price at launch',
-      type: 'unset',
-      note: 'No confirmed price is available in the linked master record.',
-      approvedForSale: false,
-    };
-  }
   return {
-    display: `£${record['Price (£) confirmed']}`,
-    type: 'master-reference',
-    masterProductId: record.id,
-    note: 'Existing master-catalogue value for reference only; it is not approval to sell.',
+    display: '',
+    type: product.masterProductId ? 'master-reference' : 'unset',
+    note: '',
     approvedForSale: false,
   };
 }

@@ -43,7 +43,7 @@ test('FLEX catalogue values remain references; the brown-tone photos are not con
   const master = masterProducts.find(product => product.id === 40);
   assert.equal(master['Price (£) confirmed'], '49.99');
   assert.equal(master.Colourways, 'Black / Gold');
-  assert.equal(flex.price.display, '£49.99');
+  assert.equal(flex.price.display, '');
   assert.equal(flex.price.type, 'master-reference');
   assert.equal(flex.price.approvedForSale, false);
   assert.equal(flex.variants[1].approval, 'unconfirmed');
@@ -53,7 +53,8 @@ test('FLEX catalogue values remain references; the brown-tone photos are not con
 test('zip-neck top stays distinct from AEROFORGE and has no master price assigned', () => {
   const top = createWomensCollectionPreview('zip-neck').product;
   assert.equal(top.masterProductId, null);
-  assert.equal(top.price.display, 'Price at launch');
+  assert.equal(top.price.display, '');
+  assert.equal(top.price.note, '');
   assert.equal(top.variants.length, 6);
   assert.equal(top.variants.reduce((sum, variant) => sum + variant.images.length, 0), 12);
   assert.equal(masterProducts.find(product => product.id === 39).id, 39);
@@ -63,7 +64,7 @@ test('BREEZE boards are excluded and missing standalone colour images remain exp
   const breeze = createWomensCollectionPreview('breeze').product;
   const master = masterProducts.find(product => product.id === 49);
   assert.equal(master['Price (£) confirmed'], '64.99');
-  assert.equal(breeze.price.display, '£64.99');
+  assert.equal(breeze.price.display, '');
   assert.equal(breeze.price.approvedForSale, false);
   assert.equal(breeze.variants.length, 6);
   assert.equal(breeze.variants.filter(variant => variant.images.length > 0).length, 2);

@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { categories, filterProducts, products } from '../src/catalogue-data.js';
 import { createNavigationModel, getNavigationFeature, primaryNavigation } from '../src/site-navigation.js';
@@ -75,7 +76,7 @@ test('category menu items use exact existing catalogue categories', () => {
   }
 });
 
-test('feature images remain mapped to the selected collection instead of borrowing unrelated artwork', () => {
+test('mega-menu image previews use only explicit single-image bindings', () => {
   const mensIndex = menu[0].groups.findIndex(group => group.id === 'mens-luxury-performance');
   const conceptFeature = getNavigationFeature(menu[0], mensIndex, 1);
   assert.equal(conceptFeature.item, '2-in-1 Combat Training Shorts & Tanks');
@@ -85,13 +86,30 @@ test('feature images remain mapped to the selected collection instead of borrowi
   const hijabIndex = women.items.findIndex(item => item.title === 'Performance Hijabs');
   const womenIndex = menu[0].groups.indexOf(women);
   const hijabFeature = getNavigationFeature(menu[0], womenIndex, hijabIndex);
-  assert.ok(hijabFeature.imageSources.includes('/images/fsd-velocity-performance-sports-hijab.jpg'));
-  for (const imagePath of hijabFeature.imageSources) {
-    assert.ok(products.some(product => product.images?.some(image => image.src === imagePath)));
-  }
+  assert.deepEqual(hijabFeature.imageSources, []);
 
   assert.ok(women.items.some(item => item.title === 'Performance Hijabs'));
   assert.ok(women.items.some(item => item.title === 'Sports Hijabs'));
+
+  const bioLab = menu.find(section => section.id === 'bio-lab');
+  const nexusGroup = bioLab.groups[0];
+  const nexusIndex = nexusGroup.items.findIndex(item => item.record?.name === 'FSD NEXUS (smart ring)');
+  assert.ok(nexusIndex >= 0);
+  const nexusFeature = getNavigationFeature(bioLab, 0, nexusIndex);
+  assert.deepEqual(nexusFeature.imageSources, ['/fsd-assets/3daa9883cec9.webp']);
+  assert.equal(existsSync(new URL('../public/fsd-assets/3daa9883cec9.webp', import.meta.url)), true);
+
+  for (const section of menu) {
+    for (const [groupIndex, group] of section.groups.entries()) {
+      for (const [itemIndex] of group.items.entries()) {
+        const feature = getNavigationFeature(section, groupIndex, itemIndex);
+        assert.ok(feature.imageSources.length <= 1, `${section.label} / ${group.title} / ${feature.item} must not show a multi-image fallback`);
+        for (const imagePath of feature.imageSources) {
+          assert.match(imagePath, /^\/fsd-assets\/[^/]+\.webp$/i);
+        }
+      }
+    }
+  }
 });
 
 test('Bio-Lab and Hardware reuse current division groups and product records', () => {
@@ -123,7 +141,7 @@ test('weighted rope is an opt-in Hardware draft preview, not a published catalog
   assert.match(rope.description, /Eight colour editions in the FSD performance training collection/i);
   assert.equal(rope.productId, undefined);
   assert.equal(products.some(product => product.name === rope.title), false);
-  assert.deepEqual(getNavigationFeature(previewHardware, 0, ropeIndex).imageSources, [rope.featureImageSrc]);
+  assert.deepEqual(getNavigationFeature(previewHardware, 0, ropeIndex).imageSources, []);
 });
 
 test('the hooded-shell campaign proof is available only in the development preview menu', () => {
@@ -147,7 +165,7 @@ test('the hooded-shell campaign proof is available only in the development previ
   assert.match(shell.description, /Campaign imagery for the FSD Hooded Running Shell/i);
   assert.equal(shell.record, undefined);
   assert.equal(shell.productId, undefined);
-  assert.deepEqual(getNavigationFeature(previewCollections, previewCollections.groups.indexOf(previewMens), shellIndex).imageSources, [shell.featureImageSrc]);
+  assert.deepEqual(getNavigationFeature(previewCollections, previewCollections.groups.indexOf(previewMens), shellIndex).imageSources, []);
 });
 
 test('House destinations remain existing anchors and do not claim proposed locations are live', () => {

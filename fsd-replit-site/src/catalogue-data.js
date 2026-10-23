@@ -28,7 +28,6 @@ export const products = masterProducts
     alsoShowIn: p['Also show in'].split(';').map(s => s.trim()).filter(Boolean),
     audience: p.Audience,
     confirmedPrice: p['Price (£) confirmed'] === '' ? null : Number(p['Price (£) confirmed']),
-    suggestedPrice: p['Suggested price (£) – to confirm'] === '' ? null : Number(p['Suggested price (£) – to confirm']),
     colourways: p.Colourways,
     collection: p['Collection line'],
     imageStatus: p['Image status'],
@@ -89,9 +88,13 @@ export function priceInfo(p) {
   const format = value => new Intl.NumberFormat('en-GB', {
     style: 'currency', currency: 'GBP',
   }).format(value);
-  if (p.confirmedPrice !== null) return { label: '', value: format(p.confirmedPrice) };
-  if (p.suggestedPrice !== null) return { label: 'Expected', value: format(p.suggestedPrice) };
-  return { label: '', value: 'Price at launch' };
+  if ([43, 49].includes(Number(p?.id))) {
+    return { label: 'Reference only · not for sale', value: '' };
+  }
+  if (Number.isFinite(p?.confirmedPrice) && p.confirmedPrice > 0) {
+    return { label: '', value: format(p.confirmedPrice) };
+  }
+  return { label: '', value: '' };
 }
 
 export function safe(value) {
