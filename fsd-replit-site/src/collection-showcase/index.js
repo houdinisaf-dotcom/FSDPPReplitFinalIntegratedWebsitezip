@@ -1,6 +1,4 @@
-import { imageSwatchBackground, isHardwareVisualPreviewProduct, priceInfo } from '../catalogue-data.js';
-import { aegisGiletPreviewPath } from '../aegis-gilet-preview-path.js';
-import { crossfadeMappedImage } from '../catalogue-image-gallery.js';
+import { isHardwareVisualPreviewProduct, priceInfo } from '../catalogue-data.js';
 import { trackEvent } from '../analytics.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -142,61 +140,28 @@ function matchesGroup(product, group) {
 }
 
 function productCard(product) {
-  const isAegisPreview = import.meta.env.DEV && Number(product.id) === 46;
   const isHardwarePreview = isHardwareVisualPreviewProduct(product);
-  const productIdAttribute = isHardwarePreview ? '' : `data-product-id="${escapeHTML(product.id)}"`;
-  const imageOptions = Array.isArray(product.images) ? product.images : [];
-  const catalogueImage = imageOptions[0] || null;
-  const image = isAegisPreview
-    ? {
-      src: `${aegisGiletPreviewPath}media/front-three-quarter`,
-      label: 'Aegis campaign image',
-    }
-    : catalogueImage;
   const category = product.category || 'FSD COLLECTION';
   const audience = product.audience ? `<span>${escapeHTML(product.audience)}</span>` : '';
   const masterPrice = priceInfo(product);
   const referenceOnlyPrice = /reference only|not for sale/i.test(masterPrice.label || '');
-  const price = isAegisPreview || isHardwarePreview || referenceOnlyPrice
+  const price = isHardwarePreview || referenceOnlyPrice
     ? { label: '', value: '' }
     : masterPrice;
-  const colourways = Number(product.id) === 43 && import.meta.env.DEV
-    ? 'Black / Champagne Gold'
-    : product.colourways;
-  const description = product.coverage || product.priceBasis ||
-    (colourways ? `Colourways: ${colourways}` : '');
-  const media = image
-    ? isAegisPreview
-      ? `<a class="fsd-product-media fsd-product-media--aegis-preview" href="${aegisGiletPreviewPath}" aria-label="Explore ${escapeHTML(product.name)}"><img loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(image.label)}"><span>FSD AEGIS / CAMPAIGN</span></a>`
-        : `<div class="fsd-product-media"><img class="mapped-gallery-image" data-mapped-gallery-active="true" data-collection-card-image="${escapeHTML(product.id)}" loading="lazy" src="${escapeHTML(image.src)}" alt="${escapeHTML(product.name)}${image.label ? ` — ${escapeHTML(image.label)}` : ''}"></div>`
-    : `<div class="fsd-product-media fsd-product-media--placeholder" role="note">
-        <span class="fsd-placeholder-code" aria-hidden="true">FSD</span>
-        <strong>${escapeHTML(product.name)}</strong>
-      </div>`;
-  const imageSwatches = !isAegisPreview && imageOptions.length > 1
-    ? `<div class="fsd-product-swatches" role="group" aria-label="Choose an image of ${escapeHTML(product.name)}">
-        ${imageOptions.map((option, index) => {
-          const swatch = imageSwatchBackground(option.label);
-          return `<button type="button" data-collection-image-index="${index}" data-product-id="${escapeHTML(product.id)}"
-            aria-label="Show ${escapeHTML(option.label)}" aria-pressed="${index === 0}">
-            ${swatch ? `<span aria-hidden="true" style="--catalogue-swatch:${escapeHTML(swatch)}"></span>` : ''}
-            <span>${escapeHTML(option.label)}</span>
-          </button>`;
-        }).join('')}
-      </div>`
+  const description = !isHardwarePreview
+    ? product.coverage || product.priceBasis || product.colourways
     : '';
-  const productTitle = isAegisPreview
-    ? `<a class="fsd-aegis-preview-title" href="${aegisGiletPreviewPath}">${escapeHTML(product.name)}</a>`
-    : escapeHTML(product.name);
-  const productAction = `<button class="fsd-product-link" type="button" data-product-id="${escapeHTML(product.id)}">VIEW DETAILS <span aria-hidden="true">↗</span><span class="fsd-sr-only"> for ${escapeHTML(product.name)}</span></button>`;
-  return `<article class="fsd-product-card" ${productIdAttribute}>
-    ${media}
-    ${imageSwatches}
-    <div class="fsd-product-meta"><span>${escapeHTML(category)}</span>${audience}</div>
-    <h4>${productTitle}</h4>
-      ${description ? `<p class="fsd-product-description">${escapeHTML(description)}</p>` : ''}
-     ${price.label || price.value ? `<p class="fsd-product-reference">${price.label ? `${escapeHTML(price.label)} ` : ''}${price.value ? `<strong>${escapeHTML(price.value)}</strong>` : ''}</p>` : ''}
-    ${productAction}
+  return `<article class="fsd-product-card fsd-product-card--row">
+    <button class="fsd-product-row" type="button" data-product-id="${escapeHTML(product.id)}"
+      aria-label="View details for ${escapeHTML(product.name)}">
+      <span class="fsd-product-row__meta"><span>${escapeHTML(category)}</span>${audience}</span>
+      <span class="fsd-product-row__copy">
+        <strong>${escapeHTML(product.name)}</strong>
+        ${description ? `<span class="fsd-product-description">${escapeHTML(description)}</span>` : ''}
+      </span>
+      ${price.label || price.value ? `<span class="fsd-product-reference">${price.label ? `${escapeHTML(price.label)} ` : ''}${price.value ? `<strong>${escapeHTML(price.value)}</strong>` : ''}</span>` : ''}
+      <span class="fsd-product-row__action">VIEW DETAILS <span aria-hidden="true">↗</span></span>
+    </button>
   </article>`;
 }
 
@@ -400,21 +365,6 @@ export function mountCollectionShowcase({
       dialog.close();
       return;
     }
-    const collectionImageButton = event.target.closest('[data-collection-image-index]');
-    if (collectionImageButton && dialog.contains(collectionImageButton)) {
-      const selectedProduct = safeProducts.find(product =>
-        String(product.id) === collectionImageButton.dataset.productId);
-      const image = selectedProduct?.images?.[Number(collectionImageButton.dataset.collectionImageIndex)];
-      const card = collectionImageButton.closest('.fsd-product-card');
-      const mainImage = card?.querySelector('[data-collection-card-image]');
-      if (image && mainImage) {
-        crossfadeMappedImage(mainImage, image.src, `${selectedProduct.name} — ${image.label}`);
-        card.querySelectorAll('[data-collection-image-index]').forEach(button => {
-          button.setAttribute('aria-pressed', String(button === collectionImageButton));
-        });
-      }
-      return;
-    }
     const tab = event.target.closest('[data-group-index]');
     if (tab && dialog.contains(tab)) {
       activeGroupIndex = Number(tab.dataset.groupIndex);
@@ -434,8 +384,7 @@ export function mountCollectionShowcase({
     if (productButton && dialog.contains(productButton)) {
       const selectedProduct = safeProducts.find(product => String(product.id) === productButton.dataset.productId);
       if (!selectedProduct) return;
-      afterClose = () => onProductSelect(selectedProduct.id);
-      dialog.close();
+      onProductSelect(selectedProduct.id);
       return;
     }
     if (event.target.closest('[data-explore-collection]') && activeDivision) {

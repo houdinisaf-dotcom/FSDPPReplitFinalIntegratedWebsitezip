@@ -9,7 +9,7 @@ let activeAudience = 'All';
 let activeCollection = 'All';
 let query = '';
 let sort = 'featured';
-let view = 'grid';
+let view = 'list';
 let page = 1;
 let activeDialogProduct = null;
 let dialogReturnFocus = null;
@@ -22,8 +22,7 @@ const sortOptions = [
   ['price-asc', 'Price: low to high'],
   ['price-desc', 'Price: high to low'],
 ];
-const viewOptions = ['grid', 'visual'];
-const failedProductImageIds = new Set();
+const viewOptions = ['list'];
 const isBrowser = () => typeof window !== 'undefined' && Boolean(window.history && window.location);
 const scrollBehavior = () => typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   ? 'auto'
@@ -55,7 +54,7 @@ function readStateFromURL() {
     collection: shopCollections.some(item => item.id === requestedCollection) ? requestedCollection : 'All',
     query: params.get('q') || '',
     sort: sortOptions.some(([value]) => value === requestedSort) ? requestedSort : 'featured',
-    view: viewOptions.includes(requestedView) ? requestedView : 'grid',
+    view: viewOptions.includes(requestedView) ? requestedView : 'list',
     page: Math.max(1, Number.parseInt(params.get('page') || '1', 10) || 1),
     productId: Number.parseInt(params.get('product') || '', 10) || null,
   };
@@ -103,7 +102,7 @@ function writeStateToURL({ mode = 'replace', productId = null } = {}) {
     ['collection', activeCollection, 'All'],
     ['q', query, ''],
     ['sort', sort, 'featured'],
-    ['view', view, 'grid'],
+    ['view', view, 'list'],
     ['page', String(page), '1'],
   ];
   for (const [key, value, defaultValue] of values) {
@@ -158,7 +157,7 @@ function activeFilterMarkup() {
   if (activeCategory !== 'All') chips.push(['category', activeCategory, activeCategory]);
   if (activeAudience !== 'All') chips.push(['audience', activeAudience, activeAudience]);
   if (query.trim()) chips.push(['q', query, `Search: ${query}`]);
-  const hasOtherState = sort !== 'featured' || view !== 'grid';
+  const hasOtherState = sort !== 'featured';
   const wrapper = document.querySelector('#catalogue-active-filters');
   if (!wrapper) return;
   wrapper.innerHTML = chips.length || hasOtherState
@@ -166,7 +165,7 @@ function activeFilterMarkup() {
         ${chips.map(([key, value, label]) => `<button type="button" class="catalogue-chip" data-remove-filter="${safe(key)}" data-filter-value="${safe(value)}">
           ${safe(label)} <span aria-hidden="true">×</span><span class="sr-only">Remove filter</span>
         </button>`).join('')}
-        ${hasOtherState ? `<span class="catalogue-view-state">${sort !== 'featured' ? `SORT: ${safe(sortOptions.find(([value]) => value === sort)?.[1] || sort)}` : ''}${view === 'visual' ? ' · VISUAL VIEW' : ''}</span>` : ''}
+        ${hasOtherState ? `<span class="catalogue-view-state">SORT: ${safe(sortOptions.find(([value]) => value === sort)?.[1] || sort)}</span>` : ''}
         <button type="button" class="catalogue-clear-all" data-clear-filters>Clear all</button>
       </div>`
     : '';
@@ -190,33 +189,42 @@ function displayPrice(product) {
     : price;
 }
 
+function productColourwayOptions(product) {
+  return typeof product.colourways === 'string'
+    ? product.colourways.split(/\s*;\s*/).map(option => option.trim()).filter(Boolean)
+    : [];
+}
+
+function normalizedImageLabel(value) {
+  return String(value || '').toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function imageIndexForColourway(images, colourway) {
+  const target = normalizedImageLabel(colourway);
+  return images.findIndex(image => normalizedImageLabel(image.label) === target);
+}
+
 function card(product) {
   const hardwarePreview = isHardwareVisualPreviewProduct(product);
   const price = displayPrice(product);
-  const images = Array.isArray(product.images) ? product.images : [];
-  const image = images[0];
-  const imageFailed = failedProductImageIds.has(String(product.id));
+  const summary = !hardwarePreview
+    ? product.colourways || product.priceBasis || product.coverage
+    : '';
+  const priceMarkup = price.label || price.value
+    ? `<span class="product-row__price">${price.label ? `<small>${safe(price.label)}</small>` : ''}${price.value ? `<strong>${safe(price.value)}</strong>` : ''}</span>`
+    : '';
   return `<article class="product-card">
-    <div class="product-image" data-catalogue-card-stage>${image && !imageFailed
-      ? `<img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-card-image="${product.id}" loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}"/>`
-      : imagePlaceholder(product, imageFailed)}</div>
-    ${images.length > 1 ? `<div class="catalogue-card-swatches" role="group" aria-label="Choose an image of ${safe(product.name)}">
-      ${images.map((option, index) => {
-        const swatch = imageSwatchBackground(option.label);
-        return `<button type="button" data-catalogue-card-image-index="${index}" data-product-id="${product.id}"
-          aria-label="Show ${safe(option.label)}" aria-pressed="${index === 0}">
-          ${swatch ? `<span class="catalogue-swatch-dot" aria-hidden="true" style="--catalogue-swatch:${safe(swatch)}"></span>` : ''}
-          <span>${safe(option.label)}</span>
-        </button>`;
-      }).join('')}
-    </div>` : ''}
-    <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>
-    <h3>${safe(product.name)}</h3>
-     ${!hardwarePreview && product.colourways ? `<p class="catalogue-colourways">${safe(product.colourways)}</p>` : ''}
-    ${price.label || price.value ? `<div class="catalogue-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
-    ${!hardwarePreview && product.priceBasis ? `<p class="catalogue-colourways">${safe(product.priceBasis)}</p>` : ''}
-    ${!hardwarePreview && canAddToBag(product) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${product.id}" aria-label="Add ${safe(product.name)} to bag">ADD TO BAG</button>` : ''}
-    <button class="text-link" data-product="${product.id}">VIEW DETAILS ↗<span class="sr-only"> for ${safe(product.name)}</span></button>
+    <button class="product-row__trigger" type="button" data-product="${product.id}"
+      data-can-add-to-bag="${canAddToBag(product)}" aria-label="View details for ${safe(product.name)}">
+      <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
+      <span class="product-row__copy">
+        <span class="product-row__meta"><span>${safe(product.category)}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}</span>
+        <h3>${safe(product.name)}</h3>
+        ${summary ? `<span class="product-row__summary">${safe(summary)}</span>` : ''}
+      </span>
+      ${priceMarkup}
+      <span class="product-row__action">VIEW DETAILS <span aria-hidden="true">↗</span></span>
+    </button>
   </article>`;
 }
 
@@ -244,17 +252,10 @@ export function catalogueSection() {
       </select></label>
       <label>Find a product<input id="search" type="search" placeholder="Name, colourway or alternate name…" aria-label="Search products"/></label>
       </div>
-      <div class="catalogue-control-bottom">
-        <div class="catalogue-view-controls" role="group" aria-label="Product display">
-          <span>VIEW</span>
-          <button type="button" data-catalogue-view="grid" aria-pressed="true">Grid</button>
-          <button type="button" data-catalogue-view="visual" aria-pressed="false">Visual</button>
-        </div>
-        <div id="catalogue-active-filters"></div>
-      </div>
+      <div class="catalogue-control-bottom"><div id="catalogue-active-filters"></div></div>
     </div>
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>
-    <div class="product-grid" id="catalogue-grid" data-view="grid"></div>
+    <div class="product-grid" id="catalogue-grid" data-view="list"></div>
     <nav class="catalogue-pagination" id="catalogue-pagination" aria-label="Product catalogue pages"></nav>
   </section>`;
 }
@@ -307,7 +308,7 @@ function clearFilters({ keepView = false } = {}) {
   activeCollection = 'All';
   query = '';
   sort = 'featured';
-  if (!keepView) view = 'grid';
+  view = 'list';
   page = 1;
 }
 
@@ -317,7 +318,7 @@ export function navigateCatalogue({
   collection = 'All',
   query: nextQuery = '',
   sort: nextSort = 'featured',
-  view: nextView = 'grid',
+  view: nextView = 'list',
 } = {}) {
   if (category !== 'All' && !categories.includes(category)) return false;
   if (audience !== 'All' && !audiences.includes(audience)) return false;
@@ -327,7 +328,7 @@ export function navigateCatalogue({
   activeCollection = collection;
   query = nextQuery;
   sort = sortOptions.some(([value]) => value === nextSort) ? nextSort : 'featured';
-  view = viewOptions.includes(nextView) ? nextView : 'grid';
+  view = viewOptions.includes(nextView) ? nextView : 'list';
   page = 1;
   openShopArchive();
   renderResults();
@@ -348,6 +349,12 @@ export function showProduct(id, { fromHistory = false } = {}) {
     const currentProductId = Number.parseInt(new URLSearchParams(window.location.search).get('product') || '', 10);
     if (currentProductId !== p.id) {
       openShopArchive();
+      const returnUrl = new URL(window.location.href);
+      returnUrl.searchParams.delete('product');
+      window.history.replaceState({
+        ...(window.history.state || {}),
+        fsdShop: { ...currentState(), productId: null, scrollY: window.scrollY || 0 },
+      }, '', returnUrl);
       writeStateToURL({ mode: 'push', productId: p.id });
     }
   }
@@ -358,8 +365,15 @@ export function showProduct(id, { fromHistory = false } = {}) {
   const detail = (label, value) => value ? `<dt>${label}</dt><dd>${safe(value)}</dd>` : '';
   const confirmedAlias = /^confirmed\b/i.test(p.aliasStatus) ? p.alias : '';
   const images = Array.isArray(p.images) ? p.images : [];
+  const colourwayOptions = hardwarePreview ? [] : productColourwayOptions(p);
+  const colourwayImageIndexes = colourwayOptions.map(option => imageIndexForColourway(images, option));
+  const allColourwaysHaveImages = colourwayOptions.length > 1
+    && images.length === colourwayOptions.length
+    && colourwayImageIndexes.every(index => index >= 0)
+    && new Set(colourwayImageIndexes).size === colourwayOptions.length;
+  const initialImageIndex = allColourwaysHaveImages ? colourwayImageIndexes[0] : 0;
   const dialogBody = document.querySelector('#dialog-body');
-  const initialImage = images[0];
+  const initialImage = images[initialImageIndex];
   const detailRows = hardwarePreview
     ? detail('Category', p.category)
     : [
@@ -381,10 +395,10 @@ export function showProduct(id, { fromHistory = false } = {}) {
           </div>
           <figcaption data-catalogue-main-caption>${safe(initialImage.label)}</figcaption>
         </figure>
-        ${images.length > 1 ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Select an image of ${safe(p.name)}">
+        ${images.length > 1 && !allColourwaysHaveImages ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Select an image view of ${safe(p.name)}">
           ${images.map((image, index) => `<button type="button" class="catalogue-selector__thumb"
             data-catalogue-image-index="${index}" aria-label="Show ${safe(image.label)}"
-            aria-pressed="${index === 0}">
+            aria-pressed="${index === initialImageIndex}">
             <img src="${safe(image.src)}" alt="" loading="lazy"/><span>${safe(image.label)}</span>
           </button>`).join('')}
         </div>` : ''}
@@ -402,6 +416,21 @@ export function showProduct(id, { fromHistory = false } = {}) {
     <dl class="catalogue-details">
       ${detailRows}
       </dl>
+       ${colourwayOptions.length > 1 ? `<fieldset class="catalogue-colourway-selector">
+         <legend>COLOURWAY</legend>
+         <div class="catalogue-colourway-selector__options" role="group" aria-label="Choose a colourway">
+           ${colourwayOptions.map((option, index) => {
+             const swatch = imageSwatchBackground(option);
+             return `<button type="button" data-catalogue-colourway-index="${index}"
+               data-catalogue-colourway-image-index="${colourwayImageIndexes[index]}"
+               aria-pressed="${index === 0}">
+               ${swatch ? `<span class="catalogue-swatch-dot" aria-hidden="true" style="--catalogue-swatch:${safe(swatch)}"></span>` : ''}
+               <span>${safe(option)}</span>
+             </button>`;
+           }).join('')}
+         </div>
+         <p data-catalogue-selected-colourway aria-live="polite">${safe(colourwayOptions[0])}</p>
+       </fieldset>` : ''}
       ${hardwarePreview ? '' : `<div data-product-specifications-root data-product-id="${safe(p.id)}"></div>`}
       ${price.label || price.value ? `<div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
      ${!hardwarePreview && canAddToBag(p) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${p.id}" aria-label="Add ${safe(p.name)} to bag">ADD TO BAG</button>` : ''}
@@ -503,6 +532,27 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     writeStateToURL({ mode: 'push' });
   };
 
+  const selectDialogImage = index => {
+    const image = activeDialogProduct?.images?.[index];
+    const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
+    const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
+    if (!image || !mainImage || !caption) return;
+    crossfadeMappedImage(mainImage, image.src, `${activeDialogProduct.name} — ${image.label}`);
+    caption.textContent = image.label;
+    dialogBody.querySelectorAll('[data-catalogue-image-index]').forEach(button => {
+      button.setAttribute('aria-pressed', String(Number(button.dataset?.catalogueImageIndex) === index));
+    });
+    const matchedColourway = productColourwayOptions(activeDialogProduct)
+      .findIndex(option => imageIndexForColourway(activeDialogProduct.images, option) === index);
+    if (matchedColourway >= 0) {
+      dialogBody.querySelectorAll('[data-catalogue-colourway-index]').forEach(button => {
+        button.setAttribute('aria-pressed', String(Number(button.dataset?.catalogueColourwayIndex) === matchedColourway));
+      });
+      const selectedColourway = dialogBody.querySelector('[data-catalogue-selected-colourway]');
+      if (selectedColourway) selectedColourway.textContent = productColourwayOptions(activeDialogProduct)[matchedColourway];
+    }
+  };
+
   category.addEventListener('change', () => {
     activeCategory = category.value;
     commitFilterChange();
@@ -534,36 +584,24 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   search.addEventListener('change', () => { searchEditing = false; clearTimeout(searchCommitTimer); });
 
   document.addEventListener('click', event => {
-    const cardImageButton = event.target.closest('[data-catalogue-card-image-index]');
-    if (cardImageButton) {
-      const product = products.find(item => String(item.id) === cardImageButton.dataset.productId);
-      const index = Number(cardImageButton.dataset.catalogueCardImageIndex);
-      const image = product?.images?.[index];
-      const cardElement = cardImageButton.closest('.product-card');
-      const mainImage = cardElement?.querySelector('[data-catalogue-card-image]');
-      if (image && mainImage) {
-        crossfadeMappedImage(mainImage, image.src, `${product.name} — ${image.label}`);
-        cardElement.querySelectorAll('[data-catalogue-card-image-index]').forEach(button => {
-          button.setAttribute('aria-pressed', String(button === cardImageButton));
-        });
-      }
+    const colourwayButton = event.target.closest('[data-catalogue-colourway-index]');
+    if (colourwayButton && dialogBody.contains(colourwayButton) && activeDialogProduct) {
+      const index = Number(colourwayButton.dataset.catalogueColourwayIndex);
+      const colourway = productColourwayOptions(activeDialogProduct)[index];
+      if (!colourway) return;
+      dialogBody.querySelectorAll('[data-catalogue-colourway-index]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button === colourwayButton));
+      });
+      const selectedColourway = dialogBody.querySelector('[data-catalogue-selected-colourway]');
+      if (selectedColourway) selectedColourway.textContent = colourway;
+      const imageIndex = Number(colourwayButton.dataset.catalogueColourwayImageIndex);
+      if (imageIndex >= 0) selectDialogImage(imageIndex);
       return;
     }
     const imageButton = event.target.closest('[data-catalogue-image-index]');
     if (imageButton && dialogBody.contains(imageButton) && activeDialogProduct) {
       const index = Number(imageButton.dataset.catalogueImageIndex);
-      const image = activeDialogProduct.images?.[index];
-      if (image) {
-        const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
-        const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
-        if (mainImage && caption) {
-          crossfadeMappedImage(mainImage, image.src, `${activeDialogProduct.name} — ${image.label}`);
-          caption.textContent = image.label;
-          dialogBody.querySelectorAll('[data-catalogue-image-index]').forEach(button => {
-            button.setAttribute('aria-pressed', String(button === imageButton));
-          });
-        }
-      }
+      selectDialogImage(index);
       return;
     }
     if (event.target.closest('[data-catalogue-back]')) {
@@ -603,7 +641,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     }
     const viewButton = event.target.closest('[data-catalogue-view]');
     if (viewButton) {
-      view = viewOptions.includes(viewButton.dataset.catalogueView) ? viewButton.dataset.catalogueView : 'grid';
+      view = viewOptions.includes(viewButton.dataset.catalogueView) ? viewButton.dataset.catalogueView : 'list';
       page = 1;
       renderResults();
       writeStateToURL({ mode: 'push' });
@@ -635,12 +673,6 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       search.focus();
     }
   });
-  document.addEventListener('error', event => {
-    const image = event.target.closest?.('[data-catalogue-card-image]');
-    if (!image) return;
-    failedProductImageIds.add(String(image.dataset.catalogueCardImage));
-    renderResults();
-  }, true);
   document.querySelector('#close-dialog').addEventListener('click', closeProductFromUI);
   dialog.addEventListener('cancel', event => {
     event.preventDefault();
@@ -664,7 +696,9 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       document.dispatchEvent(new CustomEvent('fsd:product-specifications-close'));
     }
     activeDialogProduct = null;
-    document.documentElement?.classList?.remove('fsd-modal-open');
+    if (!document.querySelectorAll('dialog[open]').length) {
+      document.documentElement?.classList?.remove('fsd-modal-open');
+    }
     focusTarget?.focus?.({ preventScroll: true });
     dialogReturnFocus = null;
   });

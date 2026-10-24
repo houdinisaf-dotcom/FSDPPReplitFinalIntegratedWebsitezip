@@ -145,7 +145,9 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
       (element('#catalogue-grid').innerHTML.match(/class="product-card"/g) ?? []).length,
       initialPageCount,
     );
-    assert.ok(element('#catalogue-grid').innerHTML.includes('class="catalogue-placeholder"'));
+    assert.match(element('#catalogue-grid').innerHTML, /class="product-row__trigger"/);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /class="product-image"|<img\b/);
+    assert.equal(element('#catalogue-grid').dataset.view, 'list');
     assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
 
     element('#catalogue-category').value = 'Smart Tech';
@@ -162,7 +164,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     );
     assert.equal(
       (element('#catalogue-grid').innerHTML.match(/class="catalogue-placeholder"/g) ?? []).length,
-      smartTechCount,
+      0,
     );
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
     element('#search').value = 'no match at all';
@@ -185,9 +187,9 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     click('[data-product]', { dataset: { product: '10' } });
     assert.equal(element('#product-dialog').open, true);
     assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
-    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 3);
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-colourway-index/g) ?? []).length, 3);
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 0);
     for (const image of products.find(p => p.id === 10).images) {
-      assert.ok(element('#dialog-body').innerHTML.includes(image.src));
       assert.ok(element('#dialog-body').innerHTML.includes(image.label));
     }
     assert.doesNotMatch(element('#dialog-body').innerHTML, /design concept/i);
@@ -197,22 +199,27 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     const dialogBody = element('#dialog-body');
     const mainImage = {};
     const mainCaption = {};
-    const thumbnailButtons = [0, 1, 2].map(() => ({ setAttribute() {} }));
+    const selectorButtons = [0, 1, 2].map(() => ({ setAttribute() {} }));
     dialogBody.contains = () => true;
-    dialogBody.querySelector = selector => selector === '[data-catalogue-main-image]' ? mainImage : mainCaption;
-    dialogBody.querySelectorAll = () => thumbnailButtons;
-    click('[data-catalogue-image-index]', {
-      dataset: { catalogueImageIndex: '1' },
+    const selectedColourway = { textContent: '' };
+    dialogBody.querySelector = selector => selector === '[data-catalogue-main-image]'
+      ? mainImage
+      : selector === '[data-catalogue-selected-colourway]' ? selectedColourway : mainCaption;
+    dialogBody.querySelectorAll = () => selectorButtons;
+    click('[data-catalogue-colourway-index]', {
+      dataset: { catalogueColourwayIndex: '1', catalogueColourwayImageIndex: '1' },
       setAttribute() {},
     });
     assert.equal(mainImage.src, products.find(p => p.id === 10).images[1].src);
     assert.equal(mainCaption.textContent, products.find(p => p.id === 10).images[1].label);
+    assert.equal(selectedColourway.textContent, products.find(p => p.id === 10).images[1].label);
 
     handlers.get('#close-dialog:click')();
     assert.equal(element('#product-dialog').open, false);
     click('[data-product]', { dataset: { product: '1' } });
     assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
-    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 2);
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-colourway-index/g) ?? []).length, 2);
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 0);
     assert.match(element('#dialog-body').innerHTML, /Vintage indigo fading to jet black/);
     assert.match(element('#dialog-body').innerHTML, /Electric cobalt fading to jet black/);
     for (const id of [42, 45, 60, 61, 62, 63, 65]) {

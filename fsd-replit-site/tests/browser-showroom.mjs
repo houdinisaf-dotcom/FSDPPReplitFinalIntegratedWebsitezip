@@ -359,6 +359,12 @@ try {
     ['69', '70', '71', '72'],
   );
   assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog .fsd-product-card").length'), 4);
+  await click('#fsd-showcase-dialog [data-product-id="69"]');
+  await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  assert.equal(await evaluate('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")'), true);
+  assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
   assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-showcase-empty") === null'), true);
   assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-placeholder-kicker") === null'));
   assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog .fsd-product-link--pending").length'), 0);
