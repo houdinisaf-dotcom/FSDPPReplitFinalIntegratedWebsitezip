@@ -537,15 +537,13 @@ try {
     search.dispatchEvent(new Event("input", { bubbles: true }));
   })()`);
   await waitFor('document.querySelector("#catalogue-count").textContent.includes("of 1 product") && document.querySelector("#catalogue-grid [data-product=\\"43\\"]")');
-  await click('[data-catalogue-view="visual"]');
-  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelector("[data-catalogue-view=\\"visual\\"]").getAttribute("aria-pressed") === "true"');
+  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && !document.querySelector("[data-catalogue-view=\\"visual\\"]")');
   assert.deepEqual(await evaluate('Object.fromEntries(new URLSearchParams(location.search))'), {
     category: 'Modest Activewear',
     audience: 'Women’s',
     collection: 'womens-modest-combat',
     q: 'FSD Velocity Performance Sports Hijab',
     sort: 'price-asc',
-    view: 'visual',
   });
   await click('#catalogue-active-filters [data-remove-filter="audience"]');
   await waitFor('document.querySelector("#catalogue-audience").value === "All" && !new URLSearchParams(location.search).has("audience")');
@@ -554,10 +552,9 @@ try {
     audience.value = "Women’s";
     audience.dispatchEvent(new Event("change", { bubbles: true }));
   })()`);
-  await click('[data-catalogue-view="visual"]');
   await send('Page.reload');
   await waitFor('performance.getEntriesByType("navigation")[0]?.type === "reload" && document.readyState === "complete" && document.querySelector("#catalogue-count")');
-  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelector("#catalogue-count")?.textContent.includes("of 1 product")');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#catalogue-grid").dataset.view === "list" && document.querySelector("#catalogue-count")?.textContent.includes("of 1 product")');
   await evaluate(`(() => {
     const search = document.querySelector("#search");
     search.value = "FSD product that does not exist";
@@ -565,15 +562,9 @@ try {
   })()`);
   await waitFor('document.querySelector("#catalogue-count").textContent === "No matching products" && document.querySelector("#catalogue-grid [data-clear-filters]")');
   await click('#catalogue-grid [data-clear-filters]');
-  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "grid"');
+  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "list"');
   await assertNoHorizontalPageScroll();
-  const brokenImage = await evaluate(`(() => {
-    const image = document.querySelector("#catalogue-grid [data-catalogue-card-image]");
-    if (!image) return false;
-    image.dispatchEvent(new Event("error", { bubbles: true }));
-    return Boolean(document.querySelector("#catalogue-grid .catalogue-placeholder"));
-  })()`);
-  assert.equal(brokenImage, true, 'A failed catalogue image should fall back to an explicit placeholder.');
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid img").length === 0 && document.querySelectorAll("#catalogue-grid .product-card").length === document.querySelectorAll("#catalogue-grid .product-row__trigger").length'), true, 'The catalogue should stay in a compact text-row view.');
 
   await click('.fsd-home-primary');
   await waitFor('location.hash === "#universe" && document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"universe\\"]").getAttribute("aria-current") === "page"');
@@ -812,7 +803,8 @@ try {
   await click(`#product-dialog [data-bag-add="${addableProductId}"]`);
   const addedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_added_to_bag")');
   assert.equal(addedProductEvent?.data?.product_id, Number(addableProductId));
-  await key('Escape');
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 8, y: 8, button: 'left', clickCount: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 8, y: 8, button: 'left', clickCount: 1 });
   await waitFor('!document.querySelector("#product-dialog")?.open');
   await waitFor(`Math.abs(window.scrollY - ${catalogueReturnScrollY}) < 4`);
   await click('[data-bag-open]');

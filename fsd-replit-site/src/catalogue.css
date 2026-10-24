@@ -74,9 +74,9 @@
 .catalogue-dialog-images figcaption { padding: 10px; color: #555c66; font-size: 12px; }
 .catalogue-dialog-images .catalogue-placeholder { min-height: 370px; }
 #product-dialog {
-  width: min(1060px, calc(100vw - 36px));
+  width: min(1260px, calc(100vw - 36px));
   max-width: none;
-  max-height: min(850px, calc(100dvh - 32px));
+  max-height: min(940px, calc(100dvh - 32px));
   overflow: auto;
   overscroll-behavior: contain;
   border: 1px solid rgba(205, 179, 128, .3);
@@ -96,8 +96,8 @@
   cursor: pointer;
 }
 #dialog-body {
-  grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
-  min-height: 500px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(350px, .8fr);
+  min-height: min(650px, calc(100dvh - 48px));
 }
 #dialog-body .catalogue-selector__visual {
   display: flex;
@@ -111,7 +111,7 @@
   display: grid;
   min-height: 0;
   flex: 1;
-  grid-template-rows: minmax(280px, 1fr) auto;
+  grid-template-rows: minmax(420px, 1fr) auto;
   margin: 0;
 }
 #dialog-body .catalogue-selector__image-stage {
@@ -123,7 +123,7 @@
 #dialog-body .catalogue-selector__main img {
   width: 100%;
   height: 100%;
-  max-height: 600px;
+  max-height: 760px;
   object-fit: contain;
   background: #0f1011;
 }
@@ -365,9 +365,9 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
   .product-grid[data-view="visual"] .product-image { min-height: 340px; }
   #product-dialog { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); }
   #dialog-body { grid-template-columns: 1fr; }
-  #dialog-body .catalogue-selector__visual { min-height: 310px; padding: 14px; }
-  #dialog-body .catalogue-selector__main { grid-template-rows: minmax(200px, 36vh) auto; }
-  #dialog-body .catalogue-selector__main img { max-height: 42vh; }
+  #dialog-body .catalogue-selector__visual { min-height: 360px; padding: 12px; }
+  #dialog-body .catalogue-selector__main { grid-template-rows: minmax(260px, 45vh) auto; }
+  #dialog-body .catalogue-selector__main img { max-height: 52vh; }
   #dialog-body .catalogue-selector__visual--empty { min-height: 260px; }
   #dialog-body .catalogue-selector__visual--empty .catalogue-placeholder { min-height: 240px; }
   #dialog-body .dialog-copy { padding: 28px 22px; }

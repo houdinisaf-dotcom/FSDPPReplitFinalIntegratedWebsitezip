@@ -1,0 +1,15 @@
+@import './_shared/style.css';
+@import './_shared/catalogue.css';
+@import './_shared/showroom.css';
+@import './_shared/visual-system.css';
+
+.fsd-catalogue-preview {
+  min-height: 100vh;
+  padding: clamp(16px, 3vw, 40px);
+  background: #0c0d0f;
+}
+
+.fsd-catalogue-preview > details {
+  max-width: 1480px;
+  margin: 0 auto;
+}

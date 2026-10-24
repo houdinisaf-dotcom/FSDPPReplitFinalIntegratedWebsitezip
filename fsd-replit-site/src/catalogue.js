@@ -2,6 +2,7 @@ import { audiences, categories, imageSwatchBackground, products, filterProducts,
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage } from './catalogue-image-gallery.js';
 import { trackEvent } from './analytics.js';
+import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -13,6 +14,7 @@ let view = 'list';
 let page = 1;
 let activeDialogProduct = null;
 let dialogReturnFocus = null;
+let dialogReturnFocusIsExplicit = false;
 let searchEditing = false;
 let searchCommitTimer = null;
 
@@ -180,13 +182,23 @@ function imagePlaceholder(product, failed = false) {
 }
 
 function displayPrice(product) {
-  if (isHardwareVisualPreviewProduct(product)) {
+  if (isHardwareVisualPreviewProduct(product) || isAegisPrivateProof(product)) {
     return { label: '', value: '' };
   }
   const price = priceInfo(product);
   return /reference only|not for sale/i.test(price.label || '')
     ? { label: '', value: '' }
     : price;
+}
+
+function isAegisPrivateProof(product) {
+  return typeof import.meta.env !== 'undefined'
+    && import.meta.env.DEV
+    && Number(product?.id) === 46;
+}
+
+function canShowBagAction(product) {
+  return !isAegisPrivateProof(product) && canAddToBag(product);
 }
 
 function productColourwayOptions(product) {
@@ -215,7 +227,7 @@ function card(product) {
     : '';
   return `<article class="product-card">
     <button class="product-row__trigger" type="button" data-product="${product.id}"
-      data-can-add-to-bag="${canAddToBag(product)}" aria-label="View details for ${safe(product.name)}">
+      data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
       <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
       <span class="product-row__copy">
         <span class="product-row__meta"><span>${safe(product.category)}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}</span>
@@ -341,7 +353,7 @@ export function navigateCatalogue({
   return true;
 }
 
-export function showProduct(id, { fromHistory = false } = {}) {
+export function showProduct(id, { fromHistory = false, returnFocus = null } = {}) {
   const p = products.find(product => product.id === id);
   if (!p) return;
   const dialog = document.querySelector('#product-dialog');
@@ -358,13 +370,18 @@ export function showProduct(id, { fromHistory = false } = {}) {
       writeStateToURL({ mode: 'push', productId: p.id });
     }
   }
-  if (!activeDialogProduct) dialogReturnFocus = document.activeElement;
+  if (!activeDialogProduct) {
+    dialogReturnFocus = returnFocus || document.activeElement;
+    dialogReturnFocusIsExplicit = Boolean(returnFocus);
+  }
   activeDialogProduct = p;
   const hardwarePreview = isHardwareVisualPreviewProduct(p);
   const price = displayPrice(p);
   const detail = (label, value) => value ? `<dt>${label}</dt><dd>${safe(value)}</dd>` : '';
   const confirmedAlias = /^confirmed\b/i.test(p.aliasStatus) ? p.alias : '';
-  const images = Array.isArray(p.images) ? p.images : [];
+  const images = isAegisPrivateProof(p)
+    ? [{ label: 'Aegis campaign image', src: `${aegisGiletPreviewPath}media/front-three-quarter` }]
+    : Array.isArray(p.images) ? p.images : [];
   const colourwayOptions = hardwarePreview ? [] : productColourwayOptions(p);
   const colourwayImageIndexes = colourwayOptions.map(option => imageIndexForColourway(images, option));
   const allColourwaysHaveImages = colourwayOptions.length > 1
@@ -433,7 +450,7 @@ export function showProduct(id, { fromHistory = false } = {}) {
        </fieldset>` : ''}
       ${hardwarePreview ? '' : `<div data-product-specifications-root data-product-id="${safe(p.id)}"></div>`}
       ${price.label || price.value ? `<div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
-     ${!hardwarePreview && canAddToBag(p) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${p.id}" aria-label="Add ${safe(p.name)} to bag">ADD TO BAG</button>` : ''}
+     ${!hardwarePreview && canShowBagAction(p) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${p.id}" aria-label="Add ${safe(p.name)} to bag">ADD TO BAG</button>` : ''}
     </div>`;
   if (!hardwarePreview && typeof document.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
     document.dispatchEvent(new CustomEvent('fsd:product-specifications-open', {
@@ -453,6 +470,7 @@ export function showProduct(id, { fromHistory = false } = {}) {
 
 function closeProductFromUI() {
   if (!activeDialogProduct) return;
+  const dialog = document.querySelector('#product-dialog');
   if (isBrowser()) {
     const params = new URLSearchParams(window.location.search);
     const urlProduct = Number.parseInt(params.get('product') || '', 10);
@@ -469,7 +487,7 @@ function closeProductFromUI() {
       fsdShop: { ...currentState(), productId: null, scrollY: window.scrollY || 0 },
     }, '', url);
   }
-  document.querySelector('#product-dialog')?.close();
+  dialog?.close();
 }
 
 function closeProductForNewDestination() {
@@ -628,7 +646,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     }
     const product = event.target.closest('[data-product]');
     if (product) {
-      onProductSelect(Number(product.dataset.product));
+      onProductSelect(Number(product.dataset.product), product);
       return;
     }
     const categoryLink = event.target.closest('[data-category-link]');
@@ -679,8 +697,24 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     closeProductFromUI();
   });
   dialog.addEventListener('click', event => {
-    if (event.target === dialog) closeProductFromUI();
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    const clickedOutsideCard = event.clientX < bounds.left
+      || event.clientX > bounds.right
+      || event.clientY < bounds.top
+      || event.clientY > bounds.bottom;
+    if (clickedOutsideCard) closeProductFromUI();
   });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const productDialog = document.querySelector('#product-dialog');
+    const hasOpenParentDialog = [...document.querySelectorAll('dialog[open]')]
+      .some(openDialog => openDialog !== productDialog);
+    if (!productDialog?.open || !hasOpenParentDialog) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    closeProductFromUI();
+  }, true);
   dialog.addEventListener('close', () => {
     const productId = activeDialogProduct?.id;
     const isVisibleFocusTarget = target => target?.isConnected
@@ -689,7 +723,9 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     const visibleProductTrigger = productId
       ? [...document.querySelectorAll(`[data-product="${productId}"]`)].find(isVisibleFocusTarget)
       : null;
-    const focusTarget = isVisibleFocusTarget(dialogReturnFocus)
+    const focusTarget = dialogReturnFocusIsExplicit && dialogReturnFocus?.isConnected
+      ? dialogReturnFocus
+      : isVisibleFocusTarget(dialogReturnFocus)
       ? dialogReturnFocus
       : visibleProductTrigger || document.querySelector('#catalogue-archive > summary');
     if (typeof document.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
@@ -699,8 +735,13 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     if (!document.querySelectorAll('dialog[open]').length) {
       document.documentElement?.classList?.remove('fsd-modal-open');
     }
-    focusTarget?.focus?.({ preventScroll: true });
+    const restoreFocus = () => focusTarget?.focus?.({ preventScroll: true });
+    if (document.querySelectorAll('dialog[open]').length && typeof window !== 'undefined') {
+      window.setTimeout(restoreFocus, 0);
+    } else if (typeof requestAnimationFrame === 'function') requestAnimationFrame(restoreFocus);
+    else restoreFocus();
     dialogReturnFocus = null;
+    dialogReturnFocusIsExplicit = false;
   });
   if (isBrowser()) window.addEventListener('popstate', event => restoreFromURL({
     scrollY: event.state?.fsdShop?.scrollY,

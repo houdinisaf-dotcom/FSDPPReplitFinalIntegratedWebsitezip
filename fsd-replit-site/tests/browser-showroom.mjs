@@ -179,16 +179,18 @@ try {
   await click('[data-division="apparel"][data-group-index="1"]');
   await click('[data-group-index="1"]');
   const aegisCard = '[data-product-id="46"]';
-  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector("img").src.endsWith("/media/front-three-quarter")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Black / Gold")`));
-  assert.ok(!await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("£69.99")`));
-  assert.ok(!await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Reference only · not for sale")`));
-  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector(".fsd-product-media--aegis-preview").href.endsWith("/__catalogue-preview/aegis-modest-performance-gilet/")`));
   await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").scrollIntoView({ block: "center" })`);
+  await click(aegisCard);
+  await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("/media/front-three-quarter")'));
+  assert.equal(await evaluate('document.querySelector("#product-dialog [data-bag-add]") === null'), true);
   if (aegisProofCapture) {
     await captureHijabProof(mobileProofCapture ? 'aegis-gilet-collection-mobile.jpg' : 'aegis-gilet-collection-desktop.jpg');
   }
-  await click(aegisCard);
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  await send('Page.navigate', { url: `https://${domain}/__catalogue-preview/aegis-modest-performance-gilet/` });
   await waitFor('location.pathname === "/__catalogue-preview/aegis-modest-performance-gilet/" && !!document.querySelector("#aegis-gilet-title")');
   assert.equal(await evaluate('document.querySelectorAll("[data-aegis-thumb]").length'), 10);
   assert.ok(await evaluate('document.querySelector("#aegis-gilet-title").textContent.includes("Aegis Modest Performance Gilet")'));
@@ -280,9 +282,26 @@ try {
   await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
   await click('[data-division="apparel"]');
   await click('[data-group-index="1"]');
+  await click('[data-subcategory-index="1"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog [data-aeroforge-product=\\"top\\"]")');
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog [data-aeroforge-product]").length'), 1);
+  assert.equal(
+    await evaluate('document.querySelector("#fsd-showcase-dialog [data-aeroforge-product=\\"top\\"] h4").textContent'),
+    'FSD AeroForge Modest Training Top',
+  );
+  assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog [data-aeroforge-product=\\"top\\"] a.fsd-product-link").getAttribute("href").endsWith("#aeroforge-training-top")'));
+  await click('[data-subcategory-index="2"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog [data-aeroforge-product=\\"joggers\\"]")');
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog [data-aeroforge-product]").length'), 1);
+  assert.equal(
+    await evaluate('document.querySelector("#fsd-showcase-dialog [data-aeroforge-product=\\"joggers\\"] h4").textContent'),
+    'FSD AeroForge Performance Joggers',
+  );
+  assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog [data-aeroforge-product=\\"joggers\\"] a.fsd-product-link").getAttribute("href").endsWith("#aeroforge-performance-joggers")'));
   await click('[data-subcategory-index="0"]');
-  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
-  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector(".fsd-product-description").textContent.includes("Black / Champagne Gold")'));
+  assert.equal(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img") === null'), true);
+  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Black / Gold")'));
+  assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Black / Champagne Gold")'));
   assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
   assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Reference only · not for sale")'));
   await evaluate('document.querySelector("[data-product-id=\\"43\\"]").scrollIntoView({ block: "center" })');
@@ -292,18 +311,21 @@ try {
   } else {
     await captureHijabProof('velocity-hijab-collection-desktop.jpg');
   }
+  await click('[data-product-id="43"]');
+  await waitFor('document.querySelector("#product-dialog")?.open');
+  assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("/images/fsd-velocity-performance-sports-hijab.jpg")'));
+  assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Black / Gold")'));
+  assert.equal(await evaluate('document.querySelector("#product-dialog [data-bag-add]") === null'), true);
+  assert.ok(!await evaluate('document.querySelector("#product-dialog").textContent.includes("£29.99")'));
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
   await send('Emulation.setDeviceMetricsOverride', {
     width: mobileProofCapture ? 402 : 1440,
     height: mobileProofCapture ? 874 : 1000,
     deviceScaleFactor: 1,
     mobile: mobileProofCapture,
   });
-  await send('Page.navigate', { url: `https://${domain}/` });
-  await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
-  await click('[data-division="apparel"]');
-  await click('[data-group-index="1"]');
-  await click('[data-subcategory-index="0"]');
-  await click('[data-product-id="43"]');
+  await send('Page.navigate', { url: `https://${domain}/__catalogue-preview/velocity-performance-sports-hijab/` });
   await waitFor('location.pathname === "/__catalogue-preview/velocity-performance-sports-hijab/" && !!document.querySelector("#velocity-hijab-title")');
   assert.equal(await evaluate('document.querySelectorAll("[data-hijab-thumb]").length'), 5);
   assert.ok(await evaluate('document.querySelector("#velocity-hijab-title").textContent.includes("Velocity")'));
@@ -363,7 +385,7 @@ try {
   await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
   await key('Escape');
   await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
-  assert.equal(await evaluate('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")'), true);
+  await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
   assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
   assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-showcase-empty") === null'), true);
   assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-placeholder-kicker") === null'));

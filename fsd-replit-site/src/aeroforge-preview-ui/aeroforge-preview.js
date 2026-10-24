@@ -44,12 +44,19 @@ export function mountAeroForgePreview(root, data) {
   root.innerHTML = `
     <div class="af-preview">
       <div class="af-shell">
-        <nav class="af-crumb" aria-label="Breadcrumb"><a href="/#collections">FSD</a><span>/</span><span>AEROFORGE</span></nav>
-        <div class="af-ribbon"><span><i aria-hidden="true"></i> FSD APPAREL / MODEST ACTIVEWEAR</span><span>AEROFORGE COLLECTION</span></div>
+        <nav class="af-crumb" aria-label="Breadcrumb">
+          <a href="/#collections">FSD</a><span>/</span>
+          <a href="/#collections">APPAREL</a><span>/</span>
+          <a href="#aeroforge-collection" aria-current="location">AEROFORGE</a>
+        </nav>
+        <div class="af-ribbon">
+          <a href="/#collections" aria-label="Return to FSD apparel collections"><i aria-hidden="true"></i> FSD APPAREL / MODEST ACTIVEWEAR</a>
+          <a href="#aeroforge-collection">AEROFORGE COLLECTION</a>
+        </div>
       </div>
       <main class="af-main" id="af-main"></main>
       <footer class="af-footer"><div class="af-shell">
-        <span class="af-footer-brand">FSD <i>/</i> AEROFORGE</span>
+        <a class="af-footer-brand" href="/#collections">FSD <i>/</i> APPAREL COLLECTIONS</a>
       </div></footer>
     </div>`;
 
@@ -62,7 +69,7 @@ export function mountAeroForgePreview(root, data) {
     const headlineHighlight = headlineWords.pop() || '';
     const headlineLead = headlineWords.join(' ');
     main.innerHTML = `
-      <section class="af-shell af-collection" aria-labelledby="af-collection-title">
+      <section class="af-shell af-collection" id="aeroforge-collection" tabindex="-1" aria-labelledby="af-collection-title">
         <div class="af-collection-copy">
           <p class="af-eyebrow">FSD / AEROFORGE</p>
           <p class="af-kicker">${escapeHTML(collection.name || 'AeroForge Modest Activewear')}</p>

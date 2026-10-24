@@ -84,15 +84,24 @@ test('private preview data maps one fixed hero, six true colour assets, restrain
 
 test('the development-only collection entry is normal discovery with no purchase action', () => {
   const integration = createAeroForgeDevelopmentIntegration();
-  assert.match(integration.collectionCard, /data-aeroforge-draft-card/);
-  assert.doesNotMatch(integration.collectionCard, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
-  assert.match(integration.collectionCard, /EXPLORE COLLECTION/);
-  assert.match(integration.collectionCard, /\/__catalogue-preview\/aeroforge\//);
-  assert.doesNotMatch(integration.collectionCard, /ADD TO CART|BUY NOW|£\d/i);
-  assert.doesNotMatch(integration.collectionCard, /PRIVATE COLLECTION REFERENCE|PENDING APPROVAL/);
-  assert.equal(integration.collectionCardPlacement.divisionId, 'apparel');
-  assert.equal(integration.collectionCardPlacement.groupId, 'womens-modest-combat');
-  assert.equal(integration.collectionCardPlacement.heading, 'AEROFORGE');
+  assert.equal(integration.collectionCards.length, 2);
+  const top = integration.collectionCards.find(card => card.placement.id === 'aeroforge-private-top');
+  const joggers = integration.collectionCards.find(card => card.placement.id === 'aeroforge-private-joggers');
+  assert.ok(top && joggers);
+  assert.match(top.markup, /FSD AeroForge Modest Training Top/);
+  assert.match(top.markup, /href="\/__catalogue-preview\/aeroforge\/#aeroforge-training-top"/);
+  assert.equal(top.placement.subcategoryIndex, 1);
+  assert.match(joggers.markup, /FSD AeroForge Performance Joggers/);
+  assert.match(joggers.markup, /href="\/__catalogue-preview\/aeroforge\/#aeroforge-performance-joggers"/);
+  assert.equal(joggers.placement.subcategoryIndex, 2);
+  for (const card of integration.collectionCards) {
+    assert.match(card.markup, /data-aeroforge-draft-card/);
+    assert.doesNotMatch(card.markup, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
+    assert.match(card.markup, /EXPLORE ITEM/);
+    assert.doesNotMatch(card.markup, /ADD TO CART|BUY NOW|£\d/i);
+    assert.equal(card.placement.divisionId, 'apparel');
+    assert.equal(card.placement.groupId, 'womens-modest-combat');
+  }
 });
 
 test('AeroForge browsing uses separate modal product selectors and labels jogger images only as outfit references', () => {
@@ -106,6 +115,9 @@ test('AeroForge browsing uses separate modal product selectors and labels jogger
   assert.doesNotMatch(source, /01_collection_hero|suppliedOutfitAssets|af-proof-ledger|PRIVATE DRAFT/);
   assert.match(source, /dialog\.addEventListener\('cancel'/);
   assert.match(source, /opener\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(source, /aria-label="Breadcrumb"/);
+  assert.match(source, /href="#aeroforge-collection"/);
+  assert.match(source, /id="aeroforge-collection"/);
 });
 
 test('the private asset/page route is dev-serve-only', () => {

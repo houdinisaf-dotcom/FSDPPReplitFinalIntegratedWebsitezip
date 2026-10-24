@@ -384,7 +384,7 @@ export function mountCollectionShowcase({
     if (productButton && dialog.contains(productButton)) {
       const selectedProduct = safeProducts.find(product => String(product.id) === productButton.dataset.productId);
       if (!selectedProduct) return;
-      onProductSelect(selectedProduct.id);
+      onProductSelect(selectedProduct.id, productButton);
       return;
     }
     if (event.target.closest('[data-explore-collection]') && activeDivision) {
@@ -407,6 +407,9 @@ export function mountCollectionShowcase({
 
   const onDialogClick = event => {
     if (event.target === dialog) dialog.close();
+  };
+  const onDialogCancel = event => {
+    if (section.ownerDocument.querySelector('#product-dialog')?.open) event.preventDefault();
   };
   const onDialogClose = () => {
     // Native close events are queued; ignore an old event if already reopened.
@@ -455,12 +458,14 @@ export function mountCollectionShowcase({
 
   section.addEventListener('click', onClick);
   dialog.addEventListener('click', onDialogClick);
+  dialog.addEventListener('cancel', onDialogCancel);
   dialog.addEventListener('close', onDialogClose);
   dialog.addEventListener('keydown', onKeyDown);
 
   const unmount = () => {
     section.removeEventListener('click', onClick);
     dialog.removeEventListener('click', onDialogClick);
+    dialog.removeEventListener('cancel', onDialogCancel);
     dialog.removeEventListener('close', onDialogClose);
     dialog.removeEventListener('keydown', onKeyDown);
     if (dialog.open) {

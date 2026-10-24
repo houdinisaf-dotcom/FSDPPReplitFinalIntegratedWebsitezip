@@ -77,9 +77,16 @@ try {
   await waitFor('document.querySelector(".af-preview") && document.querySelector("#af-collection-title")');
   assert.equal(await evaluate('document.querySelector("meta[name=robots]")?.content'), 'noindex, nofollow, noarchive');
   assert.equal(await evaluate('document.querySelectorAll(".af-product-link").length'), 2);
+  assert.equal(await evaluate('document.querySelectorAll(".af-crumb a").length'), 3);
+  assert.equal(await evaluate('document.querySelector(".af-crumb a[aria-current=\\"location\\"]")?.getAttribute("href")'), '#aeroforge-collection');
+  assert.equal(await evaluate('document.querySelector(".af-crumb a:first-child")?.getAttribute("href")'), '/#collections');
+  assert.equal(await evaluate('document.querySelector(".af-ribbon a:first-child")?.getAttribute("href")'), '/#collections');
+  assert.ok(await evaluate('document.querySelector(".af-footer a")?.textContent.includes("APPAREL COLLECTIONS")'));
   assert.equal(await evaluate('document.querySelectorAll(".af-manifest-row").length'), 0);
   const fixedHero = await evaluate('document.querySelector(".af-campaign-image img")?.src');
   assert.ok(fixedHero.includes('aeroforge-collection-hero'));
+  await click('.af-ribbon a:last-child');
+  await waitFor('location.hash === "#aeroforge-collection"');
 
   await click('[data-af-open="top"]');
   await waitFor('document.querySelector(".af-selector[open] .af-selector__title")?.textContent.includes("Training Top")');
@@ -95,6 +102,7 @@ try {
   assert.doesNotMatch(await evaluate('document.body.innerText'), /front image pending|rear image pending/i);
   await click('.af-selector[open] [data-af-close]');
   await waitFor('!document.querySelector(".af-selector[open]")');
+  await waitFor('location.hash === "#aeroforge-collection"');
   await waitFor('document.querySelector("#af-collection-title")');
   assert.equal(await evaluate('document.querySelector(".af-campaign-image img")?.src'), fixedHero);
 

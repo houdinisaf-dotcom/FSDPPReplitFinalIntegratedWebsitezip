@@ -9,8 +9,6 @@ import { mountClientBag } from './bag.js';
 import { FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
 import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
-import { velocityHijabPreviewPath } from './velocity-hijab-preview-path.js';
-import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 import './style.css';
 import './catalogue.css';
 import './collection-showcase/collection-showcase.css';
@@ -27,19 +25,9 @@ export function renderStorefrontHeader() {
   return renderNavigationHeader(currentBrandMarkup);
 }
 
-function openProduct(id, onRouteChange = () => {}) {
-  if (import.meta.env.DEV && Number(id) === 43) {
-    onRouteChange({ view: 'preview', target: velocityHijabPreviewPath });
-    window.location.assign(velocityHijabPreviewPath);
-    return;
-  }
-  if (import.meta.env.DEV && Number(id) === 46) {
-    onRouteChange({ view: 'preview', target: aegisGiletPreviewPath });
-    window.location.assign(aegisGiletPreviewPath);
-    return;
-  }
+function openProduct(id, onRouteChange = () => {}, returnFocus = null) {
   onRouteChange({ view: 'product', target: String(id) });
-  showProduct(id);
+  showProduct(id, { returnFocus });
 }
 
 function hardwareEditorialSection() {
@@ -215,14 +203,14 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
 
 function startMainExperience(clientBag, onRouteChange = () => {}) {
   initCatalogue({
-    onProductSelect: id => openProduct(id, onRouteChange),
+    onProductSelect: (id, returnFocus) => openProduct(id, onRouteChange, returnFocus),
     onAddToBag: clientBag.addToBag,
   });
   const collectionShowcase = mountCollectionShowcase({
     root: document.querySelector('#collections'),
     divisions: collectionDivisions,
     products,
-    onProductSelect: id => openProduct(id, onRouteChange),
+    onProductSelect: (id, returnFocus) => openProduct(id, onRouteChange, returnFocus),
     onExploreCollection(group) {
       onRouteChange({ view: 'collection', target: group.id });
       showCatalogueDestination({
@@ -280,7 +268,9 @@ export function mountStorefrontRuntime({ onRouteChange = () => {} } = {}) {
   import('./aeroforge-development-integration.js')
     .then(({ createAeroForgeDevelopmentIntegration }) => {
       const aeroforge = createAeroForgeDevelopmentIntegration();
-      collectionShowcase.setDraftProductCard(aeroforge.collectionCard, aeroforge.collectionCardPlacement);
+      for (const card of aeroforge.collectionCards) {
+        collectionShowcase.setDraftProductCard(card.markup, card.placement);
+      }
     })
     .catch(error => {
       console.error('The private AeroForge collection card could not be loaded.', error);
