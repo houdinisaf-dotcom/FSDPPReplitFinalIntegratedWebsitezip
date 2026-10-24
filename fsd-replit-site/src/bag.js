@@ -1,4 +1,5 @@
 import { safe } from './catalogue-data.js';
+import { trackEvent } from './analytics.js';
 
 export const CLIENT_BAG_STORAGE_KEY = 'fsd-client-bag-v1';
 const MAX_QUANTITY = 99;
@@ -194,6 +195,10 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
     dialog.showModal();
     dialog.querySelector('[data-bag-close]')?.focus({ preventScroll: true });
     render();
+    trackEvent('bag_opened', {
+      item_count: bag.items().length,
+      unit_count: bag.itemCount(),
+    });
   };
 
   const addToBag = id => {
@@ -202,6 +207,10 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
     if (added) {
       status.textContent = `${product.name} added to your bag. Checkout is disabled.`;
       render();
+      trackEvent('product_added_to_bag', {
+        product_id: product.id,
+        product_category: product.category,
+      });
     } else {
       status.textContent = 'This item is not available in the client-side bag.';
     }

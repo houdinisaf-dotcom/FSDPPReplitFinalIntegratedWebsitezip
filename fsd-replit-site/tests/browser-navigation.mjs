@@ -143,6 +143,21 @@ try {
     await evaluate('document.body.innerText'),
     /CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING|PLACEHOLDER/i,
   );
+  await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
+  await click('#collections [data-division="apparel"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+  const collectionOpenedEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "collection_opened")');
+  assert.equal(collectionOpenedEvent?.data?.division_id, 'apparel');
+  assert.equal(collectionOpenedEvent?.data?.group_index, 0);
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog")?.open');
+  await click('[data-bag-open]');
+  await waitFor('document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
+  const emptyBagOpenedEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "bag_opened")');
+  assert.equal(emptyBagOpenedEvent?.data?.item_count, 0);
+  assert.equal(emptyBagOpenedEvent?.data?.unit_count, 0);
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
   await evaluate('window.scrollTo(0, document.documentElement.scrollHeight)');
   await waitFor('Number.parseFloat(getComputedStyle(document.querySelector(".fsd-reading-progress")).getPropertyValue("--fsd-reading-progress")) > 0.98');
   assert.equal(
@@ -714,6 +729,7 @@ try {
   });
   await evaluate('window.scrollTo(0, 0)');
   await waitFor('window.scrollY === 0');
+  await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
   await click('[data-search-open]');
   await waitFor('document.querySelector("#fsd-search-dialog")?.open');
   assert.equal(await evaluate('document.activeElement.id'), 'fsd-search-input');
@@ -724,6 +740,10 @@ try {
   await waitFor(`Boolean(document.querySelector('[data-search-collection="${modestCollection.id}"]'))`);
   await click(`[data-search-collection="${modestCollection.id}"]`);
   await waitFor(`!document.querySelector("#fsd-search-dialog").open && document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === ${JSON.stringify(modestCollection.id)}`);
+  const selectedCollectionEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "search_destination_selected")');
+  assert.equal(selectedCollectionEvent?.data?.destination_type, 'collection');
+  assert.equal(selectedCollectionEvent?.data?.destination_id, modestCollection.id);
+  assert.equal(selectedCollectionEvent?.data?.selection_method, 'result_click');
 
   await evaluate('window.scrollTo(0, 0)');
   await send('Emulation.setDeviceMetricsOverride', {
@@ -755,8 +775,52 @@ try {
   await waitFor('location.pathname === "/story" && document.querySelector("#fsd-house-archive")?.open');
   await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
 
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('!!document.querySelector(".fsd-primary-nav")');
+  await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
+  await evaluate('document.querySelector("#catalogue-archive").open = true');
+  await waitFor('document.querySelector("#catalogue-grid [data-bag-add]")');
+  const addableProductId = await evaluate('document.querySelector("#catalogue-grid [data-bag-add]")?.dataset.bagAdd');
+  const searchableProductName = await evaluate('document.querySelector("#catalogue-grid [data-bag-add]")?.getAttribute("aria-label")?.replace(/^Add\\s+/, "").replace(/\\s+to bag$/, "")');
+  assert.ok(addableProductId, 'The catalogue should expose at least one confirmed addable product.');
+  assert.ok(searchableProductName, 'An addable product should have a searchable catalogue name.');
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  await send('Input.insertText', { text: searchableProductName });
+  await waitFor('document.querySelector("#fsd-search-dialog [data-search-result]")');
+  await click('#fsd-search-dialog .fsd-search-form button[type="submit"]');
+  await waitFor('document.querySelector("#product-dialog")?.open');
+  const submittedSearchEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "site_search_submitted")');
+  assert.equal(submittedSearchEvent?.data?.query_length, searchableProductName.length);
+  assert.ok(submittedSearchEvent?.data?.product_match_count > 0);
+  assert.equal(submittedSearchEvent?.data?.destination_type, 'product');
+  assert.equal(Object.hasOwn(submittedSearchEvent.data, 'query'), false);
+  const openedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_detail_opened")');
+  assert.equal(openedProductEvent?.data?.product_id, Number(await evaluate('new URLSearchParams(location.search).get("product")')));
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open');
+
+  await click(`#catalogue-grid [data-product="${addableProductId}"]`);
+  await waitFor('document.querySelector("#product-dialog")?.open');
+  await click(`#product-dialog [data-bag-add="${addableProductId}"]`);
+  const addedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_added_to_bag")');
+  assert.equal(addedProductEvent?.data?.product_id, Number(addableProductId));
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open');
+  await click('[data-bag-open]');
+  await waitFor('document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
+  const populatedBagEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "bag_opened")');
+  assert.equal(populatedBagEvent?.data?.item_count, 1);
+  assert.equal(populatedBagEvent?.data?.unit_count, 1);
+  await click('[data-bag-clear]');
+  await click('[data-bag-close]');
+  await waitFor('!document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
+
   assert.deepEqual(browserErrors, []);
-  console.log('Navigation browser checks passed: verified links, weighted-rope draft row and feature CTA, mobile draft routing, unavailable destinations, women’s preview framing, live search, safe collection routing, keyboard/focus, and overflow.');
+  console.log('Navigation browser checks passed: verified links, search and catalogue analytics, bag analytics, collection analytics, mobile draft routing, keyboard/focus, and overflow.');
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');

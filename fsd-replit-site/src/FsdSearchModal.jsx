@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { priceInfo, productsWithUsableImages, shopCollections } from './catalogue-data.js';
 import { navigateCatalogue, showProduct } from './catalogue.js';
+import { trackEvent } from './analytics.js';
 import './fsd-search-modal.css';
 
 const publicProducts = productsWithUsableImages.filter(product => Boolean(priceInfo(product).value));
@@ -90,6 +91,7 @@ export function FsdSearchModal() {
       trigger.setAttribute('aria-expanded', 'true');
       setQuery('');
       setIsOpen(true);
+      trackEvent('search_opened', { location: 'header' });
     };
     const onCancel = event => {
       event.preventDefault();
@@ -119,20 +121,52 @@ export function FsdSearchModal() {
     };
   }, []);
 
-  const openProduct = product => closeSearch(() => showProduct(product.id), false);
-  const openPage = page => closeSearch(() => window.location.assign(page.href), false);
-  const browseMatches = () => closeSearch(() => navigateCatalogue({ query: query.trim() }), false);
-  const openCollection = collection => closeSearch(
-    () => navigateCatalogue({ collection: collection.id }),
-    false,
-  );
+  const trackSearchDestination = (destinationType, destinationId, selectionMethod) => {
+    if (selectionMethod === 'form_submit') return;
+    trackEvent('search_destination_selected', {
+      destination_type: destinationType,
+      destination_id: String(destinationId),
+      selection_method: selectionMethod,
+    });
+  };
+  const openProduct = (product, selectionMethod = 'result_click') => {
+    trackSearchDestination('product', product.id, selectionMethod);
+    closeSearch(() => showProduct(product.id), false);
+  };
+  const openPage = (page, selectionMethod = 'result_click') => {
+    trackSearchDestination('page', page.id, selectionMethod);
+    closeSearch(() => window.location.assign(page.href), false);
+  };
+  const browseMatches = (selectionMethod = 'view_all_click') => {
+    trackSearchDestination('catalogue', 'filtered-catalogue', selectionMethod);
+    closeSearch(() => navigateCatalogue({ query: query.trim() }), false);
+  };
+  const openCollection = (collection, selectionMethod = 'result_click') => {
+    trackSearchDestination('collection', collection.id, selectionMethod);
+    closeSearch(() => navigateCatalogue({ collection: collection.id }), false);
+  };
   const handleSubmit = event => {
     event.preventDefault();
-    if (!query.trim()) return;
-    if (results[0]) openProduct(results[0]);
-    else if (pageMatches[0]) openPage(pageMatches[0]);
-    else if (collectionMatches[0]) openCollection(collectionMatches[0]);
-    else browseMatches();
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+    const destinationType = results[0]
+      ? 'product'
+      : pageMatches[0]
+        ? 'page'
+        : collectionMatches[0]
+          ? 'collection'
+          : 'catalogue';
+    trackEvent('site_search_submitted', {
+      query_length: trimmedQuery.length,
+      product_match_count: results.length,
+      collection_match_count: collectionMatches.length,
+      page_match_count: pageMatches.length,
+      destination_type: destinationType,
+    });
+    if (results[0]) openProduct(results[0], 'form_submit');
+    else if (pageMatches[0]) openPage(pageMatches[0], 'form_submit');
+    else if (collectionMatches[0]) openCollection(collectionMatches[0], 'form_submit');
+    else browseMatches('form_submit');
   };
 
   return (
@@ -241,7 +275,7 @@ export function FsdSearchModal() {
                         type="button"
                         key={collection.id}
                         data-search-collection={collection.id}
-                        onClick={() => openCollection(collection)}
+                        onClick={() => openCollection(collection, 'result_click')}
                       >
                         {collection.label}
                       </button>
@@ -250,7 +284,7 @@ export function FsdSearchModal() {
                 </div>
               )}
               {results.length > 0 && (
-                <button className="fsd-search-all" type="button" onClick={browseMatches}>
+                <button className="fsd-search-all" type="button" onClick={() => browseMatches('view_all_click')}>
                   VIEW ALL RESULTS IN CATALOGUE <span aria-hidden="true">→</span>
                 </button>
               )}
@@ -258,7 +292,7 @@ export function FsdSearchModal() {
           ) : (
             <div className="fsd-search-empty">
               <p>No matching products or collections.</p>
-              <button className="fsd-search-all" type="button" onClick={browseMatches}>
+              <button className="fsd-search-all" type="button" onClick={() => browseMatches('no_match_click')}>
                 SEARCH THE FULL CATALOGUE <span aria-hidden="true">→</span>
               </button>
             </div>
@@ -272,7 +306,7 @@ export function FsdSearchModal() {
                   type="button"
                   key={collection.id}
                   data-search-collection={collection.id}
-                  onClick={() => openCollection(collection)}
+                  onClick={() => openCollection(collection, 'suggestion_click')}
                 >
                   {collection.label}
                 </button>
@@ -282,7 +316,7 @@ export function FsdSearchModal() {
                   type="button"
                   key={page.id}
                   data-search-page={page.id}
-                  onClick={() => openPage(page)}
+                  onClick={() => openPage(page, 'suggestion_click')}
                 >
                   {page.title}
                 </button>

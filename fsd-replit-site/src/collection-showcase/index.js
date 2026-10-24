@@ -1,6 +1,7 @@
 import { imageSwatchBackground, isHardwareVisualPreviewProduct, priceInfo } from '../catalogue-data.js';
 import { aegisGiletPreviewPath } from '../aegis-gilet-preview-path.js';
 import { crossfadeMappedImage } from '../catalogue-image-gallery.js';
+import { trackEvent } from '../analytics.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
@@ -377,6 +378,10 @@ export function mountCollectionShowcase({
     renderDialog();
     page.classList.add('fsd-modal-open');
     if (!dialog.open) dialog.showModal();
+    trackEvent('collection_opened', {
+      division_id: division.id,
+      group_index: activeGroupIndex,
+    });
     const closeButton = dialog.querySelector('[data-close-dialog]');
     closeButton?.focus({ preventScroll: true });
   };

@@ -1,6 +1,7 @@
 import { audiences, categories, imageSwatchBackground, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage } from './catalogue-image-gallery.js';
+import { trackEvent } from './analytics.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -413,6 +414,12 @@ export function showProduct(id, { fromHistory = false } = {}) {
   document.documentElement?.classList?.add('fsd-modal-open');
   if (dialog && !dialog.open) dialog.showModal();
   dialog?.querySelector?.('#close-dialog')?.focus?.({ preventScroll: true });
+  if (!fromHistory && dialog?.open) {
+    trackEvent('product_detail_opened', {
+      product_id: p.id,
+      product_category: p.category,
+    });
+  }
 }
 
 function closeProductFromUI() {
