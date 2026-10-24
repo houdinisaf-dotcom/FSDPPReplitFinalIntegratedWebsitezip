@@ -5,6 +5,8 @@ import { renderStorefrontMarkup, mountStorefrontRuntime, navigateFsdSelection } 
 import { FsdNavigation } from './FsdNavigation.jsx';
 import { FSDReactUtilities } from './react-utilities.jsx';
 import { CinematicCarousel } from './CinematicCarousel.jsx';
+import { FSDCatalogView } from './FSDCatalogView.jsx';
+import { setCatalogueResultsRenderer } from './catalogue.js';
 import { routeFromLocation } from './react-router.js';
 import { mountLazyImageLoading } from './lazy-image-loading.js';
 import { mountScrollParallax } from './scroll-parallax.js';
@@ -12,12 +14,38 @@ import './tailwind.css';
 import './react-utilities.css';
 import './lazy-image-loading.css';
 
+function FSDCatalogPortal({ target }) {
+  const [products, setProducts] = useState([]);
+  const [actions, setActions] = useState({});
+  const renderResults = useCallback((nextProducts, nextActions) => {
+    setProducts(nextProducts);
+    setActions(nextActions);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!target) return undefined;
+    setCatalogueResultsRenderer(renderResults);
+    return () => setCatalogueResultsRenderer(null);
+  }, [target, renderResults]);
+
+  if (!target) return null;
+  return createPortal(
+    <FSDCatalogView
+      products={products}
+      onProductSelect={actions.onProductSelect}
+      onAddToBag={actions.onAddToBag}
+    />,
+    target,
+  );
+}
+
 function AppRouter({ hardwareForgeExtension }) {
   const storefrontRef = useRef(null);
   const storefrontContentRef = useRef(null);
   const markup = useMemo(() => renderStorefrontMarkup(), []);
   const [route, setRoute] = useState(() => routeFromLocation(window.location));
   const [featuredCarouselPortalTarget, setFeaturedCarouselPortalTarget] = useState(null);
+  const [cataloguePortalTarget, setCataloguePortalTarget] = useState(null);
   const reportRoute = useCallback(nextRoute => setRoute(nextRoute), []);
   const navigationReady = useRef(false);
   const contentReady = useRef(false);
@@ -39,6 +67,7 @@ function AppRouter({ hardwareForgeExtension }) {
     setFeaturedCarouselPortalTarget(
       content?.querySelector('[data-fsd-featured-carousel-slot]') ?? null,
     );
+    setCataloguePortalTarget(content?.querySelector('#catalogue-grid') ?? null);
   }, []);
 
   useLayoutEffect(() => {
@@ -65,6 +94,7 @@ function AppRouter({ hardwareForgeExtension }) {
   useLayoutEffect(() => mountScrollParallax(storefrontContentRef.current, window), []);
 
   useLayoutEffect(() => {
+    if (!cataloguePortalTarget) return undefined;
     const syncHashRoute = () => setRoute(routeFromLocation(window.location));
     window.addEventListener('hashchange', syncHashRoute);
     window.addEventListener('popstate', syncHashRoute);
@@ -77,7 +107,7 @@ function AppRouter({ hardwareForgeExtension }) {
       window.removeEventListener('popstate', syncHashRoute);
       storefrontRef.current?.removeAttribute('data-runtime-ready');
     };
-  }, [markRuntimeReady, reportRoute]);
+  }, [cataloguePortalTarget, markRuntimeReady, reportRoute]);
 
   return (
     <div
@@ -92,6 +122,7 @@ function AppRouter({ hardwareForgeExtension }) {
         hardwareForgeExtension={hardwareForgeExtension}
       />
       <div ref={storefrontContentRef} data-storefront-content dangerouslySetInnerHTML={{ __html: markup }} />
+      <FSDCatalogPortal target={cataloguePortalTarget} />
       {featuredCarouselPortalTarget && createPortal(
         <CinematicCarousel />,
         featuredCarouselPortalTarget,

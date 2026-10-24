@@ -17,6 +17,11 @@ let dialogReturnFocus = null;
 let dialogReturnFocusIsExplicit = false;
 let searchEditing = false;
 let searchCommitTimer = null;
+let catalogueResultsRenderer = null;
+let catalogueRowActions = {
+  onProductSelect: showProduct,
+  onAddToBag: () => {},
+};
 
 const sortOptions = [
   ['featured', 'Featured'],
@@ -272,6 +277,13 @@ export function catalogueSection() {
   </section>`;
 }
 
+export function setCatalogueResultsRenderer(renderer) {
+  if (renderer !== null && typeof renderer !== 'function') {
+    throw new TypeError('Catalogue results renderer must be a function or null.');
+  }
+  catalogueResultsRenderer = renderer;
+}
+
 export function roadmapSection() {
   return `<section class="planned" id="planned"><div class="section-heading"><div>
     <p class="section-kicker">SHOP BY CATEGORY</p><h2>BROWSE THE COLLECTION<span class="period">.</span></h2>
@@ -304,9 +316,33 @@ function renderResults() {
   document.querySelector('#catalogue-count').textContent = filtered.length
     ? `Showing ${start + 1}–${Math.min(start + pageSize, filtered.length)} of ${filtered.length} ${filtered.length === 1 ? 'product' : 'products'}`
     : 'No matching products';
-  document.querySelector('#catalogue-grid').innerHTML = filtered.length
-    ? filtered.slice(start, start + pageSize).map(card).join('')
-    : '<div class="empty"><p>No visual matches for these filters. Try another selection.</p><button class="filter" data-clear-filters>Clear all filters</button></div>';
+  const visibleProducts = filtered.slice(start, start + pageSize).map(product => {
+    const hardwarePreview = isHardwareVisualPreviewProduct(product);
+    return {
+      ...product,
+      rowPrice: displayPrice(product),
+      rowSummary: hardwarePreview ? '' : product.colourways || product.priceBasis || product.coverage || '',
+      rowColourways: hardwarePreview ? [] : productColourwayOptions(product),
+      rowDetails: hardwarePreview
+        ? [['Category', product.category]]
+        : [
+          ['Colourways', product.colourways],
+          ['Audience', product.audience],
+          ['Collection line', product.collection],
+          ['Coverage', product.coverage],
+          ['Set configuration', product.priceBasis],
+        ].filter(([, value]) => value),
+      canAddToBag: canShowBagAction(product),
+    };
+  });
+  const grid = document.querySelector('#catalogue-grid');
+  if (catalogueResultsRenderer) {
+    catalogueResultsRenderer(visibleProducts, catalogueRowActions);
+  } else {
+    grid.innerHTML = filtered.length
+      ? filtered.slice(start, start + pageSize).map(card).join('')
+      : '<div class="empty"><p>No visual matches for these filters. Try another selection.</p><button class="filter" data-clear-filters>Clear all filters</button></div>';
+  }
   document.querySelector('#catalogue-pagination').innerHTML = filtered.length && totalPages > 1
     ? `<button class="filter" data-page="${page - 1}" ${page === 1 ? 'disabled' : ''}>Previous</button>
       <span>Page ${page} of ${totalPages}</span>
@@ -536,6 +572,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   const search = document.querySelector('#search');
   const dialog = document.querySelector('#product-dialog');
   const dialogBody = document.querySelector('#dialog-body');
+  catalogueRowActions = { onProductSelect, onAddToBag };
   const initialState = readStateFromURL();
   applyState(initialState);
   const initialShopState = isBrowser() && [...new URLSearchParams(window.location.search).keys()]

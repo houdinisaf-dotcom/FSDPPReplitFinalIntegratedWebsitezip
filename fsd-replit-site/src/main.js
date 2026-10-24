@@ -18,7 +18,7 @@ import './site-navigation.css';
 import './visual-system.css';
 import './flagship-pages.css';
 import './bag.css';
-import './boxing-glove-cursor.css';
+import './globals.css';
 
 export function renderStorefrontHeader() {
   const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;

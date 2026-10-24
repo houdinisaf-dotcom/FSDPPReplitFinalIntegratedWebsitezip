@@ -131,12 +131,18 @@ try {
   await waitFor('!!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools") && !!document.querySelector(".fsd-reading-progress")');
   const desktopCursor = await evaluate('getComputedStyle(document.body).cursor');
   assert.match(desktopCursor, /data:image\/svg\+xml/);
-  assert.match(desktopCursor, /\)\s+2 2,\s*auto$/);
+  assert.match(desktopCursor, /\)\s+12 12,\s*auto$/);
   const encodedCursorSvg = desktopCursor.match(/url\("data:image\/svg\+xml,([^"]+)"\)/)?.[1];
   assert.ok(encodedCursorSvg);
-  assert.match(decodeURIComponent(encodedCursorSvg), /boxing-glove-laces/);
-  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-primary-trigger")).cursor'), 'pointer');
-  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-bag-toggle")).cursor'), 'pointer');
+  const decodedCursorSvg = decodeURIComponent(encodedCursorSvg);
+  assert.match(decodedCursorSvg, /width='24' height='24'/);
+  assert.match(decodedCursorSvg, /fill='#D4AF37'/);
+  assert.match(decodedCursorSvg, /M6 7h2v10H6V7z/);
+  assert.equal(
+    await evaluate('Array.from(document.querySelectorAll("a, button, input, select, textarea, [role=button], .cursor-pointer")).every(element => getComputedStyle(element).cursor === getComputedStyle(document.body).cursor)'),
+    true,
+    'The dumbbell cursor should override pointer styles throughout interactive UI.',
+  );
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundPosition'), '50% 35%');
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundSize'), 'cover');
   assert.doesNotMatch(
@@ -537,7 +543,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     search.value = "FSD Velocity Performance Sports Hijab";
     search.dispatchEvent(new Event("input", { bubbles: true }));
   })()`);
-  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of 1 product") && document.querySelector("#catalogue-grid [data-product=\\"43\\"]")');
+  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of 1 product") && !!document.querySelector("#catalogue-grid [data-product=\\"43\\"]")');
   await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && !document.querySelector("[data-catalogue-view=\\"visual\\"]")');
   assert.deepEqual(await evaluate('Object.fromEntries(new URLSearchParams(location.search))'), {
     category: 'Modest Activewear',
@@ -561,18 +567,43 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     search.value = "FSD product that does not exist";
     search.dispatchEvent(new Event("input", { bubbles: true }));
   })()`);
-  await waitFor('document.querySelector("#catalogue-count").textContent === "No matching products" && document.querySelector("#catalogue-grid [data-clear-filters]")');
+  await waitFor('document.querySelector("#catalogue-count").textContent === "No matching products" && !!document.querySelector("#catalogue-grid [data-clear-filters]")');
   await click('#catalogue-grid [data-clear-filters]');
   await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "list"');
   await assertNoHorizontalPageScroll();
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid img").length === 0 && document.querySelectorAll("#catalogue-grid .product-card").length === document.querySelectorAll("#catalogue-grid .product-row__trigger").length'), true, 'The catalogue should stay in a compact text-row view.');
+
+  // Product rows expand in place and preserve the list's exact scroll position.
+  await evaluate('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.scrollIntoView({ block: "center" })');
+  await waitFor('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getBoundingClientRect().top >= 0');
+  const rowScrollY = await evaluate('window.scrollY');
+  await click('#catalogue-grid [data-product="1"]');
+  await waitFor('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getAttribute("aria-expanded") === "true" && !!document.querySelector("#catalogue-grid #catalogue-expanded-1")');
+  assert.equal(await evaluate('Math.abs(window.scrollY - ' + rowScrollY + ') < 2'), true);
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-1 [data-catalogue-inline-view]").length'), 2);
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-1 [data-catalogue-inline-colourway]").length'), 2);
+  await click('#catalogue-expanded-1 [data-catalogue-inline-view]:nth-child(2)');
+  await waitFor('document.querySelector("#catalogue-expanded-1 [data-catalogue-inline-image]")?.alt.includes("Electric cobalt fading to jet black")');
+  await click('#catalogue-expanded-1 [data-catalogue-inline-colourway]:first-child');
+  await waitFor('document.querySelector("#catalogue-expanded-1 [data-catalogue-inline-image]")?.alt.includes("Vintage indigo fading to jet black")');
+  await click('#catalogue-expanded-1 .fsd-catalog-row__collapse');
+  await waitFor('document.querySelector("#catalogue-expanded-1") === null && document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getAttribute("aria-expanded") === "false"');
+  assert.equal(await evaluate('Math.abs(window.scrollY - ' + rowScrollY + ') < 2'), true);
+  await click('#catalogue-grid [data-product="1"]');
+  await waitFor('!!document.querySelector("#catalogue-expanded-1")');
+  await click('#catalogue-expanded-1 [data-catalogue-deep-dive]');
+  await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.trim() === "FSD Ombré Slash Tee"');
+  await click('#close-dialog');
+  await waitFor('!document.querySelector("#product-dialog")?.open && !!document.querySelector("#catalogue-expanded-1")');
+  await click('#catalogue-grid [data-product="1"]');
+  await waitFor('document.querySelector("#catalogue-expanded-1") === null');
 
   await click('.fsd-home-primary');
   await waitFor('location.hash === "#universe" && document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"universe\\"]").getAttribute("aria-current") === "page"');
   await click('.fsd-primary-trigger[data-nav-primary="universe"]');
   await click('#fsd-mega-menu [data-nav-group="1"]');
   await click('#fsd-mega-menu [data-nav-item="0"]');
-  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"0\\"][aria-pressed=\\"true\\"]")');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && !!document.querySelector("#fsd-showcase-dialog [data-group-index=\\"0\\"][aria-pressed=\\"true\\"]")');
   await key('Escape');
   await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
   await waitFor('document.querySelector("[data-division=\\"bio-lab\\"]") === document.activeElement');
@@ -792,13 +823,15 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await click('footer a[href="#products"]');
   await waitFor('document.querySelector("#catalogue-archive").open');
   await waitFor('document.querySelector("#catalogue-grid")?.dataset.view === "list"');
-  await waitFor('document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")');
+  await waitFor('!!document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")');
   const addableProductId = await evaluate('document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")?.dataset.product');
   assert.ok(addableProductId, 'The catalogue should expose at least one confirmed addable product.');
   await evaluate(`document.querySelector('#catalogue-grid [data-product="${addableProductId}"]').scrollIntoView({ block: 'center' })`);
   await waitFor('window.scrollY > 0');
   const catalogueReturnScrollY = await evaluate('window.scrollY');
   await click(`#catalogue-grid [data-product="${addableProductId}"]`);
+  await waitFor(`!!document.querySelector("#catalogue-expanded-${addableProductId}")`);
+  await click(`#catalogue-expanded-${addableProductId} [data-catalogue-deep-dive]`);
   await waitFor('document.querySelector("#product-dialog")?.open');
   const openedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_detail_opened")');
   assert.equal(openedProductEvent?.data?.product_id, Number(addableProductId));

@@ -412,8 +412,9 @@ try {
   await click('[data-subcategory-index="0"]');
   await click('[data-explore-collection]');
   await waitFor('document.querySelector("#catalogue-archive").open && !document.querySelector("#fsd-showcase-dialog").open');
+  await waitFor('document.querySelector("#search")?.value === "Hijab"');
   assert.equal(await evaluate('document.querySelector("#search").value'), 'Hijab');
-  const filteredNames = await evaluate('Array.from(document.querySelectorAll("#catalogue-grid h3"), heading => heading.textContent)');
+  const filteredNames = await evaluate('Array.from(document.querySelectorAll("#catalogue-grid .product-row__name"), heading => heading.textContent)');
   assert.ok(filteredNames.length > 0 && filteredNames.every(name => /hijab/i.test(name)));
   assert.ok(await evaluate('!document.querySelector("#gallery-archive, #full-gallery")'));
   assert.equal(await evaluate('document.querySelectorAll(\'a[href="#full-gallery"]\').length'), 0);
