@@ -5,12 +5,15 @@ function colourwaysFor(product) {
   return Array.isArray(product.rowColourways) ? product.rowColourways : [];
 }
 
-function matchingImageIndex(images, colourway) {
-  const normalized = value => String(value || '')
+function normalizedImageLabel(value) {
+  return String(value || '')
     .toLocaleLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
-  return images.findIndex(image => normalized(image.label) === normalized(colourway));
+}
+
+function matchingImageIndex(images, colourway) {
+  return images.findIndex(image => normalizedImageLabel(image.colourway || image.label) === normalizedImageLabel(colourway));
 }
 
 function deepDiveHref(productId) {
@@ -43,8 +46,8 @@ export function ProductDetail({
 
   const chooseImage = image => {
     setSelectedAngle(image.label);
-    const matchingColourway = colourways.find(colourway => matchingImageIndex(images, colourway) >= 0
-      && images[matchingImageIndex(images, colourway)].label === image.label);
+    const matchingColourway = image.colourway || colourways.find(colourway =>
+      normalizedImageLabel(image.label) === normalizedImageLabel(colourway));
     if (matchingColourway) setSelectedColor(matchingColourway);
   };
 

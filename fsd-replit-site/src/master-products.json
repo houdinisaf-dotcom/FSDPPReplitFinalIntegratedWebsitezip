@@ -1119,5 +1119,29 @@
     "Specification status": "Exact weight increments, quantities and total set weight pending manufacturer specification",
     "Price basis": "Complete 10–50kg set.",
     "Notes": "Approved replacement tier for the retired £129.99 pair. Supplied construction brief is not evidence of manufactured materials or verified performance. No rack or other accessories are implied."
+  },
+  {
+    "id": 73,
+    "Publication status": "Active",
+    "Product name": "FSD Breeze Overshirt & Engineered Leggings Set",
+    "Category": "Modest Activewear",
+    "Also show in": "",
+    "Audience": "Women’s",
+    "Price (£) confirmed": "145.00",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Onyx Black; Deep Olive; Warm Taupe; Slate Grey; Midnight Navy; Deep Burgundy",
+    "Collection line": "Women’s Flagship / FSD Breeze",
+    "Image status": "User-approved public product imagery",
+    "Source": "User-supplied product metadata and specifications",
+    "Also appears as": "FSD Breeze Set",
+    "Alias status": "Confirmed",
+    "Description": "Full-coverage performance set engineered for absolute confidence in motion. Combines a lightweight tactical overshirt with half-zip entry and side ventilation, paired with engineered performance leggings featuring laser-etched jacquard panels.",
+    "Short description": "Lightweight modest overshirt and engineered performance leggings.",
+    "Set contents": "One Lightweight Modest Training Overshirt and one pair of Engineered Performance Leggings.",
+    "Sizes": "XS; S; M; L; XL",
+    "Specifications": "88% Performance Polyester and 12% Elastane mechanical-stretch weave; laser-etched geometric jacquard micro-mesh panels; anodized matte-black and champagne-gold auto-lock zippers with FSD custom pullers; four-way mechanical stretch; breathable airflow zoning; extended hi-low hem and integrated hood.",
+    "Specification status": "Approved",
+    "Price basis": "Combined set: one lightweight modest overshirt and one pair of engineered performance leggings.",
+    "Notes": "Public combined-set listing at £145.00. Keep the existing standalone overshirt master record separate and unchanged."
   }
 ]

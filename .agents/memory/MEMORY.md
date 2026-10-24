@@ -4,7 +4,7 @@
 - [House of Performance approvals](house-of-performance-approvals.md) — preserve the flagship and keep pending page media visible in titled placeholders within approval boundaries.
 - [Velocity hijab proof boundary](velocity-hijab-proof.md) — visual approval is not commercial approval; keep master data intact and the separate image archive untouched.
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.
-- [Breeze draft boundary](breeze-draft-boundary.md) — keep Breeze separate from Modest Flow and master data; treat its existing £64.99 only as a catalogue reference.
+- [Breeze set and overshirt separation](breeze-public-set.md) — the combined set is approved at £145; keep the existing £64.99 overshirt and Modest Flow separate.
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.
 - [Customer-facing terminology](customer-facing-terminology.md) — remove visible release/status labels and use neutral product names with existing catalogue values.
 - [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk setup needs a valid app name; package installs must target the nested storefront directory.

@@ -1,4 +1,4 @@
-import { audiences, categories, imageSwatchBackground, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
+import { audiences, categories, getVerifiedProductSpecifications, imageSwatchBackground, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage } from './catalogue-image-gallery.js';
 import { trackEvent } from './analytics.js';
@@ -212,13 +212,33 @@ function productColourwayOptions(product) {
     : [];
 }
 
+function verifiedSpecificationRows(product) {
+  const specifications = getVerifiedProductSpecifications(product.id);
+  if (!specifications) return [];
+  const technicalLabels = {
+    composition: 'Composition',
+    fit: 'Fit and coverage',
+    care: 'Care instructions',
+  };
+  return [
+    ...(specifications.materials.length
+      ? [['Materials and construction', specifications.materials.join(' ')]]
+      : []),
+    ...(specifications.benefits.length
+      ? [['Performance features', specifications.benefits.join(' ')]]
+      : []),
+    ...Object.entries(specifications.technicalSpecs)
+      .map(([key, value]) => [technicalLabels[key] || key, value]),
+  ];
+}
+
 function normalizedImageLabel(value) {
   return String(value || '').toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 function imageIndexForColourway(images, colourway) {
   const target = normalizedImageLabel(colourway);
-  return images.findIndex(image => normalizedImageLabel(image.label) === target);
+  return images.findIndex(image => normalizedImageLabel(image.colourway || image.label) === target);
 }
 
 function card(product) {
@@ -318,19 +338,24 @@ function renderResults() {
     : 'No matching products';
   const visibleProducts = filtered.slice(start, start + pageSize).map(product => {
     const hardwarePreview = isHardwareVisualPreviewProduct(product);
+    const specificationRows = verifiedSpecificationRows(product);
     return {
       ...product,
       rowPrice: displayPrice(product),
-      rowSummary: hardwarePreview ? '' : product.colourways || product.priceBasis || product.coverage || '',
+      rowSummary: hardwarePreview ? '' : product.shortDescription || product.colourways || product.priceBasis || product.coverage || '',
       rowColourways: hardwarePreview ? [] : productColourwayOptions(product),
       rowDetails: hardwarePreview
         ? [['Category', product.category]]
         : [
+          ...(product.description ? [['Overview', product.description]] : []),
+          ...(product.setContents ? [['Set includes', product.setContents]] : []),
+          ...(product.sizes ? [['Sizes', product.sizes.replaceAll(';', ' /')]] : []),
           ['Colourways', product.colourways],
           ['Audience', product.audience],
           ['Collection line', product.collection],
           ['Coverage', product.coverage],
           ['Set configuration', product.priceBasis],
+          ...specificationRows,
         ].filter(([, value]) => value),
       canAddToBag: canShowBagAction(product),
     };
@@ -430,6 +455,9 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
   const detailRows = hardwarePreview
     ? detail('Category', p.category)
     : [
+      detail('Overview', p.description),
+      detail('Set includes', p.setContents),
+      detail('Sizes', p.sizes.split(';').map(value => value.trim()).filter(Boolean).join(' / ')),
       detail('Colourways', p.colourways),
       detail('Audience', p.audience),
       detail('Collection line', p.collection),
@@ -488,13 +516,13 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
       ${price.label || price.value ? `<div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
      ${!hardwarePreview && canShowBagAction(p) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${p.id}" aria-label="Add ${safe(p.name)} to bag">ADD TO BAG</button>` : ''}
     </div>`;
+  document.documentElement?.classList?.add('fsd-modal-open');
+  if (dialog && !dialog.open) dialog.showModal();
   if (!hardwarePreview && typeof document.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
     document.dispatchEvent(new CustomEvent('fsd:product-specifications-open', {
       detail: { productId: p.id },
     }));
   }
-  document.documentElement?.classList?.add('fsd-modal-open');
-  if (dialog && !dialog.open) dialog.showModal();
   dialog?.querySelector?.('#close-dialog')?.focus?.({ preventScroll: true });
   if (!fromHistory && dialog?.open) {
     trackEvent('product_detail_opened', {

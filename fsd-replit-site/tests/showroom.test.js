@@ -41,7 +41,11 @@ test('group filters constrain category, audience and terms rather than leaking u
   const men = groupProducts(apparel.groups[0], products);
   const women = groupProducts(apparel.groups[1], products);
   assert.ok(men.length && men.every(product => ['Men’s', 'Unisex'].includes(product.audience)));
-  assert.ok(women.length && women.every(product => product.audience === 'Women’s'));
+  const expectedWomenIds = products
+    .filter(product => product.audience === 'Women’s')
+    .map(product => product.id)
+    .sort((a, b) => a - b);
+  assert.deepEqual(women.map(product => product.id).sort((a, b) => a - b), expectedWomenIds);
   assert.ok(women.some(product => product.id === 43));
   const hardware = collectionDivisions[2];
   assert.deepEqual(groupProducts(hardware.groups[0], products).map(product => product.id), [69, 70, 71, 72]);
@@ -51,11 +55,20 @@ test('group filters constrain category, audience and terms rather than leaking u
   assert.ok(groupProducts(collectionDivisions[3].groups[0], products).length === 0);
 });
 
-test('apparel subcategories select genuine records and distinguish new concepts', () => {
+test('women’s sub-lines cover the existing catalogue without unfilled concept placeholders', () => {
   const women = collectionDivisions[0].groups[1];
   const hijabs = groupProducts(women, products, women.subcategories[0]);
   assert.ok(hijabs.some(product => product.id === 43));
   assert.ok(hijabs.every(product => /hijab/i.test(product.name)));
+  assert.ok(women.subcategories.every(subcategory => !subcategory.concepts?.length));
+  const sublineProductIds = [...new Set(women.subcategories.flatMap(subcategory =>
+    groupProducts(women, products, subcategory).map(product => product.id),
+  ))].sort((a, b) => a - b);
+  const allWomenProductIds = products
+    .filter(product => product.audience === 'Women’s')
+    .map(product => product.id)
+    .sort((a, b) => a - b);
+  assert.deepEqual(sublineProductIds, allWomenProductIds);
   const men = collectionDivisions[0].groups[0];
   const volcanic = men.subcategories.find(item => /Volcanic/.test(item.title));
   assert.equal(groupProducts(men, products, volcanic).length, 0);

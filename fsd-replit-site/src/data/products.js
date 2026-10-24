@@ -14,6 +14,21 @@ const imageReferences = {
   'FSD Velocity Performance Sports Hijab': [
     { src: '/images/fsd-velocity-performance-sports-hijab.jpg', label: 'Black and gold sports hijab with matching performance top' },
   ],
+  'FSD Breeze Overshirt & Engineered Leggings Set': [
+    { src: '/fsd-assets/breeze-set-onyx-black-full-length.webp', label: 'Onyx Black · full-length view', colourway: 'Onyx Black' },
+    { src: '/fsd-assets/breeze-set-onyx-black-front.webp', label: 'Onyx Black · straight-on view', colourway: 'Onyx Black' },
+    { src: '/fsd-assets/breeze-set-onyx-black-trouser-view.webp', label: 'Onyx Black · alternate full-length view', colourway: 'Onyx Black' },
+    { src: '/fsd-assets/breeze-set-onyx-black.webp', label: 'Onyx Black · full-set view', colourway: 'Onyx Black' },
+    { src: '/fsd-assets/breeze-set-onyx-black-side.webp', label: 'Onyx Black · alternate view', colourway: 'Onyx Black' },
+    { src: '/fsd-assets/breeze-set-deep-olive.webp', label: 'Deep Olive · full-set view', colourway: 'Deep Olive' },
+    { src: '/fsd-assets/breeze-set-warm-taupe-full-length.webp', label: 'Warm Taupe · full-length view', colourway: 'Warm Taupe' },
+    { src: '/fsd-assets/breeze-set-slate-grey-full-length.webp', label: 'Slate Grey · full-length view', colourway: 'Slate Grey' },
+    { src: '/fsd-assets/breeze-set-slate-grey.webp', label: 'Slate Grey · full-set view', colourway: 'Slate Grey' },
+    { src: '/fsd-assets/breeze-set-midnight-navy.webp', label: 'Midnight Navy · full-set view', colourway: 'Midnight Navy' },
+    { src: '/fsd-assets/breeze-set-deep-burgundy-full-length.webp', label: 'Deep Burgundy · full-length view', colourway: 'Deep Burgundy' },
+    { src: '/fsd-assets/breeze-set-deep-burgundy-alt-full-length.webp', label: 'Deep Burgundy · alternate full-length view', colourway: 'Deep Burgundy' },
+    { src: '/fsd-assets/breeze-set-deep-burgundy.webp', label: 'Deep Burgundy · full-set view', colourway: 'Deep Burgundy' },
+  ],
 };
 
 // Publication decisions use stable record metadata, not names that may change.
@@ -34,6 +49,10 @@ export const products = masterProducts
     source: p.Source,
     alias: p['Also appears as'],
     aliasStatus: p['Alias status'] ?? '',
+    description: p.Description ?? '',
+    shortDescription: p['Short description'] ?? '',
+    setContents: p['Set contents'] ?? '',
+    sizes: p.Sizes ?? '',
     coverage: p.Coverage ?? '',
     specifications: p.Specifications ?? '',
     specificationStatus: p['Specification status'] ?? '',
@@ -43,7 +62,27 @@ export const products = masterProducts
   }));
 
 // Add records here only after the complete specification set has been verified.
-export const verifiedProductSpecifications = Object.freeze({});
+export const verifiedProductSpecifications = Object.freeze({
+  73: {
+    approvalStatus: 'verified',
+    materials: [
+      'Primary fabric: 88% Performance Polyester, 12% Elastane mechanical-stretch weave.',
+      'Panels: laser-etched geometric jacquard micro-mesh.',
+      'Hardware: anodized matte-black and champagne-gold auto-lock zippers with FSD custom pullers.',
+    ],
+    benefits: [
+      'Four-way mechanical stretch engineered for dynamic combat sports and agility training.',
+      'Breathable airflow zoning through laser-etched jacquard detailing.',
+      'Extended hi-low hem and integrated hood structure for complete, distraction-free coverage.',
+      'Premium matte technical fabric with moisture-wicking properties.',
+    ],
+    technicalSpecs: {
+      composition: '88% Performance Polyester and 12% Elastane mechanical-stretch weave, with laser-etched geometric jacquard micro-mesh panels.',
+      fit: 'Full-coverage set with a lightweight tactical overshirt, half-zip entry, side ventilation and engineered performance leggings.',
+      care: 'Machine wash cold on delicate cycle inside out. Hang dry only. Do not tumble dry. Do not iron metallic hardware.',
+    },
+  },
+});
 
 const verifiedTextList = value => Array.isArray(value)
   ? value.filter(item => typeof item === 'string' && item.trim()).map(item => item.trim())
@@ -118,7 +157,8 @@ export function filterProducts(category = 'All', query = '', audience = 'All', c
       selectedCollection.audiences.includes(p.audience)
     )) &&
     searchText([p.name, p.alias, p.category, ...p.alsoShowIn, p.colourways, p.audience, p.collection,
-      p.coverage, p.specifications, p.specificationStatus, p.priceBasis].join(' ')).includes(term)
+      p.description, p.shortDescription, p.setContents, p.sizes, p.coverage, p.specifications,
+      p.specificationStatus, p.priceBasis].join(' ')).includes(term)
   );
 }
 
@@ -126,7 +166,7 @@ export function priceInfo(p) {
   const format = value => new Intl.NumberFormat('en-GB', {
     style: 'currency', currency: 'GBP',
   }).format(value);
-  if ([43, 49].includes(Number(p?.id))) {
+  if (Number(p?.id) === 43) {
     return { label: 'Reference only · not for sale', value: '' };
   }
   if (Number.isFinite(p?.confirmedPrice) && p.confirmedPrice > 0) {
@@ -136,6 +176,12 @@ export function priceInfo(p) {
 }
 
 const swatchPalette = [
+  [/\bonxy black\b/i, '#090A0C'],
+  [/\bdeep olive\b/i, '#4A5340'],
+  [/\bwarm taupe\b/i, '#8C7A6B'],
+  [/\bslate grey\b/i, '#2A3547'],
+  [/\bmidnight navy\b/i, '#1D4ED8'],
+  [/\bdeep burgundy\b/i, '#581C1C'],
   [/\bindigo\b/i, '#35415f'],
   [/\b(cobalt|blue)\b/i, '#2862c5'],
   [/\b(yellow|amber)\b/i, '#e1b642'],

@@ -15,16 +15,16 @@ import { ourStorySection } from '../src/story-section.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from '../src/flagship-pages.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
-  assert.equal(master.length, 72);
-  assert.equal(new Set(master.map(p => p.id)).size, 72);
+  assert.equal(master.length, 73);
+  assert.equal(new Set(master.map(p => p.id)).size, 73);
   for (let id = 1; id <= 68; id++) assert.ok(master.some(p => p.id === id));
-  assert.equal(products.length, 66);
+  assert.equal(products.length, 67);
   assert.deepEqual(heldProducts.map(p => p.id), [36, 37, 64, 68]);
   assert.deepEqual(retiredProducts.map(p => p.id), [21, 53]);
   assert.equal(categories.length, 9);
   assert.ok(products.every(p => !heldProducts.some(h => h.id === p.id)));
   assert.ok(products.every(p => !retiredProducts.some(r => r.id === p.id)));
-  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 37);
+  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 38);
   assert.ok(products.every(p => !Object.hasOwn(p, 'suggestedPrice')));
 });
 
@@ -36,10 +36,29 @@ test('customer-facing prices use approved RRPs only', () => {
     label: 'Reference only · not for sale',
     value: '',
   });
-  assert.deepEqual(priceInfo(products.find(p => p.id === 49)), {
-    label: 'Reference only · not for sale',
-    value: '',
-  });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 49)), { label: '', value: '£64.99' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 73)), { label: '', value: '£145.00' });
+});
+
+test('the public Breeze set stays distinct from the existing overshirt and is reachable from Women’s modest collections', () => {
+  const set = products.find(product => product.id === 73);
+  const existingOvershirt = products.find(product => product.id === 49);
+  const womensGroup = collectionDivisions.find(group => group.id === 'apparel')
+    ?.groups.find(group => group.id === 'womens-modest-combat');
+
+  assert.equal(set?.name, 'FSD Breeze Overshirt & Engineered Leggings Set');
+  assert.equal(set?.confirmedPrice, 145);
+  assert.equal(set?.specificationStatus, 'Approved');
+  assert.equal(existingOvershirt?.name, "FSD Women's Lightweight Modest Training Overshirt");
+  assert.equal(existingOvershirt?.confirmedPrice, 64.99);
+  assert.ok(filterProducts('Modest Activewear', 'FSD Breeze Overshirt & Engineered Leggings Set')
+    .some(product => product.id === 73));
+  assert.ok(womensGroup?.subcategories.some(item =>
+    item.title === 'FSD Breeze Set' && item.productTerms.includes('FSD Breeze Overshirt & Engineered Leggings Set')));
+  assert.equal(set?.images.length, 13);
+  for (const image of set.images) {
+    assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)), `${image.src} should exist`);
+  }
 });
 
 test('category cross-listing, alternate names, colourways and case-insensitive search work', () => {
@@ -55,20 +74,20 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 3);
+  assert.equal(products.filter(p => p.images.length).length, 4);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
       assert.equal(p.colourways, 'Black / Gold');
       assert.match(image.label, /Black and gold/i);
     } else {
-      assert.ok(p.colourways.split(';').map(value => value.trim()).includes(image.label));
+      assert.ok(p.colourways.split(';').map(value => value.trim()).includes(image.colourway || image.label));
     }
   }
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 43]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 43, 73]);
   assert.deepEqual(products.find(p => p.id === 1).images.map(image => image.src), [
     '/images/ombre-indigo.png', '/images/ombre-blue.png',
   ]);
@@ -81,6 +100,21 @@ test('product images use only supplied assets explicitly mapped to products', ()
   }]);
   assert.equal(products.find(p => p.id === 43).imageStatus, 'User-supplied main product image');
   assert.ok(existsSync(new URL('../public/images/fsd-velocity-performance-sports-hijab.jpg', import.meta.url)));
+  assert.deepEqual(products.find(p => p.id === 73).images.map(image => image.src), [
+    '/fsd-assets/breeze-set-onyx-black-full-length.webp',
+    '/fsd-assets/breeze-set-onyx-black-front.webp',
+    '/fsd-assets/breeze-set-onyx-black-trouser-view.webp',
+    '/fsd-assets/breeze-set-onyx-black.webp',
+    '/fsd-assets/breeze-set-onyx-black-side.webp',
+    '/fsd-assets/breeze-set-deep-olive.webp',
+    '/fsd-assets/breeze-set-warm-taupe-full-length.webp',
+    '/fsd-assets/breeze-set-slate-grey-full-length.webp',
+    '/fsd-assets/breeze-set-slate-grey.webp',
+    '/fsd-assets/breeze-set-midnight-navy.webp',
+    '/fsd-assets/breeze-set-deep-burgundy-full-length.webp',
+    '/fsd-assets/breeze-set-deep-burgundy-alt-full-length.webp',
+    '/fsd-assets/breeze-set-deep-burgundy.webp',
+  ]);
   for (const id of [42, 45, 60, 61, 62, 63, 65]) {
     assert.deepEqual(products.find(p => p.id === id).images, []);
   }
@@ -323,7 +357,7 @@ test('approved category placements, coverage and palette exception are consisten
 });
 
 test('hardware prices buy complete approved set tiers without invented weight breakdowns', () => {
-  const tiers = products.filter(p => p.id >= 69);
+  const tiers = products.filter(p => p.id >= 69 && p.id <= 72);
   assert.equal(tiers.length, 4);
   assert.deepEqual(tiers.map(p => p.confirmedPrice), [699.99, 599.99, 399.99, 299.99]);
   for (const p of tiers) {

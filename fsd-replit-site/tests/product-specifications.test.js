@@ -10,6 +10,7 @@ test('product specifications require an exact active product and an explicit ver
   assert.equal(getVerifiedProductSpecifications('not-a-product'), null);
   assert.equal(getVerifiedProductSpecifications(39), null);
   assert.equal(getVerifiedProductSpecifications(69), null);
+  assert.equal(getVerifiedProductSpecifications(73)?.materials.length, 3);
   assert.equal(normalizeVerifiedSpecifications({
     approvalStatus: 'pending',
     materials: ['Unverified material'],
@@ -17,6 +18,10 @@ test('product specifications require an exact active product and an explicit ver
 
   assert.equal(renderToStaticMarkup(createElement(ProductSpecificationsView, { productId: 9999 })), '');
   assert.equal(renderToStaticMarkup(createElement(ProductSpecificationsView, { productId: 39 })), '');
+  assert.match(
+    renderToStaticMarkup(createElement(ProductSpecificationsView, { productId: 73 })),
+    /Four-way mechanical stretch|88% Performance Polyester/,
+  );
 });
 
 test('only non-empty fields in a verified record are rendered', () => {

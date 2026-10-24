@@ -94,6 +94,7 @@ try {
     const rect = await evaluate(`(() => {
       const element = document.querySelector(${JSON.stringify(selector)});
       if (!element) return null;
+      element.scrollIntoView({ block: "nearest", inline: "nearest" });
       const rect = element.getBoundingClientRect();
       return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
     })()`);
@@ -846,15 +847,15 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
   await click('[data-search-open]');
   await waitFor('document.querySelector("#fsd-search-dialog")?.open');
-  await send('Input.insertText', { text: 'Modest' });
-  await waitFor(`Boolean(document.querySelector('[data-search-collection="${modestCollection.id}"]'))`);
+  const breezeSearchTerm = 'FSD Breeze Overshirt & Engineered Leggings Set';
+  await send('Input.insertText', { text: breezeSearchTerm });
+  await waitFor('document.querySelectorAll("[data-search-result]").length === 1');
   await click('#fsd-search-dialog button[type="submit"]');
-  await waitFor(`!document.querySelector("#fsd-search-dialog").open && document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === ${JSON.stringify(modestCollection.id)}`);
+  await waitFor('!document.querySelector("#fsd-search-dialog").open && document.querySelector("#product-dialog")?.open && document.querySelector("#product-dialog").textContent.includes("FSD Breeze Overshirt & Engineered Leggings Set")');
   const submittedSearchEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "site_search_submitted")');
-  assert.equal(submittedSearchEvent?.data?.query_length, 'Modest'.length);
-  assert.equal(submittedSearchEvent?.data?.product_match_count, 0);
-  assert.ok(submittedSearchEvent?.data?.collection_match_count > 0);
-  assert.equal(submittedSearchEvent?.data?.destination_type, 'collection');
+  assert.equal(submittedSearchEvent?.data?.query_length, breezeSearchTerm.length);
+  assert.equal(submittedSearchEvent?.data?.product_match_count, 1);
+  assert.equal(submittedSearchEvent?.data?.destination_type, 'product');
   assert.equal(Object.hasOwn(submittedSearchEvent.data, 'query'), false);
 
   await send('Page.navigate', { url: `https://${domain}/` });

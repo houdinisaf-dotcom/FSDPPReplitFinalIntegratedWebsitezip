@@ -3,7 +3,7 @@ import { FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
 
 export const featuredProducts = products.filter(product => {
   const price = priceInfo(product);
-  return product.images?.length > 0 && price.value && !price.label;
+  return [1, 10].includes(product.id) && product.images?.length > 0 && price.value && !price.label;
 });
 
 export function featuredInnovationsSection() {

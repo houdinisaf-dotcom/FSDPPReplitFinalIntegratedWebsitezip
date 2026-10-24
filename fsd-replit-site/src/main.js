@@ -281,23 +281,6 @@ export function mountStorefrontRuntime({ onRouteChange = () => {} } = {}) {
       throw error;
     });
 
-  Promise.all([
-    import('./breeze-development-integration.js'),
-    import('./breeze-preview-ui/breeze-preview.js'),
-  ])
-    .then(([{ createBreezeDevelopmentIntegration }, { mountBreezePreview }]) => {
-      const breeze = createBreezeDevelopmentIntegration();
-      collectionShowcase.setDraftProductCard(breeze.collectionCard, breeze.collectionCardPlacement);
-      mountBreezePreview({
-        root: document.body,
-        product: breeze.productData,
-        variants: breeze.variants,
-      });
-    })
-    .catch(error => {
-      console.error('The private FSD Breeze selector could not be loaded.', error);
-      throw error;
-    });
   }
 
   return collectionShowcase;

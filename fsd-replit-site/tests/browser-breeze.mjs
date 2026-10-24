@@ -1,18 +1,37 @@
-// Browser checks and optional desktop/mobile proof capture for the private FSD Breeze selector.
+// Browser checks for the public FSD Breeze set in the flagship catalogue.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
-import draft from '../content/fsd-breeze-private/draft.json' with { type: 'json' };
-import imageManifest from '../content/fsd-breeze-private/image-manifest.json' with { type: 'json' };
 
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
 const captureProof = process.env.FSD_BREEZE_CAPTURE === '1';
-const proofDirectory = join(process.cwd(), '../generated-artifacts/fsd-breeze-private');
+const proofDirectory = join(process.cwd(), '../generated-artifacts/fsd-breeze-public');
 if (captureProof) mkdirSync(proofDirectory, { recursive: true });
+
+const title = 'FSD Breeze Overshirt & Engineered Leggings Set';
+const colourwayAssets = [
+  ['Onyx Black', 'breeze-set-onyx-black-full-length.webp'],
+  ['Deep Olive', 'breeze-set-deep-olive.webp'],
+  ['Warm Taupe', 'breeze-set-warm-taupe-full-length.webp'],
+  ['Slate Grey', 'breeze-set-slate-grey-full-length.webp'],
+  ['Midnight Navy', 'breeze-set-midnight-navy.webp'],
+  ['Deep Burgundy', 'breeze-set-deep-burgundy-full-length.webp'],
+];
+const galleryAssets = [
+  ...colourwayAssets.map(([, file]) => `/fsd-assets/${file}`),
+  '/fsd-assets/breeze-set-onyx-black-front.webp',
+  '/fsd-assets/breeze-set-onyx-black-trouser-view.webp',
+  '/fsd-assets/breeze-set-onyx-black.webp',
+  '/fsd-assets/breeze-set-onyx-black-side.webp',
+  '/fsd-assets/breeze-set-slate-grey.webp',
+  '/fsd-assets/breeze-set-deep-burgundy-alt-full-length.webp',
+  '/fsd-assets/breeze-set-deep-burgundy.webp',
+];
+
 const profile = mkdtempSync(join(tmpdir(), 'fsd-breeze-browser-'));
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
@@ -72,7 +91,6 @@ try {
     }
     throw new Error(`Browser condition did not become true: ${expression}`);
   };
-  const click = selector => evaluate(`document.querySelector(${JSON.stringify(selector)})?.click()`);
   const capture = async fileName => {
     if (!captureProof) return;
     const screenshot = await send('Page.captureScreenshot', {
@@ -83,135 +101,156 @@ try {
     });
     writeFileSync(join(proofDirectory, fileName), Buffer.from(screenshot.data, 'base64'));
   };
+  const setSearch = value => evaluate(`(() => {
+    const input = document.querySelector('#search');
+    input.value = ${JSON.stringify(value)};
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  })()`);
+  const productRowExists = `!![...document.querySelectorAll('#catalogue-grid button')]
+    .find(node => node.textContent.includes(${JSON.stringify(title)}))`;
+  const clickProductRow = () => evaluate(`(() => {
+    const row = [...document.querySelectorAll('#catalogue-grid button')]
+      .find(node => node.textContent.includes(${JSON.stringify(title)}));
+    row?.click();
+    return !!row;
+  })()`);
+  const catalogueScrollState = () => evaluate(`(() => {
+    const row = [...document.querySelectorAll('#catalogue-grid button')]
+      .find(node => node.textContent.includes(${JSON.stringify(title)}));
+    const ancestors = [];
+    for (let node = row; node; node = node.parentElement) {
+      const overflowY = getComputedStyle(node).overflowY;
+      if (node.scrollHeight > node.clientHeight + 1 && /(auto|scroll)/.test(overflowY)) {
+        ancestors.push({ id: node.id, scrollTop: node.scrollTop });
+      }
+    }
+    return { windowY: window.scrollY, ancestors };
+  })()`);
+  const imageSource = '(document.querySelector("#catalogue-expanded-73 .fsd-catalog-detail__image-stage img")?.src || "")';
 
   await send('Runtime.enable');
   await send('Page.enable');
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: `https://${domain}/` });
-  await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector(".breeze-preview")');
-
-  await click('[data-division="apparel"]');
-  await waitFor('document.querySelector("#fsd-showcase-dialog").open');
-  await click('#fsd-showcase-dialog [data-group-index="1"]');
-  await waitFor('!!document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]")');
-  assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog [data-fsd-breeze-card]").length'), 1);
-  assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog [data-product-id=\\"49\\"]").length'), 0);
-  assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]").dataset.masterProductId'), '49');
-  await evaluate('document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]").scrollIntoView({ block: "center", behavior: "instant" })');
-  await capture('collection-desktop.jpg');
-  const initialScroll = await evaluate('window.scrollY');
-  const opener = '#fsd-showcase-dialog [data-fsd-breeze-open]';
-
-  await click(opener);
-  await waitFor('document.querySelector(".breeze-preview").open');
-  assert.equal(await evaluate('document.querySelector(".breeze-preview__title").textContent'), draft.name);
-  assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__swatch").length'), 6);
-  assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__view").length'), 4);
-  assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__image").length'), 1);
-  assert.equal(await evaluate('document.querySelector(".breeze-preview__image").naturalWidth'), 256);
-  assert.ok(!await evaluate('document.querySelector(".breeze-preview__reference")'));
-  assert.ok(!await evaluate('document.body.textContent.includes("£64.99")'));
-  assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__notices").length'), 0);
-  assert.ok(!await evaluate('document.querySelector(".breeze-preview__product-note")'));
-  assert.ok(await evaluate('!/(CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)/i.test(document.querySelector(".breeze-preview").textContent)'));
-  assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog").open'), true);
-  assert.equal(await evaluate('window.scrollY'), initialScroll);
-  assert.equal(await evaluate('document.querySelectorAll(".breeze-preview form, .breeze-preview [data-purchase], .breeze-preview [data-add-to-cart]").length'), 0);
-  assert.ok(!await evaluate('document.querySelector(".breeze-preview__reference")'));
-  await capture('desktop.jpg');
-
-  for (const variant of imageManifest.variants) {
-    await click('[data-breeze-view="front"]');
-    await click(`[data-breeze-variant="${variant.id}"]`);
-    for (const asset of variant.assets) {
-      await click(`[data-breeze-view="${asset.view}"]`);
-      await waitFor(`document.querySelector(".breeze-preview__image").src.endsWith(${JSON.stringify(`/__catalogue-preview/fsd-breeze/media/${asset.id}`)})`);
-      await waitFor('document.querySelector(".breeze-preview__image").naturalWidth === 256');
-      assert.equal(await evaluate('document.querySelector(".breeze-preview__current-colour").textContent'), variant.label);
-      assert.equal(await evaluate('document.querySelector(".breeze-preview__current-view").textContent.toLowerCase()'), asset.view);
-      assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__swatch[aria-pressed=\\"true\\"]").length'), 1);
-      assert.equal(await evaluate('document.querySelectorAll(".breeze-preview__view[aria-pressed=\\"true\\"]").length'), 1);
-      assert.equal(await evaluate('document.querySelector(".breeze-preview__image").naturalWidth'), 256);
-      assert.ok(await evaluate(`document.querySelector(".breeze-preview__image").alt.includes(${JSON.stringify(variant.label)})`));
-      assert.ok(await evaluate(`document.querySelector(".breeze-preview__image").alt.toLowerCase().includes(${JSON.stringify(asset.view)})`));
-      assert.doesNotMatch(await evaluate('document.querySelector(".breeze-preview__image").alt'), /draft concept image|source crop|unverified/i);
-      assert.equal(await evaluate('window.scrollY'), initialScroll);
-    }
-  }
-
-  const mediaCheck = await evaluate(`Promise.all([
-    fetch("/__catalogue-preview/fsd-breeze/media/breeze-onyx-black-front", { method: "HEAD" }).then(response => ({
-      status: response.status,
-      robots: response.headers.get("X-Robots-Tag"),
-      cache: response.headers.get("Cache-Control"),
-      type: response.headers.get("Content-Type"),
-    })),
-    fetch("/__catalogue-preview/fsd-breeze/media/breeze-onyx-black-front", { method: "POST" }).then(response => response.status),
-    fetch("/__catalogue-preview/fsd-breeze/media/not-a-breeze-image").then(response => response.status),
-  ])`);
-  assert.equal(mediaCheck[0].status, 200);
-  assert.ok(mediaCheck[0].robots?.includes('noindex'));
-  assert.equal(mediaCheck[0].cache, 'no-store');
-  assert.ok(mediaCheck[0].type?.includes('image/jpeg'));
-  assert.equal(mediaCheck[1], 405);
-  assert.equal(mediaCheck[2], 404);
-
-  await click('[data-breeze-variant="onyx-black"]');
-  await click('[data-breeze-view="front"]');
+  await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("#search") && !!document.querySelector("#catalogue-grid")');
+  await evaluate('document.querySelector(\'footer a[href="#products"]\')?.click()');
+  await waitFor('document.querySelector("#catalogue-archive")?.open');
   await evaluate(`(() => {
-    const button = document.querySelector('[data-breeze-view="front"]');
-    button.focus();
-    button.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    const collection = document.querySelector('#catalogue-collection');
+    collection.value = 'womens-modest-combat';
+    collection.dispatchEvent(new Event('change', { bubbles: true }));
   })()`);
-  await waitFor('document.querySelector("[data-breeze-view=\\"side\\"]").getAttribute("aria-pressed") === "true"');
-  assert.equal(await evaluate('document.querySelector(".breeze-preview__image").src.endsWith("/breeze-onyx-black-side")'), true);
+  await setSearch(title);
+  await waitFor(productRowExists);
+  assert.ok(await evaluate('!document.querySelector(".breeze-preview")'));
+  assert.ok(await evaluate('!document.querySelector("[data-fsd-breeze-card]")'));
+  assert.equal(await evaluate('document.querySelector("#catalogue-count").textContent'), 'Showing 1–1 of 1 product');
 
-  await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
-  await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
-  await waitFor('!document.querySelector(".breeze-preview").open');
-  await waitFor('document.querySelector("#fsd-showcase-dialog").open');
-  await waitFor('document.activeElement.matches("[data-fsd-breeze-open]")');
-  assert.equal(await evaluate('window.scrollY'), initialScroll);
+  await evaluate(`document.querySelector('#catalogue-grid button')?.scrollIntoView({ block: 'center', behavior: 'instant' })`);
+  assert.equal(await clickProductRow(), true);
+  await waitFor('!!document.querySelector("#catalogue-expanded-73")');
+  await waitFor(`${imageSource}.endsWith("breeze-set-onyx-black-full-length.webp")`);
+  await evaluate('document.querySelector("#catalogue-expanded-73 .fsd-catalog-detail__image-stage")?.scrollIntoView({ block: "center", behavior: "instant" })');
+  await waitFor(`document.querySelector("#catalogue-expanded-73 .fsd-catalog-detail__image-stage img")?.naturalWidth > 0`);
+  await capture('desktop-detail.jpg');
 
+  const detailText = await evaluate('document.querySelector("#catalogue-expanded-73").textContent');
+  assert.ok(detailText.includes('£145.00'));
+  assert.ok(detailText.includes('absolute confidence in motion'));
+  assert.ok(detailText.includes('XS / S / M / L / XL'));
+  assert.ok(detailText.includes('88% Performance Polyester'));
+  assert.ok(detailText.includes('Four-way mechanical stretch'));
+  assert.ok(detailText.includes('Machine wash cold on delicate cycle'));
+  assert.ok(!/(CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING|IN DEVELOPMENT)/i.test(detailText));
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-73 [data-catalogue-inline-colourway]").length'), 6);
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-73 [data-catalogue-inline-view]").length'), 13);
+
+  for (const [colourway, file] of colourwayAssets) {
+    await evaluate(`(() => {
+      const button = [...document.querySelectorAll('#catalogue-expanded-73 [data-catalogue-inline-colourway]')]
+        .find(node => node.textContent.trim().includes(${JSON.stringify(colourway)}));
+      button?.click();
+    })()`);
+    await waitFor(`[...document.querySelectorAll('#catalogue-expanded-73 [data-catalogue-inline-colourway]')]
+      .find(node => node.textContent.trim().includes(${JSON.stringify(colourway)}))?.getAttribute('aria-pressed') === "true"`);
+    const pressed = await evaluate(`[...document.querySelectorAll('#catalogue-expanded-73 [data-catalogue-inline-colourway]')]
+      .find(node => node.textContent.trim().includes(${JSON.stringify(colourway)}))?.getAttribute('aria-pressed')`);
+    assert.equal(pressed, 'true', `${colourway} should be selectable`);
+    await waitFor(`${imageSource}.endsWith(${JSON.stringify(file)})`);
+    await waitFor(`document.querySelector("#catalogue-expanded-73 .fsd-catalog-detail__image-stage img")?.naturalWidth > 0`);
+  }
+  await evaluate(`(() => {
+    const view = [...document.querySelectorAll('#catalogue-expanded-73 [data-catalogue-inline-view]')]
+      .find(node => node.textContent.includes('Onyx Black · alternate view'));
+    view?.click();
+  })()`);
+  await waitFor(`${imageSource}.endsWith("breeze-set-onyx-black-side.webp")`);
+  assert.equal(await evaluate(`[...document.querySelectorAll('#catalogue-expanded-73 [data-catalogue-inline-colourway]')]
+    .find(node => node.textContent.trim().includes('Onyx Black'))?.getAttribute('aria-pressed')`), 'true');
+
+  const imageStatuses = await evaluate(`Promise.all(${JSON.stringify(galleryAssets)}.map(src =>
+    fetch(src, { method: 'HEAD' }).then(response => response.status)))`);
+  assert.deepEqual(imageStatuses, Array(galleryAssets.length).fill(200));
+
+  await evaluate(`document.querySelector('#catalogue-grid button')?.scrollIntoView({ block: 'center', behavior: 'instant' })`);
+  await evaluate('window.scrollBy(0, -200)');
+  const expandedScrollState = await catalogueScrollState();
+  assert.equal(await clickProductRow(), true);
+  await waitFor('!document.querySelector("#catalogue-expanded-73")');
+  assert.deepEqual(await catalogueScrollState(), expandedScrollState);
+
+  await setSearch("FSD Women's Lightweight Modest Training Overshirt");
+  await waitFor('!![...document.querySelectorAll("#catalogue-grid button")].find(node => node.textContent.includes("FSD Women"))');
+  assert.ok(await evaluate(`[...document.querySelectorAll('#catalogue-grid button')]
+    .find(node => node.textContent.includes('FSD Women'))?.textContent.includes('£64.99')`));
+  assert.ok(await evaluate(`[...document.querySelectorAll('#catalogue-grid button')]
+    .find(node => node.textContent.includes('FSD Women'))?.textContent.includes('Lightweight Modest Training Overshirt')`));
+  assert.ok(await evaluate(`![...document.querySelectorAll('#catalogue-grid button')]
+    .find(node => node.textContent.includes('FSD Women'))?.textContent.includes('Engineered Leggings Set')`));
+
+  await setSearch(title);
+  await waitFor(productRowExists);
+  await clickProductRow();
+  await waitFor('!!document.querySelector("#catalogue-expanded-73")');
   await send('Emulation.setDeviceMetricsOverride', { width: 402, height: 874, deviceScaleFactor: 1, mobile: false });
-  await send('Page.reload');
-  await waitFor('document.readyState === "complete"');
-  await delay(300);
-  await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector(".breeze-preview")');
-  assert.equal(await evaluate('window.innerWidth'), 402);
-  assert.ok(await evaluate('Math.abs(visualViewport.scale - 1) < 0.01'));
-  await click('[data-nav-mobile-toggle]');
-  await waitFor('document.body.classList.contains("fsd-mobile-nav-open")');
-  await click('.fsd-mobile-primary-list [data-nav-primary="universe"]');
-  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
-  await click('#fsd-mega-menu [data-nav-group="0"]');
-  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail"');
-  await click('#fsd-mega-menu [data-nav-item="0"]');
-  await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
-  await click('#fsd-showcase-dialog [data-group-index="1"]');
-  await click('#fsd-showcase-dialog [data-subcategory-index="-1"]');
-  await waitFor('!!document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]")');
-  await evaluate('document.querySelector("#fsd-showcase-dialog [data-fsd-breeze-card]").scrollIntoView({ block: "center", behavior: "instant" })');
-  await capture('collection-mobile.jpg');
-  await click(opener);
-  await waitFor('document.querySelector(".breeze-preview").open');
-  await click('[data-breeze-view="front"]');
-  await waitFor('document.querySelector(".breeze-preview__image").naturalWidth === 256');
-  await capture('mobile.jpg');
-  assert.equal(await evaluate('(() => { const rect = document.querySelector(".breeze-preview").getBoundingClientRect(); return rect.left >= -1 && rect.right <= innerWidth + 1; })()'), true);
-  assert.equal(await evaluate('getComputedStyle(document.querySelector(".breeze-preview__layout")).gridTemplateColumns.trim().split(/\\s+/).length'), 1);
-  assert.ok(await evaluate('document.querySelector(".breeze-preview__image").getBoundingClientRect().width <= 256.1'));
-  await click('[data-breeze-variant="deep-burgundy"]');
-  await waitFor('document.querySelector(".breeze-preview__image").src.endsWith("/breeze-deep-burgundy-front")');
-  assert.equal(await evaluate('document.querySelector(".breeze-preview__current-colour").textContent'), 'Deep Burgundy — Combat');
-  assert.equal(await evaluate('document.querySelector(".breeze-preview__current-view").textContent'), 'Front');
-  await click('.breeze-preview__close');
-  await waitFor('!document.querySelector(".breeze-preview").open');
-  await waitFor('document.activeElement.matches("[data-fsd-breeze-open]")');
-  assert.equal(await evaluate('document.body.scrollWidth <= window.innerWidth + 1'), true);
+  await delay(150);
+  const mobileLayout = await evaluate(`(() => {
+    const detail = document.querySelector('#catalogue-expanded-73');
+    const rect = detail.getBoundingClientRect();
+    return {
+      width: innerWidth,
+      scrollWidth: document.body.scrollWidth,
+      left: rect.left,
+      right: rect.right,
+      imageWidth: detail.querySelector('.fsd-catalog-detail__image-stage').getBoundingClientRect().width,
+    };
+  })()`);
+  assert.equal(mobileLayout.width, 402);
+  assert.ok(mobileLayout.scrollWidth <= mobileLayout.width + 1);
+  assert.ok(mobileLayout.left >= -1 && mobileLayout.right <= mobileLayout.width + 1);
+  assert.ok(mobileLayout.imageWidth > 0);
+  await capture('mobile-detail.jpg');
+
+  await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
+  await send('Page.navigate', { url: `https://${domain}/?product=73#products` });
+  await waitFor('document.querySelector("#product-dialog")?.open');
+  await waitFor('document.querySelector("#product-dialog").textContent.includes("ENGINEERING & SPECIFICATIONS")');
+  const deepDiveText = await evaluate('document.querySelector("#product-dialog").textContent');
+  assert.ok(deepDiveText.includes('£145.00'));
+  assert.ok(deepDiveText.includes('One Lightweight Modest Training Overshirt'));
+  assert.ok(deepDiveText.includes('XS / S / M / L / XL'));
+  assert.ok(deepDiveText.includes('88% Performance Polyester'));
+  assert.ok(deepDiveText.includes('Four-way mechanical stretch'));
+  assert.ok(deepDiveText.includes('Machine wash cold on delicate cycle'));
+  assert.ok(await evaluate('Boolean(document.querySelector(\'#product-dialog [data-bag-add="73"]\'))'));
+  const taupeImageIndex = await evaluate(`Number([...document.querySelectorAll('#product-dialog [data-catalogue-colourway-index]')]
+    .find(button => button.textContent.includes('Warm Taupe'))?.dataset.catalogueColourwayImageIndex)`);
+  assert.ok(taupeImageIndex >= 0);
+  await evaluate(`document.querySelector('#product-dialog [data-catalogue-colourway-index="2"]')?.click()`);
+  await waitFor('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("breeze-set-warm-taupe-full-length.webp")');
   assert.deepEqual(browserErrors, []);
-  console.log('FSD Breeze browser checks passed: one linked collection record, all 24 colour/view mappings, native image size, private media, no checkout, nested Escape/focus return, and mobile layout.');
+  console.log('FSD Breeze browser checks passed: public price and specifications, six selectable colourways, 13 mapped views, separate £64.99 overshirt, no collage boards, no private preview, and responsive inline detail.');
 } finally {
   socket?.close();
   const chromeExit = chrome.exitCode === null ? new Promise(resolve => chrome.once('exit', resolve)) : Promise.resolve();

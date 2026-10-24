@@ -290,6 +290,14 @@
   gap: 1px;
 }
 
+.fsd-nav-column--items .fsd-nav-list {
+  max-height: min(58vh, 480px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(200, 170, 114, 0.45) transparent;
+  scrollbar-width: thin;
+}
+
 .fsd-nav-option {
   display: grid;
   width: 100%;
