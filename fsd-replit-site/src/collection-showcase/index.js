@@ -239,15 +239,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     ? `<div class="fsd-showcase-empty"><h4>Explore the collection.</h4><p>There are no visual items to show in this section.</p></div>`
     : '';
   const womensHeroMarkup = isWomensCollection
-    ? `<div class="fsd-modal-hero fsd-modal-hero--womens">
-        <img class="fsd-womens-hero-image" src="/fsd-assets/womens-activewear-hero.png" alt="" aria-hidden="true" fetchpriority="high"/>
-        <div class="fsd-womens-hero-copy">
-          <span class="fsd-modal-kicker">FSD APPAREL <span>/</span> WOMEN’S COLLECTION</span>
-          <h2>The Performance Edit</h2>
-          <p>High-end activewear crafted for ultimate comfort, luxury, and peak performance.</p>
-          <button class="fsd-womens-hero-cta" type="button" data-scroll-womens-products>Shop Women’s Collection <span aria-hidden="true">↓</span></button>
-        </div>
-      </div>`
+    ? '<div data-womens-banner-slot></div>'
     : '';
   return `${womensHeroMarkup || `<div class="fsd-modal-hero fsd-modal-hero--${escapeHTML(heroVisual)}${isApparel && heroVisual !== 'apparel' ? ' fsd-modal-hero--apparel' : ''}${mappedHeroImage ? ' fsd-modal-hero--image' : ''}">
       <div class="fsd-modal-hero__copy">

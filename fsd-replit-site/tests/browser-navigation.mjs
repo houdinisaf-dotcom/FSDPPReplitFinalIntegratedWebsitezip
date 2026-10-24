@@ -129,19 +129,38 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("[data-division=\\"apparel\\"]")');
   await waitFor('!!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools") && !!document.querySelector(".fsd-reading-progress")');
-  const desktopCursor = await evaluate('getComputedStyle(document.body).cursor');
-  assert.match(desktopCursor, /data:image\/svg\+xml/);
-  assert.match(desktopCursor, /\)\s+12 12,\s*auto$/);
-  const encodedCursorSvg = desktopCursor.match(/url\("data:image\/svg\+xml,([^"]+)"\)/)?.[1];
+  const hasFinePointer = await evaluate('matchMedia("(pointer: fine)").matches');
+  const desktopCursor = await evaluate('getComputedStyle(document.querySelector("a[href]")).cursor');
+  const cursorStylesheet = await evaluate('document.getElementById("fsd-cursor")?.textContent ?? ""');
+  assert.match(cursorStylesheet, /@media \(pointer: fine\)/);
+  const encodedCursorSvg = cursorStylesheet.match(/url\("data:image\/svg\+xml,([^"]+)"\)/)?.[1];
   assert.ok(encodedCursorSvg);
   const decodedCursorSvg = decodeURIComponent(encodedCursorSvg);
-  assert.match(decodedCursorSvg, /width='24' height='24'/);
-  assert.match(decodedCursorSvg, /fill='#D4AF37'/);
-  assert.match(decodedCursorSvg, /M6 7h2v10H6V7z/);
-  assert.equal(
-    await evaluate('Array.from(document.querySelectorAll("a, button, input, select, textarea, [role=button], .cursor-pointer")).every(element => getComputedStyle(element).cursor === getComputedStyle(document.body).cursor)'),
-    true,
-    'The dumbbell cursor should override pointer styles throughout interactive UI.',
+  assert.match(decodedCursorSvg, /width="32" height="32"/);
+  assert.match(decodedCursorSvg, /fill="#D4AF37" stroke="#0a0a0a"/);
+  assert.match(decodedCursorSvg, /<rect x="10" y="14\.5" width="12" height="3"\/>/);
+  if (hasFinePointer) {
+    assert.match(desktopCursor, /data:image\/svg\+xml/);
+    assert.match(desktopCursor, /\)\s+16 16,\s*pointer$/);
+    assert.equal(
+      await evaluate('Array.from(document.querySelectorAll(\'a[href], button:not(:disabled), [role="button"], [role="tab"], summary, label[for], select\')).every(element => getComputedStyle(element).cursor === getComputedStyle(document.querySelector("a[href]")).cursor)'),
+      true,
+      'The dumbbell cursor should apply to fine-pointer interactive controls.',
+    );
+  } else {
+    assert.equal(desktopCursor, 'pointer', 'Headless Chromium reports no fine pointer, so native pointer behavior is expected.');
+  }
+  assert.deepEqual(
+    await evaluate(`(() => {
+      const input = document.querySelector('#search');
+      const textarea = document.createElement('textarea');
+      document.body.append(textarea);
+      const cursors = [getComputedStyle(input).cursor, getComputedStyle(textarea).cursor];
+      textarea.remove();
+      return cursors;
+    })()`),
+    ['text', 'text'],
+    'Text entry controls should retain their native text cursor.',
   );
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundPosition'), '50% 35%');
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundSize'), 'cover');
@@ -591,6 +610,27 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('Math.abs(window.scrollY - ' + rowScrollY + ') < 2'), true);
   await click('#catalogue-grid [data-product="1"]');
   await waitFor('!!document.querySelector("#catalogue-expanded-1")');
+   const secondProductId = await evaluate('document.querySelectorAll("#catalogue-grid [data-product]")[1]?.dataset.product');
+   assert.ok(secondProductId, 'A second product row should be available for the anchoring check.');
+   const secondProductSelector = `#catalogue-grid [data-product="${secondProductId}"]`;
+   await evaluate(`document.querySelector(${JSON.stringify(secondProductSelector)}).scrollIntoView({ block: "center", behavior: "instant" })`);
+   const secondProductTop = await evaluate(`document.querySelector(${JSON.stringify(secondProductSelector)}).getBoundingClientRect().top`);
+   await click(secondProductSelector);
+   await waitFor(`!!document.querySelector("#catalogue-expanded-${secondProductId}")`);
+   assert.equal(
+     await evaluate(`Math.abs(document.querySelector(${JSON.stringify(secondProductSelector)}).getBoundingClientRect().top - ${secondProductTop}) < 2`),
+     true,
+     'Switching expanded products should keep the clicked row in the same viewport position.',
+   );
+   await key('Escape');
+   await waitFor(`document.querySelector("#catalogue-expanded-${secondProductId}") === null && document.querySelector(${JSON.stringify(secondProductSelector)})?.getAttribute("aria-expanded") === "false"`);
+   assert.equal(
+     await evaluate(`document.activeElement === document.querySelector(${JSON.stringify(secondProductSelector)})`),
+     true,
+     'Escape should close the inline detail and restore focus to its row.',
+   );
+   await click('#catalogue-grid [data-product="1"]');
+   await waitFor('!!document.querySelector("#catalogue-expanded-1")');
   await click('#catalogue-expanded-1 [data-catalogue-deep-dive]');
   await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.trim() === "FSD Ombré Slash Tee"');
   await click('#close-dialog');

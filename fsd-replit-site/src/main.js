@@ -8,7 +8,6 @@ import { ourStorySection } from './story-section.js';
 import { mountClientBag } from './bag.js';
 import { FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
-import approvedFsdHeaderLogo from '../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 import './style.css';
 import './catalogue.css';
 import './collection-showcase/collection-showcase.css';
@@ -21,7 +20,7 @@ import './bag.css';
 import './globals.css';
 
 export function renderStorefrontHeader() {
-  const currentBrandMarkup = `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`;
+  const currentBrandMarkup = '<span data-fsd-logo-slot="header"></span>';
   return renderNavigationHeader(currentBrandMarkup);
 }
 
@@ -53,20 +52,7 @@ function hardwareEditorialSection() {
 
 export function renderStorefrontMarkup() {
   return `<main id="home">
-  <section class="fsd-home-hero" aria-labelledby="fsd-home-title">
-    <div class="fsd-home-hero__image" data-fsd-parallax aria-hidden="true"></div>
-    <div class="fsd-home-hero__shade" aria-hidden="true"></div>
-    <div class="fsd-home-hero__content">
-      <p class="fsd-home-kicker"><span></span> PERFORMANCE / DISCIPLINE / IDENTITY</p>
-      <h1 id="fsd-home-title">Made to Move,<br/><em>Made to Belong.</em></h1>
-      <p class="fsd-home-intro">Fitness &amp; Self-Defence.<br/>A house for those who train with purpose.</p>
-      <div class="fsd-home-actions">
-        <a class="fsd-home-primary" href="#universe">Explore the collections <span aria-hidden="true">↗</span></a>
-      </div>
-      <p class="fsd-home-signoff">FSD <span>/</span> FITNESS &amp; SELF-DEFENCE</p>
-    </div>
-    <p class="fsd-home-caption">MADE TO MOVE <span>—</span> MADE TO BELONG</p>
-  </section>
+  <div data-home-hero-slot></div>
   <div id="collections">
     ${renderCollectionShowcase(collectionDivisions, { editorial: true })}
   </div>
@@ -90,7 +76,7 @@ export function renderStorefrontMarkup() {
     <summary>BROWSE THE FULL CATALOGUE</summary>
     ${catalogueSection()}
   </details>
-  <footer><div class="footer-brand"><img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="FSD Fitness & Self-Defence" loading="lazy" decoding="async"/></div>
+  <footer><div class="footer-brand"><span data-fsd-logo-slot="footer"></span></div>
     <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Website prototype.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD COLLECTIONS</a><a href="#products">BROWSE CATALOGUE</a>
       <a href="#contact">VIP ACCESS</a></nav>
