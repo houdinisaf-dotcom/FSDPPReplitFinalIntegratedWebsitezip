@@ -78,15 +78,19 @@ root.innerHTML = `
     <div class="velocity-product-copy">
       <p class="velocity-product-kicker">FSD / WOMEN’S MODEST ACTIVEWEAR</p>
       <h1 id="velocity-hijab-title">${escapeHTML(preview.product.name)}</h1>
-      <p class="velocity-product-tagline">CONCEPT</p>
-      <p class="velocity-product-description">An FSD performance sports hijab concept in ${escapeHTML(preview.colour)}.</p>
+      <p class="velocity-product-description">FSD performance sports hijab in ${escapeHTML(preview.colour)}.</p>
       <div><span class="velocity-product-label">Colour</span>
         <p class="velocity-colour"><span class="velocity-colour-swatch" aria-hidden="true"></span>${escapeHTML(preview.colour)}</p>
       </div>
       <div class="velocity-accordions">
-        <details><summary>Product details</summary><p>Product information will be shared before release.</p></details>
+        <details>
+          <summary>Product details</summary>
+          <dl>
+            <div><dt>Product</dt><dd>${escapeHTML(preview.product.name)}</dd></div>
+            <div><dt>Colourway</dt><dd>${escapeHTML(preview.colour)}</dd></div>
+          </dl>
+        </details>
       </div>
-      <p class="velocity-product-disclaimer">Product details will be shared before release.</p>
     </div>
   </section>
   <footer class="velocity-proof-footer"><span>FSD / VELOCITY</span><span>WOMEN’S MODEST ACTIVEWEAR</span></footer>`;

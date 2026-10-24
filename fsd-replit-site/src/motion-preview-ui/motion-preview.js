@@ -49,7 +49,7 @@ function productLink(product, index, assets) {
     </span>
       <span class="motion-product-copy"><small>${esc(product.category ?? product.type ?? 'FSD MOTION')}</small>
       <strong>${esc(product.name ?? product.title ?? '')}</strong>
-      <span class="motion-link-label">VIEW CONCEPT <i aria-hidden="true">↗</i></span>
+      <span class="motion-link-label">VIEW DETAILS <i aria-hidden="true">↗</i></span>
     </span>
   </a>`;
 }
@@ -98,7 +98,6 @@ export function renderMotionPreview({ headerHtml, collection, product, products,
             <div class="motion-hero-copy"><p class="motion-kicker">FSD / TRAINING APPAREL</p><p class="motion-overline">GYM · OUTDOORS · SELF-DEFENCE</p>
               <h1>FSD<br><em>MOTION</em></h1><p class="motion-hero-subtitle">${esc(collection?.subtitle ?? title)}</p>
               ${collection?.introduction ? `<p class="motion-hero-introduction">${esc(collection.introduction)}</p>` : ''}
-              <p class="motion-prelaunch-note"><strong>CONCEPT</strong><small>Product details are being finalised.</small></p>
             </div>
             <div class="motion-hero-art">
               ${heroSrc ? `<button class="motion-hero-image motion-hero-image--campaign" type="button" data-motion-image="${esc(hero.id ?? '')}" data-motion-enlarge aria-label="Enlarge campaign image"><img data-motion-active-image src="${esc(heroSrc)}" alt=""><span>ENLARGE IMAGE</span></button>` : `<div class="motion-no-photo">FSD MOTION</div>`}
@@ -108,13 +107,13 @@ export function renderMotionPreview({ headerHtml, collection, product, products,
         </div>
         <section class="motion-manifesto"><div class="motion-wrap"><span>01 / THE COLLECTION</span><p>${esc(collection?.supportingMessage ?? 'TRAIN SMARTER. MOVE BETTER. GO FURTHER.')}</p><small>FSD MOTION / CAMPAIGN DIRECTION</small></div></section>
         <section class="motion-lineup motion-wrap" aria-labelledby="motion-lineup-title">
-          <div class="motion-section-head"><div><p class="motion-kicker">FSD MOTION / 04 CONCEPTS</p><h2 id="motion-lineup-title">The <em>line-up.</em></h2></div>
-            <p>Four apparel concepts for training across gym, outdoor and self-defence contexts.</p></div>
+          <div class="motion-section-head"><div><p class="motion-kicker">FSD MOTION / 04 PRODUCTS</p><h2 id="motion-lineup-title">The <em>line-up.</em></h2></div>
+            <p>Four apparel products for training across gym, outdoor and self-defence contexts.</p></div>
           <div class="motion-product-grid">${allProducts.map((item, index) => productLink(item, index, sourceAssets)).join('')}</div>
         </section>
-        ${stories?.length ? `<section class="motion-stories motion-wrap"><div class="motion-section-head"><div><p class="motion-kicker">CAMPAIGN CONTEXT</p><h2>Built around <em>movement.</em></h2></div></div><div class="motion-story-grid">${list(stories).map((story, index) => `<article class="motion-story"><span>0${index + 1} / ${esc(story.context ?? story.label ?? 'CONCEPT')}</span><h3>${esc(story.title ?? story.name ?? '')}</h3><p>${esc(story.copy ?? story.description ?? '')}</p></article>`).join('')}</div></section>` : ''}
+        ${stories?.length ? `<section class="motion-stories motion-wrap"><div class="motion-section-head"><div><p class="motion-kicker">CAMPAIGN CONTEXT</p><h2>Built around <em>movement.</em></h2></div></div><div class="motion-story-grid">${list(stories).map((story, index) => `<article class="motion-story"><span>0${index + 1} / ${esc(story.context ?? story.label ?? 'FSD')}</span><h3>${esc(story.title ?? story.name ?? '')}</h3><p>${esc(story.copy ?? story.description ?? '')}</p></article>`).join('')}</div></section>` : ''}
         ${renderReferences(sourceAssets, hero?.id)}
-        <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong><span>CONCEPT</span></footer>
+        <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong></footer>
       </main>${dialog}</div>`;
   }
 
@@ -131,15 +130,14 @@ export function renderMotionPreview({ headerHtml, collection, product, products,
               <p class="motion-art-caption" data-motion-active-caption aria-live="polite">${esc(campaignImageLabel(image))}<span>CAMPAIGN IMAGE</span></p>
               ${renderProductGallery(productRefs, image?.id, product.name ?? product.title ?? 'FSD MOTION')}` : `<div class="motion-no-photo">FSD MOTION</div>`}
           </div>
-          <div class="motion-detail-copy"><p class="motion-kicker">FSD MOTION / CONCEPT</p><p class="motion-overline">${esc(product.category ?? product.type ?? 'SMART TRAINING APPAREL')}</p>
+          <div class="motion-detail-copy"><p class="motion-kicker">FSD MOTION</p><p class="motion-overline">${esc(product.category ?? product.type ?? 'SMART TRAINING APPAREL')}</p>
             <h1>${esc(product.name ?? product.title ?? '')}</h1>
-            <p class="motion-description">A visual concept for the FSD MOTION collection.</p>
-            <p class="motion-prelaunch-note"><strong>CONCEPT</strong><small>Product details are being finalised.</small></p>
+            <p class="motion-description">Part of the FSD MOTION collection.</p>
           </div>
         </section>
       </div>
-      ${stories?.length ? `<section class="motion-stories motion-wrap"><div class="motion-section-head"><div><p class="motion-kicker">CAMPAIGN CONTEXT</p><h2>In the <em>field.</em></h2></div></div><div class="motion-story-grid">${list(stories).map((story, index) => `<article class="motion-story"><span>0${index + 1} / ${esc(story.context ?? story.label ?? 'CONCEPT')}</span><h3>${esc(story.title ?? story.name ?? '')}</h3><p>${esc(story.copy ?? story.description ?? '')}</p></article>`).join('')}</div></section>` : ''}
-      <section class="motion-next motion-wrap"><p class="motion-kicker">MORE MOTION CONCEPTS</p><div>${allProducts.filter(item => item.slug !== product.slug).map((item, index) => productLink(item, index, sourceAssets)).join('')}</div></section>
-      <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong><span>CONCEPT</span></footer>
+      ${stories?.length ? `<section class="motion-stories motion-wrap"><div class="motion-section-head"><div><p class="motion-kicker">CAMPAIGN CONTEXT</p><h2>In the <em>field.</em></h2></div></div><div class="motion-story-grid">${list(stories).map((story, index) => `<article class="motion-story"><span>0${index + 1} / ${esc(story.context ?? story.label ?? 'FSD')}</span><h3>${esc(story.title ?? story.name ?? '')}</h3><p>${esc(story.copy ?? story.description ?? '')}</p></article>`).join('')}</div></section>` : ''}
+      <section class="motion-next motion-wrap"><p class="motion-kicker">MORE MOTION PRODUCTS</p><div>${allProducts.filter(item => item.slug !== product.slug).map((item, index) => productLink(item, index, sourceAssets)).join('')}</div></section>
+      <footer class="motion-footer motion-wrap"><strong>FSD <i>/</i> MOTION</strong></footer>
     </main>${dialog}</div>`;
 }

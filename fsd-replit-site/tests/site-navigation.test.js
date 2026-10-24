@@ -26,19 +26,16 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
   ]);
 });
 
-test('Shop exposes All Products and keeps the existing apparel groups and subcategories', () => {
+test('Shop foregrounds collection groups and removes the redundant All Products group', () => {
   const collections = menu[0];
   assert.deepEqual(collections.groups.map(group => group.title), [
     'MEN’S LUXURY PERFORMANCE',
     'WOMEN’S MODEST COMBAT',
     'LIMITED COLLECTIONS',
-    'NEW & FEATURED CONCEPTS',
-    'ALL PRODUCTS',
+    'NEW & FEATURED',
   ]);
 
-  const allProducts = collections.groups.find(group => group.id === 'shop-all-products');
-  assert.equal(allProducts.href, '#products');
-  assert.equal(allProducts.items[0].kind, 'shop-all');
+  assert.equal(collections.groups.some(group => group.id === 'shop-all-products'), false);
   const men = collections.groups.find(group => group.id === 'mens-luxury-performance');
   assert.equal(men.items[1].title, '2-in-1 Combat Training Shorts & Tanks');
   assert.equal(men.items[1].kind, 'subcategory');
@@ -80,13 +77,13 @@ test('mega-menu image previews use only explicit single-image bindings', () => {
   const mensIndex = menu[0].groups.findIndex(group => group.id === 'mens-luxury-performance');
   const conceptFeature = getNavigationFeature(menu[0], mensIndex, 1);
   assert.equal(conceptFeature.item, '2-in-1 Combat Training Shorts & Tanks');
-  assert.deepEqual(conceptFeature.imageSources, []);
+  assert.deepEqual(conceptFeature.imageSources, ['/fsd-assets/8ffe2fd45a06.webp']);
 
   const women = menu[0].groups.find(group => group.id === 'womens-modest-combat');
   const hijabIndex = women.items.findIndex(item => item.title === 'Performance Hijabs');
   const womenIndex = menu[0].groups.indexOf(women);
   const hijabFeature = getNavigationFeature(menu[0], womenIndex, hijabIndex);
-  assert.deepEqual(hijabFeature.imageSources, []);
+  assert.deepEqual(hijabFeature.imageSources, ['/fsd-assets/8ffe2fd45a06.webp']);
 
   assert.ok(women.items.some(item => item.title === 'Performance Hijabs'));
   assert.ok(women.items.some(item => item.title === 'Sports Hijabs'));
@@ -115,11 +112,27 @@ test('mega-menu image previews use only explicit single-image bindings', () => {
 test('Bio-Lab and Hardware reuse current division groups and product records', () => {
   const bioLab = menu.find(item => item.id === 'bio-lab');
   const hardware = menu.find(item => item.id === 'hardware');
-  assert.deepEqual(bioLab.groups.map(group => group.title), ['WEARABLE TECHNOLOGY & CONCEPTS']);
+  const combatEquipmentIndex = hardware.groups.findIndex(group => group.id === 'combat-equipment');
+  assert.ok(combatEquipmentIndex >= 0);
+  assert.deepEqual(
+    getNavigationFeature(hardware, combatEquipmentIndex, 0).imageSources,
+    ['/fsd-assets/8ffe2fd45a06.webp'],
+  );
+  assert.deepEqual(bioLab.groups.map(group => group.title), [
+    'WEARABLE TECHNOLOGY',
+    'INNOVATION HUB',
+  ]);
   assert.ok(bioLab.groups[0].items.length > 0);
-  assert.deepEqual(hardware.groups.map(group => group.title), collectionDivisions
-    .find(division => division.id === 'hardware').groups.map(group => group.title));
+  assert.equal(bioLab.groups[1].items[0].title, 'Browse Innovation Hub');
+  assert.equal(bioLab.groups[1].items[0].href, '#innovation-hub');
+  assert.ok(bioLab.groups[1].items.some(item =>
+    item.title === 'Smart Apparel & NFC' && item.href === '#smart-apparel-nfc'));
+  assert.deepEqual(hardware.groups.map(group => group.title), [
+    ...collectionDivisions.find(division => division.id === 'hardware').groups.map(group => group.title),
+    'FSD PODS',
+  ]);
   assert.ok(hardware.groups[0].items.some(item => item.record?.name));
+  assert.equal(hardware.groups.at(-1).items[0].href, '#fsd-pods');
 });
 
 test('weighted rope is an opt-in Hardware draft preview, not a published catalogue record', () => {
@@ -168,36 +181,44 @@ test('the hooded-shell campaign proof is available only in the development previ
   assert.deepEqual(getNavigationFeature(previewCollections, previewCollections.groups.indexOf(previewMens), shellIndex).imageSources, []);
 });
 
-test('House destinations remain existing anchors and do not claim proposed locations are live', () => {
+test('House destinations expose the story route and do not claim proposed locations are live', () => {
   const house = menu.find(item => item.id === 'house');
   assert.deepEqual(house.groups.map(group => group.title), [
-    'OUR STORY',
+    'BRAND STORY & ARCHIVE',
     'FLAGSHIPS',
     'FIGHT PROMOTIONS',
+    'PERFORMANCE-LINKED PARTNERSHIPS & SECURITY',
     'GLOBAL VISION',
     'INVESTOR RELATIONS',
   ]);
   assert.ok(house.groups.filter(group => group.href).every(group =>
-    ['#philosophy', '#fsd-division-global'].includes(group.href)));
+    ['/story', '#fsd-division-global', '#performance-linked-partnerships-security'].includes(group.href)));
+  assert.equal(house.groups[0].items[0].status, 'EDITORIAL / BRAND PRINCIPLES');
+  assert.equal(house.groups[0].items[0].chapterCount, '04 FOUNDATIONAL CHAPTERS');
+  assert.equal(house.groups[0].items[0].houseCodeCount, '05 WORKING PRINCIPLES');
+  assert.match(house.groups[0].items[0].description, /Capability is not a costume/);
   assert.ok(house.groups[1].items.every(item => /no location or service is represented as operational/i.test(item.description)));
   assert.equal(house.groups[1].href, '');
   assert.equal(house.groups[1].sourceDivisionId, 'global');
   assert.equal(house.groups[1].sourceGroupIndex, 0);
   assert.equal(house.groups[2].href, '');
   assert.equal(house.groups[2].sourceGroupIndex, 1);
-  assert.equal(house.groups[4].navigationUnavailable, true);
+  assert.equal(house.groups[5].navigationUnavailable, true);
 });
 
 test('Private Access remains informational and collects no sign-ups', () => {
   const access = menu.find(item => item.id === 'private-access');
-  assert.equal(access.groups.length, 3);
+  assert.equal(access.groups.length, 4);
   assert.ok(access.description.includes('deferred'));
-  assert.ok(access.groups[0].description.includes('not collecting sign-ups'));
-  assert.equal(access.groups[0].href, '');
-  assert.equal(access.groups[0].navigationUnavailable, true);
-  assert.equal(access.groups[1].href, '#contact');
-  assert.equal(access.groups[2].href, '');
-  assert.equal(access.groups[2].navigationUnavailable, true);
+  assert.equal(access.groups[0].href, '#tactical-shield-membership');
+  assert.equal(access.groups[0].navigationUnavailable, false);
+  assert.ok(access.groups[0].description.includes('registration is not open'));
+  assert.ok(access.groups[1].description.includes('not collecting sign-ups'));
+  assert.equal(access.groups[1].href, '');
+  assert.equal(access.groups[1].navigationUnavailable, true);
+  assert.equal(access.groups[2].href, '#contact');
+  assert.equal(access.groups[3].href, '');
+  assert.equal(access.groups[3].navigationUnavailable, true);
   assert.ok(access.groups.every(group => group.items.every(item => !item.record)));
 });
 

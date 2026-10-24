@@ -153,7 +153,7 @@
 
 .fsd-showcase-banner--apparel {
   --banner-accent: #d5b876;
-  background: linear-gradient(90deg, #181613 10%, rgba(15,16,18,.1) 100%), url('/images/fsd-velocity-performance-sports-hijab.jpg') center 22% / cover;
+  background: linear-gradient(90deg, #181613 10%, rgba(15,16,18,.1) 100%), #17171a;
 }
 .fsd-showcase-banner--bio-lab {
   --banner-accent: #d3bd8a;
@@ -414,7 +414,18 @@
 .fsd-aegis-preview-title:hover { color: #e3c68c; }
 .fsd-aegis-preview-title:focus-visible { outline: 2px solid #e3c68c; outline-offset: 3px; }
 .fsd-product-media > span:last-child { position: absolute; right: 8px; bottom: 8px; padding: 5px 7px; background: rgba(7,8,9,.82); color: #d1c6af; font-size: 7px; font-weight: 700; letter-spacing: .11em; }
-.fsd-product-media--placeholder { align-content: center; gap: 12px; background: radial-gradient(ellipse at 54% 42%, rgba(201,166,107,.13), transparent 55%), linear-gradient(140deg,#1a1b1b,#101214); color: #969187; }
+.fsd-product-media--placeholder {
+  align-content: center;
+  gap: 12px;
+  padding: clamp(18px, 3vw, 32px);
+  border: 1px solid rgba(201,166,107,.3);
+  background: radial-gradient(ellipse at 54% 42%, rgba(201,166,107,.13), transparent 55%), linear-gradient(140deg,#1a1b1b,#101214);
+  color: #969187;
+  text-align: center;
+}
+.fsd-product-placeholder-kicker { color: #c8aa72; font-size: 7px; font-weight: 700; letter-spacing: .14em; }
+.fsd-product-media--placeholder strong { color: #e8e3d8; font-size: 12px; line-height: 1.4; }
+.fsd-product-media--placeholder small { max-width: 340px; color: #9a9a96; font-size: 9px; line-height: 1.55; }
 .fsd-placeholder-code { color: rgba(217,190,135,.42); font: italic 700 29px/.9 Manrope,sans-serif; letter-spacing: -.1em; }
 .fsd-product-meta { display: flex; justify-content: space-between; gap: 8px; margin-top: 13px; color: #a99877; font-size: 7px; letter-spacing: .09em; text-transform: uppercase; }
 .fsd-product-meta span:last-child { color: #82827f; text-align: right; }
@@ -444,6 +455,8 @@ html.fsd-modal-open { overflow: hidden; }
 .fsd-product-link { display: flex; align-items: center; gap: 8px; align-self: flex-start; margin-top: auto; padding: 14px 0 3px; border: 0; background: none; color: var(--fsd-gold-bright); font-size: 8px; font-weight: 800; letter-spacing: .09em; cursor: pointer; }
 .fsd-product-link span:not(.fsd-sr-only) { font-size: 13px; }
 .fsd-product-link:hover { color: #fff0cd; }
+.fsd-product-link--pending,
+.fsd-product-link--pending:hover { color: #8a8580; cursor: default; }
 .fsd-concept-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; }
 .fsd-concept-card { position: relative; display: flex; min-height: 83px; flex-direction: column; justify-content: center; gap: 8px; padding: 15px 18px; border: 1px solid rgba(201,166,107,.21); background: linear-gradient(110deg,rgba(201,166,107,.055),rgba(255,255,255,.018)); }
 .fsd-concept-card h4 { max-width: 90%; margin: 0; color: #e6e3dd; font-size: 13px; line-height: 1.45; }
@@ -455,6 +468,125 @@ html.fsd-modal-open { overflow: hidden; }
 .fsd-showcase-empty p { margin: 0; color: #a5a4a0; font-size: 12px; }
 .fsd-modal-disclaimer { max-width: 800px; margin: 27px 0 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.1); color: #858582; font-size: 9px; line-height: 1.7; }
 .fsd-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Apparel category pages use mapped editorial photography only. */
+.fsd-modal-hero {
+  min-height: 270px;
+  padding: 0;
+  background:
+    radial-gradient(ellipse at 78% 28%, rgba(200,170,114,.13), transparent 40%),
+    linear-gradient(115deg, #101113, #191a1b 66%, #111315);
+}
+.fsd-modal-hero__copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: end;
+  padding: 34px clamp(24px, 5vw, 60px);
+}
+.fsd-modal-hero--image {
+  min-height: clamp(320px, 43vh, 430px);
+  grid-template-columns: minmax(0, 1.03fr) minmax(320px, .97fr);
+  align-items: stretch;
+  background: #090a0c;
+}
+.fsd-modal-hero--image .fsd-modal-hero__copy {
+  background: linear-gradient(90deg, #090a0c 0%, #101113 88%, rgba(16,17,19,.78) 100%);
+}
+.fsd-modal-hero--image::after { display: none; }
+.fsd-modal-hero__media {
+  position: relative;
+  min-width: 0;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #111315;
+}
+.fsd-modal-hero__media::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(9,10,12,.18), transparent 35%), linear-gradient(0deg, rgba(9,10,12,.68), transparent 42%);
+  content: "";
+  pointer-events: none;
+}
+.fsd-modal-hero__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  object-position: center 34%;
+  filter: saturate(.78) brightness(.83);
+  transition: transform 700ms cubic-bezier(.2,.65,.2,1);
+}
+.fsd-modal-hero__media:hover img { transform: scale(1.025); }
+.fsd-modal-hero__media figcaption {
+  position: absolute;
+  z-index: 1;
+  bottom: 22px;
+  left: 24px;
+  color: #eee9df;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .15em;
+}
+.fsd-group-tab { border-left: 2px solid transparent; }
+.fsd-group-tab.is-active { border-left-color: var(--fsd-gold); }
+.fsd-product-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 0 2px;
+}
+.fsd-product-swatches button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border: 1px solid rgba(255,255,255,.13);
+  background: rgba(255,255,255,.025);
+  color: #c5c1b8;
+  font-size: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+.fsd-product-swatches button:hover,
+.fsd-product-swatches button[aria-pressed="true"] {
+  border-color: rgba(200,170,114,.72);
+  background: rgba(200,170,114,.08);
+  color: #f1eee8;
+}
+.fsd-product-swatches button > span:first-child:not(:last-child) {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+  background: var(--catalogue-swatch, #777);
+}
+.fsd-product-media { position: relative; }
+.fsd-product-media > span:last-child { z-index: 3; }
+.fsd-product-media img.mapped-gallery-image--incoming,
+.fsd-product-media img.mapped-gallery-image--hidden { object-fit: cover; }
+
+@media (max-width: 760px) {
+  .fsd-modal-hero__copy { padding: 28px 22px; }
+  .fsd-modal-hero--image {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .fsd-modal-hero--image .fsd-modal-hero__copy { min-height: 230px; }
+  .fsd-modal-hero__media { min-height: 270px; }
+  .fsd-modal-hero__media img { min-height: 270px; max-height: 42vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fsd-modal-hero__media img { transition-duration: .01ms; }
+  .fsd-product-swatches button { transition-duration: .01ms; }
+}
 
 @media (min-width: 1500px) {
   .fsd-showcase-banner:nth-child(1) { min-height: 410px; }
@@ -529,4 +661,178 @@ html.fsd-modal-open { overflow: hidden; }
   .fsd-showcase-dialog { transition: none; animation: none; }
   .fsd-product-card, .fsd-concept-card { animation: none; }
   .fsd-showcase-dialog[open] .fsd-modal-hero h2 { animation: none; }
+}
+
+/* Apparel collections use full-width editorial headers and an asymmetric card rhythm. */
+.fsd-modal-hero--apparel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 250px;
+  padding: 0;
+  background:
+    radial-gradient(ellipse at 82% 28%, rgba(200,170,114,.13), transparent 40%),
+    linear-gradient(112deg, #090a0c, #17191c 72%, #101113);
+}
+.fsd-modal-hero--apparel .fsd-modal-hero__copy {
+  min-height: 250px;
+  justify-content: center;
+  padding: 34px clamp(24px, 5vw, 60px);
+}
+.fsd-modal-hero--apparel h2 { max-width: 78%; }
+.fsd-modal-hero--apparel.fsd-modal-hero--image {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 1fr);
+  min-height: clamp(340px, 47vh, 470px);
+}
+.fsd-modal-hero--apparel.fsd-modal-hero--image .fsd-modal-hero__copy {
+  min-height: 100%;
+  background: linear-gradient(90deg, #090a0c, #101113 83%, rgba(16,17,19,.8));
+}
+.fsd-product-grid--apparel {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: start;
+  gap: 20px 15px;
+}
+.fsd-product-grid--apparel > .fsd-product-card {
+  grid-column: span 6;
+  overflow: hidden;
+  border-color: rgba(200,170,114,.22);
+  background: rgba(26,28,32,.72);
+  backdrop-filter: blur(16px);
+  transition: border-color 220ms ease, transform 220ms ease;
+}
+.fsd-product-grid--apparel > .fsd-product-card:hover {
+  border-color: rgba(200,170,114,.62);
+  transform: translateY(-3px);
+}
+.fsd-product-grid--apparel > .fsd-product-card:nth-child(4n + 1) { grid-column: span 7; }
+.fsd-product-grid--apparel > .fsd-product-card:nth-child(4n + 2) { grid-column: span 5; margin-top: 42px; }
+.fsd-product-grid--apparel > .fsd-product-card:nth-child(4n + 3) { grid-column: 2 / span 10; }
+.fsd-product-grid--apparel > .fsd-product-card:nth-child(4n + 4) { grid-column: span 6; }
+.fsd-product-grid--apparel > .fsd-product-card:only-child { grid-column: 3 / span 8; }
+.fsd-product-grid--apparel .fsd-product-media {
+  height: auto;
+  aspect-ratio: 4 / 4.7;
+  background: #090a0c;
+}
+
+.fsd-modal-hero--womens {
+  position: relative;
+  display: flex;
+  min-height: clamp(360px, 48vw, 520px);
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(34px, 6vw, 76px);
+  background: #111113;
+}
+.fsd-modal-hero--womens::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(6,7,8,.88) 0%, rgba(6,7,8,.7) 36%, rgba(6,7,8,.2) 72%, rgba(6,7,8,.06) 100%),
+    linear-gradient(0deg, rgba(6,7,8,.42), transparent 48%);
+  content: "";
+  pointer-events: none;
+}
+.fsd-womens-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 66% 43%;
+}
+.fsd-womens-hero-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: min(510px, 58%);
+  flex-direction: column;
+  align-items: flex-start;
+}
+.fsd-modal-hero--womens .fsd-modal-kicker {
+  color: #e3c68c;
+  font-size: 9px;
+}
+.fsd-modal-hero--womens h2 {
+  max-width: 100%;
+  margin: 18px 0 12px;
+  color: #f3eee4;
+  font-size: clamp(36px, 5.5vw, 66px);
+  line-height: .98;
+  letter-spacing: -.06em;
+}
+.fsd-modal-hero--womens .fsd-womens-hero-copy > p {
+  max-width: 400px;
+  margin: 0;
+  color: #e2ded5;
+  font-size: clamp(13px, 1.35vw, 16px);
+  font-weight: 500;
+  letter-spacing: .015em;
+  line-height: 1.65;
+}
+.fsd-womens-hero-cta {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 25px;
+  margin-top: 26px;
+  padding: 0 20px;
+  border: 1px solid #d7b879;
+  background: #d7b879;
+  color: #171512;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .055em;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.fsd-womens-hero-cta span { font-size: 16px; font-weight: 400; }
+.fsd-womens-hero-cta:hover {
+  border-color: #f0d69f;
+  background: #f0d69f;
+}
+.fsd-womens-hero-cta:focus-visible {
+  outline: 2px solid #fff0cd;
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .fsd-modal-hero--womens {
+    min-height: 430px;
+    align-items: flex-end;
+    padding: 30px 22px 34px;
+  }
+  .fsd-modal-hero--womens::before {
+    background:
+      linear-gradient(0deg, rgba(6,7,8,.94) 0%, rgba(6,7,8,.74) 40%, rgba(6,7,8,.18) 77%, rgba(6,7,8,.08) 100%),
+      linear-gradient(90deg, rgba(6,7,8,.3), transparent 75%);
+  }
+  .fsd-womens-hero-image { object-position: 70% 35%; }
+  .fsd-womens-hero-copy { width: min(100%, 430px); }
+  .fsd-modal-hero--womens h2 { font-size: clamp(36px, 10vw, 50px); }
+  .fsd-modal-hero--womens .fsd-womens-hero-copy > p { max-width: 350px; font-size: 13px; }
+  .fsd-womens-hero-cta { margin-top: 20px; }
+  .fsd-modal-hero--apparel .fsd-modal-hero__copy { min-height: 220px; padding: 28px 22px; }
+  .fsd-modal-hero--apparel.fsd-modal-hero--image {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .fsd-modal-hero--apparel.fsd-modal-hero--image .fsd-modal-hero__copy { min-height: 210px; }
+  .fsd-modal-hero--apparel .fsd-modal-hero__media { min-height: 270px; }
+  .fsd-modal-hero--apparel .fsd-modal-hero__media img { min-height: 270px; max-height: 43vh; }
+  .fsd-product-grid--apparel { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+  .fsd-product-grid--apparel > .fsd-product-card:nth-child(n) { grid-column: span 1; margin-top: 0; }
+  .fsd-product-grid--apparel > .fsd-product-card:only-child { grid-column: 1 / -1; }
+  .fsd-product-grid--apparel .fsd-product-media { aspect-ratio: 4 / 4.8; }
+}
+@media (max-width: 380px) {
+  .fsd-product-grid--apparel { grid-template-columns: 1fr; }
+  .fsd-product-grid--apparel > .fsd-product-card:nth-child(n),
+  .fsd-product-grid--apparel > .fsd-product-card:only-child { grid-column: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fsd-product-grid--apparel > .fsd-product-card { transition: none; }
+  .fsd-product-grid--apparel > .fsd-product-card:hover { transform: none; }
 }

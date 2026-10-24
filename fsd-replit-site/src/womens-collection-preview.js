@@ -212,7 +212,7 @@ function renderAudit(data) {
     </section>
     <section class="womens-image-audit-callout">
       <p class="eyebrow">SOURCE PRESERVATION</p>
-      <p>The uploaded ZIP and its TIFF originals were not edited. Browser previews use separate WebP copies; the six exact Modest Flow duplicates are displayed from their existing PNG files.</p>
+      <p>The uploaded ZIP and its TIFF originals were not edited. Browser copies use separate WebP files; the six exact Modest Flow duplicates are displayed from their existing PNG files.</p>
     </section>
     <footer class="review-footer"><span>FSD / WOMEN’S COLLECTION</span><span>PRIVATE REVIEW · NO ORDERING</span></footer>`;
 }

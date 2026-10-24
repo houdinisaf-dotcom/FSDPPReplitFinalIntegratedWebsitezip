@@ -85,7 +85,7 @@ test('private preview data maps one fixed hero, six true colour assets, restrain
 test('the development-only collection entry is normal discovery with no purchase action', () => {
   const integration = createAeroForgeDevelopmentIntegration();
   assert.match(integration.collectionCard, /data-aeroforge-draft-card/);
-  assert.match(integration.collectionCard, /CONCEPT/);
+  assert.doesNotMatch(integration.collectionCard, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.match(integration.collectionCard, /EXPLORE COLLECTION/);
   assert.match(integration.collectionCard, /\/__catalogue-preview\/aeroforge\//);
   assert.doesNotMatch(integration.collectionCard, /ADD TO CART|BUY NOW|£\d/i);

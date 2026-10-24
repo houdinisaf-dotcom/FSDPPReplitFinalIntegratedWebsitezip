@@ -1,4 +1,13 @@
 .story-section {
+  --story-obsidian: #0B0C0E;
+  --story-gunmetal: #25282C;
+  --story-antique-gold: #C6A36A;
+  --story-titanium-grey: #C9CDD1;
+  --story-volt-green: #A6FF00;
+  background:
+    radial-gradient(ellipse at 76% 5%, rgba(198, 163, 106, .08), transparent 34%),
+    linear-gradient(160deg, var(--story-obsidian), var(--story-gunmetal) 55%, var(--story-obsidian));
+  color: var(--story-titanium-grey);
   padding: clamp(72px, 8vw, 122px) 6%;
   text-align: left;
 }
@@ -33,6 +42,25 @@
   color: #d1cec7;
   font-size: 15px;
   line-height: 1.9;
+}
+
+.story-founder-statement {
+  margin-top: 60px;
+  padding: 25px 0 28px;
+  border-top: 1px solid rgba(230, 220, 200, .2);
+  border-bottom: 1px solid rgba(230, 220, 200, .2);
+}
+
+.story-founder-statement .story-index {
+  color: var(--story-antique-gold);
+}
+
+.story-founder-statement blockquote {
+  max-width: 980px;
+  margin: 20px 0 0;
+  color: var(--story-titanium-grey);
+  font: 500 clamp(25px, 4.2vw, 54px)/1.2 Manrope, sans-serif;
+  letter-spacing: -.045em;
 }
 
 .story-section h3 {
@@ -80,6 +108,72 @@
 
 .story-principles {
   margin-top: 66px;
+}
+
+.story-chapters,
+.story-house-codes {
+  margin-top: 66px;
+}
+
+.story-chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid rgba(230, 220, 200, .2);
+}
+
+.story-chapter {
+  min-width: 0;
+  padding: 22px 22px 0 0;
+  margin-right: 22px;
+  border-right: 1px solid rgba(230, 220, 200, .13);
+}
+
+.story-chapter:last-child {
+  margin-right: 0;
+  padding-right: 0;
+  border-right: 0;
+}
+
+.story-chapter > span,
+.story-code > span {
+  color: var(--story-volt-green);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .15em;
+}
+
+.story-chapter h4,
+.story-code h4 {
+  margin: 14px 0 9px;
+  color: var(--story-titanium-grey);
+  font: 600 14px/1.4 Manrope, sans-serif;
+}
+
+.story-chapter p,
+.story-code p {
+  margin: 0;
+  color: #c5c1b8;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.story-code-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid rgba(230, 220, 200, .2);
+}
+
+.story-code {
+  min-width: 0;
+  padding: 19px 16px 0 0;
+  margin-right: 16px;
+  border-right: 1px solid rgba(230, 220, 200, .13);
+}
+
+.story-code:last-child {
+  margin-right: 0;
+  padding-right: 0;
+  border-right: 0;
 }
 
 .story-values {
@@ -141,6 +235,10 @@
     padding: 74px 6%;
   }
 
+  .story-founder-statement {
+    margin-top: 45px;
+  }
+
   .story-intro {
     grid-template-columns: 1fr;
     gap: 23px;
@@ -168,6 +266,35 @@
 
   .story-principles {
     margin-top: 48px;
+  }
+
+  .story-chapters,
+  .story-house-codes {
+    margin-top: 48px;
+  }
+
+  .story-chapter-grid,
+  .story-code-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .story-chapter,
+  .story-code {
+    padding: 19px 16px 20px 0;
+    margin: 0 16px 0 0;
+    border-bottom: 1px solid rgba(230, 220, 200, .13);
+  }
+
+  .story-chapter:nth-child(2n),
+  .story-code:nth-child(2n) {
+    padding-right: 0;
+    margin-right: 0;
+    border-right: 0;
+  }
+
+  .story-chapter:nth-last-child(-n + 2),
+  .story-code:nth-last-child(-n + 2) {
+    border-bottom: 0;
   }
 
   .story-values {
@@ -206,6 +333,28 @@
 }
 
 @media (max-width: 430px) {
+  .story-chapter-grid,
+  .story-code-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .story-chapter,
+  .story-chapter:nth-child(2n),
+  .story-chapter:last-child,
+  .story-code,
+  .story-code:nth-child(2n),
+  .story-code:last-child {
+    padding: 18px 0;
+    margin: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(230, 220, 200, .13);
+  }
+
+  .story-chapter:last-child,
+  .story-code:last-child {
+    border-bottom: 0;
+  }
+
   .story-values {
     grid-template-columns: 1fr;
   }

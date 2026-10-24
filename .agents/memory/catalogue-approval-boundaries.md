@@ -3,17 +3,23 @@ name: Catalogue approval boundaries
 description: How to interpret product decisions and unresolved manufacturer details
 ---
 
-Product names, prices and construction briefs approved by the user remain pre-launch development decisions, not evidence of completed manufacture or verified performance.
+The latest site-wide directive supersedes earlier customer-facing status and visibility holds: show existing products, categories and features as current offerings, without CONCEPT, DRAFT, PREVIEW, PENDING REVIEW, PRIVATE VIEWING or PLACEHOLDER labels. Existing master values are approved; missing values stay blank.
 
-**Why:** The user approved complete commercial dumbbell sets spanning 10kg–50kg without specifying increments or quantities, and explicitly left barbell contents undecided. Those omissions must not be filled with assumed industry-standard configurations.
+**Why:** The user later explicitly directed that all existing inventory be treated as production-ready and selected approval of existing catalogue values.
 
-**How to apply:** Keep missing manufacturer details explicit, distinguish proposed construction from verified materials, and obtain factual specifications before assigning package contents. The user confirmed all prior holds remain and the site stays pre-launch with no checkout.
+**How to apply:** Keep every existing record. Use only values already present in the master catalogue; do not invent specifications, prices, materials, claims or product mappings. Do not change payment or checkout controls solely as part of removing status copy.
 
-Publication holds apply to reference galleries as well as product listings and roadmaps.
+Approval to display inventory does not fill missing manufacturer details such as set contents, increments or technical construction.
 
-**Why:** A concept can otherwise remain publicly promoted through a named design-library image after its catalogue record is held.
+**Why:** The user approved complete dumbbell sets spanning 10kg–50kg without specifying increments or quantities, and explicitly left barbell contents undecided.
 
-**How to apply:** Check all public surfaces when changing hold status; retain source files for internal review without rendering held references.
+**How to apply:** Leave omitted values blank and distinguish verified product data from assumptions.
+
+Image mapping approval remains separate from production display approval.
+
+**Why:** A visible image can otherwise be mistaken for verified product photography or evidence of a technical claim.
+
+**How to apply:** Use only explicitly approved image roles; keep source archives intact and do not infer product specifications from campaign artwork.
 
 The reviewed Performance/Cover hijab and HYDRATE, MOTION, NEXUS, SONIC and PULSE
 step-counter image candidates were not approved for product mappings. The
@@ -34,6 +40,12 @@ separate design library. Keep NEXUS noindex and development-only, preserve
 source archives, never retouch or overlay a mismatched embedded logo, and keep
 every feature, measurement, product detail, price, and availability unverified.
 No catalogue mapping, checkout, or public release is authorized.
+
+The user later explicitly authorized existing female fighter-in-hijab imagery as campaign/menu feature art across Women’s Modest Combat, Combat/Training and Hardware. This does not authorize new product-specific image mappings or integrate the separate 15-image archive.
+
+**Why:** The user specifically requested balanced female athlete and boxer representation across those areas while retaining the separate hijab archive boundary.
+
+**How to apply:** Use the approved image only in the requested editorial/menu contexts; do not treat it as proof of product construction, fit or performance.
 
 VIP sign-up collection is deferred until the destination and approved privacy/consent wording are ready.
 
@@ -100,3 +112,21 @@ All landed costs, COGS, projected gross profit and margin figures are internal-o
 **Why:** The user explicitly set this as a critical boundary for product cards, detail views and checkout.
 
 **How to apply:** Keep internal financial metrics in private/backend-only systems. Audit data rendered or shipped to the browser, hide unapproved suggested prices, and never expose financial breakdowns. Do not change master product records from a planning matrix alone.
+
+The new Hardware Division concepts are visual-only until their commercial details are separately approved. Keep their draft prices, set specifications, and availability out of customer-facing product cards and detail views; preserve unrelated legacy catalogue items and cross-listed accessories under their existing records.
+
+**Why:** The user chose a non-purchasable visual page with placeholders for unverified details. The broad hardware category also contains older products with separate catalogue behavior, so treating every item in that category as the same concept would alter unrelated records.
+
+**How to apply:** Apply the visual-only safeguard to the new Hardware Division concepts. Do not copy prices or specifications from supplied planning documents into public UI, and do not suppress or rewrite unrelated legacy products without separate approval.
+
+For homepage and catalogue changes, the existing master catalogue remains the approved source for values; missing values stay unfilled.
+
+**Why:** The user chose to approve existing catalogue values while leaving missing values unfilled when asked whether a new homepage directive should supersede existing product approval holds.
+
+**How to apply:** Use only values already present in the master catalogue. Do not treat reference guides, visual concepts, or the homepage redesign as approval to invent or publish missing details, change product status, or enable checkout.
+
+The user confirmed that existing inventory and features may be presented as production-ready and approved existing master values for display, while leaving missing values unfilled.
+
+**Why:** This was the user’s direct choice when asked how the new directive should affect existing product approvals.
+
+**How to apply:** Remove retired status labels from customer-facing surfaces, retain all product records, and leave absent catalogue values blank. Keep product data and transaction settings unchanged unless separately instructed.

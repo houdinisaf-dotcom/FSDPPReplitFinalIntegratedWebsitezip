@@ -145,7 +145,7 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       </div>
       <footer class="fsd-bag-footer">
         <div class="fsd-bag-subtotal"><span>Subtotal</span><strong data-bag-subtotal>£0.00</strong></div>
-        <p class="fsd-bag-note">Bag preview only. No payment or order is processed here.</p>
+        <p class="fsd-bag-note">Payment is not available here. No order is processed.</p>
         <button type="button" class="fsd-bag-checkout" disabled aria-disabled="true">Checkout disabled</button>
       </footer>
     </div>`;
@@ -188,9 +188,9 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       : '<p class="fsd-bag-empty">Your bag is empty.</p>';
   };
 
-  const open = () => {
+  const open = (opener = trigger) => {
     if (dialog.open) return;
-    returnFocus = documentRef.activeElement;
+    returnFocus = opener?.isConnected ? opener : trigger;
     dialog.showModal();
     dialog.querySelector('[data-bag-close]')?.focus({ preventScroll: true });
     render();
@@ -211,7 +211,7 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
   documentRef.addEventListener('click', event => {
     const openButton = event.target.closest?.('[data-bag-open]');
     if (openButton) {
-      open();
+      open(openButton);
       return;
     }
   });
@@ -242,6 +242,11 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       status.textContent = 'Bag quantity updated.';
       render();
     }
+  });
+
+  dialog.addEventListener('cancel', event => {
+    event.preventDefault();
+    dialog.close('escape');
   });
 
   dialog.addEventListener('close', () => {

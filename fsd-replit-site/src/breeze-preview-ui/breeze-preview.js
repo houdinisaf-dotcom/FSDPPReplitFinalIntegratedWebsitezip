@@ -74,9 +74,8 @@ export function mountBreezePreview({ root, product, variants }) {
         <p class="breeze-preview__eyebrow">FSD <span aria-hidden="true">/</span> WOMEN’S MODEST ACTIVEWEAR</p>
         <h2 class="breeze-preview__title" id="${instanceId}-title">${escapeHTML(product.name)}</h2>
         <p class="breeze-preview__description" id="${instanceId}-description">
-          A draft overshirt concept for FSD Women’s Modest Activewear. The overshirt is the item shown; other garments are styling context.
+          An overshirt for FSD Women’s Modest Activewear. Other garments shown are styling context.
         </p>
-        <p class="breeze-preview__product-note">Product details are being finalised.</p>
         <hr class="breeze-preview__rule" />
         <div class="breeze-preview__section-heading">
           <span>View</span>
@@ -88,10 +87,10 @@ export function mountBreezePreview({ root, product, variants }) {
             aria-pressed="${String(index === 0)}">${escapeHTML(view.label)}</button>`).join('')}
         </div>
         <div class="breeze-preview__section-heading breeze-preview__colour-heading">
-          <span>Colour concept</span>
+          <span>Colourway</span>
           <span class="breeze-preview__current-colour" data-breeze-colour aria-live="polite">${escapeHTML(activeVariant.label)}</span>
         </div>
-        <div class="breeze-preview__swatches" role="group" aria-label="Choose one of six colour concepts">
+        <div class="breeze-preview__swatches" role="group" aria-label="Choose one of six colourways">
           ${options.map((variant, index) => `<button class="breeze-preview__swatch"
             type="button" data-breeze-variant="${escapeHTML(variant.id)}"
             aria-label="${escapeHTML(variant.label)}"

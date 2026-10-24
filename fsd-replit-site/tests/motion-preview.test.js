@@ -77,8 +77,7 @@ test('the draft card links into the development-only collection route without pu
   assert.equal(integration.collectionCardPlacement.groupId, 'bio-lab-concepts');
   assert.match(integration.collectionCard, /FSD BIO-LAB™/);
   assert.match(integration.collectionCard, /FSD MOTION/);
-  assert.match(integration.collectionCard, /CONCEPT/);
-  assert.match(integration.collectionCard, /CONCEPT/);
+  assert.doesNotMatch(integration.collectionCard, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.doesNotMatch(integration.collectionCard, /£\s?\d|\bBUY\b|\bADD TO CART\b/i);
   assert.equal(integration.draftMenuItems[0].href, motionPreviewPath);
   assert.equal(integration.draftMenuItems[0].previewKicker, 'BIO-LAB™ / WEARABLE TECHNOLOGY');
@@ -95,7 +94,7 @@ test('MOTION keeps campaign galleries and collection return links without custom
     stories: collection.stories,
   });
   assert.match(collectionHtml, /BACK TO COLLECTION/);
-  assert.match(collectionHtml, /CONCEPT/);
+  assert.doesNotMatch(collectionHtml, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.equal((collectionHtml.match(/data-motion-gallery-select=/g) || []).length, 15);
   assert.equal((collectionHtml.match(/data-motion-product-link=/g) || []).length, 4);
   assert.doesNotMatch(collectionHtml, /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|motion-review-columns|Standalone views|Awaiting confirmation/);
@@ -110,7 +109,8 @@ test('MOTION keeps campaign galleries and collection return links without custom
     stories: product.stories,
   });
   assert.match(productHtml, /BACK TO MOTION COLLECTION/);
-  assert.match(productHtml, /Product details are being finalised\./);
+  assert.doesNotMatch(productHtml, /Product details are being finalised\./);
+  assert.doesNotMatch(productHtml, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.ok((productHtml.match(/data-motion-gallery-select=/g) || []).length >= 3);
   assert.doesNotMatch(productHtml, /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|motion-review-columns/);
 });

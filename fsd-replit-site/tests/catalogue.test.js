@@ -4,13 +4,15 @@ import { existsSync, readFileSync } from 'node:fs';
 import master from '../src/master-products.json' with { type: 'json' };
 import additional from '../src/additional-catalog.json' with { type: 'json' };
 import { galleryProductIds, galleryProducts } from '../src/gallery.js';
-import { products, heldProducts, retiredProducts, categories, filterProducts, priceInfo, safe } from '../src/catalogue-data.js';
+import { products, heldProducts, retiredProducts, categories, filterProducts, imageSwatchBackground, priceInfo, safe } from '../src/catalogue-data.js';
 import { catalogueSection, roadmapSection, innovationsSection, initCatalogue, navigateCatalogue } from '../src/catalogue.js';
+import { crossfadeMappedImage } from '../src/catalogue-image-gallery.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
 import { featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
 import { renderNavigationHeader } from '../src/site-navigation.js';
 import { ourStorySection } from '../src/story-section.js';
+import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from '../src/flagship-pages.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
   assert.equal(master.length, 72);
@@ -84,6 +86,17 @@ test('product images use only supplied assets explicitly mapped to products', ()
   }
 });
 
+test('image swatches use named mapped colourways and do not invent unknown colours', () => {
+  assert.match(imageSwatchBackground('Vintage indigo fading to jet black'), /^linear-gradient\(135deg,/);
+  assert.match(imageSwatchBackground('Sunshine yellow / jet black'), /#e1b642/);
+  assert.equal(imageSwatchBackground('Unmapped colour concept'), '');
+
+  const image = { src: '/old.webp', alt: 'Old image', parentElement: null, ownerDocument: null };
+  assert.equal(crossfadeMappedImage(image, '/new.webp', 'Mapped new image'), true);
+  assert.equal(image.src, '/new.webp');
+  assert.equal(image.alt, 'Mapped new image');
+});
+
 test('rendered sections follow the master list, escape content, and do not promote held products', () => {
   const sections = catalogueSection() + roadmapSection() + innovationsSection();
   assert.match(sections, /Find FSD products by collection, category and audience/);
@@ -122,25 +135,52 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
   });
   try {
     initCatalogue();
-  assert.equal(element('#catalogue-count').textContent, 'Showing 1–1 of 1 product');
-  assert.match(element('#catalogue-grid').innerHTML, /fsd-velocity-performance-sports-hijab\.jpg/);
-  assert.match(element('#catalogue-grid').innerHTML, /Reference only · not for sale/);
-  assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£29\.99/);
-  assert.doesNotMatch(element('#catalogue-grid').innerHTML, /ombre-indigo|cheetah-windrunner/i);
-  assert.equal(element('#catalogue-pagination').innerHTML, '');
+    const allProductCount = filterProducts('All').length;
+    const initialPageCount = Math.min(12, allProductCount);
+    assert.equal(
+      element('#catalogue-count').textContent,
+      `Showing 1–${initialPageCount} of ${allProductCount} products`,
+    );
+    assert.equal(
+      (element('#catalogue-grid').innerHTML.match(/class="product-card"/g) ?? []).length,
+      initialPageCount,
+    );
+    assert.ok(element('#catalogue-grid').innerHTML.includes('class="catalogue-placeholder"'));
+    assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
 
     element('#catalogue-category').value = 'Smart Tech';
     handlers.get('#catalogue-category:change')();
     assert.equal(element('#catalogue-pagination').innerHTML, '');
-    assert.match(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
+    const smartTechCount = filterProducts('Smart Tech').length;
+    assert.equal(
+      element('#catalogue-count').textContent,
+      `Showing 1–${smartTechCount} of ${smartTechCount} products`,
+    );
+    assert.equal(
+      (element('#catalogue-grid').innerHTML.match(/class="product-card"/g) ?? []).length,
+      smartTechCount,
+    );
+    assert.equal(
+      (element('#catalogue-grid').innerHTML.match(/class="catalogue-placeholder"/g) ?? []).length,
+      smartTechCount,
+    );
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
     element('#search').value = 'no match at all';
     handlers.get('#search:input')();
     assert.match(element('#catalogue-active-filters').innerHTML, /Clear all/);
 
     click('[data-clear-filters]', {});
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–1 of 1 product');
+    assert.equal(
+      element('#catalogue-count').textContent,
+      `Showing 1–${initialPageCount} of ${allProductCount} products`,
+    );
+    assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
     click('[data-category-link]', { dataset: { categoryLink: 'Sports Hijabs' } });
-    assert.equal(element('#catalogue-count').textContent, 'Showing 1–1 of 1 product');
+    const hijabProductCount = filterProducts('Sports Hijabs').length;
+    assert.equal(
+      element('#catalogue-count').textContent,
+      `Showing 1–${hijabProductCount} of ${hijabProductCount} products`,
+    );
 
     click('[data-product]', { dataset: { product: '10' } });
     assert.equal(element('#product-dialog').open, true);
@@ -150,7 +190,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
       assert.ok(element('#dialog-body').innerHTML.includes(image.src));
       assert.ok(element('#dialog-body').innerHTML.includes(image.label));
     }
-    assert.match(element('#dialog-body').innerHTML, /design concept/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /design concept/i);
     assert.ok(element('#dialog-body').innerHTML.includes(priceInfo(products.find(p => p.id === 10)).value));
     assert.doesNotMatch(element('#dialog-body').innerHTML, /Confirmed list price/);
 
@@ -177,7 +217,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     assert.match(element('#dialog-body').innerHTML, /Electric cobalt fading to jet black/);
     for (const id of [42, 45, 60, 61, 62, 63, 65]) {
       click('[data-product]', { dataset: { product: String(id) } });
-      assert.match(element('#dialog-body').innerHTML, /A product image is not shown for this item/);
+      assert.doesNotMatch(element('#dialog-body').innerHTML, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
       assert.doesNotMatch(element('#dialog-body').innerHTML, /Image status in master list|Development notes/);
       assert.doesNotMatch(element('#dialog-body').innerHTML, /<img /);
     }
@@ -185,15 +225,19 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     assert.doesNotMatch(element('#dialog-body').innerHTML, /Price at launch|£\d/);
     assert.doesNotMatch(element('#dialog-body').innerHTML, /£0|undefined|null/);
 
+    click('[data-product]', { dataset: { product: '39' } });
+    assert.match(element('#dialog-body').innerHTML, /data-product-specifications-root/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /Standalone athletic layer|ENGINEERING &amp; SPECIFICATIONS/i);
+
     click('[data-product]', { dataset: { product: '47' } });
     assert.match(element('#dialog-body').innerHTML, /Mid-Hip Modest Coverage \(Regular Tunic Length\)/);
     assert.match(element('#dialog-body').innerHTML, /Also appears as/);
     assert.doesNotMatch(element('#dialog-body').innerHTML, /identity to confirm/);
     click('[data-product]', { dataset: { product: '69' } });
-    assert.match(element('#dialog-body').innerHTML, /£699.99/);
-    assert.match(element('#dialog-body').innerHTML, /Complete 10–50kg set\./);
-    assert.doesNotMatch(element('#dialog-body').innerHTML, /Exact weight increments, quantities and total set weight pending/);
-    assert.doesNotMatch(element('#dialog-body').innerHTML, /32mm/);
+    assert.match(element('#dialog-body').innerHTML, /<dt>Category<\/dt>/);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /Price details pending confirmation|VISUAL ASSET \/ PENDING REVIEW/i);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /Product specifications, set contents, pricing and availability are not confirmed|Design concept/i);
+    assert.doesNotMatch(element('#dialog-body').innerHTML, /£699\.99|Complete 10–50kg set|32mm|data-bag-add/);
     click('[data-product]', { dataset: { product: '54' } });
     assert.match(element('#dialog-body').innerHTML, /5-Cutout/);
     assert.doesNotMatch(element('#dialog-body').innerHTML, /Not decided: bar weight/);
@@ -203,11 +247,25 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
       assert.equal(element('#dialog-body').innerHTML, beforeHeldAttempt);
     }
 
-    click('[data-category-link]', { dataset: { categoryLink: 'Gym Hardware and Accessories' } });
-    assert.match(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
-    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /Complete 10–50kg set\./);
-    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /Exact weight increments/);
-    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /£129\.99|£699\.99/);
+    element('#catalogue-category').value = 'Gym Hardware and Accessories';
+    handlers.get('#catalogue-category:change')();
+    const hardwareProductCount = filterProducts('Gym Hardware and Accessories').length;
+    const visibleHardwareCount = Math.min(12, hardwareProductCount);
+    assert.equal(
+      element('#catalogue-count').textContent,
+      `Showing 1–${visibleHardwareCount} of ${hardwareProductCount} products`,
+    );
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
+    assert.match(element('#catalogue-grid').innerHTML, /VIEW DETAILS/);
+    const renderedHardwareCards = [...element('#catalogue-grid').innerHTML.matchAll(/<article class="product-card">[\s\S]*?<\/article>/g)]
+      .map(([markup]) => markup);
+    for (const id of [69, 70, 71, 72]) {
+      const previewCard = renderedHardwareCards.find(markup => markup.includes(`data-product="${id}"`));
+      assert.ok(previewCard, `expected hardware visual preview ${id} in filtered results`);
+      assert.doesNotMatch(previewCard, /Price details pending confirmation|VIEW VISUAL PREVIEW|CONCEPT \/ REVIEW ONLY/i);
+      assert.doesNotMatch(previewCard, /£699\.99|£599\.99|£399\.99|£299\.99|ADD TO BAG|Complete 10–50kg set|Exact weight increments/);
+    }
   } finally {
     delete globalThis.document;
   }
@@ -308,33 +366,39 @@ test('the complete public page excludes held imagery while retaining internal so
       catalogueSection, initCatalogue, navigateCatalogue, products,
       collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
-      ourStorySection,
+      FSD_STORY_PATH: '/story',
+      ourStorySection, flagshipPageHashes, renderFlagshipPlaceholderPages,
+      renderInnovationHubIndex,
+      renderHardwareForgePreview: () => '',
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
       initCatalogueNavigation() {}, showProduct() {}, mountClientBag() { return { addToBag() {} }; },
     };
     const renderPage = new Function(
       'document',
       ...Object.keys(dependencies),
-      `${source}\nreturn renderStorefrontMarkup;`,
+      `${source}\nreturn { renderStorefrontHeader, renderStorefrontMarkup };`,
     )(document, ...Object.values(dependencies));
-    const page = renderPage();
-    assert.match(page, /DESIGN PREVIEW/);
+    const page = `${renderPage.renderStorefrontHeader()}${renderPage.renderStorefrontMarkup()}`;
+    assert.doesNotMatch(page, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
     assert.match(page, /id="catalogue-archive"/);
     assert.doesNotMatch(page, /id="gallery-archive"|id="full-gallery"|DESIGN LIBRARY|IMAGE ARCHIVE/i);
     assert.doesNotMatch(page, /FSD PRODUCT DESIGN LIBRARY|THE FULL VISUAL EDIT|74 designs/i);
     assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
     assert.match(page, /website-shield-lockup-defence\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
-    assert.match(page, /Training technology concepts\./);
-    assert.match(page, /Engineered for<br\/><span>the Work\.<\/span>/);
+    assert.match(page, /Training technology and recovery\./);
+    assert.match(page, /Capability is not a costume\.<br\/><span>It is a practice\.<\/span>/);
     assert.match(page, /AEROFORGE represents FSD’s direction in technical training apparel/);
     assert.doesNotMatch(page, /IN DEVELOPMENT|PRE-LAUNCH|FSD DEVELOPMENT ROADMAP/i);
     assert.doesNotMatch(page, /Sign up today/i);
     assert.doesNotMatch(page, /<form|type="email"/i);
-    assert.ok(page.indexOf('class="hero"') < page.indexOf('class="fsd-showcase"'));
+    assert.ok(page.indexOf('class="fsd-home-hero"') < page.indexOf('class="fsd-showcase fsd-showcase--editorial"'));
     assert.ok(page.indexOf('class="fsd-showcase"') < page.indexOf('id="innovations"'));
     assert.ok(page.indexOf('id="innovations"') < page.indexOf('id="philosophy"'));
     assert.ok(page.indexOf('id="philosophy"') < page.indexOf('id="contact"'));
+    assert.equal((page.match(/class="manifesto story-section"/g) || []).length, 1);
+    assert.equal((page.match(/id="philosophy"/g) || []).length, 1);
+    assert.doesNotMatch(page, /id="shell-campaign"/);
     assert.doesNotMatch(page, /STRIDE|Shilajit|Championship Belt|Ring Corner Post|add to cart|checkout/i);
     for (const image of withheldImages) {
       assert.ok(!page.includes(image.name));

@@ -26,3 +26,15 @@ For browser tests of proxied development routes, check required `X-Robots-Tag` d
 **Why:** The preview proxy can append its own robots directives to the application's noindex header.
 
 **How to apply:** Assert that `noindex` and `nofollow` are present, and separately verify cache and method restrictions.
+
+When a browser test intentionally triggers full-page navigation, tolerate Chromium’s transient “Inspected target navigated or closed” response.
+
+**Why:** A `location.assign()` can replace the execution context before the initiating CDP `Runtime.evaluate` returns, even when the destination navigation is working correctly.
+
+**How to apply:** Retry only that specific transient error in click/wait helpers; let destination checks time out if the new route never loads.
+
+For cold deep links, use an instant initial scroll even when the storefront uses smooth in-page navigation.
+
+**Why:** The global smooth-scroll rule left direct routes far down a long page mid-animation during browser capture and initial review.
+
+**How to apply:** Keep instant scrolling limited to initial route restoration; retain the site’s smooth or reduced-motion behavior for deliberate in-page navigation.

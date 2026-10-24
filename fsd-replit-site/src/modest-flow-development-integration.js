@@ -15,13 +15,12 @@ export function createModestFlowDevelopmentIntegration() {
     <a class="fsd-product-media fsd-product-media--private-preview" href="#modest-flow"
       data-modest-flow-open aria-haspopup="dialog" aria-expanded="false"
       aria-label="Open the FSD Modest Flow colour selector">
-      <img loading="lazy" src="${escapeHTML(hero.src)}" alt="${escapeHTML(hero.alt)}" width="${hero.width}" height="${hero.height}"/>
+      <img loading="lazy" src="${escapeHTML(hero.src)}" alt="FSD Modest Flow campaign image" width="${hero.width}" height="${hero.height}"/>
       <span>FIXED CAMPAIGN HERO · DEEP BURGUNDY</span>
     </a>
     <div class="fsd-product-meta"><span>FSD APPAREL</span><span>MODEST ACTIVEWEAR</span></div>
     <h4>${escapeHTML(product.name)}</h4>
     <p class="fsd-product-description">${escapeHTML(product.subtitle)}</p>
-    <p class="fsd-product-status">CONCEPT</p>
     <a class="fsd-product-link fsd-product-link--private-preview" href="#modest-flow"
       data-modest-flow-open aria-haspopup="dialog" aria-expanded="false">
       SELECT A COLOUR <span aria-hidden="true">↗</span>

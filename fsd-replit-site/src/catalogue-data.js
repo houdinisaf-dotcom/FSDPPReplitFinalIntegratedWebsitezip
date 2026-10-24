@@ -42,6 +42,39 @@ export const products = masterProducts
     images: imageReferences[p['Product name']] ?? [],
   }));
 
+// Add records here only after the complete specification set has been verified.
+export const verifiedProductSpecifications = Object.freeze({});
+
+const verifiedTextList = value => Array.isArray(value)
+  ? value.filter(item => typeof item === 'string' && item.trim()).map(item => item.trim())
+  : [];
+
+export function normalizeVerifiedSpecifications(record) {
+  if (!record || record.approvalStatus !== 'verified') return null;
+  const technicalSource = record.technicalSpecs && typeof record.technicalSpecs === 'object'
+    ? record.technicalSpecs
+    : {};
+  const technicalSpecs = Object.fromEntries(
+    ['composition', 'fit', 'care']
+      .map(key => [key, typeof technicalSource[key] === 'string' ? technicalSource[key].trim() : ''])
+      .filter(([, value]) => value),
+  );
+  const materials = verifiedTextList(record.materials);
+  const benefits = verifiedTextList(record.benefits);
+  if (!materials.length && !benefits.length && !Object.keys(technicalSpecs).length) return null;
+  return { materials, benefits, technicalSpecs };
+}
+
+export function getVerifiedProductSpecifications(productId) {
+  const id = typeof productId === 'string' && productId.trim() ? Number(productId) : productId;
+  if (!Number.isSafeInteger(id)) return null;
+  const product = products.find(item => item.id === id);
+  if (!product) return null;
+  const status = product.specificationStatus.trim();
+  if (status && !/^(?:verified|approved)$/i.test(status)) return null;
+  return normalizeVerifiedSpecifications(verifiedProductSpecifications[id]);
+}
+
 export const categories = [...new Set(products.flatMap(p => [p.category, ...p.alsoShowIn]))];
 export const audiences = [...new Set(products.map(product => product.audience).filter(Boolean))];
 
@@ -69,6 +102,11 @@ const hasStandaloneProductImage = product => {
 export const productsWithUsableImages = Object.freeze(products.filter(hasStandaloneProductImage));
 export const productsMissingUsableImages = Object.freeze(products.filter(product => !hasStandaloneProductImage(product)));
 
+export function isHardwareVisualPreviewProduct(product) {
+  const collection = String(product?.collection || '').trim().toLocaleLowerCase('en-GB');
+  return collection.startsWith('hardware division /');
+}
+
 export function filterProducts(category = 'All', query = '', audience = 'All', collection = 'All') {
   const term = searchText(query.trim());
   const selectedCollection = shopCollections.find(item => item.id === collection);
@@ -95,6 +133,32 @@ export function priceInfo(p) {
     return { label: '', value: format(p.confirmedPrice) };
   }
   return { label: '', value: '' };
+}
+
+const swatchPalette = [
+  [/\bindigo\b/i, '#35415f'],
+  [/\b(cobalt|blue)\b/i, '#2862c5'],
+  [/\b(yellow|amber)\b/i, '#e1b642'],
+  [/\b(ice[- ]?white|white)\b/i, '#e7e4dc'],
+  [/\b(grey|gray)\b/i, '#81858a'],
+  [/\bkhaki\b/i, '#857956'],
+  [/\b(burgundy|maroon)\b/i, '#672a37'],
+  [/\bred\b/i, '#b3202d'],
+  [/\bblack\b/i, '#171819'],
+  [/\bgold\b/i, '#c8aa72'],
+];
+
+export function imageSwatchBackground(label) {
+  const text = String(label ?? '');
+  const colours = swatchPalette
+    .filter(([pattern]) => pattern.test(text))
+    .map(([, colour]) => colour)
+    .slice(0, 3);
+  if (!colours.length) return '';
+  if (colours.length === 1) return colours[0];
+  const stop = 100 / colours.length;
+  return `linear-gradient(135deg, ${colours.map((colour, index) =>
+    `${colour} ${Math.round(index * stop)}% ${Math.round((index + 1) * stop)}%`).join(', ')})`;
 }
 
 export function safe(value) {

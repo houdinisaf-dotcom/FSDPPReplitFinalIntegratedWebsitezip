@@ -61,14 +61,25 @@ try {
     if (response.exceptionDetails) throw new Error(JSON.stringify(response.exceptionDetails));
     return response.result.value;
   };
+  const isNavigationRace = error => /Inspected target navigated or closed/.test(error?.message || '');
   const waitFor = async expression => {
     for (let attempt = 0; attempt < 100; attempt++) {
-      if (await evaluate(expression)) return;
+      try {
+        if (await evaluate(expression)) return;
+      } catch (error) {
+        if (!isNavigationRace(error)) throw error;
+      }
       await delay(100);
     }
     throw new Error(`Browser condition did not become true: ${expression}`);
   };
-  const click = selector => evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
+  const click = async selector => {
+    try {
+      return await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
+    } catch (error) {
+      if (!isNavigationRace(error)) throw error;
+    }
+  };
   const captureHijabProof = async (fileName, fullPage = false) => {
     if (process.env.FSD_HIJAB_CAPTURE !== '1') return;
     let clip;
@@ -135,8 +146,20 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
-  assert.equal(await evaluate('document.querySelectorAll("[data-division]").length'), 4);
+  assert.equal(await evaluate('document.querySelectorAll("[data-division]").length'), 5);
+  assert.equal(await evaluate('document.querySelector("#fsd-home-title").textContent.trim().replace(/\\s+/g, " ")'), 'Made to Move,Made to Belong.');
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-editorial-card").length'), 3);
   assert.equal(await evaluate('document.querySelectorAll(".showroom-archive[open]").length'), 0);
+  assert.equal(await evaluate('document.querySelectorAll("#hardware-editorial").length'), 1);
+  assert.equal(await evaluate('document.querySelector("#hardware-editorial").closest("#fsd-house-archive") === null'), true);
+  assert.equal(await evaluate('document.querySelector("#hardware-editorial").getBoundingClientRect().height > 0'), true);
+  const editorialDividerCopy = 'THE REFINEMENT OF LUXURY FASHION. THE ENERGY OF ELITE SPORT. THE PRECISION OF PERFORMANCE ENGINEERING. THE INNOVATION OF MODERN TECHNOLOGY.';
+  assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.textContent.trim()'), editorialDividerCopy);
+  assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.previousElementSibling?.id'), 'collections');
+  assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.nextElementSibling?.id'), 'hardware-editorial');
+  assert.equal(await evaluate('Math.abs(document.querySelector(".fsd-editorial-divider").getBoundingClientRect().width - document.documentElement.clientWidth) < 1'), true);
+  assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
+  assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollbarColor'), 'rgb(119, 103, 72) rgb(17, 18, 20)');
 
   for (const division of ['apparel', 'bio-lab', 'hardware', 'global']) {
     await click(`[data-division="${division}"]`);
@@ -153,13 +176,13 @@ try {
     assert.equal(await evaluate('document.activeElement.dataset.division'), division);
   }
 
-  await click('[data-division="apparel"]');
+  await click('[data-division="apparel"][data-group-index="1"]');
   await click('[data-group-index="1"]');
   const aegisCard = '[data-product-id="46"]';
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector("img").src.endsWith("/media/front-three-quarter")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Black / Gold")`));
   assert.ok(!await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("£69.99")`));
-  assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Reference only · not for sale")`));
+  assert.ok(!await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").textContent.includes("Reference only · not for sale")`));
   assert.ok(await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").querySelector(".fsd-product-media--aegis-preview").href.endsWith("/__catalogue-preview/aegis-modest-performance-gilet/")`));
   await evaluate(`document.querySelector(${JSON.stringify(aegisCard)}).closest("article").scrollIntoView({ block: "center" })`);
   if (aegisProofCapture) {
@@ -201,7 +224,7 @@ try {
   await click('[data-division="bio-lab"]');
   await waitFor('!!document.querySelector("[data-alight-draft-card]")');
   assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("FSD ALIGHT")'));
-  assert.ok(await evaluate('document.querySelector("[data-alight-draft-card]").textContent.includes("CONCEPT")'));
+  assert.ok(!await evaluate('document.querySelector("[data-alight-draft-card]").textContent.match(/CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING/i)'));
   assert.ok(await evaluate('!document.querySelector("[data-alight-draft-card]").textContent.match(/PENDING APPROVAL|NOT AVAILABLE TO PURCHASE/i)'));
   assert.ok(await evaluate('!document.querySelector("[data-alight-draft-card]").textContent.match(/£\\s?\\d|ADD TO CART|BUY NOW/i)'));
   await evaluate('document.querySelector("[data-alight-draft-card]").scrollIntoView({ block: "center" })');
@@ -261,7 +284,7 @@ try {
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img").src.endsWith("fsd-velocity-performance-sports-hijab.jpg")'));
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector(".fsd-product-description").textContent.includes("Black / Champagne Gold")'));
   assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
-  assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Reference only · not for sale")'));
+  assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Reference only · not for sale")'));
   await evaluate('document.querySelector("[data-product-id=\\"43\\"]").scrollIntoView({ block: "center" })');
   if (mobileProofCapture) {
     console.log('Mobile collection viewport:', await evaluate('({ innerWidth: window.innerWidth, clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, visualWidth: window.visualViewport?.width, screenWidth: screen.width, pixelRatio: devicePixelRatio })'));
@@ -301,8 +324,11 @@ try {
     await waitFor(`document.querySelector("#velocity-gallery-main-image").src.endsWith("/media/${imageId}")`);
     assert.equal(await evaluate(`document.querySelector('[data-hijab-thumb="${imageId}"]').getAttribute("aria-pressed")`), 'true');
   }
-  assert.ok(await evaluate('document.querySelector(".velocity-product-tagline").textContent.includes("CONCEPT")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-product-disclaimer").textContent.includes("Product details will be shared before release")'));
+  assert.ok(await evaluate('!document.querySelector(".velocity-product-tagline")'));
+  assert.ok(await evaluate('!document.querySelector(".velocity-product-disclaimer")'));
+  assert.ok(await evaluate('Boolean(document.querySelector(".velocity-accordions"))'));
+  assert.ok(await evaluate('document.querySelector(".velocity-accordions").textContent.includes("Black / Champagne Gold")'));
+  assert.ok(await evaluate('!/(CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)/i.test(document.body.textContent)'));
   assert.ok(!await evaluate('/PENDING VERIFICATION|No technical claims are established/i.test(document.body.textContent)'));
   assert.ok(!await evaluate('/Lightweight & breathable|Stays in place|Strategic airflow/i.test(document.body.textContent)'));
   await click('[data-hijab-thumb="campaign"]');
@@ -324,10 +350,21 @@ try {
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
+  await waitFor('document.querySelector("[data-fsd-storefront]")?.dataset.runtimeReady === "true"');
 
   await click('[data-division="hardware"]');
-  assert.deepEqual(await evaluate('Array.from(document.querySelectorAll("[data-product-id]"), b => Number(b.dataset.productId))'), [69, 70, 71, 72]);
-  assert.ok(await evaluate('document.querySelector("[data-dialog-content]").textContent.includes("£699.99") && document.querySelector("[data-dialog-content]").textContent.includes("£299.99")'));
+  await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+  assert.deepEqual(
+    await evaluate('Array.from(document.querySelectorAll("#fsd-showcase-dialog [data-product-id]"), element => element.dataset.productId)'),
+    ['69', '70', '71', '72'],
+  );
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog .fsd-product-card").length'), 4);
+  assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-showcase-empty") === null'), true);
+  assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-placeholder-kicker") === null'));
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog .fsd-product-link--pending").length'), 0);
+  assert.ok(await evaluate('!/(CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING|PLACEHOLDER)/i.test(document.querySelector("#fsd-showcase-dialog").textContent)'));
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog form, #fsd-showcase-dialog [data-add-to-cart], #fsd-showcase-dialog [data-purchase]").length'), 0);
+  assert.equal(await evaluate('document.querySelector("[data-dialog-content]").textContent.includes("£699.99") || document.querySelector("[data-dialog-content]").textContent.includes("£299.99")'), false);
   await click('[data-group-index="2"]');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-product-card").length'), 0);
   assert.equal(await evaluate('document.querySelectorAll(".fsd-concept-card").length'), 3);
@@ -350,8 +387,58 @@ try {
   assert.ok(filteredNames.length > 0 && filteredNames.every(name => /hijab/i.test(name)));
   assert.ok(await evaluate('!document.querySelector("#gallery-archive, #full-gallery")'));
   assert.equal(await evaluate('document.querySelectorAll(\'a[href="#full-gallery"]\').length'), 0);
+  await evaluate('location.hash = "#innovations"');
+  await waitFor('document.querySelector("#fsd-house-archive").open && document.querySelectorAll(".fsd-featured-card").length === 2');
+  const seoMeta = await evaluate(`({
+    title: document.title,
+    description: document.querySelector('meta[name="description"]')?.content,
+    ogImage: document.querySelector('meta[property="og:image"]')?.content,
+    twitterImage: document.querySelector('meta[name="twitter:image"]')?.content
+  })`);
+  assert.deepEqual(seoMeta, {
+    title: 'FSD — Fitness & Self Defence | The Luxury Digital Flagship',
+    description: 'A bespoke British luxury performance house fusing obsidian aesthetics, tactical engineering, and advanced digital innovation.',
+    ogImage: '/fsd-assets/8ffe2fd45a06.webp',
+    twitterImage: '/fsd-assets/8ffe2fd45a06.webp',
+  });
+  const offscreenImageLoading = await evaluate(`document.querySelector('#hardware-editorial img')?.loading`);
+  assert.equal(offscreenImageLoading, 'lazy');
+  assert.equal(await evaluate(`document.querySelector('#philosophy .story-background-image') === null`), true);
+
+  const featuredCarousel = await evaluate(`({
+    names: Array.from(document.querySelectorAll(".fsd-featured-card h3"), heading => heading.textContent.trim()),
+    prices: Array.from(document.querySelectorAll(".fsd-featured-card__price strong"), price => price.textContent.trim()),
+    imageCount: document.querySelectorAll(".fsd-featured-card img").length,
+    swatchCount: document.querySelectorAll(".fsd-featured-card [data-feature-swatch]").length,
+    nextDisabled: document.querySelector("[data-feature-next]").disabled
+  })`);
+  assert.deepEqual(featuredCarousel.names, ['FSD Ombré Slash Tee', 'FSD Cheetah Windrunner']);
+  assert.deepEqual(featuredCarousel.prices, ['£39.99', '£79.99']);
+  assert.equal(featuredCarousel.imageCount, 0);
+  assert.equal(featuredCarousel.swatchCount, 0);
+
+  await evaluate('document.querySelector(".fsd-featured-card [data-product=\\"1\\"]").focus({ preventScroll: true })');
+  await click('.fsd-featured-card [data-product="1"]');
+  await waitFor('document.querySelector("#product-dialog").open');
+  assert.ok((await evaluate('document.querySelector("#dialog-body").textContent')).includes('FSD Ombré Slash Tee'));
+  assert.equal(await evaluate('Boolean(document.querySelector("#dialog-body [data-product-specifications-root]"))'), true);
+  assert.equal(await evaluate('document.querySelector("#dialog-body [data-product-specifications-root]").textContent.trim()'), '');
+  assert.equal(await evaluate('document.querySelector("#dialog-body [data-catalogue-main-image]").loading'), 'eager');
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog").open');
+  await waitFor('document.activeElement.matches(".fsd-featured-card [data-product=\\"1\\"]")');
+
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 402,
+    height: 874,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await waitFor('document.querySelector(".fsd-featured-track").scrollWidth > document.querySelector(".fsd-featured-track").clientWidth');
+  assert.equal(await evaluate('document.querySelector("[data-feature-next]").disabled'), false);
   await click('[data-feature-next]');
-  await waitFor('document.querySelector(".showroom-feature-track").scrollLeft > 0');
+  await waitFor('document.querySelector(".fsd-featured-track").scrollLeft > 0');
+  await send('Emulation.clearDeviceMetricsOverride');
   assert.ok(await evaluate('document.querySelector("#contact button").disabled && !document.querySelector("#contact form, #contact input")'));
 
   assert.deepEqual(browserErrors, []);

@@ -1,0 +1,47 @@
+.fsd-cinematic-preview__image {
+  object-position: 65% 35%;
+}
+
+.fsd-cinematic-preview__reveal {
+  opacity: 0;
+  transform: translateY(15px);
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fsd-cinematic-preview__reveal--one { transition-delay: 120ms; }
+.fsd-cinematic-preview__reveal--two { transition-delay: 200ms; }
+.fsd-cinematic-preview__reveal--three { transition-delay: 280ms; }
+.fsd-cinematic-preview__reveal--four { transition-delay: 360ms; }
+
+.fsd-cinematic-preview.is-visible .fsd-cinematic-preview__reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .fsd-cinematic-preview__image {
+    object-position: center;
+  }
+}
+
+@media (hover: none) {
+  .fsd-cinematic-preview__card.group:hover .fsd-cinematic-preview__image {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-cinematic-preview__reveal,
+  .fsd-cinematic-preview__card,
+  .fsd-cinematic-preview__image {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .fsd-cinematic-preview__reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

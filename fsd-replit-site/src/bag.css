@@ -23,6 +23,32 @@
   color: #f5e7c8;
 }
 .fsd-bag-toggle svg { width: 15px; height: 15px; }
+.fsd-bag-toggle .fsd-boxing-bag-icon {
+  width: 18px;
+  height: 21px;
+  flex: 0 0 18px;
+  overflow: visible;
+  color: rgba(216, 184, 121, .9);
+  transition: color 160ms ease, filter 160ms ease;
+}
+.fsd-boxing-bag-icon path {
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fsd-boxing-bag-icon__body { fill: rgba(201, 173, 120, .14); }
+.fsd-boxing-bag-icon__seam { opacity: .64; }
+.fsd-boxing-bag-icon__highlight { opacity: .44; }
+.fsd-bag-toggle:hover .fsd-boxing-bag-icon,
+.fsd-bag-toggle:focus-visible .fsd-boxing-bag-icon {
+  color: #f2d8a1;
+  filter: drop-shadow(0 0 3px rgba(201, 173, 120, .34));
+}
+.fsd-bag-toggle:hover .fsd-boxing-bag-icon__body,
+.fsd-bag-toggle:focus-visible .fsd-boxing-bag-icon__body {
+  fill: rgba(201, 173, 120, .23);
+}
 .fsd-bag-count {
   display: inline-grid;
   min-width: 18px;

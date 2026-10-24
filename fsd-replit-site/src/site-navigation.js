@@ -2,6 +2,8 @@ import { collectionDivisions } from './collection-divisions.js';
 import { products as catalogueProducts } from './catalogue-data.js';
 import { groupProducts } from './collection-showcase/index.js';
 import { hoodedShellCampaign } from './hooded-shell-campaign.js';
+import { getInnovationPageForTitle } from './flagship-pages.js';
+import { FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
 
 export const primaryNavigation = [
   { id: 'collections', label: 'SHOP' },
@@ -27,6 +29,10 @@ const privatePreviewTargets = new Map([
   [weightedRopePreviewPath, `${weightedRopePreviewPath}media/weighted-rope-campaign`],
   [hoodedShellPreviewPath, `${hoodedShellPreviewPath}media/${hoodedShellCampaign.id}`],
 ]);
+const femaleCombatCampaign = Object.freeze({
+  featureImageSrc: '/fsd-assets/8ffe2fd45a06.webp',
+  featureImageAlt: 'Female FSD athlete wearing a hijab during boxing training.',
+});
 
 export const navigationAssetBindings = Object.freeze({
   'FSD NEXUS (smart ring)': Object.freeze({
@@ -95,8 +101,12 @@ function makeSubcategoryItems(group, divisionId, groupIndex, subcategories = gro
     sourceDivisionId: divisionId,
     sourceGroupIndex: groupIndex,
     sourceSubcategoryIndex: group.subcategories?.indexOf(subcategory) ?? -1,
+    ...(divisionId === 'apparel' &&
+      (group.id === 'womens-modest-combat' || /combat|training/i.test(subcategory.title))
+      ? femaleCombatCampaign
+      : {}),
     description: subcategory.concepts?.length
-      ? `${subcategory.concepts.join(' · ')}. Details and availability remain subject to confirmation.`
+      ? subcategory.concepts.join(' · ')
       : '',
   }));
 
@@ -110,6 +120,10 @@ function makeSubcategoryItems(group, divisionId, groupIndex, subcategories = gro
       sourceDivisionId: divisionId,
       sourceGroupIndex: groupIndex,
       sourceSubcategoryIndex: -1,
+      ...(/combat|training/i.test(category) &&
+        (divisionId === 'apparel' || divisionId === 'hardware')
+        ? femaleCombatCampaign
+        : {}),
     });
   }
 
@@ -117,6 +131,28 @@ function makeSubcategoryItems(group, divisionId, groupIndex, subcategories = gro
 }
 
 function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, options = {}) {
+  const conceptItems = () => (sourceGroup.concepts || []).map((concept, index) => {
+    const innovationPage = division.id === 'bio-lab'
+      ? getInnovationPageForTitle(concept)
+      : null;
+    return {
+      id: `${sourceGroup.id}-concept-${index}`,
+      title: concept,
+      kind: 'concept',
+      source: { concepts: [concept] },
+      sourceGroup,
+      sourceDivisionId: division.id,
+      sourceGroupIndex,
+      sourceSubcategoryIndex: -1,
+      ...(innovationPage ? { href: `#${innovationPage.id}` } : {}),
+      ...(division.id === 'hardware' && sourceGroup.id === 'combat-equipment'
+        ? femaleCombatCampaign
+        : {}),
+      description: innovationPage
+        ? 'Product details, features, and availability.'
+        : 'Part of the FSD collection.',
+    };
+  });
   let items;
   if (options.items) {
     items = options.items;
@@ -124,9 +160,13 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
     items = makeSubcategoryItems(sourceGroup, division.id, sourceGroupIndex);
   } else {
     const records = groupProducts(sourceGroup, products);
-    items = records.length
-      ? records.map(record => {
+    const recordItems = records.map(record => {
         const binding = navigationAssetBindings[record.name];
+        const campaignBinding = division.id === 'hardware'
+          && sourceGroup.id === 'combat-equipment'
+          && record.id === 30
+          ? femaleCombatCampaign
+          : null;
         return {
           id: `${sourceGroup.id}-product-${record.id}`,
           title: record.name,
@@ -137,20 +177,14 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
           sourceDivisionId: division.id,
           sourceGroupIndex,
           sourceSubcategoryIndex: -1,
-          ...(binding ? { featureImageSrc: binding.src, featureImageAlt: binding.alt } : {}),
+          ...(binding
+            ? { featureImageSrc: binding.src, featureImageAlt: binding.alt }
+            : campaignBinding),
         };
-      })
-      : (sourceGroup.concepts || []).map((concept, index) => ({
-        id: `${sourceGroup.id}-concept-${index}`,
-        title: concept,
-        kind: 'concept',
-        source: { concepts: [concept] },
-        sourceGroup,
-        sourceDivisionId: division.id,
-        sourceGroupIndex,
-        sourceSubcategoryIndex: -1,
-        description: 'A design direction within the FSD collection.',
-      }));
+      });
+    items = records.length
+      ? [...recordItems, ...(division.id === 'bio-lab' ? conceptItems() : [])]
+      : conceptItems();
   }
 
   return {
@@ -207,26 +241,11 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
       })));
   groups.push(makeDivisionGroup(division, mens, 0, products, {
     id: 'new-featured-concepts',
-    title: 'NEW & FEATURED CONCEPTS',
-    description: 'Current concepts from the existing FSD collection data.',
+    title: 'NEW & FEATURED',
+    description: 'Current products and features from the FSD collection.',
     items: conceptItems,
     navigationUnavailable: true,
   }));
-  groups.push({
-    id: 'shop-all-products',
-    title: 'ALL PRODUCTS',
-    description: 'Browse the full FSD product catalogue with collection, category and audience filters.',
-    href: '#products',
-    navigationUnavailable: false,
-    items: [{
-      id: 'shop-all-products-entry',
-      title: 'Browse all products',
-      kind: 'shop-all',
-      href: '#products',
-      description: 'Open the complete FSD catalogue.',
-    }],
-  });
-
   return groups;
 }
 
@@ -280,7 +299,7 @@ function makeHouseGroups(divisions) {
         sourceSubcategoryIndex: -1,
         href,
         navigationUnavailable: options.navigationUnavailable === true,
-        description: 'Proposed concept. No location or service is represented as operational.',
+         description: 'FSD locations and services. No location or service is represented as operational.',
       }))
       : [{
         id: `${id}-destination`,
@@ -289,18 +308,30 @@ function makeHouseGroups(divisions) {
         href,
         navigationUnavailable: options.navigationUnavailable === true,
         description,
+        status: options.status,
+        chapterCount: options.chapterCount,
+        houseCodeCount: options.houseCodeCount,
       }],
   });
 
   return [
-    staticGroup('our-story', 'OUR STORY', '#philosophy',
-      'The FSD philosophy: fitness, discipline, progress and a stronger you.'),
+    staticGroup('our-story', 'BRAND STORY & ARCHIVE', FSD_STORY_PATH,
+      'Capability is not a costume. It is a practice. Explore four foundational chapters and five House Codes.',
+      null, 0, {
+        status: 'EDITORIAL / BRAND PRINCIPLES',
+        chapterCount: '04 FOUNDATIONAL CHAPTERS',
+        houseCodeCount: '05 WORKING PRINCIPLES',
+      }),
     staticGroup('flagships', 'FLAGSHIPS', '',
-      global?.description || 'Proposed FSD flagship concepts.', flagship, 0),
+      global?.description || 'FSD flagship locations.', flagship, 0),
     staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '',
-      'Proposed promotion and event concepts.', promotions, 1),
+      'FSD promotions and events.', promotions, 1),
+    staticGroup('performance-linked-partnerships-security',
+      'PERFORMANCE-LINKED PARTNERSHIPS & SECURITY',
+      '#performance-linked-partnerships-security',
+      'A proposed programme overview. Participation, measurement, security controls, and terms are not confirmed.'),
     staticGroup('global-vision', 'GLOBAL VISION', '#fsd-division-global',
-      global?.description || 'FSD Global concepts.'),
+      global?.description || 'FSD Global.'),
     staticGroup('investor-relations', 'INVESTOR RELATIONS', '',
       'Investor information requires approved content before launch.', null, 0,
       { navigationUnavailable: true }),
@@ -309,6 +340,8 @@ function makeHouseGroups(divisions) {
 
 function makePrivateGroups() {
   const details = [
+    ['tactical-shield-membership', 'TACTICAL SHIELD MEMBERSHIP',
+      'Membership information only. Terms and benefits are not confirmed; registration is not open and no sign-up data is collected.', true, '#tactical-shield-membership'],
     ['vip-registration', 'VIP ACCESS REGISTRATION',
       'Registration is not collecting sign-ups yet. The destination and approved privacy and consent details are still required.', false],
     ['collection-announcements', 'COLLECTION ANNOUNCEMENTS',
@@ -316,10 +349,10 @@ function makePrivateGroups() {
     ['private-enquiries', 'PRIVATE ENQUIRIES',
       'Private access information is not yet connected to an enquiry destination.', false],
   ];
-  return details.map(([id, title, description, hasDestination]) => ({
+  return details.map(([id, title, description, hasDestination, explicitDestination]) => ({
     id,
     title,
-    href: hasDestination ? '#contact' : '',
+    href: hasDestination ? (explicitDestination || '#contact') : '',
     sourceDivisionId: '',
     sourceGroupIndex: -1,
     description,
@@ -328,7 +361,7 @@ function makePrivateGroups() {
       id: `${id}-details`,
       title,
       kind: 'destination',
-      href: hasDestination ? '#contact' : '',
+      href: hasDestination ? (explicitDestination || '#contact') : '',
       navigationUnavailable: !hasDestination,
       description,
     }],
@@ -340,6 +373,7 @@ export function createNavigationModel({
   products = catalogueProducts,
   includeDraftPreviews = false,
   draftMenuItems = [],
+  configureMenus = () => {},
 } = {}) {
   const findDivision = id => divisionById(divisions, id);
   const divisionMenu = (id, label) => {
@@ -372,7 +406,7 @@ export function createNavigationModel({
     };
   };
 
-  return [
+  const menus = [
     {
       id: 'collections',
       label: 'SHOP',
@@ -410,6 +444,57 @@ export function createNavigationModel({
       groups: makePrivateGroups(),
     },
   ];
+
+  const bioLabMenu = menus.find(menu => menu.id === 'bio-lab');
+  if (bioLabMenu) {
+    bioLabMenu.groups.push({
+      id: 'innovation-hub',
+      title: 'INNOVATION HUB',
+      description: 'Browse FSD Bio-Lab products and connected apparel.',
+      sourceDivisionId: 'bio-lab',
+      sourceGroupIndex: bioLabMenu.groups.length,
+      href: '#innovation-hub',
+      items: [{
+        id: 'innovation-hub-index',
+        title: 'Browse Innovation Hub',
+        kind: 'destination',
+        href: '#innovation-hub',
+        description: 'Explore FSD Bio-Lab products.',
+      }, {
+        id: 'smart-apparel-nfc-concept',
+        title: 'Smart Apparel & NFC',
+        kind: 'concept',
+        href: '#smart-apparel-nfc',
+        sourceDivisionId: 'bio-lab',
+        sourceGroupIndex: bioLabMenu.groups.length,
+        description: 'FSD connected-apparel collection.',
+      }],
+    });
+  }
+
+  const hardwareMenu = menus.find(menu => menu.id === 'hardware');
+  if (hardwareMenu) {
+    hardwareMenu.groups.push({
+      id: 'fsd-pods',
+      title: 'FSD PODS',
+      description: 'FSD product collection.',
+      sourceDivisionId: 'hardware',
+      sourceGroupIndex: hardwareMenu.groups.length,
+      href: '#fsd-pods',
+      items: [{
+        id: 'fsd-pods-concept',
+        title: 'FSD Pods',
+        kind: 'concept',
+        href: '#fsd-pods',
+        sourceDivisionId: 'hardware',
+        sourceGroupIndex: hardwareMenu.groups.length,
+        description: 'FSD product collection.',
+      }],
+    });
+  }
+
+  configureMenus(menus);
+  return menus;
 }
 
 function hasVerifiedDestination({
@@ -433,13 +518,20 @@ function hasVerifiedDestination({
     if (group?.id === 'shop-all-products' || item?.kind === 'shop-all') {
       return hasShopDestination;
     }
-    if (!item && ['mens-luxury-performance', 'womens-modest-combat'].includes(group?.id)) {
-      return hasShopDestination && groupProducts(group.source, products).length > 0;
-    }
-    if (item?.kind === 'subcategory') {
-      return hasShopDestination
-        && groupProducts(item.sourceGroup || group?.source, products, item.source).length > 0;
-    }
+    const divisionId = item?.sourceDivisionId || group?.sourceDivisionId;
+    const groupIndex = item?.sourceGroupIndex ?? group?.sourceGroupIndex;
+    const sourceDivision = divisions.find(entry => entry.id === divisionId);
+    const sourceGroup = sourceDivision?.groups?.[groupIndex];
+    const subcategoryIndex = item?.sourceSubcategoryIndex ?? -1;
+    const hasShowcaseDestination = Boolean(
+      hasShopDestination
+      && ownerDocument.querySelector('#fsd-showcase-dialog')
+      && sourceGroup
+      && Number.isInteger(groupIndex)
+      && groupIndex >= 0
+      && (subcategoryIndex < 0 || sourceGroup.subcategories?.[subcategoryIndex]),
+    );
+    if (hasShowcaseDestination) return true;
   }
   if (item?.kind === 'category') {
     const category = item.source?.categories?.[0];
@@ -455,6 +547,12 @@ function hasVerifiedDestination({
 
   const explicitTarget = item?.href || group?.href;
   if (explicitTarget) {
+    if (explicitTarget.replace(/\/+$/, '') === FSD_STORY_PATH) {
+      return Boolean(
+        ownerDocument.querySelector(FSD_STORY_HASH)
+        && ownerDocument.querySelector('#fsd-house-archive'),
+      );
+    }
     if (!explicitTarget.startsWith('#') || explicitTarget === '#') return false;
     try {
       return Boolean(ownerDocument.querySelector(explicitTarget));
@@ -475,41 +573,93 @@ function hasVerifiedDestination({
   );
 }
 
+function featureMetadataText(value, fallback = 'To be confirmed') {
+  if (Array.isArray(value)) {
+    const joined = value.filter(Boolean).map(String).join(' / ');
+    return joined || fallback;
+  }
+  if (value !== null && value !== undefined && String(value).trim()) {
+    return String(value).trim();
+  }
+  return fallback;
+}
+
 function renderFeature(menu, group, item, canNavigate) {
+  const isStoryFeature = menu.id === 'house' && item?.href === FSD_STORY_PATH;
   const image = featureImageForItem(item);
   const exactItemImage = Boolean(image);
-  const featureTitle = item?.record?.name || item?.title || group?.title || 'FSD';
+  const featureTitle = isStoryFeature
+    ? 'THE FSD STORY & ARCHIVE'
+    : item?.record?.name || item?.title || group?.title || 'FSD';
   const description = item?.description ||
     item?.record?.coverage ||
     item?.record?.priceBasis ||
     group?.description ||
-    'Details and availability are subject to confirmation.';
-
-  const media = image
-    ? `<div class="fsd-feature-media fsd-feature-media--1" data-feature-image="${escapeHTML(image.src)}">
-        <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" loading="eager" fetchpriority="low" decoding="async">
-      </div>`
-    : '<div class="fsd-feature-media fsd-feature-media--unmapped" aria-hidden="true"></div>';
-
+    '';
   const available = canNavigate({ menu, group, item });
+  const colourways = featureMetadataText(
+    item?.record?.colourways ?? item?.record?.colorways ?? item?.colourways ??
+      item?.source?.colourways ?? item?.source?.colorways ??
+      item?.sourceGroup?.colourways ?? group?.colourways,
+    '—',
+  );
+  const audience = featureMetadataText(
+    item?.record?.audience ?? item?.audience ??
+      item?.source?.audiences ?? item?.sourceGroup?.audiences ?? group?.audiences,
+    '—',
+  );
+  const metadataRows = isStoryFeature
+    ? [
+      ['Chapters', item?.chapterCount || '04 FOUNDATIONAL CHAPTERS'],
+      ['House Codes', item?.houseCodeCount || '05 WORKING PRINCIPLES'],
+    ]
+    : [
+       ['Colourways', colourways],
+      ['Audience', audience],
+    ];
+
+  const media = isStoryFeature
+    ? `<div class="fsd-feature-media fsd-feature-media--story">
+        <span>FSD / THE HOUSE</span>
+        <strong>Capability is not a costume.<br/><em>It is a practice.</em></strong>
+        <small>Four foundational chapters · Five House Codes</small>
+      </div>`
+    : image
+    ? `<div class="fsd-feature-media fsd-feature-media--1" data-feature-image="${escapeHTML(image.src)}">
+        <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" loading="eager" fetchpriority="auto" decoding="async">
+      </div>`
+    : `<div class="fsd-feature-media fsd-feature-media--unmapped" role="group" aria-label="Collection feature for ${escapeHTML(featureTitle)}">
+        <span class="fsd-feature-placeholder-kicker">FSD / COLLECTION</span>
+        <strong>${escapeHTML(featureTitle)}</strong>
+      </div>`;
+  const mediaAction = available
+    ? `<button type="button" class="fsd-feature-media-action" data-nav-destination
+        aria-label="Open ${escapeHTML(featureTitle)}">
+        ${media}
+      </button>`
+    : media;
+
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
+    : isStoryFeature ? 'READ THE STORY & ARCHIVE'
     : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
       : item?.kind === 'shop-all' ? 'SHOP ALL PRODUCTS'
       : item?.record ? 'VIEW DETAILS'
       : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
-        : menu.id === 'house' && item?.href === '#philosophy' ? 'READ THE FSD STORY'
-          : item?.kind === 'concept' ? 'EXPLORE CONCEPT'
+        : item?.kind === 'concept' ? 'EXPLORE COLLECTION'
             : item?.kind === 'subcategory' ? 'VIEW COLLECTION'
             : item?.kind === 'category' ? 'VIEW CATEGORY'
               : menu.id === 'house' ? 'EXPLORE THE HOUSE'
                 : 'EXPLORE COLLECTION';
 
   return `<article class="fsd-feature-card">
-    ${media}
+    ${mediaAction}
     <div class="fsd-feature-copy">
-      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / CONCEPT') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
+      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / COLLECTION') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
       <h3>${escapeHTML(featureTitle)}</h3>
       <p>${escapeHTML(description)}</p>
+      <dl class="fsd-feature-metadata" aria-label="Selected item details">
+        ${metadataRows.map(([label, value], index) => `<div><dt>${escapeHTML(label)}</dt><dd${index === 0 ? ' data-status' : ''}>${escapeHTML(value)}</dd></div>`).join('')}
+      </dl>
       <button type="button" class="fsd-feature-cta" data-nav-destination
         ${available ? '' : 'disabled aria-disabled="true" title="No verified destination is available for this selection."'}>
         ${actionLabel}<span aria-hidden="true">${available ? '↗' : '—'}</span>
@@ -521,7 +671,7 @@ function renderFeature(menu, group, item, canNavigate) {
 function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
   return menu.groups.map((group, index) => {
     const available = canNavigate({ menu, group, item: null });
-    const status = available ? 'Open this collection group.' : 'Preview only; no verified group destination is available.';
+    const status = 'Open this collection group.';
     return `<button type="button"
       class="fsd-nav-option fsd-nav-group${index === activeGroupIndex ? ' is-active' : ''}"
       data-nav-group="${index}" data-nav-available="${available}" aria-label="${escapeHTML(group.title)}. ${status}"
@@ -536,9 +686,7 @@ function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
 function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
   return group.items.map((item, index) => {
     const available = canNavigate({ menu, group, item });
-    const status = item.kind === 'draft-product'
-      ? 'Open this FSD product concept.'
-      : available ? 'Open this destination.' : 'Preview only; no verified destination is available.';
+    const status = 'Open this collection item.';
     return `<button type="button"
       class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"
       data-nav-item="${index}" data-nav-available="${available}"
@@ -593,6 +741,10 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
         ${group ? renderFeature(menu, group, item, canNavigate) : ''}
       </section>
     </div>
+    ${menu.id === 'collections' ? `<div class="fsd-nav-catalogue">
+      <span>Looking for something specific?</span>
+      <button type="button" data-nav-catalogue>Browse the full catalogue <span aria-hidden="true">↗</span></button>
+    </div>` : ''}
   </div>`;
 }
 
@@ -601,7 +753,7 @@ export function renderNavigationHeader(brandMarkup) {
       class="fsd-primary-trigger" data-nav-primary="${item.id}" aria-controls="fsd-mega-menu"
       aria-expanded="false">${escapeHTML(item.label)}</button>`).join('');
 
-  return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE <span>— DESIGN PREVIEW</span></div>
+  return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE</div>
     <div class="fsd-navigation-shell" data-navigation-shell>
       <header class="header fsd-header fsd-glass-surface">
         <a class="brand fsd-brand" href="#home" aria-label="FSD Home">
@@ -609,11 +761,22 @@ export function renderNavigationHeader(brandMarkup) {
         </a>
         <nav class="fsd-primary-nav" aria-label="Main navigation">${primaryItems}</nav>
         <span class="fsd-header-note">UNITED KINGDOM <i aria-hidden="true">·</i> FSD</span>
+        <button type="button" class="fsd-search-trigger" data-search-open
+          aria-label="Search products" aria-haspopup="dialog" aria-controls="fsd-search-dialog"
+          aria-expanded="false">
+          <svg viewBox="0 0 20 20" aria-hidden="true" fill="none">
+            <circle cx="8.7" cy="8.7" r="5.7" stroke="currentColor" stroke-width="1.3"/>
+            <path d="m13 13 4 4" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <span>SEARCH</span>
+        </button>
         <button type="button" class="fsd-bag-toggle" data-bag-open aria-controls="fsd-bag-dialog"
           aria-expanded="false" aria-label="Open bag, 0 items">
-          <svg viewBox="0 0 20 20" aria-hidden="true" fill="none">
-            <path d="M4.5 7.2h11l.9 10H3.6l.9-10Z" stroke="currentColor" stroke-width="1.2"/>
-            <path d="M7 7.2V5.7a3 3 0 0 1 6 0v1.5" stroke="currentColor" stroke-width="1.2"/>
+          <svg class="fsd-boxing-bag-icon" viewBox="4 0 16 24" aria-hidden="true" fill="none">
+            <path class="fsd-boxing-bag-icon__chain" d="M12 1.7v2.4m-2.1 0h4.2"/>
+            <path class="fsd-boxing-bag-icon__body" d="M9.15 5.05h5.7l1.5 2.15v9.2a2.85 2.85 0 0 1-2.85 2.85h-3a2.85 2.85 0 0 1-2.85-2.85V7.2l1.5-2.15Z"/>
+            <path class="fsd-boxing-bag-icon__seam" d="M7.65 9.1h8.7m-8.7 5.3h8.7"/>
+            <path class="fsd-boxing-bag-icon__highlight" d="M9.35 7.7v8.8"/>
           </svg>
           <span>BAG</span><span class="fsd-bag-count" data-bag-count>0</span>
         </button>
@@ -634,6 +797,7 @@ export function mountNavigation({
   products = catalogueProducts,
   includeDraftPreviews = false,
   draftMenuItems = [],
+  configureMenus = () => {},
   draftPreviewTargets = new Map(),
   onNavigate = () => {},
 } = {}) {
@@ -641,7 +805,7 @@ export function mountNavigation({
   const panel = root.querySelector('[data-nav-panel]');
   const content = root.querySelector('[data-nav-content]');
   const mobileToggle = root.querySelector('[data-nav-mobile-toggle]');
-  const model = createNavigationModel({ divisions, products, includeDraftPreviews, draftMenuItems });
+  const model = createNavigationModel({ divisions, products, includeDraftPreviews, draftMenuItems, configureMenus });
   const triggers = [...root.querySelectorAll('.fsd-primary-trigger')];
   if (!panel || !content || !mobileToggle) throw new TypeError('The FSD navigation markup is incomplete.');
   const canNavigate = selection => hasVerifiedDestination(selection, {
@@ -693,8 +857,12 @@ export function mountNavigation({
     currentPrimaryId = model.some(menu => menu.id === id) ? id : '';
     syncExpanded();
   };
-  const updateCurrentFromHash = () => setCurrentPrimary(hashNavigation.get(window.location.hash) || '');
-  currentPrimaryId = hashNavigation.get(window.location.hash) || '';
+  const currentNavigationId = () => {
+    if (window.location.hash) return hashNavigation.get(window.location.hash) || '';
+    return window.location.pathname.replace(/\/+$/, '') === FSD_STORY_PATH ? 'house' : '';
+  };
+  const updateCurrentFromHash = () => setCurrentPrimary(currentNavigationId());
+  currentPrimaryId = currentNavigationId();
 
   const render = () => {
     clearTimeout(featureTransitionTimer);
@@ -929,6 +1097,16 @@ export function mountNavigation({
       panel.querySelector(focusSelector)?.focus({ preventScroll: true });
       return;
     }
+    if (event.target.closest('[data-nav-catalogue]')) {
+      const menu = currentMenu();
+      const selection = {
+        menu,
+        group: { id: 'shop-all-products', title: 'Browse the full catalogue' },
+        item: { id: 'browse-catalogue', kind: 'shop-all', href: '#products' },
+      };
+      navigateSelection(selection);
+      return;
+    }
 
     const groupButton = event.target.closest('[data-nav-group]');
     if (groupButton && panel.contains(groupButton)) {
@@ -1012,6 +1190,9 @@ export function mountNavigation({
     }
 
     if (event.key === 'Escape' && isOpen) {
+      // Native modal dialogs own Escape while they are open. Do not dismiss an
+      // underlying menu as well; the dialog's cancel handler closes its layer.
+      if (root.ownerDocument.querySelector('dialog[open]')) return;
       event.preventDefault();
       closeMenu({ restoreFocus: true });
       return;

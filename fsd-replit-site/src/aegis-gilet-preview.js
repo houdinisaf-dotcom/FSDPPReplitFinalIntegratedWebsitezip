@@ -84,8 +84,7 @@ root.innerHTML = `
     <div class="aegis-product-copy">
       <p class="aegis-product-kicker">FSD / WOMEN’S MODEST ACTIVEWEAR</p>
       <h1 id="aegis-gilet-title">${escapeHTML(preview.product.name)}</h1>
-      <p class="aegis-product-status">CONCEPT</p>
-      <p class="aegis-product-description">A visual concept for the FSD modest outerwear collection.</p>
+      <p class="aegis-product-description">FSD modest outerwear.</p>
       ${preview.product.colourways ? `<div class="aegis-product-option">
         <span class="aegis-product-label">Colour</span>
         <p class="aegis-product-colour"><span aria-hidden="true"></span>${escapeHTML(preview.product.colourways)}</p>

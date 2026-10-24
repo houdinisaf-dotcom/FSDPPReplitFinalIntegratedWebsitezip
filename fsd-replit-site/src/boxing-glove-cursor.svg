@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <path
+    class="boxing-glove-body"
+    d="M2.2 2.2c3.1-.1 5.8.7 7.7 2.5 2.5-1.7 6.3-1.5 9 .9 3.1 2.6 4.1 6.7 2.1 10l-2.4 3.2 9.4 2.7c1.5.4 2.2 1.8 1.7 3.2l-1.5 4.3c-.5 1.4-1.9 2.1-3.3 1.7l-11-3.2c-2.3-.7-4.2-2.2-5.5-4.2L4 16.2C2.8 14.4 2.2 12.1 2.2 9.7V2.2Z"
+    fill="#d8b570"
+    fill-opacity=".19"
+    stroke="#e1c17b"
+    stroke-opacity=".94"
+    stroke-width="1.55"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    class="boxing-glove-outline"
+    d="M2.2 2.2c3.1-.1 5.8.7 7.7 2.5 2.5-1.7 6.3-1.5 9 .9 3.1 2.6 4.1 6.7 2.1 10l-2.4 3.2 9.4 2.7c1.5.4 2.2 1.8 1.7 3.2l-1.5 4.3c-.5 1.4-1.9 2.1-3.3 1.7l-11-3.2c-2.3-.7-4.2-2.2-5.5-4.2L4 16.2C2.8 14.4 2.2 12.1 2.2 9.7V2.2Z"
+    stroke="#392912"
+    stroke-opacity=".9"
+    stroke-width=".65"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    class="boxing-glove-laces"
+    d="M7.1 4.1c1.2 1.1 1.9 2.4 2 3.9m1.7-4.2c1.1 1.2 1.7 2.6 1.8 4.1m1.8-3.5c1 1.2 1.5 2.5 1.5 4M4.2 11.1c2.2-.7 4.6.4 5.5 2.5l.8 1.8c.6 1.4-.1 3-1.5 3.7l-1.2.6m10.9-2.2 9.3 2.7m-10.6.2 9.8 2.9m-8.3-4.5-1.1 3m4.3-2.1-1.1 3m4.3-2.1-1.1 3"
+    stroke="#f0d89f"
+    stroke-opacity=".84"
+    stroke-width=".85"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

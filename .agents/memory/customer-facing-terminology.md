@@ -3,8 +3,8 @@ name: Customer-facing terminology
 description: Preferred wording for FSD website copy that describes concepts and upcoming collections.
 ---
 
-Avoid the retired release-stage label in customer-facing FSD website copy. Prefer clear alternatives such as “concept,” “collection preview,” “upcoming,” or “development.”
+Remove customer-facing release/status labels such as “CONCEPT,” “DRAFT,” “PREVIEW,” “PENDING REVIEW,” “PRIVATE VIEWING” and “PLACEHOLDER.” Use neutral product and collection names.
 
-**Why:** The user explicitly asked to remove the former release-stage wording throughout the website.
+**Why:** The user’s latest site-wide directive requires all existing inventory to be presented as current offerings and removes those labels from the storefront.
 
-**How to apply:** Use the preferred wording in visible page copy, labels, browser titles, metadata, and announcements. Preserve internal draft/private states and purchasing or publishing safeguards.
+**How to apply:** Check visible badges, cards, headings, banners, browser titles, metadata and menus. Keep internal record states private, use existing catalogue values only, and leave missing details blank.

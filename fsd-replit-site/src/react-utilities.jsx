@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
+import { ProductSpecificationsView } from './ProductSpecificationsView.js';
 
 const socialProfiles = [
   { name: 'Facebook', glyph: 'f' },
@@ -43,6 +44,39 @@ function ReadingProgress() {
   }, []);
 
   return <div ref={barRef} className="fsd-reading-progress" aria-hidden="true"><span /></div>;
+}
+
+function ProductSpecificationsPortal() {
+  const [dialogTarget, setDialogTarget] = useState(null);
+
+  useEffect(() => {
+    const syncSpecificationsTarget = requestedProductId => {
+      const target = document.querySelector('#dialog-body [data-product-specifications-root]');
+      const dialog = document.querySelector('#product-dialog');
+      const productId = Number(requestedProductId ?? target?.dataset?.productId);
+      setDialogTarget(
+        dialog?.open && Number.isSafeInteger(productId) && target
+          ? { target, productId }
+          : null,
+      );
+    };
+    const openSpecifications = event => syncSpecificationsTarget(event.detail?.productId);
+    const closeSpecifications = () => setDialogTarget(null);
+
+    document.addEventListener('fsd:product-specifications-open', openSpecifications);
+    document.addEventListener('fsd:product-specifications-close', closeSpecifications);
+    syncSpecificationsTarget();
+    return () => {
+      document.removeEventListener('fsd:product-specifications-open', openSpecifications);
+      document.removeEventListener('fsd:product-specifications-close', closeSpecifications);
+    };
+  }, []);
+
+  if (!dialogTarget?.target?.isConnected) return null;
+  return createPortal(
+    <ProductSpecificationsView productId={dialogTarget.productId} />,
+    dialogTarget.target,
+  );
 }
 
 function FooterUtilities({ theme, onToggleTheme }) {
@@ -113,6 +147,7 @@ export function FSDReactUtilities() {
   return (
     <>
       <ReadingProgress />
+      <ProductSpecificationsPortal />
       {footerTarget && createPortal(
         <FooterUtilities
           theme={theme}

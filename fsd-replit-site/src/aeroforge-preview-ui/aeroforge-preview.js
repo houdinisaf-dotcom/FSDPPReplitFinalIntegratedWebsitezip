@@ -50,7 +50,6 @@ export function mountAeroForgePreview(root, data) {
       <main class="af-main" id="af-main"></main>
       <footer class="af-footer"><div class="af-shell">
         <span class="af-footer-brand">FSD <i>/</i> AEROFORGE</span>
-        <span>CONCEPT</span>
       </div></footer>
     </div>`;
 

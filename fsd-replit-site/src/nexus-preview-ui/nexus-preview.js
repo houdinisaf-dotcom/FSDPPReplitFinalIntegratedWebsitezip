@@ -18,23 +18,31 @@ function approvedAssets(preview) {
 }
 
 function featureStatus(feature) {
-  return 'CONCEPT DIRECTION';
+  return 'FSD NEXUS';
 }
 
 function galleryNote(asset) {
-  if (asset?.id === 'app-interface') return 'STATIC INTERFACE CONCEPT';
-  if (asset?.id === 'proposed-features') return 'FEATURE CONCEPT';
+  if (asset?.id === 'app-interface') return 'STATIC INTERFACE';
+  if (asset?.id === 'proposed-features') return 'NEXUS FEATURES';
   if (asset?.id === 'progression-conditions') return 'RESPONSIBLE DEVELOPMENT';
   return 'CAMPAIGN IMAGE';
 }
 
+function galleryAssetTitle(asset, index = 0) {
+  return ({
+    'app-interface': 'Companion app interface',
+    'proposed-features': 'FSD NEXUS features',
+    'progression-conditions': 'Product information',
+  }[asset?.id] || `FSD image ${index + 1}`);
+}
+
 function galleryMarkup(assets, active) {
   if (!active) {
-    return `<div class="nexus-gallery-empty" role="status">APPROVED CONCEPT ARTWORK NOT PROVIDED</div>`;
+    return `<div class="nexus-gallery-empty" role="status">IMAGE UNAVAILABLE</div>`;
   }
   const activeSrc = esc(active.src);
-  const activeAlt = esc(active.alt || active.label);
-  const activeLabel = esc(active.label || 'Approved concept artwork');
+  const activeLabel = esc(galleryAssetTitle(active, 0));
+  const activeAlt = esc(`FSD NEXUS ${galleryAssetTitle(active, 0)}`);
   return `<div class="nexus-gallery" data-nexus-gallery>
     <button class="nexus-gallery-main" type="button" data-nexus-enlarge
       aria-label="Enlarge ${activeLabel}">
@@ -45,13 +53,13 @@ function galleryMarkup(assets, active) {
       <span data-nexus-active-caption aria-live="polite">${activeLabel}</span>
       <span data-nexus-active-note aria-live="polite">${esc(galleryNote(active))}</span>
     </div>
-    <div class="nexus-gallery-thumbs" role="group" aria-label="Select concept artwork">
+    <div class="nexus-gallery-thumbs" role="group" aria-label="Select product imagery">
       ${assets.map((asset, index) => `<button class="nexus-thumb" type="button"
         data-nexus-gallery-select="${esc(asset.id)}" aria-pressed="${String(asset.id === active.id)}"
-        aria-label="Show ${esc(asset.label || `concept artwork ${index + 1}`)}">
+        aria-label="Show ${esc(galleryAssetTitle(asset, index))}">
         <span class="nexus-thumb-index">0${index + 1}</span>
         <img src="${esc(asset.src)}" alt="" loading="lazy">
-        <span class="nexus-thumb-label">${esc(asset.label || `Artwork ${index + 1}`)}</span>
+        <span class="nexus-thumb-label">${esc(galleryAssetTitle(asset, index))}</span>
       </button>`).join('')}
     </div>
   </div>`;
@@ -160,8 +168,8 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
   const progressionArt = assets.find(asset => asset.id === 'progression-conditions');
   const features = list(preview?.proposedFeatures);
   const conditions = list(preview?.progressionConditions);
-  const dialogCaption = active?.label || 'Approved concept artwork';
-  const dialog = `<dialog class="nexus-dialog" data-nexus-dialog aria-label="Concept artwork viewer">
+  const dialogCaption = active?.label || 'FSD gallery image';
+  const dialog = `<dialog class="nexus-dialog" data-nexus-dialog aria-label="FSD image viewer">
     <button class="nexus-dialog-close" type="button" data-nexus-close aria-label="Close artwork viewer">CLOSE <span aria-hidden="true">×</span></button>
     <img data-nexus-dialog-image alt="">
     <p data-nexus-dialog-caption>${esc(dialogCaption)}</p>
@@ -182,30 +190,30 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
             <h1 id="nexus-title" aria-label="FSD NEXUS"><em>NEXUS</em></h1>
             <p class="nexus-hero-line">${esc(preview?.headline || 'DISCREET TECHNOLOGY. DEEPER INSIGHTS.')}</p>
             <p class="nexus-intro">${esc(preview?.description || '')}</p>
-            <p class="nexus-prelaunch-note"><strong>FSD NEXUS CONCEPT</strong><small>A visual exploration for the FSD Bio-Lab.</small></p>
+            <p class="nexus-prelaunch-note"><strong>FSD NEXUS</strong><small>Training, recovery and everyday wellbeing.</small></p>
           </div>
-          <div class="nexus-hero-visual" aria-label="Concept presentation artwork">
+          <div class="nexus-hero-visual" aria-label="FSD NEXUS imagery">
             <div class="nexus-orbit nexus-orbit--one" aria-hidden="true"></div>
             <div class="nexus-orbit nexus-orbit--two" aria-hidden="true"></div>
             <div class="nexus-hero-visual-copy">
-               <span>NEXUS / CONCEPT</span>
+               <span>NEXUS / PERFORMANCE</span>
               <strong>01<span>—</span>03</strong>
-               <small>FSD NEXUS<br>CONCEPT STUDY</small>
+               <small>FSD NEXUS<br>CONNECTED TECHNOLOGY</small>
             </div>
             <div class="nexus-hero-index" aria-hidden="true">N / 01</div>
           </div>
         </section>
 
-        <section class="nexus-manifesto" aria-label="Concept direction">
+        <section class="nexus-manifesto" aria-label="FSD NEXUS">
           <div class="nexus-manifesto-index">01 / THE ENQUIRY</div>
           <p>${esc(preview?.campaignMessage || 'TRAIN. RECOVER. BALANCE. PERFORM. LIVE BETTER.')}</p>
-          <small>FSD NEXUS / CONCEPT DIRECTION</small>
+          <small>FSD NEXUS / CONNECTED TECHNOLOGY</small>
         </section>
 
         <section class="nexus-evidence nexus-wrap" aria-labelledby="nexus-evidence-title">
           <div class="nexus-section-head">
-            <div><p class="nexus-kicker">CONCEPT MATERIAL / 01</p><h2 id="nexus-evidence-title">A direction, <em>not a device.</em></h2></div>
-            <p>A visual exploration of the FSD NEXUS direction.</p>
+            <div><p class="nexus-kicker">NEXUS DETAIL / 01</p><h2 id="nexus-evidence-title">Technology for<br><em>everyday training.</em></h2></div>
+            <p>Explore FSD NEXUS product imagery and details.</p>
           </div>
           ${galleryMarkup(assets, active)}
         </section>
@@ -213,25 +221,25 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
         <section class="nexus-app-section" aria-labelledby="nexus-app-title">
           <div class="nexus-wrap nexus-app-layout">
             <div class="nexus-app-copy">
-              <p class="nexus-kicker">02 / INTERFACE STUDY</p>
-              <h2 id="nexus-app-title">An interface<br>in <em>exploration.</em></h2>
-              <p>A visual study of a potential FSD NEXUS interface.</p>
-              <p class="nexus-app-warning">Illustrative interface. Scores shown are concept artwork, not live data.</p>
-              <span class="nexus-validation">CONCEPT DIRECTION</span>
+              <p class="nexus-kicker">02 / INTERFACE</p>
+              <h2 id="nexus-app-title">FSD NEXUS<br><em>app interface.</em></h2>
+              <p>FSD NEXUS app imagery.</p>
+              <p class="nexus-app-warning">Illustrative interface. Scores shown are not live data.</p>
+              <span class="nexus-validation">FSD NEXUS</span>
             </div>
             <figure class="nexus-app-figure">
               ${appImage ? `<img src="${esc(appImage.src)}" alt="${esc(appImage.alt || appImage.label)}" loading="lazy">` : ''}
-              <figcaption><span>APP INTERFACE CONCEPT</span><span>STATIC INTERFACE STUDY</span></figcaption>
+              <figcaption><span>APP INTERFACE</span><span>STATIC INTERFACE</span></figcaption>
             </figure>
           </div>
         </section>
 
         <section class="nexus-capabilities nexus-wrap" aria-labelledby="nexus-capabilities-title">
           <div class="nexus-capabilities-intro">
-            <p class="nexus-kicker">03 / FUTURE DIRECTIONS</p>
-            <h2 id="nexus-capabilities-title">Ideas under<br><em>examination.</em></h2>
-            <p>Possible directions for a future FSD NEXUS experience.</p>
-            ${featureArt ? `<figure class="nexus-feature-art"><img src="${esc(featureArt.src)}" alt="${esc(featureArt.alt || featureArt.label)}" loading="lazy"><figcaption>FEATURE CONCEPT</figcaption></figure>` : ''}
+            <p class="nexus-kicker">03 / FEATURES</p>
+            <h2 id="nexus-capabilities-title">Training<br><em>and recovery.</em></h2>
+            <p>FSD NEXUS product features.</p>
+            ${featureArt ? `<figure class="nexus-feature-art"><img src="${esc(featureArt.src)}" alt="${esc(featureArt.alt || featureArt.label)}" loading="lazy"><figcaption>NEXUS FEATURES</figcaption></figure>` : ''}
           </div>
           <ul class="nexus-feature-list">
             ${features.map((feature, index) => `<li>
@@ -245,9 +253,9 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
         <section class="nexus-boundary">
           <div class="nexus-wrap nexus-boundary-layout">
             <div>
-              <p class="nexus-kicker">04 / RESPONSIBLE DEVELOPMENT</p>
-              <h2>Open questions.<br><em>Clear boundaries.</em></h2>
-              <p>Each idea is a starting point for careful research and evaluation.</p>
+            <p class="nexus-kicker">04 / PRODUCT DETAILS</p>
+            <h2>Designed for<br><em>everyday use.</em></h2>
+            <p>FSD NEXUS information and specifications.</p>
             </div>
             <div class="nexus-gates">
               ${conditions.map((condition, index) => `<div class="nexus-gate">
@@ -262,15 +270,13 @@ export function renderNexusPreview({ headerHtml, preview } = {}) {
           <div class="nexus-photo-mark" aria-hidden="true"><span></span><span></span><span></span></div>
           <div>
             <p class="nexus-kicker">05 / THE DESIGN</p>
-            <h2 id="nexus-photo-title">A vision<br>still <em>evolving.</em></h2>
-            <p>Product imagery will be shared as the design develops.</p>
+            <h2 id="nexus-photo-title">Connected<br><em>performance.</em></h2>
+            <p>FSD NEXUS product imagery.</p>
           </div>
-          <span class="nexus-photo-stamp">CONCEPT<br>ONLY</span>
         </section>
 
         <footer class="nexus-footer nexus-wrap">
           <strong>FSD / NEXUS</strong>
-          <span>CONCEPT</span>
         </footer>
       </div>
     </main>

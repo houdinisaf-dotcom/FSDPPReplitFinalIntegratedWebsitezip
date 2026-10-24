@@ -3,54 +3,68 @@ export function ourStorySection() {
     <div class="story-shell">
       <header class="story-intro">
         <div class="story-intro-heading">
-          <p class="section-kicker">OUR STORY / ENGINEERED FOR THE WORK</p>
-          <h2 id="story-title">Engineered for<br/><span>the Work.</span></h2>
+          <p class="section-kicker">FSD / BRAND STORY &amp; ARCHIVE</p>
+          <h2 id="story-title">Capability is not a costume.<br/><span>It is a practice.</span></h2>
         </div>
         <p class="story-lede">FSD — Fitness &amp; Self-Defence — was founded by a lifelong athlete with a simple observation: much activewear is designed for image rather than support. After countless hours in the gym and learning self-defence, they knew there had to be a better way.</p>
       </header>
 
-      <section class="story-mission" aria-labelledby="story-mission-title">
-        <h3 id="story-mission-title">Our Mission</h3>
-        <p>Our mission is to create purposeful designs built for movement, not image. We focus on function over form and on speaking honestly about materials and development. We believe true confidence does not need to shout; it speaks through action.</p>
+      <section class="story-founder-statement" aria-labelledby="story-founder-title">
+        <p class="story-index" id="story-founder-title">THE HOUSE / FOUNDER STATEMENT</p>
+        <blockquote>“We are not building an image of capability. We are building the conditions for it.”</blockquote>
       </section>
 
-      <section class="story-principles" aria-labelledby="story-principles-title">
+      <section class="story-chapters" aria-labelledby="story-chapters-title">
         <div class="story-section-heading">
-          <p class="story-index">01 / PRINCIPLES</p>
-          <h3 id="story-principles-title">What We Stand For</h3>
+          <p class="story-index">00—03 / THE FSD STORY</p>
+          <h3 id="story-chapters-title">Four foundational chapters</h3>
         </div>
-        <div class="story-values">
-          <article>
-            <span>01</span>
-            <h4>Purposeful design</h4>
-            <p>Every detail matters. We develop designs with movement, performance and durability in mind.</p>
+        <div class="story-chapter-grid">
+          <article class="story-chapter">
+            <span>00 / THE QUESTION</span>
+            <h4>Capability over theatre</h4>
+            <p>Make the surrounding conditions more capable. Begin with preparation and support, not the performance of toughness.</p>
           </article>
-          <article>
-            <span>02</span>
-            <h4>Honest materials</h4>
-            <p>We would rather tell you less than overstate what a fabric can do.</p>
+          <article class="story-chapter">
+            <span>01 / THE PRACTICE</span>
+            <h4>Train the whole day</h4>
+            <p>Fitness, self-defence, recovery, nutrition and community are connected parts of a fuller training practice.</p>
           </article>
-          <article>
-            <span>03</span>
-            <h4>Movement over image</h4>
-            <p>Clothing developed for how you train, not just how it photographs.</p>
+          <article class="story-chapter">
+            <span>02 / THE SYSTEM</span>
+            <h4>Make the parts speak</h4>
+            <p>Membership, apparel, hardware and education are part of the FSD community.</p>
           </article>
-          <article>
-            <span>04</span>
-            <h4>Discipline without ego</h4>
-            <p>Confidence that comes from within, not external validation.</p>
+          <article class="story-chapter">
+            <span>03 / THE HOUSE</span>
+            <h4>Keep it close to place</h4>
+            <p>Local knowledge should shape future hubs. Manchester, Dublin and Belfast are points of reference—not a claim of operating FSD sites.</p>
           </article>
+        </div>
+      </section>
+
+      <section class="story-house-codes" aria-labelledby="story-house-codes-title">
+        <div class="story-section-heading">
+          <p class="story-index">THE HOUSE / WORKING PRINCIPLES</p>
+          <h3 id="story-house-codes-title">House Codes</h3>
+        </div>
+        <div class="story-code-grid">
+          <article><span>01</span><h4>Discipline</h4><p>Do the repeatable work. Let the standard show in the details.</p></article>
+          <article><span>02</span><h4>Composure</h4><p>Stay clear enough to choose well when the pressure arrives.</p></article>
+          <article><span>03</span><h4>Protection</h4><p>Build safety through awareness, preparation, and responsible support.</p></article>
+          <article><span>04</span><h4>Responsibility</h4><p>Premium means caring about the people, material, and place behind the product.</p></article>
+          <article><span>05</span><h4>Progress</h4><p>Test the idea, listen to the field, and make the next version more useful.</p></article>
         </div>
       </section>
 
       <div class="story-development">
         <section aria-labelledby="story-today-title">
-          <p class="story-index">02 / THE HOUSE</p>
-          <h3 id="story-today-title">Where We Are Today</h3>
+          <p class="story-index">THE ARCHIVE / CURRENT DIRECTION</p>
+          <h3 id="story-today-title">Where the work stands</h3>
           <p>AEROFORGE represents FSD’s direction in technical training apparel: considered fit, purposeful construction and movement in focus. Product details remain to be confirmed.</p>
         </section>
         <section aria-labelledby="story-road-title">
-          <p class="story-index">03 / THE ROAD AHEAD</p>
+          <p class="story-index">THE ARCHIVE / THE ROAD AHEAD</p>
           <h3 id="story-road-title">The Road Ahead</h3>
           <p>Apparel is just the beginning for FSD. We aim to support the training community through future partnerships with gyms and academies, honest education and content that celebrates real training. These are ideas we are still shaping; we will bring them forward only when we know we can deliver them properly.</p>
         </section>

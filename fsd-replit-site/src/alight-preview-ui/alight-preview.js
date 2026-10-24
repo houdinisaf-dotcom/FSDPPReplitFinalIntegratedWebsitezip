@@ -70,7 +70,7 @@ const storiesMarkup = preview.editorialStories.map((story, index) => {
       <span>CAMPAIGN IMAGE</span>
     </div>
     <div class="alight-story-copy">
-      <span class="alight-micro-index">0${index + 1} / CONCEPT STUDY</span>
+      <span class="alight-micro-index">0${index + 1} / PRODUCT DETAIL</span>
       <h3>${escapeHTML(story.title)}</h3>
       <p>${escapeHTML(story.copy)}</p>
     </div>
@@ -90,7 +90,7 @@ root.innerHTML = `
       <section class="alight-intro" aria-labelledby="alight-title">
         <div class="alight-intro-copy">
           <p class="alight-eyebrow">FSD / ${escapeHTML(preview.product.category)}</p>
-          <p class="alight-overline">A CONCEPT IN MINDFUL MOVEMENT</p>
+          <p class="alight-overline">MINDFUL MOVEMENT</p>
           <h1 id="alight-title">FSD<br><em>ALIGHT</em></h1>
           <p class="alight-subtitle">${escapeHTML(preview.product.subtitle)}</p>
           <p class="alight-description">${escapeHTML(preview.product.description)}</p>
@@ -98,7 +98,6 @@ root.innerHTML = `
             <span class="alight-colour-swatch" aria-hidden="true"></span>
             <span><small>DEPICTED PALETTE</small><strong>${escapeHTML(preview.product.colour)}</strong></span>
           </div>
-           <p class="alight-prelaunch-note"><strong>CONCEPT</strong><small>Product details are being finalised.</small></p>
         </div>
         <div class="alight-hero-artwork">
           <button class="alight-hero-image" type="button" data-alight-enlarge aria-label="Enlarge selected campaign reference">
@@ -118,7 +117,7 @@ root.innerHTML = `
       <div class="alight-campaign-inner">
         <span class="alight-section-index">ARTWORK / 01</span>
         <p>${escapeHTML(preview.campaignMessage)}</p>
-         <span class="alight-campaign-caveat">CAMPAIGN DIRECTION</span>
+         <span class="alight-campaign-caveat">CAMPAIGN IMAGE</span>
       </div>
     </section>
 
@@ -128,7 +127,7 @@ root.innerHTML = `
           <p class="alight-eyebrow">THE IDEA / IN CONTEXT</p>
           <h2 id="alight-editorial-title">Movement, in the<br><em>moments between.</em></h2>
         </div>
-         <p class="alight-section-intro">An early editorial study exploring how ALIGHT might sit within work and training.</p>
+         <p class="alight-section-intro">FSD ALIGHT for work and training.</p>
       </div>
       <div class="alight-stories">${storiesMarkup}</div>
     </section>
@@ -140,7 +139,7 @@ root.innerHTML = `
              <p class="alight-eyebrow">CAMPAIGN IMAGERY / 12 FRAMES</p>
             <h2 id="alight-gallery-title">Campaign <em>archive.</em></h2>
           </div>
-           <p>Choose a frame to explore the ALIGHT campaign direction.</p>
+           <p>Choose a frame to explore ALIGHT campaign imagery.</p>
         </div>
         <div class="alight-gallery-grid" role="group" aria-label="Select one of twelve campaign image references">
           ${galleryMarkup}
@@ -151,8 +150,6 @@ root.innerHTML = `
     <footer class="alight-footer">
       <div class="alight-main-wrap">
         <span class="alight-footer-brand">FSD <i>/</i> ALIGHT</span>
-         <span>CONCEPT</span>
-        <span>CONCEPT</span>
       </div>
     </footer>
   </main>

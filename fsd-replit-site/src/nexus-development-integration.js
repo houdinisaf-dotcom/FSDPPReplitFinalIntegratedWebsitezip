@@ -15,15 +15,14 @@ export function createNexusDevelopmentIntegration() {
 
   const collectionCard = `<article class="fsd-product-card" data-nexus-draft-card>
     <a class="fsd-product-media" href="${nexusPreviewPath}"
-      aria-label="Explore the FSD NEXUS concept">
-      <img loading="lazy" src="${escapeHTML(appScreen.src)}" alt="${escapeHTML(appScreen.alt)}" width="${appScreen.width}" height="${appScreen.height}"/>
+      aria-label="Explore FSD NEXUS">
+      <img loading="lazy" src="${escapeHTML(appScreen.src)}" alt="FSD NEXUS app interface. Displayed score is illustrative, not live data." width="${appScreen.width}" height="${appScreen.height}"/>
       <span>FSD NEXUS</span>
     </a>
     <div class="fsd-product-meta"><span>FSD BIO-LAB™</span><span>WEARABLE TECHNOLOGY</span></div>
     <h4>FSD NEXUS</h4>
-    <p class="fsd-product-description">A smart ring concept with an illustrative app interface.</p>
-    <p class="fsd-preview-status">CONCEPT</p>
-    <a class="fsd-product-link" href="${nexusPreviewPath}">EXPLORE CONCEPT <span aria-hidden="true">↗</span></a>
+    <p class="fsd-product-description">A smart ring with an app interface.</p>
+    <a class="fsd-product-link" href="${nexusPreviewPath}">EXPLORE PRODUCT <span aria-hidden="true">↗</span></a>
   </article>`;
 
   return Object.freeze({

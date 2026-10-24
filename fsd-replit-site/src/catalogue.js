@@ -1,5 +1,6 @@
-import { audiences, categories, products, productsWithUsableImages, filterProducts, priceInfo, safe, shopCollections } from './catalogue-data.js';
+import { audiences, categories, imageSwatchBackground, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
 import { canAddToBag } from './bag.js';
+import { crossfadeMappedImage } from './catalogue-image-gallery.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -21,7 +22,6 @@ const sortOptions = [
   ['price-desc', 'Price: high to low'],
 ];
 const viewOptions = ['grid', 'visual'];
-const imageReadyProductIds = new Set(productsWithUsableImages.map(product => String(product.id)));
 const failedProductImageIds = new Set();
 const isBrowser = () => typeof window !== 'undefined' && Boolean(window.history && window.location);
 const scrollBehavior = () => typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -172,29 +172,49 @@ function activeFilterMarkup() {
 }
 
 function imagePlaceholder(product, failed = false) {
-  return `<div class="catalogue-placeholder" role="status">
-    <strong>${failed ? 'This product image could not be loaded.' : 'A product image is not shown for this item.'}</strong>
-    <small>${safe(product.category)}</small></div>`;
+  return `<div class="catalogue-placeholder" role="note">
+    <strong>${safe(product.name)}</strong>
+    <small>${safe(product.category)}</small>
+    ${failed ? '<small>Image unavailable</small>' : ''}
+  </div>`;
 }
 
 function displayPrice(product) {
-  return priceInfo(product);
+  if (isHardwareVisualPreviewProduct(product)) {
+    return { label: '', value: '' };
+  }
+  const price = priceInfo(product);
+  return /reference only|not for sale/i.test(price.label || '')
+    ? { label: '', value: '' }
+    : price;
 }
 
 function card(product) {
+  const hardwarePreview = isHardwareVisualPreviewProduct(product);
   const price = displayPrice(product);
-  const image = product.images[0];
+  const images = Array.isArray(product.images) ? product.images : [];
+  const image = images[0];
   const imageFailed = failedProductImageIds.has(String(product.id));
   return `<article class="product-card">
-    <div class="product-image">${image && !imageFailed
-      ? `<img data-catalogue-card-image="${product.id}" loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}; design concept"/>`
-      : imagePlaceholder(product, imageFailed)}<span class="chip">PREVIEW</span></div>
+    <div class="product-image" data-catalogue-card-stage>${image && !imageFailed
+      ? `<img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-card-image="${product.id}" loading="lazy" src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}"/>`
+      : imagePlaceholder(product, imageFailed)}</div>
+    ${images.length > 1 ? `<div class="catalogue-card-swatches" role="group" aria-label="Choose an image of ${safe(product.name)}">
+      ${images.map((option, index) => {
+        const swatch = imageSwatchBackground(option.label);
+        return `<button type="button" data-catalogue-card-image-index="${index}" data-product-id="${product.id}"
+          aria-label="Show ${safe(option.label)}" aria-pressed="${index === 0}">
+          ${swatch ? `<span class="catalogue-swatch-dot" aria-hidden="true" style="--catalogue-swatch:${safe(swatch)}"></span>` : ''}
+          <span>${safe(option.label)}</span>
+        </button>`;
+      }).join('')}
+    </div>` : ''}
     <div class="product-meta"><span>${safe(product.category)}</span><span>${safe(product.audience)}</span></div>
     <h3>${safe(product.name)}</h3>
-     ${product.colourways ? `<p class="catalogue-colourways">${safe(product.colourways)}</p>` : ''}
+     ${!hardwarePreview && product.colourways ? `<p class="catalogue-colourways">${safe(product.colourways)}</p>` : ''}
     ${price.label || price.value ? `<div class="catalogue-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
-    ${product.priceBasis ? `<p class="catalogue-colourways">${safe(product.priceBasis)}</p>` : ''}
-    ${canAddToBag(product) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${product.id}" aria-label="Add ${safe(product.name)} to bag">ADD TO BAG</button>` : ''}
+    ${!hardwarePreview && product.priceBasis ? `<p class="catalogue-colourways">${safe(product.priceBasis)}</p>` : ''}
+    ${!hardwarePreview && canAddToBag(product) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${product.id}" aria-label="Add ${safe(product.name)} to bag">ADD TO BAG</button>` : ''}
     <button class="text-link" data-product="${product.id}">VIEW DETAILS ↗<span class="sr-only"> for ${safe(product.name)}</span></button>
   </article>`;
 }
@@ -251,18 +271,17 @@ export function roadmapSection() {
 export function innovationsSection() {
   const innovations = products.filter(p => p.category === 'Smart Tech');
   return `<section class="fsd-expanded" id="innovations"><div class="section-heading"><div>
-    <p class="section-kicker">FUTURE INNOVATIONS / SMART TECH</p><h2>BEYOND APPAREL<span class="period">.</span></h2>
-    </div><p>Ideas for future FSD training technology.</p></div>
+    <p class="section-kicker">TRAINING TECHNOLOGY / SMART TECH</p><h2>BEYOND APPAREL<span class="period">.</span></h2>
+    </div><p>FSD training technology and connected products.</p></div>
     <div class="planned-grid">${innovations.map(p => `<div class="planned-row"><span>↗</span><div>
-       <strong>${safe(p.name)}</strong><small>FSD SMART TECH CONCEPT</small>
+       <strong>${safe(p.name)}</strong><small>FSD SMART TECH</small>
       </div><button class="text-link" data-product="${p.id}">DETAILS<span class="sr-only"> for ${safe(p.name)}</span></button></div>`).join('')}</div>
-     <p class="disclaimer">Ideas shown as part of the FSD innovation collection.</p>
+     <p class="disclaimer">Explore FSD training technology.</p>
     </section>`;
 }
 
 function renderResults() {
-  const filtered = sortedProducts(filterProducts(activeCategory, query, activeAudience, activeCollection)
-    .filter(product => imageReadyProductIds.has(String(product.id))));
+  const filtered = sortedProducts(filterProducts(activeCategory, query, activeAudience, activeCollection));
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   page = Math.min(page, totalPages);
   updateControls();
@@ -333,17 +352,32 @@ export function showProduct(id, { fromHistory = false } = {}) {
   }
   if (!activeDialogProduct) dialogReturnFocus = document.activeElement;
   activeDialogProduct = p;
+  const hardwarePreview = isHardwareVisualPreviewProduct(p);
   const price = displayPrice(p);
   const detail = (label, value) => value ? `<dt>${label}</dt><dd>${safe(value)}</dd>` : '';
   const confirmedAlias = /^confirmed\b/i.test(p.aliasStatus) ? p.alias : '';
-  const displaySpecifications = p.specificationStatus ? '' : p.specifications;
   const images = Array.isArray(p.images) ? p.images : [];
+  const dialogBody = document.querySelector('#dialog-body');
   const initialImage = images[0];
+  const detailRows = hardwarePreview
+    ? detail('Category', p.category)
+    : [
+      detail('Colourways', p.colourways),
+      detail('Audience', p.audience),
+      detail('Collection line', p.collection),
+      detail('Also shown in', p.alsoShowIn.join('; ')),
+      detail('Also appears as', confirmedAlias),
+      detail('Coverage', p.coverage),
+      detail('Set configuration', p.priceBasis),
+    ].join('');
   const imageExperience = initialImage
     ? `<div class="catalogue-selector__visual">
         <figure class="catalogue-selector__main" aria-live="polite">
-          <img data-catalogue-main-image src="${safe(initialImage.src)}"
-            alt="${safe(p.name)} — ${safe(initialImage.label)}; design concept"/>
+          <div class="catalogue-selector__image-stage">
+          <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
+            src="${safe(initialImage.src)}" alt="${safe(p.name)} — ${safe(initialImage.label)}"
+            loading="eager" fetchpriority="high" decoding="async"/>
+          </div>
           <figcaption data-catalogue-main-caption>${safe(initialImage.label)}</figcaption>
         </figure>
         ${images.length > 1 ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Select an image of ${safe(p.name)}">
@@ -355,7 +389,7 @@ export function showProduct(id, { fromHistory = false } = {}) {
         </div>` : ''}
       </div>`
     : `<div class="catalogue-selector__visual catalogue-selector__visual--empty">${imagePlaceholder(p)}</div>`;
-  document.querySelector('#dialog-body').innerHTML = `${imageExperience}<div class="dialog-copy">
+  dialogBody.innerHTML = `${imageExperience}<div class="dialog-copy">
     <nav class="catalogue-breadcrumbs" aria-label="Breadcrumb"><ol>
       <li><a href="#home" data-home-breadcrumb>Home</a></li>
       <li><a href="#products" data-shop-breadcrumb>Shop</a></li>
@@ -365,17 +399,17 @@ export function showProduct(id, { fromHistory = false } = {}) {
     <button class="catalogue-back" type="button" data-catalogue-back><span aria-hidden="true">←</span> BACK TO COLLECTION</button>
      <p class="section-kicker">${safe(p.category)} / COLLECTION</p><h2 id="product-title">${safe(p.name)}</h2>
     <dl class="catalogue-details">
-      ${detail('Colourways', p.colourways)}
-      ${detail('Audience', p.audience)}
-      ${detail('Collection line', p.collection)}
-      ${detail('Also shown in', p.alsoShowIn.join('; '))}
-      ${detail('Also appears as', confirmedAlias)}
-      ${detail('Coverage', p.coverage)}
-      ${detail('Specifications', displaySpecifications)}
-       ${detail('Set configuration', p.priceBasis)}
-      </dl>${price.label || price.value ? `<div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
-     ${canAddToBag(p) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${p.id}" aria-label="Add ${safe(p.name)} to bag">ADD TO BAG</button>` : ''}
+      ${detailRows}
+      </dl>
+      ${hardwarePreview ? '' : `<div data-product-specifications-root data-product-id="${safe(p.id)}"></div>`}
+      ${price.label || price.value ? `<div class="dialog-price">${price.label ? `<span>${price.label}</span>` : ''}${price.value ? `<strong>${price.value}</strong>` : ''}</div>` : ''}
+     ${!hardwarePreview && canAddToBag(p) ? `<button class="catalogue-bag-add" type="button" data-bag-add="${p.id}" aria-label="Add ${safe(p.name)} to bag">ADD TO BAG</button>` : ''}
     </div>`;
+  if (!hardwarePreview && typeof document.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
+    document.dispatchEvent(new CustomEvent('fsd:product-specifications-open', {
+      detail: { productId: p.id },
+    }));
+  }
   document.documentElement?.classList?.add('fsd-modal-open');
   if (dialog && !dialog.open) dialog.showModal();
   dialog?.querySelector?.('#close-dialog')?.focus?.({ preventScroll: true });
@@ -493,6 +527,21 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   search.addEventListener('change', () => { searchEditing = false; clearTimeout(searchCommitTimer); });
 
   document.addEventListener('click', event => {
+    const cardImageButton = event.target.closest('[data-catalogue-card-image-index]');
+    if (cardImageButton) {
+      const product = products.find(item => String(item.id) === cardImageButton.dataset.productId);
+      const index = Number(cardImageButton.dataset.catalogueCardImageIndex);
+      const image = product?.images?.[index];
+      const cardElement = cardImageButton.closest('.product-card');
+      const mainImage = cardElement?.querySelector('[data-catalogue-card-image]');
+      if (image && mainImage) {
+        crossfadeMappedImage(mainImage, image.src, `${product.name} — ${image.label}`);
+        cardElement.querySelectorAll('[data-catalogue-card-image-index]').forEach(button => {
+          button.setAttribute('aria-pressed', String(button === cardImageButton));
+        });
+      }
+      return;
+    }
     const imageButton = event.target.closest('[data-catalogue-image-index]');
     if (imageButton && dialogBody.contains(imageButton) && activeDialogProduct) {
       const index = Number(imageButton.dataset.catalogueImageIndex);
@@ -501,8 +550,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
         const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
         const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
         if (mainImage && caption) {
-          mainImage.src = image.src;
-          mainImage.alt = `${activeDialogProduct.name} — ${image.label}; design concept`;
+          crossfadeMappedImage(mainImage, image.src, `${activeDialogProduct.name} — ${image.label}`);
           caption.textContent = image.label;
           dialogBody.querySelectorAll('[data-catalogue-image-index]').forEach(button => {
             button.setAttribute('aria-pressed', String(button === imageButton));
@@ -596,11 +644,18 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   });
   dialog.addEventListener('close', () => {
     const productId = activeDialogProduct?.id;
-    const focusTarget = dialogReturnFocus?.isConnected
+    const isVisibleFocusTarget = target => target?.isConnected
+      && target.getClientRects().length > 0
+      && !target.closest('[hidden], details:not([open])');
+    const visibleProductTrigger = productId
+      ? [...document.querySelectorAll(`[data-product="${productId}"]`)].find(isVisibleFocusTarget)
+      : null;
+    const focusTarget = isVisibleFocusTarget(dialogReturnFocus)
       ? dialogReturnFocus
-      : productId
-        ? document.querySelector(`#catalogue-grid [data-product="${productId}"]`)
-        : null;
+      : visibleProductTrigger || document.querySelector('#catalogue-archive > summary');
+    if (typeof document.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
+      document.dispatchEvent(new CustomEvent('fsd:product-specifications-close'));
+    }
     activeDialogProduct = null;
     document.documentElement?.classList?.remove('fsd-modal-open');
     focusTarget?.focus?.({ preventScroll: true });

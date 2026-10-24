@@ -245,37 +245,46 @@ summary {
   text-wrap: balance;
 }
 
-/* Porcelain is reserved for the catalogue, with controls tuned for long sessions. */
+/* The catalogue follows the flagship's obsidian and champagne-gold system. */
 .shop {
-  background: #eeece6;
-  color: #171816;
+  background:
+    radial-gradient(ellipse at 78% 0%, rgba(200, 170, 114, .055), transparent 36%),
+    #090a0c;
+  color: #f1eee8;
 }
 
 .shop .section-heading h2,
-.shop .product-card h3 { color: #171816; }
+.shop .product-card h3 { color: #f1eee8; }
 
-.shop .section-kicker { color: #85663b; }
-.shop .section-heading > p { color: #56564f; }
+.shop .section-kicker { color: #c8aa72; }
+.shop .section-heading > p,
+.shop .catalogue-count { color: #aaa79f; }
+
+.shop .catalogue-control-panel {
+  border: 1px solid rgba(200, 170, 114, .18);
+  background: rgba(26, 28, 32, .76);
+  backdrop-filter: blur(16px);
+}
 
 .catalogue-toolbar select,
 .catalogue-toolbar input,
 .toolbar input {
   min-height: 48px;
-  border-color: #c4c0b7;
-  background: #f8f7f3;
-  color: #171816;
+  border-color: rgba(238, 234, 225, .2);
+  background: #1a1c20;
+  color: #f1eee8;
   transition: border-color var(--fsd-motion-fast) ease, box-shadow var(--fsd-motion-fast) ease;
 }
 
 .catalogue-toolbar select:hover,
 .catalogue-toolbar input:hover,
-.toolbar input:hover { border-color: #95774a; }
+.toolbar input:hover { border-color: rgba(200, 170, 114, .7); }
 
 .catalogue-toolbar select:focus-visible,
 .catalogue-toolbar input:focus-visible,
 .toolbar input:focus-visible {
-  outline-color: #87683c;
-  box-shadow: 0 0 0 3px rgba(135, 104, 60, .13);
+  outline-color: #c8aa72;
+  box-shadow: 0 0 0 3px rgba(200, 170, 114, .16);
 }
 
 .catalogue-view-controls button,
@@ -320,17 +329,30 @@ summary {
 }
 
 .product-grid { gap: clamp(18px, 2.4vw, 34px); }
-.product-card { min-width: 0; }
+.shop .product-card {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(200, 170, 114, .18);
+  background: linear-gradient(145deg, #1a1c20, #111315);
+  transition: border-color var(--fsd-motion-standard) ease, transform var(--fsd-motion-standard) var(--fsd-ease-out);
+}
+.shop .product-card:hover { border-color: rgba(200, 170, 114, .55); transform: translateY(-3px); }
+.shop .product-meta,
+.shop .catalogue-colourways { color: #aaa79f; }
+.shop .catalogue-price span { color: #b8b1a3; }
+.shop .catalogue-price strong { color: #e3c68c; }
+.shop .product-card .text-link { color: #e3c68c; }
+.shop .product-card .text-link:hover { color: #fff0cd; }
 
 .product-image {
-  background: #e7e5df;
+  background: #101113;
   isolation: isolate;
 }
 
 .product-image::after {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(25, 24, 21, .055);
+  border: 1px solid rgba(238, 234, 225, .08);
   content: "";
   pointer-events: none;
 }
@@ -341,8 +363,25 @@ summary {
 
 .product-card:hover .product-image img { transform: scale(1.025); }
 .product-card h3 { font-family: var(--fsd-display); }
-.product-card .text-link { color: #785b32; }
-.product-card .text-link:hover { color: #392a17; }
+.product-card .text-link { color: #e3c68c; }
+.product-card .text-link:hover { color: #fff0cd; }
+
+.mapped-gallery-image--incoming,
+.mapped-gallery-image--hidden {
+  position: absolute !important;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 200ms ease;
+}
+.mapped-gallery-image--incoming { z-index: 2; opacity: 0; }
+.mapped-gallery-image--incoming.mapped-gallery-image--visible { opacity: 1; }
+.mapped-gallery-image--hidden { z-index: 1; opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mapped-gallery-image--incoming,
+  .mapped-gallery-image--hidden { transition-duration: .01ms; }
+}
 
 .catalogue-pagination { padding-bottom: 3px; }
 .catalogue-pagination button { min-height: 42px; }
@@ -618,7 +657,7 @@ summary {
   .hero { min-height: min(760px, calc(100svh - 92px)); }
   .hero-content { width: calc(100% - 40px); }
   .hero-image {
-    background-position: 57% center;
+    background-position: 20% center;
     opacity: .76;
   }
   .hero-shade {
@@ -947,7 +986,7 @@ summary {
   }
   .hero-image {
     inset: -1% -4% 0;
-    background-position: 59% center;
+    background-position: 20% center;
     opacity: .82;
   }
   .hero-shade {

@@ -6,9 +6,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { collectionDivisions } from '../src/collection-divisions.js';
-import { products } from '../src/catalogue-data.js';
-import { groupProducts } from '../src/collection-showcase/index.js';
+import { products, shopCollections } from '../src/catalogue-data.js';
 import { createNavigationModel } from '../src/site-navigation.js';
+import { resolveFsdRoute } from '../src/react-router.js';
 
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
@@ -46,7 +46,8 @@ try {
       if (message.error) request.reject(new Error(JSON.stringify(message.error)));
       else request.resolve(message.result);
     } else if (message.method === 'Runtime.exceptionThrown') {
-      browserErrors.push(message.params.exceptionDetails.text);
+      browserErrors.push(message.params.exceptionDetails.exception?.description
+        || message.params.exceptionDetails.text);
     } else if (message.method === 'Runtime.consoleAPICalled' && message.params.type === 'error') {
       browserErrors.push(message.params.args.map(argument => argument.value || '').join(' '));
     }
@@ -62,11 +63,16 @@ try {
     socket.send(JSON.stringify({ id, method, params }));
   });
   const evaluate = async expression => {
-    const response = await send('Runtime.evaluate', {
-      expression,
-      awaitPromise: true,
-      returnByValue: true,
-    });
+    let response;
+    try {
+      response = await send('Runtime.evaluate', {
+        expression,
+        awaitPromise: true,
+        returnByValue: true,
+      });
+    } catch (error) {
+      throw new Error(`CDP evaluation failed for: ${expression}\n${error.message}`, { cause: error });
+    }
     if (response.exceptionDetails) throw new Error(JSON.stringify(response.exceptionDetails));
     return response.result.value;
   };
@@ -123,7 +129,57 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("[data-division=\\"apparel\\"]")');
   await waitFor('!!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools") && !!document.querySelector(".fsd-reading-progress")');
+  const desktopCursor = await evaluate('getComputedStyle(document.body).cursor');
+  assert.match(desktopCursor, /data:image\/svg\+xml/);
+  assert.match(desktopCursor, /\)\s+2 2,\s*auto$/);
+  const encodedCursorSvg = desktopCursor.match(/url\("data:image\/svg\+xml,([^"]+)"\)/)?.[1];
+  assert.ok(encodedCursorSvg);
+  assert.match(decodeURIComponent(encodedCursorSvg), /boxing-glove-laces/);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-primary-trigger")).cursor'), 'pointer');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-bag-toggle")).cursor'), 'pointer');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundPosition'), '50% 35%');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundSize'), 'cover');
+  assert.doesNotMatch(
+    await evaluate('document.body.innerText'),
+    /CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING|PLACEHOLDER/i,
+  );
+  await evaluate('window.scrollTo(0, document.documentElement.scrollHeight)');
+  await waitFor('Number.parseFloat(getComputedStyle(document.querySelector(".fsd-reading-progress")).getPropertyValue("--fsd-reading-progress")) > 0.98');
+  assert.equal(
+    await evaluate('Number.parseFloat(getComputedStyle(document.querySelector(".fsd-reading-progress")).getPropertyValue("--fsd-reading-progress"))'),
+    1,
+  );
+  await evaluate('window.scrollTo(0, 0)');
+  await waitFor('Number.parseFloat(getComputedStyle(document.querySelector(".fsd-reading-progress")).getPropertyValue("--fsd-reading-progress")) < 0.02');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-social-placeholder").length'), 5);
+  await send('Page.navigate', { url: `https://${domain}/#philosophy` });
+  await waitFor('document.querySelector("#fsd-house-archive")?.open');
+  await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+  assert.ok(await evaluate('document.querySelector("#philosophy").getBoundingClientRect().top >= -1'));
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools")');
+  await send('Page.navigate', { url: `https://${domain}/story` });
+  await waitFor('document.querySelector("#fsd-house-archive")?.open');
+  await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+  assert.ok(await evaluate('Boolean(document.querySelector(".fsd-reading-progress"))'));
+  assert.equal(await evaluate('document.querySelector("[data-fsd-storefront]").dataset.currentView'), 'story');
+  assert.equal(await evaluate('document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"house\\"]")?.classList.contains("is-current")'), true);
+  assert.ok(await evaluate('Boolean(document.querySelector(\'footer a[href="/story"]\'))'));
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools")');
+  await click('.fsd-primary-trigger[data-nav-primary="house"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"0\\"]")');
+  await moveTo('#fsd-mega-menu [data-nav-group="0"]');
+  await waitFor('document.querySelector(".fsd-feature-media--story") && document.querySelector(".fsd-feature-copy h3")?.textContent === "THE FSD STORY & ARCHIVE"');
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-metadata").textContent.includes("04 FOUNDATIONAL CHAPTERS")'), true);
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-metadata").textContent.includes("05 WORKING PRINCIPLES")'), true);
+  await click('#fsd-mega-menu .fsd-feature-cta');
+  await waitFor('location.pathname === "/story"');
+  await waitFor('document.querySelector("#fsd-house-archive")?.open');
+  await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('!!document.querySelector(".fsd-primary-nav") && window.scrollY === 0');
   await evaluate('document.querySelector(".fsd-footer-tools button:nth-of-type(2)").click()');
   await waitFor('document.documentElement.dataset.theme === "light"');
   await evaluate('document.querySelector(".fsd-footer-tools button:nth-of-type(2)").click()');
@@ -134,7 +190,7 @@ try {
   await waitFor('window.scrollY === 0');
 
   assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
-  assert.ok(await evaluate('parseFloat(getComputedStyle(document.querySelector(".hero h1")).animationDuration) < .001'));
+  assert.ok(await evaluate('parseFloat(getComputedStyle(document.querySelector(".fsd-home-hero h1")).animationDuration) < .001'));
   assert.equal(await evaluate('document.querySelector(".header.fsd-header").classList.contains("fsd-glass-surface")'), true);
   assert.equal(await evaluate('document.querySelector(".fsd-mega-menu").classList.contains("fsd-glass-surface")'), true);
   await evaluate('window.scrollTo(0, document.querySelector("#universe").getBoundingClientRect().top + window.scrollY + 120)');
@@ -144,7 +200,7 @@ try {
   await waitFor('window.scrollY === 0');
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
   assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'smooth');
-  assert.ok(await evaluate('parseFloat(getComputedStyle(document.querySelector(".hero h1")).animationDuration) >= .5'));
+  assert.ok(await evaluate('parseFloat(getComputedStyle(document.querySelector(".fsd-home-hero h1")).animationDuration) >= .5'));
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
 
@@ -157,6 +213,15 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "desktop" && document.querySelector(".fsd-navigation-shell").classList.contains("is-open")');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").hidden'), false);
   assert.equal(await evaluate('document.querySelectorAll("#fsd-mega-menu .fsd-nav-column").length'), 3);
+  assert.deepEqual(
+    await evaluate('Array.from(document.querySelectorAll("#fsd-mega-menu .fsd-feature-metadata dt"), cell => cell.textContent.trim())'),
+    ['Colourways', 'Audience'],
+  );
+  assert.equal(
+    await evaluate('Array.from(document.querySelectorAll("#fsd-mega-menu .fsd-feature-metadata dd"), cell => cell.textContent.trim()).every(Boolean)'),
+    true,
+  );
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta") !== null'), true);
   assert.equal(await evaluate('Array.from(document.querySelectorAll("#fsd-mega-menu .fsd-feature-media img")).every(image => image.loading === "eager")'), true);
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"1\\"]").textContent.includes("2-in-1 Combat Training Shorts & Tanks")'), true);
   assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3").textContent'), '2-in-1 Combat Training Shorts & Tanks');
@@ -167,6 +232,13 @@ try {
   await assertNoHorizontalPageScroll();
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").getBoundingClientRect().right <= document.documentElement.clientWidth + 1'), true);
   await capture('fsd-navigation-desktop.jpg');
+
+  await click('#fsd-mega-menu [data-nav-catalogue]');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#fsd-mega-menu").hidden');
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('document.querySelector("#fsd-home-title") && window.scrollY === 0');
+  await click('.fsd-primary-trigger[data-nav-primary="collections"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "desktop"');
 
   // Hover/focus previews update the selected rows and feature without scrolling.
   for (const groupIndex of [1, 2, 3, 0, 1]) {
@@ -204,40 +276,47 @@ try {
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "collections"');
 
-  // Shop group and subcategory selections open the shared product catalogue with the right scope.
+  // Shop groups and subcategories open the matching visual preview drawer.
   await click('#fsd-mega-menu [data-nav-group="1"]');
-  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat"');
-  assert.equal(await evaluate('document.querySelector("#catalogue-count").textContent.includes("of ")'), true);
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"1\\"][aria-pressed=\\"true\\"]")');
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").hidden'), true);
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
 
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await waitFor('!document.querySelector("#fsd-mega-menu").hidden');
   await click('#fsd-mega-menu [data-nav-item="0"]');
-  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "mens-luxury-performance" && document.querySelector("#search").value === "500 GSM"');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"0\\"][aria-pressed=\\"true\\"]")');
+  await waitFor('document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"0\\"][aria-pressed=\\"true\\"]") !== null');
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
 
-  // The featured action opens the selected women's collection rather than a fixed destination.
+  // Both the featured image and its action open the selected collection preview.
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group=\\"1\\"]").focus({ preventScroll: true })');
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"1\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent === "Performance Hijabs"');
   await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]").focus({ preventScroll: true })');
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent === "Performance Hijabs"');
+  await click('#fsd-mega-menu .fsd-feature-media-action');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"0\\"][aria-pressed=\\"true\\"]")');
+  assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-modal-hero__media img")?.getAttribute("src")'), '/images/fsd-velocity-performance-sports-hijab.jpg');
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
+
+  await click('.fsd-primary-trigger[data-nav-primary="collections"]');
+  await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group=\\"1\\"]").focus({ preventScroll: true })');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"1\\"]")?.getAttribute("aria-pressed") === "true"');
+  await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]").focus({ preventScroll: true })');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]")?.getAttribute("aria-pressed") === "true"');
   await click('#fsd-mega-menu .fsd-feature-cta');
-  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#search").value === "Hijab"');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"0\\"][aria-pressed=\\"true\\"]")');
 
   const routeKind = ({ menu, group, item }) => {
     if (item?.navigationUnavailable || (!item && group.navigationUnavailable)) return 'preview';
     if (item?.kind === 'draft-product') return 'draft';
     if (item?.record) return 'product';
-    if (menu.id === 'collections' && item?.kind === 'subcategory'
-      && !groupProducts(item.sourceGroup || group.source, products, item.source).length) return 'preview';
-    if (menu.id === 'collections' && (
-      (!item && ['mens-luxury-performance', 'womens-modest-combat', 'shop-all-products'].includes(group.id))
-      || item?.kind === 'shop-all'
-      || (item?.kind === 'subcategory'
-        && ['mens-luxury-performance', 'womens-modest-combat'].includes(group.id)
-        && groupProducts(item.sourceGroup || group.source, products, item.source).length > 0)
-      || item?.kind === 'category'
-    )) return 'shop';
-    if (menu.id === 'collections' && item?.kind === 'category') return 'shop';
+    if (menu.id === 'collections' && item?.kind === 'shop-all') return 'shop';
+    if (menu.id === 'collections' && (item?.sourceDivisionId || group.sourceDivisionId)) return 'showcase';
     if (item?.kind === 'category') return 'category';
     if (item?.href || group.href) return 'anchor';
     if (item?.sourceDivisionId || group.sourceDivisionId) return 'showcase';
@@ -278,7 +357,7 @@ try {
       })()`);
       assert.equal(
         await evaluate('document.querySelector(".fsd-feature-kicker").textContent'),
-        item.previewKicker || 'FSD / CONCEPT',
+        item.previewKicker || 'FSD / COLLECTION',
       );
       await click(selector);
       if (item.href === '/__catalogue-preview/hooded-running-shell/') {
@@ -309,6 +388,12 @@ try {
     }
 
     await click(selector);
+    const expectedRoute = resolveFsdRoute({ menu, group, item });
+    await waitFor(`(() => {
+      const root = document.querySelector("[data-fsd-storefront]");
+      return root?.dataset.currentView === ${JSON.stringify(expectedRoute.view)}
+        && root?.dataset.activeTarget === ${JSON.stringify(expectedRoute.target ?? '')};
+    })()`);
     await waitFor('document.querySelector("#fsd-mega-menu").hidden');
     if (kind === 'product') {
       await waitFor('document.querySelector("#product-dialog").open');
@@ -336,20 +421,53 @@ try {
       assert.equal(await evaluate('document.querySelector("#products").getBoundingClientRect().top < window.innerHeight'), true);
     } else if (kind === 'anchor') {
       const href = item?.href || group.href;
-      await waitFor(`(() => {
-        const target = document.querySelector(${JSON.stringify(href)});
-        if (!target || !document.querySelector("#fsd-mega-menu").hidden) return false;
-        const rect = target.getBoundingClientRect();
-        return rect.bottom > 0 && rect.top < window.innerHeight;
-      })()`);
+      if (href === '/story') {
+        await waitFor('location.pathname === "/story" && document.querySelector("#fsd-house-archive")?.open');
+        await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+      } else {
+        await waitFor(`(() => {
+          const target = document.querySelector(${JSON.stringify(href)});
+          if (!target || !document.querySelector("#fsd-mega-menu").hidden) return false;
+          const rect = target.getBoundingClientRect();
+          return rect.bottom > 0 && rect.top < window.innerHeight;
+        })()`);
+      }
     } else {
       const division = item?.sourceDivisionId || group.sourceDivisionId;
       const groupIndex = item?.sourceGroupIndex ?? group.sourceGroupIndex;
-      await waitFor('document.querySelector("#fsd-showcase-dialog").open');
+      try {
+        await waitFor('document.querySelector("#fsd-showcase-dialog").open');
+      } catch {
+        throw new Error(`${menu.label} selection ${group.title} / ${item?.title || 'group'} did not open the preview drawer: ${JSON.stringify(await evaluate('({ menu: document.querySelector("#fsd-mega-menu")?.dataset.primary, menuHidden: document.querySelector("#fsd-mega-menu")?.hidden, route: document.querySelector("[data-fsd-storefront]")?.dataset.currentView, target: document.querySelector("[data-fsd-storefront]")?.dataset.activeTarget })'))}`);
+      }
       await waitFor(`document.querySelector('#fsd-showcase-dialog [data-group-index="${groupIndex}"][aria-pressed="true"]') !== null`);
       const targetGroup = collectionDivisions.find(entry => entry.id === division)?.groups[groupIndex];
       assert.ok(targetGroup, `${division} group ${groupIndex} must exist`);
       assert.equal(await evaluate(`document.querySelector('#fsd-showcase-dialog [data-group-index="${groupIndex}"][aria-pressed="true"]').textContent.includes(${JSON.stringify(targetGroup.title)})`), true);
+      if (!item && division === 'apparel' && targetGroup.id === 'womens-modest-combat') {
+        await waitFor('document.querySelector("#fsd-showcase-dialog .fsd-womens-hero-image")?.naturalWidth > 0');
+        assert.equal(
+          await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-womens-hero-copy h2")?.textContent.trim()'),
+          'The Performance Edit',
+        );
+        assert.equal(
+          await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-womens-hero-copy > p")?.textContent.includes("High-end activewear crafted for ultimate comfort, luxury, and peak performance.")'),
+          true,
+        );
+        assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog #fsd-womens-product-grid") !== null'), true);
+        assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-placeholder-kicker") === null'), true);
+        await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-dialog-content").scrollTop = 0');
+        const routeBeforeHeroCta = await evaluate('location.href');
+        await click('#fsd-showcase-dialog [data-scroll-womens-products]');
+        await waitFor(`(() => {
+          const content = document.querySelector("#fsd-showcase-dialog .fsd-dialog-content");
+          const grid = document.querySelector("#fsd-showcase-dialog #fsd-womens-product-grid");
+          return content && grid && grid.getBoundingClientRect().top >= content.getBoundingClientRect().top - 2
+            && grid.getBoundingClientRect().top < content.getBoundingClientRect().top + 80;
+        })()`);
+        assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog").open'), true);
+        assert.equal(await evaluate('location.href'), routeBeforeHeroCta);
+      }
       if (item && item.sourceSubcategoryIndex >= 0) {
         await waitFor(`document.querySelector('#fsd-showcase-dialog [data-subcategory-index="${item.sourceSubcategoryIndex}"][aria-pressed="true"]') !== null`);
       }
@@ -379,12 +497,14 @@ try {
     }
   }
 
-  // Home → Shop → Women’s Modest, using the currently image-verified public product.
+  // Home → Shop → Women’s preview → catalogue, using the current public product record.
   await closeRouteAndReset();
-  await click('.hero .primary-btn');
+  await click('.fsd-home-secondary');
   await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "All"');
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await click('#fsd-mega-menu [data-nav-group="1"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"1\\"][aria-pressed=\\"true\\"]")');
+  await click('#fsd-showcase-dialog [data-explore-collection]');
   await waitFor('document.querySelector("#catalogue-collection").value === "womens-modest-combat"');
   await waitFor('document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"collections\\"]").getAttribute("aria-current") === "page"');
   await evaluate(`(() => {
@@ -440,7 +560,7 @@ try {
   })()`);
   assert.equal(brokenImage, true, 'A failed catalogue image should fall back to an explicit placeholder.');
 
-  await click('.hero .ghost-btn');
+  await click('.fsd-home-primary');
   await waitFor('location.hash === "#universe" && document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"universe\\"]").getAttribute("aria-current") === "page"');
   await click('.fsd-primary-trigger[data-nav-primary="universe"]');
   await click('#fsd-mega-menu [data-nav-group="1"]');
@@ -490,6 +610,23 @@ try {
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu form, #fsd-mega-menu input")'), null);
   assert.equal(await evaluate('document.querySelector("#contact button").disabled'), true);
 
+  // Escape closes only the top modal layer, then the underlying mega-menu.
+  await click('.fsd-primary-trigger[data-nav-primary="hardware"]');
+  await waitFor('!document.querySelector("#fsd-mega-menu").hidden');
+  assert.equal(await evaluate('document.querySelector(".fsd-bag-toggle .fsd-boxing-bag-icon") !== null'), true);
+  const boxingBagFill = await evaluate('getComputedStyle(document.querySelector(".fsd-boxing-bag-icon__body")).fill');
+  assert.match(boxingBagFill, /rgba\(/);
+  assert.ok(Number(boxingBagFill.match(/,\s*([0-9.]+)\)$/)?.[1]) < 1);
+  await click('[data-bag-open]');
+  await waitFor('document.querySelector("#fsd-bag-dialog").open');
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-bag-dialog").open');
+  assert.equal(await evaluate('!document.querySelector("#fsd-mega-menu").hidden'), true);
+  await waitFor('document.activeElement.matches("[data-bag-open]")');
+  await key('Escape');
+  await waitFor('document.querySelector("#fsd-mega-menu").hidden');
+  await waitFor('document.activeElement.matches(".fsd-primary-trigger[data-nav-primary=\\"hardware\\"]")');
+
   // Hover must stay open while the pointer moves from the header into the attached panel.
   const triggerRect = await evaluate('document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"hardware\\"]").getBoundingClientRect().toJSON()');
   await send('Input.dispatchMouseEvent', {
@@ -531,6 +668,8 @@ try {
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
   await click('#fsd-mega-menu [data-nav-group="1"]');
   await click('#fsd-mega-menu [data-nav-item="0"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"0\\"][aria-pressed=\\"true\\"]")');
+  await click('#fsd-showcase-dialog [data-explore-collection]');
   await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#fsd-mega-menu").hidden && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#search").value === "Hijab"');
   await assertNoHorizontalPageScroll();
   await waitFor('(() => { const rect = document.querySelector("#products").getBoundingClientRect(); return rect.bottom > 0 && rect.top < window.innerHeight; })()');
@@ -555,8 +694,69 @@ try {
   await closeRouteAndReset();
   await assertNoHorizontalPageScroll();
 
+  await waitFor('document.querySelector("#fsd-home-title") && document.querySelectorAll(".fsd-editorial-card").length === 3');
+  assert.equal(await evaluate('document.querySelector(".fsd-cinematic-preview") === null'), true);
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
+  assert.equal(await evaluate('(() => { const box = document.querySelector(".fsd-home-hero").getBoundingClientRect(); return box.left >= -1 && box.width >= window.innerWidth - 24; })()'), true);
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
+  });
+  await assertNoHorizontalPageScroll();
+  assert.equal(await evaluate('(() => { const box = document.querySelector(".fsd-home-hero").getBoundingClientRect(); return box.left >= -1 && box.width >= window.innerWidth - 24; })()'), true);
+  await capture('fsd-home-streamlined-mobile.jpg');
+
+  const modestCollection = shopCollections.find(collection => collection.label.includes('MODEST COMBAT'));
+  assert.ok(modestCollection, 'The current Women’s Modest Combat collection should be searchable.');
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
+  await evaluate('window.scrollTo(0, 0)');
+  await waitFor('window.scrollY === 0');
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  assert.equal(await evaluate('document.activeElement.id'), 'fsd-search-input');
+  assert.ok(await evaluate('document.querySelectorAll(".fsd-search-suggestions [data-search-collection]").length > 0'));
+  assert.equal(await evaluate('document.querySelector("#fsd-search-dialog").textContent.includes("£")'), false);
+  await capture('fsd-search-overlay-desktop.jpg');
+  await send('Input.insertText', { text: 'Modest' });
+  await waitFor(`Boolean(document.querySelector('[data-search-collection="${modestCollection.id}"]'))`);
+  await click(`[data-search-collection="${modestCollection.id}"]`);
+  await waitFor(`!document.querySelector("#fsd-search-dialog").open && document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === ${JSON.stringify(modestCollection.id)}`);
+
+  await evaluate('window.scrollTo(0, 0)');
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
+  });
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  await assertNoHorizontalPageScroll();
+  await capture('fsd-search-overlay-mobile.jpg');
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-search-dialog").open');
+  await waitFor('document.activeElement.matches("[data-search-open]")');
+  assert.equal(await evaluate('document.querySelector("[data-search-open]").getAttribute("aria-expanded")'), 'false');
+
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  await send('Input.insertText', { text: 'FSD Ombré Slash Tee' });
+  await waitFor('document.querySelector(".fsd-search-empty")?.textContent.includes("No matching products or collections.")');
+  assert.equal(await evaluate('document.querySelectorAll("[data-search-result]").length'), 0);
+  assert.equal(await evaluate('document.querySelector("#fsd-search-dialog").textContent.includes("£")'), false);
+  await click('.fsd-search-empty .fsd-search-all');
+  await waitFor(`!document.querySelector("#fsd-search-dialog").open && document.querySelector("#catalogue-archive").open && document.querySelector("#search").value === ${JSON.stringify('FSD Ombré Slash Tee')}`);
+
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  await send('Input.insertText', { text: 'house codes' });
+  await waitFor('Boolean(document.querySelector(\'[data-search-page="brand-story-archive"]\'))');
+  await click('[data-search-page="brand-story-archive"]');
+  await waitFor('location.pathname === "/story" && document.querySelector("#fsd-house-archive")?.open');
+  await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+
   assert.deepEqual(browserErrors, []);
-  console.log('Navigation browser checks passed: verified links, weighted-rope draft row and feature CTA, mobile draft routing, unavailable destinations, keyboard/focus, and overflow.');
+  console.log('Navigation browser checks passed: verified links, weighted-rope draft row and feature CTA, mobile draft routing, unavailable destinations, women’s preview framing, live search, safe collection routing, keyboard/focus, and overflow.');
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');

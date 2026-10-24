@@ -1,10 +1,10 @@
-- [Catalogue approval boundaries](catalogue-approval-boundaries.md) — user approval of a development brief is not manufacturer validation or permission to enable checkout.
+- [Catalogue approval boundaries](catalogue-approval-boundaries.md) — later direction approves current inventory display; existing values only, with missing catalogue fields left blank.
 - [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.
 - [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
-- [House of Performance approvals](house-of-performance-approvals.md) — preserve the flagship design during React/Tailwind migration; keep catalogue, assets, financials and checkout within approval boundaries.
+- [House of Performance approvals](house-of-performance-approvals.md) — preserve the flagship and keep pending page media visible in titled placeholders within approval boundaries.
 - [Velocity hijab proof boundary](velocity-hijab-proof.md) — visual approval is not commercial approval; keep master data intact and the separate image archive untouched.
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.
 - [Breeze draft boundary](breeze-draft-boundary.md) — keep Breeze separate from Modest Flow and master data; treat its existing £64.99 only as a catalogue reference.
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.
-- [Customer-facing terminology](customer-facing-terminology.md) — avoid the retired release-stage label in FSD site copy while preserving internal draft and no-purchase safeguards.
+- [Customer-facing terminology](customer-facing-terminology.md) — remove visible release/status labels and use neutral product names with existing catalogue values.
 - [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk setup needs a valid app name; package installs must target the nested storefront directory.

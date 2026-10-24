@@ -19,8 +19,7 @@ export function createMotionDevelopmentIntegration() {
     </a>
     <div class="fsd-product-meta"><span>FSD BIO-LAB™</span><span>WEARABLE TECHNOLOGY</span></div>
     <h4>FSD MOTION</h4>
-    <p class="fsd-product-description">A connected-movement apparel concept for training.</p>
-    <p class="fsd-preview-status">CONCEPT</p>
+    <p class="fsd-product-description">Connected-movement apparel for training.</p>
     <a class="fsd-product-link" href="${motionPreviewPath}">EXPLORE COLLECTION <span aria-hidden="true">↗</span></a>
   </article>`;
 
@@ -42,7 +41,7 @@ export function createMotionDevelopmentIntegration() {
       previewActionLabel: 'EXPLORE COLLECTION',
       featureImageSrc: hero.src,
       featureImageAlt: 'FSD MOTION campaign image',
-      description: 'A four-garment campaign concept from FSD MOTION.',
+      description: 'A four-garment FSD MOTION campaign.',
       sourceDivisionId: 'bio-lab',
       sourceGroupId: 'bio-lab-concepts',
       sourceGroupIndex: 0,

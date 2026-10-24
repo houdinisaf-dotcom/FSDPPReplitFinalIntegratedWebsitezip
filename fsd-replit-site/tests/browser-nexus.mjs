@@ -88,18 +88,18 @@ try {
   await waitFor('document.querySelectorAll("[data-nexus-gallery-select]").length === 3');
   await waitFor('document.querySelector("[data-nexus-active-image]")?.complete && document.querySelector("[data-nexus-active-image]")?.naturalWidth > 0');
   await captureProof('concept-desktop.jpg');
-  assert.match(await evaluate('document.title'), /FSD NEXUS.*Concept/);
+  assert.equal(await evaluate('document.title'), 'FSD NEXUS | FSD');
   assert.match(await evaluate('document.querySelector("meta[name=robots]")?.content'), /noindex/);
-  assert.match(await evaluate('document.body.innerText'), /FSD NEXUS CONCEPT/);
-  assert.match(await evaluate('document.body.innerText'), /FSD NEXUS CONCEPT/);
+  assert.match(await evaluate('document.body.innerText'), /FSD NEXUS/);
+  assert.doesNotMatch(await evaluate('document.body.innerText'), /CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING/i);
   assert.ok(await evaluate('document.querySelector(".nexus-back-collection")'));
   assert.equal(await evaluate('document.querySelectorAll("[data-nexus-audit-gallery-select], .nexus-audit-ledger-row").length'), 0);
-  assert.match(await evaluate('document.querySelector(".nexus-app-warning")?.textContent'), /Scores shown are concept artwork, not live data/);
+  assert.match(await evaluate('document.querySelector(".nexus-app-warning")?.textContent'), /Illustrative interface\. Scores shown are not live data/);
   assert.doesNotMatch(await evaluate('document.body.innerText'), /PRIVATE PRODUCT PROOF|PRIVATE CONCEPT REVIEW|DRAFT \/ PENDING APPROVAL|BRAND CORRECTION REQUIRED|PRIVATE REVIEW REFERENCE/);
-  assert.match(await evaluate('document.body.innerText'), /CONCEPT DIRECTION/);
+  assert.doesNotMatch(await evaluate('document.body.innerText'), /CONCEPT DIRECTION/);
   const featureStatuses = await evaluate(`Array.from(document.querySelectorAll(".nexus-feature-list small"), node => node.textContent.trim())`);
   assert.equal(featureStatuses.length, 7);
-  assert.ok(featureStatuses.every(status => status === 'CONCEPT DIRECTION'));
+  assert.ok(featureStatuses.every(status => status === 'FSD NEXUS'));
   const conditionStatuses = await evaluate(`Array.from(document.querySelectorAll(".nexus-gates small"), node => node.textContent.trim())`);
   assert.equal(conditionStatuses.length, 5);
   assert.ok(conditionStatuses.every(status => status === 'KEY CONSIDERATION'));
@@ -151,7 +151,7 @@ try {
   await click('[data-nexus-gallery-select="proposed-features"]');
   await waitFor('document.querySelector("[data-nexus-active-image]")?.src.endsWith("/media/proposed-features")');
   assert.equal(await evaluate('document.querySelector("[data-nexus-gallery-select=proposed-features]")?.getAttribute("aria-pressed")'), 'true');
-  assert.match(await evaluate('document.querySelector("[data-nexus-active-note]")?.textContent'), /FEATURE CONCEPT/);
+  assert.match(await evaluate('document.querySelector("[data-nexus-active-note]")?.textContent'), /FEATURE OVERVIEW/);
   await evaluate('document.querySelector(".nexus-evidence")?.scrollIntoView({block:"start"})');
   await delay(250);
   await captureProof('concept-gallery-desktop.jpg');
@@ -194,7 +194,7 @@ try {
   assert.ok(dimensions.scrollWidth <= dimensions.width + 1, `Mobile horizontal overflow: ${JSON.stringify(dimensions)}`);
 
   assert.equal(browserErrors.length, 0, `Browser exceptions: ${browserErrors.join(' | ')}`);
-  console.log('FSD NEXUS browser checks passed: private read-only route, separate approved/audit galleries, eight private reference images, all 11 audit findings, pending feature labels, lightbox, Bio-Lab draft card, and mobile overflow.');
+  console.log('FSD NEXUS browser checks passed: read-only route, separate galleries, eight reference images, all 11 audit findings, neutral feature captions, lightbox, Bio-Lab collection card, and mobile overflow.');
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');

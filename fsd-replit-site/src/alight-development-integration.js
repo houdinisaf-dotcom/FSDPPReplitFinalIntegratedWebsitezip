@@ -20,8 +20,8 @@ export function createAlightDevelopmentIntegration() {
     previewKicker: 'BIO-LAB™ / WEARABLE TECHNOLOGY',
     previewActionLabel: 'EXPLORE PRODUCT',
     featureImageSrc: image.src,
-    featureImageAlt: 'FSD ALIGHT concept image',
-    description: 'FSD Bio-Lab™ / Wearable Technology · A posture-awareness wearable concept.',
+    featureImageAlt: 'FSD ALIGHT product image',
+    description: 'FSD Bio-Lab™ / Wearable Technology · A posture-awareness wearable.',
     sourceDivisionId: 'bio-lab',
     sourceGroupId: 'bio-lab-concepts',
     sourceGroupIndex: 0,
@@ -31,13 +31,12 @@ export function createAlightDevelopmentIntegration() {
   const collectionCard = `<article class="fsd-product-card" data-alight-draft-card>
     <a class="fsd-product-media" href="${alightPreviewPath}"
       aria-label="Explore FSD ALIGHT">
-      <img loading="lazy" src="${escapeHTML(image.src)}" alt="FSD ALIGHT concept image" width="${image.width}" height="${image.height}"/>
+    <img loading="lazy" src="${escapeHTML(image.src)}" alt="FSD ALIGHT product image" width="${image.width}" height="${image.height}"/>
       <span>FSD ALIGHT</span>
     </a>
     <div class="fsd-product-meta"><span>FSD BIO-LAB™</span><span>WEARABLE TECHNOLOGY</span></div>
     <h4>FSD ALIGHT</h4>
-    <p class="fsd-product-description">Posture Awareness Wearable · concept design.</p>
-    <p class="fsd-preview-status">CONCEPT</p>
+    <p class="fsd-product-description">Posture Awareness Wearable.</p>
     <a class="fsd-product-link" href="${alightPreviewPath}">EXPLORE PRODUCT <span aria-hidden="true">↗</span></a>
   </article>`;
 

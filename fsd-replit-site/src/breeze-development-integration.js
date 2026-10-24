@@ -18,12 +18,12 @@ export function createBreezeDevelopmentIntegration() {
     <a class="fsd-product-media fsd-breeze-draft-media" href="#fsd-breeze"
       data-fsd-breeze-open aria-haspopup="dialog" aria-expanded="false"
       aria-label="Open the FSD Breeze product selector">
-      <img loading="lazy" src="${escapedSrc}" alt="${escapedAlt}" width="${front.width}" height="${front.height}"/>
+      <img loading="lazy" src="${escapedSrc}" alt="FSD BREEZE overshirt front view" width="${front.width}" height="${front.height}"/>
       <span>FSD BREEZE · MODEST ACTIVEWEAR</span>
     </a>
     <div class="fsd-product-meta"><span>FSD APPAREL</span><span>MODEST ACTIVEWEAR</span></div>
     <h4>${escapeHTML(product.name)}</h4>
-    <p class="fsd-product-description">One overshirt concept. Other clothing shown is styling context and is not included.</p>
+    <p class="fsd-product-description">One overshirt. Other garments shown as styling context are not included.</p>
     <a class="fsd-product-link fsd-product-link--private-preview" href="#fsd-breeze"
       data-fsd-breeze-open aria-haspopup="dialog" aria-expanded="false">
       SELECT A COLOUR <span aria-hidden="true">↗</span>

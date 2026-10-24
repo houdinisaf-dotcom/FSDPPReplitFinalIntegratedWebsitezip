@@ -91,12 +91,12 @@ test('ALIGHT appears in the private Bio-Lab collection while remaining separate 
   assert.match(integration.draftProductCard, /data-alight-draft-card/);
   assert.equal(integration.collectionCardPlacement.divisionId, 'bio-lab');
   assert.equal(integration.collectionCardPlacement.groupId, 'bio-lab-concepts');
-  assert.match(integration.draftProductCard, /CONCEPT/);
+  assert.doesNotMatch(integration.draftProductCard, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.doesNotMatch(integration.draftProductCard, /PRIVATE DRAFT|NO CHECKOUT|NOT AVAILABLE TO PURCHASE/);
   const mainSource = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.ok(mainSource.includes('setDraftProductCard(alight.draftProductCard, alight.collectionCardPlacement)'));
   assert.match(mainSource, /if \(import\.meta\.env\.DEV\)[\s\S]*setDraftProductCard\(alight\.draftProductCard/);
-  assert.match(draft.description, /posture-awareness wearable concept/i);
+  assert.match(draft.description, /posture-awareness wearable/i);
   assert.equal(draft.record, undefined);
   assert.equal(draft.productId, undefined);
   assert.equal(products.some(product => product.name === draft.title), false);
@@ -112,7 +112,7 @@ test('ALIGHT keeps its campaign gallery while presenting a restrained developmen
   assert.match(html, /FSD ALIGHT/);
   assert.match(previewSource, /CAMPAIGN IMAGE/);
   assert.doesNotMatch(previewSource, /NOT PRODUCT PHOTOGRAPHY/);
-  assert.match(previewSource, /CONCEPT/);
+  assert.doesNotMatch(previewSource, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.match(previewSource, /BACK TO COLLECTION/);
   assert.match(previewSource, /data-alight-enlarge/);
   assert.match(previewSource, /data-alight-thumb=/);

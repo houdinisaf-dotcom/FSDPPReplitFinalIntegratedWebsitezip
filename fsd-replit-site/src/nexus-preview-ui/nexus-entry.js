@@ -15,9 +15,9 @@ const preview = createNexusPreview();
 const headerHtml = renderNavigationHeader(
   `<img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="" aria-hidden="true"/>`,
 );
-document.title = `${preview.name} | Concept`;
+document.title = `${preview.name} | FSD`;
 document.querySelector('meta[name="description"]')
-  ?.setAttribute('content', 'Explore the FSD NEXUS wearable-technology concept. Not a current product or commercial commitment.');
+  ?.setAttribute('content', 'Explore the FSD NEXUS wearable-technology collection.');
 document.querySelector('.fsd-brand')?.setAttribute('href', '/');
 
 root.innerHTML = renderNexusPreview({ headerHtml, preview });
@@ -52,8 +52,8 @@ function selectAsset(asset, selectedButton) {
   activeImage.height = asset.height;
   if (activeCaption) activeCaption.textContent = asset.label;
     if (activeNote) activeNote.textContent = asset.id === 'app-interface'
-      ? 'STATIC INTERFACE CONCEPT'
-      : asset.id === 'proposed-features' ? 'FEATURE CONCEPT' : 'RESPONSIBLE DEVELOPMENT';
+      ? 'STATIC INTERFACE'
+      : asset.id === 'proposed-features' ? 'FEATURE OVERVIEW' : 'RESPONSIBLE DEVELOPMENT';
   mainImageButton?.setAttribute('aria-label', `Enlarge ${asset.label}`);
   root.querySelectorAll('[data-nexus-gallery-select]').forEach(button => {
     button.setAttribute('aria-pressed', String(button === selectedButton));
@@ -69,7 +69,7 @@ root.addEventListener('click', event => {
   if (event.target.closest('[data-nexus-enlarge]') && lightbox && selectedAsset) {
     lightboxImage.src = selectedAsset.src;
     lightboxImage.alt = selectedAsset.alt;
-    lightboxCaption.textContent = `${selectedAsset.label} — CONCEPT ARTWORK REFERENCE`;
+    lightboxCaption.textContent = `${selectedAsset.label} — ARTWORK REFERENCE`;
     if (!lightbox.open) lightbox.showModal();
     return;
   }

@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { products } from '../src/catalogue-data.js';
+import { products, priceInfo } from '../src/catalogue-data.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
-import { renderCollectionShowcase, groupProducts } from '../src/collection-showcase/index.js';
+import { renderCollectionShowcase, groupProducts, matchesDraftCardScope } from '../src/collection-showcase/index.js';
 import { featuredProducts, featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
 
 test('the showroom renders four accessible division controls and one reusable dialog', () => {
@@ -12,13 +12,28 @@ test('the showroom renders four accessible division controls and one reusable di
   assert.match(markup, /id="fsd-showcase-dialog"/);
   assert.equal((markup.match(/aria-controls="fsd-showcase-dialog"/g) || []).length, 4);
   assert.equal((markup.match(/aria-expanded="false"/g) || []).length, 4);
-  assert.match(markup, /Training technology concepts\./);
+  assert.match(markup, /Training technology and connected apparel\./);
   for (const label of ['EXPLORE APPAREL', 'EXPLORE BIO-LAB™', 'EXPLORE HARDWARE', 'EXPLORE GLOBAL']) {
     assert.ok(markup.includes(label));
   }
   assert.doesNotMatch(markup, /fsd-showcase-index|fsd-banner-index|OPEN DIVISION/);
   assert.doesNotMatch(markup, /STRIDE|Shilajit|checkout|add to cart/i);
   assert.deepEqual(collectionDivisions.map(division => division.id), ['apparel', 'bio-lab', 'hardware', 'global']);
+});
+
+test('the editorial home keeps the three primary destinations concise and opens the correct groups', () => {
+  const markup = renderCollectionShowcase(collectionDivisions, { editorial: true });
+  assert.match(markup, /Men’s Luxury Performance/);
+  assert.match(markup, /Women’s Modest Combat/);
+  assert.match(markup, /Intelligence in Motion/);
+  assert.match(markup, /Training technology and recovery\./);
+  assert.match(markup, /data-division="apparel"[\s\S]*?data-group-index="0"/);
+  assert.match(markup, /data-division="apparel"[\s\S]*?data-group-index="1"/);
+  assert.match(markup, /data-division="bio-lab"[\s\S]*?data-group-index="0"/);
+  assert.match(markup, /id="fsd-division-hardware"[^>]*data-division="hardware"/);
+  assert.match(markup, /id="fsd-division-global"[^>]*data-division="global"/);
+  assert.equal((markup.match(/<dialog/g) || []).length, 1);
+  assert.doesNotMatch(markup, /fsd-showcase-banner|SHOP ALL PRODUCTS|ADD TO BAG/i);
 });
 
 test('group filters constrain category, audience and terms rather than leaking unrelated products', () => {
@@ -47,12 +62,29 @@ test('apparel subcategories select genuine records and distinguish new concepts'
   assert.deepEqual(volcanic.concepts, ['Volcanic Amber Capsule']);
 });
 
-test('features reuse active master records and the approved Velocity main image', () => {
-  assert.equal(featuredProducts.length, 4);
+test('draft previews stay in their assigned group view unless a subcategory is explicitly mapped', () => {
+  const groupDraft = { divisionId: 'apparel', groupId: 'womens-modest-combat' };
+  assert.equal(matchesDraftCardScope(groupDraft, 'apparel', 'womens-modest-combat', -1), true);
+  assert.equal(matchesDraftCardScope(groupDraft, 'apparel', 'womens-modest-combat', 0), false);
+  assert.equal(matchesDraftCardScope(groupDraft, 'apparel', 'mens-luxury-performance', -1), false);
+
+  const mappedDraft = { ...groupDraft, subcategoryIndex: 0 };
+  assert.equal(matchesDraftCardScope(mappedDraft, 'apparel', 'womens-modest-combat', 0), true);
+  assert.equal(matchesDraftCardScope(mappedDraft, 'apparel', 'womens-modest-combat', 1), false);
+  assert.equal(matchesDraftCardScope(mappedDraft, 'apparel', 'womens-modest-combat', -1), false);
+});
+
+test('featured carousel uses only catalogue records with a public RRP and mapped product assets', () => {
+  assert.deepEqual(featuredProducts.map(product => product.id), [1, 10]);
   assert.ok(featuredProducts.every(product => products.includes(product)));
+  assert.ok(featuredProducts.every(product => {
+    const price = priceInfo(product);
+    return product.images.length > 0 && Boolean(price.value) && !price.label;
+  }));
   const markup = featuredInnovationsSection();
-  assert.match(markup, /fsd-velocity-performance-sports-hijab\.jpg/);
-  assert.match(markup, /£699\.99/);
+  assert.match(markup, /id="innovations"/);
+  assert.match(markup, /data-fsd-featured-carousel-slot/);
+  assert.doesNotMatch(markup, /Breeze|Nexus|Apex|£|fsd-velocity-performance-sports-hijab/i);
   assert.doesNotMatch(markup, /STRIDE|Shilajit|checkout/i);
 });
 

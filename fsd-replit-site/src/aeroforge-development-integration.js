@@ -15,13 +15,12 @@ export function createAeroForgeDevelopmentIntegration() {
   const collectionCard = `<article class="fsd-product-card" data-aeroforge-draft-card>
     <a class="fsd-product-media" href="${aeroforgePreviewPath}"
       aria-label="Explore the FSD AeroForge collection">
-      <img loading="lazy" src="${escapeHTML(hero.src)}" alt="${escapeHTML(hero.alt)}" width="${hero.width}" height="${hero.height}"/>
+      <img loading="lazy" src="${escapeHTML(hero.src)}" alt="FSD AEROFORGE campaign image" width="${hero.width}" height="${hero.height}"/>
       <span>FSD AEROFORGE</span>
     </a>
     <div class="fsd-product-meta"><span>FSD APPAREL</span><span>MODEST ACTIVEWEAR</span></div>
     <h4>FSD AEROFORGE</h4>
     <p class="fsd-product-description">Training Top and Joggers · six colourways.</p>
-    <p class="fsd-preview-status">CONCEPT</p>
     <a class="fsd-product-link" href="${aeroforgePreviewPath}">EXPLORE COLLECTION <span aria-hidden="true">↗</span></a>
   </article>`;
 

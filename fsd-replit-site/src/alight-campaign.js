@@ -62,7 +62,7 @@ const gallery = Object.freeze([
   image(
     'lifestyle-woman',
     '04_lifestyle_woman.jpg',
-    'Woman lifestyle concept',
+    'Woman lifestyle image',
     'lifestyle illustration',
     'FSD ALIGHT campaign crop showing a woman wearing the posture-awareness wearable concept.',
     'Lifestyle concept artwork only; it does not verify device performance, comfort, fit or outcomes.',
@@ -71,7 +71,7 @@ const gallery = Object.freeze([
   image(
     'lifestyle-man',
     '05_lifestyle_man.jpg',
-    'Man lifestyle concept',
+    'Man lifestyle image',
     'lifestyle illustration',
     'FSD ALIGHT campaign crop showing a man wearing the posture-awareness wearable concept.',
     'Lifestyle concept artwork only; it does not verify device performance, comfort, fit or outcomes.',
@@ -80,7 +80,7 @@ const gallery = Object.freeze([
   image(
     'premium-design-detail',
     '06_premium_design_detail.jpg',
-    'Premium design detail concept',
+    'Premium design detail',
     'design detail illustration',
     'Close-up campaign crop of the FSD ALIGHT wearable concept and its visible finish.',
     'Detail crop from concept artwork. Materials, finish and manufacturing are not verified.',
@@ -89,7 +89,7 @@ const gallery = Object.freeze([
   image(
     'indicator-detail',
     '07_indicator_detail.jpg',
-    'Indicator detail concept',
+    'Indicator detail',
     'indicator illustration',
     'Campaign crop showing the visible status indicator on the FSD ALIGHT wearable concept.',
     'Illustrative indicator only. Its operation and meaning are pending technical verification.',
@@ -98,7 +98,7 @@ const gallery = Object.freeze([
   image(
     'comfort-fit-detail',
     '08_comfort_fit_detail.jpg',
-    'Fit detail concept',
+    'Fit detail',
     'fit and construction illustration',
     'Campaign crop showing the strap and body of the FSD ALIGHT wearable concept.',
     'Visual reference only. Fit, comfort, materials and construction are not verified.',
@@ -107,7 +107,7 @@ const gallery = Object.freeze([
   image(
     'at-work',
     '09_at_work.jpg',
-    'At-work lifestyle concept',
+    'At-work lifestyle image',
     'work lifestyle illustration',
     'FSD ALIGHT campaign crop showing a woman at work with the wearable concept.',
     'Lifestyle concept artwork only; it does not establish a verified work or health benefit.',
@@ -116,7 +116,7 @@ const gallery = Object.freeze([
   image(
     'packaging-concept',
     '10_packaging_concept.jpg',
-    'Packaging concept',
+    'Packaging detail',
     'packaging illustration',
     'FSD ALIGHT campaign crop showing a proposed presentation box and wearable concept.',
     'Packaging concept artwork only. This is not evidence of manufactured or approved packaging.',
@@ -125,7 +125,7 @@ const gallery = Object.freeze([
   image(
     'in-training',
     '11_in_training.jpg',
-    'In-training lifestyle concept',
+    'In-training lifestyle image',
     'training lifestyle illustration',
     'FSD ALIGHT campaign crop showing a man training while wearing the wearable concept.',
     'Lifestyle concept artwork only; it does not establish verified athletic performance or injury prevention.',
@@ -151,7 +151,7 @@ const editorialStories = Object.freeze([
   }),
   Object.freeze({
     title: 'Discreet & Versatile',
-    copy: 'A refined wearable concept intended to fit naturally into work, movement and training.',
+    copy: 'A refined wearable designed to fit naturally into work, movement and training.',
     imageId: 'lifestyle-man',
   }),
   Object.freeze({
@@ -181,7 +181,7 @@ export function createAlightPreview() {
       colour: 'Black / Champagne Gold (as depicted)',
       status: 'COMING SOON · PENDING APPROVAL',
       price: null,
-      description: 'Meet FSD ALIGHT, a premium posture-awareness wearable concept designed around mindful movement, everyday comfort and purposeful performance. Created to complement your routine from work to training, ALIGHT brings refined design to the idea of greater body awareness.',
+      description: 'Meet FSD ALIGHT, a premium posture-awareness wearable designed around mindful movement, everyday comfort and purposeful performance. Created to complement your routine from work to training, ALIGHT brings refined design to greater body awareness.',
     }),
     gallery,
     productVisual: gallery.find(item => item.id === 'product-hero-crop'),
@@ -204,7 +204,7 @@ export function createAlightPreview() {
     campaignMessage: 'BETTER POSTURE. GREATER AWARENESS. A STRONGER YOU.',
     seoDraft: Object.freeze({
       title: 'FSD ALIGHT Posture Awareness Wearable | FSD',
-      description: 'Explore FSD ALIGHT, a premium posture-awareness wearable concept combining refined design with a focus on mindful movement and everyday performance.',
+      description: 'Explore FSD ALIGHT, a premium posture-awareness wearable combining refined design with mindful movement and everyday performance.',
     }),
     sourceArchive: archive,
     sourceArchiveSha256: archiveSha256,

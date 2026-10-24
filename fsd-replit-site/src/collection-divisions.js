@@ -41,10 +41,10 @@ export const collectionDivisions = [
     id: 'bio-lab',
     title: 'FSD BIO-LAB™',
     tagline: 'INTELLIGENCE IN EVERY MOVEMENT.',
-    description: 'Training technology concepts.',
+    description: 'Training technology and connected apparel.',
     groups: [{
       id: 'bio-lab-concepts',
-      title: 'WEARABLE TECHNOLOGY & CONCEPTS',
+      title: 'WEARABLE TECHNOLOGY',
       categories: ['Smart Tech'],
       concepts: [
         'Bio-Weave™ ECG & Hydration Compression Tops',
@@ -96,7 +96,7 @@ export const collectionDivisions = [
     id: 'global',
     title: 'FSD GLOBAL',
     tagline: 'FROM THE TRAINING FLOOR TO THE WORLD STAGE.',
-    description: 'Flagship and promotions concepts. None of the locations or services below are represented as operational.',
+    description: 'FSD flagships, events, and athlete development.',
     groups: [
       {
         id: 'flagships',

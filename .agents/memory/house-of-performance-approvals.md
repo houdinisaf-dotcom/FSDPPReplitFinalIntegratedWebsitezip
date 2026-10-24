@@ -50,3 +50,27 @@ The user authorized a React + Tailwind migration while preserving the current fl
 **Why:** The user directly selected React + Tailwind and specified that the primary flagship design must remain intact; they also explicitly chose to keep checkout disabled and financial data internal.
 
 **How to apply:** Keep new UI work inside the existing visual system. Do not replace the flagship template, publish unverified product information, activate checkout, or show COGS, margins, or projected profit to customers.
+
+React route state should resolve to real FSD collection, product, section, or private-preview destinations; do not use placeholder route screens or checkout controls.
+
+**Why:** The user approved the AppRouter approach only when it uses real FSD routes and preserves the current storefront and checkout hold.
+
+**How to apply:** Keep the route state synchronized with the existing destination behavior while the UI migration proceeds. Reuse real catalogue and section views; do not invent product data, replace the flagship layout, or activate purchasing.
+
+Keep any React host around the sticky navigation layout-transparent so it does not constrain the header’s sticky positioning.
+
+**Why:** A normal block wrapper limited the sticky header to the wrapper’s short height, breaking its pinned behavior after scrolling.
+
+**How to apply:** When migrating header navigation, verify sticky behavior after scrolling and avoid introducing a height-limited containing block.
+
+When new concept pages or sections have media or copy pending review, keep their routes and navigation available and show the complete responsive structure with clearly titled, styled placeholders. Do not select unverified media or hide unfinished sections.
+
+**Why:** The user explicitly wants the full desktop and mobile journey visible for review while assets and claims are still being approved.
+
+**How to apply:** Use consistent placeholder dimensions and the existing FSD visual system. Keep product claims, asset mappings, account flows, sign-ups, and checkout within their separate approval boundaries.
+
+The user designated the existing storefront structure as the master baseline: integrate future work additively, preserve the three-column menu and editorial page flow, keep pending concepts visibly marked and non-purchasable, and retain the gold scroll progress indicator.
+
+**Why:** The user explicitly described the current site as the definitive baseline and directed that future additions must not trigger a broad rewrite; the gold indicator must remain functional across pages.
+
+**How to apply:** Make focused changes within the current navigation and page hierarchy. Preserve the story section’s editorial placement, concept/pre-launch safeguards, and the global gold progress indicator when adding or revising features.
