@@ -539,6 +539,8 @@ html, body { overflow-x: clip; }
   font-size: 10px;
   letter-spacing: .15em;
 }
+#fsd-house-archive:not([open]),
+#catalogue-archive:not([open]) { display: none; }
 .showroom-archive--discover { border-top: 1px solid #35322c; }
 .showroom-archive-content { padding-top: 22px; }
 

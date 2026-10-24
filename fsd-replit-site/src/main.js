@@ -62,7 +62,6 @@ export function renderStorefrontMarkup() {
       <p class="fsd-home-intro">Fitness &amp; Self-Defence.<br/>A house for those who train with purpose.</p>
       <div class="fsd-home-actions">
         <a class="fsd-home-primary" href="#universe">Explore the collections <span aria-hidden="true">↗</span></a>
-        <a class="fsd-home-secondary" href="#products">Browse the catalogue</a>
       </div>
       <p class="fsd-home-signoff">FSD <span>/</span> FITNESS &amp; SELF-DEFENCE</p>
     </div>
@@ -70,14 +69,12 @@ export function renderStorefrontMarkup() {
   </section>
   <div id="collections">
     ${renderCollectionShowcase(collectionDivisions, { editorial: true })}
-    <details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">
-      <summary>BROWSE THE FULL CATALOGUE</summary>${catalogueSection()}
-    </details>
   </div>
   <section class="fsd-editorial-divider" aria-label="FSD design philosophy">
     <p>THE REFINEMENT OF LUXURY FASHION. THE ENERGY OF ELITE SPORT. THE PRECISION OF PERFORMANCE ENGINEERING. THE INNOVATION OF MODERN TECHNOLOGY.</p>
   </section>
   ${hardwareEditorialSection()}
+  </main>
   <details class="showroom-archive showroom-archive--discover" id="fsd-house-archive">
     <summary>DISCOVER THE FSD HOUSE</summary>
     <div class="showroom-archive-content">
@@ -89,7 +86,10 @@ export function renderStorefrontMarkup() {
       ${vipAccessSection()}
     </div>
   </details>
-  </main>
+  <details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">
+    <summary>BROWSE THE FULL CATALOGUE</summary>
+    ${catalogueSection()}
+  </details>
   <footer><div class="footer-brand"><img class="fsd-brand-logo" src="${approvedFsdHeaderLogo}" alt="FSD Fitness & Self-Defence" loading="lazy" decoding="async"/></div>
     <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Website prototype.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD COLLECTIONS</a><a href="#products">BROWSE CATALOGUE</a>

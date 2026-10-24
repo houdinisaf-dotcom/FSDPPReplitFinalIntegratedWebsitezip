@@ -511,7 +511,9 @@ function restoreFromURL({ scrollY } = {}) {
   const archive = document.querySelector('#catalogue-archive');
   const hasShopState = isBrowser() && [...new URLSearchParams(window.location.search).keys()]
     .some(key => ['category', 'audience', 'collection', 'q', 'sort', 'view', 'page', 'product'].includes(key));
-  if (archive) archive.open = hasShopState || (isBrowser() && window.location.hash === '#products');
+  if (archive) archive.open = hasShopState
+    || Number.isFinite(scrollY)
+    || (isBrowser() && window.location.hash === '#products');
   renderResults();
 
   const dialog = document.querySelector('#product-dialog');

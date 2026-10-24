@@ -159,6 +159,8 @@ try {
   assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.nextElementSibling?.id'), 'hardware-editorial');
   assert.equal(await evaluate('Math.abs(document.querySelector(".fsd-editorial-divider").getBoundingClientRect().width - document.documentElement.clientWidth) < 1'), true);
   assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
+  assert.equal(await evaluate('document.querySelector("#catalogue-archive").getClientRects().length'), 0);
+  assert.equal(await evaluate('document.querySelector("#fsd-house-archive").getClientRects().length'), 0);
   assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollbarColor'), 'rgb(119, 103, 72) rgb(17, 18, 20)');
 
   for (const division of ['apparel', 'bio-lab', 'hardware', 'global']) {

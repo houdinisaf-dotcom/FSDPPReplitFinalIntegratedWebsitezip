@@ -514,8 +514,9 @@ try {
 
   // Home → Shop → Women’s preview → catalogue, using the current public product record.
   await closeRouteAndReset();
-  await click('.fsd-home-secondary');
-  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "All"');
+assert.equal(await evaluate('document.querySelector(".fsd-home-secondary") === null'), true);
+assert.equal(await evaluate('document.querySelector("#products")?.closest("#home") === null'), true);
+assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await click('#fsd-mega-menu [data-nav-group="1"]');
   await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"1\\"][aria-pressed=\\"true\\"]")');
@@ -788,7 +789,8 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
-  await evaluate('document.querySelector("#catalogue-archive").open = true');
+  await click('footer a[href="#products"]');
+  await waitFor('document.querySelector("#catalogue-archive").open');
   await waitFor('document.querySelector("#catalogue-grid")?.dataset.view === "list"');
   await waitFor('document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")');
   const addableProductId = await evaluate('document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")?.dataset.product');

@@ -388,6 +388,15 @@ test('the complete public page excludes held imagery while retaining internal so
     const page = `${renderPage.renderStorefrontHeader()}${renderPage.renderStorefrontMarkup()}`;
     assert.doesNotMatch(page, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
     assert.match(page, /id="catalogue-archive"/);
+    const homepage = page.match(/<main id="home">([\s\S]*?)<\/main>/)?.[1] || '';
+    assert.ok(homepage, 'the storefront homepage main landmark should render');
+    assert.doesNotMatch(homepage, /SHOP \/ ALL PRODUCTS|id="catalogue-grid"|id="catalogue-archive"|id="search"|id="fsd-house-archive"|id="innovations"|id="philosophy"|id="contact"/);
+    assert.doesNotMatch(homepage, /Browse the catalogue/i);
+    assert.match(homepage, /class="fsd-home-hero"/);
+    assert.match(homepage, /class="fsd-showcase fsd-showcase--editorial"/);
+    assert.match(homepage, /class="fsd-editorial-divider"/);
+    assert.match(homepage, /id="hardware-editorial"/);
+    assert.match(page, /<details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">[\s\S]*?<section class="shop" id="products"/);
     assert.doesNotMatch(page, /id="gallery-archive"|id="full-gallery"|DESIGN LIBRARY|IMAGE ARCHIVE/i);
     assert.doesNotMatch(page, /FSD PRODUCT DESIGN LIBRARY|THE FULL VISUAL EDIT|74 designs/i);
     assert.equal((page.match(/class="fsd-brand-logo"/g) || []).length, 2);
