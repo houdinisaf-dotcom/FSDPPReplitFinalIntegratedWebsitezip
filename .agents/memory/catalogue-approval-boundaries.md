@@ -130,3 +130,9 @@ The user confirmed that existing inventory and features may be presented as prod
 **Why:** This was the user’s direct choice when asked how the new directive should affect existing product approvals.
 
 **How to apply:** Remove retired status labels from customer-facing surfaces, retain all product records, and leave absent catalogue values blank. Keep product data and transaction settings unchanged unless separately instructed.
+
+Before requesting another inventory upload, inspect the repository’s catalogue and image-map sources. Product records and aliases may already be present even when the current upload contains only images; a descriptive gallery asset is not automatically an approved product-photo mapping.
+
+**Why:** The user explicitly asked to parse existing repository data and mappings rather than require another upload.
+
+**How to apply:** Search existing product records and explicit asset mappings first. Preserve master values, and do not infer missing products, colourways, specifications, or image assignments from concept labels or filenames.
