@@ -70,6 +70,15 @@ const imageReferences = {
     { src: '/assets/products/signature-duffel-interior-organization.png', label: 'Interior / Organization', colourway: 'Obsidian & Satin Gold' },
     { src: '/assets/products/signature-duffel-hardware-detail.png', label: 'Hardware / Crest Close-up', colourway: 'Obsidian & Satin Gold' },
   ],
+  'FSD OBSIDIAN GOLD™ ELITE SET': [
+    { src: '/assets/products/obsidian-gold-elite-set.webp', label: 'Dumbbell Set / Product View' },
+  ],
+  'FSD VANGUARD COMMERCIAL™ PRO SET': [
+    { src: '/assets/products/vanguard-commercial-set.webp', label: 'Commercial Dumbbell Set / Product View' },
+  ],
+  'FSD Precision Barbell Collars (Pair)': [
+    { src: '/assets/products/precision-barbell-collars.webp', label: 'Precision Barbell Collars / Product View' },
+  ],
 };
 
 // Publication decisions use stable record metadata, not names that may change.

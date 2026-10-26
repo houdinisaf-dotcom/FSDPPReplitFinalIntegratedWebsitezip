@@ -40,6 +40,25 @@ test('customer-facing prices use approved RRPs only', () => {
   assert.deepEqual(priceInfo(products.find(p => p.id === 73)), { label: '', value: '£145.00' });
 });
 
+test('hardware records use only the uploaded standalone product images with exact record matches', () => {
+  const expectedImages = new Map([
+    [52, '/assets/products/precision-barbell-collars.webp'],
+    [70, '/assets/products/obsidian-gold-elite-set.webp'],
+    [71, '/assets/products/vanguard-commercial-set.webp'],
+  ]);
+
+  for (const [id, src] of expectedImages) {
+    const product = products.find(item => item.id === id);
+    assert.equal(product?.images.length, 1);
+    assert.equal(product?.images[0].src, src);
+    assert.ok(existsSync(new URL(`../public${src}`, import.meta.url)));
+  }
+
+  for (const id of [54, 55, 69, 72]) {
+    assert.equal(products.find(item => item.id === id)?.images.length, 0);
+  }
+});
+
 test('Signature Performance Sports Duffel uses the new lifestyle hero and four mapped detail views', () => {
   const duffel = products.find(product => product.id === 56);
   assert.equal(products.filter(product => product.name === 'Signature Performance Sports Duffel').length, 1);
@@ -253,7 +272,7 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 8);
+  assert.equal(products.filter(p => p.images.length).length, 11);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
@@ -266,7 +285,7 @@ test('colourways share one record, verified image references exist, and unknown 
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 33, 34, 43, 56, 57, 73]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 33, 34, 43, 52, 56, 57, 70, 71, 73]);
   assert.deepEqual(products.find(p => p.id === 1).images.map(image => image.src), [
     '/images/ombre-indigo.png', '/images/ombre-blue.png',
   ]);
@@ -666,7 +685,7 @@ test('hardware prices buy complete approved set tiers without invented weight br
     assert.equal(p.priceBasis, 'Complete 10–50kg set.');
     assert.match(p.specificationStatus, /increments, quantities and total set weight pending/);
     assert.match(p.notes, /not evidence of manufactured materials or verified performance/);
-    assert.deepEqual(p.images, []);
+    if ([69, 72].includes(p.id)) assert.deepEqual(p.images, []);
   }
   assert.equal(master.find(p => p.id === 21)['Merged into'], 19);
   assert.deepEqual(master.find(p => p.id === 53)['Replaced by'], tiers.map(p => p.id));
