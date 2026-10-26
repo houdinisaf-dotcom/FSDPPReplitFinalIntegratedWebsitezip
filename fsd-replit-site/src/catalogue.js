@@ -1,6 +1,7 @@
 import { audiences, categories, getVerifiedProductSpecifications, imageSwatchBackground, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage } from './catalogue-image-gallery.js';
+import { outlineIcon } from './brand/outline-icons.js';
 import { trackEvent } from './analytics.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 
@@ -170,7 +171,7 @@ function activeFilterMarkup() {
   wrapper.innerHTML = chips.length || hasOtherState
     ? `<div class="catalogue-chip-list" aria-label="Active filters">
         ${chips.map(([key, value, label]) => `<button type="button" class="catalogue-chip" data-remove-filter="${safe(key)}" data-filter-value="${safe(value)}">
-          ${safe(label)} <span aria-hidden="true">×</span><span class="sr-only">Remove filter</span>
+          ${safe(label)} ${outlineIcon('close', 'fsd-icon catalogue-chip__remove-icon')}<span class="sr-only">Remove filter</span>
         </button>`).join('')}
         ${hasOtherState ? `<span class="catalogue-view-state">SORT: ${safe(sortOptions.find(([value]) => value === sort)?.[1] || sort)}</span>` : ''}
         <button type="button" class="catalogue-clear-all" data-clear-filters>Clear all</button>
@@ -260,7 +261,7 @@ function card(product) {
         ${summary ? `<span class="product-row__summary">${safe(summary)}</span>` : ''}
       </span>
       ${priceMarkup}
-      <span class="product-row__action">VIEW DETAILS <span aria-hidden="true">↗</span></span>
+       <span class="product-row__action">VIEW DETAILS ${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
     </button>
   </article>`;
 }
@@ -369,9 +370,9 @@ function renderResults() {
       : '<div class="empty"><p>No visual matches for these filters. Try another selection.</p><button class="filter" data-clear-filters>Clear all filters</button></div>';
   }
   document.querySelector('#catalogue-pagination').innerHTML = filtered.length && totalPages > 1
-    ? `<button class="filter" data-page="${page - 1}" ${page === 1 ? 'disabled' : ''}>Previous</button>
+    ? `<button class="filter" data-page="${page - 1}" ${page === 1 ? 'disabled' : ''}>${outlineIcon('arrowLeft')} Previous</button>
       <span>Page ${page} of ${totalPages}</span>
-      <button class="filter" data-page="${page + 1}" ${page === totalPages ? 'disabled' : ''}>Next</button>`
+      <button class="filter" data-page="${page + 1}" ${page === totalPages ? 'disabled' : ''}>Next ${outlineIcon('arrowRight')}</button>`
     : '';
 }
 

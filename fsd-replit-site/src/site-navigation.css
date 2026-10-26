@@ -100,8 +100,8 @@
   right: 0;
   bottom: 11px;
   left: 0;
-  height: 1px;
-  background: #C8AA72;
+  height: 1.5px;
+  background: #D4AF37;
   content: "";
   transform: scaleX(0);
   transform-origin: left center;
@@ -254,12 +254,17 @@
   letter-spacing: 0.16em;
 }
 
-.fsd-mega-close span {
-  color: #d8c49e;
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1;
+.fsd-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: #D4AF37;
+  vertical-align: middle;
 }
+.fsd-mega-close-icon { width: 16px; height: 16px; }
+.fsd-search-icon { width: 20px; height: 20px; }
+.fsd-mobile-primary .fsd-icon { width: 15px; height: 15px; }
 
 .fsd-nav-columns {
   display: grid;
@@ -358,11 +363,14 @@
 }
 
 .fsd-nav-arrow {
-  color: #85785f;
-  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D4AF37;
   opacity: 0;
   transition: opacity 180ms ease;
 }
+.fsd-nav-arrow-icon { width: 14px; height: 14px; }
 
 .fsd-nav-option:hover .fsd-nav-arrow,
 .fsd-nav-option:focus-visible .fsd-nav-arrow,
@@ -663,9 +671,9 @@
   text-transform: uppercase;
   cursor: pointer;
 }
-.fsd-nav-catalogue button span { color: #c8aa72; font-size: 13px; }
+.fsd-nav-catalogue button > .fsd-icon { width: 16px; height: 16px; }
 .fsd-nav-catalogue button:hover { background: #c8aa72; color: #111316; }
-.fsd-nav-catalogue button:hover span { color: #111316; }
+.fsd-nav-catalogue button:hover > .fsd-icon { color: #111316; }
 .fsd-nav-catalogue button:focus-visible { outline: 2px solid #e7d3a8; outline-offset: 4px; }
 
 body.fsd-mobile-nav-open {
@@ -762,7 +770,10 @@ body.fsd-mobile-nav-open {
   }
 
   .fsd-mobile-stepbar button {
+    display: inline-flex;
     min-height: 42px;
+    align-items: center;
+    gap: 7px;
     padding: 0 10px 0 0;
     border: 0;
     background: transparent;

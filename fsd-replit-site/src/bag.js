@@ -1,5 +1,6 @@
 import { safe } from './catalogue-data.js';
 import { trackEvent } from './analytics.js';
+import { outlineIcon } from './brand/outline-icons.js';
 
 export const CLIENT_BAG_STORAGE_KEY = 'fsd-client-bag-v1';
 const MAX_QUANTITY = 99;
@@ -138,7 +139,7 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
           <p class="fsd-bag-kicker">FSD / YOUR SELECTION</p>
           <h2 id="fsd-bag-title">Your bag</h2>
         </div>
-        <button type="button" class="fsd-bag-close" data-bag-close aria-label="Close bag">×</button>
+        <button type="button" class="fsd-bag-close" data-bag-close aria-label="Close bag">${outlineIcon('close')}</button>
       </header>
       <div class="fsd-bag-body">
         <p class="fsd-bag-status" data-bag-status role="status" aria-live="polite"></p>
@@ -176,10 +177,10 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
             <strong class="fsd-bag-line-total">${formatMoney(lineAmount)}</strong>
             <div class="fsd-bag-item-controls" role="group" aria-label="Quantity for ${safe(product.name)}">
               <button type="button" data-bag-quantity="-1" data-product-id="${product.id}"
-                aria-label="Decrease quantity of ${safe(product.name)}">−</button>
+                aria-label="Decrease quantity of ${safe(product.name)}">${outlineIcon('minus')}</button>
               <span aria-live="polite">${quantity}</span>
               <button type="button" data-bag-quantity="1" data-product-id="${product.id}"
-                aria-label="Increase quantity of ${safe(product.name)}">+</button>
+                aria-label="Increase quantity of ${safe(product.name)}">${outlineIcon('plus')}</button>
               <button type="button" class="fsd-bag-remove" data-bag-remove data-product-id="${product.id}">
                 Remove <span class="sr-only">${safe(product.name)}</span>
               </button>

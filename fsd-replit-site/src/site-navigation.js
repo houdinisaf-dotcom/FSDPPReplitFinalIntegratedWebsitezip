@@ -4,6 +4,7 @@ import { groupProducts } from './collection-showcase/index.js';
 import { hoodedShellCampaign } from './hooded-shell-campaign.js';
 import { getInnovationPageForTitle } from './flagship-pages.js';
 import { FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
+import { outlineIcon } from './brand/outline-icons.js';
 
 export const primaryNavigation = [
   { id: 'collections', label: 'SHOP' },
@@ -662,7 +663,7 @@ function renderFeature(menu, group, item, canNavigate) {
       </dl>
       <button type="button" class="fsd-feature-cta" data-nav-destination
         ${available ? '' : 'disabled aria-disabled="true" title="No verified destination is available for this selection."'}>
-        ${actionLabel}<span aria-hidden="true">${available ? '↗' : '—'}</span>
+        ${actionLabel}<span aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon') : '—'}</span>
       </button>
     </div>
   </article>`;
@@ -678,7 +679,7 @@ function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
       title="${status}" aria-pressed="${index === activeGroupIndex}">
     <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
     <span>${escapeHTML(group.title)}</span>
-    <span class="fsd-nav-arrow" aria-hidden="true">${available ? '↗' : '—'}</span>
+      <span class="fsd-nav-arrow" aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon fsd-nav-arrow-icon') : '—'}</span>
   </button>`;
   }).join('');
 }
@@ -694,7 +695,7 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
       aria-pressed="${index === activeItemIndex}">
     <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
     <span>${escapeHTML(item.title)}</span>
-    <span class="fsd-nav-arrow" aria-hidden="true">${available ? '↗' : '—'}</span>
+      <span class="fsd-nav-arrow" aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon fsd-nav-arrow-icon') : '—'}</span>
   </button>`;
   }).join('');
 }
@@ -706,7 +707,7 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
       class="fsd-mobile-primary${entry.id === menu.id ? ' is-active' : ''}"
       data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}"
       ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>
-    ${escapeHTML(entry.label)}<span aria-hidden="true">↗</span>
+    ${escapeHTML(entry.label)}<span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
   </button>`).join('');
 
   return `<div class="fsd-mega-inner">
@@ -716,11 +717,11 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
         <h2>${escapeHTML(menu.title)}</h2>
       </div>
       <button type="button" class="fsd-mega-close" data-nav-close aria-label="Close navigation">
-        CLOSE <span aria-hidden="true">×</span>
+        CLOSE ${outlineIcon('close', 'fsd-icon fsd-mega-close-icon')}
       </button>
     </div>
     <div class="fsd-mobile-stepbar">
-      <button type="button" data-nav-back>${mobileStep === 'detail' ? '← BACK TO GROUPS' : '← ALL CATEGORIES'}</button>
+      <button type="button" data-nav-back>${outlineIcon('arrowLeft', 'fsd-icon')} ${mobileStep === 'detail' ? 'BACK TO GROUPS' : 'ALL CATEGORIES'}</button>
       <span>${escapeHTML(menu.label)}</span>
     </div>
     <nav class="fsd-mobile-primary-list" aria-label="FSD sections">${mobilePrimaries}</nav>
@@ -743,7 +744,7 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
     </div>
     ${menu.id === 'collections' ? `<div class="fsd-nav-catalogue">
       <span>Looking for something specific?</span>
-      <button type="button" data-nav-catalogue>Browse the full catalogue <span aria-hidden="true">↗</span></button>
+      <button type="button" data-nav-catalogue>Browse the full catalogue ${outlineIcon('arrowUpRight')}</button>
     </div>` : ''}
   </div>`;
 }
@@ -764,10 +765,7 @@ export function renderNavigationHeader(brandMarkup) {
         <button type="button" class="fsd-search-trigger" data-search-open
           aria-label="Search products" aria-haspopup="dialog" aria-controls="fsd-search-dialog"
           aria-expanded="false">
-          <svg viewBox="0 0 20 20" aria-hidden="true" fill="none">
-            <circle cx="8.7" cy="8.7" r="5.7" stroke="currentColor" stroke-width="1.3"/>
-            <path d="m13 13 4 4" stroke="currentColor" stroke-width="1.3"/>
-          </svg>
+          ${outlineIcon('search', 'fsd-icon fsd-search-icon')}
           <span>SEARCH</span>
         </button>
         <button type="button" class="fsd-bag-toggle" data-bag-open aria-controls="fsd-bag-dialog"
