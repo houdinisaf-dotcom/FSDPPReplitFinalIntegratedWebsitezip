@@ -315,10 +315,11 @@ try {
   }
   await click('[data-product-id="43"]');
   await waitFor('document.querySelector("#product-dialog")?.open');
-  assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("/images/fsd-velocity-performance-sports-hijab.jpg")'));
+  assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("/assets/products/velocity-hijab-main-listing.jpg")'));
   assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Black / Gold")'));
-  assert.equal(await evaluate('document.querySelector("#product-dialog [data-bag-add]") === null'), true);
+  assert.ok(await evaluate('document.querySelector("#product-dialog [data-bag-add]")'));
   assert.ok(!await evaluate('document.querySelector("#product-dialog").textContent.includes("£29.99")'));
+  assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("£34.99")'));
   await key('Escape');
   await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
   await send('Emulation.setDeviceMetricsOverride', {
@@ -335,7 +336,7 @@ try {
   assert.ok(await evaluate('document.querySelector("#velocity-gallery-main-image").alt.toLowerCase().includes("woman")'));
   assert.ok(!await evaluate('document.querySelector(".velocity-product-price")'));
   assert.ok(!await evaluate('document.body.textContent.includes("£29.99")'));
-  assert.ok(await evaluate('document.querySelector(".velocity-colour").textContent.includes("Black / Champagne Gold")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-colour").textContent.includes("Black / Gold")'));
   assert.ok(!await evaluate('/add to cart|checkout button|quantity selector/i.test(document.body.textContent)'));
   assert.equal(await evaluate('document.querySelectorAll("form, input[type=number], button[name*=cart i]").length'), 0);
   await waitFor('Array.from(document.querySelectorAll("[data-hijab-thumb] img"), image => image.complete && image.naturalWidth > 0).every(Boolean)');
@@ -351,7 +352,7 @@ try {
   assert.ok(await evaluate('!document.querySelector(".velocity-product-tagline")'));
   assert.ok(await evaluate('!document.querySelector(".velocity-product-disclaimer")'));
   assert.ok(await evaluate('Boolean(document.querySelector(".velocity-accordions"))'));
-  assert.ok(await evaluate('document.querySelector(".velocity-accordions").textContent.includes("Black / Champagne Gold")'));
+  assert.ok(await evaluate('document.querySelector(".velocity-accordions").textContent.includes("Black / Gold")'));
   assert.ok(await evaluate('!/(CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)/i.test(document.body.textContent)'));
   assert.ok(!await evaluate('/PENDING VERIFICATION|No technical claims are established/i.test(document.body.textContent)'));
   assert.ok(!await evaluate('/Lightweight & breathable|Stays in place|Strategic airflow/i.test(document.body.textContent)'));

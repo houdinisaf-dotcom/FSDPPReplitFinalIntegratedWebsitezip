@@ -256,7 +256,7 @@ function card(product) {
       data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
       <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
       <span class="product-row__copy">
-        <span class="product-row__meta"><span>${safe(product.category)}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}</span>
+       <span class="product-row__meta"><span>${safe(product.category)}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}${product.badge ? `<span class="product-row__badge">${safe(product.badge)}</span>` : ''}</span>
         <h3>${safe(product.name)}</h3>
         ${summary ? `<span class="product-row__summary">${safe(summary)}</span>` : ''}
       </span>
@@ -351,6 +351,7 @@ function renderResults() {
           ...(product.description ? [['Overview', product.description]] : []),
           ...(product.setContents ? [['Set includes', product.setContents]] : []),
           ...(product.sizes ? [['Sizes', product.sizes.replaceAll(';', ' /')]] : []),
+          ...(product.options?.length ? [['Sleeve options', product.options.join(' / ')]] : []),
           ['Colourways', product.colourways],
           ['Audience', product.audience],
           ['Collection line', product.collection],
@@ -444,13 +445,15 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
   const images = isAegisPrivateProof(p)
     ? [{ label: 'Aegis campaign image', src: `${aegisGiletPreviewPath}media/front-three-quarter` }]
     : Array.isArray(p.images) ? p.images : [];
+  const galleryPlaceholders = Array.isArray(p.galleryPlaceholders)
+    ? p.galleryPlaceholders.filter(slot => typeof slot === 'string' && slot.trim())
+    : [];
   const colourwayOptions = hardwarePreview ? [] : productColourwayOptions(p);
   const colourwayImageIndexes = colourwayOptions.map(option => imageIndexForColourway(images, option));
   const allColourwaysHaveImages = colourwayOptions.length > 1
-    && images.length === colourwayOptions.length
     && colourwayImageIndexes.every(index => index >= 0)
     && new Set(colourwayImageIndexes).size === colourwayOptions.length;
-  const initialImageIndex = allColourwaysHaveImages ? colourwayImageIndexes[0] : 0;
+  const initialImageIndex = 0;
   const dialogBody = document.querySelector('#dialog-body');
   const initialImage = images[initialImageIndex];
   const detailRows = hardwarePreview
@@ -459,9 +462,11 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
       detail('Overview', p.description),
       detail('Set includes', p.setContents),
       detail('Sizes', p.sizes.split(';').map(value => value.trim()).filter(Boolean).join(' / ')),
+      detail('Sleeve options', p.options.join(' / ')),
       detail('Colourways', p.colourways),
       detail('Audience', p.audience),
       detail('Collection line', p.collection),
+      detail('Badge', p.badge),
       detail('Also shown in', p.alsoShowIn.join('; ')),
       detail('Also appears as', confirmedAlias),
       detail('Coverage', p.coverage),
@@ -477,7 +482,7 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
           </div>
           <figcaption data-catalogue-main-caption>${safe(initialImage.label)}</figcaption>
         </figure>
-        ${images.length > 1 && !allColourwaysHaveImages ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Select an image view of ${safe(p.name)}">
+        ${images.length > 1 && (!allColourwaysHaveImages || images.length > colourwayOptions.length) ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Select an image view of ${safe(p.name)}">
           ${images.map((image, index) => `<button type="button" class="catalogue-selector__thumb"
             data-catalogue-image-index="${index}" aria-label="Show ${safe(image.label)}"
             aria-pressed="${index === initialImageIndex}">
@@ -485,7 +490,18 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
           </button>`).join('')}
         </div>` : ''}
       </div>`
-    : `<div class="catalogue-selector__visual catalogue-selector__visual--empty">${imagePlaceholder(p)}</div>`;
+    : galleryPlaceholders.length
+      ? `<div class="catalogue-selector__visual catalogue-selector__visual--empty">
+          <div class="catalogue-gallery-placeholders" role="group" aria-label="${safe(p.name)} gallery image placeholders">
+            ${galleryPlaceholders.map((slot, index) => `<div class="catalogue-gallery-placeholder${index === 0 ? ' catalogue-gallery-placeholder--primary' : ''}"
+                data-catalogue-gallery-placeholder role="note" aria-label="${safe(slot)} image placeholder">
+                <span>VIEW ${String(index + 1).padStart(2, '0')}</span>
+                <strong>${safe(slot)}</strong>
+                <small>Product image coming soon</small>
+              </div>`).join('')}
+          </div>
+        </div>`
+      : `<div class="catalogue-selector__visual catalogue-selector__visual--empty">${imagePlaceholder(p)}</div>`;
   dialogBody.innerHTML = `${imageExperience}<div class="dialog-copy">
     <nav class="catalogue-breadcrumbs" aria-label="Breadcrumb"><ol>
       <li><a href="#home" data-home-breadcrumb>Home</a></li>
@@ -502,7 +518,7 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
          <legend>COLOURWAY</legend>
          <div class="catalogue-colourway-selector__options" role="group" aria-label="Choose a colourway">
            ${colourwayOptions.map((option, index) => {
-             const swatch = imageSwatchBackground(option);
+             const swatch = imageSwatchBackground(option, p.colourwayPalette);
              return `<button type="button" data-catalogue-colourway-index="${index}"
                data-catalogue-colourway-image-index="${colourwayImageIndexes[index]}"
                aria-pressed="${index === 0}">

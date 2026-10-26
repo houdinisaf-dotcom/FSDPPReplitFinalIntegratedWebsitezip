@@ -11,8 +11,42 @@ const imageReferences = {
     { src: '/images/windrunner-white.png', label: 'Blizzard ice-white grey camo / black' },
     { src: '/images/windrunner-khaki.png', label: 'Savannah khaki camo / black' },
   ],
-  'FSD Velocity Performance Sports Hijab': [
-    { src: '/images/fsd-velocity-performance-sports-hijab.jpg', label: 'Black and gold sports hijab with matching performance top' },
+  "FSD Strike Men's Combat Shorts": [
+    { src: '/assets/products/strike-shorts-hero.webp', label: 'Action Kick Hero View' },
+    { src: '/assets/products/strike-shorts-front.webp', label: 'Front View' },
+    { src: '/assets/products/strike-shorts-rear.webp', label: 'Rear View' },
+    { src: '/assets/products/strike-shorts-side.webp', label: 'Side / Fit View' },
+    { src: '/assets/products/strike-shorts-waistband-detail.webp', label: 'Detail / Waistband, Drawcord & Gold Hardware' },
+    { src: '/assets/products/strike-shorts-mesh-detail.webp', label: 'Detail / Mesh Panel & Trim' },
+    { src: '/assets/products/strike-shorts-kick-view.webp', label: 'Training Kick View' },
+  ],
+  "FSD Women's MMA Performance Rash Guard": [
+    { src: '/assets/products/womens-rashguard-hero.png', label: 'Hero Lifestyle View', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-front.png', label: 'Front / Long Sleeve Technical View', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-back.png', label: 'Back / Long Sleeve Technical View', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-short-sleeve.png', label: 'Front / Short Sleeve Option', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-gusset-detail.png', label: 'Detail / Underarm Mesh Gusset', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-flatlock-detail.png', label: 'Detail / Reinforced Flatlock Seam', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-graphics-detail.png', label: 'Detail / Satin Gold Graphic', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-hem-detail.png', label: 'Detail / Anti-Ride-Up Hem', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-action-1.png', label: 'Action / Grappling View 1', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-action-2.png', label: 'Action / Grappling View 2', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-action-3.png', label: 'Combat Movement View', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-action-4.png', label: 'Rear Branding / Movement View', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/womens-rashguard-box.png', label: 'Packaging / Presentation Box', colourway: 'Obsidian & Satin Gold' },
+  ],
+  'FSD Velocity Sports Hijab': [
+    { src: '/assets/products/velocity-hijab-main-listing.jpg', label: 'Main Product Listing / Lifestyle Hero', colourway: 'Black / Gold' },
+    { src: '/assets/products/velocity-hijab-front-detail.png', label: 'Front / Hero Detail', colourway: 'Black / Gold' },
+    { src: '/assets/products/velocity-hijab-rear-view.png', label: 'Rear View', colourway: 'Black / Gold' },
+    { src: '/assets/products/velocity-hijab-fabric-ventilation.png', label: 'Fabric & Ventilation Detail', colourway: 'Black / Gold' },
+    { src: '/assets/products/velocity-hijab-branding-detail.png', label: 'Branding / Gold Crest Detail', colourway: 'Black / Gold' },
+  ],
+  'FSD Performance Crew Socks': [
+    { src: '/assets/products/performance-socks-side.png', label: 'Side Profile View', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/performance-socks-rear.png', label: 'Rear Heel View', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/performance-socks-detail.png', label: 'Detail / Gold Crest Embroidery', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/performance-socks-mesh.png', label: 'Texture / Arch Mesh Panel', colourway: 'Obsidian & Satin Gold' },
   ],
   'FSD Breeze Overshirt & Engineered Leggings Set': [
     { src: '/fsd-assets/breeze-set-onyx-black-full-length.webp', label: 'Onyx Black · full-length view', colourway: 'Onyx Black' },
@@ -29,6 +63,13 @@ const imageReferences = {
     { src: '/fsd-assets/breeze-set-deep-burgundy-alt-full-length.webp', label: 'Deep Burgundy · alternate full-length view', colourway: 'Deep Burgundy' },
     { src: '/fsd-assets/breeze-set-deep-burgundy.webp', label: 'Deep Burgundy · full-set view', colourway: 'Deep Burgundy' },
   ],
+  'Signature Performance Sports Duffel': [
+    { src: '/assets/products/signature-duffel-lifestyle.png', label: 'Lifestyle / Gym Hero', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/signature-duffel-overview.png', label: 'Front / Overview', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/signature-duffel-shoe-compartment.png', label: 'Side Compartment / Shoe Storage', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/signature-duffel-interior-organization.png', label: 'Interior / Organization', colourway: 'Obsidian & Satin Gold' },
+    { src: '/assets/products/signature-duffel-hardware-detail.png', label: 'Hardware / Crest Close-up', colourway: 'Obsidian & Satin Gold' },
+  ],
 };
 
 // Publication decisions use stable record metadata, not names that may change.
@@ -36,12 +77,22 @@ export const heldProducts = masterProducts.filter(p => p['Publication status'] =
 export const retiredProducts = masterProducts.filter(p => ['Merged', 'Replaced'].includes(p['Publication status']));
 export const products = masterProducts
   .filter(p => !p['Publication status'] || p['Publication status'] === 'Active')
-  .map(p => ({
+  .map(p => {
+    const references = imageReferences[p['Product name']] ?? [];
+    const colourwayImages = Array.isArray(p['Colourway palette'])
+      ? p['Colourway palette'].map(colourway => ({
+        src: colourway.image,
+        label: `Colourway / ${colourway.name}`,
+        colourway: colourway.name,
+      }))
+      : [];
+    return ({
     id: p.id,
     name: p['Product name'],
     category: p.Category,
     alsoShowIn: p['Also show in'].split(';').map(s => s.trim()).filter(Boolean),
     audience: p.Audience,
+    publicationStatus: p['Publication status'] ?? '',
     confirmedPrice: p['Price (£) confirmed'] === '' ? null : Number(p['Price (£) confirmed']),
     colourways: p.Colourways,
     collection: p['Collection line'],
@@ -49,6 +100,16 @@ export const products = masterProducts
     source: p.Source,
     alias: p['Also appears as'],
     aliasStatus: p['Alias status'] ?? '',
+    externalId: p['External ID'] ?? '',
+    currency: p.Currency ?? '',
+    badge: p.Badge ?? '',
+    galleryPlaceholders: Array.isArray(p['Image placeholders']) ? p['Image placeholders'] : [],
+    colourwayPrimary: p['Colourway primary'] ?? '',
+    colourwayAccent: p['Colourway accent'] ?? '',
+    colourwayPalette: Array.isArray(p['Colourway palette']) ? p['Colourway palette'] : [],
+    options: Array.isArray(p.Options) ? p.Options : [],
+    ...(p.Materials ? { materials: p.Materials } : {}),
+    ...(Array.isArray(p.Features) && p.Features.length ? { features: p.Features } : {}),
     description: p.Description ?? '',
     shortDescription: p['Short description'] ?? '',
     setContents: p['Set contents'] ?? '',
@@ -58,11 +119,39 @@ export const products = masterProducts
     specificationStatus: p['Specification status'] ?? '',
     priceBasis: p['Price basis'] ?? '',
     notes: p.Notes.trim(),
-    images: imageReferences[p['Product name']] ?? [],
-  }));
+    images: colourwayImages.length
+      ? [...references.slice(0, 1), ...colourwayImages, ...references.slice(1)]
+      : references,
+  });});
 
 // Add records here only after the complete specification set has been verified.
 export const verifiedProductSpecifications = Object.freeze({
+  56: {
+    approvalStatus: 'verified',
+    materials: [products.find(product => product.id === 56)?.materials].filter(Boolean),
+    benefits: products.find(product => product.id === 56)?.features ?? [],
+  },
+  33: {
+    approvalStatus: 'verified',
+    materials: [products.find(product => product.id === 33)?.materials].filter(Boolean),
+    benefits: products.find(product => product.id === 33)?.features ?? [],
+    technicalSpecs: {
+      composition: '82% polyester, 18% elastane; 220–250 GSM.',
+      fit: 'High-coverage crew neck with an ergonomic women’s grappling fit.',
+    },
+  },
+  34: {
+    approvalStatus: 'verified',
+    benefits: products.find(product => product.id === 34)?.features ?? [],
+  },
+  43: {
+    approvalStatus: 'verified',
+    benefits: products.find(product => product.id === 43)?.features ?? [],
+  },
+  57: {
+    approvalStatus: 'verified',
+    benefits: products.find(product => product.id === 57)?.features ?? [],
+  },
   73: {
     approvalStatus: 'verified',
     materials: [
@@ -81,6 +170,10 @@ export const verifiedProductSpecifications = Object.freeze({
       fit: 'Full-coverage set with a lightweight tactical overshirt, half-zip entry, side ventilation and engineered performance leggings.',
       care: 'Machine wash cold on delicate cycle inside out. Hang dry only. Do not tumble dry. Do not iron metallic hardware.',
     },
+  },
+  74: {
+    approvalStatus: 'verified',
+    benefits: products.find(product => product.id === 74)?.features ?? [],
   },
 });
 
@@ -166,9 +259,6 @@ export function priceInfo(p) {
   const format = value => new Intl.NumberFormat('en-GB', {
     style: 'currency', currency: 'GBP',
   }).format(value);
-  if (Number(p?.id) === 43) {
-    return { label: 'Reference only · not for sale', value: '' };
-  }
   if (Number.isFinite(p?.confirmedPrice) && p.confirmedPrice > 0) {
     return { label: '', value: format(p.confirmedPrice) };
   }
@@ -194,8 +284,18 @@ const swatchPalette = [
   [/\bgold\b/i, '#c8aa72'],
 ];
 
-export function imageSwatchBackground(label) {
+export function imageSwatchBackground(label, palette = []) {
   const text = String(label ?? '');
+  const normalized = text.trim().toLocaleLowerCase();
+  const colourway = Array.isArray(palette)
+    ? palette.find(entry => String(entry?.name ?? '').trim().toLocaleLowerCase() === normalized)
+    : null;
+  if (/^#[\da-f]{6}$/i.test(colourway?.primary || '') && /^#[\da-f]{6}$/i.test(colourway?.accent || '')) {
+    return `linear-gradient(135deg, ${colourway.primary} 0% 68%, ${colourway.accent} 68% 100%)`;
+  }
+  if (/^obsidian\s*&\s*satin gold$/i.test(text)) {
+    return 'linear-gradient(135deg, #0A0A0A 0% 68%, #D4AF37 68% 100%)';
+  }
   const colours = swatchPalette
     .filter(([pattern]) => pattern.test(text))
     .map(([, colour]) => colour)

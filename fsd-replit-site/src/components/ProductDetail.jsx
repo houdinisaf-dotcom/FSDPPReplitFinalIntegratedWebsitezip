@@ -111,7 +111,7 @@ export function ProductDetail({
               <legend>COLOURWAY EDITION</legend>
               <div>
                 {colourways.map(colourway => {
-                  const swatch = imageSwatchBackground(colourway);
+                  const swatch = imageSwatchBackground(colourway, product?.colourwayPalette);
                   return (
                     <button
                       key={colourway}

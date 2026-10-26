@@ -14,7 +14,8 @@ function createStorage(initial = null) {
 
 test('bag only accepts current master records with a confirmed non-reference price', () => {
   assert.equal(canAddToBag(products.find(product => product.id === 1)), true);
-  assert.equal(canAddToBag(products.find(product => product.id === 43)), false);
+  assert.equal(canAddToBag(products.find(product => product.id === 43)), true);
+  assert.equal(canAddToBag(products.find(product => product.id === 57)), true);
   assert.equal(canAddToBag(products.find(product => product.id === 2)), false);
   assert.equal(canAddToBag({ id: 777, confirmedPrice: 0 }), false);
   assert.equal(canAddToBag({ id: 778, confirmedPrice: 12.5, priceBasis: 'Reference only' }), false);
@@ -43,9 +44,9 @@ test('bag rejects invalid items and restores only valid, bounded persisted quant
 
   assert.deepEqual(
     bag.items().map(item => [item.product.id, item.quantity]),
-    [[1, 4], [10, 99]],
+    [[1, 4], [10, 99], [43, 2]],
   );
-  assert.equal(bag.add(43), false);
+  assert.equal(bag.add(43), true);
   assert.equal(bag.add(2), false);
   assert.equal(bag.add(777), false);
 

@@ -1,8 +1,8 @@
-- [Catalogue approval boundaries](catalogue-approval-boundaries.md) — later direction approves current inventory display; existing values only, with missing catalogue fields left blank.
+- [Catalogue approval boundaries](catalogue-approval-boundaries.md) — existing values remain the default; explicitly approved record updates are narrow exceptions, and missing fields stay blank.
 - [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.
 - [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
 - [House of Performance approvals](house-of-performance-approvals.md) — preserve the flagship and keep pending page media visible in titled placeholders within approval boundaries.
-- [Velocity hijab proof boundary](velocity-hijab-proof.md) — visual approval is not commercial approval; keep master data intact and the separate image archive untouched.
+- [Velocity product approval boundary](velocity-hijab-proof.md) — apply the approved £34.99 update with Black / Gold; keep CORE colourways and the older archive separate.
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.
 - [Breeze set and overshirt separation](breeze-public-set.md) — the combined set is approved at £145; keep the existing £64.99 overshirt and Modest Flow separate.
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.

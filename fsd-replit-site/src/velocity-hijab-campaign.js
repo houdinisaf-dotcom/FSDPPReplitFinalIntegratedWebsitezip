@@ -43,26 +43,22 @@ const suppliedGalleryAssets = [
 
 export function createVelocityHijabPreview() {
   const product = products.find(candidate => candidate.id === 43);
-  if (product?.name !== 'FSD Velocity Performance Sports Hijab') {
-    throw new Error('The approved FSD Velocity Performance Sports Hijab record is unavailable.');
+  if (product?.name !== 'FSD Velocity Sports Hijab') {
+    throw new Error('The approved FSD Velocity Sports Hijab record is unavailable.');
   }
-  if (!product.images.some(image => image.src === '/images/fsd-velocity-performance-sports-hijab.jpg')) {
-    throw new Error('The approved Velocity campaign image is not mapped to the existing product record.');
+  if (!product.images.some(image => image.src === '/assets/products/velocity-hijab-main-listing.jpg')) {
+    throw new Error('The current Velocity listing hero is not mapped to the existing product record.');
   }
 
   return Object.freeze({
     path: velocityHijabPreviewPath,
     product,
-    colour: 'Black / Champagne Gold',
-    description: 'Private review of the supplied model-worn campaign photograph and product details. Product construction, materials and performance properties have not been confirmed.',
-    features: Object.freeze([
-      Object.freeze({ title: 'Fit and coverage', text: 'Pending sample review.' }),
-      Object.freeze({ title: 'Fabric and ventilation', text: 'Composition and function pending verification.' }),
-      Object.freeze({ title: 'Performance properties', text: 'Pending product testing and verification.' }),
-      Object.freeze({ title: 'Care instructions', text: 'Not supplied; pending confirmation.' }),
-    ]),
+    colour: 'Black / Gold',
+    description: product.description,
+    features: Object.freeze(product.features.map((text, index) =>
+      Object.freeze({ title: `Performance feature ${index + 1}`, text }))),
     gallery: Object.freeze(suppliedGalleryAssets),
-    sideViewNote: 'Dedicated side-view photograph: pending. No side-view image was supplied or created.',
+    sideViewNote: 'The current listing uses the newer product photo set; this archived campaign gallery remains separate.',
   });
 }
 

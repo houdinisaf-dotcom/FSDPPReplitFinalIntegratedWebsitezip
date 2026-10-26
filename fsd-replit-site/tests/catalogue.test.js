@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import master from '../src/master-products.json' with { type: 'json' };
 import additional from '../src/additional-catalog.json' with { type: 'json' };
 import { galleryProductIds, galleryProducts } from '../src/gallery.js';
-import { products, heldProducts, retiredProducts, categories, filterProducts, imageSwatchBackground, priceInfo, safe } from '../src/catalogue-data.js';
+import { products, heldProducts, retiredProducts, categories, filterProducts, getVerifiedProductSpecifications, imageSwatchBackground, priceInfo, safe } from '../src/catalogue-data.js';
 import { catalogueSection, roadmapSection, innovationsSection, initCatalogue, navigateCatalogue } from '../src/catalogue.js';
 import { crossfadeMappedImage } from '../src/catalogue-image-gallery.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
@@ -15,16 +15,16 @@ import { ourStorySection } from '../src/story-section.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from '../src/flagship-pages.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
-  assert.equal(master.length, 73);
-  assert.equal(new Set(master.map(p => p.id)).size, 73);
+  assert.equal(master.length, 74);
+  assert.equal(new Set(master.map(p => p.id)).size, 74);
   for (let id = 1; id <= 68; id++) assert.ok(master.some(p => p.id === id));
-  assert.equal(products.length, 67);
+  assert.equal(products.length, 68);
   assert.deepEqual(heldProducts.map(p => p.id), [36, 37, 64, 68]);
   assert.deepEqual(retiredProducts.map(p => p.id), [21, 53]);
-  assert.equal(categories.length, 9);
+  assert.equal(categories.length, 15);
   assert.ok(products.every(p => !heldProducts.some(h => h.id === p.id)));
   assert.ok(products.every(p => !retiredProducts.some(r => r.id === p.id)));
-  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 38);
+  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 39);
   assert.ok(products.every(p => !Object.hasOwn(p, 'suggestedPrice')));
 });
 
@@ -32,12 +32,191 @@ test('customer-facing prices use approved RRPs only', () => {
   assert.deepEqual(priceInfo(products.find(p => p.id === 1)), { label: '', value: '£39.99' });
   assert.deepEqual(priceInfo(products.find(p => p.id === 2)), { label: '', value: '' });
   assert.deepEqual(priceInfo(products.find(p => p.id === 59)), { label: '', value: '' });
-  assert.deepEqual(priceInfo(products.find(p => p.id === 43)), {
-    label: 'Reference only · not for sale',
-    value: '',
-  });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 43)), { label: '', value: '£34.99' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 33)), { label: '', value: '£59.99' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 34)), { label: '', value: '£49.99' });
+  assert.deepEqual(priceInfo(products.find(p => p.id === 57)), { label: '', value: '£18.00' });
   assert.deepEqual(priceInfo(products.find(p => p.id === 49)), { label: '', value: '£64.99' });
   assert.deepEqual(priceInfo(products.find(p => p.id === 73)), { label: '', value: '£145.00' });
+});
+
+test('Signature Performance Sports Duffel uses the new lifestyle hero and four mapped detail views', () => {
+  const duffel = products.find(product => product.id === 56);
+  assert.equal(products.filter(product => product.name === 'Signature Performance Sports Duffel').length, 1);
+  assert.equal(duffel?.externalId, 'fsd-signature-duffel-01');
+  assert.equal(duffel?.category, 'Accessories / Bags');
+  assert.equal(duffel?.audience, 'Women’s');
+  assert.deepEqual(duffel?.alsoShowIn, ['Women’s Performance', 'Gym Hardware and Accessories']);
+  assert.equal(duffel?.confirmedPrice, 95);
+  assert.equal(duffel?.currency, 'GBP');
+  assert.equal(duffel?.badge, 'Signature Series');
+  assert.equal(duffel?.collection, 'Standard / Core');
+  assert.equal(duffel?.colourways, 'Obsidian & Satin Gold');
+  assert.equal(duffel?.colourwayPrimary, '#0A0A0A');
+  assert.equal(duffel?.colourwayAccent, '#D4AF37');
+  assert.equal(duffel?.images.length, 5);
+  assert.deepEqual(duffel?.images.map(image => image.label), [
+    'Lifestyle / Gym Hero',
+    'Front / Overview',
+    'Side Compartment / Shoe Storage',
+    'Interior / Organization',
+    'Hardware / Crest Close-up',
+  ]);
+  assert.deepEqual(getVerifiedProductSpecifications(56)?.benefits, duffel?.features);
+  assert.match(imageSwatchBackground(duffel?.colourways), /#0A0A0A.*#D4AF37/);
+  assert.ok(duffel?.images.every(image => existsSync(new URL(`../public${image.src}`, import.meta.url))));
+});
+
+test('Performance Crew Socks updates the existing three-pair record with four mapped views', () => {
+  const socks = products.find(product => product.id === 57);
+  assert.equal(products.filter(product => product.id === 57).length, 1);
+  assert.equal(socks?.name, 'FSD Performance Crew Socks');
+  assert.equal(socks?.alias, 'FSD Performance Training Socks (3-Pair Pack); FSD Performance Training Socks');
+  assert.equal(socks?.category, 'Accessories / Footwear');
+  assert.deepEqual(socks?.alsoShowIn, ['Women’s Performance', 'Gym Hardware and Accessories']);
+  assert.equal(socks?.confirmedPrice, 18);
+  assert.equal(socks?.currency, 'GBP');
+  assert.equal(socks?.badge, 'Essentials Line');
+  assert.equal(socks?.setContents, '3 pairs');
+  assert.equal(socks?.colourways, 'Obsidian & Satin Gold');
+  assert.equal(socks?.colourwayPrimary, '#0A0A0A');
+  assert.equal(socks?.colourwayAccent, '#D4AF37');
+  assert.deepEqual(socks?.images.map(image => image.src), [
+    '/assets/products/performance-socks-side.png',
+    '/assets/products/performance-socks-rear.png',
+    '/assets/products/performance-socks-detail.png',
+    '/assets/products/performance-socks-mesh.png',
+  ]);
+  assert.deepEqual(socks?.images.map(image => image.label), [
+    'Side Profile View',
+    'Rear Heel View',
+    'Detail / Gold Crest Embroidery',
+    'Texture / Arch Mesh Panel',
+  ]);
+  assert.deepEqual(getVerifiedProductSpecifications(57)?.benefits, socks?.features);
+  assert.ok(filterProducts('Accessories / Footwear').some(product => product.id === 57));
+  assert.ok(filterProducts('Women’s Performance').some(product => product.id === 57));
+  assert.ok(socks?.images.every(image => existsSync(new URL(`../public${image.src}`, import.meta.url))));
+});
+
+test('women’s MMA rash guard updates its existing record with sizes, sleeve options and cropped views', () => {
+  const rashGuard = products.find(product => product.id === 33);
+  assert.equal(products.filter(product => product.id === 33).length, 1);
+  assert.equal(rashGuard?.name, "FSD Women's MMA Performance Rash Guard");
+  assert.equal(rashGuard?.alias, 'FSD Women’s MMA Performance Rash Guard; FSD COMBAT Women’s MMA-Specific Rash Guard');
+  assert.equal(rashGuard?.category, 'Women’s / Combat Sports');
+  assert.deepEqual(rashGuard?.alsoShowIn, ['Combat and MMA', 'Women’s Performance']);
+  assert.equal(rashGuard?.audience, 'Women’s');
+  assert.equal(rashGuard?.confirmedPrice, 59.99);
+  assert.equal(rashGuard?.externalId, 'fsd-womens-mma-rash-guard-01');
+  assert.equal(rashGuard?.currency, 'GBP');
+  assert.equal(rashGuard?.badge, 'Combat Series');
+  assert.equal(rashGuard?.colourways, 'Obsidian & Satin Gold');
+  assert.equal(rashGuard?.sizes, 'XS; S; M; L; XL; XXL');
+  assert.deepEqual(rashGuard?.options, ['Long Sleeve', 'Short Sleeve']);
+  assert.deepEqual(rashGuard?.images.map(image => image.label), [
+    'Hero Lifestyle View',
+    'Front / Long Sleeve Technical View',
+    'Back / Long Sleeve Technical View',
+    'Front / Short Sleeve Option',
+    'Detail / Underarm Mesh Gusset',
+    'Detail / Reinforced Flatlock Seam',
+    'Detail / Satin Gold Graphic',
+    'Detail / Anti-Ride-Up Hem',
+    'Action / Grappling View 1',
+    'Action / Grappling View 2',
+    'Combat Movement View',
+    'Rear Branding / Movement View',
+    'Packaging / Presentation Box',
+  ]);
+  assert.deepEqual(getVerifiedProductSpecifications(33)?.benefits, rashGuard?.features);
+  assert.ok(filterProducts('Women’s / Combat Sports').some(product => product.id === 33));
+  assert.ok(filterProducts('Combat and MMA').some(product => product.id === 33));
+  assert.ok(filterProducts('Women’s Performance').some(product => product.id === 33));
+  assert.ok(rashGuard?.images.every(image => existsSync(new URL(`../public${image.src}`, import.meta.url))));
+});
+
+test('Strike Combat Shorts uses the four supplied colourways, size range and mapped kick/technical gallery', () => {
+  const shorts = products.find(product => product.id === 34);
+  assert.equal(products.filter(product => product.id === 34).length, 1);
+  assert.equal(shorts?.name, "FSD Strike Men's Combat Shorts");
+  assert.equal(shorts?.externalId, 'fsd-strike-mens-combat-shorts-01');
+  assert.equal(shorts?.category, 'Men’s / Combat Sports');
+  assert.deepEqual(shorts?.alsoShowIn, ['Combat and MMA', 'Men’s Performance and Training']);
+  assert.equal(shorts?.audience, 'Men’s');
+  assert.equal(shorts?.confirmedPrice, 49.99);
+  assert.equal(shorts?.currency, 'GBP');
+  assert.equal(shorts?.badge, 'Combat Series');
+  assert.equal(shorts?.publicationStatus, 'Active');
+  assert.equal(shorts?.sizes, 'S; M; L; XL; XXL');
+  assert.equal(shorts?.colourways, 'Black & Gold; Charcoal & Electric Lime; Navy & Ice Blue; Olive & Cream');
+  assert.deepEqual(shorts?.colourwayPalette.map(({ name, primary, accent }) => ({ name, primary, accent })), [
+    { name: 'Black & Gold', primary: '#0A0A0A', accent: '#D4AF37' },
+    { name: 'Charcoal & Electric Lime', primary: '#2C2C2C', accent: '#CCFF00' },
+    { name: 'Navy & Ice Blue', primary: '#0B132B', accent: '#7DF9FF' },
+    { name: 'Olive & Cream', primary: '#3B3A36', accent: '#F5F5DC' },
+  ]);
+  assert.equal(shorts?.images.length, 11);
+  assert.equal(shorts?.images[0].label, 'Action Kick Hero View');
+  assert.deepEqual(shorts?.images.slice(1, 5).map(({ colourway }) => colourway), [
+    'Black & Gold',
+    'Charcoal & Electric Lime',
+    'Navy & Ice Blue',
+    'Olive & Cream',
+  ]);
+  assert.deepEqual(shorts?.images.slice(5).map(({ label }) => label), [
+    'Front View',
+    'Rear View',
+    'Side / Fit View',
+    'Detail / Waistband, Drawcord & Gold Hardware',
+    'Detail / Mesh Panel & Trim',
+    'Training Kick View',
+  ]);
+  assert.deepEqual(getVerifiedProductSpecifications(34)?.benefits, shorts?.features);
+  assert.equal(imageSwatchBackground('Navy & Ice Blue', shorts?.colourwayPalette),
+    'linear-gradient(135deg, #0B132B 0% 68%, #7DF9FF 68% 100%)');
+  assert.ok(filterProducts('Men’s / Combat Sports').some(product => product.id === 34));
+  assert.ok(filterProducts('Combat and MMA').some(product => product.id === 34));
+  assert.ok(filterProducts('Men’s Performance and Training').some(product => product.id === 34));
+  assert.ok(shorts?.images.every(image => existsSync(new URL(`../public${image.src}`, import.meta.url))));
+});
+
+test('Apex leggings are added separately with the supplied £65 data and an explicit clean image placeholder', () => {
+  const apex = products.find(product => product.id === 74);
+  const existingFlexRecord = products.find(product => product.id === 40);
+  assert.equal(products.filter(product => product.externalId === 'fsd-apex-high-waist-leggings-01').length, 1);
+  assert.equal(apex?.name, 'FSD Apex High-Waisted Compression Leggings');
+  assert.equal(apex?.category, "Women's / Performance Bottoms");
+  assert.deepEqual(apex?.alsoShowIn, ['Women’s Performance']);
+  assert.equal(apex?.audience, 'Women’s');
+  assert.equal(apex?.publicationStatus, 'Active');
+  assert.equal(apex?.confirmedPrice, 65);
+  assert.equal(apex?.currency, 'GBP');
+  assert.deepEqual(priceInfo(apex), { label: '', value: '£65.00' });
+  assert.equal(apex?.badge, 'Performance Line');
+  assert.equal(apex?.sizes, 'XS; S; M; L; XL; XXL');
+  assert.equal(apex?.colourways, 'Obsidian & Satin Gold');
+  assert.equal(apex?.colourwayPrimary, '#0A0A0A');
+  assert.equal(apex?.colourwayAccent, '#D4AF37');
+  assert.equal(apex?.images.length, 0);
+  assert.match(apex?.imageStatus, /three labeled gallery placeholders/i);
+  assert.deepEqual(apex?.galleryPlaceholders, [
+    'Front Full View',
+    'Rear Contour View',
+    'Detail / Gold Crest & Waistband',
+  ]);
+  assert.deepEqual(apex?.features, [
+    'Supportive double-layer high-waisted band with anti-slip hold',
+    'Targeted ergonomic contour seams to sculpt and support',
+    'Squat-proof, highly opaque, moisture-wicking technical fabric',
+    'Discreet internal waistband card/phone pocket',
+    'Satin Champagne Gold heat-transferred FSD shield crest on rear hip',
+  ]);
+  assert.deepEqual(getVerifiedProductSpecifications(74)?.benefits, apex?.features);
+  assert.ok(imageSwatchBackground(apex?.colourways));
+  assert.ok(filterProducts('All', 'Apex High-Waisted Compression Leggings').some(product => product.id === 74));
+  assert.equal(existingFlexRecord?.name, "FSD Women's Performance Training Leggings");
+  assert.equal(existingFlexRecord?.confirmedPrice, 49.99);
 });
 
 test('the public Breeze set stays distinct from the existing overshirt and is reachable from Women’s modest collections', () => {
@@ -74,32 +253,84 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 4);
+  assert.equal(products.filter(p => p.images.length).length, 8);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
       assert.equal(p.colourways, 'Black / Gold');
-      assert.match(image.label, /Black and gold/i);
-    } else {
-      assert.ok(p.colourways.split(';').map(value => value.trim()).includes(image.colourway || image.label));
+      assert.equal(image.colourway, 'Black / Gold');
+    } else if (image.colourway) {
+      assert.ok(p.colourways.split(';').map(value => value.trim()).includes(image.colourway));
     }
   }
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 43, 73]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 33, 34, 43, 56, 57, 73]);
   assert.deepEqual(products.find(p => p.id === 1).images.map(image => image.src), [
     '/images/ombre-indigo.png', '/images/ombre-blue.png',
   ]);
   assert.deepEqual(products.find(p => p.id === 10).images.map(image => image.src), [
     '/images/windrunner-yellow.png', '/images/windrunner-white.png', '/images/windrunner-khaki.png',
   ]);
-  assert.deepEqual(products.find(p => p.id === 43).images, [{
-    src: '/images/fsd-velocity-performance-sports-hijab.jpg',
-    label: 'Black and gold sports hijab with matching performance top',
-  }]);
-  assert.equal(products.find(p => p.id === 43).imageStatus, 'User-supplied main product image');
-  assert.ok(existsSync(new URL('../public/images/fsd-velocity-performance-sports-hijab.jpg', import.meta.url)));
+  assert.deepEqual(products.find(p => p.id === 33).images.map(image => image.src), [
+    '/assets/products/womens-rashguard-hero.png',
+    '/assets/products/womens-rashguard-front.png',
+    '/assets/products/womens-rashguard-back.png',
+    '/assets/products/womens-rashguard-short-sleeve.png',
+    '/assets/products/womens-rashguard-gusset-detail.png',
+    '/assets/products/womens-rashguard-flatlock-detail.png',
+    '/assets/products/womens-rashguard-graphics-detail.png',
+    '/assets/products/womens-rashguard-hem-detail.png',
+    '/assets/products/womens-rashguard-action-1.png',
+    '/assets/products/womens-rashguard-action-2.png',
+    '/assets/products/womens-rashguard-action-3.png',
+    '/assets/products/womens-rashguard-action-4.png',
+    '/assets/products/womens-rashguard-box.png',
+  ]);
+  assert.deepEqual(products.find(p => p.id === 34).images.map(image => image.src), [
+    '/assets/products/strike-shorts-hero.webp',
+    '/assets/products/strike-shorts-black-gold.webp',
+    '/assets/products/strike-shorts-charcoal-electric-lime.webp',
+    '/assets/products/strike-shorts-navy-ice-blue.webp',
+    '/assets/products/strike-shorts-olive-cream.webp',
+    '/assets/products/strike-shorts-front.webp',
+    '/assets/products/strike-shorts-rear.webp',
+    '/assets/products/strike-shorts-side.webp',
+    '/assets/products/strike-shorts-waistband-detail.webp',
+    '/assets/products/strike-shorts-mesh-detail.webp',
+    '/assets/products/strike-shorts-kick-view.webp',
+  ]);
+  assert.deepEqual(products.find(p => p.id === 43).images.map(image => image.src), [
+    '/assets/products/velocity-hijab-main-listing.jpg',
+    '/assets/products/velocity-hijab-front-detail.png',
+    '/assets/products/velocity-hijab-rear-view.png',
+    '/assets/products/velocity-hijab-fabric-ventilation.png',
+    '/assets/products/velocity-hijab-branding-detail.png',
+  ]);
+  assert.deepEqual(products.find(p => p.id === 43).images.map(image => image.label), [
+    'Main Product Listing / Lifestyle Hero',
+    'Front / Hero Detail',
+    'Rear View',
+    'Fabric & Ventilation Detail',
+    'Branding / Gold Crest Detail',
+  ]);
+  assert.equal(products.find(p => p.id === 43).imageStatus, 'Five replacement standalone photos: listing hero plus front, rear, fabric/ventilation, and branding details');
+  assert.ok(products.find(p => p.id === 43).images.every(image =>
+    existsSync(new URL(`../public${image.src}`, import.meta.url))));
+  assert.deepEqual(products.find(p => p.id === 56).images.map(image => image.src), [
+    '/assets/products/signature-duffel-lifestyle.png',
+    '/assets/products/signature-duffel-overview.png',
+    '/assets/products/signature-duffel-shoe-compartment.png',
+    '/assets/products/signature-duffel-interior-organization.png',
+    '/assets/products/signature-duffel-hardware-detail.png',
+  ]);
+  assert.deepEqual(products.find(p => p.id === 57).images.map(image => image.src), [
+    '/assets/products/performance-socks-side.png',
+    '/assets/products/performance-socks-rear.png',
+    '/assets/products/performance-socks-detail.png',
+    '/assets/products/performance-socks-mesh.png',
+  ]);
   assert.deepEqual(products.find(p => p.id === 73).images.map(image => image.src), [
     '/fsd-assets/breeze-set-onyx-black-full-length.webp',
     '/fsd-assets/breeze-set-onyx-black-front.webp',
@@ -118,6 +349,41 @@ test('product images use only supplied assets explicitly mapped to products', ()
   for (const id of [42, 45, 60, 61, 62, 63, 65]) {
     assert.deepEqual(products.find(p => p.id === id).images, []);
   }
+});
+
+test('Velocity update retains its own Black / Gold variant and stays separate from the seven-colourway CORE hijab', () => {
+  const velocity = products.find(product => product.id === 43);
+  const core = products.find(product => product.id === 42);
+  assert.equal(velocity?.name, 'FSD Velocity Sports Hijab');
+  assert.equal(velocity?.alias, 'FSD Velocity Performance Sports Hijab');
+  assert.equal(velocity?.category, "Women's / Performance Headwear");
+  assert.deepEqual(velocity?.alsoShowIn, ['Modest Activewear', 'Sports Hijabs']);
+  assert.equal(velocity?.confirmedPrice, 34.99);
+  assert.equal(velocity?.externalId, 'fsd-velocity-sports-hijab-01');
+  assert.equal(velocity?.currency, 'GBP');
+  assert.equal(velocity?.badge, 'Performance Line');
+  assert.equal(velocity?.colourways, 'Black / Gold');
+  assert.deepEqual(velocity?.images.map(image => image.src), [
+    '/assets/products/velocity-hijab-main-listing.jpg',
+    '/assets/products/velocity-hijab-front-detail.png',
+    '/assets/products/velocity-hijab-rear-view.png',
+    '/assets/products/velocity-hijab-fabric-ventilation.png',
+    '/assets/products/velocity-hijab-branding-detail.png',
+  ]);
+  assert.deepEqual(velocity?.images.map(image => image.label), [
+    'Main Product Listing / Lifestyle Hero',
+    'Front / Hero Detail',
+    'Rear View',
+    'Fabric & Ventilation Detail',
+    'Branding / Gold Crest Detail',
+  ]);
+  assert.ok(velocity?.images.every(image => image.colourway === 'Black / Gold'));
+  assert.equal(core?.colourways, 'Navy/Cyan, Black/Gold, Black/White, Olive/Lime, Dark Grey/Silver, Black/Magenta, Burgundy/Pink');
+  assert.equal(core?.confirmedPrice, 29.99);
+  assert.deepEqual(getVerifiedProductSpecifications(43)?.benefits, velocity?.features);
+  assert.ok(filterProducts("Women's / Performance Headwear").some(product => product.id === 43));
+  assert.ok(filterProducts('Modest Activewear').some(product => product.id === 43));
+  assert.ok(filterProducts('Sports Hijabs').some(product => product.id === 43));
 });
 
 test('image swatches use named mapped colourways and do not invent unknown colours', () => {
@@ -248,6 +514,37 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     assert.equal(mainCaption.textContent, products.find(p => p.id === 10).images[1].label);
     assert.equal(selectedColourway.textContent, products.find(p => p.id === 10).images[1].label);
 
+    click('[data-product]', { dataset: { product: '34' } });
+    const strikeProduct = products.find(product => product.id === 34);
+    const strikeMarkup = element('#dialog-body').innerHTML;
+    assert.match(strikeMarkup, /src="\/assets\/products\/strike-shorts-hero\.webp"/);
+    assert.match(strikeMarkup, /S \/ M \/ L \/ XL \/ XXL/);
+    assert.match(strikeMarkup, /£49\.99/);
+    assert.equal((strikeMarkup.match(/data-catalogue-image-index=/g) ?? []).length, 11);
+    assert.deepEqual(
+      [...strikeMarkup.matchAll(/data-catalogue-colourway-index="(\d+)"\s+data-catalogue-colourway-image-index="(-?\d+)"/g)]
+        .map(([, colourwayIndex, imageIndex]) => [Number(colourwayIndex), Number(imageIndex)]),
+      [[0, 1], [1, 2], [2, 3], [3, 4]],
+    );
+    click('[data-catalogue-colourway-index]', {
+      dataset: { catalogueColourwayIndex: '2', catalogueColourwayImageIndex: '3' },
+      setAttribute() {},
+    });
+    assert.equal(mainImage.src, strikeProduct.images[3].src);
+    assert.equal(mainCaption.textContent, strikeProduct.images[3].label);
+    assert.equal(selectedColourway.textContent, 'Navy & Ice Blue');
+
+    click('[data-product]', { dataset: { product: '74' } });
+    const apexMarkup = element('#dialog-body').innerHTML;
+    assert.match(apexMarkup, /class="catalogue-gallery-placeholders"/);
+    assert.match(apexMarkup, /FSD Apex High-Waisted Compression Leggings/);
+    assert.match(apexMarkup, /£65\.00/);
+    assert.equal((apexMarkup.match(/data-catalogue-gallery-placeholder/g) ?? []).length, 3);
+    assert.match(apexMarkup, /Front Full View/);
+    assert.match(apexMarkup, /Rear Contour View/);
+    assert.match(apexMarkup, /Detail \/ Gold Crest &amp; Waistband/);
+    assert.doesNotMatch(apexMarkup, /apex-leggings-(?:front|rear|detail)\.png|<img\b/);
+
     handlers.get('#close-dialog:click')();
     assert.equal(element('#product-dialog').open, false);
     click('[data-product]', { dataset: { product: '1' } });
@@ -321,6 +618,7 @@ test('approved aliases find unified entries without merging distinct product lin
     ['FSD Modest Longline Training Top / Tunic', 47],
     ['FSD Modest Longline Training Jacket', 48],
     ['FSD Women’s Training Trousers / Joggers', 50],
+    ['FSD Signature Performance Sports Bag', 56],
     ['FSD CARRY Performance Sports Bag', 56],
     ['FSD Strike Terrain Combat Shorts - Olive/Bronze', 34],
   ]) assert.deepEqual(filterProducts('All', alias).map(p => p.id), [id]);
@@ -328,13 +626,14 @@ test('approved aliases find unified entries without merging distinct product lin
   assert.ok(products.some(p => p.id === 16 && p.confirmedPrice === 39.99));
   assert.ok(products.some(p => p.id === 38 && p.confirmedPrice === 39.99));
   assert.ok(products.some(p => p.id === 55 && p.confirmedPrice === 89.99));
-  assert.ok(products.some(p => p.id === 56 && p.confirmedPrice === 79.99));
+  assert.ok(products.some(p => p.id === 56 && p.confirmedPrice === 95));
   assert.equal(filterProducts('All', 'STRIDE').length, 0);
   assert.equal(products.find(p => p.id === 19).confirmedPrice, 44.99);
   assert.equal(Object.hasOwn(products.find(p => p.id === 19), 'suggestedPrice'), false);
   assert.equal(products.find(p => p.id === 34).confirmedPrice, 49.99);
   assert.equal(products.find(p => p.id === 19).colourways, 'Black/Green, Black/Red, Black/Grey, Navy/Blue, Olive/Black, White/Green');
-  assert.match(products.find(p => p.id === 34).colourways, /Signature.*Pulse.*Performance.*Terrain/);
+  assert.equal(products.find(p => p.id === 34).colourways,
+    'Black & Gold; Charcoal & Electric Lime; Navy & Ice Blue; Olive & Cream');
 });
 
 test('approved category placements, coverage and palette exception are consistent', () => {
@@ -345,6 +644,8 @@ test('approved category placements, coverage and palette exception are consisten
   for (const id of [18, 38, 39, 40, 56, 57]) {
     assert.ok(filterProducts('Women’s Performance').some(p => p.id === id));
   }
+  assert.ok(filterProducts('Accessories / Bags').some(p => p.id === 56));
+  assert.ok(filterProducts('Gym Hardware and Accessories').some(p => p.id === 56));
   for (const id of [42, 43, 44, 45]) {
     assert.ok(filterProducts('Modest Activewear').some(p => p.id === id));
     assert.ok(filterProducts('Sports Hijabs').some(p => p.id === id));

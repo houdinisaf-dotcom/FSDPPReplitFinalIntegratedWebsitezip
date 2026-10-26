@@ -131,8 +131,32 @@ The user confirmed that existing inventory and features may be presented as prod
 
 **How to apply:** Remove retired status labels from customer-facing surfaces, retain all product records, and leave absent catalogue values blank. Keep product data and transaction settings unchanged unless separately instructed.
 
+The sports-bag record is an explicit exception to the existing-values-only default: use the latest approved composite’s top gym lifestyle photo as the primary hero and map its four lower panels as separate detail views. Keep the existing listing and its product data; do not create a duplicate.
+
+**Why:** The user approved the top panel as the hero and the four bottom panels as the overview, shoe-compartment, interior-organization, and hardware-detail gallery.
+
+**How to apply:** Limit this image mapping approval to the existing sports-bag record and this composite. Preserve the source composite and existing catalogue details; do not infer approval for unrelated product changes or other composites.
+
+The existing three-pair performance-socks record may use the supplied Crew Socks name, £18 details, and four-view image gallery, while retaining its three-pair pack contents.
+
+**Why:** The user explicitly chose to update the existing three-pair pack rather than create another socks listing.
+
+**How to apply:** Keep one socks record, retain its three-pair quantity, and use the supplied side-profile, rear-heel, crest, and mesh views in that order.
+
 Before requesting another inventory upload, inspect the repository’s catalogue and image-map sources. Product records and aliases may already be present even when the current upload contains only images; a descriptive gallery asset is not automatically an approved product-photo mapping.
 
 **Why:** The user explicitly asked to parse existing repository data and mappings rather than require another upload.
 
 **How to apply:** Search existing product records and explicit asset mappings first. Preserve master values, and do not infer missing products, colourways, specifications, or image assignments from concept labels or filenames.
+
+The existing FSD Strike Men’s Combat Shorts record uses only the four user-confirmed colourways: Black & Gold, Charcoal & Electric Lime, Navy & Ice Blue, and Olive & Cream. Earlier palette names are not current variants.
+
+**Why:** The user explicitly chose to replace the existing colourway list with the four supplied editions to avoid duplicate or conflicting options.
+
+**How to apply:** Keep one product record and show only those four colourways. Earlier names may remain as hidden search aliases, but must not appear as current options. Leave unsupplied material composition unfilled.
+
+FSD Apex High-Waisted Compression Leggings is a separate active product, not a replacement for the existing FSD Women’s Performance Training Leggings. The user approved adding it with a clean image placeholder while its referenced photo files are unavailable.
+
+**Why:** The product was supplied with its own external ID and £65 details; after being told its three named image files were absent, the user chose to add the listing now with placeholders.
+
+**How to apply:** Preserve both leggings records. While photos are absent, show three separate labeled placeholders for front, rear contour, and gold crest/waistband detail. Keep image URLs unmapped until actual files are present.

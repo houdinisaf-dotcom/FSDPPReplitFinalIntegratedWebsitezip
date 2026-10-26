@@ -183,6 +183,42 @@
 #dialog-body .catalogue-selector__thumb span { line-height: 1.35; }
 #dialog-body .catalogue-selector__visual--empty { min-height: 400px; }
 #dialog-body .catalogue-selector__visual--empty .catalogue-placeholder { min-height: 370px; }
+#dialog-body .catalogue-gallery-placeholders {
+  display: grid;
+  width: 100%;
+  min-height: 370px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  gap: 12px;
+}
+#dialog-body .catalogue-gallery-placeholder {
+  display: flex;
+  min-height: 140px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid rgba(212, 175, 55, .24);
+  background: linear-gradient(145deg, rgba(212, 175, 55, .055), rgba(16, 18, 21, .96) 62%);
+}
+#dialog-body .catalogue-gallery-placeholder--primary {
+  min-height: 165px;
+  grid-column: 1 / -1;
+}
+#dialog-body .catalogue-gallery-placeholder span {
+  color: #d4b574;
+  font-size: 9px;
+  letter-spacing: .2em;
+}
+#dialog-body .catalogue-gallery-placeholder strong {
+  color: #e8e0d2;
+  font: 600 17px/1.35 Manrope, sans-serif;
+}
+#dialog-body .catalogue-gallery-placeholder small {
+  color: #a2a9b3;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
 #dialog-body .dialog-copy {
   padding: clamp(38px, 5vw, 58px) clamp(25px, 4vw, 44px);
   background: linear-gradient(145deg, rgba(255,255,255,.02), transparent 50%), #191a1b;
@@ -387,6 +423,11 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
   #dialog-body .catalogue-selector__main img { max-height: 52vh; }
   #dialog-body .catalogue-selector__visual--empty { min-height: 260px; }
   #dialog-body .catalogue-selector__visual--empty .catalogue-placeholder { min-height: 240px; }
+  #dialog-body .catalogue-gallery-placeholders { min-height: 240px; grid-template-columns: 1fr; gap: 8px; }
+  #dialog-body .catalogue-gallery-placeholder,
+  #dialog-body .catalogue-gallery-placeholder--primary { min-height: 90px; grid-column: auto; padding: 14px; }
+  #dialog-body .catalogue-gallery-placeholder { gap: 7px; }
+  #dialog-body .catalogue-gallery-placeholder strong { font-size: 14px; }
   #dialog-body .dialog-copy { padding: 28px 22px; }
   #dialog-body .catalogue-selector__thumb { width: 67px; min-width: 67px; }
   #dialog-body .catalogue-selector__thumb img { height: 48px; }
@@ -562,6 +603,10 @@ main h2[id] { scroll-margin-block-start: 96px; }
   letter-spacing: .09em;
   line-height: 1.45;
   text-transform: uppercase;
+}
+.product-row__badge {
+  color: #D4AF37;
+  font-weight: 700;
 }
 .product-row__copy h3 {
   margin: 0;

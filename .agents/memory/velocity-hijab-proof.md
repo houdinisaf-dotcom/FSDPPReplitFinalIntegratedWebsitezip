@@ -1,14 +1,12 @@
 ---
 name: Velocity hijab proof boundary
-description: Approved asset use and pre-launch limits for the Velocity Performance Sports Hijab page.
+description: User-approved Velocity product details, retained colourway, and the separate older campaign archive.
 ---
 
-The user approved the supplied model-worn campaign image as the primary collection and product image, and supplied separate front-detail, rear, fabric/ventilation, and branding images for the proof. Do not edit these assets or generate a missing view. A later site-wide directive supersedes the earlier customer-facing release-status hold for existing inventory; remove visible status labels and use existing master values only.
+The user approved updating the existing Velocity product with the supplied £34.99 details and active catalogue status, then replacing its gallery with a newer five-photo set: listing hero, front detail, rear view, fabric/ventilation, and gold branding. Keep its existing Black / Gold colourway. The supplied seven-colour CORE hijab is a separate product; never copy its colourways into Velocity or merge the records.
 
-Do not invent missing fit, coverage, fabric, ventilation, performance, care, or sizing information. Leave absent values blank and preserve the master record’s Black / Gold colour and existing price data. Do not change the separate 15-image archive or infer product claims from campaign artwork.
+The user-supplied Velocity description and five features are approved product copy. Composition, care instructions, and sizing were not supplied; leave those values blank. The newly approved five-view gallery is separate from the older 15-image campaign archive, which remains untouched and unintegrated.
 
-The separate 15-image hijab brief and source ZIP are on hold and must remain untouched and unintegrated until the user gives a separate instruction. The earlier temporary authorization to build a private review library was superseded. Preserve the original large screen recording; Replit checkpoints do not cover it, so advise the user to keep a verified external backup before cleanup or rollback.
+**Why:** The user explicitly approved updating the existing Velocity offer, clarified that it must retain its own Black / Gold colourway, confirmed the CORE hijab remains a different record, and selected replacement rather than appending to its existing gallery.
 
-**Why:** The user has explicitly asked to keep the multi-colour brief and files separate again and not integrate them until separate instructions are given.
-
-**How to apply:** Keep the approved Velocity product page and master record unchanged. Do not create derivatives, gallery routes, previews, catalogue entries or other integration work from the 15-image archive until the user explicitly reauthorizes it. Keep checkout and publication disabled.
+**How to apply:** Treat the latest five-photo gallery as the current mapped gallery; retain older image files without listing them as current product views. Keep CORE colours and the old campaign archive separate; do not invent missing composition, care, or size information. Product publication approval does not itself authorize changes to payment configuration.

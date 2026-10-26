@@ -340,7 +340,7 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent === "Performance Hijabs"');
   await click('#fsd-mega-menu .fsd-feature-media-action');
   await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-subcategory-index=\\"0\\"][aria-pressed=\\"true\\"]")');
-  assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-modal-hero__media img")?.getAttribute("src")'), '/images/fsd-velocity-performance-sports-hijab.jpg');
+  assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-modal-hero__media img")?.getAttribute("src")'), '/assets/products/velocity-hijab-main-listing.jpg');
   await key('Escape');
   await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
 

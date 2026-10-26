@@ -4,14 +4,12 @@ import { outlineIcon } from './brand/outline-icons.js';
 
 export const CLIENT_BAG_STORAGE_KEY = 'fsd-client-bag-v1';
 const MAX_QUANTITY = 99;
-const referenceOnlyProductIds = new Set([43]);
 
 export function canAddToBag(product) {
   const id = Number(product?.id);
   const price = Number(product?.confirmedPrice);
   const priceNotes = `${product?.priceBasis ?? ''} ${product?.notes ?? ''}`;
   return Number.isInteger(id) &&
-    !referenceOnlyProductIds.has(id) &&
     Number.isFinite(price) &&
     price > 0 &&
     !/\b(?:reference only|not for sale)\b/i.test(priceNotes);
