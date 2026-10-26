@@ -1009,6 +1009,79 @@ summary {
 
 .showroom-feature-card { border-radius: 2px; }
 
+/* Consistent champagne-gold micro-interactions for product and catalogue cards. */
+.shop .product-card,
+.fsd-product-card,
+.showroom-feature-card {
+  transition:
+    transform var(--fsd-motion-standard) var(--fsd-ease-out),
+    border-color var(--fsd-motion-standard) ease,
+    background-color var(--fsd-motion-standard) ease,
+    box-shadow var(--fsd-motion-standard) ease;
+}
+
+.product-card .product-image img,
+.fsd-product-card .fsd-product-media img,
+.showroom-feature-card .showroom-feature-media img {
+  transition: transform 650ms var(--fsd-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shop .product-card:hover,
+  .fsd-product-card:hover,
+  .showroom-feature-card:hover {
+    border-color: rgba(212, 175, 55, .55);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .24), 0 0 24px rgba(212, 175, 55, .15);
+    transform: translateY(-4px);
+  }
+
+  .product-card:hover .product-image img,
+  .fsd-product-card:hover .fsd-product-media img,
+  .showroom-feature-card:hover .showroom-feature-media img {
+    transform: scale(1.04);
+  }
+}
+
+/* Outline UI icons retain the same thin gold stroke across navigation, bag, and filters. */
+.fsd-header .fsd-icon,
+.fsd-mega-menu .fsd-icon,
+.fsd-bag-dialog .fsd-icon,
+.catalogue-control-panel .fsd-icon,
+.catalogue-pagination .fsd-icon,
+.catalogue-chip .fsd-icon,
+.product-row__action .fsd-icon,
+.fsd-nav-catalogue .fsd-icon {
+  color: #D4AF37;
+  stroke-width: 1.5;
+}
+
+.fsd-nav-catalogue button:hover {
+  background: rgba(212, 175, 55, .12);
+  color: #f1e2c4;
+}
+
+.fsd-nav-catalogue button:hover > .fsd-icon { color: #D4AF37; }
+
+.fsd-mobile-toggle i {
+  height: 1.5px;
+  background: #D4AF37;
+}
+
+@media (hover: none) {
+  .shop .product-card:hover,
+  .fsd-product-card:hover,
+  .showroom-feature-card:hover {
+    box-shadow: none;
+    transform: none;
+  }
+
+  .product-card:hover .product-image img,
+  .fsd-product-card:hover .fsd-product-media img,
+  .showroom-feature-card:hover .showroom-feature-media img {
+    transform: none;
+  }
+}
+
 .header.fsd-header {
   border-bottom-color: rgba(225, 214, 192, .16);
   background: rgba(9, 10, 12, .93);
