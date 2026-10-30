@@ -137,6 +137,10 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
 
   const destination = item?.href || group?.href;
   if (destination) {
+    if (destination === '/investor.html') {
+      window.location.assign(destination);
+      return;
+    }
     if (destination.replace(/\/+$/, '') === FSD_STORY_PATH) {
       const storyUrl = new URL(FSD_STORY_PATH, window.location.origin);
       if (window.location.pathname.replace(/\/+$/, '') !== FSD_STORY_PATH || window.location.hash) {

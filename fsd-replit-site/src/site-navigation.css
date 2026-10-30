@@ -76,7 +76,8 @@
   margin: 0 auto;
 }
 
-.fsd-primary-trigger {
+.fsd-primary-trigger,
+.fsd-primary-link {
   position: relative;
   display: inline-flex;
   min-height: 48px;
@@ -95,7 +96,12 @@
   transition: color 180ms ease;
 }
 
-.fsd-primary-trigger::after {
+.fsd-primary-link {
+  text-decoration: none;
+}
+
+.fsd-primary-trigger::after,
+.fsd-primary-link::after {
   position: absolute;
   right: 0;
   bottom: 11px;
@@ -111,14 +117,18 @@
 .fsd-primary-trigger:hover,
 .fsd-primary-trigger:focus-visible,
 .fsd-primary-trigger.is-active,
-.fsd-primary-trigger.is-current {
+.fsd-primary-trigger.is-current,
+.fsd-primary-link:hover,
+.fsd-primary-link:focus-visible {
   color: #e5c99a;
 }
 
 .fsd-primary-trigger:hover::after,
 .fsd-primary-trigger:focus-visible::after,
 .fsd-primary-trigger.is-active::after,
-.fsd-primary-trigger.is-current::after {
+.fsd-primary-trigger.is-current::after,
+.fsd-primary-link:hover::after,
+.fsd-primary-link:focus-visible::after {
   transform: scaleX(1);
 }
 
@@ -695,6 +705,11 @@ body.fsd-mobile-nav-open {
     letter-spacing: 0.13em;
   }
 
+  .fsd-primary-link {
+    font-size: 9px;
+    letter-spacing: 0.13em;
+  }
+
   .fsd-header-note {
     display: none;
   }
@@ -811,6 +826,11 @@ body.fsd-mobile-nav-open {
     font-size: 9px;
     letter-spacing: 0.11em;
     text-align: left;
+  }
+
+  .fsd-mobile-primary--link {
+    color: #d8d4cb;
+    text-decoration: none;
   }
 
   .fsd-mobile-primary.is-active,

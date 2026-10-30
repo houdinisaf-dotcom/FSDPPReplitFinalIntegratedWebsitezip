@@ -1,9 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { categories, filterProducts, products } from '../src/catalogue-data.js';
-import { createNavigationModel, getNavigationFeature, primaryNavigation } from '../src/site-navigation.js';
+import {
+  createNavigationModel,
+  getNavigationFeature,
+  primaryNavigation,
+  renderNavigationHeader,
+} from '../src/site-navigation.js';
 
 const menu = createNavigationModel();
 
@@ -24,6 +29,18 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
     'house',
     'private-access',
   ]);
+});
+
+test('Investor Relations is directly linked and the funding tables stay in normal page flow', () => {
+  const header = renderNavigationHeader('<span>FSD</span>');
+  const investorPage = readFileSync(new URL('../public/investor.html', import.meta.url), 'utf8');
+  const financials = investorPage.match(/<section id="financials">([\s\S]*?)<\/section>/)?.[1] ?? '';
+
+  assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">Investor Relations<\/a>/);
+  assert.match(financials, /Staged capital pathway/);
+  assert.match(financials, /Proposed £75,000 use of funds/);
+  assert.match(financials, /Financial snapshot: downside disclosed/);
+  assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
 });
 
 test('Shop foregrounds collection groups and removes the redundant All Products group', () => {
@@ -192,7 +209,7 @@ test('House destinations expose the story route and do not claim proposed locati
     'INVESTOR RELATIONS',
   ]);
   assert.ok(house.groups.filter(group => group.href).every(group =>
-    ['/story', '#fsd-division-global', '#performance-linked-partnerships-security'].includes(group.href)));
+    ['/story', '#fsd-division-global', '#performance-linked-partnerships-security', '/investor.html'].includes(group.href)));
   assert.equal(house.groups[0].items[0].status, 'EDITORIAL / BRAND PRINCIPLES');
   assert.equal(house.groups[0].items[0].chapterCount, '04 FOUNDATIONAL CHAPTERS');
   assert.equal(house.groups[0].items[0].houseCodeCount, '05 WORKING PRINCIPLES');
@@ -203,7 +220,8 @@ test('House destinations expose the story route and do not claim proposed locati
   assert.equal(house.groups[1].sourceGroupIndex, 0);
   assert.equal(house.groups[2].href, '');
   assert.equal(house.groups[2].sourceGroupIndex, 1);
-  assert.equal(house.groups[5].navigationUnavailable, true);
+  assert.equal(house.groups[5].href, '/investor.html');
+  assert.equal(house.groups[5].navigationUnavailable, false);
 });
 
 test('Private Access remains informational and collects no sign-ups', () => {

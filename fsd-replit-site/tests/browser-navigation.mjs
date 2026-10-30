@@ -365,7 +365,7 @@ try {
   };
 
   const closeRouteAndReset = async () => {
-    if (await evaluate('location.pathname.startsWith("/__catalogue-preview/")')) {
+    if (await evaluate('location.pathname === "/investor.html" || location.pathname.startsWith("/__catalogue-preview/")')) {
       await send('Page.navigate', { url: `https://${domain}/` });
       await waitFor('!!document.querySelector(".fsd-primary-nav")');
     }
@@ -391,6 +391,12 @@ try {
     const available = await evaluate(`document.querySelector(${JSON.stringify(selector)})?.dataset.navAvailable === "true"`);
     const kind = routeKind({ menu, group, item });
     assert.equal(available, kind !== 'preview', `${menu.label}: ${item?.title || group.title} availability metadata`);
+
+    if ((item?.href || group.href) === '/investor.html') {
+      await click(selector);
+      await waitFor('location.pathname === "/investor.html" && document.querySelector("#financials h2")?.textContent.includes("Funding and Financials")');
+      return;
+    }
 
     if (kind === 'draft') {
       await waitFor(`(() => {
@@ -733,6 +739,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await click('[data-nav-mobile-toggle]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "primary" && document.body.classList.contains("fsd-mobile-nav-open")');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-primary-list [data-nav-primary]").length'), 6);
+  assert.equal(await evaluate('document.querySelector(".fsd-mobile-primary-list [data-nav-investor]")?.getAttribute("href")'), '/investor.html');
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'groups');
   await click('#fsd-mega-menu [data-nav-group="0"]');

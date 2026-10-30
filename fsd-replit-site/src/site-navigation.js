@@ -333,9 +333,8 @@ function makeHouseGroups(divisions) {
       'A proposed programme overview. Participation, measurement, security controls, and terms are not confirmed.'),
     staticGroup('global-vision', 'GLOBAL VISION', '#fsd-division-global',
       global?.description || 'FSD Global.'),
-    staticGroup('investor-relations', 'INVESTOR RELATIONS', '',
-      'Investor information requires approved content before launch.', null, 0,
-      { navigationUnavailable: true }),
+    staticGroup('investor-relations', 'INVESTOR RELATIONS', '/investor.html',
+      'Investor relations, proposed funding pathway, planning assumptions, and roadmap.'),
   ];
 }
 
@@ -548,6 +547,7 @@ function hasVerifiedDestination({
 
   const explicitTarget = item?.href || group?.href;
   if (explicitTarget) {
+    if (explicitTarget === '/investor.html') return true;
     if (explicitTarget.replace(/\/+$/, '') === FSD_STORY_PATH) {
       return Boolean(
         ownerDocument.querySelector(FSD_STORY_HASH)
@@ -703,12 +703,16 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
 function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId = '') {
   const group = menu.groups[activeGroupIndex] || menu.groups[0];
   const item = group?.items?.[activeItemIndex] || group?.items?.[0];
-  const mobilePrimaries = primaryNavigation.map(entry => `<button type="button"
+  const mobilePrimaries = `${primaryNavigation.map(entry => `<button type="button"
       class="fsd-mobile-primary${entry.id === menu.id ? ' is-active' : ''}"
       data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}"
       ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>
     ${escapeHTML(entry.label)}<span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
-  </button>`).join('');
+  </button>`).join('')}
+    <a class="fsd-mobile-primary fsd-mobile-primary--link" data-nav-investor
+      href="/investor.html">Investor Relations
+      <span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
+    </a>`;
 
   return `<div class="fsd-mega-inner">
     <div class="fsd-mega-heading">
@@ -753,6 +757,7 @@ export function renderNavigationHeader(brandMarkup) {
   const primaryItems = primaryNavigation.map(item => `<button type="button"
       class="fsd-primary-trigger" data-nav-primary="${item.id}" aria-controls="fsd-mega-menu"
       aria-expanded="false">${escapeHTML(item.label)}</button>`).join('');
+  const investorLink = '<a class="fsd-primary-link" data-nav-investor href="/investor.html">Investor Relations</a>';
 
   return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE</div>
     <div class="fsd-navigation-shell" data-navigation-shell>
@@ -760,7 +765,7 @@ export function renderNavigationHeader(brandMarkup) {
         <a class="brand fsd-brand" href="#home" aria-label="FSD Home">
           ${brandMarkup}
         </a>
-        <nav class="fsd-primary-nav" aria-label="Main navigation">${primaryItems}</nav>
+        <nav class="fsd-primary-nav" aria-label="Main navigation">${primaryItems}${investorLink}</nav>
         <span class="fsd-header-note">UNITED KINGDOM <i aria-hidden="true">·</i> FSD</span>
         <button type="button" class="fsd-search-trigger" data-search-open
           aria-label="Search products" aria-haspopup="dialog" aria-controls="fsd-search-dialog"
