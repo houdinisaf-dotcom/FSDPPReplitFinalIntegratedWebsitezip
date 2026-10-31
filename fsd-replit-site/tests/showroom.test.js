@@ -67,7 +67,7 @@ test('women’s sub-lines cover the existing catalogue without unfilled concept 
   const leggings = groupProducts(women, products, women.subcategories.find(subcategory =>
     subcategory.title === 'Performance Leggings & Strikeflex Trousers',
   ));
-  assert.deepEqual(leggings.map(product => product.id).sort((a, b) => a - b), [40, 41, 74]);
+  assert.deepEqual(leggings.map(product => product.id).sort((a, b) => a - b), [40, 41, 74, 75]);
   assert.ok(women.subcategories.every(subcategory => !subcategory.concepts?.length));
   const sublineProductIds = [...new Set(women.subcategories.flatMap(subcategory =>
     groupProducts(women, products, subcategory).map(product => product.id),

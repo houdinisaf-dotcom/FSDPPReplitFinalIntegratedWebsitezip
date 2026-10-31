@@ -15,16 +15,16 @@ import { ourStorySection } from '../src/story-section.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from '../src/flagship-pages.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
-  assert.equal(master.length, 74);
-  assert.equal(new Set(master.map(p => p.id)).size, 74);
+  assert.equal(master.length, 75);
+  assert.equal(new Set(master.map(p => p.id)).size, 75);
   for (let id = 1; id <= 68; id++) assert.ok(master.some(p => p.id === id));
-  assert.equal(products.length, 68);
+  assert.equal(products.length, 69);
   assert.deepEqual(heldProducts.map(p => p.id), [36, 37, 64, 68]);
   assert.deepEqual(retiredProducts.map(p => p.id), [21, 53]);
   assert.equal(categories.length, 15);
   assert.ok(products.every(p => !heldProducts.some(h => h.id === p.id)));
   assert.ok(products.every(p => !retiredProducts.some(r => r.id === p.id)));
-  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 39);
+  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 40);
   assert.ok(products.every(p => !Object.hasOwn(p, 'suggestedPrice')));
 });
 
@@ -238,6 +238,64 @@ test('Apex leggings are added separately with the supplied £65 data and an expl
   assert.equal(existingFlexRecord?.confirmedPrice, 49.99);
 });
 
+test('FLEX Sculpt Leggings are a separate £65 listing with five colourways and a collage-free gallery', () => {
+  const flex = products.find(product => product.id === 75);
+  const existingFlexRecord = products.find(product => product.id === 40);
+  const apex = products.find(product => product.id === 74);
+
+  assert.equal(products.filter(product => product.externalId === 'fsd-flex-high-waisted-sculpt-leggings').length, 1);
+  assert.equal(flex?.name, 'FLEX — High-Waisted Sculpt Leggings');
+  assert.equal(flex?.category, "Women's / Performance Bottoms");
+  assert.deepEqual(flex?.alsoShowIn, ['Women’s Performance']);
+  assert.equal(flex?.audience, 'Women’s');
+  assert.equal(flex?.publicationStatus, 'Active');
+  assert.equal(flex?.confirmedPrice, 65);
+  assert.equal(flex?.currency, 'GBP');
+  assert.deepEqual(priceInfo(flex), { label: '', value: '£65.00' });
+  assert.equal(flex?.badge, 'Sculpt Series');
+  assert.equal(flex?.sizes, 'XS; S; M; L; XL; XXL');
+  assert.equal(flex?.colourways, 'Obsidian Black; Sage Green; Dusty Rose; Espresso Brown; Teal');
+  assert.deepEqual(flex?.colourwayPalette.map(({ name, primary, accent }) => ({ name, primary, accent })), [
+    { name: 'Obsidian Black', primary: '#0A0A0A', accent: '#D4AF37' },
+    { name: 'Sage Green', primary: '#6B7A68', accent: '#D4AF37' },
+    { name: 'Dusty Rose', primary: '#C28E92', accent: '#D4AF37' },
+    { name: 'Espresso Brown', primary: '#4A3B32', accent: '#D4AF37' },
+    { name: 'Teal', primary: '#2D6873', accent: '#D4AF37' },
+  ]);
+  assert.equal(flex?.images.length, 16);
+  assert.deepEqual(flex?.images.map(({ label }) => label), [
+    'Obsidian Black / Front Lifestyle Hero',
+    'Colourway / Obsidian Black',
+    'Colourway / Sage Green',
+    'Colourway / Dusty Rose',
+    'Colourway / Espresso Brown',
+    'Colourway / Teal',
+    'Obsidian Black / Rear View',
+    'Sage Green / Seated Lifestyle View',
+    'Sage Green / Rear Contour View',
+    'Dusty Rose / Rear Lifestyle View',
+    'Espresso Brown / Rear View',
+    'Espresso Brown / Side Pocket Detail',
+    'Teal / Rear View',
+    'Technical Detail / Side Phone Pocket',
+    'Technical Detail / Fabric Texture',
+    'Technical Detail / Flatlock Seams',
+  ]);
+  for (const colourway of ['Obsidian Black', 'Sage Green', 'Dusty Rose', 'Espresso Brown', 'Teal']) {
+    assert.ok(flex?.images.some(image => image.colourway === colourway), `${colourway} should have a mapped image`);
+  }
+  assert.deepEqual(getVerifiedProductSpecifications(75)?.benefits, flex?.features);
+  assert.ok(imageSwatchBackground('Teal', flex?.colourwayPalette));
+  assert.ok(filterProducts("Women's / Performance Bottoms").some(product => product.id === 75));
+  assert.ok(filterProducts('All', 'FLEX — High-Waisted Sculpt Leggings').some(product => product.id === 75));
+  assert.ok(flex?.images.every(image => image.src.endsWith('.webp')));
+  assert.ok(flex?.images.every(image => existsSync(new URL(`../public${image.src}`, import.meta.url))));
+  assert.equal(existingFlexRecord?.name, "FSD Women's Performance Training Leggings");
+  assert.equal(existingFlexRecord?.confirmedPrice, 49.99);
+  assert.equal(apex?.name, 'FSD Apex High-Waisted Compression Leggings');
+  assert.equal(apex?.confirmedPrice, 65);
+});
+
 test('the public Breeze set stays distinct from the existing overshirt and is reachable from Women’s modest collections', () => {
   const set = products.find(product => product.id === 73);
   const existingOvershirt = products.find(product => product.id === 49);
@@ -272,7 +330,7 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 11);
+  assert.equal(products.filter(p => p.images.length).length, 12);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
@@ -285,7 +343,7 @@ test('colourways share one record, verified image references exist, and unknown 
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 33, 34, 43, 52, 56, 57, 70, 71, 73]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 33, 34, 43, 52, 56, 57, 70, 71, 73, 75]);
   assert.deepEqual(products.find(p => p.id === 1).images.map(image => image.src), [
     '/images/ombre-indigo.png', '/images/ombre-blue.png',
   ]);

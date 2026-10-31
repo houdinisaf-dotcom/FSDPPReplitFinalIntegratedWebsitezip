@@ -83,11 +83,11 @@ Avoid the exact visible phrase “in development” across the public site.
 
 **How to apply:** Use honest pre-launch or proposed-concept wording instead, without implying that a product is available to buy.
 
-For the Women’s Collection, FSD FLEX leggings and the Premium Zip-Neck Performance Top are distinct products. The user explicitly identified separate supplied image groups as the Premium Zip-Neck Performance Top and “FSD FLEX — High-Waisted Sculpt Leggings”; treat these as image-group identities only, not verified product data or authorization to replace/map a master record. The sports bra shown with FLEX leggings is not thereby confirmed as a bundle. Do not rename the top to AEROFORGE or assign either group to an existing master record without separate confirmation. BREEZE remains tied to its existing master product; coordinated outfit references are not a new SKU unless confirmed.
+FSD FLEX — High-Waisted Sculpt Leggings is approved as a separate active £65 catalogue listing with sizes XS–XXL and the five specified colourways. Keep it distinct from both FSD Women’s Performance Training Leggings and FSD Apex High-Waisted Compression Leggings. The sports bra shown in the FLEX photos is not confirmed as part of the product.
 
-**Why:** The user’s collection brief explicitly distinguishes the top from AEROFORGE, calls BREEZE an existing product, and requires auditing coordinated outfit references before creating pages. Later captions identify separate image groups as the top and FLEX leggings but do not approve master-record changes or a product bundle.
+**Why:** The user supplied the product data and photos, explicitly requested the five colourways and a collage-free gallery, then chose to add FLEX as a separate listing.
 
-**How to apply:** Use the user-provided names for their respective image groups only. Keep previews private and draft-only, preserve source imagery and master catalogue data, and leave product claims, garment-logo fidelity, bundle status, and master-record association pending. Do not enable checkout or publish.
+**How to apply:** Keep the other leggings records intact. Map the approved standalone FLEX photos and individual technical-board crops only; never put the full collage board in the product gallery or imply the pictured sports bra is included.
 
 Mega-menu previews may use only one clean, standalone image with an explicit exact item match from the uploaded asset library. Items without an exact verified match stay image-free; do not use category-derived, visually similar, collage, or generic placeholder imagery. This navigation rule does not approve catalogue photography or product claims.
 

@@ -1287,5 +1287,45 @@
     ],
     "Specification status": "Approved",
     "Notes": "Keep separate from the existing FSD Women’s Performance Training Leggings record. The supplied image paths are /assets/products/apex-leggings-front.png, /assets/products/apex-leggings-rear.png, and /assets/products/apex-leggings-detail.png; files are not in the project, so do not map them until uploaded."
+  },
+  {
+    "id": 75,
+    "Publication status": "Active",
+    "Product name": "FLEX — High-Waisted Sculpt Leggings",
+    "Category": "Women's / Performance Bottoms",
+    "Also show in": "Women’s Performance",
+    "Audience": "Women’s",
+    "Price (£) confirmed": "65.00",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Obsidian Black; Sage Green; Dusty Rose; Espresso Brown; Teal",
+    "Colourway primary": "#0A0A0A",
+    "Colourway accent": "#D4AF37",
+    "Colourway palette": [
+      { "name": "Obsidian Black", "primary": "#0A0A0A", "accent": "#D4AF37", "image": "/assets/products/flex-leggings-obsidian-pocket.webp" },
+      { "name": "Sage Green", "primary": "#6B7A68", "accent": "#D4AF37", "image": "/assets/products/flex-leggings-sage-front.webp" },
+      { "name": "Dusty Rose", "primary": "#C28E92", "accent": "#D4AF37", "image": "/assets/products/flex-leggings-dusty-rose-front.webp" },
+      { "name": "Espresso Brown", "primary": "#4A3B32", "accent": "#D4AF37", "image": "/assets/products/flex-leggings-espresso-front.webp" },
+      { "name": "Teal", "primary": "#2D6873", "accent": "#D4AF37", "image": "/assets/products/flex-leggings-teal-front.webp" }
+    ],
+    "Collection line": "",
+    "Image status": "Standalone colourway views and detail crops mapped; composite boards excluded",
+    "Source": "User-supplied product metadata and uploaded product images",
+    "Also appears as": "",
+    "Alias status": "",
+    "Currency": "GBP",
+    "External ID": "fsd-flex-high-waisted-sculpt-leggings",
+    "Badge": "Sculpt Series",
+    "Description": "Engineered for uncompromising support, contour-sculpting definition, and everyday versatility. Crafted from high-density, squat-proof technical fabric featuring a supportive high-waisted band, flattering V-seam rear architecture, and convenient side pocket utility finished with Satin Champagne Gold branding.",
+    "Sizes": "XS; S; M; L; XL; XXL",
+    "Features": [
+      "Supportive high-waist compression fit that sculpts and stays in place",
+      "Flattering V-seam rear architecture designed for enhanced definition",
+      "Convenient side phone/card pocket utility",
+      "Squat-proof, highly opaque, moisture-wicking 4-way stretch fabric",
+      "Precision-engineered flatlock seams for zero chaffing and maximum durability",
+      "Signature Satin Champagne Gold minimalist crest branding"
+    ],
+    "Specification status": "Approved",
+    "Notes": "Separate listing; preserve the existing FSD Women’s Performance Training Leggings and FSD Apex High-Waisted Compression Leggings records."
   }
 ]

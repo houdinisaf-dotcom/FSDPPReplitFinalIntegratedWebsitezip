@@ -20,6 +20,19 @@ const imageReferences = {
     { src: '/assets/products/strike-shorts-mesh-detail.webp', label: 'Detail / Mesh Panel & Trim' },
     { src: '/assets/products/strike-shorts-kick-view.webp', label: 'Training Kick View' },
   ],
+  'FLEX — High-Waisted Sculpt Leggings': [
+    { src: '/assets/products/flex-leggings-obsidian-front.webp', label: 'Obsidian Black / Front Lifestyle Hero', colourway: 'Obsidian Black' },
+    { src: '/assets/products/flex-leggings-obsidian-rear.webp', label: 'Obsidian Black / Rear View', colourway: 'Obsidian Black' },
+    { src: '/assets/products/flex-leggings-sage-seated.webp', label: 'Sage Green / Seated Lifestyle View', colourway: 'Sage Green' },
+    { src: '/assets/products/flex-leggings-sage-rear.webp', label: 'Sage Green / Rear Contour View', colourway: 'Sage Green' },
+    { src: '/assets/products/flex-leggings-dusty-rose-rear.webp', label: 'Dusty Rose / Rear Lifestyle View', colourway: 'Dusty Rose' },
+    { src: '/assets/products/flex-leggings-espresso-rear.webp', label: 'Espresso Brown / Rear View', colourway: 'Espresso Brown' },
+    { src: '/assets/products/flex-leggings-espresso-pocket.webp', label: 'Espresso Brown / Side Pocket Detail', colourway: 'Espresso Brown' },
+    { src: '/assets/products/flex-leggings-teal-rear.webp', label: 'Teal / Rear View', colourway: 'Teal' },
+    { src: '/assets/products/flex-leggings-detail-pocket.webp', label: 'Technical Detail / Side Phone Pocket' },
+    { src: '/assets/products/flex-leggings-detail-fabric.webp', label: 'Technical Detail / Fabric Texture' },
+    { src: '/assets/products/flex-leggings-detail-flatlock-seams.webp', label: 'Technical Detail / Flatlock Seams' },
+  ],
   "FSD Women's MMA Performance Rash Guard": [
     { src: '/assets/products/womens-rashguard-hero.png', label: 'Hero Lifestyle View', colourway: 'Obsidian & Satin Gold' },
     { src: '/assets/products/womens-rashguard-front.png', label: 'Front / Long Sleeve Technical View', colourway: 'Obsidian & Satin Gold' },
@@ -183,6 +196,10 @@ export const verifiedProductSpecifications = Object.freeze({
   74: {
     approvalStatus: 'verified',
     benefits: products.find(product => product.id === 74)?.features ?? [],
+  },
+  75: {
+    approvalStatus: 'verified',
+    benefits: products.find(product => product.id === 75)?.features ?? [],
   },
 });
 

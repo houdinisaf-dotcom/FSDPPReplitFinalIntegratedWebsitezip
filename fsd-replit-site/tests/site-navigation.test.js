@@ -70,7 +70,7 @@ test('Shop collection filters contain current products and preserve audience sco
   const mens = filterProducts('All', '', 'All', 'mens-luxury-performance');
   const womens = filterProducts('All', '', 'All', 'womens-modest-combat');
   assert.ok(mens.length > 0);
-  assert.equal(womens.length, 19);
+  assert.equal(womens.length, 20);
   assert.ok(womens.every(product => product.audience === 'Women’s'));
 });
 

@@ -31,7 +31,7 @@ export const collectionDivisions = [
           { title: 'Women’s MMA Rash Guard', productTerms: ['MMA Performance Rash Guard'] },
           { title: 'Performance Training Tops', productTerms: ['Performance Training Top', 'Performance Top'] },
           { title: 'Longline Tunics & Training Jackets', productTerms: ['FSD Modest Longline Training Top / Tunic', 'FSD Modest Longline Training Jacket'] },
-          { title: 'Performance Leggings & Strikeflex Trousers', productTerms: ['Performance Training Leggings', 'Apex High-Waisted Compression Leggings', 'Strikeflex Women’s Training Trousers'] },
+          { title: 'Performance Leggings & Strikeflex Trousers', productTerms: ['Performance Training Leggings', 'Apex High-Waisted Compression Leggings', 'FLEX — High-Waisted Sculpt Leggings', 'Strikeflex Women’s Training Trousers'] },
           { title: 'Modest Outer Layers', productTerms: ['Aegis Modest Performance Gilet', 'Lightweight Modest Training Overshirt'] },
           { title: 'FSD Modest Flow Training Trousers', productTerms: ['FSD Modest Flow Training Trousers'] },
           { title: 'FSD Breeze Set', productTerms: ['FSD Breeze Overshirt & Engineered Leggings Set'] },
