@@ -1,4 +1,13 @@
+:root {
+  --fsd-navigation-announcement-height: 25px;
+  --fsd-navigation-shell-height: 80px;
+  --fsd-navigation-stack-height: 105px;
+}
+
 .announcement.fsd-announcement {
+  position: sticky;
+  top: 0;
+  z-index: 61;
   min-height: 25px;
   padding: 6px 16px;
   border-bottom: 1px solid rgba(199, 169, 111, 0.18);
@@ -29,11 +38,18 @@
 }
 
 .fsd-navigation-shell {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: var(--fsd-navigation-announcement-height);
+  right: 0;
+  left: 0;
   z-index: 60;
   width: 100%;
   background: #090a0c;
+}
+
+.fsd-navigation-spacer {
+  height: var(--fsd-navigation-shell-height);
+  pointer-events: none;
 }
 
 .header.fsd-header {
@@ -736,6 +752,12 @@ body.fsd-mobile-nav-open {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --fsd-navigation-announcement-height: 23px;
+    --fsd-navigation-shell-height: 108px;
+    --fsd-navigation-stack-height: 131px;
+  }
+
   .header.fsd-header .fsd-brand-logo {
     width: 98px;
     max-height: 52px;

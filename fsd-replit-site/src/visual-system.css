@@ -25,7 +25,7 @@
   --fsd-glass-blur: 16px;
   --fsd-display: Manrope, "DM Sans", sans-serif;
   --fsd-body: "DM Sans", sans-serif;
-  scroll-padding-top: 92px;
+  scroll-padding-top: var(--fsd-navigation-stack-height, 105px);
 }
 
 html {
@@ -692,7 +692,7 @@ summary {
   :root {
     --fsd-glass-blur: 16px;
     --fsd-glass-fill: rgba(13, 14, 16, .97);
-    scroll-padding-top: 76px;
+    scroll-padding-top: var(--fsd-navigation-stack-height, 131px);
   }
   .hero { min-height: min(760px, calc(100svh - 92px)); }
   .hero-content { width: calc(100% - 40px); }

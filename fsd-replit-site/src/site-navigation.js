@@ -814,7 +814,8 @@ export function renderNavigationHeader(brandMarkup) {
       <section class="fsd-mega-menu fsd-glass-surface" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
         <div data-nav-content></div>
       </section>
-    </div>`;
+    </div>
+    <div class="fsd-navigation-spacer" aria-hidden="true"></div>`;
 }
 
 export function mountNavigation({

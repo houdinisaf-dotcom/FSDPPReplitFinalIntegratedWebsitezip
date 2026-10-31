@@ -234,9 +234,24 @@ try {
   assert.ok(await evaluate('parseFloat(getComputedStyle(document.querySelector(".fsd-home-hero h1")).animationDuration) < .001'));
   assert.equal(await evaluate('document.querySelector(".header.fsd-header").classList.contains("fsd-glass-surface")'), true);
   assert.equal(await evaluate('document.querySelector(".fsd-mega-menu").classList.contains("fsd-glass-surface")'), true);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-navigation-shell")).position'), 'fixed');
+  assert.ok(await evaluate(`(() => {
+    const announcement = document.querySelector(".announcement.fsd-announcement").getBoundingClientRect();
+    const shell = document.querySelector(".fsd-navigation-shell").getBoundingClientRect();
+    const spacer = document.querySelector(".fsd-navigation-spacer").getBoundingClientRect();
+    return Math.abs(announcement.top) < 1
+      && Math.abs(shell.top - announcement.height) < 1
+      && Math.abs(spacer.height - shell.height) < 1;
+  })()`), 'The top banner, fixed navigation and spacer should align without overlap.');
   await evaluate('window.scrollTo(0, document.querySelector("#universe").getBoundingClientRect().top + window.scrollY + 120)');
   await waitFor('window.scrollY > 0');
-  assert.ok(await evaluate('Math.abs(document.querySelector(".fsd-navigation-shell").getBoundingClientRect().top) < 1'));
+  assert.ok(await evaluate(`(() => {
+    const announcement = document.querySelector(".announcement.fsd-announcement").getBoundingClientRect();
+    const shell = document.querySelector(".fsd-navigation-shell").getBoundingClientRect();
+    return getComputedStyle(document.querySelector(".fsd-navigation-shell")).position === "fixed"
+      && Math.abs(announcement.top) < 1
+      && Math.abs(shell.top - announcement.height) < 1;
+  })()`));
   await evaluate('window.scrollTo(0, 0)');
   await waitFor('window.scrollY === 0');
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
@@ -393,15 +408,21 @@ try {
     const kind = routeKind({ menu, group, item });
     assert.equal(available, kind !== 'preview', `${menu.label}: ${item?.title || group.title} availability metadata`);
 
-    if ((item?.href || group.href) === '/investor.html') {
+    const destination = item?.href || group.href;
+    if (destination === '/investor.html' || destination?.startsWith('/investor.html#')) {
       await click(selector);
-      await waitFor('location.pathname === "/investor.html" && document.querySelector("#financials h2")?.textContent.includes("Funding and Financials")');
+      await waitFor('location.pathname === "/investor.html" && document.querySelector("#financials h2")?.textContent.includes("Financials & Downside Disclosed")');
       return;
     }
 
-    if ((item?.href || group.href) === '/the-house.html') {
+    if (destination === '/the-house.html' || destination?.startsWith('/the-house.html#')) {
       await click(selector);
-      await waitFor('location.pathname === "/the-house.html" && document.querySelector(\'nav a[href="/the-house.html"]\') && document.querySelector(\'nav a[href="/investor.html"]\') && document.querySelector("#hero h1")');
+      const expectedHash = destination.includes('#') ? destination.slice(destination.indexOf('#')) : '';
+      await waitFor(`location.pathname === "/the-house.html"
+        && location.hash === ${JSON.stringify(expectedHash)}
+        && document.querySelector('nav a[href="/the-house.html"]')
+        && document.querySelector('nav a[href="/investor.html"]')
+        && document.querySelector("#hero h1")`);
       return;
     }
 
@@ -443,11 +464,26 @@ try {
 
     await click(selector);
     const expectedRoute = resolveFsdRoute({ menu, group, item });
-    await waitFor(`(() => {
-      const root = document.querySelector("[data-fsd-storefront]");
-      return root?.dataset.currentView === ${JSON.stringify(expectedRoute.view)}
-        && root?.dataset.activeTarget === ${JSON.stringify(expectedRoute.target ?? '')};
-    })()`);
+    try {
+      await waitFor(`(() => {
+        const root = document.querySelector("[data-fsd-storefront]");
+        return root?.dataset.currentView === ${JSON.stringify(expectedRoute.view)}
+          && root?.dataset.activeTarget === ${JSON.stringify(expectedRoute.target ?? '')};
+      })()`);
+    } catch {
+      const actual = await evaluate(`(() => {
+        const root = document.querySelector("[data-fsd-storefront]");
+        return {
+          url: location.href,
+          currentView: root?.dataset.currentView,
+          activeTarget: root?.dataset.activeTarget,
+          menu: document.querySelector("#fsd-mega-menu")?.dataset.primary,
+          menuHidden: document.querySelector("#fsd-mega-menu")?.hidden,
+          selection: document.querySelector(${JSON.stringify(selector)})?.textContent?.trim(),
+        };
+      })()`);
+      throw new Error(`${menu.label} selection ${group.title} / ${item?.title || 'group'} expected ${JSON.stringify(expectedRoute)}; actual ${JSON.stringify(actual)}`);
+    }
     await waitFor('document.querySelector("#fsd-mega-menu").hidden');
     if (kind === 'product') {
       await waitFor('document.querySelector("#product-dialog").open');
@@ -748,6 +784,20 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
   });
   await delay(150);
+  assert.ok(await evaluate(`(() => {
+    const announcement = document.querySelector(".announcement.fsd-announcement").getBoundingClientRect();
+    const shell = document.querySelector(".fsd-navigation-shell").getBoundingClientRect();
+    const spacer = document.querySelector(".fsd-navigation-spacer").getBoundingClientRect();
+    return getComputedStyle(document.querySelector(".fsd-navigation-shell")).position === "fixed"
+      && Math.abs(announcement.height - 23) < 1
+      && Math.abs(shell.top - announcement.height) < 1
+      && Math.abs(spacer.height - shell.height) < 1;
+  })()`), 'Mobile navigation should stay fixed with a matching flow spacer.');
+  await evaluate('window.scrollTo({ top: 220, behavior: "instant" })');
+  await waitFor('window.scrollY > 0');
+  assert.ok(await evaluate('Math.abs(document.querySelector(".fsd-navigation-shell").getBoundingClientRect().top - document.querySelector(".announcement.fsd-announcement").getBoundingClientRect().height) < 1'));
+  await evaluate('window.scrollTo({ top: 0, behavior: "instant" })');
+  await waitFor('window.scrollY === 0');
   if (await evaluate('CSS.supports("backdrop-filter: blur(1px)")')) {
     assert.match(await evaluate('getComputedStyle(document.querySelector(".header.fsd-header")).backdropFilter'), /blur\(16px\)/);
   }
