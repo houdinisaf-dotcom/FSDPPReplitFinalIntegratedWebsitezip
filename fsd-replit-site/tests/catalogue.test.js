@@ -393,6 +393,32 @@ test('FLEX Sculpt Leggings are a separate £65 listing with five colourways and 
   assert.equal(apex?.confirmedPrice, 65);
 });
 
+test('uploaded product taglines and copy attach to their existing catalogue records', () => {
+  const product = id => products.find(item => item.id === id);
+  const flex = product(75);
+  const backpack = product(76);
+  const gilet = product(77);
+  const velocitySeriesOne = product(78);
+  const velocitySeriesTwo = product(79);
+
+  assert.equal(flex?.shortDescription, 'Sculpted. Supportive. Uncompromising.');
+  assert.match(flex?.description ?? '', /training, lifting and everyday wear/);
+  assert.ok(flex?.features.some(feature => /tested across all five colourways/i.test(feature)));
+
+  assert.equal(backpack?.shortDescription, 'Elite utility and weather-resistant durability.');
+  assert.match(backpack?.description ?? '', /hydro-repellent coating/);
+
+  assert.equal(gilet?.shortDescription, 'Statement styling meets tactical architecture.');
+  assert.match(gilet?.description ?? '', /not personal protective equipment/i);
+  assert.ok(gilet?.features.some(feature => /chitin-inspired spine plates/i.test(feature)));
+
+  for (const shell of [velocitySeriesOne, velocitySeriesTwo]) {
+    assert.equal(shell?.shortDescription, 'Ultra-lightweight meteorological shielding.');
+    assert.match(shell?.description ?? '', /high-mobility outdoor conditioning and transit/);
+    assert.ok(shell?.features.some(feature => /thumbhole cuffs/i.test(feature)));
+  }
+});
+
 test('the public Breeze set stays distinct from the existing overshirt and is reachable from Women’s modest collections', () => {
   const set = products.find(product => product.id === 73);
   const existingOvershirt = products.find(product => product.id === 49);

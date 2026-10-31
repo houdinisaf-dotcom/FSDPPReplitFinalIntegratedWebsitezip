@@ -1315,13 +1315,14 @@
     "Currency": "GBP",
     "External ID": "fsd-flex-high-waisted-sculpt-leggings",
     "Badge": "Sculpt Series",
-    "Description": "Engineered for uncompromising support, contour-sculpting definition, and everyday versatility. Crafted from high-density, squat-proof technical fabric featuring a supportive high-waisted band, flattering V-seam rear architecture, and convenient side pocket utility finished with Satin Champagne Gold branding.",
+    "Short description": "Sculpted. Supportive. Uncompromising.",
+    "Description": "The FLEX High-Waisted Sculpt Leggings are engineered for training, lifting and everyday wear. A supportive high-waisted band holds you in place. The V-seam rear architecture gives a defined, flattering line, while a side pocket keeps essentials close. They're made from high-density technical fabric designed for opacity under load, and finished with Satin Champagne Gold crest branding. Five colourways let you build a full rotation.",
     "Sizes": "XS; S; M; L; XL; XXL",
     "Features": [
       "Supportive high-waist compression fit that sculpts and stays in place",
       "Flattering V-seam rear architecture designed for enhanced definition",
       "Convenient side phone/card pocket utility",
-      "Squat-proof, highly opaque, moisture-wicking 4-way stretch fabric",
+      "Squat-proof opacity tested across all five colourways; moisture-wicking 4-way stretch fabric",
       "Precision-engineered flatlock seams for zero chaffing and maximum durability",
       "Signature Satin Champagne Gold minimalist crest branding"
     ],
@@ -1351,7 +1352,8 @@
     "Currency": "GBP",
     "External ID": "fsd-apex-pro-tactical-backpack",
     "Badge": "Pro Gear",
-    "Description": "Engineered for elite utility and weather-resistant durability. Crafted from high-density grid ripstop fabric with hydro-repellent coating, custom Satin Champagne Gold dual zippers, padded ergonomic shoulder support, and a laser-etched FSD shield emblem.",
+    "Short description": "Elite utility and weather-resistant durability.",
+    "Description": "The Apex Pro Backpack is built for people who carry their whole training day. High-density grid ripstop with a hydro-repellent coating is paired with custom Satin Champagne Gold dual zippers and a laser-etched FSD shield emblem. Padded ergonomic shoulder support and a breathable mesh back panel aid carrying comfort; dedicated compartments organise tech, shoes and training gear. Its Obsidian and Satin Gold finish follows the FSD master-brand palette.",
     "Image placeholders": [
       "Front Isometric View",
       "Rear Ergonomic Straps",
@@ -1390,7 +1392,8 @@
     "Currency": "GBP",
     "External ID": "fsd-scorpion-chitin-tactical-gilet",
     "Badge": "Scorpion Series",
-    "Description": "Built for uncompromising statement styling and utility. Features articulated spine padding plates inspired by chitin architecture, laser-perforated ventilation panels, dual chest cargo pockets, and signature scorpion gold insignia.",
+    "Short description": "Statement styling meets tactical architecture.",
+    "Description": "A layering piece with presence. Articulated spine plates take their shape from chitin architecture. Laser-perforated panels add ventilation, while dual chest cargo pockets carry small items and a gold scorpion insignia marks the Scorpion Series. A grid-weave water-repellent shell and adjustable side buckles let you fit it as you need. Training apparel; not personal protective equipment.",
     "Sizes": "S; M; L; XL; XXL",
     "Image placeholders": [
       "Front View with Cargo Pockets",
@@ -1399,9 +1402,11 @@
       "Scorpion Series Chest Crest & Zip"
     ],
     "Features": [
-      "Articulated spine impact-shield panels with gold trim detailing",
+      "Articulated chitin-inspired spine plates with gold trim detailing",
       "Weather-resistant grid-weave shell with water-repellent treatment",
+      "Laser-perforated ventilation panels",
       "Dual secure chest cargo pockets and zipped side compartments",
+      "Gold Scorpion Series insignia",
       "Adjustable side buckle straps for a custom tactical fit"
     ],
     "Specification status": "User-supplied product details",
@@ -1432,12 +1437,19 @@
     "Currency": "GBP",
     "External ID": "fsd-velocity-element-running-shell-v1",
     "Badge": "Performance Shell",
-    "Description": "Ultra-lightweight weather-resistant training shell featuring integrated thumbhole cuffs, reflective safety trim, sculpted rear shield branding, and an ergonomic active fit.",
+    "Short description": "Ultra-lightweight meteorological shielding.",
+    "Description": "An ultra-lightweight, weather-resistant training shell for changeable conditions. Integrated thumbhole cuffs keep sleeves in place, reflective trim adds visibility, and a sculpted rear shield emblem carries the FSD identity. It packs light and moves with you, designed for high-mobility outdoor conditioning and transit.",
     "Sizes": "XS; S; M; L; XL",
     "Image placeholders": [
       "Orange, Black & White Front Views",
       "Rear Sculpted Shield Views",
       "Thumbhole Cuffs Detail"
+    ],
+    "Features": [
+      "Weather-shield ripstop fabric for changeable conditions",
+      "Integrated thumbhole cuffs keep sleeves in place",
+      "Reflective trim adds visibility",
+      "Sculpted rear shield branding"
     ],
     "Specification status": "User-supplied product details",
     "Notes": "The uploaded running-shell image is a composite colourway board and is not mapped to the product gallery. Referenced standalone photos are not present; availability and manufacturing details remain unverified."
@@ -1467,12 +1479,19 @@
     "Currency": "GBP",
     "External ID": "fsd-velocity-element-running-shell-v2",
     "Badge": "Performance Shell",
-    "Description": "Expanded meteorological colorway release of our ultra-lightweight running shell. Features weather-shield fabric, reflective trims, and ergonomic thumbhole cuffs.",
+    "Short description": "Ultra-lightweight meteorological shielding.",
+    "Description": "The expanded colourway release of our ultra-lightweight running shell is designed for changeable conditions. Integrated thumbhole cuffs keep sleeves in place, reflective trim adds visibility, and a sculpted rear shield emblem carries the FSD identity. It packs light and moves with you, designed for high-mobility outdoor conditioning and transit.",
     "Sizes": "XS; S; M; L; XL",
     "Image placeholders": [
       "Charcoal, Navy & Cream Front Views",
       "Rear Sculpted Shield Views",
       "Thumbhole Cuffs Detail"
+    ],
+    "Features": [
+      "Weather-shield ripstop fabric for changeable conditions",
+      "Integrated thumbhole cuffs keep sleeves in place",
+      "Reflective trim adds visibility",
+      "Sculpted rear shield branding"
     ],
     "Specification status": "User-supplied product details",
     "Notes": "The uploaded running-shell image is a composite colourway board and is not mapped to the product gallery. Referenced standalone photos are not present; availability and manufacturing details remain unverified."
