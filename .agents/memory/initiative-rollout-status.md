@@ -8,3 +8,9 @@ Rule: The user approved the public status “Operating or rollout underway” fo
 **Why:** The uploaded brief names 11 initiatives and preserves important privacy, safety, commercial, and evidence limits. The status selection included no additional rollout details.
 
 **How to apply:** Use active/rollout status for the 11 items while retaining their individual safeguards. Ask for verified details before adding dates, operating locations, partnerships, or a twelfth initiative. Keep unrelated product concepts separate.
+
+Keep a visible public disclaimer on initiative and concept pages: related concepts and design prototypes are exploratory, not current products or commitments. This clarifies product readiness without changing the approved status of the initiative workstreams themselves.
+
+**Why:** The user supplied an updated pre-launch brief and selected keeping the disclaimer when asked how to resolve its conflict with earlier active-status wording.
+
+**How to apply:** Keep both statements where relevant: the workstream may be active or rolling out, while any associated product concept remains unconfirmed and is not promised as available.

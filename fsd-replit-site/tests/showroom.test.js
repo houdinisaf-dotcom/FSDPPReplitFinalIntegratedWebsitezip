@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { products, priceInfo } from '../src/catalogue-data.js';
+import { customerFacingCategory, products, priceInfo } from '../src/catalogue-data.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase, groupProducts, matchesDraftCardScope } from '../src/collection-showcase/index.js';
 import { featuredProducts, featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
@@ -53,6 +53,13 @@ test('group filters constrain category, audience and terms rather than leaking u
   assert.deepEqual(groupProducts({}, products), []);
   assert.ok(groupProducts(hardware.groups[1], products).every(product => /gloves|mitts|mouthguard|gear kit/i.test(product.name)));
   assert.ok(groupProducts(collectionDivisions[3].groups[0], products).length === 0);
+});
+
+test('customer-facing category labels are normalized without changing filter values', () => {
+  const headwear = products.find(product => product.id === 43);
+  assert.equal(headwear.category, "Women's / Performance Headwear");
+  assert.equal(customerFacingCategory(headwear.category), "Women's Performance");
+  assert.equal(customerFacingCategory('Modest Activewear'), 'Modest Activewear');
 });
 
 test('women’s sub-lines cover the existing catalogue without unfilled concept placeholders', () => {

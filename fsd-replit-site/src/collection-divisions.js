@@ -11,6 +11,7 @@ export const collectionDivisions = [
       {
         id: 'mens-luxury-performance',
         title: 'MEN’S LUXURY PERFORMANCE',
+        overview: 'Explore men’s and unisex performance apparel, combat training, and lifestyle collections.',
         categories: ['Men’s Performance and Training', 'Training Sets', 'Combat and MMA', 'Lifestyle'],
         audiences: ['Men’s', 'Unisex'],
         subcategories: [
@@ -24,6 +25,7 @@ export const collectionDivisions = [
       {
         id: 'womens-modest-combat',
         title: 'WOMEN’S MODEST COMBAT',
+        overview: 'Explore women’s performance apparel, modest movement, combat training, and accessories.',
         categories: ['Modest Activewear', 'Sports Hijabs', 'Women’s Performance', 'Combat and MMA'],
         audiences: ['Women’s'],
         subcategories: [
@@ -51,6 +53,7 @@ export const collectionDivisions = [
     groups: [{
       id: 'bio-lab-concepts',
       title: 'WEARABLE TECHNOLOGY',
+      overview: 'Explore wearable technology, connected apparel, and recovery concepts.',
       categories: ['Smart Tech'],
       concepts: [
         'Bio-Weave™ ECG & Hydration Compression Tops',
@@ -72,12 +75,14 @@ export const collectionDivisions = [
       {
         id: 'strength-equipment',
         title: 'STRENGTH EQUIPMENT',
+        overview: 'Explore FSD strength equipment and dumbbell collections.',
         categories: ['Gym Hardware and Accessories'],
         productTerms: ['Dumbbell', 'AUREUS', 'OBSIDIAN', 'VANGUARD', 'UTILITY'],
       },
       {
         id: 'combat-equipment',
         title: 'COMBAT EQUIPMENT',
+        overview: 'Explore equipment for boxing and combat training.',
         categories: ['Combat and MMA'],
         productTerms: ['Gloves', 'Mitts', 'Mouthguard', 'Gear Kit'],
         concepts: ['16oz Pro Leather Boxing Gloves', 'Apex Ring Boots', 'Heavy Bags'],
@@ -85,12 +90,14 @@ export const collectionDivisions = [
       {
         id: 'recovery-technology',
         title: 'RECOVERY TECHNOLOGY',
+        overview: 'Explore recovery concepts and accessories. Concept details are not confirmed.',
         categories: [],
         concepts: ['Cryo-Zero Recovery Chambers', 'Red Light Recovery Beds', '7mm Knee Sleeves'],
       },
       {
         id: 'performance-accessories',
         title: 'PERFORMANCE ACCESSORIES',
+        overview: 'Explore FSD training accessories and connected equipment.',
         categories: ['Gym Hardware and Accessories', 'Smart Tech'],
         productTerms: ['COMMAND', 'CARRY', 'SOCKS', 'COLLARS', 'HYDRATE', 'SONIC', 'PULSE'],
         concepts: ['Anti-Snap Resistance Systems', 'Premium Metal Flasks'],
@@ -107,11 +114,13 @@ export const collectionDivisions = [
       {
         id: 'flagships',
         title: 'FSD FLAGSHIPS',
+        overview: 'Explore the FSD flagship vision and named future locations.',
         concepts: ['Dublin', 'Belfast', 'Manchester', 'Islamabad', 'Future Global Locations'],
       },
       {
         id: 'promotions',
         title: 'FSD PROMOTIONS',
+        overview: 'Explore FSD live events, broadcast concepts, and athlete development.',
         concepts: [
           'Professional Fight Promotions',
           'Live Events',

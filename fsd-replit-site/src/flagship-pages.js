@@ -82,6 +82,7 @@ const standalonePages = Object.freeze([
     modules: ['Modular training and retail infrastructure', 'Operating model and site readiness', 'Safety, planning, and demand gates'],
     action: 'VIEW GLOBAL VISION & OPERATIONS',
     actionHref: '/the-house.html#global/pods',
+    initiative: true,
   },
   {
     id: 'performance-linked-partnerships-security',
@@ -158,6 +159,7 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
         <div>
           <h2 id="fsd-innovation-hub-title">Innovation Hub</h2>
           <p>Explore FSD Bio-Lab products and active material-science and connected-apparel initiatives.</p>
+          <p class="fsd-page-intro fsd-page-disclaimer">Initiative workstreams may be underway; related concepts and design prototypes are for exploration, not current products or commitments.</p>
         </div>
         ${renderAssetSlot('Innovation Hub editorial image', 'hub')}
       </div>
@@ -198,6 +200,7 @@ function renderPage(page) {
         <h2 id="${escapeHTML(page.id)}-title">${escapeHTML(page.title)}</h2>
         <p class="fsd-page-intro">${escapeHTML(page.summary)}</p>
         ${page.initiative ? '<span class="fsd-page-status">ACTIVE INITIATIVE · ROLLOUT UNDERWAY</span>' : ''}
+        ${page.initiative ? '<p class="fsd-page-intro fsd-page-disclaimer">Related concepts and design prototypes are for exploration, not current products or commitments.</p>' : ''}
       </header>
       ${renderAssetSlot(`${page.title} / Editorial`, 'hero')}
       <div class="fsd-page-module-grid">${modules}</div>

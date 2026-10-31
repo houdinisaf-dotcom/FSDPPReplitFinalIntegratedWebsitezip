@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import '../CatalogList.css';
 import { ProductDetail } from './ProductDetail.jsx';
 import { SafeImage } from './SafeImage.jsx';
+import { customerFacingCategory } from '../catalogue-data.js';
 
 function colourwaysFor(product) {
   return Array.isArray(product.rowColourways) ? product.rowColourways : [];
@@ -48,7 +49,7 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
         </span>
         <span className="catalogue-card__copy">
           <span className="product-row__meta">
-            <span>{product.category}</span>{product.audience && <span>{product.audience}</span>}
+            <span>{customerFacingCategory(product.category)}</span>{product.audience && <span>{product.audience}</span>}
           </span>
           <span className="product-row__name">{product.name}</span>
           {product.rowSummary && <span className="product-row__summary">{product.rowSummary}</span>}
@@ -220,7 +221,7 @@ export function CatalogList({ products = [], view = 'list', onProductSelect, onA
               <span className="product-row__index" aria-hidden="true">{String(product.id).padStart(2, '0')}</span>
               <span className="product-row__copy">
                 <span className="product-row__meta">
-                  <span>{product.category}</span>{product.audience && <span>{product.audience}</span>}
+                  <span>{customerFacingCategory(product.category)}</span>{product.audience && <span>{product.audience}</span>}
                 </span>
                 <span className="product-row__name">{product.name}</span>
                 {product.rowSummary && <span className="product-row__summary">{product.rowSummary}</span>}

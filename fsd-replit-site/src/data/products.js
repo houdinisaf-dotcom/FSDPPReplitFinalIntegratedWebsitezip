@@ -254,6 +254,14 @@ export function getVerifiedProductSpecifications(productId) {
 export const categories = [...new Set(products.flatMap(p => [p.category, ...p.alsoShowIn]))];
 export const audiences = [...new Set(products.map(product => product.audience).filter(Boolean))];
 
+export function customerFacingCategory(value) {
+  const category = String(value ?? '').trim();
+  if (/^women['’]s\s*\/\s*performance\s+headwear$/i.test(category)) {
+    return "Women's Performance";
+  }
+  return category;
+}
+
 const apparelDivision = collectionDivisions.find(division => division.id === 'apparel');
 export const shopCollections = (apparelDivision?.groups || [])
   .filter(group => ['mens-luxury-performance', 'womens-modest-combat'].includes(group.id))

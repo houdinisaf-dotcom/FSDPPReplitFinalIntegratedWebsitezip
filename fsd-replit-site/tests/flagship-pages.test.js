@@ -45,6 +45,7 @@ test('Innovation Hub links to all concepts and keeps private proofs out of produ
   const publicHtml = renderInnovationHubIndex();
   assert.equal((publicHtml.match(/class="fsd-innovation-card"/g) || []).length, 8);
   assert.match(publicHtml, /ACTIVE BIO-LAB INITIATIVE/);
+  assert.match(publicHtml, /related concepts and design prototypes are for exploration, not current products or commitments/);
   assert.match(publicHtml, /\/the-house\.html#bio-lab\/adaptive-fabrics/);
   assert.doesNotMatch(publicHtml, /__catalogue-preview/);
 
@@ -60,6 +61,7 @@ test('new page content does not enable membership sign-up, checkout, or unverifi
   assert.match(html, /PARTNERSHIP ENQUIRIES NOT CONNECTED/);
   assert.match(html, /FSD \/ GLOBAL VISION &amp; OPERATIONS/);
   assert.match(html, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
+  assert.match(html, /Related concepts and design prototypes are for exploration, not current products or commitments/);
   assert.doesNotMatch(html, /<form\b|ADD TO BAG|CHECKOUT|£\d/i);
   assert.match(html, /FSD Bio-Lab product information/i);
 });

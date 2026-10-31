@@ -1,4 +1,4 @@
-import { audiences, categories, getVerifiedProductSpecifications, imageSwatchBackground, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
+import { audiences, categories, customerFacingCategory, getVerifiedProductSpecifications, imageSwatchBackground, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage } from './catalogue-image-gallery.js';
 import { outlineIcon } from './brand/outline-icons.js';
@@ -162,7 +162,7 @@ function activeFilterMarkup() {
     const collection = shopCollections.find(item => item.id === activeCollection);
     chips.push(['collection', activeCollection, collection?.label || activeCollection]);
   }
-  if (activeCategory !== 'All') chips.push(['category', activeCategory, activeCategory]);
+  if (activeCategory !== 'All') chips.push(['category', activeCategory, customerFacingCategory(activeCategory)]);
   if (activeAudience !== 'All') chips.push(['audience', activeAudience, activeAudience]);
   if (query.trim()) chips.push(['q', query, `Search: ${query}`]);
   const hasOtherState = sort !== 'featured';
@@ -182,7 +182,7 @@ function activeFilterMarkup() {
 function imagePlaceholder(product, failed = false) {
   return `<div class="catalogue-placeholder" role="note">
     <strong>${safe(product.name)}</strong>
-    <small>${safe(product.category)}</small>
+    <small>${safe(customerFacingCategory(product.category))}</small>
     ${failed ? '<small>Image unavailable</small>' : ''}
   </div>`;
 }
@@ -256,7 +256,7 @@ function card(product) {
       data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
       <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
       <span class="product-row__copy">
-       <span class="product-row__meta"><span>${safe(product.category)}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}${product.badge ? `<span class="product-row__badge">${safe(product.badge)}</span>` : ''}</span>
+       <span class="product-row__meta"><span>${safe(customerFacingCategory(product.category))}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}${product.badge ? `<span class="product-row__badge">${safe(product.badge)}</span>` : ''}</span>
         <h3>${safe(product.name)}</h3>
         ${summary ? `<span class="product-row__summary">${safe(summary)}</span>` : ''}
       </span>
@@ -279,7 +279,7 @@ export function catalogueSection() {
       </select></label>
       <label>Category<select id="catalogue-category" aria-label="Filter by category">
         <option value="All">All categories</option>
-        ${categories.map(category => `<option value="${safe(category)}">${safe(category)}</option>`).join('')}
+        ${categories.map(category => `<option value="${safe(category)}">${safe(customerFacingCategory(category))}</option>`).join('')}
       </select></label>
       <label>Audience<select id="catalogue-audience" aria-label="Filter by audience">
         <option value="All">All audiences</option>
@@ -317,7 +317,7 @@ export function roadmapSection() {
     <p class="section-kicker">SHOP BY CATEGORY</p><h2>BROWSE THE COLLECTION<span class="period">.</span></h2>
     </div><p>Explore FSD apparel, training and technology by category.</p></div><div class="planned-grid">
     ${categories.map((category, i) => `<a class="planned-row catalogue-category-link" href="#products" data-category-link="${safe(category)}">
-      <span>${String(i + 1).padStart(2, '0')}</span><div><strong>${safe(category)}</strong>
+      <span>${String(i + 1).padStart(2, '0')}</span><div><strong>${safe(customerFacingCategory(category))}</strong>
       <small>${filterProducts(category).length} products</small></div><span class="planned-status">EXPLORE ↗</span></a>`).join('')}
     </div></section>`;
 }
@@ -353,7 +353,7 @@ function renderResults() {
       rowSummary: hardwarePreview ? '' : product.shortDescription || product.colourways || product.priceBasis || product.coverage || '',
       rowColourways: hardwarePreview ? [] : productColourwayOptions(product),
       rowDetails: hardwarePreview
-        ? [['Category', product.category]]
+        ? [['Category', customerFacingCategory(product.category)]]
         : [
           ...(product.description ? [['Overview', product.description]] : []),
           ...(product.setContents ? [['Set includes', product.setContents]] : []),
@@ -464,7 +464,7 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
   const dialogBody = document.querySelector('#dialog-body');
   const initialImage = images[initialImageIndex];
   const detailRows = hardwarePreview
-    ? detail('Category', p.category)
+    ? detail('Category', customerFacingCategory(p.category))
     : [
       detail('Overview', p.description),
       detail('Set includes', p.setContents),
@@ -513,11 +513,11 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
     <nav class="catalogue-breadcrumbs" aria-label="Breadcrumb"><ol>
       <li><a href="#home" data-home-breadcrumb>Home</a></li>
       <li><a href="#products" data-shop-breadcrumb>Shop</a></li>
-      <li><a href="#products" data-category-link="${safe(p.category)}">${safe(p.category)}</a></li>
+      <li><a href="#products" data-category-link="${safe(p.category)}">${safe(customerFacingCategory(p.category))}</a></li>
       <li aria-current="page">${safe(p.name)}</li>
     </ol></nav>
     <button class="catalogue-back" type="button" data-catalogue-back><span aria-hidden="true">←</span> BACK TO COLLECTION</button>
-     <p class="section-kicker">${safe(p.category)} / COLLECTION</p><h2 id="product-title">${safe(p.name)}</h2>
+     <p class="section-kicker">${safe(customerFacingCategory(p.category))} / COLLECTION</p><h2 id="product-title">${safe(p.name)}</h2>
     <dl class="catalogue-details">
       ${detailRows}
       </dl>

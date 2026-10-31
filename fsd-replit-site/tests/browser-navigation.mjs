@@ -336,7 +336,47 @@ try {
   // Shop groups and subcategories open the matching visual preview drawer.
   await click('#fsd-mega-menu [data-nav-group="1"]');
   await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"1\\"][aria-pressed=\\"true\\"]")');
+  assert.equal(
+    await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-modal-description p")?.textContent'),
+    'Explore women’s performance apparel, modest movement, combat training, and accessories.',
+  );
+  assert.equal(
+    await evaluate('Boolean([...document.querySelectorAll("#fsd-showcase-dialog .fsd-product-row__meta > span:first-child")].find(node => node.textContent === "Women\'s Performance"))'),
+    true,
+  );
+  assert.equal(
+    await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-row")?.style.width || getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).width'),
+    await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-grid")).width'),
+  );
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).columnGap'), '32px');
+  const productRowTracks = await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).gridTemplateColumns.split(" ")');
+  assert.equal(productRowTracks.length, 4);
+  assert.equal(productRowTracks[0], '200px');
+  assert.equal(productRowTracks[2], '90px');
+  assert.equal(productRowTracks[3], '140px');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-reference")).textAlign'), 'right');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row__action")).justifySelf'), 'end');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").hidden'), true);
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
+
+  // Hardware concepts keep the exploratory disclaimer, neutral card styling, and correct numbering.
+  await click('#collections [data-division="hardware"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+  await click('#fsd-showcase-dialog [data-group-index="2"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog [data-group-index=\\"2\\"][aria-pressed=\\"true\\"]")');
+  assert.equal(
+    await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-modal-description p")?.textContent'),
+    'Explore recovery concepts and accessories. Concept details are not confirmed.',
+  );
+  assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-modal-subhead > span")?.textContent'), '01');
+  assert.equal(
+    await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-concept-disclaimer")?.textContent'),
+    'Concept for exploration. Not a current product or commitment.',
+  );
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-concept-card")).padding'), '24px');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-concept-card h4")).userSelect'), 'none');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-concept-details summary")).listStyleType'), 'none');
   await key('Escape');
   await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
 

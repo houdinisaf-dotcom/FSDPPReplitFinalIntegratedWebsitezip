@@ -1,4 +1,4 @@
-import { isHardwareVisualPreviewProduct, priceInfo } from '../catalogue-data.js';
+import { customerFacingCategory, isHardwareVisualPreviewProduct, priceInfo } from '../catalogue-data.js';
 import { trackEvent } from '../analytics.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -141,7 +141,7 @@ function matchesGroup(product, group) {
 
 function productCard(product) {
   const isHardwarePreview = isHardwareVisualPreviewProduct(product);
-  const category = product.category || 'FSD COLLECTION';
+  const category = customerFacingCategory(product.category) || 'FSD COLLECTION';
   const audience = product.audience ? `<span>${escapeHTML(product.audience)}</span>` : '';
   const masterPrice = priceInfo(product);
   const referenceOnlyPrice = /reference only|not for sale/i.test(masterPrice.label || '');
@@ -167,11 +167,12 @@ function productCard(product) {
 
 function conceptCard(concept) {
   return `<article class="fsd-concept-card">
-    <span class="fsd-concept-index" aria-hidden="true">FSD / FEATURE</span>
+    <span class="fsd-concept-index" aria-hidden="true">FSD / CONCEPT</span>
     <h4>${escapeHTML(concept)}</h4>
-    <span class="fsd-concept-tag">FSD COLLECTION</span>
+    <span class="fsd-concept-tag">DESIGN PROTOTYPE</span>
+    <p class="fsd-concept-disclaimer">Concept for exploration. Not a current product or commitment.</p>
     <details class="fsd-concept-details"><summary>EXPLORE DETAILS ↗</summary>
-      <p>Product and collection information.</p>
+      <p>Product details and availability are not confirmed.</p>
     </details>
   </article>`;
 }
@@ -223,7 +224,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
   const title = subcategory?.title || group.title || division.title;
   const heroVisual = division.visual || division.id;
   const conceptMarkup = concepts.length
-    ? `<div class="fsd-modal-subhead"><span>02</span><h4>ADDITIONAL FEATURES</h4><i></i></div>
+    ? `<div class="fsd-modal-subhead"><span>${foundProducts.length || matchingDraftCards.length ? '02' : '01'}</span><h4>ADDITIONAL FEATURES</h4><i></i></div>
        <div class="fsd-concept-grid">${concepts.map(conceptCard).join('')}</div>`
     : '';
   const collectionProductMarkup = [
@@ -259,7 +260,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
       ${group.subcategories.map((item, index) => `<button type="button" data-subcategory-index="${index}" aria-pressed="${index === activeSubcategoryIndex}">${escapeHTML(item.title)}</button>`).join('')}
     </nav>` : ''}
     <div class="fsd-modal-body">
-      <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(division.description)}</p></div>
+      <div class="fsd-modal-description"><span>COLLECTION OVERVIEW</span><p>${escapeHTML(subcategory?.overview || group.overview || division.description)}</p></div>
       ${foundProducts.length ? '<button class="fsd-explore-collection" type="button" data-explore-collection>EXPLORE COLLECTION <span aria-hidden="true">↗</span></button>' : ''}
       ${productsMarkup}${conceptMarkup}${emptyMarkup}
       <p class="fsd-modal-disclaimer">Prices are shown where a catalogue value is recorded. Add-to-bag controls appear only for eligible products.</p>
