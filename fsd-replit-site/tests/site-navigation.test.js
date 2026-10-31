@@ -43,6 +43,31 @@ test('Investor Relations is directly linked and the funding tables stay in norma
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
 });
 
+test('The House mega-menu links to the full public interactive House page', () => {
+  const house = menu.find(section => section.id === 'house');
+  const group = house?.groups.find(item => item.id === 'the-house-website');
+  const pagePath = new URL('../public/the-house.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+  const inlineScript = page.match(/<script\b[^>]*>([\s\S]*?)<\/script\s*>/i)?.[1] ?? '';
+
+  assert.ok(group);
+  assert.equal(group.items[0].title, 'THE HOUSE WEBSITE');
+  assert.equal(group.items[0].href, '/the-house.html');
+  assert.equal(group.items[0].kind, 'destination');
+  assert.ok(existsSync(pagePath));
+  assert.match(page, /<title>FSD \| The House<\/title>/);
+  assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
+  assert.match(page, /--bk:#0B0C0E/);
+  assert.match(page, /--gold:#C8AA72/);
+  assert.match(page, /--vg:#C8AA72/);
+  assert.match(inlineScript, /const P=/);
+  assert.match(inlineScript, /,M=/);
+  assert.match(inlineScript, /addEventListener\('hashchange',render\)/);
+  assert.doesNotMatch(page, /<script\s+src=/i);
+  assert.doesNotMatch(page, /A6FF00|C6A36A/);
+  assert.doesNotMatch(page, /private preview|private draft/i);
+});
+
 test('Shop foregrounds collection groups and removes the redundant All Products group', () => {
   const collections = menu[0];
   assert.deepEqual(collections.groups.map(group => group.title), [
@@ -202,6 +227,7 @@ test('House destinations expose the story route and do not claim proposed locati
   const house = menu.find(item => item.id === 'house');
   assert.deepEqual(house.groups.map(group => group.title), [
     'BRAND STORY & ARCHIVE',
+    'THE HOUSE WEBSITE',
     'FLAGSHIPS',
     'FIGHT PROMOTIONS',
     'PERFORMANCE-LINKED PARTNERSHIPS & SECURITY',
@@ -209,19 +235,26 @@ test('House destinations expose the story route and do not claim proposed locati
     'INVESTOR RELATIONS',
   ]);
   assert.ok(house.groups.filter(group => group.href).every(group =>
-    ['/story', '#fsd-division-global', '#performance-linked-partnerships-security', '/investor.html'].includes(group.href)));
-  assert.equal(house.groups[0].items[0].status, 'EDITORIAL / BRAND PRINCIPLES');
-  assert.equal(house.groups[0].items[0].chapterCount, '04 FOUNDATIONAL CHAPTERS');
-  assert.equal(house.groups[0].items[0].houseCodeCount, '05 WORKING PRINCIPLES');
-  assert.match(house.groups[0].items[0].description, /Capability is not a costume/);
-  assert.ok(house.groups[1].items.every(item => /no location or service is represented as operational/i.test(item.description)));
-  assert.equal(house.groups[1].href, '');
-  assert.equal(house.groups[1].sourceDivisionId, 'global');
-  assert.equal(house.groups[1].sourceGroupIndex, 0);
-  assert.equal(house.groups[2].href, '');
-  assert.equal(house.groups[2].sourceGroupIndex, 1);
-  assert.equal(house.groups[5].href, '/investor.html');
-  assert.equal(house.groups[5].navigationUnavailable, false);
+    ['/story', '/the-house.html', '#fsd-division-global', '#performance-linked-partnerships-security', '/investor.html'].includes(group.href)));
+  const story = house.groups.find(group => group.id === 'our-story');
+  const site = house.groups.find(group => group.id === 'the-house-website');
+  const flagships = house.groups.find(group => group.id === 'flagships');
+  const fightPromotions = house.groups.find(group => group.id === 'fight-promotions');
+  const investor = house.groups.find(group => group.id === 'investor-relations');
+  assert.equal(story.items[0].status, 'EDITORIAL / BRAND PRINCIPLES');
+  assert.equal(story.items[0].chapterCount, '04 FOUNDATIONAL CHAPTERS');
+  assert.equal(story.items[0].houseCodeCount, '05 WORKING PRINCIPLES');
+  assert.match(story.items[0].description, /Capability is not a costume/);
+  assert.equal(site.items[0].href, '/the-house.html');
+  assert.equal(site.navigationUnavailable, false);
+  assert.ok(flagships.items.every(item => /no location or service is represented as operational/i.test(item.description)));
+  assert.equal(flagships.href, '');
+  assert.equal(flagships.sourceDivisionId, 'global');
+  assert.equal(flagships.sourceGroupIndex, 0);
+  assert.equal(fightPromotions.href, '');
+  assert.equal(fightPromotions.sourceGroupIndex, 1);
+  assert.equal(investor.href, '/investor.html');
+  assert.equal(investor.navigationUnavailable, false);
 });
 
 test('Private Access remains informational and collects no sign-ups', () => {

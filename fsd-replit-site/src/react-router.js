@@ -2,6 +2,7 @@ import { flagshipPageHashRoutes } from './flagship-pages.js';
 
 export const FSD_STORY_PATH = '/story';
 export const FSD_STORY_HASH = '#philosophy';
+export const FSD_HOUSE_PAGE_PATH = '/the-house.html';
 
 const hashRoutes = new Map([
   ['#products', { view: 'collection', target: 'all-products' }],
@@ -33,6 +34,9 @@ function routeFromDestination(destination) {
   if (destination?.replace(/\/+$/, '') === FSD_STORY_PATH) {
     return { view: 'story', target: 'our-story' };
   }
+  if (destination === FSD_HOUSE_PAGE_PATH) {
+    return { view: 'house', target: 'the-house-page' };
+  }
   return routeFromHash(destination);
 }
 
@@ -41,6 +45,7 @@ export function routeFromLocation(location = {}) {
 
   const pathname = String(location.pathname || '/').replace(/\/+$/, '') || '/';
   if (pathname === FSD_STORY_PATH) return { view: 'story', target: 'our-story' };
+  if (pathname === FSD_HOUSE_PAGE_PATH) return { view: 'house', target: 'the-house-page' };
   return routeFromHash('');
 }
 

@@ -74,3 +74,9 @@ The user designated the existing storefront structure as the master baseline: in
 **Why:** The user explicitly described the current site as the definitive baseline and directed that future additions must not trigger a broad rewrite; the gold indicator must remain functional across pages.
 
 **How to apply:** Make focused changes within the current navigation and page hierarchy. Preserve the story section’s editorial placement, concept/pre-launch safeguards, and the global gold progress indicator when adding or revising features.
+
+The user explicitly authorized the complete supplied FSD The House website, including its interactive router and data dictionary, as a public page linked from THE HOUSE navigation.
+
+**Why:** The user asked for direct integration into the main project with no private framing and requested production publication for this specific supplied page.
+
+**How to apply:** Keep this page and its supplied content publicly accessible at its dedicated route. Do not generalize this approval to unrelated drafts, unverified claims, checkout, or other private concepts.

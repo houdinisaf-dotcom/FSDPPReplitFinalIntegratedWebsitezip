@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { resolveFsdRoute, routeFromHash, routeFromLocation } from '../src/react-router.js';
+import { FSD_HOUSE_PAGE_PATH, resolveFsdRoute, routeFromHash, routeFromLocation } from '../src/react-router.js';
 
 test('collection menu selections resolve to real catalogue targets', () => {
   assert.deepEqual(resolveFsdRoute({
@@ -70,6 +70,21 @@ test('the brand story has a direct path route while retaining hash-route compati
   }), {
     view: 'story',
     target: 'our-story',
+  });
+});
+
+test('the public House page has a direct route from the House navigation', () => {
+  assert.deepEqual(routeFromLocation({ pathname: FSD_HOUSE_PAGE_PATH, hash: '' }), {
+    view: 'house',
+    target: 'the-house-page',
+  });
+  assert.deepEqual(resolveFsdRoute({
+    menu: { id: 'house' },
+    group: { id: 'the-house-website', href: FSD_HOUSE_PAGE_PATH },
+    item: { kind: 'destination', href: FSD_HOUSE_PAGE_PATH },
+  }), {
+    view: 'house',
+    target: 'the-house-page',
   });
 });
 

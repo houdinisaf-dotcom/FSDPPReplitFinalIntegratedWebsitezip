@@ -6,7 +6,7 @@ import { featuredInnovationsSection, vipAccessSection, initCatalogueNavigation }
 import { renderNavigationHeader } from './site-navigation.js';
 import { ourStorySection } from './story-section.js';
 import { mountClientBag } from './bag.js';
-import { FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
+import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
 import './style.css';
 import './catalogue.css';
@@ -137,7 +137,7 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
 
   const destination = item?.href || group?.href;
   if (destination) {
-    if (destination === '/investor.html') {
+    if (destination === '/investor.html' || destination === FSD_HOUSE_PAGE_PATH) {
       window.location.assign(destination);
       return;
     }

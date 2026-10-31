@@ -3,7 +3,7 @@ import { products as catalogueProducts } from './catalogue-data.js';
 import { groupProducts } from './collection-showcase/index.js';
 import { hoodedShellCampaign } from './hooded-shell-campaign.js';
 import { getInnovationPageForTitle } from './flagship-pages.js';
-import { FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
+import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
 import { outlineIcon } from './brand/outline-icons.js';
 
 export const primaryNavigation = [
@@ -323,6 +323,8 @@ function makeHouseGroups(divisions) {
         chapterCount: '04 FOUNDATIONAL CHAPTERS',
         houseCodeCount: '05 WORKING PRINCIPLES',
       }),
+    staticGroup('the-house-website', 'THE HOUSE WEBSITE', FSD_HOUSE_PAGE_PATH,
+      'Explore the full interactive FSD House platform, including its brand story, flagships, promotions, partnerships, global vision, and investor relations.'),
     staticGroup('flagships', 'FLAGSHIPS', '',
       global?.description || 'FSD flagship locations.', flagship, 0),
     staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '',
@@ -547,7 +549,7 @@ function hasVerifiedDestination({
 
   const explicitTarget = item?.href || group?.href;
   if (explicitTarget) {
-    if (explicitTarget === '/investor.html') return true;
+    if (explicitTarget === '/investor.html' || explicitTarget === FSD_HOUSE_PAGE_PATH) return true;
     if (explicitTarget.replace(/\/+$/, '') === FSD_STORY_PATH) {
       return Boolean(
         ownerDocument.querySelector(FSD_STORY_HASH)
@@ -862,7 +864,8 @@ export function mountNavigation({
   };
   const currentNavigationId = () => {
     if (window.location.hash) return hashNavigation.get(window.location.hash) || '';
-    return window.location.pathname.replace(/\/+$/, '') === FSD_STORY_PATH ? 'house' : '';
+    const pathname = window.location.pathname.replace(/\/+$/, '');
+    return pathname === FSD_STORY_PATH || pathname === FSD_HOUSE_PAGE_PATH ? 'house' : '';
   };
   const updateCurrentFromHash = () => setCurrentPrimary(currentNavigationId());
   currentPrimaryId = currentNavigationId();
