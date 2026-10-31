@@ -34,6 +34,7 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
 test('Investor Relations is directly linked and the funding tables stay in normal page flow', () => {
   const header = renderNavigationHeader('<span>FSD</span>');
   const investorPage = readFileSync(new URL('../public/investor.html', import.meta.url), 'utf8');
+  const investorPublicScript = readFileSync(new URL('../public/investor-public.js', import.meta.url), 'utf8');
   const financials = investorPage.match(/<section id="financials">([\s\S]*?)<\/section>/)?.[1] ?? '';
 
   assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">Investor Relations<\/a>/);
@@ -41,6 +42,12 @@ test('Investor Relations is directly linked and the funding tables stay in norma
   assert.match(financials, /Proposed £75,000 use of funds/);
   assert.match(financials, /Financial snapshot: downside disclosed/);
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
+  assert.match(investorPage, /<script src="\/investor-public\.js"><\/script>/);
+  assert.match(investorPage, /rel="icon" type="image\/svg\+xml" href="\/favicon\.svg"/);
+  assert.match(investorPage, /Public investor information · Pre-commercial/);
+  assert.doesNotMatch(investorPage, /confidential, commercially sensitive information for authorised recipients/i);
+  assert.match(investorPublicScript, /accessSection\.querySelector\('form'\)\?\.remove\(\)/);
+  assert.match(investorPublicScript, /No sign-in or access request is required/);
 });
 
 test('The House mega-menu links to the full public interactive House page', () => {
@@ -63,6 +70,7 @@ test('The House mega-menu links to the full public interactive House page', () =
   assert.match(inlineScript, /const P=/);
   assert.match(inlineScript, /,M=/);
   assert.match(inlineScript, /addEventListener\('hashchange',render\)/);
+  assert.match(inlineScript, /Public Information/);
   assert.doesNotMatch(page, /<script\s+src=/i);
   assert.doesNotMatch(page, /A6FF00|C6A36A/);
   assert.doesNotMatch(page, /private preview|private draft/i);

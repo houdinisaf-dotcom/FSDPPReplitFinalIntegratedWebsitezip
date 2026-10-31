@@ -77,6 +77,6 @@ The user designated the existing storefront structure as the master baseline: in
 
 The user explicitly authorized the complete supplied FSD The House website, including its interactive router and data dictionary, as a public page linked from THE HOUSE navigation.
 
-**Why:** The user asked for direct integration into the main project with no private framing and requested production publication for this specific supplied page.
+**Why:** The user asked for direct integration into the main project with no private framing, requested production publication, and confirmed UK legal advice cleared this specific supplied page for public circulation.
 
 **How to apply:** Keep this page and its supplied content publicly accessible at its dedicated route. Do not generalize this approval to unrelated drafts, unverified claims, checkout, or other private concepts.
