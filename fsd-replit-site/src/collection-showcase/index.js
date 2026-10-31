@@ -398,7 +398,13 @@ export function mountCollectionShowcase({
   };
 
   const onDialogClick = event => {
-    if (event.target === dialog) dialog.close();
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    const clickedOutsideDialog = event.clientX < bounds.left
+      || event.clientX > bounds.right
+      || event.clientY < bounds.top
+      || event.clientY > bounds.bottom;
+    if (clickedOutsideDialog) dialog.close();
   };
   const onDialogCancel = event => {
     if (section.ownerDocument.querySelector('#product-dialog')?.open) event.preventDefault();

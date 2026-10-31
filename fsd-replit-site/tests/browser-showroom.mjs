@@ -10,6 +10,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
 const mobileProofCapture = process.env.FSD_HIJAB_MOBILE_CAPTURE === '1';
+const popupOnly = process.env.FSD_POPUP_ONLY === '1';
 const aegisProofCapture = process.env.FSD_AEGIS_CAPTURE === '1';
 const alightProofCapture = process.env.FSD_ALIGHT_CAPTURE === '1';
 const alightMobileCapture = process.env.FSD_ALIGHT_MOBILE_CAPTURE === '1';
@@ -135,6 +136,10 @@ try {
     await send('Input.dispatchKeyEvent', { type: 'rawKeyDown', ...parameters });
     await send('Input.dispatchKeyEvent', { type: 'keyUp', ...parameters });
   };
+  const clickAt = async (x, y) => {
+    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', clickCount: 1 });
+    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x, y, button: 'left', clickCount: 1 });
+  };
   await send('Runtime.enable');
   await send('Page.enable');
   await send('Page.bringToFront');
@@ -170,6 +175,17 @@ try {
     assert.ok(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'));
     assert.ok(!await evaluate('/STRIDE|Shilajit|Championship Belt|Ring Corner Post/i.test(document.querySelector("[data-dialog-content]").textContent)'));
     if (division === 'apparel') {
+      const dialogEdge = await evaluate(`(() => {
+        const dialog = document.querySelector("#fsd-showcase-dialog");
+        const bounds = dialog.getBoundingClientRect();
+        const x = bounds.left + 0.5;
+        const y = bounds.top + bounds.height / 2;
+        dialog.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: x, clientY: y }));
+        return { x, y, isInsideDialog: x >= bounds.left && x <= bounds.right && y >= bounds.top && y <= bounds.bottom };
+      })()`);
+      assert.equal(dialogEdge.isInsideDialog, true);
+      assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog").open'), true,
+        'Clicking inside the collection dialog border must not dismiss it.');
       for (let count = 0; count < 12; count++) await key('Tab');
       assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog").contains(document.activeElement)'));
     }
@@ -177,6 +193,12 @@ try {
     await waitFor('!document.querySelector("#fsd-showcase-dialog").open && !document.documentElement.classList.contains("fsd-modal-open")');
     assert.equal(await evaluate('document.activeElement.dataset.division'), division);
   }
+
+  await click('[data-division="apparel"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog").open');
+  await click('#fsd-showcase-dialog [data-close-dialog]');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog").open && !document.documentElement.classList.contains("fsd-modal-open") && document.activeElement.dataset.division === "apparel"');
+  assert.equal(await evaluate('document.activeElement.dataset.division'), 'apparel');
 
   await click('[data-division="apparel"][data-group-index="1"]');
   await click('[data-group-index="1"]');
@@ -320,8 +342,37 @@ try {
   assert.ok(await evaluate('document.querySelector("#product-dialog [data-bag-add]")'));
   assert.ok(!await evaluate('document.querySelector("#product-dialog").textContent.includes("£29.99")'));
   assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("£34.99")'));
+  assert.ok(await evaluate('document.querySelectorAll("#product-dialog [data-catalogue-image-index]").length > 1'));
+  await click('#product-dialog [data-catalogue-image-index="1"]');
+  await waitFor('document.querySelector("#product-dialog [data-catalogue-image-index=\\"1\\"]")?.getAttribute("aria-pressed") === "true"');
+  assert.ok(await evaluate('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open'),
+    'Using an image-gallery control must leave both dialogs open.');
+  await clickAt(4, 4);
+  await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"43\\"]")');
+  await click('[data-product-id="43"]');
+  await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
   await key('Escape');
   await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  if (mobileProofCapture) {
+    await key('Escape');
+    await waitFor('!document.querySelector("#fsd-showcase-dialog")?.open');
+    await click('[data-division="hardware"]');
+    await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+    await click('#fsd-showcase-dialog [data-product-id="69"]');
+    await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+    await click('#product-dialog #product-title');
+    assert.equal(await evaluate('document.querySelector("#product-dialog")?.open'), true,
+      'Clicking product detail content must not dismiss the garment dialog.');
+    await key('Escape');
+    await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+    await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
+    assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
+  }
+  if (popupOnly) {
+    assert.deepEqual(browserErrors, []);
+    console.log(`${mobileProofCapture ? 'Mobile' : 'Desktop'} popup browser checks passed: collection categories, inside clicks, backdrop dismissal, gallery use, close button, nested Escape and focus restoration.`);
+  } else {
   await send('Emulation.setDeviceMetricsOverride', {
     width: mobileProofCapture ? 402 : 1440,
     height: mobileProofCapture ? 874 : 1000,
@@ -475,6 +526,7 @@ try {
 
   assert.deepEqual(browserErrors, []);
   console.log('Desktop browser checks passed: all divisions, subcategories, focus/closing, product handoff, catalogue navigation, archive removal, carousel, and deferred VIP. Mobile layouts require a separate visual review.');
+  }
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');
