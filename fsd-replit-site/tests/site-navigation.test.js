@@ -37,7 +37,11 @@ test('Investor Relations is directly linked and the funding tables stay in norma
   const investorPublicScript = readFileSync(new URL('../public/investor-public.js', import.meta.url), 'utf8');
   const financials = investorPage.match(/<section id="financials">([\s\S]*?)<\/section>/)?.[1] ?? '';
 
-  assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">Investor Relations<\/a>/);
+  assert.match(header, /<a class="fsd-primary-link" data-nav-house href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(header, /aria-label="Open The House menu"/);
+  assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
+  assert.match(investorPage, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(investorPage, /<a href="\/investor\.html" aria-current="page">INVESTOR RELATIONS<\/a>/);
   assert.match(financials, /Staged capital pathway/);
   assert.match(financials, /Proposed £75,000 use of funds/);
   assert.match(financials, /Financial snapshot: downside disclosed/);
@@ -64,6 +68,8 @@ test('The House mega-menu links to the full public interactive House page', () =
   assert.ok(existsSync(pagePath));
   assert.match(page, /<title>FSD \| The House<\/title>/);
   assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
+  assert.match(page, /<a class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
+  assert.match(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);
   assert.match(page, /--gold:#C8AA72/);
   assert.match(page, /--vg:#C8AA72/);

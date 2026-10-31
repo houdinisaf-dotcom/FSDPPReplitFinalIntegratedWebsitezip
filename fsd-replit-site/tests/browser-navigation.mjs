@@ -245,8 +245,9 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
 
-  assert.deepEqual(await evaluate('Array.from(document.querySelectorAll(".fsd-primary-nav [data-nav-primary]"), button => button.textContent.trim())'), [
-    'SHOP', 'UNIVERSE', 'BIO-LAB™', 'HARDWARE', 'THE HOUSE', 'PRIVATE ACCESS',
+  assert.equal(await evaluate('document.querySelector(".fsd-primary-nav [data-nav-house]")?.getAttribute("href")'), '/the-house.html');
+  assert.deepEqual(await evaluate('Array.from(document.querySelectorAll(".fsd-primary-nav [data-nav-primary]"), button => button.getAttribute("aria-label") || button.textContent.trim())'), [
+    'SHOP', 'UNIVERSE', 'BIO-LAB™', 'HARDWARE', 'Open The House menu', 'PRIVATE ACCESS',
   ]);
   const startingUrl = await evaluate('location.href');
   const startingScrollY = await evaluate('window.scrollY');
@@ -748,6 +749,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await click('[data-nav-mobile-toggle]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "primary" && document.body.classList.contains("fsd-mobile-nav-open")');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-primary-list [data-nav-primary]").length'), 6);
+  assert.equal(await evaluate('document.querySelector(".fsd-mobile-primary-list [data-nav-house]")?.getAttribute("href")'), '/the-house.html');
   assert.equal(await evaluate('document.querySelector(".fsd-mobile-primary-list [data-nav-investor]")?.getAttribute("href")'), '/investor.html');
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'groups');
