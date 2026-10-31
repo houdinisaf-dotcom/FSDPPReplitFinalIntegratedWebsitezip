@@ -34,8 +34,13 @@ function routeFromDestination(destination) {
   if (destination?.replace(/\/+$/, '') === FSD_STORY_PATH) {
     return { view: 'story', target: 'our-story' };
   }
-  if (destination === FSD_HOUSE_PAGE_PATH) {
-    return { view: 'house', target: 'the-house-page' };
+  if (destination === FSD_HOUSE_PAGE_PATH || destination?.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) {
+    return {
+      view: 'house',
+      target: destination === FSD_HOUSE_PAGE_PATH
+        ? 'the-house-page'
+        : destination.slice(FSD_HOUSE_PAGE_PATH.length + 1),
+    };
   }
   return routeFromHash(destination);
 }

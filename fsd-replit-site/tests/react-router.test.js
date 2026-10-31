@@ -86,6 +86,14 @@ test('the public House page has a direct route from the House navigation', () =>
     view: 'house',
     target: 'the-house-page',
   });
+  assert.deepEqual(resolveFsdRoute({
+    menu: { id: 'house' },
+    group: { id: 'community-culture' },
+    item: { kind: 'destination', href: '/the-house.html#community/co-creation' },
+  }), {
+    view: 'house',
+    target: 'community/co-creation',
+  });
 });
 
 test('universe and house collections preserve the selected FSD destination', () => {

@@ -62,7 +62,7 @@ test('The House mega-menu links to the full public interactive House page', () =
   const group = house?.groups.find(item => item.id === 'the-house-website');
   const pagePath = new URL('../public/the-house.html', import.meta.url);
   const page = readFileSync(pagePath, 'utf8');
-  const inlineScript = page.match(/<script\b[^>]*>([\s\S]*?)<\/script\s*>/i)?.[1] ?? '';
+  const inlineScript = page.match(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script\s*>/i)?.[1] ?? '';
 
   assert.ok(group);
   assert.equal(group.items[0].title, 'THE HOUSE WEBSITE');
@@ -72,6 +72,9 @@ test('The House mega-menu links to the full public interactive House page', () =
   assert.match(page, /<title>FSD \| The House<\/title>/);
   assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
   assert.match(page, /<a class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
+  assert.match(page, /href="\/the-house\.html#bio-lab">BIO-LAB™<\/a>/);
+  assert.match(page, /href="\/the-house\.html#community">UNIVERSE \/ COMMUNITY<\/a>/);
+  assert.match(page, /href="\/the-house\.html#global\/innovation">GLOBAL VISION<\/a>/);
   assert.match(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);
   assert.match(page, /--gold:#C8AA72/);
@@ -80,7 +83,8 @@ test('The House mega-menu links to the full public interactive House page', () =
   assert.match(inlineScript, /,M=/);
   assert.match(inlineScript, /addEventListener\('hashchange',render\)/);
   assert.match(inlineScript, /Public Information/);
-  assert.doesNotMatch(page, /<script\s+src=/i);
+  assert.match(page, /<script src="\/innovation-initiative-data\.js"><\/script>/);
+  assert.match(page, /<script src="\/innovation-initiative-router\.js"><\/script>/);
   assert.doesNotMatch(page, /A6FF00|C6A36A/);
   assert.doesNotMatch(page, /private preview|private draft/i);
 });
@@ -185,13 +189,16 @@ test('Bio-Lab and Hardware reuse current division groups and product records', (
   assert.equal(bioLab.groups[1].items[0].title, 'Browse Innovation Hub');
   assert.equal(bioLab.groups[1].items[0].href, '#innovation-hub');
   assert.ok(bioLab.groups[1].items.some(item =>
-    item.title === 'Smart Apparel & NFC' && item.href === '#smart-apparel-nfc'));
+    item.title === 'Adaptive Technical Fabrics'
+      && item.href === '/the-house.html#bio-lab/adaptive-fabrics'));
+  assert.ok(bioLab.groups[1].items.some(item =>
+    item.title === 'Smart Apparel & NFC Authentication'
+      && item.href === '/the-house.html#bio-lab/smart-apparel'));
   assert.deepEqual(hardware.groups.map(group => group.title), [
     ...collectionDivisions.find(division => division.id === 'hardware').groups.map(group => group.title),
-    'FSD PODS',
   ]);
   assert.ok(hardware.groups[0].items.some(item => item.record?.name));
-  assert.equal(hardware.groups.at(-1).items[0].href, '#fsd-pods');
+  assert.equal(hardware.groups.some(group => group.id === 'fsd-pods'), false);
 });
 
 test('weighted rope is an opt-in Hardware draft preview, not a published catalogue record', () => {
@@ -240,23 +247,25 @@ test('the hooded-shell campaign proof is available only in the development previ
   assert.deepEqual(getNavigationFeature(previewCollections, previewCollections.groups.indexOf(previewMens), shellIndex).imageSources, []);
 });
 
-test('House destinations expose the story route and do not claim proposed locations are live', () => {
+test('House navigation maps the public initiative homes and rollout details', () => {
   const house = menu.find(item => item.id === 'house');
   assert.deepEqual(house.groups.map(group => group.title), [
     'BRAND STORY & ARCHIVE',
     'THE HOUSE WEBSITE',
     'FLAGSHIPS',
     'FIGHT PROMOTIONS',
-    'PERFORMANCE-LINKED PARTNERSHIPS & SECURITY',
-    'GLOBAL VISION',
+    'COMMUNITY & CULTURE',
+    'GLOBAL VISION & OPERATIONS',
     'INVESTOR RELATIONS',
   ]);
   assert.ok(house.groups.filter(group => group.href).every(group =>
-    ['/story', '/the-house.html', '#fsd-division-global', '#performance-linked-partnerships-security', '/investor.html'].includes(group.href)));
+    ['/story', '/the-house.html', '/the-house.html#community/co-creation', '/the-house.html#global/pods', '/investor.html'].includes(group.href)));
   const story = house.groups.find(group => group.id === 'our-story');
   const site = house.groups.find(group => group.id === 'the-house-website');
   const flagships = house.groups.find(group => group.id === 'flagships');
   const fightPromotions = house.groups.find(group => group.id === 'fight-promotions');
+  const community = house.groups.find(group => group.id === 'community-culture');
+  const globalOperations = house.groups.find(group => group.id === 'global-vision-operations');
   const investor = house.groups.find(group => group.id === 'investor-relations');
   assert.equal(story.items[0].status, 'EDITORIAL / BRAND PRINCIPLES');
   assert.equal(story.items[0].chapterCount, '04 FOUNDATIONAL CHAPTERS');
@@ -270,6 +279,21 @@ test('House destinations expose the story route and do not claim proposed locati
   assert.equal(flagships.sourceGroupIndex, 0);
   assert.equal(fightPromotions.href, '');
   assert.equal(fightPromotions.sourceGroupIndex, 1);
+  assert.deepEqual(community.items.map(item => item.title), [
+    'Community Co-Creation',
+    'Performance-Linked Partnerships',
+    'Circular Trade-In Programme',
+    'Community First Aid & Safety Skills',
+  ]);
+  assert.ok(community.items.every(item => item.href.startsWith('/the-house.html#community/')));
+  assert.deepEqual(globalOperations.items.map(item => item.title), [
+    'FSD Pods',
+    'Autonomous Pop-Ups & Predictive Stock',
+    'Mobile Testing Labs',
+    'Local Micro-Manufacturing',
+    'Genetic & Microbiome Personalisation',
+  ]);
+  assert.ok(globalOperations.items.every(item => item.href.startsWith('/the-house.html#global/')));
   assert.equal(investor.href, '/investor.html');
   assert.equal(investor.navigationUnavailable, false);
 });

@@ -12,8 +12,9 @@ test('every requested page and Bio-Lab concept has a direct route and visible pa
   const expectedTitles = [
     'Tactical Shield Membership',
     'FSD Pods',
-    'Smart Apparel &amp; NFC',
-    'Performance-Linked Partnerships &amp; Security',
+    'Smart Apparel &amp; NFC Authentication',
+    'Adaptive Technical Fabrics',
+    'Performance-Linked Partnerships',
     'Bio-Weave™ ECG &amp; Hydration Compression Tops',
     'FSD Aware Band™',
     'Graphene-Infused Thermal Recovery Vests',
@@ -28,12 +29,12 @@ test('every requested page and Bio-Lab concept has a direct route and visible pa
     assert.equal(routeFromHash(`#${page.id}`).target, page.id);
   }
   for (const title of expectedTitles) assert.ok(html.includes(title), `${title} should be visible`);
-  assert.equal(flagshipPageDefinitions.length, 10);
+  assert.equal(flagshipPageDefinitions.length, 11);
 });
 
 test('pending media uses labeled responsive placeholders rather than unapproved imagery', () => {
   const html = renderFlagshipPlaceholderPages();
-  assert.equal((html.match(/class="fsd-asset-slot fsd-asset-slot--/g) || []).length, 40);
+  assert.equal((html.match(/class="fsd-asset-slot fsd-asset-slot--/g) || []).length, 44);
   assert.match(html, /FSD \/ PERFORMANCE/);
   assert.match(html, /FSD product and editorial imagery/);
   assert.doesNotMatch(html, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
@@ -42,7 +43,9 @@ test('pending media uses labeled responsive placeholders rather than unapproved 
 
 test('Innovation Hub links to all concepts and keeps private proofs out of production markup', () => {
   const publicHtml = renderInnovationHubIndex();
-  assert.equal((publicHtml.match(/class="fsd-innovation-card"/g) || []).length, 7);
+  assert.equal((publicHtml.match(/class="fsd-innovation-card"/g) || []).length, 8);
+  assert.match(publicHtml, /ACTIVE BIO-LAB INITIATIVE/);
+  assert.match(publicHtml, /\/the-house\.html#bio-lab\/adaptive-fabrics/);
   assert.doesNotMatch(publicHtml, /__catalogue-preview/);
 
   const developmentHtml = renderInnovationHubIndex({ includePrivatePreviews: true });
@@ -55,6 +58,8 @@ test('new page content does not enable membership sign-up, checkout, or unverifi
   const html = renderFlagshipPlaceholderPages();
   assert.match(html, /REGISTRATION NOT OPEN/);
   assert.match(html, /PARTNERSHIP ENQUIRIES NOT CONNECTED/);
+  assert.match(html, /FSD \/ GLOBAL VISION &amp; OPERATIONS/);
+  assert.match(html, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
   assert.doesNotMatch(html, /<form\b|ADD TO BAG|CHECKOUT|£\d/i);
   assert.match(html, /FSD Bio-Lab product information/i);
 });

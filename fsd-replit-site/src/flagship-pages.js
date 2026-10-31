@@ -49,9 +49,19 @@ export const innovationHubPages = Object.freeze([
   },
   {
     id: 'smart-apparel-nfc',
-    title: 'Smart Apparel & NFC',
-    summary: 'FSD connected-apparel product information.',
-    modules: ['Product overview', 'Connected-apparel experience', 'Data, privacy & compatibility'],
+    title: 'Smart Apparel & NFC Authentication',
+    summary: 'Active Bio-Lab initiative for garment authentication, product information, and digital content.',
+    modules: ['Garment authentication', 'Care, sizing & digital content', 'Privacy, security & manufacturing gates'],
+    initiative: true,
+    houseRoute: 'bio-lab/smart-apparel',
+  },
+  {
+    id: 'adaptive-technical-fabrics',
+    title: 'Adaptive Technical Fabrics',
+    summary: 'Active Bio-Lab initiative focused on material science, moisture management, and garment durability.',
+    modules: ['Material science & moisture management', 'Durability testing', 'Partner, IP & rollout gates'],
+    initiative: true,
+    houseRoute: 'bio-lab/adaptive-fabrics',
   },
 ]);
 
@@ -67,17 +77,21 @@ const standalonePages = Object.freeze([
   {
     id: 'fsd-pods',
     title: 'FSD Pods',
-    eyebrow: 'FSD / HARDWARE',
-    summary: 'FSD Pods product information.',
-    modules: ['Product overview', 'Product & interface', 'Specifications & compatibility'],
+    eyebrow: 'FSD / GLOBAL VISION & OPERATIONS',
+    summary: 'Active infrastructure initiative with rollout underway. The House page contains its delivery scope, value pillars, and rollout framework.',
+    modules: ['Modular training and retail infrastructure', 'Operating model and site readiness', 'Safety, planning, and demand gates'],
+    action: 'VIEW GLOBAL VISION & OPERATIONS',
+    actionHref: '/the-house.html#global/pods',
   },
   {
     id: 'performance-linked-partnerships-security',
-    title: 'Performance-Linked Partnerships & Security',
+    title: 'Performance-Linked Partnerships',
     eyebrow: 'FSD / THE HOUSE',
-    summary: 'An information page for a proposed partnership programme. Participation, measurement, security controls, and programme terms are not confirmed.',
-    modules: ['Programme overview', 'Measurement framework', 'Security & governance'],
+    summary: 'Active House & Universe initiative with rollout underway. Partner participation and written terms remain subject to agreement.',
+    modules: ['Co-created products and campaigns', 'Athlete, coach, and workplace programmes', 'Safety, measurement, and governance'],
     action: 'PARTNERSHIP ENQUIRIES NOT CONNECTED',
+    initiative: true,
+    houseRoute: 'community/performance-partnerships',
   },
 ]);
 
@@ -119,11 +133,13 @@ function renderAssetSlot(title, variant = 'editorial') {
 }
 
 export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}) {
-  const conceptLinks = innovationHubPages.map(page => `<a class="fsd-innovation-card" href="#${escapeHTML(page.id)}">
+  const conceptLinks = innovationHubPages.map(page => `<a class="fsd-innovation-card" href="${page.initiative
+    ? `${escapeHTML('/the-house.html#')}${escapeHTML(page.houseRoute)}`
+    : `#${escapeHTML(page.id)}`}">
     <span class="fsd-innovation-card-index">${String(innovationHubPages.indexOf(page) + 1).padStart(2, '0')}</span>
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHTML(page.title)}</strong>
-      <small>FSD PRODUCT · DETAILS</small>
+      <small>${page.initiative ? 'ACTIVE BIO-LAB INITIATIVE' : 'FSD PRODUCT · DETAILS'}</small>
     </span>
     <span class="fsd-innovation-card-arrow" aria-hidden="true">↗</span>
   </a>`).join('');
@@ -141,7 +157,7 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
       <div class="fsd-hub-heading">
         <div>
           <h2 id="fsd-innovation-hub-title">Innovation Hub</h2>
-          <p>Explore the FSD Bio-Lab range.</p>
+          <p>Explore FSD Bio-Lab products and active material-science and connected-apparel initiatives.</p>
         </div>
         ${renderAssetSlot('Innovation Hub editorial image', 'hub')}
       </div>
@@ -157,7 +173,7 @@ function renderPageModule(page, moduleTitle, index) {
     <div class="fsd-page-module-copy">
       <span class="fsd-page-module-index">${String(index + 1).padStart(2, '0')}</span>
       <h3>${escapeHTML(moduleTitle)}</h3>
-      <p>Product information and supporting media.</p>
+       <p>${page.initiative ? 'Initiative scope, value pillars, and rollout framework.' : 'Product information and supporting media.'}</p>
     </div>
     ${renderAssetSlot(`${page.title} / ${moduleTitle}`, ratio)}
   </article>`;
@@ -169,9 +185,11 @@ function renderPage(page) {
   const returnLabel = isInnovationPage ? 'RETURN TO INNOVATION HUB' : 'RETURN TO FSD UNIVERSE';
   const modules = page.modules.map((moduleTitle, index) =>
     renderPageModule(page, moduleTitle, index)).join('');
-  const action = page.action
-    ? `<span class="fsd-page-status" aria-disabled="true">${escapeHTML(page.action)}</span>`
-    : '';
+  const action = page.actionHref
+    ? `<a class="fsd-page-status" href="${escapeHTML(page.actionHref)}">${escapeHTML(page.action || 'VIEW INITIATIVE')}</a>`
+    : page.action
+      ? `<span class="fsd-page-status" aria-disabled="true">${escapeHTML(page.action)}</span>`
+      : '';
 
   return `<section class="fsd-placeholder-page" id="${escapeHTML(page.id)}" aria-labelledby="${escapeHTML(page.id)}-title">
     <div class="fsd-page-shell">
@@ -179,6 +197,7 @@ function renderPage(page) {
         <p class="fsd-page-eyebrow">${escapeHTML(page.eyebrow)}</p>
         <h2 id="${escapeHTML(page.id)}-title">${escapeHTML(page.title)}</h2>
         <p class="fsd-page-intro">${escapeHTML(page.summary)}</p>
+        ${page.initiative ? '<span class="fsd-page-status">ACTIVE INITIATIVE · ROLLOUT UNDERWAY</span>' : ''}
       </header>
       ${renderAssetSlot(`${page.title} / Editorial`, 'hero')}
       <div class="fsd-page-module-grid">${modules}</div>

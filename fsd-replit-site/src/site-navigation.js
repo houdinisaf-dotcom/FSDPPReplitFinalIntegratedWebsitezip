@@ -315,6 +315,22 @@ function makeHouseGroups(divisions) {
       }],
   });
 
+  const initiativeGroup = (id, title, description, initiatives) => ({
+    id,
+    title,
+    description,
+    href: `${FSD_HOUSE_PAGE_PATH}#${initiatives[0]?.hash || 'global/innovation'}`,
+    sourceDivisionId: global?.id || 'global',
+    sourceGroupIndex: -1,
+    items: initiatives.map(initiative => ({
+      id: `${id}-${initiative.id}`,
+      title: initiative.title,
+      kind: 'destination',
+      href: `${FSD_HOUSE_PAGE_PATH}#${initiative.hash}`,
+      description: initiative.description,
+    })),
+  });
+
   return [
     staticGroup('our-story', 'BRAND STORY & ARCHIVE', FSD_STORY_PATH,
       'Capability is not a costume. It is a practice. Explore four foundational chapters and five House Codes.',
@@ -324,17 +340,28 @@ function makeHouseGroups(divisions) {
         houseCodeCount: '05 WORKING PRINCIPLES',
       }),
     staticGroup('the-house-website', 'THE HOUSE WEBSITE', FSD_HOUSE_PAGE_PATH,
-      'Explore the full interactive FSD House platform, including its brand story, flagships, promotions, partnerships, global vision, and investor relations.'),
+      'Explore the public FSD House platform, including Bio-Lab, community initiatives, Global Vision, and investor relations.'),
     staticGroup('flagships', 'FLAGSHIPS', '',
       global?.description || 'FSD flagship locations.', flagship, 0),
     staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '',
       'FSD promotions and events.', promotions, 1),
-    staticGroup('performance-linked-partnerships-security',
-      'PERFORMANCE-LINKED PARTNERSHIPS & SECURITY',
-      '#performance-linked-partnerships-security',
-      'A proposed programme overview. Participation, measurement, security controls, and terms are not confirmed.'),
-    staticGroup('global-vision', 'GLOBAL VISION', '#fsd-division-global',
-      global?.description || 'FSD Global.'),
+    initiativeGroup('community-culture', 'COMMUNITY & CULTURE',
+      'Active House & Universe initiatives across co-creation, partnerships, reuse, and community safety.',
+      [
+        { id: 'co-creation', title: 'Community Co-Creation', hash: 'community/co-creation', description: 'Creator workshops, structured feedback, and product testing.' },
+        { id: 'performance-partnerships', title: 'Performance-Linked Partnerships', hash: 'community/performance-partnerships', description: 'Partner programmes, subject to written agreement and governance.' },
+        { id: 'circular-trade-in', title: 'Circular Trade-In Programme', hash: 'community/circular-trade-in', description: 'Inspection, repair, resale, and recycling pathways.' },
+        { id: 'first-aid-safety', title: 'Community First Aid & Safety Skills', hash: 'community/first-aid-safety', description: 'Community resilience education with qualified providers.' },
+      ]),
+    initiativeGroup('global-vision-operations', 'GLOBAL VISION & OPERATIONS',
+      global?.description || 'Active FSD infrastructure and long-horizon R&D initiatives.',
+      [
+        { id: 'pods', title: 'FSD Pods', hash: 'global/pods', description: 'Modular training, retail, and community-learning infrastructure.' },
+        { id: 'predictive-popups', title: 'Autonomous Pop-Ups & Predictive Stock', hash: 'global/predictive-popups', description: 'Staffed flexible retail supported by demand-led stock planning.' },
+        { id: 'mobile-testing-labs', title: 'Mobile Testing Labs', hash: 'global/mobile-testing-labs', description: 'Mobile apparel trials, feedback, and qualified demonstrations.' },
+        { id: 'local-micro-manufacturing', title: 'Local Micro-Manufacturing', hash: 'global/local-micro-manufacturing', description: 'Small-batch, on-demand production closer to FSD communities.' },
+        { id: 'genetic-microbiome', title: 'Genetic & Microbiome Personalisation', hash: 'global/genetic-microbiome', description: 'Long-horizon research with strict scientific and privacy gates.' },
+      ]),
     staticGroup('investor-relations', 'INVESTOR RELATIONS', '/investor.html',
       'Investor relations, proposed funding pathway, planning assumptions, and roadmap.'),
   ];
@@ -433,7 +460,7 @@ export function createNavigationModel({
       id: 'house',
       label: 'THE HOUSE',
       title: 'THE HOUSE',
-      description: 'The story and proposed FSD global vision.',
+      description: 'The story, community initiatives, Bio-Lab, and active FSD Global programmes.',
       divisionId: 'global',
       groups: makeHouseGroups(divisions),
     },
@@ -452,10 +479,10 @@ export function createNavigationModel({
     bioLabMenu.groups.push({
       id: 'innovation-hub',
       title: 'INNOVATION HUB',
-      description: 'Browse FSD Bio-Lab products and connected apparel.',
+      description: 'Browse Bio-Lab products and active material-science and connected-apparel initiatives.',
       sourceDivisionId: 'bio-lab',
       sourceGroupIndex: bioLabMenu.groups.length,
-      href: '#innovation-hub',
+      href: `${FSD_HOUSE_PAGE_PATH}#bio-lab`,
       items: [{
         id: 'innovation-hub-index',
         title: 'Browse Innovation Hub',
@@ -463,34 +490,19 @@ export function createNavigationModel({
         href: '#innovation-hub',
         description: 'Explore FSD Bio-Lab products.',
       }, {
+        id: 'adaptive-technical-fabrics',
+        title: 'Adaptive Technical Fabrics',
+        kind: 'destination',
+        href: `${FSD_HOUSE_PAGE_PATH}#bio-lab/adaptive-fabrics`,
+        description: 'Material science, moisture management, and garment durability.',
+      }, {
         id: 'smart-apparel-nfc-concept',
-        title: 'Smart Apparel & NFC',
-        kind: 'concept',
-        href: '#smart-apparel-nfc',
+        title: 'Smart Apparel & NFC Authentication',
+        kind: 'destination',
+        href: `${FSD_HOUSE_PAGE_PATH}#bio-lab/smart-apparel`,
         sourceDivisionId: 'bio-lab',
         sourceGroupIndex: bioLabMenu.groups.length,
-        description: 'FSD connected-apparel collection.',
-      }],
-    });
-  }
-
-  const hardwareMenu = menus.find(menu => menu.id === 'hardware');
-  if (hardwareMenu) {
-    hardwareMenu.groups.push({
-      id: 'fsd-pods',
-      title: 'FSD PODS',
-      description: 'FSD product collection.',
-      sourceDivisionId: 'hardware',
-      sourceGroupIndex: hardwareMenu.groups.length,
-      href: '#fsd-pods',
-      items: [{
-        id: 'fsd-pods-concept',
-        title: 'FSD Pods',
-        kind: 'concept',
-        href: '#fsd-pods',
-        sourceDivisionId: 'hardware',
-        sourceGroupIndex: hardwareMenu.groups.length,
-        description: 'FSD product collection.',
+        description: 'Garment authentication, useful product information, and digital content.',
       }],
     });
   }
@@ -549,7 +561,9 @@ function hasVerifiedDestination({
 
   const explicitTarget = item?.href || group?.href;
   if (explicitTarget) {
-    if (explicitTarget === '/investor.html' || explicitTarget === FSD_HOUSE_PAGE_PATH) return true;
+    if (explicitTarget === '/investor.html'
+      || explicitTarget === FSD_HOUSE_PAGE_PATH
+      || explicitTarget.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) return true;
     if (explicitTarget.replace(/\/+$/, '') === FSD_STORY_PATH) {
       return Boolean(
         ownerDocument.querySelector(FSD_STORY_HASH)
