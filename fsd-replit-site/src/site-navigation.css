@@ -754,8 +754,8 @@ body.fsd-mobile-nav-open {
 @media (max-width: 900px) {
   :root {
     --fsd-navigation-announcement-height: 23px;
-    --fsd-navigation-shell-height: 108px;
-    --fsd-navigation-stack-height: 131px;
+    --fsd-navigation-shell-height: 109px;
+    --fsd-navigation-stack-height: 132px;
   }
 
   .header.fsd-header .fsd-brand-logo {
@@ -811,7 +811,7 @@ body.fsd-mobile-nav-open {
   }
 
   .fsd-mega-menu {
-    max-height: calc(100dvh - 131px);
+    max-height: calc(100dvh - 132px);
     border-top-color: rgba(200, 170, 114, 0.32);
   }
 

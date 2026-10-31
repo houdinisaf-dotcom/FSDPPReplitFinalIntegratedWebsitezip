@@ -784,15 +784,26 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
   });
   await delay(150);
-  assert.ok(await evaluate(`(() => {
+  const mobileNavMetrics = await evaluate(`(() => {
     const announcement = document.querySelector(".announcement.fsd-announcement").getBoundingClientRect();
     const shell = document.querySelector(".fsd-navigation-shell").getBoundingClientRect();
     const spacer = document.querySelector(".fsd-navigation-spacer").getBoundingClientRect();
-    return getComputedStyle(document.querySelector(".fsd-navigation-shell")).position === "fixed"
-      && Math.abs(announcement.height - 23) < 1
-      && Math.abs(shell.top - announcement.height) < 1
-      && Math.abs(spacer.height - shell.height) < 1;
-  })()`), 'Mobile navigation should stay fixed with a matching flow spacer.');
+    return {
+      position: getComputedStyle(document.querySelector(".fsd-navigation-shell")).position,
+      announcementHeight: announcement.height,
+      shellTop: shell.top,
+      shellHeight: shell.height,
+      spacerHeight: spacer.height,
+      viewportWidth: window.innerWidth,
+    };
+  })()`);
+  assert.ok(
+    mobileNavMetrics.position === 'fixed'
+      && Math.abs(mobileNavMetrics.announcementHeight - 23) < 1
+      && Math.abs(mobileNavMetrics.shellTop - mobileNavMetrics.announcementHeight) < 1
+      && Math.abs(mobileNavMetrics.spacerHeight - mobileNavMetrics.shellHeight) < 1,
+    `Mobile navigation geometry: ${JSON.stringify(mobileNavMetrics)}`,
+  );
   await evaluate('window.scrollTo({ top: 220, behavior: "instant" })');
   await waitFor('window.scrollY > 0');
   assert.ok(await evaluate('Math.abs(document.querySelector(".fsd-navigation-shell").getBoundingClientRect().top - document.querySelector(".announcement.fsd-announcement").getBoundingClientRect().height) < 1'));

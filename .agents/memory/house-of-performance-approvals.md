@@ -75,6 +75,12 @@ The user designated the existing storefront structure as the master baseline: in
 
 **How to apply:** Make focused changes within the current navigation and page hierarchy. Preserve the story section’s editorial placement, concept/pre-launch safeguards, and the global gold progress indicator when adding or revising features.
 
+The user chose to adapt their supplied top-navigation snippet to the existing header and menus, not replace the data-driven navigation with its demo markup.
+
+**Why:** The snippet was incomplete and included placeholder panels and page sections; the user selected adaptation to the current platform.
+
+**How to apply:** Preserve the approved menu structure, real destinations, keyboard/focus behavior, mobile links, and motion settings. Apply reference behavior to the shared header only, reserving its layout space so fixed navigation does not cover page content.
+
 The user explicitly authorized the complete supplied FSD The House website, including its interactive router and data dictionary, as a public page linked from THE HOUSE navigation.
 
 **Why:** The user asked for direct integration into the main project with no private framing, requested production publication, and confirmed UK legal advice cleared this specific supplied page for public circulation.
