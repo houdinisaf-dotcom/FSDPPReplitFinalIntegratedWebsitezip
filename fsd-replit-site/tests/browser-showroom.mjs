@@ -354,21 +354,21 @@ try {
   await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
   await key('Escape');
   await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
-  if (mobileProofCapture) {
-    await key('Escape');
-    await waitFor('!document.querySelector("#fsd-showcase-dialog")?.open');
-    await click('[data-division="hardware"]');
-    await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
-    await click('#fsd-showcase-dialog [data-product-id="69"]');
-    await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
-    await click('#product-dialog #product-title');
-    assert.equal(await evaluate('document.querySelector("#product-dialog")?.open'), true,
-      'Clicking product detail content must not dismiss the garment dialog.');
-    await key('Escape');
-    await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
-    await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
-    assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
-  }
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog")?.open');
+  await click('[data-division="hardware"]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+  await click('#fsd-showcase-dialog [data-product-id="69"]');
+  await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  await click('#product-dialog #product-title');
+  assert.equal(await evaluate('document.querySelector("#product-dialog")?.open'), true,
+    'Clicking product detail content must not dismiss the garment dialog.');
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
+  await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
+  assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog")?.open && !document.documentElement.classList.contains("fsd-modal-open")');
   if (popupOnly) {
     assert.deepEqual(browserErrors, []);
     console.log(`${mobileProofCapture ? 'Mobile' : 'Desktop'} popup browser checks passed: collection categories, inside clicks, backdrop dismissal, gallery use, close button, nested Escape and focus restoration.`);
@@ -437,9 +437,8 @@ try {
   assert.equal(await evaluate('document.querySelectorAll("#fsd-showcase-dialog .fsd-product-card").length'), 4);
   await click('#fsd-showcase-dialog [data-product-id="69"]');
   await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
-  await key('Escape');
+  await click('#close-dialog');
   await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
-  await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
   assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
   assert.equal(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-showcase-empty") === null'), true);
   assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-placeholder-kicker") === null'));
@@ -507,6 +506,14 @@ try {
   assert.equal(await evaluate('Boolean(document.querySelector("#dialog-body [data-product-specifications-root]"))'), true);
   assert.equal(await evaluate('document.querySelector("#dialog-body [data-product-specifications-root]").textContent.trim()'), '');
   assert.equal(await evaluate('document.querySelector("#dialog-body [data-catalogue-main-image]").loading'), 'eager');
+  const colourwayCount = await evaluate('document.querySelectorAll("#dialog-body [data-catalogue-colourway-index]").length');
+  assert.ok(colourwayCount > 1, 'The selected product should expose its existing colourway controls.');
+  for (let index = 0; index < colourwayCount; index++) {
+    await click(`#product-dialog [data-catalogue-colourway-index="${index}"]`);
+    await waitFor(`document.querySelector('#product-dialog [data-catalogue-colourway-index="${index}"]')?.getAttribute("aria-pressed") === "true"`);
+    assert.equal(await evaluate('document.querySelector("#product-dialog").open'), true,
+      'Selecting a product colourway must not dismiss the garment dialog.');
+  }
   await key('Escape');
   await waitFor('!document.querySelector("#product-dialog").open');
   await waitFor('document.activeElement.matches(".fsd-featured-card [data-product=\\"1\\"]")');

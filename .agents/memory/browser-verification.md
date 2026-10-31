@@ -15,6 +15,12 @@ Do not trust responsive measurements after switching an already-loaded desktop C
 
 **How to apply:** For reliable responsive proof capture, use a 402px CSS viewport (`mobile: false`, device scale 1), reload after resizing, and confirm `innerWidth` and `visualViewport.scale`. Use a fresh device-emulation context for true mobile/touch testing.
 
+Run dialog focus checks in separate desktop and mobile Chromium contexts instead of switching one live context between device modes.
+
+**Why:** In this project, focus restoration passed in the isolated mobile popup flow but failed later after the same session switched back to desktop metrics.
+
+**How to apply:** When a focus assertion fails after changing emulation mode, reproduce it in a fresh context at the intended viewport before changing application behavior.
+
 For navigation panels that rerender their rows, use real pointer movement—not `pointerover`—to update the hover selection.
 
 **Why:** Replacing the row under a stationary mouse can synthesize another `pointerover` and overwrite a keyboard-focused selection.
