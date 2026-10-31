@@ -570,7 +570,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     search.dispatchEvent(new Event("input", { bubbles: true }));
   })()`);
   await waitFor('document.querySelector("#catalogue-count").textContent.includes("of 1 product") && !!document.querySelector("#catalogue-grid [data-product=\\"43\\"]")');
-  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && !document.querySelector("[data-catalogue-view=\\"visual\\"]")');
+  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && !!document.querySelector("[data-catalogue-view=\\"visual\\"]")');
   assert.deepEqual(await evaluate('Object.fromEntries(new URLSearchParams(location.search))'), {
     category: 'Modest Activewear',
     audience: 'Women’s',
@@ -598,6 +598,15 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "list"');
   await assertNoHorizontalPageScroll();
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid img").length === 0 && document.querySelectorAll("#catalogue-grid .product-card").length === document.querySelectorAll("#catalogue-grid .product-row__trigger").length'), true, 'The catalogue should stay in a compact text-row view.');
+  await click('[data-catalogue-view="visual"]');
+  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelectorAll("#catalogue-grid [data-catalogue-card-image]").length > 0');
+  assert.equal(await evaluate('document.querySelector("[data-catalogue-view=\\"visual\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("[data-catalogue-view=\\"list\\"]")?.getAttribute("aria-pressed") === "false" && new URLSearchParams(location.search).get("view") === "visual"'), true, 'Visual layout should be selected and preserved in the URL.');
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid [data-catalogue-card-slide]").length > 0'), true, 'Visual catalogue cards should offer accessible image selectors.');
+  await click('#catalogue-grid [data-catalogue-card-next]');
+  await waitFor('document.querySelector("#catalogue-grid [data-product=\\"1\\"] [data-catalogue-card-image]")?.alt.includes("Electric cobalt fading to jet black")');
+  await click('[data-catalogue-view="list"]');
+  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && document.querySelectorAll("#catalogue-grid img").length === 0');
+  assert.equal(await evaluate('document.querySelector("[data-catalogue-view=\\"list\\"]")?.getAttribute("aria-pressed") === "true" && !new URLSearchParams(location.search).has("view")'), true, 'List layout should restore the default state in the URL.');
 
   // Product rows expand in place and preserve the list's exact scroll position.
   await evaluate('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.scrollIntoView({ block: "center" })');

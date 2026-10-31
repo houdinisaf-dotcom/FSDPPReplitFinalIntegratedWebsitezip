@@ -467,6 +467,8 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     assert.match(element('#catalogue-grid').innerHTML, /class="product-row__trigger"/);
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /class="product-image"|<img\b/);
     assert.equal(element('#catalogue-grid').dataset.view, 'list');
+    assert.match(catalogueSection(), /data-catalogue-view="visual"/);
+    assert.match(catalogueSection(), /data-catalogue-view="list"/);
     assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
 
     element('#catalogue-category').value = 'Smart Tech';
@@ -496,6 +498,10 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
       `Showing 1–${initialPageCount} of ${allProductCount} products`,
     );
     assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
+    click('[data-catalogue-view]', { dataset: { catalogueView: 'visual' } });
+    assert.equal(element('#catalogue-grid').dataset.view, 'visual');
+    click('[data-catalogue-view]', { dataset: { catalogueView: 'list' } });
+    assert.equal(element('#catalogue-grid').dataset.view, 'list');
     click('[data-category-link]', { dataset: { categoryLink: 'Sports Hijabs' } });
     const hijabProductCount = filterProducts('Sports Hijabs').length;
     assert.equal(

@@ -415,7 +415,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
   .catalogue-chip-list { align-items: flex-start; }
   .catalogue-clear-all { margin-left: 0; }
   .product-grid[data-view="visual"] { grid-template-columns: 1fr; }
-  .product-grid[data-view="visual"] .product-image { min-height: 340px; }
+  .product-grid[data-view="visual"] .catalogue-card__media { aspect-ratio: 5 / 4; }
   #product-dialog { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); }
   #dialog-body { grid-template-columns: 1fr; }
   #dialog-body .catalogue-selector__visual { min-height: 360px; padding: 12px; }

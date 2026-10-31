@@ -20,9 +20,11 @@ import './lazy-image-loading.css';
 function CataloguePortal({ target }) {
   const [products, setProducts] = useState([]);
   const [actions, setActions] = useState({});
-  const renderResults = useCallback((nextProducts, nextActions) => {
+  const [view, setView] = useState('list');
+  const renderResults = useCallback((nextProducts, nextActions, nextView) => {
     setProducts(nextProducts);
     setActions(nextActions);
+    setView(nextView);
   }, []);
 
   useLayoutEffect(() => {
@@ -35,6 +37,7 @@ function CataloguePortal({ target }) {
   return createPortal(
     <CatalogList
       products={products}
+      view={view}
       onProductSelect={actions.onProductSelect}
       onAddToBag={actions.onAddToBag}
     />,

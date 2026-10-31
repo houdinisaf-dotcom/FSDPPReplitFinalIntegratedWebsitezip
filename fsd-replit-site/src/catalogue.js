@@ -30,7 +30,7 @@ const sortOptions = [
   ['price-asc', 'Price: low to high'],
   ['price-desc', 'Price: high to low'],
 ];
-const viewOptions = ['list'];
+const viewOptions = ['list', 'visual'];
 const isBrowser = () => typeof window !== 'undefined' && Boolean(window.history && window.location);
 const scrollBehavior = () => typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   ? 'auto'
@@ -290,7 +290,14 @@ export function catalogueSection() {
       </select></label>
       <label>Find a product<input id="search" type="search" placeholder="Name, colourway or alternate name…" aria-label="Search products"/></label>
       </div>
-      <div class="catalogue-control-bottom"><div id="catalogue-active-filters"></div></div>
+     <div class="catalogue-control-bottom">
+       <div id="catalogue-active-filters"></div>
+       <div class="catalogue-view-controls" role="group" aria-label="Catalogue layout">
+         <span>VIEW</span>
+         <button type="button" data-catalogue-view="list" aria-pressed="true">List</button>
+         <button type="button" data-catalogue-view="visual" aria-pressed="false">Visual</button>
+       </div>
+     </div>
     </div>
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>
     <div class="product-grid" id="catalogue-grid" data-view="list"></div>
@@ -364,7 +371,7 @@ function renderResults() {
   });
   const grid = document.querySelector('#catalogue-grid');
   if (catalogueResultsRenderer) {
-    catalogueResultsRenderer(visibleProducts, catalogueRowActions);
+    catalogueResultsRenderer(visibleProducts, catalogueRowActions, view);
   } else {
     grid.innerHTML = filtered.length
       ? filtered.slice(start, start + pageSize).map(card).join('')

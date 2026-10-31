@@ -1,12 +1,107 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import '../CatalogList.css';
 import { ProductDetail } from './ProductDetail.jsx';
+import { SafeImage } from './SafeImage.jsx';
 
 function colourwaysFor(product) {
   return Array.isArray(product.rowColourways) ? product.rowColourways : [];
 }
 
-export function CatalogList({ products = [], onProductSelect, onAddToBag }) {
+function VisualProductCard({ product, isOpen, onToggle, children }) {
+  const images = Array.isArray(product.images)
+    ? product.images.filter(image => typeof image?.src === 'string' && image.src.startsWith('/'))
+    : [];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeImage = images.length ? images[activeIndex % images.length] : null;
+  const updateImage = nextIndex => {
+    if (!images.length) return;
+    setActiveIndex((nextIndex + images.length) % images.length);
+  };
+
+  return (
+    <article className={`product-card fsd-catalog-row product-card--visual${isOpen ? ' product-card--visual-open' : ''}`}>
+      <button
+        className="product-row__trigger"
+        type="button"
+        data-product={product.id}
+        data-can-add-to-bag={Boolean(product.canAddToBag)}
+        aria-expanded={isOpen}
+        aria-controls={`catalogue-expanded-${product.id}`}
+        aria-label={`${isOpen ? 'Collapse' : 'View details for'} ${product.name}`}
+        onClick={onToggle}
+      >
+        <span className="catalogue-card__media" aria-live="polite">
+          {activeImage ? (
+            <SafeImage
+              data-catalogue-card-image
+              src={activeImage.src}
+              alt={`${product.name} — ${activeImage.label}`}
+              fallbackLabel="IMAGE NOT AVAILABLE"
+            />
+          ) : (
+            <span className="catalogue-card__image-empty">
+              <span>IMAGE NOT AVAILABLE</span>
+              <strong>{product.galleryPlaceholders?.[0] || product.name}</strong>
+            </span>
+          )}
+          {product.badge && <span className="catalogue-card__badge">{product.badge}</span>}
+        </span>
+        <span className="catalogue-card__copy">
+          <span className="product-row__meta">
+            <span>{product.category}</span>{product.audience && <span>{product.audience}</span>}
+          </span>
+          <span className="product-row__name">{product.name}</span>
+          {product.rowSummary && <span className="product-row__summary">{product.rowSummary}</span>}
+          {(product.rowPrice?.label || product.rowPrice?.value) && (
+            <span className="product-row__price">
+              {product.rowPrice.label && <small>{product.rowPrice.label}</small>}
+              {product.rowPrice.value && <strong>{product.rowPrice.value}</strong>}
+            </span>
+          )}
+          <span className="catalogue-card__action">{isOpen ? 'COLLAPSE DETAILS' : 'VIEW DETAILS'} <span aria-hidden="true">↗</span></span>
+        </span>
+      </button>
+      {images.length > 1 && (
+        <div className="catalogue-card__carousel" role="group" aria-label={`Image carousel for ${product.name}`}>
+          <button
+            type="button"
+            data-catalogue-card-prev
+            aria-label={`Previous image of ${product.name}`}
+            onClick={() => updateImage(activeIndex - 1)}
+          >
+            ‹
+          </button>
+          <span className="catalogue-card__dots">
+            {images.map((image, index) => (
+              <button
+                key={`${product.id}-${image.label}-${index}`}
+                type="button"
+                data-catalogue-card-slide={index}
+                aria-label={`Show ${image.label}`}
+                aria-pressed={index === activeIndex}
+                onClick={() => updateImage(index)}
+              />
+            ))}
+          </span>
+          <button
+            type="button"
+            data-catalogue-card-next
+            aria-label={`Next image of ${product.name}`}
+            onClick={() => updateImage(activeIndex + 1)}
+          >
+            ›
+          </button>
+        </div>
+      )}
+      <span className="sr-only" aria-live="polite">
+        {activeImage ? `${activeImage.label}, image ${activeIndex + 1} of ${images.length}` : 'No mapped product image'}
+      </span>
+      {children}
+    </article>
+  );
+}
+
+export function CatalogList({ products = [], view = 'list', onProductSelect, onAddToBag }) {
   const [activeProductId, setActiveProductId] = useState(null);
   const [selectedAngle, setSelectedAngle] = useState('front');
   const [selectedColor, setSelectedColor] = useState('');
@@ -87,6 +182,29 @@ export function CatalogList({ products = [], onProductSelect, onAddToBag }) {
     <>
       {products.map(product => {
         const isOpen = activeProductId === product.id;
+        if (view === 'visual') {
+          return (
+            <VisualProductCard
+              key={product.id}
+              product={product}
+              isOpen={isOpen}
+              onToggle={event => toggleProduct(product, event)}
+            >
+              {isOpen && (
+                <ProductDetail
+                  product={product}
+                  selectedAngle={selectedAngle}
+                  setSelectedAngle={setSelectedAngle}
+                  selectedColor={selectedColor}
+                  setSelectedColor={setSelectedColor}
+                  onDeepDive={onProductSelect}
+                  onAddToBag={onAddToBag}
+                  onCollapse={event => toggleProduct(product, event, true)}
+                />
+              )}
+            </VisualProductCard>
+          );
+        }
         return (
           <article className="product-card fsd-catalog-row" key={product.id}>
             <button
