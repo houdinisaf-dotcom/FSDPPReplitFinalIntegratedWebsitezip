@@ -40,6 +40,9 @@ test('Investor Relations is directly linked and the funding tables stay in norma
   assert.match(header, /<a class="fsd-primary-link" data-nav-house href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(header, /aria-label="Open The House menu"/);
   assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
+  assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Public pages">/);
+  assert.match(header, /<a data-nav-house href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(header, /<a data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(investorPage, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(investorPage, /<a href="\/investor\.html" aria-current="page">INVESTOR RELATIONS<\/a>/);
   assert.match(financials, /Staged capital pathway/);

@@ -82,6 +82,10 @@
   gap: 3px;
 }
 
+.fsd-mobile-public-links {
+  display: none;
+}
+
 .fsd-house-menu-trigger {
   min-width: 18px;
   justify-content: center;
@@ -754,12 +758,38 @@ body.fsd-mobile-nav-open {
     display: none;
   }
 
+  .fsd-mobile-public-links {
+    display: flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding: 0 14px;
+    border-bottom: 1px solid rgba(215, 207, 189, 0.12);
+    background: #090a0c;
+  }
+
+  .fsd-mobile-public-links a {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    color: #d8d4cb;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+  }
+
+  .fsd-mobile-public-links a:hover,
+  .fsd-mobile-public-links a:focus-visible {
+    color: #e7cb98;
+  }
+
   .fsd-mobile-toggle {
     display: flex;
   }
 
   .fsd-mega-menu {
-    max-height: calc(100dvh - 93px);
+    max-height: calc(100dvh - 131px);
     border-top-color: rgba(200, 170, 114, 0.32);
   }
 

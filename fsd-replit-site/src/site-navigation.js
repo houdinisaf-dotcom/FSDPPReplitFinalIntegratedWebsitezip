@@ -710,15 +710,7 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
       data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}"
       ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>
     ${entry.id === 'house' ? 'HOUSE MENU' : escapeHTML(entry.label)}<span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
-  </button>`).join('')}
-    <a class="fsd-mobile-primary fsd-mobile-primary--link" data-nav-house
-      href="/the-house.html">THE HOUSE
-      <span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
-    </a>
-    <a class="fsd-mobile-primary fsd-mobile-primary--link" data-nav-investor
-      href="/investor.html">INVESTOR RELATIONS
-      <span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
-    </a>`;
+  </button>`).join('')}`;
 
   return `<div class="fsd-mega-inner">
     <div class="fsd-mega-heading">
@@ -801,6 +793,10 @@ export function renderNavigationHeader(brandMarkup) {
           <span>MENU</span><i aria-hidden="true"></i><i aria-hidden="true"></i>
         </button>
       </header>
+      <nav class="fsd-mobile-public-links" aria-label="Public pages">
+        <a data-nav-house href="/the-house.html">THE HOUSE</a>
+        <a data-nav-investor href="/investor.html">INVESTOR RELATIONS</a>
+      </nav>
       <section class="fsd-mega-menu fsd-glass-surface" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
         <div data-nav-content></div>
       </section>
