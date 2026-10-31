@@ -15,17 +15,97 @@ import { ourStorySection } from '../src/story-section.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from '../src/flagship-pages.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
-  assert.equal(master.length, 75);
-  assert.equal(new Set(master.map(p => p.id)).size, 75);
+  assert.equal(master.length, 79);
+  assert.equal(new Set(master.map(p => p.id)).size, 79);
   for (let id = 1; id <= 68; id++) assert.ok(master.some(p => p.id === id));
-  assert.equal(products.length, 69);
+  assert.equal(products.length, 73);
   assert.deepEqual(heldProducts.map(p => p.id), [36, 37, 64, 68]);
   assert.deepEqual(retiredProducts.map(p => p.id), [21, 53]);
-  assert.equal(categories.length, 15);
+  assert.equal(categories.length, 18);
   assert.ok(products.every(p => !heldProducts.some(h => h.id === p.id)));
   assert.ok(products.every(p => !retiredProducts.some(r => r.id === p.id)));
-  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 40);
+  assert.equal(products.filter(p => p.confirmedPrice !== null).length, 44);
   assert.ok(products.every(p => !Object.hasOwn(p, 'suggestedPrice')));
+});
+
+test('four supplied tactical and running-shell records are listed without mapping composite boards', () => {
+  const expected = [
+    {
+      id: 76,
+      externalId: 'fsd-apex-pro-tactical-backpack',
+      name: 'FSD Apex Pro Tactical Gym Backpack',
+      category: 'Accessories / Gear',
+      price: 110,
+      sizes: '',
+      colourways: ['Obsidian & Gold'],
+      placeholders: [
+        'Front Isometric View',
+        'Rear Ergonomic Straps',
+        'Water-Repellent Fabric Detail',
+        'Hardware & Crest Close-up',
+      ],
+    },
+    {
+      id: 77,
+      externalId: 'fsd-scorpion-chitin-tactical-gilet',
+      name: 'FSD Scorpion Chitin Tactical Gilet',
+      category: 'Outerwear / Tactical',
+      price: 135,
+      sizes: 'S; M; L; XL; XXL',
+      colourways: ['Obsidian Black'],
+      placeholders: [
+        'Front View with Cargo Pockets',
+        'Rear Chitin Spine Armor Detail',
+        'Water-Repellent Fabric Close-up',
+        'Scorpion Series Chest Crest & Zip',
+      ],
+    },
+    {
+      id: 78,
+      externalId: 'fsd-velocity-element-running-shell-v1',
+      name: 'FSD Velocity Element Running Shell (Series 1)',
+      category: 'Outerwear / Performance',
+      price: 95,
+      sizes: 'XS; S; M; L; XL',
+      colourways: ['Tactical Orange', 'Obsidian Black', 'Arctic White'],
+      placeholders: [
+        'Orange, Black & White Front Views',
+        'Rear Sculpted Shield Views',
+        'Thumbhole Cuffs Detail',
+      ],
+    },
+    {
+      id: 79,
+      externalId: 'fsd-velocity-element-running-shell-v2',
+      name: 'FSD Velocity Element Running Shell (Series 2)',
+      category: 'Outerwear / Performance',
+      price: 95,
+      sizes: 'XS; S; M; L; XL',
+      colourways: ['Charcoal Grey', 'Deep Navy', 'Bone Cream'],
+      placeholders: [
+        'Charcoal, Navy & Cream Front Views',
+        'Rear Sculpted Shield Views',
+        'Thumbhole Cuffs Detail',
+      ],
+    },
+  ];
+
+  for (const expectedProduct of expected) {
+    const product = products.find(item => item.id === expectedProduct.id);
+    assert.ok(product, `${expectedProduct.name} should be in the catalogue`);
+    assert.equal(product.externalId, expectedProduct.externalId);
+    assert.equal(products.filter(item => item.externalId === expectedProduct.externalId).length, 1);
+    assert.equal(product.name, expectedProduct.name);
+    assert.equal(product.category, expectedProduct.category);
+    assert.equal(product.publicationStatus, 'Active');
+    assert.equal(product.confirmedPrice, expectedProduct.price);
+    assert.equal(product.currency, 'GBP');
+    assert.equal(product.sizes, expectedProduct.sizes);
+    assert.deepEqual(product.colourways.split('; '), expectedProduct.colourways);
+    assert.deepEqual(product.images, []);
+    assert.deepEqual(product.galleryPlaceholders, expectedProduct.placeholders);
+    assert.ok(filterProducts(expectedProduct.category).some(item => item.id === product.id));
+  }
 });
 
 test('customer-facing prices use approved RRPs only', () => {

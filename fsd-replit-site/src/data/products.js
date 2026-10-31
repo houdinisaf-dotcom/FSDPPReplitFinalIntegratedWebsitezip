@@ -118,11 +118,13 @@ export const products = masterProducts
   .map(p => {
     const references = imageReferences[p['Product name']] ?? [];
     const colourwayImages = Array.isArray(p['Colourway palette'])
-      ? p['Colourway palette'].map(colourway => ({
+      ? p['Colourway palette'].filter(colourway =>
+        typeof colourway.image === 'string' && colourway.image.trim())
+        .map(colourway => ({
         src: colourway.image,
         label: `Colourway / ${colourway.name}`,
         colourway: colourway.name,
-      }))
+        }))
       : [];
     return ({
     id: p.id,

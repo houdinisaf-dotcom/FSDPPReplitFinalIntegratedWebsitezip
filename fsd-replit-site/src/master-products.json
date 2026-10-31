@@ -1327,5 +1327,154 @@
     ],
     "Specification status": "Approved",
     "Notes": "Separate listing; preserve the existing FSD Women’s Performance Training Leggings and FSD Apex High-Waisted Compression Leggings records."
+  },
+  {
+    "id": 76,
+    "Publication status": "Active",
+    "Product name": "FSD Apex Pro Tactical Gym Backpack",
+    "Category": "Accessories / Gear",
+    "Also show in": "",
+    "Audience": "Unisex",
+    "Price (£) confirmed": "110.00",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Obsidian & Gold",
+    "Colourway primary": "#0A0A0A",
+    "Colourway accent": "#D4AF37",
+    "Colourway palette": [
+      { "name": "Obsidian & Gold", "primary": "#0A0A0A", "accent": "#D4AF37" }
+    ],
+    "Collection line": "",
+    "Image status": "Supplied composite board only; standalone gallery photos not confirmed",
+    "Source": "User-supplied product metadata and image references",
+    "Also appears as": "",
+    "Alias status": "",
+    "Currency": "GBP",
+    "External ID": "fsd-apex-pro-tactical-backpack",
+    "Badge": "Pro Gear",
+    "Description": "Engineered for elite utility and weather-resistant durability. Crafted from high-density grid ripstop fabric with hydro-repellent coating, custom Satin Champagne Gold dual zippers, padded ergonomic shoulder support, and a laser-etched FSD shield emblem.",
+    "Image placeholders": [
+      "Front Isometric View",
+      "Rear Ergonomic Straps",
+      "Water-Repellent Fabric Detail",
+      "Hardware & Crest Close-up"
+    ],
+    "Features": [
+      "Weather-resistant grid ripstop fabric with advanced water-repellent finish",
+      "Ergonomic breathable mesh back padding with adjustable sternum buckle",
+      "Custom Satin Champagne Gold branded zipper pullers and hardware",
+      "Dedicated compartments for tech, shoes, and training gear"
+    ],
+    "Specification status": "User-supplied product details",
+    "Notes": "The uploaded backpack image is a composite board and is not mapped to the product gallery. The referenced standalone image files are not present; availability and manufacturing details remain unverified."
+  },
+  {
+    "id": 77,
+    "Publication status": "Active",
+    "Product name": "FSD Scorpion Chitin Tactical Gilet",
+    "Category": "Outerwear / Tactical",
+    "Also show in": "",
+    "Audience": "",
+    "Price (£) confirmed": "135.00",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Obsidian Black",
+    "Colourway primary": "#0A0A0A",
+    "Colourway accent": "#D4AF37",
+    "Colourway palette": [
+      { "name": "Obsidian Black", "primary": "#0A0A0A", "accent": "#D4AF37" }
+    ],
+    "Collection line": "",
+    "Image status": "Supplied composite board only; standalone gallery photos not confirmed",
+    "Source": "User-supplied product metadata and image references",
+    "Also appears as": "",
+    "Alias status": "",
+    "Currency": "GBP",
+    "External ID": "fsd-scorpion-chitin-tactical-gilet",
+    "Badge": "Scorpion Series",
+    "Description": "Built for uncompromising statement styling and utility. Features articulated spine padding plates inspired by chitin architecture, laser-perforated ventilation panels, dual chest cargo pockets, and signature scorpion gold insignia.",
+    "Sizes": "S; M; L; XL; XXL",
+    "Image placeholders": [
+      "Front View with Cargo Pockets",
+      "Rear Chitin Spine Armor Detail",
+      "Water-Repellent Fabric Close-up",
+      "Scorpion Series Chest Crest & Zip"
+    ],
+    "Features": [
+      "Articulated spine impact-shield panels with gold trim detailing",
+      "Weather-resistant grid-weave shell with water-repellent treatment",
+      "Dual secure chest cargo pockets and zipped side compartments",
+      "Adjustable side buckle straps for a custom tactical fit"
+    ],
+    "Specification status": "User-supplied product details",
+    "Notes": "The uploaded gilet image is a composite board and is not mapped to the product gallery. The referenced standalone image files are not present; availability and manufacturing details remain unverified."
+  },
+  {
+    "id": 78,
+    "Publication status": "Active",
+    "Product name": "FSD Velocity Element Running Shell (Series 1)",
+    "Category": "Outerwear / Performance",
+    "Also show in": "",
+    "Audience": "",
+    "Price (£) confirmed": "95.00",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Tactical Orange; Obsidian Black; Arctic White",
+    "Colourway primary": "#E65C00",
+    "Colourway accent": "",
+    "Colourway palette": [
+      { "name": "Tactical Orange", "primary": "#E65C00" },
+      { "name": "Obsidian Black", "primary": "#0A0A0A" },
+      { "name": "Arctic White", "primary": "#F0F0F0" }
+    ],
+    "Collection line": "",
+    "Image status": "Supplied composite boards only; standalone gallery photos not confirmed",
+    "Source": "User-supplied product metadata and image references",
+    "Also appears as": "",
+    "Alias status": "",
+    "Currency": "GBP",
+    "External ID": "fsd-velocity-element-running-shell-v1",
+    "Badge": "Performance Shell",
+    "Description": "Ultra-lightweight weather-resistant training shell featuring integrated thumbhole cuffs, reflective safety trim, sculpted rear shield branding, and an ergonomic active fit.",
+    "Sizes": "XS; S; M; L; XL",
+    "Image placeholders": [
+      "Orange, Black & White Front Views",
+      "Rear Sculpted Shield Views",
+      "Thumbhole Cuffs Detail"
+    ],
+    "Specification status": "User-supplied product details",
+    "Notes": "The uploaded running-shell image is a composite colourway board and is not mapped to the product gallery. Referenced standalone photos are not present; availability and manufacturing details remain unverified."
+  },
+  {
+    "id": 79,
+    "Publication status": "Active",
+    "Product name": "FSD Velocity Element Running Shell (Series 2)",
+    "Category": "Outerwear / Performance",
+    "Also show in": "",
+    "Audience": "",
+    "Price (£) confirmed": "95.00",
+    "Suggested price (£) – to confirm": "",
+    "Colourways": "Charcoal Grey; Deep Navy; Bone Cream",
+    "Colourway primary": "#2F3538",
+    "Colourway accent": "",
+    "Colourway palette": [
+      { "name": "Charcoal Grey", "primary": "#2F3538" },
+      { "name": "Deep Navy", "primary": "#1A2530" },
+      { "name": "Bone Cream", "primary": "#E8E4DF" }
+    ],
+    "Collection line": "",
+    "Image status": "Supplied composite boards only; standalone gallery photos not confirmed",
+    "Source": "User-supplied product metadata and image references",
+    "Also appears as": "",
+    "Alias status": "",
+    "Currency": "GBP",
+    "External ID": "fsd-velocity-element-running-shell-v2",
+    "Badge": "Performance Shell",
+    "Description": "Expanded meteorological colorway release of our ultra-lightweight running shell. Features weather-shield fabric, reflective trims, and ergonomic thumbhole cuffs.",
+    "Sizes": "XS; S; M; L; XL",
+    "Image placeholders": [
+      "Charcoal, Navy & Cream Front Views",
+      "Rear Sculpted Shield Views",
+      "Thumbhole Cuffs Detail"
+    ],
+    "Specification status": "User-supplied product details",
+    "Notes": "The uploaded running-shell image is a composite colourway board and is not mapped to the product gallery. Referenced standalone photos are not present; availability and manufacturing details remain unverified."
   }
 ]
