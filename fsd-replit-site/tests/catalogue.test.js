@@ -262,7 +262,7 @@ test('FLEX Sculpt Leggings are a separate £65 listing with five colourways and 
     { name: 'Espresso Brown', primary: '#4A3B32', accent: '#D4AF37' },
     { name: 'Teal', primary: '#2D6873', accent: '#D4AF37' },
   ]);
-  assert.equal(flex?.images.length, 16);
+  assert.equal(flex?.images.length, 32);
   assert.deepEqual(flex?.images.map(({ label }) => label), [
     'Obsidian Black / Front Lifestyle Hero',
     'Colourway / Obsidian Black',
@@ -280,7 +280,24 @@ test('FLEX Sculpt Leggings are a separate £65 listing with five colourways and 
     'Technical Detail / Side Phone Pocket',
     'Technical Detail / Fabric Texture',
     'Technical Detail / Flatlock Seams',
+    'Dusty Rose / Kneeling Lifestyle View',
+    'Dusty Rose / Side Pocket Detail',
+    'Dusty Rose / Rear Three-Quarter View',
+    'Dusty Rose / Front Lifestyle View',
+    'Dusty Rose / Side Lifestyle View',
+    'Espresso Brown / Side Profile View',
+    'Teal / Side Lifestyle View',
+    'Teal / Seated Lifestyle View',
+    'Sage Green / Lunge Training View',
+    'Sage Green / Seated Profile View',
+    'Sage Green / Front Lifestyle View',
+    'Obsidian Black / Training Lifestyle View',
+    'Obsidian Black / Standing Lifestyle View',
+    'Obsidian Black / Gym Lifestyle View',
+    'Espresso Brown / Lifestyle View',
+    'Espresso Brown / Side Lifestyle View',
   ]);
+  assert.equal(new Set(flex?.images.map(({ label }) => label)).size, flex?.images.length);
   for (const colourway of ['Obsidian Black', 'Sage Green', 'Dusty Rose', 'Espresso Brown', 'Teal']) {
     assert.ok(flex?.images.some(image => image.colourway === colourway), `${colourway} should have a mapped image`);
   }
