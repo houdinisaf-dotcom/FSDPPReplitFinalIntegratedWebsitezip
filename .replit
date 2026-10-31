@@ -42,3 +42,8 @@ externalPort = 3000
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 180000
+
+[deployment]
+deploymentTarget = "static"
+build = ["bash", "-lc", "cd fsd-replit-site && npm run build"]
+publicDir = "fsd-replit-site/dist"
