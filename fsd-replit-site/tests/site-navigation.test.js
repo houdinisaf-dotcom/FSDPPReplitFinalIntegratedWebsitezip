@@ -37,7 +37,7 @@ test('Investor Relations is linked and its complete funding data stays visible i
   const funding = investorPage.match(/<article class="investor-card" id="funding"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? '';
   const financials = investorPage.match(/<article class="investor-card" id="financials"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? '';
 
-  assert.match(header, /<a class="fsd-primary-link" data-nav-house href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(header, /<a class="fsd-primary-link" data-nav-house id="house-trigger" href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(header, /aria-label="Open The House menu"/);
   assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Public pages">/);
@@ -49,7 +49,7 @@ test('Investor Relations is linked and its complete funding data stays visible i
   assert.match(investorPage, /href="\/#universe">UNIVERSE<\/a>/);
   assert.match(investorPage, /href="\/#innovations">BIO-LAB™<\/a>/);
   assert.match(investorPage, /href="\/#hardware-editorial">HARDWARE<\/a>/);
-  assert.match(investorPage, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(investorPage, /<a id="house-trigger" href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(investorPage, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.match(investorPage, /<a href="\/investor\.html" class="on" aria-current="page">INVESTOR RELATIONS<\/a>/);
   assert.match(funding, /Staged Capital Pathway/);
@@ -79,10 +79,13 @@ test('The House mega-menu links to the full public interactive House page', () =
   assert.ok(existsSync(pagePath));
   assert.match(page, /<title>FSD \| The House<\/title>/);
   assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
-  assert.match(page, /<a class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
-  assert.match(page, /href="\/the-house\.html#bio-lab">BIO-LAB™<\/a>/);
-  assert.match(page, /href="\/the-house\.html#community">UNIVERSE \/ COMMUNITY<\/a>/);
-  assert.match(page, /href="\/the-house\.html#global\/innovation">GLOBAL VISION<\/a>/);
+  assert.match(page, /<nav aria-label="Main navigation">/);
+  assert.match(page, /href="\/#products">SHOP<\/a>/);
+  assert.match(page, /href="\/#universe">UNIVERSE<\/a>/);
+  assert.match(page, /href="\/#innovations">BIO-LAB™<\/a>/);
+  assert.match(page, /href="\/#hardware-editorial">HARDWARE<\/a>/);
+  assert.match(page, /<a id="house-trigger" class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
+  assert.match(page, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.match(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);
   assert.match(page, /--gold:#C8AA72/);

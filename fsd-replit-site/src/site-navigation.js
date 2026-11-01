@@ -768,7 +768,7 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
 export function renderNavigationHeader(brandMarkup) {
   const primaryItems = primaryNavigation.map(item => item.id === 'house'
     ? `<span class="fsd-primary-house-group">
-        <a class="fsd-primary-link" data-nav-house href="/the-house.html">THE HOUSE</a>
+        <a class="fsd-primary-link" data-nav-house id="house-trigger" href="/the-house.html">THE HOUSE</a>
         <button type="button" class="fsd-primary-trigger fsd-house-menu-trigger"
           data-nav-primary="house" aria-controls="fsd-mega-menu" aria-expanded="false"
           aria-label="Open The House menu"><span aria-hidden="true">⌄</span></button>
