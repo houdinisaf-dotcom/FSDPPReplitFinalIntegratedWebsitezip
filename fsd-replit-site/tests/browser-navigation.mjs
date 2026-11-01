@@ -463,7 +463,6 @@ try {
       await waitFor(`location.pathname === "/the-house.html"
         && location.hash === ${JSON.stringify(expectedHash)}
         && document.querySelector('nav a[href="/the-house.html"]')
-        && document.querySelector('nav a[href="/investor.html"]')
         && document.querySelector("#hero h1")`);
       return;
     }
@@ -859,7 +858,8 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-primary-list [data-nav-primary]").length'), 5);
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-mobile-public-links")).display'), 'flex');
   assert.equal(await evaluate('document.querySelector(".fsd-mobile-public-links a[href=\\"/the-house.html\\"]")?.textContent.trim()'), 'THE HOUSE');
-  assert.equal(await evaluate('document.querySelector(".fsd-mobile-public-links [data-nav-investor]")?.getAttribute("href")'), '/investor.html');
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-public-links a").length'), 1);
+  assert.equal(await evaluate('document.querySelector(".fsd-mobile-public-links [data-nav-investor]")'), null);
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'groups');
   await click('#fsd-mega-menu [data-nav-group="0"]');

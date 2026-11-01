@@ -36,10 +36,9 @@ test('Investor Relations uses the selected shorter public dossier and working ro
 
   assert.match(header, /<a class="fsd-primary-link" href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.doesNotMatch(header, /data-nav-primary="house"|data-nav-house|house-trigger|Open The House menu/);
-  assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
+  assert.doesNotMatch(header, /data-nav-investor|INVESTOR RELATIONS/);
   assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Public pages">/);
   assert.match(header, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
-  assert.match(header, /<a data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(investorPage, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
   assert.match(investorPage, /FSD \/ PUBLIC INVESTOR INFORMATION &mdash; PRE-COMMERCIAL/);
   assert.match(investorPage, /href="\/#products">SHOP<\/a>/);
@@ -48,7 +47,7 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   assert.match(investorPage, /href="\/#hardware-editorial">HARDWARE<\/a>/);
   assert.match(investorPage, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(investorPage, /href="\/#contact">PRIVATE ACCESS<\/a>/);
-  assert.match(investorPage, /<a href="\/investor\.html" class="on" aria-current="page">INVESTOR RELATIONS<\/a>/);
+  assert.doesNotMatch(investorPage, /<a[^>]+href="\/investor\.html"[^>]*>INVESTOR RELATIONS<\/a>/);
   assert.match(investorPage, /Initial Pre-Seed \(Proposed\)/);
   assert.match(investorPage, /50–100/);
   assert.match(investorPage, /The Foundation/);
@@ -83,7 +82,7 @@ test('The House page is limited to the five original brand sections', () => {
   assert.match(page, /href="\/#hardware-editorial">HARDWARE<\/a>/);
   assert.match(page, /<a class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
   assert.match(page, /href="\/#contact">PRIVATE ACCESS<\/a>/);
-  assert.match(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
+  assert.doesNotMatch(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);
   assert.match(page, /--gold:#C8AA72/);
   assert.match(page, /--vg:#C8AA72/);

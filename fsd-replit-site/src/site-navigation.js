@@ -772,15 +772,13 @@ export function renderNavigationHeader(brandMarkup) {
       aria-expanded="false">${escapeHTML(item.label)}</button>`;
     return item.id === 'private-access' ? `${houseLink}${trigger}` : trigger;
   }).join('');
-  const investorLink = '<a class="fsd-primary-link" data-nav-investor href="/investor.html">INVESTOR RELATIONS</a>';
-
   return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE</div>
     <div class="fsd-navigation-shell" data-navigation-shell>
       <header class="header fsd-header fsd-glass-surface">
         <a class="brand fsd-brand" href="#home" aria-label="FSD Home">
           ${brandMarkup}
         </a>
-        <nav class="fsd-primary-nav" aria-label="Main navigation">${primaryItems}${investorLink}</nav>
+        <nav class="fsd-primary-nav" aria-label="Main navigation">${primaryItems}</nav>
         <span class="fsd-header-note">UNITED KINGDOM <i aria-hidden="true">·</i> FSD</span>
         <button type="button" class="fsd-search-trigger" data-search-open
           aria-label="Search products" aria-haspopup="dialog" aria-controls="fsd-search-dialog"
@@ -805,7 +803,6 @@ export function renderNavigationHeader(brandMarkup) {
       </header>
       <nav class="fsd-mobile-public-links" aria-label="Public pages">
         <a href="/the-house.html">THE HOUSE</a>
-        <a data-nav-investor href="/investor.html">INVESTOR RELATIONS</a>
       </nav>
       <section class="fsd-mega-menu fsd-glass-surface" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
         <div data-nav-content></div>
