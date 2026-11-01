@@ -31,11 +31,9 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
   ]);
 });
 
-test('Investor Relations is linked and its complete funding data stays visible in page flow', () => {
+test('Investor Relations uses the selected shorter public dossier and working routes', () => {
   const header = renderNavigationHeader('<span>FSD</span>');
   const investorPage = readFileSync(new URL('../public/investor.html', import.meta.url), 'utf8');
-  const funding = investorPage.match(/<article class="investor-card" id="funding"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? '';
-  const financials = investorPage.match(/<article class="investor-card" id="financials"[^>]*>([\s\S]*?)<\/article>/)?.[1] ?? '';
 
   assert.match(header, /<a class="fsd-primary-link" data-nav-house id="house-trigger" href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(header, /aria-label="Open The House menu"/);
@@ -52,15 +50,15 @@ test('Investor Relations is linked and its complete funding data stays visible i
   assert.match(investorPage, /<a id="house-trigger" href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(investorPage, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.match(investorPage, /<a href="\/investor\.html" class="on" aria-current="page">INVESTOR RELATIONS<\/a>/);
-  assert.match(funding, /Staged Capital Pathway/);
-  assert.match(funding, /£25,000/);
-  assert.match(funding, /£100,000 – £150,000/);
-  assert.match(funding, /£175,000 – £225,000/);
-  assert.match(financials, /Financial Projections/);
-  assert.match(financials, /£30,524/);
-  assert.match(financials, /£57,981/);
-  assert.match(financials, /£88,806/);
-  assert.equal((investorPage.match(/class="investor-card"/g) ?? []).length, 9);
+  assert.match(investorPage, /Initial Pre-Seed \(Proposed\)/);
+  assert.match(investorPage, /50–100/);
+  assert.match(investorPage, /The Foundation/);
+  assert.match(investorPage, /Product Architecture/);
+  assert.match(investorPage, /Market &amp; Customer/);
+  assert.equal((investorPage.match(/<article class="investor-card">/g) ?? []).length, 3);
+  assert.match(investorPage, /Public FSD information/);
+  assert.doesNotMatch(investorPage, /Confidential discussion draft/i);
+  assert.doesNotMatch(investorPage, /Staged Capital Pathway|£25,000|£175,000 – £225,000/);
   assert.doesNotMatch(investorPage, /href="(?:universe|biolab|hardware|private)\.html"/);
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
 });
