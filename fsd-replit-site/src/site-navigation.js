@@ -772,7 +772,7 @@ export function renderNavigationHeader(brandMarkup) {
       aria-expanded="false">${escapeHTML(item.label)}</button>`;
     return item.id === 'private-access' ? `${houseLink}${trigger}` : trigger;
   }).join('');
-  return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE</div>
+  return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE <span>·</span> INVESTOR RELATIONS</div>
     <div class="fsd-navigation-shell" data-navigation-shell>
       <header class="header fsd-header fsd-glass-surface">
         <a class="brand fsd-brand" href="#home" aria-label="FSD Home">

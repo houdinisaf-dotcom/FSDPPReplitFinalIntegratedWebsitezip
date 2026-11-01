@@ -36,7 +36,8 @@ test('Investor Relations uses the selected shorter public dossier and working ro
 
   assert.match(header, /<a class="fsd-primary-link" href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.doesNotMatch(header, /data-nav-primary="house"|data-nav-house|house-trigger|Open The House menu/);
-  assert.doesNotMatch(header, /data-nav-investor|INVESTOR RELATIONS/);
+  assert.match(header, /FSD \/ THE HOUSE OF PERFORMANCE <span>·<\/span> INVESTOR RELATIONS/);
+  assert.doesNotMatch(header, /href="\/investor\.html"|data-nav-investor/);
   assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Public pages">/);
   assert.match(header, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(investorPage, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
