@@ -76,6 +76,7 @@ test('The House page is limited to the five original brand sections', () => {
   assert.ok(existsSync(pagePath));
   assert.match(page, /<title>FSD \| The House<\/title>/);
   assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
+  assert.match(page, /<div class="top">FSD \/ THE HOUSE OF PERFORMANCE <span aria-hidden="true">·<\/span> INVESTOR RELATIONS<\/div>/);
   assert.match(page, /<nav aria-label="Main navigation">/);
   assert.match(page, /href="\/#products">SHOP<\/a>/);
   assert.match(page, /href="\/#universe">UNIVERSE<\/a>/);
