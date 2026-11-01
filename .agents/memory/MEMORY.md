@@ -8,4 +8,4 @@
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.
 - [Customer-facing terminology](customer-facing-terminology.md) — remove visible release/status labels and use neutral product names with existing catalogue values.
 - [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk setup needs a valid app name; package installs must target the nested storefront directory.
-- [Innovation initiative status](initiative-rollout-status.md) — 11 named initiatives are active/rolling out; preserve their homes and safeguards, and do not invent missing rollout details or a twelfth.
+- [Innovation initiative status](initiative-rollout-status.md) — Keep 11 initiatives in their approved routes, separate from the five-section House landing and standalone Investor page; do not invent rollout details.

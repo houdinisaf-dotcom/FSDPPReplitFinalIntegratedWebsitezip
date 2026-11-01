@@ -14,3 +14,9 @@ Keep a visible public disclaimer on initiative and concept pages: related concep
 **Why:** The user supplied an updated pre-launch brief and selected keeping the disclaimer when asked how to resolve its conflict with earlier active-status wording.
 
 **How to apply:** Keep both statements where relevant: the workstream may be active or rolling out, while any associated product concept remains unconfirmed and is not promised as available.
+
+The direct House landing should show only the five Brand Story & Archive sections. Investor Relations belongs on its standalone page; initiative detail routes and safeguards remain separate from the House brand-section list.
+
+**Why:** The user later requested a clean five-section House presentation and a standalone Investor Relations page while the earlier initiative homes remained approved.
+
+**How to apply:** Keep `/the-house.html` focused on its brand sections by default. Do not place investor dossiers or initiative categories in that section list; retain explicitly linked Bio-Lab, community, and global initiative routes with their disclaimer and safeguards.

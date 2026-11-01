@@ -62,7 +62,7 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
 });
 
-test('The House landing page remains mapped to its public interactive page', () => {
+test('The House page is limited to the five original brand sections', () => {
   const house = menu.find(section => section.id === 'house');
   const group = house?.groups.find(item => item.id === 'the-house-website');
   const pagePath = new URL('../public/the-house.html', import.meta.url);
@@ -87,10 +87,16 @@ test('The House landing page remains mapped to its public interactive page', () 
   assert.match(page, /--bk:#0B0C0E/);
   assert.match(page, /--gold:#C8AA72/);
   assert.match(page, /--vg:#C8AA72/);
+  assert.match(page, /<nav class="house-sections" id="house-sections" aria-label="The House sections"><\/nav>/);
+  assert.doesNotMatch(page, /<div class="mega"|COLLECTION GROUPS|SUBCATEGORIES/);
+  assert.match(page, /id="initiative-disclaimer" role="note" hidden/);
   assert.match(inlineScript, /const P=/);
   assert.match(inlineScript, /,M=/);
+  assert.match(inlineScript, /window\.configureFSDInnovationRoutes\(P,M\)/);
+  assert.match(inlineScript, /const publicHouseGroups=new Set\(\['brand','bio-lab','community','global'\]\)/);
+  assert.match(inlineScript, /P\.brand\.subs\.map/);
   assert.match(inlineScript, /addEventListener\('hashchange',render\)/);
-  assert.match(inlineScript, /Public Information/);
+  assert.doesNotMatch(inlineScript, /publicInvestorCopy|investorMenu|investorOverview/);
   assert.match(page, /<script src="\/innovation-initiative-data\.js"><\/script>/);
   assert.match(page, /<script src="\/innovation-initiative-router\.js"><\/script>/);
   assert.doesNotMatch(page, /A6FF00|C6A36A/);

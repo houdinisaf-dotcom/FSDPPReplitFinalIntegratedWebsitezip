@@ -212,6 +212,14 @@ try {
   assert.equal(await evaluate('document.querySelector(".fsd-primary-nav [data-nav-primary=\\"house\\"]")'), null);
   await click('.fsd-primary-nav a[href="/the-house.html"]');
   await waitFor('location.pathname === "/the-house.html" && document.querySelector("nav[aria-label=\\"Main navigation\\"] a[aria-current=\\"page\\"]")?.textContent.trim() === "THE HOUSE"');
+  assert.deepEqual(
+    await evaluate('Array.from(document.querySelectorAll("#house-sections a strong"), item => item.textContent.trim())'),
+    ['Purpose & Positioning', 'Brand Identity Standard', 'Founder Story', 'Press & Media Kit', 'Archive & Version History'],
+  );
+  assert.equal(await evaluate('document.querySelectorAll(".mega, #m1, #m2, #m3").length'), 0);
+  assert.equal(await evaluate('document.querySelector("#main").textContent.includes("Investor Relations")'), false);
+  await click('#house-sections a[href="#brand/purpose"]');
+  await waitFor('location.hash === "#brand/purpose" && document.querySelector("#hero h1")?.textContent === "PURPOSE & POSITIONING"');
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && window.scrollY === 0');
   await evaluate('document.querySelector(".fsd-footer-tools button:nth-of-type(2)").click()');
