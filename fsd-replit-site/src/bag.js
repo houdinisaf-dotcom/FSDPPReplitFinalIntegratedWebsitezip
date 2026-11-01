@@ -1,9 +1,43 @@
 import { safe } from './catalogue-data.js';
 import { trackEvent } from './analytics.js';
 import { outlineIcon } from './brand/outline-icons.js';
+import { showCartToast } from './motion-runtime.js';
 
 export const CLIENT_BAG_STORAGE_KEY = 'fsd-client-bag-v1';
 const MAX_QUANTITY = 99;
+
+function normalizeVariant(variant = {}) {
+  return {
+    size: String(variant?.size ?? '').trim().slice(0, 80),
+    colourway: String(variant?.colourway ?? '').trim().slice(0, 80),
+  };
+}
+
+function makeLineId(productId, variant = {}) {
+  const normalized = normalizeVariant(variant);
+  return normalized.size || normalized.colourway
+    ? JSON.stringify([productId, normalized.size, normalized.colourway])
+    : String(productId);
+}
+
+function parseLineId(lineId) {
+  if (/^\d+$/.test(String(lineId))) {
+    return { productId: Number(lineId), size: '', colourway: '' };
+  }
+  try {
+    const [productId, size = '', colourway = ''] = JSON.parse(lineId);
+    if (!Number.isInteger(Number(productId))) return null;
+    return { productId: Number(productId), ...normalizeVariant({ size, colourway }) };
+  } catch {
+    return null;
+  }
+}
+
+function resolveLineId(idOrLineId, variant = {}) {
+  if (typeof idOrLineId === 'string' && idOrLineId.startsWith('[')) return idOrLineId;
+  const productId = Number(idOrLineId);
+  return Number.isInteger(productId) ? makeLineId(productId, variant) : '';
+}
 
 export function canAddToBag(product) {
   const id = Number(product?.id);
@@ -34,16 +68,14 @@ export function createClientBag(products, storage) {
   try {
     const saved = JSON.parse(persistedStorage?.getItem(CLIENT_BAG_STORAGE_KEY) || '{}');
     if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
-      quantities = Object.fromEntries(
-        Object.entries(saved)
-          .map(([id, quantity]) => [Number(id), Number(quantity)])
-          .filter(([id, quantity]) =>
-            eligibleProducts.has(id) &&
-            Number.isInteger(quantity) &&
-            quantity > 0
-          )
-          .map(([id, quantity]) => [id, Math.min(quantity, MAX_QUANTITY)]),
-      );
+      quantities = {};
+      for (const [storedLineId, storedQuantity] of Object.entries(saved)) {
+        const line = parseLineId(storedLineId);
+        const quantity = Number(storedQuantity);
+        if (!line || !eligibleProducts.has(line.productId) || !Number.isInteger(quantity) || quantity <= 0) continue;
+        const lineId = makeLineId(line.productId, line);
+        quantities[lineId] = Math.min(quantity, MAX_QUANTITY);
+      }
     }
   } catch {
     quantities = {};
@@ -57,34 +89,37 @@ export function createClientBag(products, storage) {
     }
   };
 
-  const remove = id => {
-    const numericId = Number(id);
-    if (!Object.hasOwn(quantities, numericId)) return false;
-    delete quantities[numericId];
+  const remove = (idOrLineId, variant = {}) => {
+    const lineId = resolveLineId(idOrLineId, variant);
+    if (!Object.hasOwn(quantities, lineId)) return false;
+    delete quantities[lineId];
     persist();
     return true;
   };
 
   return Object.freeze({
-    add(id, amount = 1) {
+    add(id, amount = 1, variant = {}) {
       const numericId = Number(id);
       const numericAmount = Number(amount);
       if (!eligibleProducts.has(numericId) || !Number.isInteger(numericAmount) || numericAmount < 1) {
         return false;
       }
-      quantities[numericId] = Math.min(
+      const lineId = makeLineId(numericId, variant);
+      quantities[lineId] = Math.min(
         MAX_QUANTITY,
-        (quantities[numericId] || 0) + numericAmount,
+        (quantities[lineId] || 0) + numericAmount,
       );
       persist();
       return true;
     },
-    setQuantity(id, quantity) {
-      const numericId = Number(id);
+    setQuantity(idOrLineId, quantity, variant = {}) {
+      const lineId = resolveLineId(idOrLineId, variant);
       const numericQuantity = Number(quantity);
-      if (!eligibleProducts.has(numericId) || !Number.isInteger(numericQuantity)) return false;
-      if (numericQuantity <= 0) return remove(numericId);
-      quantities[numericId] = Math.min(numericQuantity, MAX_QUANTITY);
+      const line = parseLineId(lineId);
+      if (!line || !eligibleProducts.has(line.productId) || !Number.isInteger(numericQuantity)) return false;
+      if (numericQuantity <= 0) return remove(lineId);
+      if (!Object.hasOwn(quantities, lineId)) return false;
+      quantities[lineId] = Math.min(numericQuantity, MAX_QUANTITY);
       persist();
       return true;
     },
@@ -94,11 +129,16 @@ export function createClientBag(products, storage) {
       persist();
     },
     items() {
-      return Object.entries(quantities).map(([id, quantity]) => {
-        const product = eligibleProducts.get(Number(id));
+      return Object.entries(quantities).map(([lineId, quantity]) => {
+        const line = parseLineId(lineId);
+        const product = eligibleProducts.get(line.productId);
         const unitAmount = Math.round(product.confirmedPrice * 100);
         return Object.freeze({
           product,
+          productId: line.productId,
+          lineId,
+          size: line.size,
+          colourway: line.colourway,
           quantity,
           unitAmount,
           lineAmount: unitAmount * quantity,
@@ -145,11 +185,23 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       </div>
       <footer class="fsd-bag-footer">
         <div class="fsd-bag-subtotal"><span>Subtotal</span><strong data-bag-subtotal>£0.00</strong></div>
-        <p class="fsd-bag-note">Payment is not available here. No order is processed.</p>
+        <p class="fsd-bag-note">Payment provider: [TO CONFIRM]. No payment provider or checkout is integrated; no order is processed.</p>
         <button type="button" class="fsd-bag-checkout" disabled aria-disabled="true">Checkout disabled</button>
       </footer>
     </div>`;
   documentRef.body.append(dialog);
+  const toast = documentRef.createElement('div');
+  toast.className = 'fsd-add-toast';
+  toast.dataset.cartToast = '';
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  toast.hidden = true;
+  documentRef.body.append(toast);
+  const placeToastForLayer = () => {
+    const productDialog = documentRef.querySelector('#product-dialog');
+    const destination = productDialog?.open ? productDialog : documentRef.body;
+    if (toast.parentElement !== destination) destination.append(toast);
+  };
 
   const count = trigger.querySelector('[data-bag-count]');
   const lines = dialog.querySelector('[data-bag-lines]');
@@ -166,20 +218,21 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
     subtotal.textContent = formatMoney(bag.subtotal());
 
     lines.innerHTML = items.length
-      ? `<ul class="fsd-bag-list">${items.map(({ product, quantity, unitAmount, lineAmount }) => `
+      ? `<ul class="fsd-bag-list">${items.map(({ product, quantity, unitAmount, lineAmount, lineId, size, colourway }) => `
           <li class="fsd-bag-item">
             <div class="fsd-bag-item-copy">
               <h3>${safe(product.name)}</h3>
               <p>${safe(product.category)} · ${formatMoney(unitAmount)} each</p>
+              ${(size || colourway) ? `<p>${[size && `Size: ${size}`, colourway && `Colour: ${colourway}`].filter(Boolean).map(safe).join(' · ')}</p>` : ''}
             </div>
             <strong class="fsd-bag-line-total">${formatMoney(lineAmount)}</strong>
             <div class="fsd-bag-item-controls" role="group" aria-label="Quantity for ${safe(product.name)}">
-              <button type="button" data-bag-quantity="-1" data-product-id="${product.id}"
+              <button type="button" data-bag-quantity="-1" data-bag-line-id="${safe(lineId)}"
                 aria-label="Decrease quantity of ${safe(product.name)}">${outlineIcon('minus')}</button>
               <span aria-live="polite">${quantity}</span>
-              <button type="button" data-bag-quantity="1" data-product-id="${product.id}"
+              <button type="button" data-bag-quantity="1" data-bag-line-id="${safe(lineId)}"
                 aria-label="Increase quantity of ${safe(product.name)}">${outlineIcon('plus')}</button>
-              <button type="button" class="fsd-bag-remove" data-bag-remove data-product-id="${product.id}">
+              <button type="button" class="fsd-bag-remove" data-bag-remove data-bag-line-id="${safe(lineId)}">
                 Remove <span class="sr-only">${safe(product.name)}</span>
               </button>
             </div>
@@ -200,15 +253,23 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
     });
   };
 
-  const addToBag = id => {
+  const addToBag = (id, variant = {}) => {
     const product = products.find(item => Number(item.id) === Number(id));
-    const added = bag.add(id);
+    const added = bag.add(id, 1, variant);
     if (added) {
-      status.textContent = `${product.name} added to your bag. Checkout is disabled.`;
+      const variantText = [
+        variant.size && `size ${variant.size}`,
+        variant.colourway && variant.colourway,
+      ].filter(Boolean).join(' / ');
+      status.textContent = `${product.name}${variantText ? `, ${variantText}` : ''} added to your bag. Checkout is disabled.`;
+      placeToastForLayer();
+      showCartToast(toast, `${product.name}${variantText ? ` · ${variantText}` : ''} added to your bag. Checkout is disabled.`);
       render();
       trackEvent('product_added_to_bag', {
         product_id: product.id,
         product_category: product.category,
+        product_size: variant.size || undefined,
+        product_colourway: variant.colourway || undefined,
       });
     } else {
       status.textContent = 'This item is not available in the client-side bag.';
@@ -237,16 +298,16 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
     }
     const removeButton = event.target.closest?.('[data-bag-remove]');
     if (removeButton) {
-      bag.remove(removeButton.dataset.productId);
+      bag.remove(removeButton.dataset.bagLineId);
       status.textContent = 'Item removed from your bag.';
       render();
       return;
     }
     const quantityButton = event.target.closest?.('[data-bag-quantity]');
     if (quantityButton) {
-      const productId = quantityButton.dataset.productId;
-      const current = bag.items().find(item => item.product.id === Number(productId))?.quantity || 0;
-      bag.setQuantity(productId, current + Number(quantityButton.dataset.bagQuantity));
+      const lineId = quantityButton.dataset.bagLineId;
+      const current = bag.items().find(item => item.lineId === lineId)?.quantity || 0;
+      bag.setQuantity(lineId, current + Number(quantityButton.dataset.bagQuantity));
       status.textContent = 'Bag quantity updated.';
       render();
     }

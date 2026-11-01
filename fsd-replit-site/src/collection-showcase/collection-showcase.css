@@ -453,9 +453,11 @@
 .fsd-concept-details summary::-webkit-details-marker { display: none; }
 .fsd-concept-details summary::marker { content: ""; }
 .fsd-concept-details summary:focus-visible { outline: 1px solid var(--fsd-gold, #c8aa72); outline-offset: 3px; }
-.fsd-product-card, .fsd-concept-card { animation: fsd-content-in .35s both; }
-.fsd-product-card:nth-child(3n+2), .fsd-concept-card:nth-child(3n+2) { animation-delay: .04s; }
-.fsd-product-card:nth-child(3n), .fsd-concept-card:nth-child(3n) { animation-delay: .08s; }
+.fsd-concept-details__content { overflow: hidden; }
+.fsd-concept-details__content p { margin: 0; }
+.fsd-concept-card { animation: fsd-content-in .35s both; }
+.fsd-concept-card:nth-child(3n+2) { animation-delay: .04s; }
+.fsd-concept-card:nth-child(3n) { animation-delay: .08s; }
 html.fsd-modal-open { overflow: hidden; }
 @keyframes fsd-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fsd-content-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

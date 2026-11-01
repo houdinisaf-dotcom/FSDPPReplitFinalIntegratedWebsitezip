@@ -8,8 +8,10 @@ import { ourStorySection } from './story-section.js';
 import { mountClientBag } from './bag.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
+import { mountStorefrontMotion } from './motion-runtime.js';
 import './style.css';
 import './catalogue.css';
+import './product-detail.css';
 import './collection-showcase/collection-showcase.css';
 import './showroom.css';
 import './story-section.css';
@@ -18,6 +20,7 @@ import './visual-system.css';
 import './flagship-pages.css';
 import './bag.css';
 import './globals.css';
+import './motion-effects.css';
 
 export function renderStorefrontHeader() {
   const currentBrandMarkup = '<span data-fsd-logo-slot="header"></span>';
@@ -76,13 +79,21 @@ export function renderStorefrontMarkup() {
     <summary>BROWSE THE FULL CATALOGUE</summary>
     ${catalogueSection()}
   </details>
+  <div id="prelaunch-signup" data-prelaunch-signup-slot></div>
   <footer><div class="footer-brand"><span data-fsd-logo-slot="footer"></span></div>
     <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Website prototype.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD COLLECTIONS</a><a href="#products">BROWSE CATALOGUE</a>
       <a href="#contact">VIP ACCESS</a></nav>
       <nav class="footer-links" aria-label="Corporate navigation"><a href="${FSD_STORY_PATH}">THE HOUSE / OUR STORY</a><a href="#fsd-division-global">FSD GLOBAL</a></nav>
+      <nav class="footer-links" aria-label="Customer information">
+        <a href="/delivery-returns.html">Delivery &amp; Returns</a>
+        <a href="/size-guide.html">Size Guide</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
       <div id="fsd-react-footer-utilities"></div>
-      <small class="footer-pending">Investor information and legal pages require approved content before launch.</small></div>
+      <small class="footer-pending">Investor information and legal copy remain [TO CONFIRM - LEGAL REVIEW].</small></div>
     <a href="#home">BACK TO TOP ↑</a></footer>
   <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
 }
@@ -225,6 +236,7 @@ function startMainExperience(clientBag, onRouteChange = () => {}) {
 export function mountStorefrontRuntime({ onRouteChange = () => {} } = {}) {
   const clientBag = mountClientBag({ products });
   const collectionShowcase = startMainExperience(clientBag, onRouteChange);
+  mountStorefrontMotion(document);
 
   if (import.meta.env.DEV) {
   import('./alight-development-integration.js')

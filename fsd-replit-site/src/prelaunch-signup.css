@@ -1,0 +1,48 @@
+.fsd-prelaunch-signup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, .82fr);
+  gap: clamp(24px, 5vw, 64px);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(30px, 6vw, 72px) clamp(18px, 5vw, 54px);
+  border-top: 1px solid rgba(232, 215, 186, .24);
+  background: linear-gradient(115deg, rgba(211, 181, 116, .07), rgba(16, 17, 18, .2) 56%);
+}
+
+.fsd-prelaunch-copy { align-self: center; }
+.fsd-prelaunch-kicker { margin: 0 0 10px; color: #d4bf91; font-size: 11px; letter-spacing: .16em; }
+.fsd-prelaunch-copy h2 { margin: 0 0 12px; color: #f1eee7; font-size: clamp(25px, 3.5vw, 42px); line-height: 1.1; }
+.fsd-prelaunch-copy > p:not(.fsd-prelaunch-kicker) { max-width: 54ch; color: #c9c4ba; line-height: 1.7; }
+.fsd-prelaunch-copy strong { color: #ead39d; }
+.fsd-prelaunch-note { font-size: 13px; }
+.fsd-prelaunch-form { display: grid; gap: 12px; align-content: center; }
+.fsd-prelaunch-form > label:not(.fsd-prelaunch-consent) { color: #e8ddc5; font-size: 13px; font-weight: 700; }
+.fsd-prelaunch-form input[type="email"] {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid rgba(232, 215, 186, .42);
+  background: #111213;
+  color: #f2eee6;
+  font: inherit;
+}
+.fsd-prelaunch-consent { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: start; gap: 9px; color: #c8c2b6; font-size: 12px; line-height: 1.6; }
+.fsd-prelaunch-consent input { width: 17px; height: 17px; margin: 2px 0 0; accent-color: #d4af37; }
+.fsd-prelaunch-consent a { color: #ead39d; text-underline-offset: 3px; }
+.fsd-prelaunch-form button {
+  min-height: 48px;
+  border: 1px solid #d1b477;
+  background: #d1b477;
+  color: #151514;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: .12em;
+  cursor: pointer;
+}
+.fsd-prelaunch-form button:disabled { opacity: .7; cursor: wait; }
+.fsd-prelaunch-feedback { min-height: 1.5em; margin: 0; color: #d2c59e; font-size: 13px; }
+.fsd-prelaunch-feedback.is-error { color: #f2a7a0; }
+
+@media (max-width: 700px) {
+  .fsd-prelaunch-signup { grid-template-columns: minmax(0, 1fr); gap: 12px; padding-inline: 16px; }
+}

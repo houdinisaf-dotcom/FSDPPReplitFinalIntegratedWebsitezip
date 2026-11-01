@@ -510,7 +510,7 @@ try {
   assert.ok(colourwayCount > 1, 'The selected product should expose its existing colourway controls.');
   for (let index = 0; index < colourwayCount; index++) {
     await click(`#product-dialog [data-catalogue-colourway-index="${index}"]`);
-    await waitFor(`document.querySelector('#product-dialog [data-catalogue-colourway-index="${index}"]')?.getAttribute("aria-pressed") === "true"`);
+    await waitFor(`document.querySelector('#product-dialog [data-catalogue-colourway-index="${index}"]')?.checked === true`);
     assert.equal(await evaluate('document.querySelector("#product-dialog").open'), true,
       'Selecting a product colourway must not dismiss the garment dialog.');
   }

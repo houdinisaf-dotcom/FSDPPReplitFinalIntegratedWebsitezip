@@ -33,6 +33,7 @@ export function FsdNavigation({ onNavigate, onReady, hardwareForgeExtension }) {
 
   return (
     <>
+      <a className="fsd-skip-link" href="#home">Skip to content</a>
       <div
         ref={containerRef}
         data-fsd-react-navigation

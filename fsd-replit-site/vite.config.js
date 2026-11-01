@@ -10,6 +10,7 @@ import { modestFlowPrivatePreviewPlugin } from './scripts/modest-flow-private-pr
 import { breezePrivatePreviewPlugin } from './scripts/breeze-private-preview-plugin.mjs';
 import { womensCollectionPrivatePreviewPlugin } from './scripts/womens-collection-private-preview-plugin.mjs';
 import { hardwareForgePrivatePreviewPlugin } from './scripts/hardware-forge-private-preview-plugin.mjs';
+import { prelaunchSignupApiPlugin } from './scripts/prelaunch-signup-api-plugin.mjs';
 
 const projectRoot = fileURLToPath(new URL('.', import.meta.url));
 
@@ -36,6 +37,7 @@ export default defineConfig({
     breezePrivatePreviewPlugin(),
     womensCollectionPrivatePreviewPlugin(),
     hardwareForgePrivatePreviewPlugin(),
+    prelaunchSignupApiPlugin(),
     staticStoryRoutePlugin(),
   ],
   server: {
@@ -43,5 +45,13 @@ export default defineConfig({
     port: 5000,
     strictPort: true,
     allowedHosts: true,
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(projectRoot, 'index.html'),
+        sizeGuide: resolve(projectRoot, 'size-guide.html'),
+      },
+    },
   },
 });

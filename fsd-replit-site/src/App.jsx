@@ -8,6 +8,7 @@ import { CatalogList } from './components/CatalogList.jsx';
 import { HomeHero } from './components/HomeHero.jsx';
 import { WomensBanner } from './components/WomensBanner.jsx';
 import { FsdLogo } from './brand/Logos.jsx';
+import { PrelaunchSignup } from './components/PrelaunchSignup.jsx';
 import { useGoldCursor } from './brand/useGoldCursor.js';
 import { setCatalogueResultsRenderer } from './catalogue.js';
 import { routeFromLocation } from './react-router.js';
@@ -55,6 +56,7 @@ function AppRouter({ hardwareForgeExtension }) {
   const [homeHeroPortalTarget, setHomeHeroPortalTarget] = useState(null);
   const [womensBannerPortalTarget, setWomensBannerPortalTarget] = useState(null);
   const [footerLogoPortalTarget, setFooterLogoPortalTarget] = useState(null);
+  const [prelaunchSignupPortalTarget, setPrelaunchSignupPortalTarget] = useState(null);
   const reportRoute = useCallback(nextRoute => setRoute(nextRoute), []);
   const navigationReady = useRef(false);
   const contentReady = useRef(false);
@@ -82,6 +84,9 @@ function AppRouter({ hardwareForgeExtension }) {
     );
     setFooterLogoPortalTarget(
       content?.querySelector('[data-fsd-logo-slot="footer"]') ?? null,
+    );
+    setPrelaunchSignupPortalTarget(
+      content?.querySelector('[data-prelaunch-signup-slot]') ?? null,
     );
   }, []);
 
@@ -153,6 +158,7 @@ function AppRouter({ hardwareForgeExtension }) {
       {homeHeroPortalTarget && createPortal(<HomeHero />, homeHeroPortalTarget)}
       {womensBannerPortalTarget && createPortal(<WomensBanner />, womensBannerPortalTarget)}
       {footerLogoPortalTarget && createPortal(<FsdLogo loading="lazy" />, footerLogoPortalTarget)}
+      {prelaunchSignupPortalTarget && createPortal(<PrelaunchSignup />, prelaunchSignupPortalTarget)}
       <CataloguePortal target={cataloguePortalTarget} />
       {featuredCarouselPortalTarget && createPortal(
         <CinematicCarousel />,

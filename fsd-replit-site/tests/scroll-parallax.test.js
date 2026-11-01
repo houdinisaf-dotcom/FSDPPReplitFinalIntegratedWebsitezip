@@ -2,10 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mountScrollParallax } from '../src/scroll-parallax.js';
 
-function makeHarness({ reducedMotion = false } = {}) {
+function makeHarness({ reducedMotion = false, mobile = false } = {}) {
   const styles = new Map();
   const listeners = new Map();
   const mediaListeners = new Set();
+  const mobileMediaListeners = new Set();
   const pendingFrames = new Map();
   let nextFrame = 1;
   const layer = {
@@ -13,14 +14,16 @@ function makeHarness({ reducedMotion = false } = {}) {
     style: { setProperty: (name, value) => styles.set(name, value) },
     getBoundingClientRect() { return this.rect; },
   };
-  const media = {
-    matches: reducedMotion,
-    addEventListener: (name, listener) => mediaListeners.add(listener),
-    removeEventListener: (name, listener) => mediaListeners.delete(listener),
-  };
+  const createMedia = (matches, targetListeners) => ({
+    matches,
+    addEventListener: (name, listener) => targetListeners.add(listener),
+    removeEventListener: (name, listener) => targetListeners.delete(listener),
+  });
+  const media = createMedia(reducedMotion, mediaListeners);
+  const mobileMedia = createMedia(mobile, mobileMediaListeners);
   const windowRef = {
     innerHeight: 800,
-    matchMedia: () => media,
+    matchMedia: query => query.includes('prefers-reduced-motion') ? media : mobileMedia,
     addEventListener: (name, listener) => listeners.set(name, listener),
     removeEventListener: name => listeners.delete(name),
     requestAnimationFrame(callback) {
@@ -37,7 +40,7 @@ function makeHarness({ reducedMotion = false } = {}) {
     pendingFrames.delete(id);
     callback();
   };
-  return { layer, styles, listeners, media, mediaListeners, pendingFrames, windowRef, root, flushFrame };
+  return { layer, styles, listeners, media, mediaListeners, mobileMedia, mobileMediaListeners, pendingFrames, windowRef, root, flushFrame };
 }
 
 test('scroll parallax updates a marked background in a single animation frame and cleans up', () => {
@@ -57,13 +60,14 @@ test('scroll parallax updates a marked background in a single animation frame an
   dispose();
   assert.equal(harness.listeners.size, 0);
   assert.equal(harness.mediaListeners.size, 0);
+  assert.equal(harness.mobileMediaListeners.size, 0);
 });
 
 test('reduced motion keeps layers still and disables scheduled parallax updates', () => {
   const harness = makeHarness({ reducedMotion: true });
   mountScrollParallax(harness.root, harness.windowRef);
   assert.equal(harness.pendingFrames.size, 0);
-  assert.equal(harness.styles.size, 0);
+  assert.equal(harness.styles.get('--fsd-parallax-y'), '0px');
 
   harness.media.matches = false;
   for (const listener of harness.mediaListeners) listener();
@@ -72,4 +76,24 @@ test('reduced motion keeps layers still and disables scheduled parallax updates'
   for (const listener of harness.mediaListeners) listener();
   assert.equal(harness.pendingFrames.size, 0);
   assert.equal(harness.styles.get('--fsd-parallax-y'), '0px');
+});
+
+test('mobile viewports keep parallax still and restore it after resizing to desktop', () => {
+  const harness = makeHarness({ mobile: true });
+  const dispose = mountScrollParallax(harness.root, harness.windowRef);
+  assert.equal(harness.pendingFrames.size, 0);
+  assert.equal(harness.styles.get('--fsd-parallax-y'), '0px');
+
+  harness.mobileMedia.matches = false;
+  for (const listener of harness.mobileMediaListeners) listener();
+  assert.equal(harness.pendingFrames.size, 1);
+  harness.flushFrame();
+
+  harness.mobileMedia.matches = true;
+  for (const listener of harness.mobileMediaListeners) listener();
+  assert.equal(harness.pendingFrames.size, 0);
+  assert.equal(harness.styles.get('--fsd-parallax-y'), '0px');
+
+  dispose();
+  assert.equal(harness.mobileMediaListeners.size, 0);
 });

@@ -1,5 +1,7 @@
 import { customerFacingCategory, isHardwareVisualPreviewProduct, priceInfo } from '../catalogue-data.js';
 import { trackEvent } from '../analytics.js';
+import { FSD_MOTION, prefersReducedMotion } from '../motion-config.js';
+import { animateElement } from '../motion-runtime.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
@@ -72,7 +74,7 @@ export function renderCollectionShowcase(divisions, { editorial = false } = {}) 
           ${className.includes('fsd-editorial-card--women')
             ? '<img class="fsd-editorial-card__image" src="/fsd-assets/8ffe2fd45a06.webp" alt="" aria-hidden="true" loading="lazy" decoding="async"/>'
             : ''}
-          <span class="fsd-editorial-card__eyebrow">${number} <i>/</i> ${escapeHTML(eyebrow)}</span>
+          <span class="fsd-editorial-card__eyebrow">${number} <i aria-hidden="true">/</i> ${escapeHTML(eyebrow)}</span>
           <strong>${escapeHTML(title)}</strong>
           <span class="fsd-editorial-card__note">${escapeHTML(note)}</span>
           <span class="fsd-editorial-card__action">Explore <b aria-hidden="true">↗</b></span>
@@ -171,8 +173,10 @@ function conceptCard(concept) {
     <h4>${escapeHTML(concept)}</h4>
     <span class="fsd-concept-tag">DESIGN PROTOTYPE</span>
     <p class="fsd-concept-disclaimer">Concept for exploration. Not a current product or commitment.</p>
-    <details class="fsd-concept-details"><summary>EXPLORE DETAILS ↗</summary>
-      <p>Product details and availability are not confirmed.</p>
+    <details class="fsd-concept-details" data-motion-details><summary>EXPLORE DETAILS ↗</summary>
+      <div class="fsd-concept-details__content" data-motion-details-content>
+        <p>Product details and availability are not confirmed.</p>
+      </div>
     </details>
   </article>`;
 }
@@ -303,24 +307,50 @@ export function mountCollectionShowcase({
   let activeSubcategoryIndex = -1;
   let returnFocus = null;
   let afterClose = null;
+  let renderGeneration = 0;
+  let dialogTransitionGeneration = 0;
   const page = root.ownerDocument?.documentElement || document.documentElement;
 
-  const renderDialog = () => {
-    if (!activeDivision) return;
-    const group = activeDivision.groups?.[activeGroupIndex] || { title: activeDivision.title };
-    content.innerHTML = modalContent(
-      activeDivision,
-      group,
-      safeProducts,
-      activeGroupIndex,
-      activeSubcategoryIndex,
-      activeDraftProductCards,
-    );
-    content.scrollTop = 0;
+  const renderDialog = ({ crossfade = false } = {}) => {
+    if (!activeDivision) return Promise.resolve(false);
+    const generation = ++renderGeneration;
+    const updateContent = () => {
+      if (generation !== renderGeneration || !activeDivision) return false;
+      const group = activeDivision.groups?.[activeGroupIndex] || { title: activeDivision.title };
+      content.innerHTML = modalContent(
+        activeDivision,
+        group,
+        safeProducts,
+        activeGroupIndex,
+        activeSubcategoryIndex,
+        activeDraftProductCards,
+      );
+      content.scrollTop = 0;
+      return true;
+    };
+
+    if (!crossfade || !dialog.open || prefersReducedMotion(dialog.ownerDocument?.defaultView)) {
+      updateContent();
+      return Promise.resolve(true);
+    }
+
+    return animateElement(content, {
+      opacity: [1, 0],
+      y: [0, -4],
+    }, { duration: FSD_MOTION.shortDuration }).then(async () => {
+      if (!updateContent()) return false;
+      await animateElement(content, {
+        opacity: [0, 1],
+        y: [6, 0],
+      }, { duration: FSD_MOTION.shortDuration });
+      return generation === renderGeneration;
+    });
   };
 
   const open = (division, opener, groupIndex = 0) => {
     if (!division) return;
+    dialogTransitionGeneration += 1;
+    delete dialog.dataset.motionClosing;
     if (returnFocus && returnFocus !== opener) {
       returnFocus.setAttribute('aria-expanded', 'false');
       returnFocus.classList.remove('is-selected');
@@ -333,15 +363,39 @@ export function mountCollectionShowcase({
     returnFocus = opener;
     returnFocus?.setAttribute('aria-expanded', 'true');
     returnFocus?.classList.add('is-selected');
-    renderDialog();
+    void renderDialog();
     page.classList.add('fsd-modal-open');
-    if (!dialog.open) dialog.showModal();
+    if (!dialog.open) {
+      dialog.dataset.motionOpening = 'true';
+      dialog.showModal();
+      dialog.ownerDocument.defaultView?.requestAnimationFrame?.(() => {
+        dialog.ownerDocument.defaultView?.requestAnimationFrame?.(() => {
+          delete dialog.dataset.motionOpening;
+        });
+      });
+    }
+    void animateElement(dialog.querySelector('.fsd-dialog-frame'), {
+      opacity: [0, 1],
+      y: [FSD_MOTION.distance, 0],
+    }, { duration: FSD_MOTION.duration });
     trackEvent('collection_opened', {
       division_id: division.id,
       group_index: activeGroupIndex,
     });
     const closeButton = dialog.querySelector('[data-close-dialog]');
     closeButton?.focus({ preventScroll: true });
+  };
+
+  const closeWithMotion = async () => {
+    if (!dialog.open) return;
+    const generation = ++dialogTransitionGeneration;
+    dialog.dataset.motionClosing = 'true';
+    await animateElement(dialog.querySelector('.fsd-dialog-frame'), {
+      opacity: [1, 0],
+      y: [0, FSD_MOTION.distance],
+    }, { duration: FSD_MOTION.shortDuration });
+    if (generation !== dialogTransitionGeneration || !dialog.open) return;
+    dialog.close();
   };
 
   const onClick = event => {
@@ -355,22 +409,30 @@ export function mountCollectionShowcase({
       return;
     }
     if (event.target.closest('[data-close-dialog]')) {
-      dialog.close();
+      void closeWithMotion();
       return;
     }
     const tab = event.target.closest('[data-group-index]');
     if (tab && dialog.contains(tab)) {
       activeGroupIndex = Number(tab.dataset.groupIndex);
       activeSubcategoryIndex = -1;
-      renderDialog();
-      dialog.querySelector(`[data-group-index="${activeGroupIndex}"]`)?.focus({ preventScroll: true });
+      const selectedIndex = activeGroupIndex;
+      void renderDialog({ crossfade: true }).then(() => {
+        if (activeGroupIndex === selectedIndex) {
+          dialog.querySelector(`[data-group-index="${selectedIndex}"]`)?.focus({ preventScroll: true });
+        }
+      });
       return;
     }
     const subcategoryButton = event.target.closest('[data-subcategory-index]');
     if (subcategoryButton && dialog.contains(subcategoryButton)) {
       activeSubcategoryIndex = Number(subcategoryButton.dataset.subcategoryIndex);
-      renderDialog();
-      dialog.querySelector(`[data-subcategory-index="${activeSubcategoryIndex}"]`)?.focus({ preventScroll: true });
+      const selectedIndex = activeSubcategoryIndex;
+      void renderDialog({ crossfade: true }).then(() => {
+        if (activeSubcategoryIndex === selectedIndex) {
+          dialog.querySelector(`[data-subcategory-index="${selectedIndex}"]`)?.focus({ preventScroll: true });
+        }
+      });
       return;
     }
     const productButton = event.target.closest('[data-product-id]');
@@ -384,7 +446,7 @@ export function mountCollectionShowcase({
       const group = activeDivision.groups[activeGroupIndex];
       const subcategory = group.subcategories?.[activeSubcategoryIndex];
       afterClose = () => onExploreCollection({ ...group, query: subcategory?.productTerms?.[0] || '' });
-      dialog.close();
+      void closeWithMotion();
     }
     const womensCollectionCta = event.target.closest('[data-scroll-womens-products]');
     if (womensCollectionCta && dialog.contains(womensCollectionCta)) {
@@ -405,14 +467,21 @@ export function mountCollectionShowcase({
       || event.clientX > bounds.right
       || event.clientY < bounds.top
       || event.clientY > bounds.bottom;
-    if (clickedOutsideDialog) dialog.close();
+    if (clickedOutsideDialog) void closeWithMotion();
   };
   const onDialogCancel = event => {
-    if (section.ownerDocument.querySelector('#product-dialog')?.open) event.preventDefault();
+    if (section.ownerDocument.querySelector('#product-dialog')?.open) {
+      event.preventDefault();
+      return;
+    }
+    event.preventDefault();
+    void closeWithMotion();
   };
   const onDialogClose = () => {
     // Native close events are queued; ignore an old event if already reopened.
     if (dialog.open) return;
+    delete dialog.dataset.motionClosing;
+    delete dialog.dataset.motionOpening;
     activeDivision = null;
     page.classList.remove('fsd-modal-open');
     returnFocus?.setAttribute('aria-expanded', 'false');
@@ -451,8 +520,12 @@ export function mountCollectionShowcase({
     activeGroupIndex = event.key === 'Home' ? 0 : event.key === 'End' ? length - 1 :
       (activeGroupIndex + (event.key === 'ArrowRight' ? 1 : -1) + length) % length;
     activeSubcategoryIndex = -1;
-    renderDialog();
-    dialog.querySelector(`[data-group-index="${activeGroupIndex}"]`)?.focus({ preventScroll: true });
+    const selectedIndex = activeGroupIndex;
+    void renderDialog({ crossfade: true }).then(() => {
+      if (activeGroupIndex === selectedIndex) {
+        dialog.querySelector(`[data-group-index="${selectedIndex}"]`)?.focus({ preventScroll: true });
+      }
+    });
   };
 
   section.addEventListener('click', onClick);

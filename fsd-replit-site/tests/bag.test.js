@@ -53,3 +53,30 @@ test('bag rejects invalid items and restores only valid, bounded persisted quant
   const malformed = createClientBag(products, createStorage('not-json'));
   assert.equal(malformed.itemCount(), 0);
 });
+
+test('bag keeps size and colourway variants as separate legacy-compatible lines', () => {
+  const storage = createStorage();
+  const bag = createClientBag(products, storage);
+
+  assert.equal(bag.add(43, 1, { size: 'M', colourway: 'Black / Gold' }), true);
+  assert.equal(bag.add(43, 1, { size: 'L', colourway: 'Black / Gold' }), true);
+  assert.equal(bag.add(43, 1, { size: 'M', colourway: 'Sage Green' }), true);
+  assert.equal(bag.itemCount(), 3);
+  assert.equal(bag.items().length, 3);
+  assert.deepEqual(
+    bag.items().map(({ size, colourway }) => [size, colourway]),
+    [
+      ['M', 'Black / Gold'],
+      ['L', 'Black / Gold'],
+      ['M', 'Sage Green'],
+    ],
+  );
+
+  const restored = createClientBag(products, storage);
+  assert.equal(restored.itemCount(), 3);
+  const line = restored.items().find(item => item.size === 'L');
+  assert.equal(restored.setQuantity(line.lineId, 2), true);
+  assert.equal(restored.itemCount(), 4);
+  assert.equal(restored.remove(line.lineId), true);
+  assert.equal(restored.items().some(item => item.size === 'L'), false);
+});

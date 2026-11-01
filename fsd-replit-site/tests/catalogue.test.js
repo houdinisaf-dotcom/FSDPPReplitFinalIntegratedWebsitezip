@@ -694,7 +694,10 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     assert.equal(element('#product-dialog').open, true);
     assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
     assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-colourway-index/g) ?? []).length, 3);
-    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 0);
+    assert.equal(
+      (element('#dialog-body').innerHTML.match(/data-catalogue-image-index=/g) ?? []).length,
+      products.find(p => p.id === 10).images.length,
+    );
     for (const image of products.find(p => p.id === 10).images) {
       assert.ok(element('#dialog-body').innerHTML.includes(image.label));
     }
@@ -708,23 +711,40 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     const selectorButtons = [0, 1, 2].map(() => ({ setAttribute() {} }));
     dialogBody.contains = () => true;
     const selectedColourway = { textContent: '' };
+    const wishlistButton = { setAttribute() {}, querySelector() { return null; } };
     dialogBody.querySelector = selector => selector === '[data-catalogue-main-image]'
       ? mainImage
-      : selector === '[data-catalogue-selected-colourway]' ? selectedColourway : mainCaption;
+      : selector === '[data-catalogue-selected-colourway]' ? selectedColourway
+        : selector === '[data-product-wishlist]' ? wishlistButton
+          : mainCaption;
     dialogBody.querySelectorAll = () => selectorButtons;
-    click('[data-catalogue-colourway-index]', {
-      dataset: { catalogueColourwayIndex: '1', catalogueColourwayImageIndex: '1' },
-      setAttribute() {},
-    });
+    const changeColourway = (colourwayIndex, imageIndex) => {
+      const input = {
+        checked: true,
+        dataset: {
+          catalogueColourwayIndex: String(colourwayIndex),
+          catalogueColourwayImageIndex: String(imageIndex),
+        },
+      };
+      handlers.get('document:change')({
+        target: {
+          closest: selector => selector === 'input[data-catalogue-colourway-index]' ? input : null,
+        },
+      });
+    };
+    changeColourway(1, 1);
     assert.equal(mainImage.src, products.find(p => p.id === 10).images[1].src);
     assert.equal(mainCaption.textContent, products.find(p => p.id === 10).images[1].label);
-    assert.equal(selectedColourway.textContent, products.find(p => p.id === 10).images[1].label);
+    assert.equal(selectedColourway.textContent, 'Blizzard ice-white grey camo / black');
 
     click('[data-product]', { dataset: { product: '34' } });
     const strikeProduct = products.find(product => product.id === 34);
     const strikeMarkup = element('#dialog-body').innerHTML;
     assert.match(strikeMarkup, /src="\/assets\/products\/strike-shorts-hero\.webp"/);
-    assert.match(strikeMarkup, /S \/ M \/ L \/ XL \/ XXL/);
+    assert.deepEqual(
+      [...strikeMarkup.matchAll(/value="([^"]+)" data-product-size/g)].map(([, size]) => size),
+      ['S', 'M', 'L', 'XL', 'XXL'],
+    );
     assert.match(strikeMarkup, /£49\.99/);
     assert.equal((strikeMarkup.match(/data-catalogue-image-index=/g) ?? []).length, 11);
     assert.deepEqual(
@@ -732,38 +752,44 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
         .map(([, colourwayIndex, imageIndex]) => [Number(colourwayIndex), Number(imageIndex)]),
       [[0, 1], [1, 2], [2, 3], [3, 4]],
     );
-    click('[data-catalogue-colourway-index]', {
-      dataset: { catalogueColourwayIndex: '2', catalogueColourwayImageIndex: '3' },
-      setAttribute() {},
-    });
+    changeColourway(2, 3);
     assert.equal(mainImage.src, strikeProduct.images[3].src);
     assert.equal(mainCaption.textContent, strikeProduct.images[3].label);
     assert.equal(selectedColourway.textContent, 'Navy & Ice Blue');
 
     click('[data-product]', { dataset: { product: '74' } });
     const apexMarkup = element('#dialog-body').innerHTML;
-    assert.match(apexMarkup, /class="catalogue-gallery-placeholders"/);
+    assert.match(apexMarkup, /class="product-detail-gallery[^"]*product-detail-gallery--placeholders"/);
     assert.match(apexMarkup, /FSD Apex High-Waisted Compression Leggings/);
     assert.match(apexMarkup, /£65\.00/);
-    assert.equal((apexMarkup.match(/data-catalogue-gallery-placeholder/g) ?? []).length, 3);
+    assert.equal((apexMarkup.match(/class="catalogue-gallery-placeholder/g) ?? []).length, 3);
     assert.match(apexMarkup, /Front Full View/);
     assert.match(apexMarkup, /Rear Contour View/);
     assert.match(apexMarkup, /Detail \/ Gold Crest &amp; Waistband/);
-    assert.doesNotMatch(apexMarkup, /apex-leggings-(?:front|rear|detail)\.png|<img\b/);
+    assert.doesNotMatch(apexMarkup, /apex-leggings-(?:front|rear|detail)\.png/);
+    const apexGallery = apexMarkup.match(/<section class="product-detail-media"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(apexGallery);
+    assert.doesNotMatch(apexGallery, /<img\b/);
 
     handlers.get('#close-dialog:click')();
     assert.equal(element('#product-dialog').open, false);
     click('[data-product]', { dataset: { product: '1' } });
     assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
     assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-colourway-index/g) ?? []).length, 2);
-    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index/g) ?? []).length, 0);
+    assert.equal(
+      (element('#dialog-body').innerHTML.match(/data-catalogue-image-index=/g) ?? []).length,
+      products.find(p => p.id === 1).images.length,
+    );
     assert.match(element('#dialog-body').innerHTML, /Vintage indigo fading to jet black/);
     assert.match(element('#dialog-body').innerHTML, /Electric cobalt fading to jet black/);
     for (const id of [42, 45, 60, 61, 62, 63, 65]) {
       click('[data-product]', { dataset: { product: String(id) } });
       assert.doesNotMatch(element('#dialog-body').innerHTML, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
       assert.doesNotMatch(element('#dialog-body').innerHTML, /Image status in master list|Development notes/);
-      assert.doesNotMatch(element('#dialog-body').innerHTML, /<img /);
+      const mediaSection = element('#dialog-body').innerHTML
+        .match(/<section class="product-detail-media"[\s\S]*?<\/section>/)?.[0];
+      assert.ok(mediaSection);
+      assert.doesNotMatch(mediaSection, /<img\b/);
     }
     click('[data-product]', { dataset: { product: '59' } });
     assert.doesNotMatch(element('#dialog-body').innerHTML, /Price at launch|£\d/);

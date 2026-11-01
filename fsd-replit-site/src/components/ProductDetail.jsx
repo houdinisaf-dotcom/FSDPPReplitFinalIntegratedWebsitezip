@@ -1,5 +1,6 @@
 import { imageSwatchBackground } from '../data/products.js';
 import { SafeImage } from './SafeImage.jsx';
+import { animateAddButton } from '../motion-runtime.js';
 
 function colourwaysFor(product) {
   return Array.isArray(product.rowColourways) ? product.rowColourways : [];
@@ -159,7 +160,7 @@ export function ProductDetail({
               className="fsd-catalog-detail__bag"
               onClick={event => {
                 event.stopPropagation();
-                onAddToBag?.(product.id);
+                if (onAddToBag?.(product.id)) animateAddButton(event.currentTarget);
               }}
             >
               Add to Bag

@@ -206,6 +206,32 @@
 .catalogue-bag-add:focus-visible { border-color: #d8bf8e; background: rgba(201, 173, 120, .16); }
 #dialog-body .catalogue-bag-add { margin-top: 17px; }
 
+.fsd-add-toast {
+  position: fixed;
+  z-index: 10000;
+  right: 22px;
+  bottom: 22px;
+  width: min(420px, calc(100vw - 32px));
+  padding: 15px 18px;
+  border: 1px solid rgba(200, 170, 114, .72);
+  background: #111214;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .38);
+  color: #eee7d8;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.fsd-add-toast[hidden] { display: none !important; }
+
+@media (max-width: 767px) {
+  .fsd-add-toast {
+    right: 14px;
+    bottom: calc(92px + env(safe-area-inset-bottom));
+    left: 14px;
+    width: auto;
+  }
+}
+
 @media (max-width: 900px) {
   .fsd-bag-toggle { min-width: 58px; min-height: 42px; margin-left: auto; }
   .fsd-bag-dialog { width: min(470px, 100vw); }

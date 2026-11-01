@@ -1,0 +1,74 @@
+:root {
+  --fsd-motion-duration: 320ms;
+  --fsd-motion-overlay: 240ms;
+  --fsd-motion-ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+#fsd-showcase-dialog::backdrop {
+  opacity: 1;
+  transition: opacity var(--fsd-motion-overlay) var(--fsd-motion-ease);
+}
+
+#fsd-showcase-dialog:is([data-motion-opening], [data-motion-closing])::backdrop {
+  opacity: 0;
+}
+
+:where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card) {
+  position: relative;
+  isolation: isolate;
+  transition: transform var(--fsd-motion-duration) var(--fsd-motion-ease);
+}
+
+:where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card)::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border: 1px solid rgba(200, 170, 114, .72);
+  border-radius: inherit;
+  background: rgba(200, 170, 114, .055);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fsd-motion-duration) var(--fsd-motion-ease);
+}
+
+:where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card) > * {
+  position: relative;
+  z-index: 1;
+}
+
+:where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card):is(:hover, :focus-within),
+:where(.fsd-editorial-card, .fsd-featured-card):focus-visible {
+  transform: translateY(-2px);
+}
+
+:where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card):is(:hover, :focus-within)::after,
+:where(.fsd-editorial-card, .fsd-featured-card):focus-visible::after {
+  opacity: 1;
+}
+
+.fsd-concept-details [data-motion-details-content] {
+  transform-origin: top center;
+}
+
+.catalogue-bag-add[data-cart-state="added"],
+.fsd-catalog-detail__bag[data-cart-state="added"] {
+  border-color: #d8bf8e;
+  color: #e4cf9f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #fsd-showcase-dialog::backdrop {
+    transition-duration: 0.01ms !important;
+  }
+
+  :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card),
+  :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card)::after {
+    transition-duration: 0.01ms !important;
+  }
+
+  :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card):is(:hover, :focus-within),
+  :where(.fsd-editorial-card, .fsd-featured-card):focus-visible {
+    transform: none;
+  }
+}

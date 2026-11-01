@@ -8,6 +8,8 @@ export function mountScrollParallax(root, windowRef = globalThis.window) {
   if (!layers.length || typeof windowRef.matchMedia !== 'function') return () => {};
 
   const motionPreference = windowRef.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobilePreference = windowRef.matchMedia('(max-width: 767px)');
+  const motionDisabled = () => motionPreference.matches || mobilePreference.matches;
   let frame = 0;
   let destroyed = false;
 
@@ -17,7 +19,7 @@ export function mountScrollParallax(root, windowRef = globalThis.window) {
 
   const update = () => {
     frame = 0;
-    if (destroyed || motionPreference.matches) return;
+    if (destroyed || motionDisabled()) return;
 
     const viewportHeight = windowRef.innerHeight || 1;
     layers.forEach(layer => {
@@ -33,13 +35,13 @@ export function mountScrollParallax(root, windowRef = globalThis.window) {
   };
 
   const scheduleUpdate = () => {
-    if (!frame && !destroyed && !motionPreference.matches) {
+    if (!frame && !destroyed && !motionDisabled()) {
       frame = windowRef.requestAnimationFrame(update);
     }
   };
 
-  const handleMotionChange = () => {
-    if (motionPreference.matches) {
+  const handlePreferenceChange = () => {
+    if (motionDisabled()) {
       if (frame) windowRef.cancelAnimationFrame(frame);
       frame = 0;
       resetLayers();
@@ -50,14 +52,17 @@ export function mountScrollParallax(root, windowRef = globalThis.window) {
 
   windowRef.addEventListener('scroll', scheduleUpdate, { passive: true });
   windowRef.addEventListener('resize', scheduleUpdate, { passive: true });
-  motionPreference.addEventListener?.('change', handleMotionChange);
-  scheduleUpdate();
+  motionPreference.addEventListener?.('change', handlePreferenceChange);
+  mobilePreference.addEventListener?.('change', handlePreferenceChange);
+  if (motionDisabled()) resetLayers();
+  else scheduleUpdate();
 
   return () => {
     destroyed = true;
     if (frame) windowRef.cancelAnimationFrame(frame);
     windowRef.removeEventListener('scroll', scheduleUpdate);
     windowRef.removeEventListener('resize', scheduleUpdate);
-    motionPreference.removeEventListener?.('change', handleMotionChange);
+    motionPreference.removeEventListener?.('change', handlePreferenceChange);
+    mobilePreference.removeEventListener?.('change', handlePreferenceChange);
   };
 }

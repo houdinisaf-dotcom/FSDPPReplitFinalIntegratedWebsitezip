@@ -1,4 +1,4 @@
-modules = ["nodejs-24", "python-base-3.13"]
+modules = ["nodejs-24", "python-base-3.13", "postgresql-16"]
 [nix]
 channel = "stable-25_05"
 packages = ["unzip"]
@@ -32,6 +32,10 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
+localPort = 5101
+externalPort = 3001
+
+[[ports]]
 localPort = 5173
 externalPort = 5173
 
@@ -44,6 +48,7 @@ path = "scripts/post-merge.sh"
 timeoutMs = 180000
 
 [deployment]
-deploymentTarget = "static"
+deploymentTarget = "autoscale"
 build = ["bash", "-lc", "cd fsd-replit-site && npm run build"]
 publicDir = "fsd-replit-site/dist"
+run = ["bash", "-lc", "cd fsd-replit-site && npm start"]
