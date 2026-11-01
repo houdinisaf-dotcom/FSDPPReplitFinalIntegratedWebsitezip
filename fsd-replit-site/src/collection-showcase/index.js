@@ -173,7 +173,7 @@ function conceptCard(concept) {
     <h4>${escapeHTML(concept)}</h4>
     <span class="fsd-concept-tag">DESIGN PROTOTYPE</span>
     <p class="fsd-concept-disclaimer">Concept for exploration. Not a current product or commitment.</p>
-    <details class="fsd-concept-details" data-motion-details><summary>EXPLORE DETAILS ↗</summary>
+    <details class="fsd-concept-details" data-motion-details><summary>EXPLORE DETAILS <span class="fsd-details-chevron" data-motion-details-chevron aria-hidden="true">›</span></summary>
       <div class="fsd-concept-details__content" data-motion-details-content>
         <p>Product details and availability are not confirmed.</p>
       </div>

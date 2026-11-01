@@ -609,7 +609,7 @@ test('rendered sections follow the master list, escape content, and do not promo
   assert.equal(safe('<script>"x"&</script>'), '&lt;script&gt;&quot;x&quot;&amp;&lt;/script&gt;');
 });
 
-test('catalogue UI handlers filter, reset, open details and close the dialog', () => {
+test('catalogue UI handlers filter, reset, open details and close the dialog', async () => {
   // Minimal DOM surface checks the real event handlers without a browser dependency.
   const elements = new Map();
   const handlers = new Map();
@@ -772,6 +772,10 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', (
     assert.doesNotMatch(apexGallery, /<img\b/);
 
     handlers.get('#close-dialog:click')();
+    const closeDeadline = Date.now() + 2000;
+    while (element('#product-dialog').open && Date.now() < closeDeadline) {
+      await new Promise(resolve => setTimeout(resolve, 10));
+    }
     assert.equal(element('#product-dialog').open, false);
     click('[data-product]', { dataset: { product: '1' } });
     assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);

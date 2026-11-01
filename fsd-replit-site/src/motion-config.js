@@ -3,6 +3,7 @@ export const FSD_MOTION = Object.freeze({
   shortDuration: 0.18,
   overlayDuration: 0.25,
   tabDuration: 0.25,
+  routeDuration: 0.3,
   duration: 0.36,
   panelDuration: 0.35,
   revealDuration: 0.4,

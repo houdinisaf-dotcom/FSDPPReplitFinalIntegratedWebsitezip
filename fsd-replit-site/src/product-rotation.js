@@ -177,6 +177,7 @@ export function mountProductRotationViewer(root) {
     controls.hidden = false;
     hint.hidden = hintDismissed;
     canvas.hidden = false;
+    reportFrame();
     if (frameCountLabel) {
       frameCountLabel.textContent = sources.length
         ? `${frameCount} compressed WebP frames`

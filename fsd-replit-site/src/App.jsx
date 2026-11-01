@@ -1,11 +1,9 @@
 import { createPortal } from 'react-dom';
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { MotionConfig } from 'motion/react';
+import { lazy, Suspense, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { renderStorefrontMarkup, mountStorefrontRuntime, navigateFsdSelection } from './main.js';
 import { FsdNavigation } from './FsdNavigation.jsx';
 import { FSDReactUtilities } from './react-utilities.jsx';
 import { CinematicCarousel } from './CinematicCarousel.jsx';
-import { CatalogList } from './components/CatalogList.jsx';
 import { HomeHero } from './components/HomeHero.jsx';
 import { WomensBanner } from './components/WomensBanner.jsx';
 import { FsdLogo } from './brand/Logos.jsx';
@@ -16,15 +14,21 @@ import { routeFromLocation } from './react-router.js';
 import { mountLazyImageLoading } from './lazy-image-loading.js';
 import { mountScrollParallax } from './scroll-parallax.js';
 import { mountSmoothScroll } from './smooth-scroll.js';
+import { animateElement } from './motion-runtime.js';
+import { FSD_MOTION } from './motion-config.js';
 import './tailwind.css';
 import './react-utilities.css';
 import './lazy-image-loading.css';
 import 'lenis/dist/lenis.css';
 
+const CatalogList = lazy(() => import('./components/CatalogList.jsx')
+  .then(module => ({ default: module.CatalogList })));
+
 function CataloguePortal({ target }) {
   const [products, setProducts] = useState([]);
   const [actions, setActions] = useState({});
   const [view, setView] = useState('list');
+  const [archiveOpen, setArchiveOpen] = useState(false);
   const renderResults = useCallback((nextProducts, nextActions, nextView) => {
     setProducts(nextProducts);
     setActions(nextActions);
@@ -37,14 +41,27 @@ function CataloguePortal({ target }) {
     return () => setCatalogueResultsRenderer(null);
   }, [target, renderResults]);
 
+  useLayoutEffect(() => {
+    const archive = target?.closest('details');
+    if (!archive) return undefined;
+    const syncOpenState = () => setArchiveOpen(archive.open);
+    archive.addEventListener('toggle', syncOpenState);
+    syncOpenState();
+    return () => archive.removeEventListener('toggle', syncOpenState);
+  }, [target]);
+
   if (!target) return null;
   return createPortal(
-    <CatalogList
-      products={products}
-      view={view}
-      onProductSelect={actions.onProductSelect}
-      onAddToBag={actions.onAddToBag}
-    />,
+    archiveOpen ? (
+      <Suspense fallback={<div className="fsd-catalog-loading" role="status">Loading catalogue…</div>}>
+        <CatalogList
+          products={products}
+          view={view}
+          onProductSelect={actions.onProductSelect}
+          onAddToBag={actions.onAddToBag}
+        />
+      </Suspense>
+    ) : null,
     target,
   );
 }
@@ -54,6 +71,7 @@ function AppRouter({ hardwareForgeExtension }) {
   const storefrontContentRef = useRef(null);
   const markup = useMemo(() => renderStorefrontMarkup(), []);
   const [route, setRoute] = useState(() => routeFromLocation(window.location));
+  const previousRouteKey = useRef('');
   const [featuredCarouselPortalTarget, setFeaturedCarouselPortalTarget] = useState(null);
   const [cataloguePortalTarget, setCataloguePortalTarget] = useState(null);
   const [homeHeroPortalTarget, setHomeHeroPortalTarget] = useState(null);
@@ -123,6 +141,19 @@ function AppRouter({ hardwareForgeExtension }) {
     return () => cancelAnimationFrame(frame);
   }, []);
 
+  useLayoutEffect(() => {
+    const nextKey = `${route.view}:${route.target ?? ''}`;
+    const previousKey = previousRouteKey.current;
+    previousRouteKey.current = nextKey;
+    if (!previousKey || previousKey === nextKey || route.view !== 'page' || !route.target) return;
+    const target = document.getElementById(route.target);
+    if (!target || !storefrontContentRef.current?.contains(target)) return;
+    void animateElement(target, {
+      opacity: [0.86, 1],
+      y: [FSD_MOTION.distance, 0],
+    }, { duration: FSD_MOTION.routeDuration });
+  }, [route.view, route.target]);
+
   useLayoutEffect(() => mountLazyImageLoading(document), []);
   useLayoutEffect(() => mountSmoothScroll(document, window), []);
   useLayoutEffect(
@@ -175,9 +206,5 @@ function AppRouter({ hardwareForgeExtension }) {
 
 export default function App({ hardwareForgeExtension }) {
   useGoldCursor();
-  return (
-    <MotionConfig reducedMotion="user">
-      <AppRouter hardwareForgeExtension={hardwareForgeExtension} />
-    </MotionConfig>
-  );
+  return <AppRouter hardwareForgeExtension={hardwareForgeExtension} />;
 }

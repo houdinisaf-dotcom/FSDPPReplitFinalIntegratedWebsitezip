@@ -19,6 +19,8 @@ export function mountSmoothScroll(documentRef = globalThis.document, view = docu
   let disposed = false;
   let generation = 0;
   let lenis = null;
+  let activationPending = false;
+  let userIntentStarted = false;
   const sync = async () => {
     const requestGeneration = ++generation;
     if (!shouldEnableSmoothScroll(view)) {
@@ -44,17 +46,41 @@ export function mountSmoothScroll(documentRef = globalThis.document, view = docu
       globalThis.console?.error?.('FSD smooth scrolling could not load; native scrolling remains available.', error);
     }
   };
+  const removeIntentListeners = () => {
+    documentRef.removeEventListener('wheel', startOnIntent);
+    documentRef.removeEventListener('pointerdown', startOnIntent);
+    documentRef.removeEventListener('keydown', startOnIntent);
+  };
+  const startOnIntent = () => {
+    if (disposed || activationPending || lenis || !shouldEnableSmoothScroll(view)) return;
+    userIntentStarted = true;
+    activationPending = true;
+    void sync().finally(() => {
+      activationPending = false;
+      if (lenis) removeIntentListeners();
+    });
+  };
+  const onPreferenceChange = () => {
+    if (!shouldEnableSmoothScroll(view)) {
+      void sync();
+    } else if (userIntentStarted) {
+      void startOnIntent();
+    }
+  };
   const preference = view.matchMedia?.('(prefers-reduced-motion: reduce)');
   const coarsePointer = view.matchMedia?.('(pointer: coarse)');
-  preference?.addEventListener?.('change', sync);
-  coarsePointer?.addEventListener?.('change', sync);
-  void sync();
+  documentRef.addEventListener('wheel', startOnIntent, { passive: true });
+  documentRef.addEventListener('pointerdown', startOnIntent, { passive: true });
+  documentRef.addEventListener('keydown', startOnIntent);
+  preference?.addEventListener?.('change', onPreferenceChange);
+  coarsePointer?.addEventListener?.('change', onPreferenceChange);
 
   return () => {
     disposed = true;
     generation += 1;
-    preference?.removeEventListener?.('change', sync);
-    coarsePointer?.removeEventListener?.('change', sync);
+    removeIntentListeners();
+    preference?.removeEventListener?.('change', onPreferenceChange);
+    coarsePointer?.removeEventListener?.('change', onPreferenceChange);
     lenis?.destroy();
     lenis = null;
     delete documentRef.documentElement.dataset.fsdLenisActive;

@@ -464,6 +464,10 @@ try {
   await click('[data-explore-collection]');
   await waitFor('document.querySelector("#catalogue-archive").open && !document.querySelector("#fsd-showcase-dialog").open');
   await waitFor('document.querySelector("#search")?.value === "Hijab"');
+  await waitFor(`(() => {
+    const names = Array.from(document.querySelectorAll("#catalogue-grid .product-row__name"), heading => heading.textContent);
+    return names.length > 0 && names.every(name => /hijab/i.test(name));
+  })()`);
   assert.equal(await evaluate('document.querySelector("#search").value'), 'Hijab');
   const filteredNames = await evaluate('Array.from(document.querySelectorAll("#catalogue-grid .product-row__name"), heading => heading.textContent)');
   assert.ok(filteredNames.length > 0 && filteredNames.every(name => /hijab/i.test(name)));

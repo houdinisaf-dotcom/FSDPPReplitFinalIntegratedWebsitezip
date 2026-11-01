@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
+import { AnimatePresence, LayoutGroup, MotionConfig, motion } from 'motion/react';
 import '../CatalogList.css';
 import { ProductDetail } from './ProductDetail.jsx';
 import { SafeImage } from './SafeImage.jsx';
@@ -191,8 +191,9 @@ export function CatalogList({ products = [], view = 'list', onProductSelect, onA
 
   return (
     <>
-      <LayoutGroup id="fsd-catalogue-product-images">
-        <AnimatePresence initial={false}>
+      <MotionConfig reducedMotion="user">
+        <LayoutGroup id="fsd-catalogue-product-images">
+          <AnimatePresence initial={false}>
           {products.map(product => {
             const isOpen = activeProductId === product.id;
             if (view === 'visual') {
@@ -274,8 +275,9 @@ export function CatalogList({ products = [], view = 'list', onProductSelect, onA
               </motion.article>
             );
           })}
-        </AnimatePresence>
-      </LayoutGroup>
+          </AnimatePresence>
+        </LayoutGroup>
+      </MotionConfig>
     </>
   );
 }

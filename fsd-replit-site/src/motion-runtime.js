@@ -219,6 +219,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   documentRef.documentElement.dataset.fsdMotionMounted = 'true';
 
   let rowObserver = null;
+  let revealObserverActivated = false;
   let observedTargets = new WeakSet();
   const collectTargets = node => {
     if (!node || node.nodeType !== 1) return;
@@ -241,6 +242,18 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
     collectTargets(documentRef.body);
   };
+  const removeRevealIntentListeners = () => {
+    documentRef.removeEventListener('wheel', activateRevealObserver);
+    documentRef.removeEventListener('touchstart', activateRevealObserver);
+    documentRef.removeEventListener('pointerdown', activateRevealObserver);
+    documentRef.removeEventListener('keydown', activateRevealObserver);
+  };
+  const activateRevealObserver = () => {
+    if (revealObserverActivated || prefersReducedMotion(documentRef.defaultView)) return;
+    revealObserverActivated = true;
+    removeRevealIntentListeners();
+    refreshRevealObserver();
+  };
   const cleanRemovedTargets = node => {
     if (!node || node.nodeType !== 1) return;
     const cleanViewer = viewer => {
@@ -258,13 +271,18 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   });
   mutationObserver.observe(documentRef.body, { childList: true, subtree: true });
-  refreshRevealObserver();
+  documentRef.querySelectorAll('[data-product-rotation]').forEach(viewer => void mountRotationViewer(viewer));
+  documentRef.addEventListener('wheel', activateRevealObserver, { passive: true });
+  documentRef.addEventListener('touchstart', activateRevealObserver, { passive: true });
+  documentRef.addEventListener('pointerdown', activateRevealObserver);
+  documentRef.addEventListener('keydown', activateRevealObserver);
 
   const motionIntent = event => {
     if (prefersReducedMotion(documentRef.defaultView)) return;
     if (!event.target.closest?.(
       '[data-division], [data-group-index], [data-subcategory-index], [data-close-dialog], [data-product-id], [data-product], [data-bag-add], .fsd-catalog-detail__bag, .fsd-concept-details summary',
     )) return;
+    activateRevealObserver();
     void loadMotion().catch(reportMotionFailure);
     documentRef.removeEventListener('pointerover', motionIntent, true);
     documentRef.removeEventListener('pointerdown', motionIntent, true);
@@ -281,22 +299,53 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     const panel = details.querySelector('[data-motion-details-content]');
     if (!panel) return;
     event.preventDefault();
+    if (details.dataset.motionTransition === 'true') return;
+    const chevron = summary.querySelector('[data-motion-details-chevron]');
+    const reducedMotion = prefersReducedMotion(documentRef.defaultView);
 
     if (details.open) {
-      void animateElement(panel, {
-        opacity: [1, 0],
-        y: [0, -8],
-      }, { duration: FSD_MOTION.shortDuration }).then(() => {
+      if (reducedMotion) {
         details.open = false;
+        return;
+      }
+      details.dataset.motionTransition = 'true';
+      const height = panel.getBoundingClientRect().height;
+      panel.style.height = `${height}px`;
+      panel.style.overflow = 'hidden';
+      void Promise.all([
+        animateElement(panel, {
+          height: [height, 0],
+          opacity: [1, 0],
+          y: [0, -8],
+        }, { duration: FSD_MOTION.shortDuration }),
+        chevron && animateElement(chevron, { rotate: [90, 0] }, { duration: FSD_MOTION.shortDuration }),
+      ]).finally(() => {
+        details.open = false;
+        panel.style.removeProperty('height');
+        panel.style.removeProperty('overflow');
+        delete details.dataset.motionTransition;
       });
       return;
     }
 
     details.open = true;
-    void animateElement(panel, {
-      opacity: [0, 1],
-      y: [8, 0],
-    }, { duration: FSD_MOTION.shortDuration });
+    if (reducedMotion) return;
+    details.dataset.motionTransition = 'true';
+    panel.style.height = '0px';
+    panel.style.overflow = 'hidden';
+    const height = panel.scrollHeight;
+    void Promise.all([
+      animateElement(panel, {
+        height: [0, height],
+        opacity: [0, 1],
+        y: [8, 0],
+      }, { duration: FSD_MOTION.shortDuration }),
+      chevron && animateElement(chevron, { rotate: [0, 90] }, { duration: FSD_MOTION.shortDuration }),
+    ]).finally(() => {
+      panel.style.removeProperty('height');
+      panel.style.removeProperty('overflow');
+      delete details.dataset.motionTransition;
+    });
   };
   documentRef.addEventListener('click', summaryForDetails);
 
@@ -409,12 +458,15 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
 
   const motionPreference = documentRef.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)');
   const onMotionPreferenceChange = event => {
-    refreshRevealObserver();
+    if (revealObserverActivated) refreshRevealObserver();
     if (!event.matches) return;
     documentRef.querySelectorAll('[data-motion-hovered]').forEach(element => {
       delete element.dataset.motionHovered;
       element.style.removeProperty('transform');
     });
+    for (const control of pressedControls) {
+      if (control.isConnected) control.style.removeProperty('transform');
+    }
     pressedControls.clear();
   };
   motionPreference?.addEventListener?.('change', onMotionPreferenceChange);
@@ -422,6 +474,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   return () => {
     mutationObserver.disconnect();
     rowObserver?.disconnect();
+    removeRevealIntentListeners();
     motionPreference?.removeEventListener?.('change', onMotionPreferenceChange);
     documentRef.removeEventListener('pointerover', motionIntent, true);
     documentRef.removeEventListener('pointerdown', motionIntent, true);

@@ -5,7 +5,8 @@ import { outlineIcon } from './brand/outline-icons.js';
 import { trackEvent } from './analytics.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 import { productSizeOptions, renderProductDetailPage, renderSizeGuideDialog } from './product-detail-page.js';
-import { animateAddButton, animateWishlistHeart, setStickyAddBarVisible } from './motion-runtime.js';
+import { animateAddButton, animateElement, animateWishlistHeart, setStickyAddBarVisible } from './motion-runtime.js';
+import { FSD_MOTION } from './motion-config.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -612,6 +613,18 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
   }
 }
 
+function closeProductDialogWithMotion(dialog) {
+  if (!dialog?.open || dialog.dataset.fsdMotionClosing === 'true') return;
+  dialog.dataset.fsdMotionClosing = 'true';
+  void animateElement(dialog, {
+    opacity: [1, 0],
+    y: [0, 12],
+  }, { duration: FSD_MOTION.panelDuration }).finally(() => {
+    delete dialog.dataset.fsdMotionClosing;
+    if (dialog.open) dialog.close();
+  });
+}
+
 function closeProductFromUI() {
   if (!activeDialogProduct) return;
   const dialog = document.querySelector('#product-dialog');
@@ -620,6 +633,7 @@ function closeProductFromUI() {
     const urlProduct = Number.parseInt(params.get('product') || '', 10);
     if (urlProduct === activeDialogProduct.id &&
         window.history.state?.fsdShop?.productId === activeDialogProduct.id) {
+      closeProductDialogWithMotion(dialog);
       window.history.back();
       return;
     }
@@ -631,7 +645,7 @@ function closeProductFromUI() {
       fsdShop: { ...currentState(), productId: null, scrollY: window.scrollY || 0 },
     }, '', url);
   }
-  dialog?.close();
+  closeProductDialogWithMotion(dialog);
 }
 
 function closeProductForNewDestination() {
@@ -645,7 +659,7 @@ function closeProductForNewDestination() {
       fsdShop: { ...currentState(), productId: null, scrollY: window.scrollY || 0 },
     }, '', url);
   }
-  dialog?.close();
+  closeProductDialogWithMotion(dialog);
 }
 
 function restoreFromURL({ scrollY } = {}) {

@@ -463,6 +463,7 @@
 .fsd-concept-details summary::-webkit-details-marker { display: none; }
 .fsd-concept-details summary::marker { content: ""; }
 .fsd-concept-details summary:focus-visible { outline: 1px solid var(--fsd-gold, #c8aa72); outline-offset: 3px; }
+.fsd-details-chevron { display: inline-block; transform-origin: center; }
 .fsd-concept-details__content { overflow: hidden; }
 .fsd-concept-details__content p { margin: 0; }
 .fsd-concept-card { animation: fsd-content-in .35s both; }

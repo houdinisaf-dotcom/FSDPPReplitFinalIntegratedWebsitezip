@@ -180,7 +180,97 @@ try {
     assert.ok(dimensions.scrollWidth <= dimensions.width + 1, `Mobile horizontal overflow on ${slug}: ${JSON.stringify(dimensions)}`);
   }
 
-  console.log('FSD MOTION browser checks passed: private collection, 15 selectable references, lightbox, four product galleries, homepage draft card, and mobile overflow.');
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
+  await send('Emulation.setTouchEmulationEnabled', { enabled: false });
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
+  await navigate('/');
+  await waitFor('document.querySelector(".fsd-primary-nav")');
+  await delay(200);
+  assert.equal(await evaluate('document.documentElement.dataset.fsdLenisActive === "true"'), false,
+    'Lenis should not load before the first desktop interaction.');
+  assert.equal(await evaluate('performance.getEntriesByType("resource").some(entry => entry.name.includes("/node_modules/.vite/deps/motion.js"))'), false,
+    'Motion should stay unloaded before the first interaction.');
+  await send('Input.dispatchMouseEvent', {
+    type: 'mouseWheel', x: 320, y: 320, deltaY: 35, deltaX: 0,
+  });
+  await waitFor('document.documentElement.dataset.fsdLenisActive === "true"');
+  await waitFor('performance.getEntriesByType("resource").some(entry => entry.name.includes("/node_modules/.vite/deps/motion.js"))');
+
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  await waitFor('!document.documentElement.dataset.fsdLenisActive');
+  await navigate('/?product=43#products');
+  await waitFor('document.querySelector("#product-dialog")?.open && !!document.querySelector("[data-product-rotation]")');
+  assert.equal(await evaluate('document.querySelector("[data-rotation-canvas]")?.hidden'), true,
+    'Reduced motion should preserve the static product photo and disable the rotation canvas.');
+
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
+  await waitFor('!document.querySelector("[data-rotation-canvas]")?.hidden');
+  await waitFor('document.querySelector("[data-rotation-status]")?.textContent.includes("Placeholder frame 01 of 24")');
+  await evaluate(`(() => {
+    const viewer = document.querySelector('[data-product-rotation]');
+    viewer.focus();
+    viewer.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  })()`);
+  await waitFor('document.querySelector("[data-rotation-status]")?.textContent.includes("Placeholder frame 02 of 24")');
+  await evaluate(`(() => {
+    const viewer = document.querySelector('[data-product-rotation]');
+    viewer.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+  })()`);
+  await waitFor('document.querySelector("[data-rotation-status]")?.textContent.includes("Placeholder frame 01 of 24")');
+
+  await evaluate('document.querySelector("[data-product-rotation]")?.scrollIntoView({ block: "center" })');
+  const desktopCanvas = await evaluate(`(() => {
+    const bounds = document.querySelector('[data-rotation-canvas]').getBoundingClientRect();
+    return { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2, width: bounds.width };
+  })()`);
+  await send('Input.dispatchMouseEvent', {
+    type: 'mousePressed', x: desktopCanvas.x, y: desktopCanvas.y, button: 'left', buttons: 1,
+  });
+  await send('Input.dispatchMouseEvent', {
+    type: 'mouseMoved', x: desktopCanvas.x + desktopCanvas.width / 5, y: desktopCanvas.y, button: 'left', buttons: 1,
+  });
+  await send('Input.dispatchMouseEvent', {
+    type: 'mouseReleased', x: desktopCanvas.x + desktopCanvas.width / 5, y: desktopCanvas.y, button: 'left', buttons: 0,
+  });
+  await waitFor('!document.querySelector("[data-rotation-status]")?.textContent.includes("Placeholder frame 01 of 24")');
+
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390, height: 844, deviceScaleFactor: 1, mobile: true,
+  });
+  await send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
+  await waitFor('!document.documentElement.dataset.fsdLenisActive');
+  await evaluate('document.querySelector("[data-product-rotation]")?.scrollIntoView({ block: "center" })');
+  const touchCanvas = await evaluate(`(() => {
+    const bounds = document.querySelector('[data-rotation-canvas]').getBoundingClientRect();
+    return { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2, width: bounds.width };
+  })()`);
+  await send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ x: touchCanvas.x, y: touchCanvas.y, id: 1 }],
+  });
+  await send('Input.dispatchTouchEvent', {
+    type: 'touchMove',
+    touchPoints: [{ x: touchCanvas.x + touchCanvas.width / 5, y: touchCanvas.y, id: 1 }],
+  });
+  await send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await waitFor('!document.querySelector("[data-rotation-status]")?.textContent.includes("Placeholder frame 01 of 24")');
+  const rotationMobileSize = await evaluate(`({
+    width: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth
+  })`);
+  assert.ok(rotationMobileSize.scrollWidth <= rotationMobileSize.width + 1,
+    `Mobile horizontal overflow on product rotation: ${JSON.stringify(rotationMobileSize)}`);
+  await evaluate('document.querySelector("[data-catalogue-back]")?.click()');
+  assert.equal(await evaluate('document.querySelector("#product-dialog")?.dataset.fsdMotionClosing === "true"'), true,
+    'Returning to the House should begin the reverse dialog transition.');
+  await waitFor('!document.querySelector("#product-dialog")?.open');
+
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  await waitFor('document.querySelector("[data-rotation-canvas]")?.hidden');
+  assert.equal(await evaluate('document.querySelector("[data-rotation-fallback]")?.hidden'), false);
+  console.log('Browser checks passed: FSD MOTION galleries, Lenis desktop/reduced/touch behavior, and product rotation by keyboard, mouse, and touch.');
   if (browserErrors.length) console.log(`Browser exceptions observed: ${browserErrors.join(' | ')}`);
 } finally {
   socket?.close();
