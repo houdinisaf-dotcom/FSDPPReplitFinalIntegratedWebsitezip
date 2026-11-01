@@ -18,7 +18,6 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
     'UNIVERSE',
     'BIO-LAB™',
     'HARDWARE',
-    'THE HOUSE',
     'PRIVATE ACCESS',
   ]);
   assert.deepEqual(menu.map(item => item.id), [
@@ -35,11 +34,11 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   const header = renderNavigationHeader('<span>FSD</span>');
   const investorPage = readFileSync(new URL('../public/investor.html', import.meta.url), 'utf8');
 
-  assert.match(header, /<a class="fsd-primary-link" data-nav-house id="house-trigger" href="\/the-house\.html">THE HOUSE<\/a>/);
-  assert.match(header, /aria-label="Open The House menu"/);
+  assert.match(header, /<a class="fsd-primary-link" href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.doesNotMatch(header, /data-nav-primary="house"|data-nav-house|house-trigger|Open The House menu/);
   assert.match(header, /<a class="fsd-primary-link" data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Public pages">/);
-  assert.match(header, /<a data-nav-house href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(header, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(header, /<a data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(investorPage, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
   assert.match(investorPage, /FSD \/ PUBLIC INVESTOR INFORMATION &mdash; PRE-COMMERCIAL/);
@@ -47,7 +46,7 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   assert.match(investorPage, /href="\/#universe">UNIVERSE<\/a>/);
   assert.match(investorPage, /href="\/#innovations">BIO-LAB™<\/a>/);
   assert.match(investorPage, /href="\/#hardware-editorial">HARDWARE<\/a>/);
-  assert.match(investorPage, /<a id="house-trigger" href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(investorPage, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(investorPage, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.match(investorPage, /<a href="\/investor\.html" class="on" aria-current="page">INVESTOR RELATIONS<\/a>/);
   assert.match(investorPage, /Initial Pre-Seed \(Proposed\)/);
@@ -63,7 +62,7 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
 });
 
-test('The House mega-menu links to the full public interactive House page', () => {
+test('The House landing page remains mapped to its public interactive page', () => {
   const house = menu.find(section => section.id === 'house');
   const group = house?.groups.find(item => item.id === 'the-house-website');
   const pagePath = new URL('../public/the-house.html', import.meta.url);
@@ -82,7 +81,7 @@ test('The House mega-menu links to the full public interactive House page', () =
   assert.match(page, /href="\/#universe">UNIVERSE<\/a>/);
   assert.match(page, /href="\/#innovations">BIO-LAB™<\/a>/);
   assert.match(page, /href="\/#hardware-editorial">HARDWARE<\/a>/);
-  assert.match(page, /<a id="house-trigger" class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
+  assert.match(page, /<a class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
   assert.match(page, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.match(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);

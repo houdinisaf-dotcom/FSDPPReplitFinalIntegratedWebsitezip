@@ -13,7 +13,8 @@ import { resolveFsdRoute } from '../src/react-router.js';
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running development preview.');
 const draftPreviewPath = '/__catalogue-preview/weighted-skipping-rope/';
-const navigationModel = createNavigationModel({ includeDraftPreviews: true });
+const navigationModel = createNavigationModel({ includeDraftPreviews: true })
+  .filter(menu => menu.id !== 'house');
 const profile = mkdtempSync(join(tmpdir(), 'fsd-nav-browser-'));
 const chrome = spawn('chromium', [
   '--headless=new', '--no-sandbox', '--disable-dev-shm-usage',
@@ -204,21 +205,13 @@ try {
   await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
   assert.ok(await evaluate('Boolean(document.querySelector(".fsd-reading-progress"))'));
   assert.equal(await evaluate('document.querySelector("[data-fsd-storefront]").dataset.currentView'), 'story');
-  assert.equal(await evaluate('document.querySelector(".fsd-primary-trigger[data-nav-primary=\\"house\\"]")?.classList.contains("is-current")'), true);
+  assert.equal(await evaluate('document.querySelector(".fsd-primary-nav a[href=\\"/the-house.html\\"]")?.textContent.trim()'), 'THE HOUSE');
   assert.ok(await evaluate('Boolean(document.querySelector(\'footer a[href="/story"]\'))'));
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools")');
-  await click('.fsd-primary-trigger[data-nav-primary="house"]');
-  await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
-  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"0\\"]")');
-  await moveTo('#fsd-mega-menu [data-nav-group="0"]');
-  await waitFor('document.querySelector(".fsd-feature-media--story") && document.querySelector(".fsd-feature-copy h3")?.textContent === "THE FSD STORY & ARCHIVE"');
-  assert.equal(await evaluate('document.querySelector(".fsd-feature-metadata").textContent.includes("04 FOUNDATIONAL CHAPTERS")'), true);
-  assert.equal(await evaluate('document.querySelector(".fsd-feature-metadata").textContent.includes("05 WORKING PRINCIPLES")'), true);
-  await click('#fsd-mega-menu .fsd-feature-cta');
-  await waitFor('location.pathname === "/story"');
-  await waitFor('document.querySelector("#fsd-house-archive")?.open');
-  await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+  assert.equal(await evaluate('document.querySelector(".fsd-primary-nav [data-nav-primary=\\"house\\"]")'), null);
+  await click('.fsd-primary-nav a[href="/the-house.html"]');
+  await waitFor('location.pathname === "/the-house.html" && document.querySelector("nav[aria-label=\\"Main navigation\\"] a[aria-current=\\"page\\"]")?.textContent.trim() === "THE HOUSE"');
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && window.scrollY === 0');
   await evaluate('document.querySelector(".fsd-footer-tools button:nth-of-type(2)").click()');
@@ -260,9 +253,10 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollBehavior'), 'auto');
 
-  assert.equal(await evaluate('document.querySelector(".fsd-primary-nav [data-nav-house]")?.getAttribute("href")'), '/the-house.html');
+  assert.equal(await evaluate('document.querySelector(".fsd-primary-nav a[href=\\"/the-house.html\\"]")?.textContent.trim()'), 'THE HOUSE');
+  assert.equal(await evaluate('document.querySelector(".fsd-primary-nav [data-nav-primary=\\"house\\"]")'), null);
   assert.deepEqual(await evaluate('Array.from(document.querySelectorAll(".fsd-primary-nav [data-nav-primary]"), button => button.getAttribute("aria-label") || button.textContent.trim())'), [
-    'SHOP', 'UNIVERSE', 'BIO-LAB™', 'HARDWARE', 'Open The House menu', 'PRIVATE ACCESS',
+    'SHOP', 'UNIVERSE', 'BIO-LAB™', 'HARDWARE', 'PRIVATE ACCESS',
   ]);
   const startingUrl = await evaluate('location.href');
   const startingScrollY = await evaluate('window.scrollY');
@@ -773,7 +767,6 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     ['universe', 'FSD UNIVERSE'],
     ['bio-lab', 'BIO-LAB™'],
     ['hardware', 'HARDWARE'],
-    ['house', 'THE HOUSE'],
     ['private-access', 'PRIVATE ACCESS'],
   ]) {
     await click(`.fsd-primary-trigger[data-nav-primary="${id}"]`);
@@ -855,9 +848,9 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-nav-mobile-toggle]")).display !== "none"'), true);
   await click('[data-nav-mobile-toggle]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "primary" && document.body.classList.contains("fsd-mobile-nav-open")');
-  assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-primary-list [data-nav-primary]").length'), 6);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-mobile-primary-list [data-nav-primary]").length'), 5);
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-mobile-public-links")).display'), 'flex');
-  assert.equal(await evaluate('document.querySelector(".fsd-mobile-public-links [data-nav-house]")?.getAttribute("href")'), '/the-house.html');
+  assert.equal(await evaluate('document.querySelector(".fsd-mobile-public-links a[href=\\"/the-house.html\\"]")?.textContent.trim()'), 'THE HOUSE');
   assert.equal(await evaluate('document.querySelector(".fsd-mobile-public-links [data-nav-investor]")?.getAttribute("href")'), '/investor.html');
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'groups');

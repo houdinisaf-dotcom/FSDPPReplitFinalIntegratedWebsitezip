@@ -11,7 +11,6 @@ export const primaryNavigation = [
   { id: 'universe', label: 'UNIVERSE' },
   { id: 'bio-lab', label: 'BIO-LAB™' },
   { id: 'hardware', label: 'HARDWARE' },
-  { id: 'house', label: 'THE HOUSE' },
   { id: 'private-access', label: 'PRIVATE ACCESS' },
 ];
 
@@ -766,16 +765,13 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
 }
 
 export function renderNavigationHeader(brandMarkup) {
-  const primaryItems = primaryNavigation.map(item => item.id === 'house'
-    ? `<span class="fsd-primary-house-group">
-        <a class="fsd-primary-link" data-nav-house id="house-trigger" href="/the-house.html">THE HOUSE</a>
-        <button type="button" class="fsd-primary-trigger fsd-house-menu-trigger"
-          data-nav-primary="house" aria-controls="fsd-mega-menu" aria-expanded="false"
-          aria-label="Open The House menu"><span aria-hidden="true">⌄</span></button>
-      </span>`
-    : `<button type="button"
-        class="fsd-primary-trigger" data-nav-primary="${item.id}" aria-controls="fsd-mega-menu"
-        aria-expanded="false">${escapeHTML(item.label)}</button>`).join('');
+  const houseLink = '<a class="fsd-primary-link" href="/the-house.html">THE HOUSE</a>';
+  const primaryItems = primaryNavigation.map(item => {
+    const trigger = `<button type="button"
+      class="fsd-primary-trigger" data-nav-primary="${item.id}" aria-controls="fsd-mega-menu"
+      aria-expanded="false">${escapeHTML(item.label)}</button>`;
+    return item.id === 'private-access' ? `${houseLink}${trigger}` : trigger;
+  }).join('');
   const investorLink = '<a class="fsd-primary-link" data-nav-investor href="/investor.html">INVESTOR RELATIONS</a>';
 
   return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE</div>
@@ -808,7 +804,7 @@ export function renderNavigationHeader(brandMarkup) {
         </button>
       </header>
       <nav class="fsd-mobile-public-links" aria-label="Public pages">
-        <a data-nav-house href="/the-house.html">THE HOUSE</a>
+        <a href="/the-house.html">THE HOUSE</a>
         <a data-nav-investor href="/investor.html">INVESTOR RELATIONS</a>
       </nav>
       <section class="fsd-mega-menu fsd-glass-surface" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
