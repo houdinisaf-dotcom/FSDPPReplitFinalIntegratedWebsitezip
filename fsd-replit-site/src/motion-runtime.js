@@ -7,10 +7,15 @@ const toastTimers = new WeakMap();
 const toastGenerations = new WeakMap();
 const stickyGenerations = new WeakMap();
 const mountedRotations = new WeakMap();
-const observedRows = new WeakSet();
+const completedReveals = new WeakSet();
 let motionFailureReported = false;
 
-const ROW_SELECTOR = '.fsd-product-card, .product-card';
+const ROW_SELECTOR = '.fsd-product-card, .product-card, .fsd-editorial-card, .fsd-featured-card';
+const SECTION_SELECTOR = '#home > section, .showroom-archive-content > section';
+const HEADING_SELECTOR = '#home h1, #home h2, #home h3, .showroom-archive-content h2, .showroom-archive-content h3';
+const REVEAL_SELECTOR = `${ROW_SELECTOR}, ${SECTION_SELECTOR}, ${HEADING_SELECTOR}`;
+const CARD_SELECTOR = '.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card';
+const ARROW_SELECTOR = '.fsd-editorial-card__action b, .product-row__action span, .catalogue-card__action span, .fsd-catalog-detail__actions a span:last-child';
 
 function reportMotionFailure(error) {
   if (motionFailureReported) return;
@@ -75,7 +80,7 @@ export function animateAddButton(button) {
   if (priorTimer) clearTimeout(priorTimer);
 
   button.dataset.cartState = 'added';
-  button.textContent = 'ADDED';
+  button.textContent = '✓ ADDED';
   void animateElement(button, {
     opacity: [0.86, 1],
     scale: [1, 1.035, 1],
@@ -86,7 +91,7 @@ export function animateAddButton(button) {
     button.textContent = originalLabel;
     delete button.dataset.cartState;
     addButtonTimers.delete(button);
-  }, 1200);
+  }, 1500);
   addButtonTimers.set(button, timer);
 
   const status = button.closest('#dialog-body')?.querySelector('[data-product-action-status]');
@@ -96,6 +101,17 @@ export function animateAddButton(button) {
       y: [8, 0],
     }, { duration: FSD_MOTION.shortDuration });
   }
+}
+
+export function animateWishlistHeart(icon) {
+  if (!icon?.isConnected) return;
+  void animateElement(icon, {
+    opacity: [0.65, 1],
+    scale: [0.72, 1.2, 1],
+  }, {
+    duration: FSD_MOTION.microDuration,
+    ease: FSD_MOTION.stateEase,
+  });
 }
 
 export function showCartToast(toast, message) {
@@ -175,24 +191,24 @@ function rowStaggerDelay(row) {
   return Math.max(0, index) * FSD_MOTION.rowStagger;
 }
 
-function mountRowObserver(documentRef) {
+function mountRevealObserver(documentRef, onReveal) {
   const view = documentRef.defaultView;
-  const reducedMotion = view?.matchMedia?.('(prefers-reduced-motion: reduce)');
   if (!view?.IntersectionObserver || prefersReducedMotion(view)) return null;
 
   const observer = new view.IntersectionObserver(entries => {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       observer.unobserve(entry.target);
+      onReveal(entry.target);
       void animateElement(entry.target, {
         opacity: [0, 1],
-        y: [FSD_MOTION.distance, 0],
+        y: [FSD_MOTION.revealDistance, 0],
       }, {
-        duration: FSD_MOTION.duration,
+        duration: FSD_MOTION.revealDuration,
         delay: rowStaggerDelay(entry.target),
       });
     }
-  }, { rootMargin: '0px 0px -5% 0px', threshold: 0.08 });
+  }, { threshold: FSD_MOTION.revealThreshold });
   return observer;
 }
 
@@ -202,20 +218,28 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   }
   documentRef.documentElement.dataset.fsdMotionMounted = 'true';
 
-  let rowObserver = mountRowObserver(documentRef);
+  let rowObserver = null;
+  let observedTargets = new WeakSet();
   const collectTargets = node => {
     if (!node || node.nodeType !== 1) return;
-    if (node.matches(ROW_SELECTOR) && rowObserver && !observedRows.has(node)) {
-      observedRows.add(node);
-      rowObserver.observe(node);
-    }
+    const observeReveal = target => {
+      if (!rowObserver || completedReveals.has(target) || observedTargets.has(target)) return;
+      observedTargets.add(target);
+      rowObserver.observe(target);
+    };
+    if (node.matches(REVEAL_SELECTOR)) observeReveal(node);
+    node.querySelectorAll?.(REVEAL_SELECTOR).forEach(observeReveal);
     if (node.matches('[data-product-rotation]')) void mountRotationViewer(node);
-    node.querySelectorAll?.(ROW_SELECTOR).forEach(row => {
-      if (!rowObserver || observedRows.has(row)) return;
-      observedRows.add(row);
-      rowObserver.observe(row);
-    });
     node.querySelectorAll?.('[data-product-rotation]').forEach(viewer => void mountRotationViewer(viewer));
+  };
+  const refreshRevealObserver = () => {
+    rowObserver?.disconnect();
+    rowObserver = null;
+    observedTargets = new WeakSet();
+    if (!prefersReducedMotion(documentRef.defaultView)) {
+      rowObserver = mountRevealObserver(documentRef, target => completedReveals.add(target));
+    }
+    collectTargets(documentRef.body);
   };
   const cleanRemovedTargets = node => {
     if (!node || node.nodeType !== 1) return;
@@ -234,7 +258,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   });
   mutationObserver.observe(documentRef.body, { childList: true, subtree: true });
-  collectTargets(documentRef.body);
+  refreshRevealObserver();
 
   const motionIntent = event => {
     if (prefersReducedMotion(documentRef.defaultView)) return;
@@ -276,11 +300,122 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   };
   documentRef.addEventListener('click', summaryForDetails);
 
+  const hoveredCards = new WeakSet();
+  const hoveredControls = new WeakSet();
+  const pressedControls = new Set();
+  const setCardHovered = (card, active) => {
+    if (!card?.isConnected || prefersReducedMotion(documentRef.defaultView)) return;
+    if (active) {
+      hoveredCards.add(card);
+      card.dataset.motionHovered = 'true';
+    } else {
+      hoveredCards.delete(card);
+      delete card.dataset.motionHovered;
+    }
+    void animateElement(card, {
+      scale: active ? [1, 1.02] : [1.02, 1],
+    }, {
+      duration: FSD_MOTION.microDuration,
+      ease: active ? FSD_MOTION.ease : FSD_MOTION.stateEase,
+    });
+    const arrow = card.querySelector(ARROW_SELECTOR);
+    if (arrow) {
+      void animateElement(arrow, {
+        x: active ? [0, 4] : [4, 0],
+        y: active ? [0, -4] : [-4, 0],
+      }, { duration: FSD_MOTION.microDuration });
+    }
+  };
+  const setControlHovered = (control, active) => {
+    if (!control?.isConnected || control.matches(CARD_SELECTOR) || prefersReducedMotion(documentRef.defaultView)) return;
+    if (active) {
+      hoveredControls.add(control);
+      control.dataset.motionHovered = 'true';
+    } else {
+      hoveredControls.delete(control);
+      delete control.dataset.motionHovered;
+    }
+    void animateElement(control, {
+      y: active ? [0, -2] : [-2, 0],
+    }, { duration: FSD_MOTION.microDuration });
+  };
+  const onPointerOver = event => {
+    if (event.pointerType === 'touch') return;
+    const card = event.target.closest?.(CARD_SELECTOR);
+    if (card && !card.contains(event.relatedTarget) && !hoveredCards.has(card)) {
+      setCardHovered(card, true);
+    }
+    const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
+    if (control && !control.contains(event.relatedTarget) && !hoveredControls.has(control)) {
+      setControlHovered(control, true);
+    }
+  };
+  const onPointerOut = event => {
+    const card = event.target.closest?.(CARD_SELECTOR);
+    if (card && !card.contains(event.relatedTarget)) {
+      const stillActive = card.matches(':hover') || card.contains(documentRef.activeElement);
+      if (!stillActive) setCardHovered(card, false);
+    }
+    const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
+    if (control && !control.contains(event.relatedTarget)) {
+      const stillActive = control.matches(':hover') || control === documentRef.activeElement;
+      if (!stillActive) setControlHovered(control, false);
+    }
+  };
+  const onFocusIn = event => {
+    const card = event.target.closest?.(CARD_SELECTOR);
+    if (card && !hoveredCards.has(card)) setCardHovered(card, true);
+    const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
+    if (control && !hoveredControls.has(control)) setControlHovered(control, true);
+  };
+  const onFocusOut = event => {
+    const card = event.target.closest?.(CARD_SELECTOR);
+    if (card && !card.contains(event.relatedTarget) && !card.matches(':hover')) setCardHovered(card, false);
+    const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
+    if (control && !control.contains(event.relatedTarget) && !control.matches(':hover')) setControlHovered(control, false);
+  };
+  const pressControl = control => {
+    if (!control?.isConnected || control.disabled || prefersReducedMotion(documentRef.defaultView)) return;
+    pressedControls.add(control);
+    void animateElement(control, {
+      scale: [1, 0.98],
+    }, { duration: FSD_MOTION.microDuration, ease: FSD_MOTION.stateEase });
+  };
+  const releaseControls = () => {
+    for (const control of pressedControls) {
+      if (control.isConnected) {
+        void animateElement(control, {
+          scale: [0.98, 1],
+        }, { duration: FSD_MOTION.microDuration, ease: FSD_MOTION.stateEase });
+      }
+      pressedControls.delete(control);
+    }
+  };
+  const onPointerDown = event => {
+    pressControl(event.target.closest?.('button, a[role="button"]'));
+  };
+  const onKeyDown = event => {
+    if (event.repeat || !['Enter', ' '].includes(event.key)) return;
+    pressControl(event.target.closest?.('button, a[role="button"]'));
+  };
+  documentRef.addEventListener('pointerover', onPointerOver);
+  documentRef.addEventListener('pointerout', onPointerOut);
+  documentRef.addEventListener('focusin', onFocusIn);
+  documentRef.addEventListener('focusout', onFocusOut);
+  documentRef.addEventListener('pointerdown', onPointerDown);
+  documentRef.addEventListener('pointerup', releaseControls);
+  documentRef.addEventListener('pointercancel', releaseControls);
+  documentRef.addEventListener('keyup', releaseControls);
+
   const motionPreference = documentRef.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)');
   const onMotionPreferenceChange = event => {
-    rowObserver?.disconnect();
-    rowObserver = event.matches ? null : mountRowObserver(documentRef);
-    if (rowObserver) collectTargets(documentRef.body);
+    refreshRevealObserver();
+    if (!event.matches) return;
+    documentRef.querySelectorAll('[data-motion-hovered]').forEach(element => {
+      delete element.dataset.motionHovered;
+      element.style.removeProperty('transform');
+    });
+    pressedControls.clear();
   };
   motionPreference?.addEventListener?.('change', onMotionPreferenceChange);
 
@@ -291,6 +426,14 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     documentRef.removeEventListener('pointerover', motionIntent, true);
     documentRef.removeEventListener('pointerdown', motionIntent, true);
     documentRef.removeEventListener('focusin', motionIntent, true);
+    documentRef.removeEventListener('pointerover', onPointerOver);
+    documentRef.removeEventListener('pointerout', onPointerOut);
+    documentRef.removeEventListener('focusin', onFocusIn);
+    documentRef.removeEventListener('focusout', onFocusOut);
+    documentRef.removeEventListener('pointerdown', onPointerDown);
+    documentRef.removeEventListener('pointerup', releaseControls);
+    documentRef.removeEventListener('pointercancel', releaseControls);
+    documentRef.removeEventListener('keyup', releaseControls);
     documentRef.removeEventListener('click', summaryForDetails);
     delete documentRef.documentElement.dataset.fsdMotionMounted;
     documentRef.querySelectorAll('[data-product-rotation]').forEach(cleanRemovedTargets);

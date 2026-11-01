@@ -5,7 +5,7 @@ import { outlineIcon } from './brand/outline-icons.js';
 import { trackEvent } from './analytics.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 import { productSizeOptions, renderProductDetailPage, renderSizeGuideDialog } from './product-detail-page.js';
-import { animateAddButton, setStickyAddBarVisible } from './motion-runtime.js';
+import { animateAddButton, animateWishlistHeart, setStickyAddBarVisible } from './motion-runtime.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -533,6 +533,7 @@ function toggleWishlist(button) {
   if (label) label.textContent = isSaved ? 'Saved to wishlist' : 'Add to wishlist';
   const icon = button.querySelector('[aria-hidden="true"]');
   if (icon) icon.textContent = isSaved ? '♥' : '♡';
+  animateWishlistHeart(icon);
 }
 
 export function showProduct(id, { fromHistory = false, returnFocus = null } = {}) {

@@ -1,6 +1,8 @@
+import { motion } from 'motion/react';
 import { imageSwatchBackground } from '../data/products.js';
 import { SafeImage } from './SafeImage.jsx';
 import { animateAddButton } from '../motion-runtime.js';
+import { FSD_MOTION } from '../motion-config.js';
 
 function colourwaysFor(product) {
   return Array.isArray(product.rowColourways) ? product.rowColourways : [];
@@ -53,18 +55,29 @@ export function ProductDetail({
   };
 
   return (
-    <section className="fsd-catalog-detail" id={`catalogue-expanded-${product.id}`} aria-labelledby={`catalogue-expanded-title-${product.id}`}>
+    <motion.section
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: FSD_MOTION.duration, ease: FSD_MOTION.ease }}
+      className="fsd-catalog-detail"
+      id={`catalogue-expanded-${product.id}`}
+      aria-labelledby={`catalogue-expanded-title-${product.id}`}
+    >
       <div className="fsd-catalog-detail__visual">
         {selectedImage ? (
           <figure className="fsd-catalog-detail__figure" aria-live="polite">
-            <div className="fsd-catalog-detail__image-stage">
+            <motion.div
+              layoutId={`catalogue-product-image-${product.id}`}
+              className="fsd-catalog-detail__image-stage fsd-catalog-detail__shared-image"
+            >
               <SafeImage
                 data-catalogue-inline-image
                 src={selectedImage.src}
                 alt={`${product.name} — ${selectedImage.label}`}
                 fallbackLabel="IMAGE NOT AVAILABLE"
               />
-            </div>
+            </motion.div>
             <figcaption>{selectedImage.label}</figcaption>
           </figure>
         ) : (
@@ -175,6 +188,6 @@ export function ProductDetail({
           </button>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

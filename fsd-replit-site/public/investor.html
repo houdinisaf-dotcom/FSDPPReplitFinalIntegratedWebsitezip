@@ -52,6 +52,10 @@
         nav a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
         nav a:hover, nav a.on { color: var(--text-white); }
         nav .on { border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
+        nav a:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
+        }
 
         /* Sub-Navigation Anchors */
         .sub-nav {
@@ -258,17 +262,27 @@
             }
             .hero h1 { font-size: 30px; }
             .card-grid { grid-template-columns: 1fr; }
+            nav {
+                gap: 12px;
+                font-size: 10px;
+                letter-spacing: 0.12em;
+            }
+            nav b { margin-right: 4px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="top-banner">FSD / Public Investor Information &mdash; Pre-commercial</div>
+    <div class="top-banner">FSD / PUBLIC INVESTOR INFORMATION &mdash; PRE-COMMERCIAL</div>
 
     <nav aria-label="Main navigation">
         <a href="/" aria-label="FSD home"><b>FSD</b></a>
-        <a href="/">COLLECTIONS</a>
+        <a href="/#products">SHOP</a>
+        <a href="/#universe">UNIVERSE</a>
+        <a href="/#innovations">BIO-LAB™</a>
+        <a href="/#hardware-editorial">HARDWARE</a>
         <a href="/the-house.html">THE HOUSE</a>
+        <a href="/#contact">PRIVATE ACCESS</a>
         <a href="/investor.html" class="on" aria-current="page">INVESTOR RELATIONS</a>
     </nav>
 

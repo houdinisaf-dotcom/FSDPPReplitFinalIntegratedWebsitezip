@@ -1,9 +1,18 @@
 export const FSD_MOTION = Object.freeze({
-  duration: 0.32,
-  shortDuration: 0.24,
-  distance: 12,
-  rowStagger: 0.04,
+  microDuration: 0.18,
+  shortDuration: 0.18,
+  overlayDuration: 0.25,
+  tabDuration: 0.25,
+  duration: 0.36,
+  panelDuration: 0.35,
+  revealDuration: 0.4,
+  largeDuration: 0.55,
+  distance: 16,
+  revealDistance: 20,
+  revealThreshold: 0.2,
+  rowStagger: 0.06,
   ease: 'easeOut',
+  stateEase: 'easeInOut',
 });
 
 let motionModulePromise;

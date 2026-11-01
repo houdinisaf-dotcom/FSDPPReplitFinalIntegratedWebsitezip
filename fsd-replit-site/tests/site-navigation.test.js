@@ -44,7 +44,13 @@ test('Investor Relations is linked and its complete funding data stays visible i
   assert.match(header, /<a data-nav-house href="\/the-house\.html">THE HOUSE<\/a>/);
   assert.match(header, /<a data-nav-investor href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(investorPage, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
+  assert.match(investorPage, /FSD \/ PUBLIC INVESTOR INFORMATION &mdash; PRE-COMMERCIAL/);
+  assert.match(investorPage, /href="\/#products">SHOP<\/a>/);
+  assert.match(investorPage, /href="\/#universe">UNIVERSE<\/a>/);
+  assert.match(investorPage, /href="\/#innovations">BIO-LAB™<\/a>/);
+  assert.match(investorPage, /href="\/#hardware-editorial">HARDWARE<\/a>/);
   assert.match(investorPage, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(investorPage, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.match(investorPage, /<a href="\/investor\.html" class="on" aria-current="page">INVESTOR RELATIONS<\/a>/);
   assert.match(funding, /Staged Capital Pathway/);
   assert.match(funding, /£25,000/);

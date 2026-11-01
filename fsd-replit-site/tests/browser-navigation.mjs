@@ -451,7 +451,7 @@ try {
     const destination = item?.href || group.href;
     if (destination === '/investor.html' || destination?.startsWith('/investor.html#')) {
       await click(selector);
-      await waitFor('location.pathname === "/investor.html" && document.querySelector("#financials h2")?.textContent.includes("Financials & Downside Disclosed")');
+      await waitFor('location.pathname === "/investor.html" && document.querySelector("#financials h2")?.textContent.includes("Financial Projections")');
       return;
     }
 

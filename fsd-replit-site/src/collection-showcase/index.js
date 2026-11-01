@@ -309,7 +309,31 @@ export function mountCollectionShowcase({
   let afterClose = null;
   let renderGeneration = 0;
   let dialogTransitionGeneration = 0;
+  let tabIndicatorX = null;
   const page = root.ownerDocument?.documentElement || document.documentElement;
+
+  const moveTabIndicator = () => {
+    const nav = content.querySelector('.fsd-group-nav');
+    const activeTab = nav?.querySelector('.fsd-group-tab.is-active');
+    if (!nav || !activeTab) return;
+    let indicator = nav.querySelector('[data-fsd-tab-indicator]');
+    if (!indicator) {
+      indicator = nav.ownerDocument.createElement('span');
+      indicator.className = 'fsd-group-tab-indicator';
+      indicator.dataset.fsdTabIndicator = '';
+      indicator.setAttribute('aria-hidden', 'true');
+      nav.append(indicator);
+    }
+    const targetX = activeTab.offsetLeft;
+    indicator.style.width = `${activeTab.offsetWidth}px`;
+    void animateElement(indicator, {
+      x: [tabIndicatorX ?? targetX, targetX],
+    }, {
+      duration: FSD_MOTION.tabDuration,
+      ease: FSD_MOTION.stateEase,
+    });
+    tabIndicatorX = targetX;
+  };
 
   const renderDialog = ({ crossfade = false } = {}) => {
     if (!activeDivision) return Promise.resolve(false);
@@ -326,6 +350,7 @@ export function mountCollectionShowcase({
         activeDraftProductCards,
       );
       content.scrollTop = 0;
+      moveTabIndicator();
       return true;
     };
 
@@ -337,12 +362,12 @@ export function mountCollectionShowcase({
     return animateElement(content, {
       opacity: [1, 0],
       y: [0, -4],
-    }, { duration: FSD_MOTION.shortDuration }).then(async () => {
+    }, { duration: FSD_MOTION.tabDuration, ease: FSD_MOTION.stateEase }).then(async () => {
       if (!updateContent()) return false;
       await animateElement(content, {
         opacity: [0, 1],
         y: [6, 0],
-      }, { duration: FSD_MOTION.shortDuration });
+      }, { duration: FSD_MOTION.tabDuration, ease: FSD_MOTION.stateEase });
       return generation === renderGeneration;
     });
   };
@@ -357,6 +382,7 @@ export function mountCollectionShowcase({
     }
     afterClose = null;
     activeDivision = division;
+    tabIndicatorX = null;
     activeGroupIndex = Number.isInteger(groupIndex) && groupIndex >= 0 &&
       groupIndex < (division.groups || []).length ? groupIndex : 0;
     activeSubcategoryIndex = -1;
@@ -377,7 +403,7 @@ export function mountCollectionShowcase({
     void animateElement(dialog.querySelector('.fsd-dialog-frame'), {
       opacity: [0, 1],
       y: [FSD_MOTION.distance, 0],
-    }, { duration: FSD_MOTION.duration });
+    }, { duration: FSD_MOTION.panelDuration });
     trackEvent('collection_opened', {
       division_id: division.id,
       group_index: activeGroupIndex,
@@ -393,7 +419,7 @@ export function mountCollectionShowcase({
     await animateElement(dialog.querySelector('.fsd-dialog-frame'), {
       opacity: [1, 0],
       y: [0, FSD_MOTION.distance],
-    }, { duration: FSD_MOTION.shortDuration });
+    }, { duration: FSD_MOTION.panelDuration });
     if (generation !== dialogTransitionGeneration || !dialog.open) return;
     dialog.close();
   };

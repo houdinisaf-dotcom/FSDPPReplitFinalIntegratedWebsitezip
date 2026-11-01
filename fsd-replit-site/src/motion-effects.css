@@ -1,6 +1,6 @@
 :root {
-  --fsd-motion-duration: 320ms;
-  --fsd-motion-overlay: 240ms;
+  --fsd-motion-duration: 360ms;
+  --fsd-motion-overlay: 250ms;
   --fsd-motion-ease: cubic-bezier(.22, 1, .36, 1);
 }
 
@@ -16,7 +16,6 @@
 :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card) {
   position: relative;
   isolation: isolate;
-  transition: transform var(--fsd-motion-duration) var(--fsd-motion-ease);
 }
 
 :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card)::after {
@@ -26,10 +25,11 @@
   border: 1px solid rgba(200, 170, 114, .72);
   border-radius: inherit;
   background: rgba(200, 170, 114, .055);
+  box-shadow: 0 10px 28px rgba(200, 170, 114, .12);
   content: "";
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--fsd-motion-duration) var(--fsd-motion-ease);
+  transition: opacity 180ms var(--fsd-motion-ease);
 }
 
 :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card) > * {
@@ -37,14 +37,35 @@
   z-index: 1;
 }
 
-:where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card):is(:hover, :focus-within),
-:where(.fsd-editorial-card, .fsd-featured-card):focus-visible {
-  transform: translateY(-2px);
-}
-
 :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card):is(:hover, :focus-within)::after,
 :where(.fsd-editorial-card, .fsd-featured-card):focus-visible::after {
   opacity: 1;
+}
+
+.fsd-catalog-row[data-motion-hovered]::after,
+.fsd-editorial-card[data-motion-hovered]::after,
+.fsd-featured-card[data-motion-hovered]::after,
+button[data-motion-hovered],
+a[data-motion-hovered] {
+  filter: drop-shadow(0 3px 10px rgba(212, 175, 55, .24));
+}
+
+.catalogue-card__shared-image,
+.fsd-catalog-detail__shared-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.catalogue-card__shared-image img,
+.fsd-catalog-detail__shared-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fsd-catalog-motion-panel {
+  transform-origin: top center;
 }
 
 .fsd-concept-details [data-motion-details-content] {
@@ -67,8 +88,10 @@
     transition-duration: 0.01ms !important;
   }
 
-  :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card):is(:hover, :focus-within),
-  :where(.fsd-editorial-card, .fsd-featured-card):focus-visible {
+  :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card)[data-motion-hovered],
+  button[data-motion-hovered],
+  a[data-motion-hovered] {
     transform: none;
+    filter: none;
   }
 }

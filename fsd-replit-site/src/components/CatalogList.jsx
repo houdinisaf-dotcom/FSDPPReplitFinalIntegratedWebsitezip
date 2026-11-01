@@ -1,8 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import '../CatalogList.css';
 import { ProductDetail } from './ProductDetail.jsx';
 import { SafeImage } from './SafeImage.jsx';
 import { customerFacingCategory } from '../catalogue-data.js';
+import { FSD_MOTION } from '../motion-config.js';
 
 function colourwaysFor(product) {
   return Array.isArray(product.rowColourways) ? product.rowColourways : [];
@@ -20,7 +22,13 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
   };
 
   return (
-    <article className={`product-card fsd-catalog-row product-card--visual${isOpen ? ' product-card--visual-open' : ''}`}>
+    <motion.article
+      layout
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ layout: { duration: FSD_MOTION.duration, ease: FSD_MOTION.ease } }}
+      className={`product-card fsd-catalog-row product-card--visual${isOpen ? ' product-card--visual-open' : ''}`}
+      data-motion-presence
+    >
       <button
         className="product-row__trigger"
         type="button"
@@ -33,12 +41,14 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
       >
         <span className="catalogue-card__media" aria-live="polite">
           {activeImage ? (
-            <SafeImage
-              data-catalogue-card-image
-              src={activeImage.src}
-              alt={`${product.name} — ${activeImage.label}`}
-              fallbackLabel="IMAGE NOT AVAILABLE"
-            />
+              <motion.span layoutId={`catalogue-product-image-${product.id}`} className="catalogue-card__shared-image">
+                <SafeImage
+                  data-catalogue-card-image
+                  src={activeImage.src}
+                  alt={`${product.name} — ${activeImage.label}`}
+                  fallbackLabel="IMAGE NOT AVAILABLE"
+                />
+              </motion.span>
           ) : (
             <span className="catalogue-card__image-empty">
               <span>IMAGE NOT AVAILABLE</span>
@@ -98,7 +108,7 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
         {activeImage ? `${activeImage.label}, image ${activeIndex + 1} of ${images.length}` : 'No mapped product image'}
       </span>
       {children}
-    </article>
+    </motion.article>
   );
 }
 
@@ -181,74 +191,91 @@ export function CatalogList({ products = [], view = 'list', onProductSelect, onA
 
   return (
     <>
-      {products.map(product => {
-        const isOpen = activeProductId === product.id;
-        if (view === 'visual') {
-          return (
-            <VisualProductCard
-              key={product.id}
-              product={product}
-              isOpen={isOpen}
-              onToggle={event => toggleProduct(product, event)}
-            >
-              {isOpen && (
-                <ProductDetail
+      <LayoutGroup id="fsd-catalogue-product-images">
+        <AnimatePresence initial={false}>
+          {products.map(product => {
+            const isOpen = activeProductId === product.id;
+            if (view === 'visual') {
+              return (
+                <VisualProductCard
+                  key={product.id}
                   product={product}
-                  selectedAngle={selectedAngle}
-                  setSelectedAngle={setSelectedAngle}
-                  selectedColor={selectedColor}
-                  setSelectedColor={setSelectedColor}
-                  onDeepDive={onProductSelect}
-                  onAddToBag={onAddToBag}
-                  onCollapse={event => toggleProduct(product, event, true)}
-                />
-              )}
-            </VisualProductCard>
-          );
-        }
-        return (
-          <article className="product-card fsd-catalog-row" key={product.id}>
-            <button
-              className="product-row__trigger"
-              type="button"
-              data-product={product.id}
-              data-can-add-to-bag={Boolean(product.canAddToBag)}
-              aria-expanded={isOpen}
-              aria-controls={`catalogue-expanded-${product.id}`}
-              aria-label={`${isOpen ? 'Collapse' : 'View details for'} ${product.name}`}
-              onClick={event => toggleProduct(product, event)}
-            >
-              <span className="product-row__index" aria-hidden="true">{String(product.id).padStart(2, '0')}</span>
-              <span className="product-row__copy">
-                <span className="product-row__meta">
-                  <span>{customerFacingCategory(product.category)}</span>{product.audience && <span>{product.audience}</span>}
-                </span>
-                <span className="product-row__name">{product.name}</span>
-                {product.rowSummary && <span className="product-row__summary">{product.rowSummary}</span>}
-              </span>
-              {(product.rowPrice?.label || product.rowPrice?.value) && (
-                <span className="product-row__price">
-                  {product.rowPrice.label && <small>{product.rowPrice.label}</small>}
-                  {product.rowPrice.value && <strong>{product.rowPrice.value}</strong>}
-                </span>
-              )}
-              <span className="product-row__action">{isOpen ? 'COLLAPSE ROW' : 'VIEW DETAILS'} <span aria-hidden="true">↗</span></span>
-            </button>
-            {isOpen && (
-              <ProductDetail
-                product={product}
-                selectedAngle={selectedAngle}
-                setSelectedAngle={setSelectedAngle}
-                selectedColor={selectedColor}
-                setSelectedColor={setSelectedColor}
-                onDeepDive={onProductSelect}
-                onAddToBag={onAddToBag}
-                onCollapse={event => toggleProduct(product, event, true)}
-              />
-            )}
-          </article>
-        );
-      })}
+                  isOpen={isOpen}
+                  onToggle={event => toggleProduct(product, event)}
+                >
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <ProductDetail
+                        key={`detail-${product.id}`}
+                        product={product}
+                        selectedAngle={selectedAngle}
+                        setSelectedAngle={setSelectedAngle}
+                        selectedColor={selectedColor}
+                        setSelectedColor={setSelectedColor}
+                        onDeepDive={onProductSelect}
+                        onAddToBag={onAddToBag}
+                        onCollapse={event => toggleProduct(product, event, true)}
+                      />
+                    )}
+                  </AnimatePresence>
+                </VisualProductCard>
+              );
+            }
+            return (
+              <motion.article
+                layout
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ layout: { duration: FSD_MOTION.duration, ease: FSD_MOTION.ease } }}
+                className="product-card fsd-catalog-row"
+                data-motion-presence
+                key={product.id}
+              >
+                <button
+                  className="product-row__trigger"
+                  type="button"
+                  data-product={product.id}
+                  data-can-add-to-bag={Boolean(product.canAddToBag)}
+                  aria-expanded={isOpen}
+                  aria-controls={`catalogue-expanded-${product.id}`}
+                  aria-label={`${isOpen ? 'Collapse' : 'View details for'} ${product.name}`}
+                  onClick={event => toggleProduct(product, event)}
+                >
+                  <span className="product-row__index" aria-hidden="true">{String(product.id).padStart(2, '0')}</span>
+                  <span className="product-row__copy">
+                    <span className="product-row__meta">
+                      <span>{customerFacingCategory(product.category)}</span>{product.audience && <span>{product.audience}</span>}
+                    </span>
+                    <span className="product-row__name">{product.name}</span>
+                    {product.rowSummary && <span className="product-row__summary">{product.rowSummary}</span>}
+                  </span>
+                  {(product.rowPrice?.label || product.rowPrice?.value) && (
+                    <span className="product-row__price">
+                      {product.rowPrice.label && <small>{product.rowPrice.label}</small>}
+                      {product.rowPrice.value && <strong>{product.rowPrice.value}</strong>}
+                    </span>
+                  )}
+                  <span className="product-row__action">{isOpen ? 'COLLAPSE ROW' : 'VIEW DETAILS'} <span aria-hidden="true">↗</span></span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <ProductDetail
+                      key={`detail-${product.id}`}
+                      product={product}
+                      selectedAngle={selectedAngle}
+                      setSelectedAngle={setSelectedAngle}
+                      selectedColor={selectedColor}
+                      setSelectedColor={setSelectedColor}
+                      onDeepDive={onProductSelect}
+                      onAddToBag={onAddToBag}
+                      onCollapse={event => toggleProduct(product, event, true)}
+                    />
+                  )}
+                </AnimatePresence>
+              </motion.article>
+            );
+          })}
+        </AnimatePresence>
+      </LayoutGroup>
     </>
   );
 }

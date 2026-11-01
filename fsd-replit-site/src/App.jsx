@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { MotionConfig } from 'motion/react';
 import { renderStorefrontMarkup, mountStorefrontRuntime, navigateFsdSelection } from './main.js';
 import { FsdNavigation } from './FsdNavigation.jsx';
 import { FSDReactUtilities } from './react-utilities.jsx';
@@ -14,9 +15,11 @@ import { setCatalogueResultsRenderer } from './catalogue.js';
 import { routeFromLocation } from './react-router.js';
 import { mountLazyImageLoading } from './lazy-image-loading.js';
 import { mountScrollParallax } from './scroll-parallax.js';
+import { mountSmoothScroll } from './smooth-scroll.js';
 import './tailwind.css';
 import './react-utilities.css';
 import './lazy-image-loading.css';
+import 'lenis/dist/lenis.css';
 
 function CataloguePortal({ target }) {
   const [products, setProducts] = useState([]);
@@ -121,6 +124,7 @@ function AppRouter({ hardwareForgeExtension }) {
   }, []);
 
   useLayoutEffect(() => mountLazyImageLoading(document), []);
+  useLayoutEffect(() => mountSmoothScroll(document, window), []);
   useLayoutEffect(
     () => mountScrollParallax(storefrontContentRef.current, window),
     [homeHeroPortalTarget],
@@ -171,5 +175,9 @@ function AppRouter({ hardwareForgeExtension }) {
 
 export default function App({ hardwareForgeExtension }) {
   useGoldCursor();
-  return <AppRouter hardwareForgeExtension={hardwareForgeExtension} />;
+  return (
+    <MotionConfig reducedMotion="user">
+      <AppRouter hardwareForgeExtension={hardwareForgeExtension} />
+    </MotionConfig>
+  );
 }
