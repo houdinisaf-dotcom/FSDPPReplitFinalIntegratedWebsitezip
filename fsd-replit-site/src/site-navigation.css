@@ -791,18 +791,22 @@ body.fsd-mobile-nav-open {
     background: #090a0c;
   }
 
-  .fsd-mobile-public-links a {
+  .fsd-mobile-public-links button {
     display: inline-flex;
     min-height: 38px;
     align-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: #d8d4cb;
+    cursor: pointer;
+    font: inherit;
     font-size: 8px;
     letter-spacing: 0.12em;
-    text-decoration: none;
   }
 
-  .fsd-mobile-public-links a:hover,
-  .fsd-mobile-public-links a:focus-visible {
+  .fsd-mobile-public-links button:hover,
+  .fsd-mobile-public-links button:focus-visible {
     color: #e7cb98;
   }
 

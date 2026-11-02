@@ -18,6 +18,7 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
     'UNIVERSE',
     'BIO-LAB™',
     'HARDWARE',
+    'THE HOUSE',
     'PRIVATE ACCESS',
   ]);
   assert.deepEqual(menu.map(item => item.id), [
@@ -34,19 +35,18 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   const header = renderNavigationHeader('<span>FSD</span>');
   const investorPage = readFileSync(new URL('../public/investor.html', import.meta.url), 'utf8');
 
-  assert.match(header, /<a class="fsd-primary-link" href="\/the-house\.html">THE HOUSE<\/a>/);
-  assert.doesNotMatch(header, /data-nav-primary="house"|data-nav-house|house-trigger|Open The House menu/);
+  assert.match(header, /<button type="button"\s+class="fsd-primary-trigger" data-nav-primary="house" aria-controls="fsd-mega-menu"/);
   assert.match(header, /FSD \/ THE HOUSE OF PERFORMANCE <span>·<\/span> INVESTOR RELATIONS/);
   assert.doesNotMatch(header, /href="\/investor\.html"|data-nav-investor/);
-  assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Public pages">/);
-  assert.match(header, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Quick navigation">/);
+  assert.match(header, /data-nav-primary="house" aria-controls="fsd-mega-menu" aria-expanded="false">THE HOUSE<\/button>/);
   assert.match(investorPage, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
   assert.match(investorPage, /FSD \/ PUBLIC INVESTOR INFORMATION &mdash; PRE-COMMERCIAL/);
   assert.match(investorPage, /href="\/#products">SHOP<\/a>/);
   assert.match(investorPage, /href="\/#universe">UNIVERSE<\/a>/);
   assert.match(investorPage, /href="\/#innovations">BIO-LAB™<\/a>/);
   assert.match(investorPage, /href="\/#hardware-editorial">HARDWARE<\/a>/);
-  assert.match(investorPage, /<a href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(investorPage, /<a href="\/#house-menu">THE HOUSE<\/a>/);
   assert.match(investorPage, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.doesNotMatch(investorPage, /<a[^>]+href="\/investor\.html"[^>]*>INVESTOR RELATIONS<\/a>/);
   assert.match(investorPage, /Initial Pre-Seed \(Proposed\)/);
@@ -64,14 +64,20 @@ test('Investor Relations uses the selected shorter public dossier and working ro
 
 test('The House page is limited to the five original brand sections', () => {
   const house = menu.find(section => section.id === 'house');
-  const group = house?.groups.find(item => item.id === 'the-house-website');
+  const group = house?.groups.find(item => item.id === 'our-story');
   const pagePath = new URL('../public/the-house.html', import.meta.url);
   const page = readFileSync(pagePath, 'utf8');
   const inlineScript = page.match(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script\s*>/i)?.[1] ?? '';
 
   assert.ok(group);
-  assert.equal(group.items[0].title, 'THE HOUSE WEBSITE');
-  assert.equal(group.items[0].href, '/the-house.html');
+  assert.deepEqual(group.items.map(item => item.title), [
+    'Purpose & Positioning',
+    'Brand Identity Standard',
+    'Founder Story',
+    'Press & Media Kit',
+    'Archive & Version History',
+  ]);
+  assert.equal(group.items[0].href, '/the-house.html#brand/purpose');
   assert.equal(group.items[0].kind, 'destination');
   assert.ok(existsSync(pagePath));
   assert.match(page, /<title>FSD \| The House<\/title>/);
@@ -82,7 +88,7 @@ test('The House page is limited to the five original brand sections', () => {
   assert.match(page, /href="\/#universe">UNIVERSE<\/a>/);
   assert.match(page, /href="\/#innovations">BIO-LAB™<\/a>/);
   assert.match(page, /href="\/#hardware-editorial">HARDWARE<\/a>/);
-  assert.match(page, /<a class="on" href="\/the-house\.html" aria-current="page">THE HOUSE<\/a>/);
+  assert.match(page, /<a class="on" href="\/#house-menu">THE HOUSE<\/a>/);
   assert.match(page, /href="\/#contact">PRIVATE ACCESS<\/a>/);
   assert.doesNotMatch(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);
@@ -265,29 +271,30 @@ test('the hooded-shell campaign proof is available only in the development previ
 test('House navigation maps the public initiative homes and rollout details', () => {
   const house = menu.find(item => item.id === 'house');
   assert.deepEqual(house.groups.map(group => group.title), [
-    'BRAND STORY & ARCHIVE',
-    'THE HOUSE WEBSITE',
+    'OUR STORY & ARCHIVE',
     'FLAGSHIPS',
     'FIGHT PROMOTIONS',
-    'COMMUNITY & CULTURE',
     'GLOBAL VISION & OPERATIONS',
     'INVESTOR RELATIONS',
+    'COMMUNITY & CULTURE',
   ]);
   assert.ok(house.groups.filter(group => group.href).every(group =>
-    ['/story', '/the-house.html', '/the-house.html#community/co-creation', '/the-house.html#global/pods', '/investor.html'].includes(group.href)));
+    ['/the-house.html#brand/purpose', '/the-house.html#community/co-creation', '/the-house.html#global/pods', '/investor.html'].includes(group.href)));
   const story = house.groups.find(group => group.id === 'our-story');
-  const site = house.groups.find(group => group.id === 'the-house-website');
   const flagships = house.groups.find(group => group.id === 'flagships');
   const fightPromotions = house.groups.find(group => group.id === 'fight-promotions');
   const community = house.groups.find(group => group.id === 'community-culture');
   const globalOperations = house.groups.find(group => group.id === 'global-vision-operations');
   const investor = house.groups.find(group => group.id === 'investor-relations');
-  assert.equal(story.items[0].status, 'EDITORIAL / BRAND PRINCIPLES');
-  assert.equal(story.items[0].chapterCount, '04 FOUNDATIONAL CHAPTERS');
-  assert.equal(story.items[0].houseCodeCount, '05 WORKING PRINCIPLES');
-  assert.match(story.items[0].description, /Capability is not a costume/);
-  assert.equal(site.items[0].href, '/the-house.html');
-  assert.equal(site.navigationUnavailable, false);
+  assert.equal(story.href, '/the-house.html#brand/purpose');
+  assert.deepEqual(story.items.map(item => item.title), [
+    'Purpose & Positioning',
+    'Brand Identity Standard',
+    'Founder Story',
+    'Press & Media Kit',
+    'Archive & Version History',
+  ]);
+  assert.ok(story.items.every(item => item.href.startsWith('/the-house.html#brand/')));
   assert.ok(flagships.items.every(item => /no location or service is represented as operational/i.test(item.description)));
   assert.equal(flagships.href, '');
   assert.equal(flagships.sourceDivisionId, 'global');

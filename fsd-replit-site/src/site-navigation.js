@@ -11,6 +11,7 @@ export const primaryNavigation = [
   { id: 'universe', label: 'UNIVERSE' },
   { id: 'bio-lab', label: 'BIO-LAB™' },
   { id: 'hardware', label: 'HARDWARE' },
+  { id: 'house', label: 'THE HOUSE' },
   { id: 'private-access', label: 'PRIVATE ACCESS' },
 ];
 
@@ -277,6 +278,19 @@ function makeHouseGroups(divisions) {
   const global = divisionById(divisions, 'global');
   const flagship = global?.groups?.[0];
   const promotions = global?.groups?.[1];
+  const storySections = [
+    ['purpose', 'Purpose & Positioning', 'Strength, discipline, confidence.'],
+    ['identity', 'Brand Identity Standard', 'One identity, everywhere.'],
+    ['founder', 'Founder Story', 'The person behind the house.'],
+    ['press', 'Press & Media Kit', 'Approved assets for the press.'],
+    ['archive', 'Archive & Version History', 'How the plan has evolved.'],
+  ].map(([id, title, description]) => ({
+    id: `our-story-${id}`,
+    title,
+    kind: 'destination',
+    href: `${FSD_HOUSE_PAGE_PATH}#brand/${id}`,
+    description,
+  }));
 
   const staticGroup = (id, title, href, description, sourceGroup = null, sourceGroupIndex = 0, options = {}) => ({
     id,
@@ -287,7 +301,7 @@ function makeHouseGroups(divisions) {
     sourceGroupIndex,
     description,
     navigationUnavailable: options.navigationUnavailable === true,
-    items: sourceGroup
+    items: options.items || (sourceGroup
       ? (sourceGroup.concepts || []).map((concept, index) => ({
         id: `${id}-item-${index}`,
         title: concept,
@@ -311,7 +325,7 @@ function makeHouseGroups(divisions) {
         status: options.status,
         chapterCount: options.chapterCount,
         houseCodeCount: options.houseCodeCount,
-      }],
+      }]),
   });
 
   const initiativeGroup = (id, title, description, initiatives) => ({
@@ -331,27 +345,18 @@ function makeHouseGroups(divisions) {
   });
 
   return [
-    staticGroup('our-story', 'BRAND STORY & ARCHIVE', FSD_STORY_PATH,
-      'Capability is not a costume. It is a practice. Explore four foundational chapters and five House Codes.',
+    staticGroup('our-story', 'OUR STORY & ARCHIVE', storySections[0].href,
+      'Capability is not a costume. It is a practice. Explore five foundational sections and the House Codes.',
       null, 0, {
+        items: storySections,
         status: 'EDITORIAL / BRAND PRINCIPLES',
         chapterCount: '04 FOUNDATIONAL CHAPTERS',
         houseCodeCount: '05 WORKING PRINCIPLES',
       }),
-    staticGroup('the-house-website', 'THE HOUSE WEBSITE', FSD_HOUSE_PAGE_PATH,
-      'Explore the public FSD House platform, including Bio-Lab, community initiatives, Global Vision, and investor relations.'),
     staticGroup('flagships', 'FLAGSHIPS', '',
       global?.description || 'FSD flagship locations.', flagship, 0),
     staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '',
       'FSD promotions and events.', promotions, 1),
-    initiativeGroup('community-culture', 'COMMUNITY & CULTURE',
-      'Active House & Universe initiatives across co-creation, partnerships, reuse, and community safety.',
-      [
-        { id: 'co-creation', title: 'Community Co-Creation', hash: 'community/co-creation', description: 'Creator workshops, structured feedback, and product testing.' },
-        { id: 'performance-partnerships', title: 'Performance-Linked Partnerships', hash: 'community/performance-partnerships', description: 'Partner programmes, subject to written agreement and governance.' },
-        { id: 'circular-trade-in', title: 'Circular Trade-In Programme', hash: 'community/circular-trade-in', description: 'Inspection, repair, resale, and recycling pathways.' },
-        { id: 'first-aid-safety', title: 'Community First Aid & Safety Skills', hash: 'community/first-aid-safety', description: 'Community resilience education with qualified providers.' },
-      ]),
     initiativeGroup('global-vision-operations', 'GLOBAL VISION & OPERATIONS',
       global?.description || 'Active FSD infrastructure and long-horizon R&D initiatives.',
       [
@@ -363,6 +368,14 @@ function makeHouseGroups(divisions) {
       ]),
     staticGroup('investor-relations', 'INVESTOR RELATIONS', '/investor.html',
       'Investor relations, proposed funding pathway, planning assumptions, and roadmap.'),
+    initiativeGroup('community-culture', 'COMMUNITY & CULTURE',
+      'Active House & Universe initiatives across co-creation, partnerships, reuse, and community safety.',
+      [
+        { id: 'co-creation', title: 'Community Co-Creation', hash: 'community/co-creation', description: 'Creator workshops, structured feedback, and product testing.' },
+        { id: 'performance-partnerships', title: 'Performance-Linked Partnerships', hash: 'community/performance-partnerships', description: 'Partner programmes, subject to written agreement and governance.' },
+        { id: 'circular-trade-in', title: 'Circular Trade-In Programme', hash: 'community/circular-trade-in', description: 'Inspection, repair, resale, and recycling pathways.' },
+        { id: 'first-aid-safety', title: 'Community First Aid & Safety Skills', hash: 'community/first-aid-safety', description: 'Community resilience education with qualified providers.' },
+      ]),
   ];
 }
 
@@ -629,6 +642,8 @@ function renderFeature(menu, group, item, canNavigate) {
       ['Chapters', item?.chapterCount || '04 FOUNDATIONAL CHAPTERS'],
       ['House Codes', item?.houseCodeCount || '05 WORKING PRINCIPLES'],
     ]
+    : menu.id === 'house'
+      ? [['Collection group', group?.title || '—'], ...(item?.status ? [['Status', item.status]] : [])]
     : [
        ['Colourways', colourways],
       ['Audience', audience],
@@ -657,6 +672,9 @@ function renderFeature(menu, group, item, canNavigate) {
 
   const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
     : isStoryFeature ? 'READ THE STORY & ARCHIVE'
+    : menu.id === 'house' && group?.id === 'investor-relations' ? 'OPEN INVESTOR RELATIONS'
+      : menu.id === 'house' && group?.id === 'our-story' ? 'READ THE SECTION'
+        : menu.id === 'house' && ['community-culture', 'global-vision-operations'].includes(group?.id) ? 'VIEW INITIATIVE'
     : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
       : item?.kind === 'shop-all' ? 'SHOP ALL PRODUCTS'
       : item?.record ? 'VIEW DETAILS'
@@ -722,7 +740,7 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
       class="fsd-mobile-primary${entry.id === menu.id ? ' is-active' : ''}"
       data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}"
       ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>
-    ${entry.id === 'house' ? 'HOUSE MENU' : escapeHTML(entry.label)}<span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
+      ${escapeHTML(entry.label)}<span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
   </button>`).join('')}`;
 
   return `<div class="fsd-mega-inner">
@@ -765,12 +783,11 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
 }
 
 export function renderNavigationHeader(brandMarkup) {
-  const houseLink = '<a class="fsd-primary-link" href="/the-house.html">THE HOUSE</a>';
   const primaryItems = primaryNavigation.map(item => {
     const trigger = `<button type="button"
       class="fsd-primary-trigger" data-nav-primary="${item.id}" aria-controls="fsd-mega-menu"
       aria-expanded="false">${escapeHTML(item.label)}</button>`;
-    return item.id === 'private-access' ? `${houseLink}${trigger}` : trigger;
+    return trigger;
   }).join('');
   return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE <span>·</span> INVESTOR RELATIONS</div>
     <div class="fsd-navigation-shell" data-navigation-shell>
@@ -801,8 +818,9 @@ export function renderNavigationHeader(brandMarkup) {
           <span>MENU</span><i aria-hidden="true"></i><i aria-hidden="true"></i>
         </button>
       </header>
-      <nav class="fsd-mobile-public-links" aria-label="Public pages">
-        <a href="/the-house.html">THE HOUSE</a>
+      <nav class="fsd-mobile-public-links" aria-label="Quick navigation">
+        <button type="button" class="fsd-primary-trigger fsd-house-menu-trigger"
+          data-nav-primary="house" aria-controls="fsd-mega-menu" aria-expanded="false">THE HOUSE</button>
       </nav>
       <section class="fsd-mega-menu fsd-glass-surface" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
         <div data-nav-content></div>
@@ -871,6 +889,7 @@ export function mountNavigation({
     ['#hardware-editorial', 'hardware'],
     ['#innovations', 'bio-lab'],
     ['#philosophy', 'house'],
+    ['#house-menu', 'house'],
     ['#contact', 'private-access'],
   ]);
   const setCurrentPrimary = id => {
@@ -1088,6 +1107,10 @@ export function mountNavigation({
         return;
       }
       const id = primaryButton.dataset.navPrimary;
+      if (primaryButton.closest('.fsd-mobile-public-links')) {
+        choosePrimary(id, true);
+        return;
+      }
       if (isOpen && activePrimaryId === id) {
         if (hoverOpened) {
           hoverOpened = false;
@@ -1305,6 +1328,11 @@ export function mountNavigation({
   window.addEventListener('resize', () => {
     if (isOpen) closeMenu({ immediate: true });
   }, { passive: true });
+
+  if (window.location.hash === '#house-menu') {
+    if (isMobile()) choosePrimary('house', true);
+    else openMenu('house');
+  }
 
   return () => {
     clearTimeout(closeTimer);

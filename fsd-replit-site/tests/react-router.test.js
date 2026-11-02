@@ -80,11 +80,11 @@ test('the public House page has a direct route from the House navigation', () =>
   });
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'house' },
-    group: { id: 'the-house-website', href: FSD_HOUSE_PAGE_PATH },
-    item: { kind: 'destination', href: FSD_HOUSE_PAGE_PATH },
+    group: { id: 'our-story', href: `${FSD_HOUSE_PAGE_PATH}#brand/purpose` },
+    item: { kind: 'destination', href: `${FSD_HOUSE_PAGE_PATH}#brand/purpose` },
   }), {
     view: 'house',
-    target: 'the-house-page',
+    target: 'brand/purpose',
   });
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'house' },
