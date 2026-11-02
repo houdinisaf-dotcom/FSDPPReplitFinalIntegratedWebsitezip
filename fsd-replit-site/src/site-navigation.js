@@ -705,7 +705,9 @@ function renderFeature(menu, group, item, canNavigate) {
 function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
   return menu.groups.map((group, index) => {
     const available = canNavigate({ menu, group, item: null });
-    const status = 'Open this collection group.';
+    const status = menu.id === 'house'
+      ? 'Select this collection group to view its subcategories.'
+      : 'Open this collection group.';
     return `<button type="button"
       class="fsd-nav-option fsd-nav-group${index === activeGroupIndex ? ' is-active' : ''}"
       data-nav-group="${index}" data-nav-available="${available}" aria-label="${escapeHTML(group.title)}. ${status}"
@@ -720,7 +722,7 @@ function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
 function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
   return group.items.map((item, index) => {
     const available = canNavigate({ menu, group, item });
-    const status = 'Open this collection item.';
+    const status = menu.id === 'house' ? 'Preview this section.' : 'Open this collection item.';
     return `<button type="button"
       class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"
       data-nav-item="${index}" data-nav-available="${available}"
@@ -1155,6 +1157,10 @@ export function mountNavigation({
     const groupButton = event.target.closest('[data-nav-group]');
     if (groupButton && panel.contains(groupButton)) {
       const index = Number(groupButton.dataset.navGroup);
+      if (currentMenu().id === 'house') {
+        chooseGroup(index, { mobile: isMobile() });
+        return;
+      }
       if (isMobile()) {
         chooseGroup(index, { mobile: true });
         return;
@@ -1171,6 +1177,10 @@ export function mountNavigation({
       const group = menu.groups[activeGroupIndex];
       const itemIndex = Number(itemButton.dataset.navItem);
       const item = group?.items[itemIndex];
+      if (menu.id === 'house') {
+        chooseItem(itemIndex);
+        return;
+      }
       const selection = { menu, group, item };
       if (!navigateSelection(selection)) chooseItem(itemIndex);
       return;

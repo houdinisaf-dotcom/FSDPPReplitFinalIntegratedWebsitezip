@@ -221,6 +221,8 @@ try {
     ['Purpose & Positioning', 'Brand Identity Standard', 'Founder Story', 'Press & Media Kit', 'Archive & Version History'],
   );
   assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3")?.textContent.trim()'), 'Purpose & Positioning');
+  await click('#fsd-mega-menu [data-nav-item="1"]');
+  await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Brand Identity Standard"');
   await click('#fsd-mega-menu [data-nav-group="3"]');
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "FSD Pods"');
   await click('#fsd-mega-menu [data-nav-group="4"]');
@@ -877,6 +879,10 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await click('.fsd-mobile-public-links [data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group] span:nth-child(2)")?.textContent.trim()'), 'OUR STORY & ARCHIVE');
+  await click('#fsd-mega-menu [data-nav-group="0"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail" && document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Purpose & Positioning"');
+  await click('#fsd-mega-menu [data-nav-item="1"]');
+  await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Brand Identity Standard"');
   await click('[data-nav-close]');
   await waitFor('document.querySelector("#fsd-mega-menu").hidden');
   await click('[data-nav-mobile-toggle]');

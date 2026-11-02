@@ -15,8 +15,8 @@ Keep a visible public disclaimer on initiative and concept pages: related concep
 
 **How to apply:** Keep both statements where relevant: the workstream may be active or rolling out, while any associated product concept remains unconfirmed and is not promised as available.
 
-The direct House landing should show only the five Brand Story & Archive sections. Investor Relations belongs on its standalone page; initiative detail routes and safeguards remain separate from the House brand-section list.
+The direct House landing should show only the five Brand Story & Archive sections. The shared THE HOUSE navigation item opens the three-column menu. Its first five groups are Our Story & Archive, Flagships, Fight Promotions, Global Vision & Operations, and Investor Relations; keep Community & Culture after those groups. Investor Relations remains a standalone page linked from the House menu, not a separate primary-navigation tab. Initiative detail routes and safeguards stay separate from the House brand-section list.
 
-**Why:** The user later requested a clean five-section House presentation and a standalone Investor Relations page while the earlier initiative homes remained approved.
+**Why:** The user explicitly requested the numbered menu structure and dynamic group, subcategory, and feature-preview behavior, while preserving a clean five-section House landing and standalone Investor Relations content.
 
-**How to apply:** Keep `/the-house.html` focused on its brand sections by default. Do not place investor dossiers or initiative categories in that section list; retain explicitly linked Bio-Lab, community, and global initiative routes with their disclaimer and safeguards.
+**How to apply:** Keep `/the-house.html` focused on its five brand sections. Selecting a House group or subcategory should update the menu preview; use its feature action to navigate. Keep Investor dossiers on `/investor.html`, and preserve initiative disclaimers and safeguards.
