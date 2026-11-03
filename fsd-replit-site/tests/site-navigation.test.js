@@ -9,6 +9,7 @@ import {
   primaryNavigation,
   renderNavigationHeader,
 } from '../src/site-navigation.js';
+import { transformHouseArchiveContent } from '../src/standalone-navigation-pages.js';
 
 const menu = createNavigationModel();
 
@@ -57,11 +58,11 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
 });
 
-test('The House page is limited to the five original brand sections', () => {
+test('The House page has four brand sections and no archive page', () => {
   const house = menu.find(section => section.id === 'house');
   const group = house?.groups.find(item => item.id === 'our-story');
   const pagePath = new URL('../public/the-house.html', import.meta.url);
-  const page = readFileSync(pagePath, 'utf8');
+  const page = transformHouseArchiveContent(readFileSync(pagePath, 'utf8'));
   const inlineScript = page.match(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script\s*>/i)?.[1] ?? '';
 
   assert.ok(group);
@@ -70,7 +71,6 @@ test('The House page is limited to the five original brand sections', () => {
     'Brand Identity Standard',
     'Founder Story',
     'Press & Media Kit',
-    'Archive & Version History',
   ]);
   assert.equal(group.items[0].href, '/the-house.html#brand/purpose');
   assert.equal(group.items[0].kind, 'destination');
@@ -78,6 +78,7 @@ test('The House page is limited to the five original brand sections', () => {
   assert.match(page, /<title>FSD \| The House<\/title>/);
   assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
   assert.match(page, /<div data-fsd-standalone-navigation><\/div>/);
+  assert.doesNotMatch(page, /Archive & Version History|Brand Story & Archive|OUR STORY & ARCHIVE|brand\/archive/);
   assert.match(page, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
   assert.doesNotMatch(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);
@@ -260,7 +261,7 @@ test('the hooded-shell campaign proof is available only in the development previ
 test('House navigation maps the public initiative homes and rollout details', () => {
   const house = menu.find(item => item.id === 'house');
   assert.deepEqual(house.groups.map(group => group.title), [
-    'OUR STORY & ARCHIVE',
+    'OUR STORY',
     'FLAGSHIPS',
     'FIGHT PROMOTIONS',
     'GLOBAL VISION & OPERATIONS',
@@ -281,7 +282,6 @@ test('House navigation maps the public initiative homes and rollout details', ()
     'Brand Identity Standard',
     'Founder Story',
     'Press & Media Kit',
-    'Archive & Version History',
   ]);
   assert.ok(story.items.every(item => item.href.startsWith('/the-house.html#brand/')));
   assert.ok(flagships.items.every(item => /no location or service is represented as operational/i.test(item.description)));

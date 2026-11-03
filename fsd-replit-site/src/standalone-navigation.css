@@ -16,6 +16,47 @@ body {
   font-family: "DM Sans", Helvetica, Arial, sans-serif;
 }
 
+.header.fsd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(12px, 2vw, 28px);
+}
+
+.header.fsd-header .fsd-brand {
+  flex: 0 0 auto;
+  color: #c8aa72;
+  text-decoration: none;
+}
+
+.header.fsd-header .fsd-primary-nav {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.header.fsd-header .fsd-search-trigger,
+.header.fsd-header .fsd-bag-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 5px;
+  border: 0;
+  background: transparent;
+  color: #d8d4cb;
+  cursor: pointer;
+  font: inherit;
+  font-size: 9px;
+  letter-spacing: .12em;
+}
+
+.header.fsd-header .fsd-search-trigger:hover,
+.header.fsd-header .fsd-bag-toggle:hover {
+  color: #e7cb98;
+}
+
 .fsd-glass-surface {
   border: 1px solid var(--fsd-glass-edge);
   background: var(--fsd-glass-solid);

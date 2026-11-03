@@ -9,7 +9,7 @@ const publicProductIds = new Set(publicProducts.map(product => product.id));
 const quickSearches = shopCollections;
 const searchablePages = [{
   id: 'brand-story-archive',
-  title: 'Brand Story & Archive',
+  title: 'Brand Story',
   category: 'THE HOUSE / EDITORIAL',
   href: '/story',
   searchText: [

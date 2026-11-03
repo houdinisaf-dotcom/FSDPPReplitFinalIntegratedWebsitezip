@@ -283,7 +283,6 @@ function makeHouseGroups(divisions) {
     ['identity', 'Brand Identity Standard', 'One identity, everywhere.'],
     ['founder', 'Founder Story', 'The person behind the house.'],
     ['press', 'Press & Media Kit', 'Approved assets for the press.'],
-    ['archive', 'Archive & Version History', 'How the plan has evolved.'],
   ].map(([id, title, description]) => ({
     id: `our-story-${id}`,
     title,
@@ -345,8 +344,8 @@ function makeHouseGroups(divisions) {
   });
 
   return [
-    staticGroup('our-story', 'OUR STORY & ARCHIVE', storySections[0].href,
-      'Capability is not a costume. It is a practice. Explore five foundational sections and the House Codes.',
+    staticGroup('our-story', 'OUR STORY', storySections[0].href,
+      'Capability is not a costume. It is a practice. Explore four foundational sections and the House Codes.',
       null, 0, {
         items: storySections,
         status: 'EDITORIAL / BRAND PRINCIPLES',

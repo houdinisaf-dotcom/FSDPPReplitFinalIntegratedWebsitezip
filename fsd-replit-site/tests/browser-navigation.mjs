@@ -214,11 +214,11 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
   assert.deepEqual(
     await evaluate('Array.from(document.querySelectorAll("#fsd-mega-menu [data-nav-group] span:nth-child(2)"), item => item.textContent.trim())'),
-    ['OUR STORY & ARCHIVE', 'FLAGSHIPS', 'FIGHT PROMOTIONS', 'GLOBAL VISION & OPERATIONS', 'INVESTOR RELATIONS', 'COMMUNITY & CULTURE'],
+    ['OUR STORY', 'FLAGSHIPS', 'FIGHT PROMOTIONS', 'GLOBAL VISION & OPERATIONS', 'INVESTOR RELATIONS', 'COMMUNITY & CULTURE'],
   );
   assert.deepEqual(
     await evaluate('Array.from(document.querySelectorAll("#fsd-mega-menu [data-nav-item] span:nth-child(2)"), item => item.textContent.trim())'),
-    ['Purpose & Positioning', 'Brand Identity Standard', 'Founder Story', 'Press & Media Kit', 'Archive & Version History'],
+    ['Purpose & Positioning', 'Brand Identity Standard', 'Founder Story', 'Press & Media Kit'],
   );
   assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3")?.textContent.trim()'), 'Purpose & Positioning');
   await click('#fsd-mega-menu [data-nav-item="1"]');
@@ -231,17 +231,24 @@ try {
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/investor.html" && document.querySelectorAll("main .investor-card").length === 3');
   await send('Page.navigate', { url: `https://${domain}/the-house.html` });
-  await waitFor('location.pathname === "/the-house.html" && document.querySelector("nav[aria-label=\\"Main navigation\\"] a.on")?.textContent.trim() === "THE HOUSE"');
+  await waitFor('location.pathname === "/the-house.html" && document.querySelector(".fsd-primary-nav [data-nav-primary=\\"house\\"]")?.textContent.trim() === "THE HOUSE"');
   assert.deepEqual(
     await evaluate('Array.from(document.querySelectorAll("#house-sections a strong"), item => item.textContent.trim())'),
-    ['Purpose & Positioning', 'Brand Identity Standard', 'Founder Story', 'Press & Media Kit', 'Archive & Version History'],
+    ['Purpose & Positioning', 'Brand Identity Standard', 'Founder Story', 'Press & Media Kit'],
   );
   assert.equal(await evaluate('document.querySelectorAll(".mega, #m1, #m2, #m3").length'), 0);
+  assert.equal(await evaluate('document.querySelectorAll("#house-sections a[href=\\"#brand/archive\\"]").length'), 0);
+  assert.equal(await evaluate('document.body.textContent.includes("Archive & Version History")'), false);
   assert.equal(await evaluate('document.querySelector("#main").textContent.includes("Investor Relations")'), false);
+  await send('Page.navigate', { url: `https://${domain}/the-house.html#brand/archive` });
+  await waitFor('location.pathname === "/the-house.html" && location.hash !== "#brand/archive"');
+  assert.equal(await evaluate('document.querySelector("#hero h1")?.textContent'), 'BRAND STORY');
+  await send('Page.navigate', { url: `https://${domain}/the-house.html#brand/purpose` });
+  await waitFor('document.querySelector("#hero h1")?.textContent === "PURPOSE & POSITIONING"');
   await click('#house-sections a[href="#brand/purpose"]');
   await waitFor('location.hash === "#brand/purpose" && document.querySelector("#hero h1")?.textContent === "PURPOSE & POSITIONING"');
-  await click('nav[aria-label="Main navigation"] a[href="/#house-menu"]');
-  await waitFor('location.pathname === "/" && location.hash === "#house-menu" && document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
+  await click('.fsd-primary-nav [data-nav-primary="house"]');
+  await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
   await click('[data-nav-close]');
   await waitFor('document.querySelector("#fsd-mega-menu").hidden');
   await send('Page.navigate', { url: `https://${domain}/` });
@@ -484,7 +491,7 @@ try {
       const expectedHash = destination.includes('#') ? destination.slice(destination.indexOf('#')) : '';
       await waitFor(`location.pathname === "/the-house.html"
         && location.hash === ${JSON.stringify(expectedHash)}
-        && document.querySelector('nav a[href="/#house-menu"]')
+        && document.querySelector('.fsd-primary-nav [data-nav-primary="house"]')
         && document.querySelector("#hero h1")`);
       return;
     }
@@ -878,7 +885,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-nav-mobile-toggle]")).display !== "none"'), true);
   await click('.fsd-mobile-public-links [data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
-  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group] span:nth-child(2)")?.textContent.trim()'), 'OUR STORY & ARCHIVE');
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group] span:nth-child(2)")?.textContent.trim()'), 'OUR STORY');
   await click('#fsd-mega-menu [data-nav-group="0"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail" && document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Purpose & Positioning"');
   await click('#fsd-mega-menu [data-nav-item="1"]');
@@ -905,7 +912,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'primary');
   await click('.fsd-mobile-primary-list [data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
-  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group] span:nth-child(2)")?.textContent.trim()'), 'OUR STORY & ARCHIVE');
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group] span:nth-child(2)")?.textContent.trim()'), 'OUR STORY');
   await click('[data-nav-close]');
   await waitFor('document.querySelector("#fsd-mega-menu").hidden');
   await click('.fsd-mobile-primary-list [data-nav-primary="collections"]');
