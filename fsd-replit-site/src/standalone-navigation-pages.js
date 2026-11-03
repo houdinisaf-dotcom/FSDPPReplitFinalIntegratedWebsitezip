@@ -45,12 +45,25 @@ function removeObjectProperty(source, propertyName) {
   return source.slice(0, propertyStart) + source.slice(end);
 }
 
-export function transformHouseArchiveContent(html) {
-  return removeObjectProperty(html, 'brand/archive')
-    .replace(/,\s*\["archive",\s*"Archive & Version History"(?:,\s*"How the plan has evolved\.")?\]/g, '')
-    .replace(/,\s*"Archive & Version History"/g, '')
-    .replaceAll('Brand Story & Archive', 'Brand Story')
-    .replaceAll('OUR STORY & ARCHIVE', 'OUR STORY');
+export function transformHousePageContent(html) {
+  let transformed = html;
+  for (const section of ['brand/archive', 'brand/purpose', 'brand/identity', 'brand/press']) {
+    transformed = removeObjectProperty(transformed, section);
+  }
+
+  for (const section of ['archive', 'purpose', 'identity', 'press']) {
+    const entry = `\\["${section}",\\s*"[^"]*"(?:,\\s*"[^"]*")?\\]`;
+    transformed = transformed.replace(new RegExp(`,\\s*${entry}|${entry},?`, 'g'), '');
+  }
+
+  return transformed
+    .replace(/"(?:Archive & Version History|Purpose & Positioning|Brand Identity Standard|Press & Media Kit)"\s*,?/g, '')
+    .replace(/^P\['brand\/identity'\]\.body\[1\].*;\s*$/gm, '')
+    .replace(/^P\['brand\/identity'\]\.bul\[4\].*;\s*$/gm, '')
+    .replaceAll('Brand Story & Archive', 'Founder Story')
+    .replaceAll('Purpose, identity and record. Choose a section below.', 'Founder story and background. Explore the Founder Story below.')
+    .replaceAll('Purpose, identity and record.', 'Founder story and background.')
+    .replace('"01", "Founder Story"', '"01", "OUR STORY"');
 }
 
 export function standaloneNavigationPagesPlugin(projectRoot) {
@@ -66,7 +79,7 @@ export function standaloneNavigationPagesPlugin(projectRoot) {
           const source = await readFile(resolve(projectRoot, 'public/the-house.html'), 'utf8');
           response.statusCode = 200;
           response.setHeader('Content-Type', 'text/html; charset=utf-8');
-          response.end(transformHouseArchiveContent(source));
+          response.end(transformHousePageContent(source));
         } catch (error) {
           next(error);
         }
@@ -89,7 +102,7 @@ export function standaloneNavigationPagesPlugin(projectRoot) {
       for (const fileName of ['investor.html', 'the-house.html']) {
         const path = resolve(outputRoot, fileName);
         let html = await readFile(path, 'utf8');
-        if (fileName === 'the-house.html') html = transformHouseArchiveContent(html);
+        if (fileName === 'the-house.html') html = transformHousePageContent(html);
         if (!html.includes('src="/src/standalone-navigation.js"')) {
           throw new Error(`The standalone navigation mount is missing from ${fileName}.`);
         }
