@@ -576,6 +576,8 @@ function hasVerifiedDestination({
     if (explicitTarget === '/investor.html'
       || explicitTarget === FSD_HOUSE_PAGE_PATH
       || explicitTarget.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) return true;
+    if (menu?.id === 'private-access'
+      && ['#tactical-shield-membership', '#contact'].includes(explicitTarget)) return true;
     if (explicitTarget.replace(/\/+$/, '') === FSD_STORY_PATH) {
       return Boolean(
         ownerDocument.querySelector(FSD_STORY_HASH)
@@ -685,16 +687,16 @@ function renderFeature(menu, group, item, canNavigate) {
               : menu.id === 'house' ? 'EXPLORE THE HOUSE'
                 : 'EXPLORE COLLECTION';
 
-  return `<article class="fsd-feature-card">
+  return `<article class="fsd-feature-card feature-card">
     ${mediaAction}
     <div class="fsd-feature-copy">
-      <p class="fsd-feature-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / COLLECTION') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
-      <h3>${escapeHTML(featureTitle)}</h3>
-      <p>${escapeHTML(description)}</p>
+      <p class="fsd-feature-kicker" id="modal-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / COLLECTION') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
+      <h3 id="modal-title">${escapeHTML(featureTitle)}</h3>
+      <p id="modal-desc">${escapeHTML(description)}</p>
       <dl class="fsd-feature-metadata" aria-label="Selected item details">
         ${metadataRows.map(([label, value], index) => `<div><dt>${escapeHTML(label)}</dt><dd${index === 0 ? ' data-status' : ''}>${escapeHTML(value)}</dd></div>`).join('')}
       </dl>
-      <button type="button" class="fsd-feature-cta" data-nav-destination
+      <button type="button" class="fsd-feature-cta feature-btn" id="modal-action-btn" data-nav-destination
         ${available ? '' : 'disabled aria-disabled="true" title="No verified destination is available for this selection."'}>
         ${actionLabel}<span aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon') : '—'}</span>
       </button>
@@ -708,14 +710,14 @@ function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
     const status = menu.id === 'house'
       ? 'Select this collection group to view its subcategories.'
       : 'Open this collection group.';
-    return `<button type="button"
+    return `<li><button type="button"
       class="fsd-nav-option fsd-nav-group${index === activeGroupIndex ? ' is-active' : ''}"
       data-nav-group="${index}" data-nav-available="${available}" aria-label="${escapeHTML(group.title)}. ${status}"
       title="${status}" aria-pressed="${index === activeGroupIndex}">
     <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
     <span>${escapeHTML(group.title)}</span>
       <span class="fsd-nav-arrow" aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon fsd-nav-arrow-icon') : '—'}</span>
-  </button>`;
+  </button></li>`;
   }).join('');
 }
 
@@ -723,7 +725,7 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
   return group.items.map((item, index) => {
     const available = canNavigate({ menu, group, item });
     const status = menu.id === 'house' ? 'Preview this section.' : 'Open this collection item.';
-    return `<button type="button"
+    return `<li><button type="button"
       class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"
       data-nav-item="${index}" data-nav-available="${available}"
       aria-label="${escapeHTML(item.title)}. ${status}" title="${status}"
@@ -731,7 +733,7 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
     <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
     <span>${escapeHTML(item.title)}</span>
       <span class="fsd-nav-arrow" aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon fsd-nav-arrow-icon') : '—'}</span>
-  </button>`;
+  </button></li>`;
   }).join('');
 }
 
@@ -746,12 +748,12 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
   </button>`).join('')}`;
 
   return `<div class="fsd-mega-inner">
-    <div class="fsd-mega-heading">
+    <div class="fsd-mega-heading menu-header-bar">
       <div>
         <p class="fsd-mega-eyebrow">${escapeHTML(menu.label)} <span>/</span> DIVISIONS</p>
-        <h2>${escapeHTML(menu.title)}</h2>
+        <h2 id="menu-section-title">${escapeHTML(menu.title)}</h2>
       </div>
-      <button type="button" class="fsd-mega-close" data-nav-close aria-label="Close navigation">
+      <button type="button" class="fsd-mega-close close-menu" id="close-menu-btn" data-nav-close aria-label="Close navigation">
         CLOSE ${outlineIcon('close', 'fsd-icon fsd-mega-close-icon')}
       </button>
     </div>
@@ -760,20 +762,20 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
       <span>${escapeHTML(menu.label)}</span>
     </div>
     <nav class="fsd-mobile-primary-list" aria-label="FSD sections">${mobilePrimaries}</nav>
-    <div class="fsd-nav-columns">
-      <section class="fsd-nav-column fsd-nav-column--groups" aria-labelledby="fsd-group-heading" data-nav-column="groups">
-        <h3 id="fsd-group-heading">COLLECTION GROUPS</h3>
-        <div class="fsd-nav-list" role="group" aria-label="Collection groups">
+    <div class="fsd-nav-columns menu-grid">
+      <section class="fsd-nav-column fsd-nav-column--groups menu-column" aria-labelledby="fsd-group-heading" data-nav-column="groups">
+        <h3 class="menu-column-title" id="fsd-group-heading">COLLECTION GROUPS</h3>
+        <ul class="fsd-nav-list menu-item-list" id="primary-group-list" role="group" aria-label="Collection groups">
           ${renderGroupButtons(menu, activeGroupIndex, canNavigate)}
-        </div>
+        </ul>
       </section>
-      <section class="fsd-nav-column fsd-nav-column--items" aria-labelledby="fsd-item-heading" data-nav-column="items">
-        <h3 id="fsd-item-heading">SUBCATEGORIES</h3>
-        <div class="fsd-nav-list" role="group" aria-label="Subcategories">
-          ${group ? renderItemButtons(menu, group, activeItemIndex, canNavigate) : '<p class="fsd-nav-empty">Select a collection group.</p>'}
-        </div>
+      <section class="fsd-nav-column fsd-nav-column--items menu-column" aria-labelledby="fsd-item-heading" data-nav-column="items">
+        <h3 class="menu-column-title" id="fsd-item-heading">SUBCATEGORIES</h3>
+        <ul class="fsd-nav-list menu-item-list" id="sub-category-list" role="group" aria-label="Subcategories">
+          ${group ? renderItemButtons(menu, group, activeItemIndex, canNavigate) : '<li><p class="fsd-nav-empty">Select a collection group.</p></li>'}
+        </ul>
       </section>
-      <section class="fsd-nav-column fsd-nav-column--feature" aria-label="Featured collection">
+      <section class="fsd-nav-column fsd-nav-column--feature menu-column" aria-label="Featured collection">
         ${group ? renderFeature(menu, group, item, canNavigate) : ''}
       </section>
     </div>
@@ -824,7 +826,7 @@ export function renderNavigationHeader(brandMarkup) {
         <button type="button" class="fsd-primary-trigger fsd-house-menu-trigger"
           data-nav-primary="house" aria-controls="fsd-mega-menu" aria-expanded="false">THE HOUSE</button>
       </nav>
-      <section class="fsd-mega-menu fsd-glass-surface" id="fsd-mega-menu" data-nav-panel hidden aria-label="FSD navigation">
+      <section class="fsd-mega-menu mega-menu fsd-glass-surface" id="fsd-mega-menu" data-unified-menu="true" data-nav-panel hidden aria-label="FSD navigation">
         <div data-nav-content></div>
       </section>
     </div>
@@ -901,7 +903,11 @@ export function mountNavigation({
   const currentNavigationId = () => {
     if (window.location.hash) return hashNavigation.get(window.location.hash) || '';
     const pathname = window.location.pathname.replace(/\/+$/, '');
-    return pathname === FSD_STORY_PATH || pathname === FSD_HOUSE_PAGE_PATH ? 'house' : '';
+    return pathname === FSD_STORY_PATH
+      || pathname === FSD_HOUSE_PAGE_PATH
+      || pathname === '/investor.html'
+      ? 'house'
+      : pathname === '/private.html' ? 'private-access' : '';
   };
   const updateCurrentFromHash = () => setCurrentPrimary(currentNavigationId());
   currentPrimaryId = currentNavigationId();

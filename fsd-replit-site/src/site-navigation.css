@@ -335,6 +335,13 @@
   display: grid;
   align-content: start;
   gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fsd-nav-list > li {
+  min-width: 0;
 }
 
 .fsd-nav-column--items .fsd-nav-list {

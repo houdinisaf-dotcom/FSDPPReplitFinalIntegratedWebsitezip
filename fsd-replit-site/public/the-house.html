@@ -2,8 +2,6 @@
 :root{--bk:#0B0C0E;--gm:#25282C;--gold:#C8AA72;--ti:#C9CDD1;--vg:#C8AA72}*{box-sizing:border-box}
 body{margin:0;background:var(--bk);color:var(--ti);font:16px/1.65 Helvetica,Arial,sans-serif}
 .top{text-align:center;font-size:11px;letter-spacing:.3em;color:var(--gold);padding:8px;border-bottom:1px solid var(--gm)}
- nav[aria-label="Main navigation"]{display:flex;gap:26px;padding:18px 40px;border-bottom:1px solid var(--gm);font-size:12px;letter-spacing:.2em;flex-wrap:wrap;align-items:center}
- nav[aria-label="Main navigation"] b{color:var(--gold);margin-right:20px}nav[aria-label="Main navigation"] a{color:inherit;text-decoration:none;opacity:.7}nav[aria-label="Main navigation"] a:hover{color:#fff;opacity:1}nav[aria-label="Main navigation"] .on{color:#fff;border-bottom:2px solid var(--gold);opacity:1}
  .house-sections{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;padding:22px clamp(20px,4vw,40px);border-bottom:1px solid var(--gm);background:#0e1013}
  .house-sections a{display:block;min-height:96px;padding:17px;color:var(--ti);text-decoration:none;background:var(--gm);border-top:2px solid var(--gold)}
  .house-sections a strong{display:block;margin-bottom:8px;color:#fff;font-size:12px;letter-spacing:.12em}
@@ -16,9 +14,8 @@ main{max-width:980px;margin:auto;padding:40px 24px}main p{font-size:17px}ul{padd
 .note{border-left:3px solid var(--gold);background:#15171a;padding:12px 16px;font-size:14px;margin-top:24px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:26px}.card{background:var(--gm);padding:20px;border-top:2px solid var(--gold);cursor:pointer}.card:hover{border-color:var(--vg)}.card h3{margin:0 0 6px;color:#fff;font-size:17px}
 footer{padding:30px 40px;border-top:1px solid var(--gm);font-size:12px;color:#8d9399}
- @media(max-width:800px){nav[aria-label="Main navigation"]{gap:12px;padding:16px 20px}.house-sections{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));padding:16px 20px}.hero h1{font-size:30px}}
-</style></head><body><div class="top">FSD / THE HOUSE OF PERFORMANCE <span aria-hidden="true">·</span> INVESTOR RELATIONS</div>
-  <nav aria-label="Main navigation"><a href="/" aria-label="FSD home"><b>FSD</b></a><a href="/#products">SHOP</a><a href="/#universe">UNIVERSE</a><a href="/#innovations">BIO-LAB™</a><a href="/#hardware-editorial">HARDWARE</a><a class="on" href="/#house-menu">THE HOUSE</a><a href="/#contact">PRIVATE ACCESS</a></nav>
+  @media(max-width:800px){.house-sections{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));padding:16px 20px}.hero h1{font-size:30px}}
+</style></head><body><div data-fsd-standalone-navigation></div>
  <nav class="house-sections" id="house-sections" aria-label="The House sections"></nav>
   <div class="hero" id="hero"></div>
  <aside class="note" id="initiative-disclaimer" role="note" hidden>Active initiative workstreams do not make related products or prototypes current, available or committed. Specific operating locations, partners and milestones are not represented unless verified.</aside>
@@ -45,4 +42,4 @@ function render(){
  if(!p.group){h+='<ul>'+p.bul.map(x=>`<li>${x}</li>`).join('')+'</ul>'+(p.note?`<div class="note">${p.note}</div>`:'')}
  document.getElementById('main').innerHTML=h;scrollTo(0,0)}
 addEventListener('hashchange',render);render();
-</script></body></html>
+</script><script type="module" src="/src/standalone-navigation.js"></script></body></html>

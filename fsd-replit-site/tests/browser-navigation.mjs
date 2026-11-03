@@ -1056,8 +1056,43 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await click('[data-bag-close]');
   await waitFor('!document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
 
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
+  await send('Page.navigate', { url: `https://${domain}/the-house.html` });
+  await waitFor('document.querySelector("[data-fsd-standalone-navigation] .fsd-header") && document.querySelector("[data-nav-primary=\\"house\\"]")');
+  await click('[data-nav-primary="house"]');
+  await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
+  assert.equal(await evaluate('document.querySelector("#menu-section-title")?.textContent.trim()'), 'THE HOUSE');
+  assert.equal(await evaluate('document.querySelector("#primary-group-list")?.closest(".menu-column")?.querySelector(".menu-column-title")?.textContent.trim()'), 'COLLECTION GROUPS');
+  assert.equal(await evaluate('document.querySelector("#sub-category-list")?.closest(".menu-column")?.querySelector(".menu-column-title")?.textContent.trim()'), 'SUBCATEGORIES');
+  assert.equal(await evaluate('document.querySelector("#modal-title")?.textContent.trim()'), 'Purpose & Positioning');
+  assert.equal(await evaluate('Boolean(document.querySelector("#modal-kicker, #modal-desc, #modal-action-btn, #close-menu-btn"))'), true);
+  await click('#fsd-mega-menu [data-nav-item="1"]');
+  await waitFor('document.querySelector("#modal-title")?.textContent.trim() === "Brand Identity Standard"');
+  await click('[data-nav-close]');
+  await waitFor('document.querySelector("#fsd-mega-menu").hidden');
+
+  await send('Page.navigate', { url: `https://${domain}/investor.html` });
+  await waitFor('document.querySelector("[data-fsd-standalone-navigation] .fsd-header") && document.querySelector(".metrics-grid .metric-card")');
+  await click('[data-nav-primary="house"]');
+  await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
+  await click('#fsd-mega-menu [data-nav-group="4"]');
+  await waitFor('document.querySelector("#modal-title")?.textContent.trim() === "INVESTOR RELATIONS"');
+  assert.equal(await evaluate('document.querySelector("#modal-action-btn")?.textContent.includes("OPEN INVESTOR RELATIONS")'), true);
+  await click('[data-nav-close]');
+  await waitFor('document.querySelector("#fsd-mega-menu").hidden');
+
+  await click('[data-nav-primary="private-access"]');
+  await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "private-access" && !document.querySelector("#fsd-mega-menu")?.hidden');
+  assert.equal(await evaluate('document.querySelector("#menu-section-title")?.textContent.trim()'), 'PRIVATE ACCESS');
+  assert.equal(await evaluate('Boolean(document.querySelector("#primary-group-list") && document.querySelector("#sub-category-list") && document.querySelector("#feature-card, .feature-card"))'), true);
+  assert.equal(await evaluate('document.querySelector("#modal-action-btn")?.disabled'), false);
+  await click('#modal-action-btn');
+  await waitFor('location.pathname === "/" && location.hash === "#tactical-shield-membership"');
+
   assert.deepEqual(browserErrors, []);
-  console.log('Navigation browser checks passed: verified links, search and catalogue analytics, bag analytics, collection analytics, mobile draft routing, keyboard/focus, and overflow.');
+  console.log('Navigation browser checks passed: shared menus on House, Investor Relations, and Private Access; links, search and catalogue analytics, bag analytics, collection analytics, mobile draft routing, keyboard/focus, and overflow.');
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');

@@ -32,30 +32,6 @@
             text-transform: uppercase;
         }
 
-        /* Main Navigation */
-        nav {
-            display: flex;
-            gap: 24px;
-            padding: 18px 40px;
-            background: var(--bg-obsidian);
-            border-bottom: 1px solid var(--border-subtle);
-            font-size: 12px;
-            letter-spacing: 0.2em;
-            flex-wrap: wrap;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        nav b { color: var(--gold); margin-right: 16px; font-size: 14px; }
-        nav a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
-        nav a:hover, nav a.on { color: var(--text-white); }
-        nav .on { border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
-        nav a:focus-visible {
-            outline: 2px solid var(--gold);
-            outline-offset: 4px;
-        }
-
         /* Sub-Navigation Anchors */
         .sub-nav {
             display: flex;
@@ -255,33 +231,17 @@
         .investor-card li { margin-bottom: 6px; }
 
         @media(max-width: 768px) {
-            .hero, .metrics-grid, .card-grid, nav {
+            .hero, .metrics-grid, .card-grid {
                 padding-left: 20px;
                 padding-right: 20px;
             }
             .hero h1 { font-size: 30px; }
             .card-grid { grid-template-columns: 1fr; }
-            nav {
-                gap: 12px;
-                font-size: 10px;
-                letter-spacing: 0.12em;
-            }
-            nav b { margin-right: 4px; }
         }
     </style>
 </head>
 <body>
-    <div class="top-banner">FSD / PUBLIC INVESTOR INFORMATION &mdash; PRE-COMMERCIAL</div>
-
-    <nav aria-label="Main navigation">
-        <a href="/" aria-label="FSD home"><b>FSD</b></a>
-        <a href="/#products">SHOP</a>
-        <a href="/#universe">UNIVERSE</a>
-        <a href="/#innovations">BIO-LAB™</a>
-        <a href="/#hardware-editorial">HARDWARE</a>
-        <a href="/#house-menu">THE HOUSE</a>
-        <a href="/#contact">PRIVATE ACCESS</a>
-    </nav>
+    <div data-fsd-standalone-navigation></div>
 
     <header class="hero">
         <span class="hero-tag">Investor Relations Dossier</span>
@@ -346,5 +306,6 @@
     <footer>
         Public FSD information. FSD is pre-commercial. No verified trading history or secured investment is represented. Product availability is not promised. Not an offer of securities, financial promotion, or investment advice.
     </footer>
+    <script type="module" src="/src/standalone-navigation.js"></script>
 </body>
 </html>

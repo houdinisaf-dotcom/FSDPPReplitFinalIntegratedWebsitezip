@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { copyFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
+import { standaloneNavigationPagesPlugin } from './src/standalone-navigation-pages.js';
 import { draftReviewPlugin } from './scripts/draft-review-plugin.mjs';
 import { aeroforgePrivatePreviewPlugin } from './scripts/aeroforge-private-preview-plugin.mjs';
 import { modestFlowPrivatePreviewPlugin } from './scripts/modest-flow-private-preview-plugin.mjs';
@@ -39,6 +40,7 @@ export default defineConfig({
     hardwareForgePrivatePreviewPlugin(),
     prelaunchSignupApiPlugin(),
     staticStoryRoutePlugin(),
+    standaloneNavigationPagesPlugin(projectRoot),
   ],
   server: {
     host: '0.0.0.0',
@@ -51,7 +53,9 @@ export default defineConfig({
       input: {
         main: resolve(projectRoot, 'index.html'),
         sizeGuide: resolve(projectRoot, 'size-guide.html'),
+        standaloneNavigation: resolve(projectRoot, 'src/standalone-navigation.js'),
       },
     },
+    manifest: true,
   },
 });
