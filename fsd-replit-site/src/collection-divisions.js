@@ -92,7 +92,7 @@ export const collectionDivisions = [
         title: 'RECOVERY TECHNOLOGY',
         overview: 'Explore recovery concepts and accessories. Concept details are not confirmed.',
         categories: [],
-        concepts: ['Cryo-Zero Recovery Chambers', 'Red Light Recovery Beds', '7mm Knee Sleeves'],
+        concepts: ['Cryo-Zero Recovery Chambers', 'Red Light Recovery Beds'],
       },
       {
         id: 'performance-accessories',
@@ -120,11 +120,11 @@ export const collectionDivisions = [
       {
         id: 'promotions',
         title: 'FSD PROMOTIONS',
-        overview: 'Explore FSD live events, broadcast concepts, and athlete development.',
+        overview: 'FSD live events, broadcast and PPV, athlete development, and Academy & Grassroots programmes.',
         concepts: [
           'Professional Fight Promotions',
           'Live Events',
-          'Broadcast & PPV Concepts',
+          'Broadcast & PPV',
           'Athlete Development',
           'Academy & Grassroots Programmes',
         ],

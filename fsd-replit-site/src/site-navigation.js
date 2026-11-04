@@ -279,7 +279,7 @@ function makeHouseGroups(divisions) {
   const flagship = global?.groups?.[0];
   const promotions = global?.groups?.[1];
   const storySections = [
-    ['founder', 'Founder Story', 'The person behind the house.'],
+    ['founder', 'Founder Story', 'Fitness. Discipline. Progress.'],
   ].map(([id, title, description]) => ({
     id: `our-story-${id}`,
     title,
@@ -287,6 +287,45 @@ function makeHouseGroups(divisions) {
     href: `${FSD_HOUSE_PAGE_PATH}#brand/${id}`,
     description,
   }));
+  const fightPromotionRoutes = new Map([
+    ['Professional Fight Promotions', '/fight-promotions.html'],
+    ['Live Events', '/live-events.html'],
+    ['Broadcast & PPV', '/broadcast-ppv.html'],
+    ['Athlete Development', '/athlete-development.html'],
+    ['Academy & Grassroots Programmes', '/academy-grassroots.html'],
+  ]);
+  const fightPromotionItems = (promotions?.concepts || []).map((concept, index) => {
+    const href = fightPromotionRoutes.get(concept) || '';
+    const isLiveEvents = concept === 'Live Events';
+    const isBroadcastPpv = concept === 'Broadcast & PPV';
+    const isAthleteDevelopment = concept === 'Athlete Development';
+    const isAcademyGrassroots = concept === 'Academy & Grassroots Programmes';
+    const isOperatingInitiative = isAthleteDevelopment || isAcademyGrassroots;
+    return {
+      id: `fight-promotions-item-${index}`,
+      title: concept,
+      kind: isLiveEvents || isBroadcastPpv || isOperatingInitiative ? 'initiative' : 'concept',
+      status: isOperatingInitiative ? 'Operating' : undefined,
+      source: { concepts: [concept] },
+      sourceGroup: promotions,
+      sourceDivisionId: global?.id || 'global',
+      sourceGroupIndex: 1,
+      sourceSubcategoryIndex: -1,
+      href,
+      navigationUnavailable: !href,
+      description: isLiveEvents
+        ? 'Strategic initiative; not yet operational. No FSD location, event, or service is represented as live.'
+        : isBroadcastPpv
+          ? 'Strategic initiative; not yet operational. No FSD broadcast, PPV event, or service is represented as live.'
+        : isAthleteDevelopment
+          ? 'Operating initiative covering athlete development and supervised recovery. No location or booking details are published here.'
+        : isAcademyGrassroots
+          ? 'Operating initiative supporting community mentorship and youth development. No schedule or registration details are published here.'
+        : concept === 'Professional Fight Promotions'
+          ? 'Exploratory concept only. No event, location, or service is represented as operational.'
+          : 'Concept for exploration; no event, location, or service is represented as operational.',
+    };
+  });
 
   const staticGroup = (id, title, href, description, sourceGroup = null, sourceGroupIndex = 0, options = {}) => ({
     id,
@@ -334,15 +373,16 @@ function makeHouseGroups(divisions) {
     items: initiatives.map(initiative => ({
       id: `${id}-${initiative.id}`,
       title: initiative.title,
-      kind: 'destination',
-      href: `${FSD_HOUSE_PAGE_PATH}#${initiative.hash}`,
+      kind: initiative.kind || 'destination',
+      href: initiative.href || `${FSD_HOUSE_PAGE_PATH}#${initiative.hash}`,
       description: initiative.description,
+      status: initiative.status,
     })),
   });
 
   return [
     staticGroup('our-story', 'OUR STORY', storySections[0].href,
-      'Explore the Founder Story and House Codes.',
+      'Explore The Architecture of Purpose and the FSD manifesto.',
       null, 0, {
         items: storySections,
         status: 'EDITORIAL / FOUNDER STORY',
@@ -352,25 +392,107 @@ function makeHouseGroups(divisions) {
     staticGroup('flagships', 'FLAGSHIPS', '',
       global?.description || 'FSD flagship locations.', flagship, 0),
     staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '',
-      'FSD promotions and events.', promotions, 1),
+      'Exploratory fight-promotion concepts. No event, location, or service is represented as operational.',
+      promotions, 1, { items: fightPromotionItems }),
     initiativeGroup('global-vision-operations', 'GLOBAL VISION & OPERATIONS',
       global?.description || 'Active FSD infrastructure and long-horizon R&D initiatives.',
       [
-        { id: 'pods', title: 'FSD Pods', hash: 'global/pods', description: 'Modular training, retail, and community-learning infrastructure.' },
-        { id: 'predictive-popups', title: 'Autonomous Pop-Ups & Predictive Stock', hash: 'global/predictive-popups', description: 'Staffed flexible retail supported by demand-led stock planning.' },
-        { id: 'mobile-testing-labs', title: 'Mobile Testing Labs', hash: 'global/mobile-testing-labs', description: 'Mobile apparel trials, feedback, and qualified demonstrations.' },
-        { id: 'local-micro-manufacturing', title: 'Local Micro-Manufacturing', hash: 'global/local-micro-manufacturing', description: 'Small-batch, on-demand production closer to FSD communities.' },
-        { id: 'genetic-microbiome', title: 'Genetic & Microbiome Personalisation', hash: 'global/genetic-microbiome', description: 'Long-horizon research with strict scientific and privacy gates.' },
+        {
+          id: 'pods',
+          title: 'FSD Pods',
+          hash: 'global/pods',
+          href: '/fsd-pods.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Operating initiative developing modular, transportable training, retail, and community-learning infrastructure. No pod or location is currently operational.',
+        },
+        {
+          id: 'predictive-popups',
+          title: 'Autonomous Pop-Ups & Predictive Stock',
+          hash: 'global/predictive-popups',
+          href: '/autonomous-popups.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Operating initiative exploring flexible pop-up retail and demand-informed stock planning. No venue or stock service is currently operational.',
+        },
+        {
+          id: 'mobile-testing-labs',
+          title: 'Mobile Testing Labs',
+          hash: 'global/mobile-testing-labs',
+          href: '/mobile-testing-labs.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Operating initiative for mobile product trials and consent-based feedback. No testing unit or venue is currently operational.',
+        },
+        {
+          id: 'local-micro-manufacturing',
+          title: 'Local Micro-Manufacturing',
+          hash: 'global/local-micro-manufacturing',
+          href: '/local-micro-manufacturing.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Operating initiative developing plans for local, small-batch production. No manufacturing hub or service is currently operational.',
+        },
+        {
+          id: 'genetic-microbiome',
+          title: 'Genetic & Microbiome Personalisation',
+          hash: 'global/genetic-microbiome',
+          href: '/genetic-microbiome.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Long-horizon research with strict scientific and privacy gates. No testing or personalised health service is represented as available.',
+        },
+        {
+          id: 'security-provisions',
+          title: 'Security Provisions',
+          hash: 'global/security-provisions',
+          href: '/security-vision.html',
+          kind: 'initiative',
+          status: 'Strategic expansion; not operational',
+          description: 'Proposed event and venue security expansion. Not an active tender; deployment depends on corporate, licensing, insurance, and legal conditions.',
+        },
       ]),
     staticGroup('investor-relations', 'INVESTOR RELATIONS', '/investor.html',
       'Investor relations, proposed funding pathway, planning assumptions, and roadmap.'),
     initiativeGroup('community-culture', 'COMMUNITY & CULTURE',
       'Active House & Universe initiatives across co-creation, partnerships, reuse, and community safety.',
       [
-        { id: 'co-creation', title: 'Community Co-Creation', hash: 'community/co-creation', description: 'Creator workshops, structured feedback, and product testing.' },
-        { id: 'performance-partnerships', title: 'Performance-Linked Partnerships', hash: 'community/performance-partnerships', description: 'Partner programmes, subject to written agreement and governance.' },
-        { id: 'circular-trade-in', title: 'Circular Trade-In Programme', hash: 'community/circular-trade-in', description: 'Inspection, repair, resale, and recycling pathways.' },
-        { id: 'first-aid-safety', title: 'Community First Aid & Safety Skills', hash: 'community/first-aid-safety', description: 'Community resilience education with qualified providers.' },
+        {
+          id: 'co-creation',
+          title: 'Community Co-Creation',
+          hash: 'community/co-creation',
+          href: '/community-co-creation.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Operating initiative for structured feedback, workshops, and collaborative testing. No sessions or submissions are open here.',
+        },
+        {
+          id: 'performance-partnerships',
+          title: 'Performance-Linked Partnerships',
+          hash: 'community/performance-partnerships',
+          href: '/performance-partnerships.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Operating partnership initiative. No specific partner or live testing programme is identified here.',
+        },
+        {
+          id: 'circular-trade-in',
+          title: 'Circular Trade-In Programme',
+          hash: 'community/circular-trade-in',
+          href: '/circular-trade-in.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Operating circularity initiative exploring inspection, repair, resale, and recycling pathways. Trade-ins are not offered here.',
+        },
+        {
+          id: 'first-aid-safety',
+          title: 'Community First Aid & Safety Skills',
+          hash: 'community/first-aid-safety',
+          href: '/community-first-aid.html',
+          kind: 'initiative',
+          status: 'Operating or rollout underway',
+          description: 'Civic-resilience initiative covering first aid and personal-safety awareness. No provider or training programme is confirmed here.',
+        },
       ]),
   ];
 }
@@ -569,7 +691,22 @@ function hasVerifiedDestination({
 
   const explicitTarget = item?.href || group?.href;
   if (explicitTarget) {
-    if (explicitTarget === '/investor.html'
+    if (explicitTarget === '/fight-promotions.html'
+      || explicitTarget === '/live-events.html'
+      || explicitTarget === '/broadcast-ppv.html'
+      || explicitTarget === '/athlete-development.html'
+      || explicitTarget === '/academy-grassroots.html'
+      || explicitTarget === '/fsd-pods.html'
+      || explicitTarget === '/autonomous-popups.html'
+      || explicitTarget === '/mobile-testing-labs.html'
+      || explicitTarget === '/local-micro-manufacturing.html'
+      || explicitTarget === '/genetic-microbiome.html'
+      || explicitTarget === '/community-co-creation.html'
+      || explicitTarget === '/performance-partnerships.html'
+      || explicitTarget === '/circular-trade-in.html'
+      || explicitTarget === '/community-first-aid.html'
+      || explicitTarget === '/security-vision.html'
+      || explicitTarget === '/investor.html'
       || explicitTarget === FSD_HOUSE_PAGE_PATH
       || explicitTarget.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) return true;
     if (menu?.id === 'private-access'
@@ -672,6 +809,11 @@ function renderFeature(menu, group, item, canNavigate) {
     : isStoryFeature ? 'READ THE STORY & ARCHIVE'
     : menu.id === 'house' && group?.id === 'investor-relations' ? 'OPEN INVESTOR RELATIONS'
       : menu.id === 'house' && group?.id === 'our-story' ? 'READ THE SECTION'
+        : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/fight-promotions.html' ? 'VIEW CONCEPT PAGE'
+          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/live-events.html' ? 'VIEW INITIATIVE'
+          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/broadcast-ppv.html' ? 'VIEW INITIATIVE'
+          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/athlete-development.html' ? 'VIEW INITIATIVE'
+          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/academy-grassroots.html' ? 'VIEW INITIATIVE'
         : menu.id === 'house' && ['community-culture', 'global-vision-operations'].includes(group?.id) ? 'VIEW INITIATIVE'
     : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
       : item?.kind === 'shop-all' ? 'SHOP ALL PRODUCTS'

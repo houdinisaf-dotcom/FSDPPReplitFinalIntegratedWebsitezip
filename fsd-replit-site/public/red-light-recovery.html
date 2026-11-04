@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Draft information about FSD Red Light Recovery. Equipment, safety, availability and service details are not yet confirmed.">
+  <title>FSD | Red Light Recovery Beds</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+    }
+
+    .red-light-page {
+      box-sizing: border-box;
+      background: #0f0f0f;
+      color: #e9e1d0;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.7;
+    }
+
+    .red-light-page *,
+    .red-light-page *::before,
+    .red-light-page *::after {
+      box-sizing: inherit;
+    }
+
+    .red-light-page section {
+      width: min(calc(100% - 48px), 1000px);
+      margin: 0 auto;
+      padding: 56px 0;
+    }
+
+    .red-light-page h1,
+    .red-light-page h2,
+    .red-light-page h3 {
+      margin: 0 0 16px;
+      color: #cdb589;
+      font-weight: 400;
+      letter-spacing: .08em;
+    }
+
+    .red-light-page h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    .red-light-page h2 {
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .red-light-page h3 {
+      font-size: 1.08rem;
+    }
+
+    .red-light-page p,
+    .red-light-page li {
+      color: #d8d0bf;
+    }
+
+    .red-light-page p {
+      margin: 0 0 16px;
+    }
+
+    .red-light-page ul {
+      margin: 0 0 16px;
+      padding-left: 20px;
+    }
+
+    .red-light-page hr {
+      width: min(calc(100% - 48px), 1000px);
+      margin: 0 auto;
+      border: 0;
+      border-top: 1px solid #2a2622;
+    }
+
+    .red-light-page .hero {
+      padding-top: 72px;
+      padding-bottom: 48px;
+      text-align: center;
+    }
+
+    .red-light-page .tag {
+      margin-bottom: 12px;
+      color: #a98b5f;
+      font-size: .78rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    .red-light-page .hero-intro {
+      max-width: 680px;
+      margin: 0 auto 26px;
+      font-size: 1.15rem;
+      letter-spacing: .04em;
+    }
+
+    .red-light-page .status-note,
+    .red-light-page .review-note {
+      border-left: 3px solid #8a6a44;
+      background: #161412;
+      padding: 18px 22px;
+      text-align: left;
+    }
+
+    .red-light-page .status-note strong,
+    .red-light-page .review-note strong {
+      color: #cdb589;
+    }
+
+    .red-light-page .glance,
+    .red-light-page .grid,
+    .red-light-page .two {
+      display: grid;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .red-light-page .glance {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      border: 1px solid #2a2622;
+      background: #2a2622;
+      gap: 1px;
+    }
+
+    .red-light-page .glance > div {
+      background: #161412;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .red-light-page .glance b {
+      display: block;
+      color: #cdb589;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .red-light-page .glance span {
+      color: #a8a092;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .red-light-page .grid {
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    }
+
+    .red-light-page .two {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    }
+
+    .red-light-page .card {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 22px;
+    }
+
+    .red-light-page .card .num {
+      margin-bottom: 8px;
+      color: #a98b5f;
+      font-size: 1.35rem;
+    }
+
+    .red-light-page .small {
+      color: #a8a092;
+      font-size: .85rem;
+    }
+
+    .red-light-page .spec-list {
+      display: grid;
+      grid-template-columns: minmax(150px, .7fr) 1.3fr;
+      border: 1px solid #2a2622;
+    }
+
+    .red-light-page .spec-list dt,
+    .red-light-page .spec-list dd {
+      margin: 0;
+      border-bottom: 1px solid #2a2622;
+      padding: 12px 16px;
+    }
+
+    .red-light-page .spec-list dt {
+      color: #cdb589;
+    }
+
+    .red-light-page .spec-list dd {
+      background: #161412;
+      color: #d8d0bf;
+    }
+
+    .red-light-page .spec-list dt:last-of-type,
+    .red-light-page .spec-list dd:last-of-type {
+      border-bottom: 0;
+    }
+
+    .red-light-page details {
+      border-bottom: 1px solid #2a2622;
+      padding: 16px 0;
+    }
+
+    .red-light-page summary {
+      color: #cdb589;
+      cursor: pointer;
+      letter-spacing: .04em;
+    }
+
+    .red-light-page summary:focus-visible {
+      outline: 2px solid #cdb589;
+      outline-offset: 4px;
+    }
+
+    .red-light-page .page-footer {
+      padding-top: 28px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .red-light-page section {
+        width: min(calc(100% - 32px), 1000px);
+        padding: 42px 0;
+      }
+
+      .red-light-page hr {
+        width: min(calc(100% - 32px), 1000px);
+      }
+
+      .red-light-page .spec-list {
+        grid-template-columns: 1fr;
+      }
+
+      .red-light-page .spec-list dt {
+        border-bottom: 0;
+        padding-bottom: 2px;
+      }
+
+      .red-light-page .spec-list dd {
+        padding-top: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div data-fsd-standalone-navigation></div>
+  <main class="red-light-page">
+    <section class="hero" aria-labelledby="red-light-title">
+      <div class="tag">FSD Recovery · Fitness &amp; Self-Defence</div>
+      <h1 id="red-light-title">Red Light Recovery Beds</h1>
+      <p class="hero-intro">Red light and PEMF. Full-length. Fully supervised.</p>
+      <div class="status-note" role="note">
+        <strong>Information in preparation.</strong>
+        The device, wavelengths, PEMF settings, safety procedures, session length, pricing, location and availability have not been confirmed.
+        No bookings or enquiries are accepted through this page.
+      </div>
+      <div class="glance" aria-label="Service details awaiting confirmation">
+        <div><b>To be confirmed</b><span>Equipment and format</span></div>
+        <div><b>To be confirmed</b><span>Settings and session length</span></div>
+        <div><b>To be confirmed</b><span>Pricing</span></div>
+        <div><b>To be confirmed</b><span>Location and availability</span></div>
+      </div>
+    </section>
+    <hr>
+
+    <section id="overview">
+      <h2>What is a red light recovery bed?</h2>
+      <p>The supplied draft describes a full-length bed using red and near-infrared light and pulsed electromagnetic field (PEMF) technology. The specific device and whether it includes these features have not been verified.</p>
+      <p>Research into red and near-infrared light and PEMF is ongoing, and results vary. This page does not claim that these technologies treat, cure or prevent any condition, injury or skin concern, and they are not a substitute for medical advice.</p>
+      <div class="review-note">
+        <strong>Device details are pending.</strong>
+        Supplier documentation must confirm the equipment design, light settings, PEMF features, eye protection and operating requirements before product-specific information is published.
+      </div>
+    </section>
+    <hr>
+
+    <section id="features">
+      <h2>Specifications to verify</h2>
+      <p>The uploaded draft contains provisional technical figures. None are presented here as confirmed equipment specifications.</p>
+      <dl class="spec-list">
+        <dt>Red and near-infrared wavelengths</dt><dd>To be confirmed from supplier documentation</dd>
+        <dt>LED quantity, output and controls</dt><dd>To be confirmed from supplier documentation</dd>
+        <dt>PEMF range and settings</dt><dd>To be confirmed from supplier documentation</dd>
+        <dt>Session length and exposure format</dt><dd>To be confirmed from supplier documentation</dd>
+        <dt>Eye protection and emergency release</dt><dd>To be confirmed with the supplier and insurer</dd>
+      </dl>
+    </section>
+    <hr>
+
+    <section id="visit">
+      <h2>Proposed visit outline</h2>
+      <p>These are draft stages only, not an operating procedure. The final process depends on verified equipment and approved safety guidance.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="num">01</div>
+          <h3>Screening</h3>
+          <p>Eligibility checks, consent and any required health questionnaire are to be confirmed with the provider and insurer.</p>
+        </article>
+        <article class="card">
+          <div class="num">02</div>
+          <h3>Preparation</h3>
+          <p>Clothing, eye protection, jewellery rules and preparation instructions are to be confirmed.</p>
+        </article>
+        <article class="card">
+          <div class="num">03</div>
+          <h3>Supervised session</h3>
+          <p>Session settings, operator requirements and stop procedures are not yet confirmed.</p>
+        </article>
+        <article class="card">
+          <div class="num">04</div>
+          <h3>Aftercare</h3>
+          <p>Any post-session guidance must be confirmed by the service provider.</p>
+        </article>
+      </div>
+    </section>
+    <hr>
+
+    <section id="safety">
+      <h2>Safety and evidence</h2>
+      <div class="two">
+        <article class="card">
+          <h3>Health and safety information</h3>
+          <p>The supplied draft contains health advice and a list of conditions and medications that may affect suitability. Those statements require review against the actual equipment, supplier instructions, insurer requirements and appropriate clinical guidance before use.</p>
+        </article>
+        <article class="card">
+          <h3>Evidence and health claims</h3>
+          <p>The supplied draft describes research as ongoing and results as variable. No health outcomes are promised here. Any future health-related copy should be reviewed by an appropriately qualified professional.</p>
+        </article>
+      </div>
+    </section>
+    <hr>
+
+    <section id="details">
+      <h2>Details to confirm</h2>
+      <ul>
+        <li>Supplier, model, verified technical specifications and equipment certification</li>
+        <li>Insurer-approved procedures, screening criteria, eye protection and operator requirements</li>
+        <li>Health and contraindication information reviewed by an appropriately qualified professional</li>
+        <li>Confirmed location, availability, session length and pricing</li>
+        <li>Booking, cancellation, privacy and customer-support arrangements</li>
+      </ul>
+      <p class="small">Until these details are confirmed, this page is informational only and does not describe an available service.</p>
+    </section>
+    <hr>
+
+    <section id="faq">
+      <h2>Frequently asked questions</h2>
+      <details>
+        <summary>Is Red Light Recovery currently available?</summary>
+        <p>Availability and location have not been confirmed.</p>
+      </details>
+      <details>
+        <summary>Can I book a session?</summary>
+        <p>No booking or enquiry service is active through this page.</p>
+      </details>
+      <details>
+        <summary>Does it treat an injury, skin concern or health condition?</summary>
+        <p>No treatment claim is made. This service information is not a substitute for advice from a healthcare professional.</p>
+      </details>
+    </section>
+
+    <section class="page-footer">
+      <div class="tag">FSD Recovery · Fitness &amp; Self-Defence</div>
+      <p class="small">Draft information only. Equipment, availability, safety procedures and all commercial details remain subject to confirmation and review.</p>
+    </section>
+  </main>
+  <script type="module" src="/src/standalone-navigation.js"></script>
+</body>
+</html>

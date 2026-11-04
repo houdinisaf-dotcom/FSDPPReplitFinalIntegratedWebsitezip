@@ -58,6 +58,138 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
 });
 
+test('Cryo-Zero has a separate information page without unconfirmed booking or service claims', () => {
+  const pagePath = new URL('../public/cryo-zero.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.match(page, /<title>FSD \| Cryo-Zero Recovery Chambers<\/title>/);
+  assert.match(page, /<div data-fsd-standalone-navigation><\/div>/);
+  assert.match(page, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
+  assert.match(page, /Information in preparation/);
+  assert.match(page, /No bookings or enquiries are accepted through this page/);
+  assert.match(page, /To be confirmed/);
+  assert.match(page, /Georgia, "Times New Roman", serif/);
+  assert.doesNotMatch(page, /\[(?:YOUR-|PRICE|AREA|TOWN|CONFIRM|HOURS|@HANDLE)/i);
+  assert.doesNotMatch(page, /<form\b|href="(?:tel:|https:\/\/wa\.me\/|#enquire)/i);
+});
+
+test('Red Light Recovery has a separate page with provisional claims clearly marked', () => {
+  const pagePath = new URL('../public/red-light-recovery.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.match(page, /<title>FSD \| Red Light Recovery Beds<\/title>/);
+  assert.match(page, /<div data-fsd-standalone-navigation><\/div>/);
+  assert.match(page, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
+  assert.match(page, /Information in preparation/);
+  assert.match(page, /No bookings or enquiries are accepted through this page/);
+  assert.match(page, /wavelengths, PEMF settings, safety procedures/);
+  assert.match(page, /To be confirmed from supplier documentation/);
+  assert.match(page, /Georgia, "Times New Roman", serif/);
+  assert.doesNotMatch(page, /\[(?:YOUR-|PRICE|AREA|TOWN|CONFIRM|HOURS|@HANDLE)/i);
+  assert.doesNotMatch(page, /<form\b|href="(?:tel:|https:\/\/wa\.me\/|#enquire)/i);
+  assert.doesNotMatch(page, /633 nm|660 nm|670 nm|0\.5–50 Hz|£\[PRICE\]/i);
+});
+
+test('Fight Promotions exposes its verified page routes and keeps other concepts unavailable', () => {
+  const fightPromotions = menu.find(item => item.id === 'house')
+    ?.groups.find(group => group.id === 'fight-promotions');
+  const pagePath = new URL('../public/fight-promotions.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+  const firstItem = fightPromotions?.items[0];
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(firstItem?.title, 'Professional Fight Promotions');
+  assert.equal(firstItem?.kind, 'concept');
+  assert.equal(firstItem?.href, '/fight-promotions.html');
+  assert.equal(firstItem?.navigationUnavailable, false);
+  assert.equal(fightPromotions.items.length, 5);
+  assert.ok(fightPromotions.items.every(item => !item.navigationUnavailable));
+  assert.match(page, /<title>FSD \| Professional Fight Promotions<\/title>/);
+  assert.match(page, /<div data-fsd-standalone-navigation><\/div>/);
+  assert.match(page, /FSD conceptualizes professional fight promotions/);
+  assert.match(page, /Concept for exploration\. Not a current product or commitment\./);
+  assert.match(page, /No FSD location, event, or service is represented as operational\./);
+  assert.doesNotMatch(page, /We collaborate with elite athletes|<form\b|BOOK NOW|BUY NOW/i);
+});
+
+test('Live Events is a public strategic initiative page with an accurate rollout status', () => {
+  const fightPromotions = menu.find(item => item.id === 'house')
+    ?.groups.find(group => group.id === 'fight-promotions');
+  const liveEvents = fightPromotions?.items.find(item => item.title === 'Live Events');
+  const pagePath = new URL('../public/live-events.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(liveEvents?.kind, 'initiative');
+  assert.equal(liveEvents?.href, '/live-events.html');
+  assert.equal(liveEvents?.navigationUnavailable, false);
+  assert.match(page, /<title>FSD \| Live Events<\/title>/);
+  assert.match(page, /Strategic initiative\. Rollout is not yet operational\./);
+  assert.match(page, /No FSD location, event, or service is currently represented as live or available\./);
+  assert.doesNotMatch(page, /Concept for exploration|not a current product|exploratory concept/i);
+  assert.doesNotMatch(page, /<form\b|BOOK NOW|BUY NOW/i);
+});
+
+test('Broadcast & PPV is a public strategic initiative page, not a concept', () => {
+  const fightPromotions = menu.find(item => item.id === 'house')
+    ?.groups.find(group => group.id === 'fight-promotions');
+  const broadcastPpv = fightPromotions?.items.find(item => item.title === 'Broadcast & PPV');
+  const pagePath = new URL('../public/broadcast-ppv.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(broadcastPpv?.kind, 'initiative');
+  assert.equal(broadcastPpv?.href, '/broadcast-ppv.html');
+  assert.equal(broadcastPpv?.navigationUnavailable, false);
+  assert.match(page, /<title>FSD \| Broadcast &amp; PPV<\/title>/);
+  assert.match(page, /Strategic initiative\. Rollout is not yet operational\./);
+  assert.match(page, /No FSD location, broadcast, PPV event, or service is currently represented as live or available\./);
+  assert.doesNotMatch(page, /Concept for exploration|not a current product|exploratory concept/i);
+  assert.doesNotMatch(page, /<form\b|BOOK NOW|BUY NOW/i);
+});
+
+test('Athlete Development is an operating initiative with no invented booking details', () => {
+  const fightPromotions = menu.find(item => item.id === 'house')
+    ?.groups.find(group => group.id === 'fight-promotions');
+  const athleteDevelopment = fightPromotions?.items.find(item => item.title === 'Athlete Development');
+  const pagePath = new URL('../public/athlete-development.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(athleteDevelopment?.kind, 'initiative');
+  assert.equal(athleteDevelopment?.status, 'Operating');
+  assert.equal(athleteDevelopment?.href, '/athlete-development.html');
+  assert.equal(athleteDevelopment?.navigationUnavailable, false);
+  assert.match(page, /<title>FSD \| Athlete Development<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating\./);
+  assert.match(page, /nutritional guidance/);
+  assert.match(page, /Cryo-Zero and Red Light therapy/);
+  assert.doesNotMatch(page, /Concept for exploration|not a current product|exploratory concept/i);
+  assert.doesNotMatch(page, /<form\b|BOOK NOW|BUY NOW|£\d/i);
+});
+
+test('Academy & Grassroots Programmes is an operating initiative page', () => {
+  const fightPromotions = menu.find(item => item.id === 'house')
+    ?.groups.find(group => group.id === 'fight-promotions');
+  const academy = fightPromotions?.items.find(item => item.title === 'Academy & Grassroots Programmes');
+  const pagePath = new URL('../public/academy-grassroots.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(academy?.kind, 'initiative');
+  assert.equal(academy?.status, 'Operating');
+  assert.equal(academy?.href, '/academy-grassroots.html');
+  assert.equal(academy?.navigationUnavailable, false);
+  assert.match(page, /<title>FSD \| Academy &amp; Grassroots Programmes<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating\./);
+  assert.match(page, /community mentorship/);
+  assert.match(page, /youth sports development/);
+  assert.doesNotMatch(page, /Concept for exploration|not a current product|exploratory concept/i);
+  assert.doesNotMatch(page, /<form\b|BOOK NOW|BUY NOW|£\d/i);
+});
+
 test('The House page keeps only Founder Story from its original brand sections', () => {
   const house = menu.find(section => section.id === 'house');
   const group = house?.groups.find(item => item.id === 'our-story');
@@ -76,6 +208,11 @@ test('The House page keeps only Founder Story from its original brand sections',
   assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
   assert.match(page, /<div data-fsd-standalone-navigation><\/div>/);
   assert.doesNotMatch(page, /Archive & Version History|Brand Story & Archive|OUR STORY & ARCHIVE|brand\/(?:archive|purpose|identity|press)|Purpose & Positioning|Brand Identity Standard|Press & Media Kit/);
+  assert.match(page, /The Architecture of Purpose/);
+  assert.match(page, /Fitness\. Discipline\. Progress\. Built on evidence rather than assertion\./);
+  assert.match(page, /Shaped by hands-on experience across frontline environments/);
+  assert.match(page, /Uncompromising Standards/);
+  assert.doesNotMatch(page, /The founder’s verified biography will appear here/);
   assert.match(page, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
   assert.doesNotMatch(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
   assert.match(page, /--bk:#0B0C0E/);
@@ -207,6 +344,11 @@ test('Bio-Lab and Hardware reuse current division groups and product records', (
   ]);
   assert.ok(hardware.groups[0].items.some(item => item.record?.name));
   assert.equal(hardware.groups.some(group => group.id === 'fsd-pods'), false);
+  const recoveryGroup = hardware.groups.find(group => group.id === 'recovery-technology');
+  assert.ok(recoveryGroup);
+  assert.ok(recoveryGroup.items.some(item => item.title === 'Cryo-Zero Recovery Chambers'));
+  assert.ok(recoveryGroup.items.some(item => item.title === 'Red Light Recovery Beds'));
+  assert.equal(recoveryGroup.items.some(item => item.title === '7mm Knee Sleeves'), false);
 });
 
 test('weighted rope is an opt-in Hardware draft preview, not a published catalogue record', () => {
@@ -277,6 +419,8 @@ test('House navigation maps the public initiative homes and rollout details', ()
   assert.deepEqual(story.items.map(item => item.title), [
     'Founder Story',
   ]);
+  assert.equal(story.items[0].description, 'Fitness. Discipline. Progress.');
+  assert.equal(story.description, 'Explore The Architecture of Purpose and the FSD manifesto.');
   assert.ok(story.items.every(item => item.href.startsWith('/the-house.html#brand/')));
   assert.ok(flagships.items.every(item => /no location or service is represented as operational/i.test(item.description)));
   assert.equal(flagships.href, '');
@@ -290,17 +434,242 @@ test('House navigation maps the public initiative homes and rollout details', ()
     'Circular Trade-In Programme',
     'Community First Aid & Safety Skills',
   ]);
-  assert.ok(community.items.every(item => item.href.startsWith('/the-house.html#community/')));
+  assert.equal(community.items[0].href, '/community-co-creation.html');
+  assert.equal(community.items[0].kind, 'initiative');
+  assert.equal(community.items[0].status, 'Operating or rollout underway');
+  assert.equal(community.items[1].href, '/performance-partnerships.html');
+  assert.equal(community.items[1].kind, 'initiative');
+  assert.equal(community.items[1].status, 'Operating or rollout underway');
+  assert.equal(community.items[2].href, '/circular-trade-in.html');
+  assert.equal(community.items[2].kind, 'initiative');
+  assert.equal(community.items[2].status, 'Operating or rollout underway');
+  assert.equal(community.items[3].href, '/community-first-aid.html');
+  assert.equal(community.items[3].kind, 'initiative');
+  assert.equal(community.items[3].status, 'Operating or rollout underway');
+  assert.ok(community.items.slice(4).every(item => item.href.startsWith('/the-house.html#community/')));
   assert.deepEqual(globalOperations.items.map(item => item.title), [
     'FSD Pods',
     'Autonomous Pop-Ups & Predictive Stock',
     'Mobile Testing Labs',
     'Local Micro-Manufacturing',
     'Genetic & Microbiome Personalisation',
+    'Security Provisions',
   ]);
-  assert.ok(globalOperations.items.every(item => item.href.startsWith('/the-house.html#global/')));
+  assert.equal(globalOperations.items[0].href, '/fsd-pods.html');
+  assert.equal(globalOperations.items[0].kind, 'initiative');
+  assert.equal(globalOperations.items[0].status, 'Operating or rollout underway');
+  assert.equal(globalOperations.items[1].href, '/autonomous-popups.html');
+  assert.equal(globalOperations.items[1].kind, 'initiative');
+  assert.equal(globalOperations.items[1].status, 'Operating or rollout underway');
+  assert.equal(globalOperations.items[2].href, '/mobile-testing-labs.html');
+  assert.equal(globalOperations.items[2].kind, 'initiative');
+  assert.equal(globalOperations.items[2].status, 'Operating or rollout underway');
+  assert.equal(globalOperations.items[3].href, '/local-micro-manufacturing.html');
+  assert.equal(globalOperations.items[3].kind, 'initiative');
+  assert.equal(globalOperations.items[3].status, 'Operating or rollout underway');
+  assert.equal(globalOperations.items[4].href, '/genetic-microbiome.html');
+  assert.equal(globalOperations.items[4].kind, 'initiative');
+  assert.equal(globalOperations.items[4].status, 'Operating or rollout underway');
+  assert.equal(globalOperations.items[5].href, '/security-vision.html');
+  assert.equal(globalOperations.items[5].kind, 'initiative');
+  assert.equal(globalOperations.items[5].status, 'Strategic expansion; not operational');
+  assert.ok(globalOperations.items.slice(6).every(item => item.href.startsWith('/the-house.html#global/')));
   assert.equal(investor.href, '/investor.html');
   assert.equal(investor.navigationUnavailable, false);
+});
+
+test('FSD Pods is a public initiative page without claiming a live pod or location', () => {
+  const house = menu.find(item => item.id === 'house');
+  const globalOperations = house?.groups.find(group => group.id === 'global-vision-operations');
+  const pods = globalOperations?.items.find(item => item.title === 'FSD Pods');
+  const pagePath = new URL('../public/fsd-pods.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(pods?.kind, 'initiative');
+  assert.equal(pods?.href, '/fsd-pods.html');
+  assert.equal(pods?.status, 'Operating or rollout underway');
+  assert.notEqual(pods?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| FSD Pods<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /No FSD Pod, location, or service is currently represented as operational\./);
+  assert.match(page, /modular, transportable architectural units/);
+  assert.doesNotMatch(page, /Concept for exploration|not a current product|exploratory concept/i);
+});
+
+test('Autonomous Pop-Ups & Predictive Stock is an initiative without claiming live venues or systems', () => {
+  const house = menu.find(item => item.id === 'house');
+  const globalOperations = house?.groups.find(group => group.id === 'global-vision-operations');
+  const retail = globalOperations?.items.find(item => item.title === 'Autonomous Pop-Ups & Predictive Stock');
+  const pagePath = new URL('../public/autonomous-popups.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(retail?.kind, 'initiative');
+  assert.equal(retail?.href, '/autonomous-popups.html');
+  assert.equal(retail?.status, 'Operating or rollout underway');
+  assert.notEqual(retail?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Autonomous Pop-Ups &amp; Predictive Stock<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /not confirmed venues or partners/);
+  assert.match(page, /No predictive stock system is represented as live/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
+});
+
+test('Mobile Testing Labs is an initiative with consent safeguards and no live-testing claim', () => {
+  const house = menu.find(item => item.id === 'house');
+  const globalOperations = house?.groups.find(group => group.id === 'global-vision-operations');
+  const testingLabs = globalOperations?.items.find(item => item.title === 'Mobile Testing Labs');
+  const pagePath = new URL('../public/mobile-testing-labs.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(testingLabs?.kind, 'initiative');
+  assert.equal(testingLabs?.href, '/mobile-testing-labs.html');
+  assert.equal(testingLabs?.status, 'Operating or rollout underway');
+  assert.notEqual(testingLabs?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Mobile Testing Labs<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /anonymised performance and fit insights with participant consent/);
+  assert.match(page, /No mobile testing unit, venue, test, or data-collection activity is currently represented as operational/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
+});
+
+test('Local Micro-Manufacturing is an initiative without claiming live production', () => {
+  const house = menu.find(item => item.id === 'house');
+  const globalOperations = house?.groups.find(group => group.id === 'global-vision-operations');
+  const manufacturing = globalOperations?.items.find(item => item.title === 'Local Micro-Manufacturing');
+  const pagePath = new URL('../public/local-micro-manufacturing.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(manufacturing?.kind, 'initiative');
+  assert.equal(manufacturing?.href, '/local-micro-manufacturing.html');
+  assert.equal(manufacturing?.status, 'Operating or rollout underway');
+  assert.notEqual(manufacturing?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Local Micro-Manufacturing<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /shorter lead times, lower transport emissions, and greater customisation/);
+  assert.match(page, /No local manufacturing hub, production site, or service is currently represented as operational/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
+});
+
+test('Genetic & Microbiome Personalisation is a research initiative, not a health service', () => {
+  const house = menu.find(item => item.id === 'house');
+  const globalOperations = house?.groups.find(group => group.id === 'global-vision-operations');
+  const research = globalOperations?.items.find(item => item.title === 'Genetic & Microbiome Personalisation');
+  const pagePath = new URL('../public/genetic-microbiome.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(research?.kind, 'initiative');
+  assert.equal(research?.href, '/genetic-microbiome.html');
+  assert.equal(research?.status, 'Operating or rollout underway');
+  assert.notEqual(research?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Genetic &amp; Microbiome Personalisation<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /strict privacy protections and appropriate clinical oversight/);
+  assert.match(page, /No genetic or microbiome testing, data analysis, or personalised health guidance is represented as currently available/);
+  assert.match(page, /No clinical partnership is identified on this page/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|clinical advice is available/i);
+});
+
+test('Security Provisions is public strategy content, not an active tender', () => {
+  const house = menu.find(item => item.id === 'house');
+  const globalOperations = house?.groups.find(group => group.id === 'global-vision-operations');
+  const security = globalOperations?.items.find(item => item.title === 'Security Provisions');
+  const pagePath = new URL('../public/security-vision.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(security?.kind, 'initiative');
+  assert.equal(security?.href, '/security-vision.html');
+  assert.equal(security?.status, 'Strategic expansion; not operational');
+  assert.notEqual(security?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Global Vision &amp; Security Provisions<\/title>/);
+  assert.match(page, /SIA Licensing &amp; UK Legislation/);
+  assert.match(page, /British Standard \(BS 7858\)/);
+  assert.match(page, /Deployment and commercial contracting are subject to corporate structuring/);
+  assert.match(page, /Not an active operational tender/);
+  assert.doesNotMatch(page, /<nav class="main-nav"|id="house-mega-menu"|<form\b/i);
+});
+
+test('Community Co-Creation is an operating initiative without an open submission flow', () => {
+  const house = menu.find(item => item.id === 'house');
+  const community = house?.groups.find(group => group.id === 'community-culture');
+  const coCreation = community?.items.find(item => item.title === 'Community Co-Creation');
+  const pagePath = new URL('../public/community-co-creation.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(coCreation?.kind, 'initiative');
+  assert.equal(coCreation?.href, '/community-co-creation.html');
+  assert.equal(coCreation?.status, 'Operating or rollout underway');
+  assert.notEqual(coCreation?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Community Co-Creation<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /structured feedback, workshops, and collaborative testing/);
+  assert.match(page, /does not offer workshop registration, product trials, or feedback submissions/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b/i);
+});
+
+test('Performance-Linked Partnerships does not claim unconfirmed partners or testing', () => {
+  const house = menu.find(item => item.id === 'house');
+  const community = house?.groups.find(group => group.id === 'community-culture');
+  const partnerships = community?.items.find(item => item.title === 'Performance-Linked Partnerships');
+  const pagePath = new URL('../public/performance-partnerships.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(partnerships?.kind, 'initiative');
+  assert.equal(partnerships?.href, '/performance-partnerships.html');
+  assert.equal(partnerships?.status, 'Operating or rollout underway');
+  assert.notEqual(partnerships?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Performance-Linked Partnerships<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /developing a partnership framework for training facilities and martial-arts coaches/);
+  assert.match(page, /subject to written agreements, agreed safety protocols, and appropriate participant consent/);
+  assert.match(page, /No specific partner, facility, or live testing programme is identified on this page/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|FSD collaborates with dedicated training facilities/i);
+});
+
+test('Circular Trade-In describes the initiative without opening a return or credit offer', () => {
+  const house = menu.find(item => item.id === 'house');
+  const community = house?.groups.find(group => group.id === 'community-culture');
+  const tradeIn = community?.items.find(item => item.title === 'Circular Trade-In Programme');
+  const pagePath = new URL('../public/circular-trade-in.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(tradeIn?.kind, 'initiative');
+  assert.equal(tradeIn?.href, '/circular-trade-in.html');
+  assert.equal(tradeIn?.status, 'Operating or rollout underway');
+  assert.notEqual(tradeIn?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Circular Trade-In Programme<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /inspection, repair, resale, and recycling pathways/);
+  assert.match(page, /does not currently accept trade-in requests or specify eligibility, credit, collection, or processing terms/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b|trade-in credit is available/i);
+});
+
+test('Community First Aid & Safety Skills does not claim an unconfirmed training service', () => {
+  const house = menu.find(item => item.id === 'house');
+  const community = house?.groups.find(group => group.id === 'community-culture');
+  const firstAid = community?.items.find(item => item.title === 'Community First Aid & Safety Skills');
+  const pagePath = new URL('../public/community-first-aid.html', import.meta.url);
+  const page = readFileSync(pagePath, 'utf8');
+
+  assert.ok(existsSync(pagePath));
+  assert.equal(firstAid?.kind, 'initiative');
+  assert.equal(firstAid?.href, '/community-first-aid.html');
+  assert.equal(firstAid?.status, 'Operating or rollout underway');
+  assert.notEqual(firstAid?.navigationUnavailable, true);
+  assert.match(page, /<title>FSD \| Community First Aid &amp; Safety Skills<\/title>/);
+  assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
+  assert.match(page, /first aid education, personal-safety awareness, and practical skills training/);
+  assert.match(page, /No accredited provider, course, venue, schedule, age range, or registration is confirmed on this page/);
+  assert.match(page, /does not provide first-aid instruction or emergency response/);
+  assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b|certified provider is currently delivering/i);
 });
 
 test('Private Access remains informational and collects no sign-ups', () => {

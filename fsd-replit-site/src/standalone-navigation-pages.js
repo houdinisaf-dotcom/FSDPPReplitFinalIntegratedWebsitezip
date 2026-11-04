@@ -45,6 +45,45 @@ function removeObjectProperty(source, propertyName) {
   return source.slice(0, propertyStart) + source.slice(end);
 }
 
+function replaceFounderStoryContent(source) {
+  const assignmentStart = source.indexOf('const P=');
+  const valueStart = assignmentStart + 'const P='.length;
+  const valueEnd = source.indexOf(',M=', valueStart);
+  if (assignmentStart < 0 || valueEnd < 0) {
+    throw new Error('Could not locate the House page content dictionary.');
+  }
+
+  const pages = JSON.parse(source.slice(valueStart, valueEnd));
+  const founder = pages['brand/founder'];
+  if (!founder) throw new Error('Could not locate the Founder Story page content.');
+
+  pages['brand/founder'] = {
+    ...founder,
+    kicker: 'The House / Founder Story & Brand Manifesto',
+    title: 'The Architecture of Purpose',
+    tag: 'Fitness. Discipline. Progress. Built on evidence rather than assertion.',
+    status: '',
+    body: [
+      '<strong>01 / The Ethos</strong><br>FSD (Fitness and Self-Defense) was founded on a singular premise: that true capability is not a costume, but a practice. In a fitness and apparel landscape saturated with loud branding, unverified claims, and fleeting trends, FSD was built for those who train with purpose.',
+      'Informed by the uncompromising demands of functional training, martial arts, and self-defense culture, our work bridges movement-led technical apparel with professional-grade recovery and training hardware. We reject noise in favor of substance, ensuring that every design choice serves a distinct operational function.',
+      '<strong>02 / Discipline &amp; Rigorous Execution</strong><br>Shaped by hands-on experience across frontline environments, institutional project management, and operational leadership, the foundation of FSD is rooted in systematic execution, precision, and absolute accountability.',
+      'We approach product architecture, supply chain integrity, and brand development with rigorous discipline. Whether engineering the AEROFORGE activewear line, structuring supervised recovery systems like Cryo-Zero, or designing professional-grade training equipment, our standard is uncompromising: form first, facts only when verified.',
+      '<strong>03 / What We Aim to Achieve</strong>',
+      '<strong>04 / Built for the Work</strong><br>FSD operates as a modern British performance house where design, governance, and utility intersect. We are building a long-horizon ecosystem structured for those who demand excellence from themselves and their equipment.',
+    ],
+    bul: [
+      '<strong>Uncompromising Standards</strong><br>To deliver technical apparel and recovery infrastructure that prioritizes durability, clean minimalist design, and verified utility.',
+      '<strong>Transparent Ecosystem</strong><br>To build an ecosystem grounded in honest disclosures, rigorous operational oversight, and evidence-driven growth.',
+      '<strong>The Pursuit of Mastery</strong><br>To cultivate a community of dedicated lifters, martial artists, and disciplined individuals who understand that confidence is earned in motion.',
+    ],
+    note: '<strong>Capability is a practice.</strong> Welcome to the house.',
+  };
+  pages.brand.subs = pages.brand.subs?.map(([id, title, description]) =>
+    id === 'founder' ? [id, title, 'Fitness. Discipline. Progress.'] : [id, title, description]);
+
+  return source.slice(0, valueStart) + JSON.stringify(pages) + source.slice(valueEnd);
+}
+
 export function transformHousePageContent(html) {
   let transformed = html;
   for (const section of ['brand/archive', 'brand/purpose', 'brand/identity', 'brand/press']) {
@@ -55,6 +94,8 @@ export function transformHousePageContent(html) {
     const entry = `\\["${section}",\\s*"[^"]*"(?:,\\s*"[^"]*")?\\]`;
     transformed = transformed.replace(new RegExp(`,\\s*${entry}|${entry},?`, 'g'), '');
   }
+
+  transformed = replaceFounderStoryContent(transformed);
 
   return transformed
     .replace(/"(?:Archive & Version History|Purpose & Positioning|Brand Identity Standard|Press & Media Kit)"\s*,?/g, '')
@@ -99,7 +140,7 @@ export function standaloneNavigationPagesPlugin(projectRoot) {
         .join('\n    ');
       const scriptTag = `<script type="module" src="/${entry.file}"></script>`;
 
-      for (const fileName of ['investor.html', 'the-house.html']) {
+      for (const fileName of ['investor.html', 'the-house.html', 'cryo-zero.html', 'red-light-recovery.html', 'fight-promotions.html', 'live-events.html', 'broadcast-ppv.html', 'athlete-development.html', 'academy-grassroots.html', 'fsd-pods.html', 'autonomous-popups.html', 'mobile-testing-labs.html', 'local-micro-manufacturing.html', 'genetic-microbiome.html', 'community-co-creation.html', 'performance-partnerships.html', 'circular-trade-in.html', 'community-first-aid.html', 'security-vision.html']) {
         const path = resolve(outputRoot, fileName);
         let html = await readFile(path, 'utf8');
         if (fileName === 'the-house.html') html = transformHousePageContent(html);

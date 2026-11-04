@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Draft information about FSD Cryo-Zero recovery technology. Availability and service details are not yet confirmed.">
+  <title>FSD | Cryo-Zero Recovery Chambers</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+    }
+
+    .cryo-page {
+      box-sizing: border-box;
+      background: #0f0f0f;
+      color: #e9e1d0;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.7;
+    }
+
+    .cryo-page *,
+    .cryo-page *::before,
+    .cryo-page *::after {
+      box-sizing: inherit;
+    }
+
+    .cryo-page section {
+      width: min(calc(100% - 48px), 1000px);
+      margin: 0 auto;
+      padding: 56px 0;
+    }
+
+    .cryo-page h1,
+    .cryo-page h2,
+    .cryo-page h3 {
+      margin: 0 0 16px;
+      color: #cdb589;
+      font-weight: 400;
+      letter-spacing: .08em;
+    }
+
+    .cryo-page h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    .cryo-page h2 {
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .cryo-page h3 {
+      font-size: 1.08rem;
+    }
+
+    .cryo-page p,
+    .cryo-page li {
+      color: #d8d0bf;
+    }
+
+    .cryo-page p {
+      margin: 0 0 16px;
+    }
+
+    .cryo-page ul {
+      margin: 0 0 16px;
+      padding-left: 20px;
+    }
+
+    .cryo-page hr {
+      width: min(calc(100% - 48px), 1000px);
+      margin: 0 auto;
+      border: 0;
+      border-top: 1px solid #2a2622;
+    }
+
+    .cryo-page .hero {
+      padding-top: 72px;
+      padding-bottom: 48px;
+      text-align: center;
+    }
+
+    .cryo-page .tag {
+      margin-bottom: 12px;
+      color: #a98b5f;
+      font-size: .78rem;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    .cryo-page .hero-intro {
+      max-width: 680px;
+      margin: 0 auto 26px;
+      font-size: 1.15rem;
+      letter-spacing: .04em;
+    }
+
+    .cryo-page .status-note,
+    .cryo-page .review-note {
+      border-left: 3px solid #8a6a44;
+      background: #161412;
+      padding: 18px 22px;
+      text-align: left;
+    }
+
+    .cryo-page .status-note strong,
+    .cryo-page .review-note strong {
+      color: #cdb589;
+    }
+
+    .cryo-page .glance,
+    .cryo-page .grid,
+    .cryo-page .two {
+      display: grid;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .cryo-page .glance {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      border: 1px solid #2a2622;
+      background: #2a2622;
+      gap: 1px;
+    }
+
+    .cryo-page .glance > div {
+      background: #161412;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .cryo-page .glance b {
+      display: block;
+      color: #cdb589;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .cryo-page .glance span {
+      color: #a8a092;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .cryo-page .grid {
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    }
+
+    .cryo-page .two {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    }
+
+    .cryo-page .card {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 22px;
+    }
+
+    .cryo-page .card .num {
+      margin-bottom: 8px;
+      color: #a98b5f;
+      font-size: 1.35rem;
+    }
+
+    .cryo-page .small {
+      color: #a8a092;
+      font-size: .85rem;
+    }
+
+    .cryo-page details {
+      border-bottom: 1px solid #2a2622;
+      padding: 16px 0;
+    }
+
+    .cryo-page summary {
+      color: #cdb589;
+      cursor: pointer;
+      letter-spacing: .04em;
+    }
+
+    .cryo-page summary:focus-visible {
+      outline: 2px solid #cdb589;
+      outline-offset: 4px;
+    }
+
+    .cryo-page .page-footer {
+      padding-top: 28px;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .cryo-page section {
+        width: min(calc(100% - 32px), 1000px);
+        padding: 42px 0;
+      }
+
+      .cryo-page hr {
+        width: min(calc(100% - 32px), 1000px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div data-fsd-standalone-navigation></div>
+  <main class="cryo-page">
+    <section class="hero" aria-labelledby="cryo-title">
+      <div class="tag">FSD · Recovery Technology · Cryo-Zero</div>
+      <h1 id="cryo-title">Cryo-Zero Recovery Chambers</h1>
+      <p class="hero-intro">Recovery, redefined.</p>
+      <div class="status-note" role="note">
+        <strong>Information in preparation.</strong>
+        Equipment, safety procedures, pricing, location and availability have not been confirmed.
+        No bookings or enquiries are accepted through this page.
+      </div>
+      <div class="glance" aria-label="Service details awaiting confirmation">
+        <div><b>To be confirmed</b><span>Chamber specification</span></div>
+        <div><b>To be confirmed</b><span>Session and visit length</span></div>
+        <div><b>To be confirmed</b><span>Pricing</span></div>
+        <div><b>To be confirmed</b><span>Location and availability</span></div>
+      </div>
+    </section>
+    <hr>
+
+    <section id="overview">
+      <h2>What is whole-body cryotherapy?</h2>
+      <p>Whole-body cryotherapy involves brief exposure to very cold, dry air in a purpose-built chamber. It is not a bath or an ice pack. Experiences vary, and research on possible recovery benefits is limited and mixed.</p>
+      <p>This page does not present cryotherapy as a medical treatment or claim that it treats, cures or prevents illness or injury. It is not a substitute for medical advice.</p>
+      <div class="review-note">
+        <strong>Equipment details are pending.</strong>
+        Chamber design, temperatures, operating requirements and any product-specific statements must be checked against supplier documentation before publication.
+      </div>
+    </section>
+    <hr>
+
+    <section id="visit">
+      <h2>Proposed visit outline</h2>
+      <p>The uploaded draft describes these possible stages. They are not an operating procedure; the final process depends on verified equipment and approved safety guidance.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="num">01</div>
+          <h3>Screening</h3>
+          <p>Eligibility checks and consent requirements are to be confirmed with the provider and insurer.</p>
+        </article>
+        <article class="card">
+          <div class="num">02</div>
+          <h3>Preparation</h3>
+          <p>Protective clothing, jewellery rules and preparation instructions are to be confirmed.</p>
+        </article>
+        <article class="card">
+          <div class="num">03</div>
+          <h3>Supervised session</h3>
+          <p>Session length, operator qualifications and stop procedures are not yet confirmed.</p>
+        </article>
+        <article class="card">
+          <div class="num">04</div>
+          <h3>Aftercare</h3>
+          <p>Any post-session guidance must be confirmed by the service provider.</p>
+        </article>
+      </div>
+    </section>
+    <hr>
+
+    <section id="safety">
+      <h2>Safety and evidence</h2>
+      <div class="two">
+        <article class="card">
+          <h3>Safety information</h3>
+          <p>Extreme cold can carry risks, including cold injury, light-headedness, skin sensations, anxiety or discomfort. Final risk information, screening criteria and contraindications require review against supplier guidance and insurer requirements before any service is offered.</p>
+        </article>
+        <article class="card">
+          <h3>Evidence and health claims</h3>
+          <p>The supplied draft describes research on recovery benefits as limited and mixed. No medical claims are made here. Any future health-related copy should be reviewed by an appropriately qualified professional.</p>
+        </article>
+      </div>
+    </section>
+    <hr>
+
+    <section id="details">
+      <h2>Details to confirm</h2>
+      <ul>
+        <li>Supplier documentation, chamber model and verified technical specifications</li>
+        <li>Insurer-approved operating procedures, screening criteria and operator requirements</li>
+        <li>Confirmed service location, availability, session duration and pricing</li>
+        <li>Booking, cancellation, privacy and customer-support arrangements</li>
+      </ul>
+      <p class="small">Until these details are confirmed, this page is informational only and does not describe an available service.</p>
+    </section>
+    <hr>
+
+    <section id="faq">
+      <h2>Frequently asked questions</h2>
+      <details>
+        <summary>Is Cryo-Zero currently available?</summary>
+        <p>Availability and location have not been confirmed.</p>
+      </details>
+      <details>
+        <summary>Can I book a session?</summary>
+        <p>No booking or enquiry service is active through this page.</p>
+      </details>
+      <details>
+        <summary>Does cryotherapy treat an injury or health condition?</summary>
+        <p>No treatment claim is made. Cryotherapy is not a substitute for advice from a healthcare professional.</p>
+      </details>
+    </section>
+
+    <section class="page-footer">
+      <div class="tag">FSD · Recovery Technology</div>
+      <p class="small">Draft information only. Equipment, availability, safety procedures and all commercial details remain subject to confirmation and review.</p>
+    </section>
+  </main>
+  <script type="module" src="/src/standalone-navigation.js"></script>
+</body>
+</html>

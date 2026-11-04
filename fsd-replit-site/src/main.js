@@ -148,7 +148,22 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
 
   const destination = item?.href || group?.href;
   if (destination) {
-    if (destination === '/investor.html'
+    if (destination === '/fight-promotions.html'
+      || destination === '/live-events.html'
+      || destination === '/broadcast-ppv.html'
+      || destination === '/athlete-development.html'
+      || destination === '/academy-grassroots.html'
+      || destination === '/fsd-pods.html'
+      || destination === '/autonomous-popups.html'
+      || destination === '/mobile-testing-labs.html'
+      || destination === '/local-micro-manufacturing.html'
+      || destination === '/genetic-microbiome.html'
+      || destination === '/community-co-creation.html'
+      || destination === '/performance-partnerships.html'
+      || destination === '/circular-trade-in.html'
+      || destination === '/community-first-aid.html'
+      || destination === '/security-vision.html'
+      || destination === '/investor.html'
       || destination === FSD_HOUSE_PAGE_PATH
       || destination.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) {
       window.location.assign(destination);
