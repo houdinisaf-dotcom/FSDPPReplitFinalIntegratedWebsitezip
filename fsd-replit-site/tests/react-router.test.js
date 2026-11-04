@@ -48,6 +48,21 @@ test('section destinations map to their existing FSD sections', () => {
   assert.deepEqual(routeFromHash('#philosophy'), { view: 'story', target: 'our-story' });
   assert.deepEqual(routeFromHash('#contact'), { view: 'private-access', target: 'contact' });
   assert.deepEqual(routeFromHash('#products'), { view: 'collection', target: 'all-products' });
+  assert.deepEqual(routeFromHash('#clothing-lines'), { view: 'collection', target: 'clothing-lines' });
+  assert.deepEqual(routeFromHash('#line-aeroforge'), { view: 'collection', target: 'line-aeroforge' });
+  assert.deepEqual(routeFromHash('#line-scorpion-series'), { view: 'collection', target: 'line-scorpion-series' });
+});
+
+test('Clothing Lines SHOP destinations resolve to their section hashes, not legacy showcase routes', () => {
+  assert.deepEqual(resolveFsdRoute({
+    menu: { id: 'collections' },
+    group: { id: 'clothing-lines', href: '#clothing-lines' },
+  }), { view: 'collection', target: 'clothing-lines' });
+  assert.deepEqual(resolveFsdRoute({
+    menu: { id: 'collections' },
+    group: { id: 'clothing-lines' },
+    item: { id: 'clothing-line-aeroforge', kind: 'clothing-line', href: '#line-aeroforge' },
+  }), { view: 'collection', target: 'line-aeroforge' });
 });
 
 test('the brand story has a direct path route while retaining hash-route compatibility', () => {

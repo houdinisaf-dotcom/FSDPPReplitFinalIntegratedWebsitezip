@@ -205,7 +205,8 @@ function conceptCard(concept) {
 
 
 export function groupProducts(group, products, subcategory = null) {
-  return products.filter(product => matchesGroup(product, group) &&
+  return products.filter(product => (matchesGroup(product, group)
+    || (group.additionalCategories || []).includes(product.category)) &&
     (!subcategory || matchesGroup(product, subcategory)));
 }
 

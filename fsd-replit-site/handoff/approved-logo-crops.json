@@ -1,0 +1,85 @@
+{
+  "approval": "Owner authorised unchanged logo-panel crops. Collection assignments were not supplied.",
+  "excludedConcepts": [
+    3
+  ],
+  "notes": "These are flattened raster crops, not standalone transparent or vector masters. The unnumbered monogram is not assigned to Serene or any collection.",
+  "assets": [
+    {
+      "key": "ascent",
+      "name": "Concept 2 — Ascent Triangle",
+      "asset": "/brand/logo-panel-crops/concept-2-ascent-triangle.png",
+      "source": "attached_assets/Image_22-10-2026_at_03.33_1793783461384.png",
+      "sourceDimensions": [
+        506,
+        1024
+      ],
+      "crop": {
+        "x": 90,
+        "y": 152,
+        "width": 330,
+        "height": 231
+      },
+      "sourceSha256": "0ba22a0155481f1730277c3721cf6a5ba69fe3a1ed59a35464bc4296bf06d852",
+      "assetSha256": "2eb4729cfd88aa7eb3fff280a69bf0304a6c1765c187aebc6d3e169f355f0148",
+      "treatment": "Owner-approved lossless rectangular panel crop; original background retained."
+    },
+    {
+      "key": "aligned",
+      "name": "Concept 4 — Aligned Wordmark",
+      "asset": "/brand/logo-panel-crops/concept-4-aligned-wordmark.png",
+      "source": "attached_assets/Image_22-10-2026_at_03.32_1793783461384.png",
+      "sourceDimensions": [
+        613,
+        1024
+      ],
+      "crop": {
+        "x": 20,
+        "y": 300,
+        "width": 285,
+        "height": 103
+      },
+      "sourceSha256": "19d8781ae60ff95bff2807f12fba3b308c1b43df0fafd12910ab5094aeb83ca8",
+      "assetSha256": "61804c847d555e313f59cb508643720fad2f8713d428a04e6a4a351647e2dcbd",
+      "treatment": "Owner-approved lossless rectangular panel crop; original background retained."
+    },
+    {
+      "key": "signature",
+      "name": "Concept 5 — Signature Mark",
+      "asset": "/brand/logo-panel-crops/concept-5-signature-mark.png",
+      "source": "attached_assets/Image_22-10-2026_at_03.32_1793783461384.png",
+      "sourceDimensions": [
+        613,
+        1024
+      ],
+      "crop": {
+        "x": 337,
+        "y": 268,
+        "width": 262,
+        "height": 180
+      },
+      "sourceSha256": "19d8781ae60ff95bff2807f12fba3b308c1b43df0fafd12910ab5094aeb83ca8",
+      "assetSha256": "f2218fa468a880945940d02ee894c640ef8cb08dd609c812fbdf3b26b677e093",
+      "treatment": "Owner-approved lossless rectangular panel crop; original background retained."
+    },
+    {
+      "key": null,
+      "name": "Monogram — identity unconfirmed",
+      "asset": "/brand/logo-panel-crops/monogram-unassigned.png",
+      "source": "attached_assets/Image_22-10-2026_at_03.34_1793783461384.png",
+      "sourceDimensions": [
+        635,
+        1024
+      ],
+      "crop": {
+        "x": 45,
+        "y": 398,
+        "width": 225,
+        "height": 146
+      },
+      "sourceSha256": "72814b27851d633bcda6fef34608832bba30c53d25494c1de16641d62102a916",
+      "assetSha256": "87ffeba75e131d310a5b01c87111594dc76c639bc698aa2cd42566081d739111",
+      "treatment": "Owner-approved lossless rectangular panel crop; original background retained."
+    }
+  ]
+}

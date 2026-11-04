@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FSD — Website Audit &amp; Launch Readiness</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0a0a0a;color:#e8e3d9;font:16px/1.65 system-ui,sans-serif}
+main{max-width:1160px;margin:auto;padding:48px 24px}h1,h2{color:#d4af37;line-height:1.2}h1{font-size:clamp(28px,5vw,48px);font-weight:500}h2{margin-top:42px;font-size:24px}
+.kicker{letter-spacing:.18em;font-size:12px;color:#d4af37;text-transform:uppercase}.summary,.notice{padding:22px;background:#151515;border:1px solid #49402a;border-radius:8px}.notice{border-left:4px solid #d4af37}small{color:#bcb5a5}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:14px 12px;border-bottom:1px solid #333;text-align:left;vertical-align:top}th{color:#d4af37}td:first-child{min-width:190px}.pass{color:#bfe0ae}.fix{color:#f4cf7b}.na{color:#bcb5a5}code{font-size:.9em;color:#e1ca88;overflow-wrap:anywhere}li{margin:9px 0}a{color:#d4af37}p{max-width:90ch}
+@media print{body{background:white;color:#171717}h1,h2,th,.kicker{color:#715511}.summary,.notice{background:#faf7f0}.pass{color:#326224}.fix{color:#8b5900}.na,small{color:#555}code{color:#715511}main{padding:16px}.table-wrap{overflow:visible}}
+</style>
+</head>
+<body><main>
+<p class="kicker">FSD / Existing website audit / 4 November 2026</p>
+<h1>Website audit &amp;<br>launch readiness</h1>
+<div class="summary"><strong>Implementation status:</strong> the tested public-preview build is ready for an owner-led publish. <strong>Live commerce is not enabled.</strong> No active deployment or verified production domain was returned by the deployment service during this audit.</div>
+<p>This work improves the existing application. It does not replace the website, duplicate catalogue records, change prices or colourways, redraw logos, enable payments, or turn future initiatives into live services.</p>
+<h2>Twenty-point audit</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Check</th><th>Initial</th><th>After work</th><th>Evidence and limitation</th></tr></thead>
+<tbody>
+<tr><td>1. Production domain</td><td class="fix">NEEDS FIX</td><td class="fix">NEEDS FIX</td><td>Deployment service: no active deployment, primary URL or visibility. Autoscale configuration was preserved. Publishing and domain verification remain owner actions.</td></tr>
+<tr><td>2. Unique page titles</td><td class="fix">NEEDS FIX</td><td class="pass">PASS</td><td>111 real public routes have unique server-delivered titles. Product, audience, seven clothing-line and division entry routes reuse existing data and UI.</td></tr>
+<tr><td>3. Meta descriptions</td><td class="fix">NEEDS FIX</td><td class="pass">PASS</td><td>All 111 routes have descriptions, including The House and Investor Relations. Client metadata follows selected products and restores the underlying page when its dialog closes.</td></tr>
+<tr><td>4. FSD favicon</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Existing custom FSD favicon retained and referenced on generated public entries and the new 404 page.</td></tr>
+<tr><td>5. Open Graph images</td><td class="fix">NEEDS FIX</td><td class="pass">PASS</td><td>Open Graph and Twitter card metadata added across public pages, using mapped product photos or existing approved FSD campaign imagery. No new logo or stock photograph was substituted.</td></tr>
+<tr><td>6. Canonical URLs</td><td class="fix">NEEDS FIX</td><td class="fix">NEEDS FIX</td><td>Generation is implemented but intentionally withheld until a verified production origin is configured. Preview hosts and placeholder production URLs are rejected.</td></tr>
+<tr><td>7. Social previews</td><td class="fix">NEEDS FIX</td><td class="fix">NEEDS FIX</td><td>HTML metadata is ready. Real external crawler/card rendering cannot be verified without an accessible production URL. No claim is made that Facebook, LinkedIn or other platforms have scraped the site.</td></tr>
+<tr><td>8. Branded 404</td><td class="fix">NEEDS FIX</td><td class="pass">PASS</td><td>Unknown public HTML and extensionless paths return a genuine HTTP 404 with FSD styling and recovery links. Missing assets remain 404 rather than pretending to be the homepage. GET and HEAD were tested.</td></tr>
+<tr><td>9. Loading states</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Existing loading states, mapped-photo loading and named missing-image placeholders retained. The initial hero remains eager/high priority; offscreen imagery stays lazy.</td></tr>
+<tr><td>10. Error messages</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Existing image, gallery, pre-launch and API messages preserved; the new 404 explains recovery. Gallery error/fallback states are covered by tests. This is not a claim that every third-party failure has been exercised.</td></tr>
+<tr><td>11. Headings</td><td class="fix">NEEDS FIX</td><td class="pass">PASS</td><td>Active storefront H1 checked in browsers; standalone pages retain their H1. Generated product and collection entries include meaningful no-JavaScript H1 and linked content from the same catalogue, without duplicating visible sections.</td></tr>
+<tr><td>12. Image alt text</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Rendered storefront images declare alt intent at all three checked widths. Existing gallery captions and colourway labels remain intact. Decorative images may legitimately use empty alt text.</td></tr>
+<tr><td>13. Sitemap</td><td class="fix">NEEDS FIX</td><td class="fix">NEEDS FIX</td><td>Generator derives only real public routes, excluding private/admin/cart/checkout paths. It deliberately emits no sitemap without a verified origin. Production robots rules are generated now; a Sitemap directive is added when the origin is configured.</td></tr>
+<tr><td>14. Production console</td><td class="na">NOT APPLICABLE</td><td class="na">NOT APPLICABLE</td><td>No active deployment exists to observe. Local production-build HTTP checks and development browser error checks passed; these are not live-production console monitoring.</td></tr>
+<tr><td>15. Development logging</td><td class="pass">PASS</td><td class="pass">PASS</td><td>No application console.log/debug calls found in the inspected frontend source/public scripts. Useful console.error reporting and the server startup log remain. Vite's development messages are not shipped as production logging.</td></tr>
+<tr><td>16. Source-map exposure</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Production source maps explicitly disabled; none found in build assets; map requests return 404. nosniff retained and a referrer policy added. This is not a penetration test or a substitute for authorization and privacy controls.</td></tr>
+<tr><td>17. JavaScript bundles</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Main application: approximately 135 kB raw / 40 kB gzip. React vendor: 223 kB raw / 69 kB gzip, separately cacheable. Navigation: 188 kB raw / 49 kB gzip. Motion stays deferred. All are below the audit's 500 kB per-script review budget; this is not a Lighthouse or field-performance score.</td></tr>
+<tr><td>18. Mobile layouts</td><td class="pass">PASS</td><td class="pass">PASS</td><td>1440, 768 and 393 px browser checks cover overflow, colourways, swipe, gallery zoom/panning, nested close/focus and return position. Existing desktop design is retained. Native pinch permission is preserved; device-specific pinch behaviour is not certified by the desktop harness.</td></tr>
+<tr><td>19. UI spacing</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Existing spacing system retained; storefront, product galleries and collection transitions remain within checked viewports. New 404 links have 44 px minimum tap areas.</td></tr>
+<tr><td>20. Buttons and navigation</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Navigation, search, filters, product handoff, collection links and bag quantity/subtotal checks passed. Checkout remains intentionally disabled. No real payment, order, refund or fulfilment transaction was attempted.</td></tr>
+</tbody></table></div>
+<h2>What was implemented</h2>
+<ul>
+<li>Additive public entry paths for existing products, men's/women's/accessories collections, all seven clothing lines, story and public divisions. Each opens the existing product dialog, filtered catalogue or established banner rather than a replacement storefront.</li>
+<li>Shared build-time and browser metadata, including standalone public pages. A verified origin will generate absolute sharing images, canonical links, Open Graph URLs and a public-route sitemap.</li>
+<li>Real branded 404 responses, source-map request denial, immutable caching for hashed build assets, and a stable React vendor chunk. No dependencies were added.</li>
+<li>A native-dialog lifecycle guard prevents a queued old close event from clearing a newly reopened product or moving focus away from it.</li>
+<li>Preservation and regression testing of seven collection banners, scroll-active highlights, approved far-right logos, restrained motion, variant-safe galleries, full-screen photography, zoom/panning and cart controls.</li>
+<li>No missing photographs were replaced with unrelated images. No fabricated photographic angles, models, 3D viewer or single-image “360°” simulation was added.</li>
+</ul>
+<h2>Existing collections and branding</h2>
+<p>AEROFORGE, COMBAT, FLEX, BREEZE, MODEST FLOW, Tiger and Scorpion retain their existing mapped products and approved assets. Women's Concepts 1, 2, 4 and 5 remain the approved set; Concept 3 is excluded. Unassigned catalogue records remain available and are not guessed into these seven lines. The master shield, established black/gold design and all catalogue prices remain unchanged.</p>
+<h2>Available recording review</h2>
+<p>Two older FSD screen recordings were found in the project: approximately <strong>49.93 seconds</strong> and <strong>4.47 seconds</strong>, both 2560 × 1600 H.264. Neither contains an audio stream, so there were no spoken instructions to transcribe. Neither filename explicitly identifies it as the requested WhatsApp reference.</p>
+<p>Review used representative extracted frames at approximately five-second intervals for the longer recording and one-second intervals for the shorter recording. It was a visual sampling review, not an audio review or a frame-by-frame certification of animation timing.</p>
+<ul>
+<li>The longer recording shows an older FSD hero, sticky header, scroll-through editorial sections, Universe cards, a catalogue, visual image archive, VIP section, and a collection overlay with category chips and product previews.</li>
+<li>The shorter recording shows an older multi-column Collections overlay inside Replit's preview.</li>
+<li>The current site already supplies the corresponding navigation, editorial hierarchy, collection filtering and product handoffs. These were tested rather than replaced with the recorded older UI.</li>
+<li>The historical visual archive and VIP controls were not restored against later scope decisions. A white catalogue panel in an older recording was not assumed to be a current defect. No recorded artwork, legacy logo or unverified product mapping was imported.</li>
+<li>Recommendation: retain the current unified black/gold navigation and approval boundaries. Use an explicitly identified WhatsApp reference, if different, for any further motion-specific comparison.</li>
+</ul>
+<h2>Verified checks</h2>
+<ul>
+<li>185 automated Node tests and a successful Vite production build.</li>
+<li>Production-build HTTP audit across 111 public routes: unique metadata, sharing tags, 404 GET/HEAD behaviour, robots rules, source-map denial and immutable vendor assets.</li>
+<li>Browser checks for public collection/product entry routes, native filters, metadata, H1/alt intent and desktop/tablet/mobile overflow.</li>
+<li>Existing collection and gallery checks: correct colourway selection, keyboard navigation, mobile swipe, decoded full-screen photos, zoom/drag pan, focus return, retained scroll position, named missing-image fallbacks and reduced motion.</li>
+<li>Existing navigation and showroom checks cover search, links, gallery/product handoff and shopping bag behaviour. Real production behaviour still requires deployment verification.</li>
+</ul>
+<h2>Remaining owner actions</h2>
+<div class="notice"><ol>
+<li><strong>Publish the tested public preview.</strong> Obtain the real deployed URL from the deployment service, not the preview hostname. This audit did not publish the project.</li>
+<li><strong>Configure the verified production origin</strong> in <code>site.config.js</code>, rebuild and republish. Then verify canonical URLs, <code>/sitemap.xml</code>, robots, production console output and external social cards on the live domain.</li>
+<li><strong>Before accepting payments:</strong> finish the existing payment-provider, privacy, delivery/returns, support and fulfilment approvals. Do not describe the disabled checkout as live commerce. Outbound notification delivery has not been certified.</li>
+<li><strong>Optional media:</strong> genuine 3D models, approved complete rotation sequences and cleaner standalone animal-series logo assets still require appropriate supplied/approved files. They are not required for the working photo galleries.</li>
+</ol></div>
+<p><small>Audit scope: existing FSD website and current local build. No production database mutations, payment transactions, new integrations or publishing actions were performed.</small></p>
+</main></body></html>

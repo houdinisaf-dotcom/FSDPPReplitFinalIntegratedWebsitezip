@@ -11,7 +11,7 @@ CDP keyboard activation of native buttons and disclosure summaries requires the 
 
 Wait for native dialog close-handler cleanup before asserting focus restoration or reopening the same panel.
 
-**Why:** Removing the `open` state happens synchronously, but the native `close` event is queued. Checking only `dialog.open` produced false failures and exposed a possible stale-event reopening race.
+**Why:** Removing the `open` state happens synchronously, but the native `close` event is queued. An old event can arrive after reopening and clear the new product state or focus target; asynchronous focus restoration can also steal focus from the reopened dialog.
 
 **How to apply:** Assert the final focus/scroll-lock cleanup state, and ignore a queued old close event if the dialog has already reopened.
 
@@ -62,3 +62,21 @@ Force off-screen lazy images to load when deliberately testing broken-image fall
 **Why:** The homepage fallback test waited for errors on lazy images outside the viewport; no request meant no error event, producing a false timeout.
 
 **How to apply:** In the test only, set the target image's loading mode to eager before assigning a deliberately missing source. Keep production lazy loading intact.
+
+Exclude interactive zoom-surface geometry from generic layout transitions, and verify actual scroll bounds rather than only inline dimensions.
+
+**Why:** Existing transitions temporarily kept a photo plane at its old computed width despite a larger inline width. This masked whether magnification and panning worked, particularly in mobile/reduced-motion checks.
+
+**How to apply:** Keep zoom dimensions unanimated, check computed size and real pan movement, and test swiping again after closing a magnified viewer so viewer state cannot disable the underlying gallery.
+
+Retry temporary Chromium-profile cleanup after shutdown rather than treating an `ENOTEMPTY` removal error as an application failure.
+
+**Why:** Chromium child processes can finish writing profile/cache files just after the parent exit, even when every browser assertion passed.
+
+**How to apply:** Use bounded retries for recursive temporary-profile removal; distinguish cleanup errors from failed application assertions.
+
+Use the layout viewport's content width for page-edge alignment checks, not the width including a classic scrollbar.
+
+**Why:** Headless Chromium reported a 1440px inner width but 1425px content width with a native scrollbar. A correctly full-width banner ended at the content edge, creating a false alignment failure against inner width.
+
+**How to apply:** Compare content-edge geometry with `document.documentElement.clientWidth`, retaining a small subpixel tolerance. Keep separate overflow checks.

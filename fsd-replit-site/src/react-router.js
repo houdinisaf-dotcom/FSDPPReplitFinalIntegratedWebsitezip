@@ -1,4 +1,6 @@
 import { flagshipPageHashRoutes } from './flagship-pages.js';
+import { seoEntryForPath } from './site-seo.js';
+import { CATALOGUE_COLLECTIONS } from './catalogue-collections.js';
 
 export const FSD_STORY_PATH = '/story';
 export const FSD_STORY_HASH = '#philosophy';
@@ -13,6 +15,12 @@ const hashRoutes = new Map([
   ['#innovation-hub', { view: 'page', target: 'innovation-hub' }],
   ['#philosophy', { view: 'story', target: 'our-story' }],
   ['#contact', { view: 'private-access', target: 'contact' }],
+  ['#clothing-lines', { view: 'collection', target: 'clothing-lines' }],
+  ['#technical-collections-archive', { view: 'collection', target: 'technical-collections-archive' }],
+  ...CATALOGUE_COLLECTIONS.filter(collection => collection.kind === 'catalogue-collection')
+    .map(collection => [`#collection-${collection.id}`, { view: 'collection', target: `collection-${collection.id}` }]),
+  ...['aeroforge', 'combat', 'flex', 'breeze', 'modest-flow', 'tiger-series', 'scorpion-series']
+    .map(id => [`#line-${id}`, { view: 'collection', target: `line-${id}` }]),
   ...flagshipPageHashRoutes,
 ]);
 
@@ -51,16 +59,28 @@ export function routeFromLocation(location = {}) {
   const pathname = String(location.pathname || '/').replace(/\/+$/, '') || '/';
   if (pathname === FSD_STORY_PATH) return { view: 'story', target: 'our-story' };
   if (pathname === FSD_HOUSE_PAGE_PATH) return { view: 'house', target: 'the-house-page' };
+  const entry = seoEntryForPath(pathname);
+  if (entry) return entry.route;
   return routeFromHash('');
 }
 
 export function resolveFsdRoute({ menu, group, item } = {}) {
+  if (group?.id === 'catalogue-collections' || item?.kind === 'catalogue-collection') {
+    const destination = item?.href || group?.href || '';
+    return routeFromHash(destination.slice(destination.indexOf('#')));
+  }
   if (item?.kind === 'draft-product') {
     return { view: 'preview', target: item.href || item.id || null };
   }
 
   if (item?.record) {
     return { view: 'product', target: String(item.record.id) };
+  }
+
+  if (group?.id === 'clothing-lines'
+    || item?.kind === 'clothing-lines'
+    || item?.kind === 'clothing-line') {
+    return routeFromDestination(item?.href || group?.href);
   }
 
   if (item?.kind === 'category' || item?.kind === 'subcategory' || item?.kind === 'shop-all'

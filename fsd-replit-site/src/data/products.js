@@ -140,6 +140,15 @@ export const products = masterProducts
     confirmedPrice: p['Price (£) confirmed'] === '' ? null : Number(p['Price (£) confirmed']),
     colourways: p.Colourways,
     collection: p['Collection line'],
+    collectionIds: Array.isArray(p.collectionIds || p['Collection IDs'])
+      ? [...(p.collectionIds || p['Collection IDs'])]
+      : String(p.collectionIds || p['Collection IDs'] || '').split(/[;,]/).map(value => value.trim()).filter(Boolean),
+    collectionLine: p.collectionLine || '',
+    series: p.series || p.Series || '',
+    tags: Array.isArray(p.tags || p.Tags) ? [...(p.tags || p.Tags)]
+      : String(p.tags || p.Tags || '').split(/[;,]/).map(value => value.trim()).filter(Boolean),
+    availability: p.availability || p.Availability || undefined,
+    stockStatus: p.stockStatus || p['Stock status'] || undefined,
     imageStatus: p['Image status'],
     source: p.Source,
     alias: p['Also appears as'],

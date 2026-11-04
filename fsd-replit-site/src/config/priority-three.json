@@ -1,0 +1,42 @@
+{
+  "brand": "FSD — Fitness & Self Defence",
+  "version": "1.0",
+  "priority": 3,
+  "theme": {
+    "background": "#0a0a0a",
+    "primaryAccent": "#D4AF37"
+  },
+  "rules": {
+    "preserveOriginalArtwork": true,
+    "allowLogoRedesign": false,
+    "allowGeneratedReplacements": false,
+    "excludedConcepts": [3],
+    "logoPosition": "far-right-end-of-existing-banner",
+    "showLogoBesideProductRows": false
+  },
+  "logos": {
+    "master": { "name": "FSD Master Shield", "asset": null },
+    "serene": { "name": "Concept 1 — Serene Monogram", "asset": null },
+    "ascent": { "name": "Concept 2 — Ascent Triangle", "asset": "/brand/logo-panel-crops/concept-2-ascent-triangle.png" },
+    "aligned": { "name": "Concept 4 — Aligned Wordmark", "asset": "/brand/logo-panel-crops/concept-4-aligned-wordmark.png" },
+    "signature": { "name": "Concept 5 — Signature Mark", "asset": "/brand/logo-panel-crops/concept-5-signature-mark.png" },
+    "tiger": { "name": "Tiger Series Logo", "asset": null },
+    "scorpion": { "name": "Scorpion Series Logo", "asset": null }
+  },
+  "collections": [
+    { "id": "aeroforge", "name": "AEROFORGE", "logo": null },
+    { "id": "combat", "name": "COMBAT", "logo": null },
+    { "id": "flex", "name": "FLEX", "logo": null },
+    { "id": "breeze", "name": "BREEZE", "logo": null },
+    { "id": "modest-flow", "name": "MODEST FLOW", "logo": null },
+    { "id": "tiger", "name": "TIGER SERIES", "logo": "tiger" },
+    { "id": "scorpion", "name": "SCORPION SERIES", "logo": "scorpion" }
+  ],
+  "interaction": {
+    "scrollDetection": "IntersectionObserver",
+    "activeNameIllumination": true,
+    "dynamicLogoSwitching": true,
+    "transitionDurationMs": 240,
+    "respectReducedMotion": true
+  }
+}

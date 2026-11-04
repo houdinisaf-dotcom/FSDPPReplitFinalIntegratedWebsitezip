@@ -241,6 +241,8 @@ test('Shop foregrounds collection groups and removes the redundant All Products 
     'WOMEN’S MODEST COMBAT',
     'LIMITED COLLECTIONS',
     'NEW & FEATURED',
+    'CLOTHING LINES',
+    'ACCESSORIES & TECHNICAL',
   ]);
 
   assert.equal(collections.groups.some(group => group.id === 'shop-all-products'), false);
@@ -255,6 +257,66 @@ test('Shop foregrounds collection groups and removes the redundant All Products 
   assert.ok(limited.items.some(item => item.title === 'Vector Camo Capsule'));
   assert.equal(limited.navigationUnavailable, true);
   assert.equal(featured.navigationUnavailable, true);
+});
+
+test('SHOP Clothing Lines adds seven explicit destinations and a browse-all action without changing source groups', () => {
+  const collections = menu.find(section => section.id === 'collections');
+  const apparel = collectionDivisions.find(division => division.id === 'apparel');
+  const clothingGroup = collections.groups.find(group => group.id === 'clothing-lines');
+  const expectedLines = [
+    ['aeroforge', 'AEROFORGE'],
+    ['combat', 'COMBAT'],
+    ['flex', 'FLEX'],
+    ['breeze', 'BREEZE'],
+    ['modest-flow', 'MODEST FLOW'],
+    ['tiger-series', 'FSD TIGER SERIES'],
+    ['scorpion-series', 'FSD SCORPION SERIES'],
+  ];
+
+  assert.ok(clothingGroup);
+  assert.equal(clothingGroup.href, '#clothing-lines');
+  assert.deepEqual(clothingGroup.items.slice(1).map(item => [
+    item.id.replace('clothing-line-', ''),
+    item.title,
+    item.kind,
+    item.href,
+  ]), expectedLines.map(([id, title]) => [
+    id,
+    title,
+    'clothing-line',
+    `#line-${id}`,
+  ]));
+  assert.deepEqual(
+    [clothingGroup.items[0].kind, clothingGroup.items[0].href],
+    ['clothing-lines', '#clothing-lines'],
+  );
+
+  const legacyGroups = collections.groups.slice(0, 4);
+  assert.deepEqual(legacyGroups.map(group => group.id), [
+    'mens-luxury-performance',
+    'womens-modest-combat',
+    'limited-collections',
+    'new-featured-concepts',
+  ]);
+  assert.equal(legacyGroups[0].source, apparel.groups[0]);
+  assert.equal(legacyGroups[1].source, apparel.groups[1]);
+  assert.equal(legacyGroups[2].source, apparel.groups[0]);
+  assert.equal(legacyGroups[3].source, apparel.groups[0]);
+
+  const womensSource = apparel.groups[1];
+  const womensGroup = legacyGroups[1];
+  const modestFlowSource = womensSource.subcategories.find(item =>
+    item.title === 'FSD Modest Flow Training Trousers');
+  const modestFlowMenuItem = womensGroup.items.find(item =>
+    item.title === 'FSD Modest Flow Training Trousers');
+  assert.equal(modestFlowMenuItem.kind, 'subcategory');
+  assert.equal(modestFlowMenuItem.source, modestFlowSource);
+  assert.equal(modestFlowMenuItem.sourceSubcategoryIndex, womensSource.subcategories.indexOf(modestFlowSource));
+
+  const mainSource = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(mainSource, /lineDestinations|item\?\.kind === ['"]subcategory['"]/);
+  assert.match(mainSource, /\['clothing-line', 'clothing-lines', 'catalogue-collection'\]\.includes\(item\?\.kind\)/);
+  assert.match(mainSource, /dispatchEvent\(new HashChangeEvent\(['"]hashchange['"]\)\)/);
 });
 
 test('Shop collection filters contain current products and preserve audience scope', () => {

@@ -1,12 +1,10 @@
 import { FSD_MOTION, loadMotion, prefersReducedMotion } from './motion-config.js';
+import { rotationFramesForProduct } from './product-rotation-assets.js';
 
 const PLACEHOLDER_FRAME_COUNT = 24;
 
 // These must be individual, compressed WebP angles of the same product and colourway.
 // The current catalogue contains no approved 360° sequence for the selected product.
-const ROTATION_FRAMES_BY_PRODUCT = Object.freeze({
-  43: [],
-});
 
 function isWebpPath(source) {
   return typeof source === 'string' && /\.webp(?:[?#].*)?$/i.test(source);
@@ -57,7 +55,7 @@ export function mountProductRotationViewer(root) {
   const productId = Number(root?.dataset.rotationProduct);
   if (!root || !poster || !canvas || !controls || !hint || !caption || !status) return () => {};
 
-  const sources = (ROTATION_FRAMES_BY_PRODUCT[productId] || []).filter(isWebpPath);
+  const sources = rotationFramesForProduct(productId).filter(isWebpPath);
   const frameCount = sources.length || PLACEHOLDER_FRAME_COUNT;
   const loadedFrames = new Array(sources.length);
   const failedFrames = new Set();

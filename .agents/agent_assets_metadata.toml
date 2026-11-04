@@ -896,3 +896,115 @@ mtime_ms = 1792683627446
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e3923cf9-2f51-41a9-a61b-e4db9aed4cd8/712af0ca-2dc8-4e54-b714-927e78f1160b"
 storage_version_token = "1792683911622019"
 content_type = "image/png"
+
+[[outputs]]
+id = "Rm33mbMgXmHmV7S_OFjTH"
+uri = "file://fsd-replit-site/handoff/launch-audit.html"
+type = "html"
+title = "FSD Website Audit & Launch Readiness"
+description = "Twenty-point audit with verified fixes, browser and build results, recording review, and remaining production-domain and commerce requirements."
+logical_id = "52579db0-c9d8-41d7-87d5-e3a8c87af191"
+content_hash = "sha256:1fa5469541e44ccb36e251ee4833300a94e0f601c63fbae5a58c9bc1cacdad44"
+size = 13656
+mtime_ms = 1793785576830
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/52579db0-c9d8-41d7-87d5-e3a8c87af191/2f2576c4-934e-4408-96f4-ecb70f391144"
+storage_version_token = "1793785871049103"
+content_type = "text/html"
+
+[[outputs]]
+id = "6BTvFiGrn41OOFkPIsxDG"
+uri = "file://fsd-replit-site/handoff/priority-one-audit.html"
+type = "html"
+title = "FSD Priority 1 — Audit & Launch Readiness"
+description = "All 20 results, verified fixes, six-width mobile tests, before/after measurements, modified files, security findings and launch blockers."
+logical_id = "0294b591-148f-41a6-a37e-e78a71325f15"
+content_hash = "sha256:c1e927f8c96790c7935f6f3b3c002ec20d2ba14ebcb85eb8f0a4473a33a5aae6"
+size = 18521
+mtime_ms = 1793787880201
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/0294b591-148f-41a6-a37e-e78a71325f15/a5151859-4f68-43a4-81ea-a03af8da0656"
+storage_version_token = "1793787945820314"
+content_type = "text/html"
+
+[[outputs]]
+id = "souXev3UV9qWPkhKXsY9L"
+uri = "file://fsd-replit-site/public/brand/fsd-social-preview.jpg"
+type = "image"
+title = "FSD Social-Sharing Preview"
+description = "1200 × 630 card composed from existing approved campaign photography and the approved website shield lockup."
+logical_id = "03927dd7-efd1-4111-9145-a86b5d044b30"
+content_hash = "sha256:c128f748e581ef9401622958a0ef4d1b3f06a89b7c0de5528d50725021abae68"
+size = 87865
+mtime_ms = 1793786659962
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/03927dd7-efd1-4111-9145-a86b5d044b30/1b299884-8f8e-406a-92e4-0b550678ef6d"
+storage_version_token = "1793787946559431"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "yPNjTG8tz5yGjNozFnh7w"
+uri = "file://fsd-replit-site/handoff/priority-two-report.html"
+type = "html"
+title = "Priority 2 — Collection Integration Report"
+description = "Before/after inventory, all 11 banner counts, preserved catalogue records, missing assets, unclear assignments and verification results."
+logical_id = "354342ac-6219-42ce-86fd-80b0cd0c7e40"
+content_hash = "sha256:20bc359097ad8df36bad9ba17b8674aab4b4e1b10e770222f3ecff5a180a5298"
+size = 26917
+mtime_ms = 1793790859691
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/354342ac-6219-42ce-86fd-80b0cd0c7e40/ab6f9ad0-829d-4d55-b9ae-04a6bd0b6dc1"
+storage_version_token = "1793790943149274"
+content_type = "text/html"
+
+[[outputs]]
+id = "TrDF0BKisSePqOwjLwL8A"
+uri = "file://fsd-replit-site/public/brand/logo-panel-crops/concept-2-ascent-triangle.png"
+type = "image"
+title = "Concept 2 — Ascent Triangle"
+description = "Unchanged source-panel crop. Original background and complete lettering retained; not assigned to a collection."
+logical_id = "fe859b97-9cab-4300-8ffe-8f74d4d583d1"
+content_hash = "sha256:2eb4729cfd88aa7eb3fff280a69bf0304a6c1765c187aebc6d3e169f355f0148"
+size = 69523
+mtime_ms = 1793793001650
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/fe859b97-9cab-4300-8ffe-8f74d4d583d1/b57b371f-14c2-412d-b31e-e65e97303aab"
+storage_version_token = "1793793040621161"
+content_type = "image/png"
+
+[[outputs]]
+id = "XSFnHNjEO5_QMQAUym77G"
+uri = "file://fsd-replit-site/public/brand/logo-panel-crops/concept-4-aligned-wordmark.png"
+type = "image"
+title = "Concept 4 — Aligned Wordmark"
+description = "Unchanged source-panel crop. Original background and complete lettering retained; not assigned to a collection."
+logical_id = "94cfbd1a-75c6-4cc4-95ef-da1784ee634c"
+content_hash = "sha256:61804c847d555e313f59cb508643720fad2f8713d428a04e6a4a351647e2dcbd"
+size = 26750
+mtime_ms = 1793793002795
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/94cfbd1a-75c6-4cc4-95ef-da1784ee634c/cec07ea0-a2cf-42a1-ab42-130ae4ed8b24"
+storage_version_token = "1793793041384691"
+content_type = "image/png"
+
+[[outputs]]
+id = "T7P1dIMujDHkl8pt35qZI"
+uri = "file://fsd-replit-site/public/brand/logo-panel-crops/concept-5-signature-mark.png"
+type = "image"
+title = "Concept 5 — Signature Mark"
+description = "Unchanged source-panel crop. Original background and complete lettering retained; not assigned to a collection."
+logical_id = "8412255c-b419-43ac-bb70-c5304a0b816c"
+content_hash = "sha256:f2218fa468a880945940d02ee894c640ef8cb08dd609c812fbdf3b26b677e093"
+size = 39206
+mtime_ms = 1793793003928
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/8412255c-b419-43ac-bb70-c5304a0b816c/f6e9750f-8c77-4673-b910-d67dd6136d8c"
+storage_version_token = "1793793042132052"
+content_type = "image/png"
+
+[[outputs]]
+id = "icApfN_2lUBDKRr42x25_"
+uri = "file://fsd-replit-site/public/brand/logo-panel-crops/monogram-unassigned.png"
+type = "image"
+title = "Monogram — identity unconfirmed"
+description = "Unchanged source-panel crop. Not assumed to be Concept 1 and not assigned to a collection."
+logical_id = "983f80d6-f61e-48ca-918b-3484520c76fa"
+content_hash = "sha256:87ffeba75e131d310a5b01c87111594dc76c639bc698aa2cd42566081d739111"
+size = 34865
+mtime_ms = 1793793005080
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/983f80d6-f61e-48ca-918b-3484520c76fa/421d6a83-3e4b-4e5c-8529-7dabedd283fa"
+storage_version_token = "1793793042838928"
+content_type = "image/png"

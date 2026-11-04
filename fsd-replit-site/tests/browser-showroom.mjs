@@ -1,6 +1,8 @@
 // Run against the running Replit workflow. Uses system Chromium and Node's CDP
 // WebSocket support, with no browser-test package or downloaded browser needed.
 import assert from 'node:assert/strict';
+import { seoEntryForPath, seoForView, DEFAULT_SOCIAL_IMAGE } from '../src/site-seo.js';
+import { routeFromLocation } from '../src/react-router.js';
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -370,7 +372,16 @@ try {
     'Clicking product detail content must not dismiss the garment dialog.');
   await click('#product-dialog #close-dialog');
   await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
-  await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
+  try {
+    await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
+  } catch (error) {
+    console.error(await evaluate(`({
+      active: document.activeElement.outerHTML.slice(0, 250),
+      opener: document.querySelector('#fsd-showcase-dialog [data-product-id="69"]')?.outerHTML.slice(0, 250),
+      dialogOpen: document.querySelector('#fsd-showcase-dialog')?.open
+    })`));
+    throw error;
+  }
   assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
   await key('Escape');
   await waitFor('!document.querySelector("#fsd-showcase-dialog")?.open && !document.documentElement.classList.contains("fsd-modal-open")');
@@ -484,6 +495,7 @@ try {
   assert.deepEqual(await evaluate('Array.from(document.querySelectorAll("#innovations .fsd-featured-card__details"), button => button.dataset.product)'), ['33', '34']);
   await click('#innovations .fsd-featured-card__details');
   await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.includes("MMA Performance Rash Guard")');
+  await waitFor(`document.title === ${JSON.stringify(seoForView({ view: 'product', target: '33' }).title)}`);
   await click('#close-dialog');
   await waitFor('!document.querySelector("#product-dialog")?.open');
   const seoMeta = await evaluate(`({
@@ -492,11 +504,14 @@ try {
     ogImage: document.querySelector('meta[property="og:image"]')?.content,
     twitterImage: document.querySelector('meta[name="twitter:image"]')?.content
   })`);
+  const currentSeoLocation = await evaluate('({pathname:location.pathname,hash:location.hash})');
+  const underlyingSeo = seoForView(routeFromLocation(currentSeoLocation))
+    || seoEntryForPath(currentSeoLocation.pathname) || seoEntryForPath('/');
   assert.deepEqual(seoMeta, {
-    title: 'FSD — Fitness & Self Defence | The Luxury Digital Flagship',
-    description: 'A bespoke British luxury performance house fusing obsidian aesthetics, tactical engineering, and advanced digital innovation.',
-    ogImage: '/fsd-assets/8ffe2fd45a06.webp',
-    twitterImage: '/fsd-assets/8ffe2fd45a06.webp',
+    title: underlyingSeo.title,
+    description: underlyingSeo.description,
+    ogImage: DEFAULT_SOCIAL_IMAGE,
+    twitterImage: DEFAULT_SOCIAL_IMAGE,
   });
   const offscreenImageLoading = await evaluate(`document.querySelector('#hardware-editorial img')?.loading`);
   assert.equal(offscreenImageLoading, 'lazy');

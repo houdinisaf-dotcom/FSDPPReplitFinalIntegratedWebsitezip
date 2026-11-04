@@ -12,6 +12,7 @@ import { breezePrivatePreviewPlugin } from './scripts/breeze-private-preview-plu
 import { womensCollectionPrivatePreviewPlugin } from './scripts/womens-collection-private-preview-plugin.mjs';
 import { hardwareForgePrivatePreviewPlugin } from './scripts/hardware-forge-private-preview-plugin.mjs';
 import { prelaunchSignupApiPlugin } from './scripts/prelaunch-signup-api-plugin.mjs';
+import { siteSeoPlugin } from './scripts/site-seo-plugin.mjs';
 
 const projectRoot = fileURLToPath(new URL('.', import.meta.url));
 
@@ -56,6 +57,7 @@ export default defineConfig({
     prelaunchSignupApiPlugin(),
     staticStoryRoutePlugin(),
     standaloneNavigationPagesPlugin(projectRoot),
+    siteSeoPlugin(projectRoot),
   ],
   server: {
     host: '0.0.0.0',
@@ -64,7 +66,13 @@ export default defineConfig({
     allowedHosts: true,
   },
   build: {
+    sourcemap: false,
     rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (/\/node_modules\/(?:react|react-dom|scheduler)\//.test(id)) return 'react-vendor';
+        },
+      },
       input: {
         main: resolve(projectRoot, 'index.html'),
         sizeGuide: resolve(projectRoot, 'size-guide.html'),

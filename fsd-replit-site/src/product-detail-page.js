@@ -7,6 +7,8 @@ import {
 import { renderSizeGuideTable, sizeGuideSectionForProduct, SIZE_GUIDE_FIT_NOTE } from './size-guide-data.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
 import { productImagesForDisplay } from './data/products.js';
+import { rotationFramesForProduct } from './product-rotation-assets.js';
+import { productStructuredData } from './product-structured-data.js';
 
 export function productSizeOptions(product) {
   return String(product?.sizes || '')
@@ -82,23 +84,24 @@ function renderColourwayOptions(product, colourways, colourwayImageIndexes) {
 }
 
 function renderRotationViewer(product, poster) {
-  if (Number(product?.id) !== 43 || !poster?.src) return '';
+  const frames = rotationFramesForProduct(product?.id);
+  if (!frames.length || !poster?.src) return '';
   return `<section class="product-rotation" data-product-rotation data-rotation-product="43"
       aria-labelledby="product-rotation-title-43">
     <header class="product-rotation__heading">
       <p class="section-kicker">FSD / PRODUCT VIEW</p>
       <h3 id="product-rotation-title-43">360° product view</h3>
-      <p data-rotation-caption>360° photography has not been supplied. The static catalogue image remains visible.</p>
+      <p data-rotation-caption>Inspect the product through its complete photographic rotation.</p>
     </header>
     <figure class="product-rotation__stage">
       <img data-rotation-fallback src="${safe(poster.src)}" alt="${safe(product.name)} — ${safe(poster.label || 'Main product view')}" loading="lazy" decoding="async" />
       <canvas data-rotation-canvas aria-hidden="true" hidden></canvas>
-      <figcaption>To complete this view, provide 24–36 separate WebP angles of the same colourway, 10°–15° apart, with consistent camera, lighting and background. Placeholder frames are labels only.</figcaption>
+      <figcaption>${frames.length} individual photographs of the same product and colourway.</figcaption>
     </figure>
     <p class="product-rotation__hint" data-rotation-hint hidden>Drag to turn the frame, or focus this viewer and use the left and right arrow keys.</p>
     <div class="product-rotation__controls" data-rotation-controls hidden>
       <button type="button" data-rotation-prev aria-label="Previous rotation frame">←</button>
-      <span data-rotation-frame-count>24 placeholder frames</span>
+      <span data-rotation-frame-count>${frames.length} photographs</span>
       <button type="button" data-rotation-next aria-label="Next rotation frame">→</button>
     </div>
     <p class="sr-only" data-rotation-status role="status" aria-live="polite"></p>
@@ -312,43 +315,7 @@ export function renderProductDetailPage({
   const priceMarkup = price.label || price.value
     ? `<p class="product-detail-price">${price.label ? `<span>${safe(price.label)}</span>` : ''}${price.value ? `<strong>${safe(price.value)}</strong>` : ''}</p>`
     : '<p class="product-detail-price"><strong>[TO CONFIRM]</strong></p>';
-  const priceForSchema = Number(product.confirmedPrice);
-  const availabilityValue = String(product.availability || '').toLowerCase();
-  const schemaAvailability = {
-    instock: 'https://schema.org/InStock',
-    outofstock: 'https://schema.org/OutOfStock',
-    preorder: 'https://schema.org/PreOrder',
-    backorder: 'https://schema.org/BackOrder',
-  }[availabilityValue];
-  const schemaBase = {
-    name: product.name,
-    ...(description ? { description } : {}),
-    brand: { '@type': 'Brand', name: 'FSD' },
-    ...(images.length ? { image: images.map(image => absoluteImageUrl(image.src)).filter(Boolean) } : {}),
-    ...(colourways.length ? { color: colourways } : {}),
-    ...(sizes.length ? { size: sizes } : {}),
-    ...(priceForSchema > 0 && schemaAvailability
-      ? { offers: { '@type': 'Offer', priceCurrency: 'GBP', price: priceForSchema.toFixed(2), availability: schemaAvailability } }
-      : {}),
-  };
-  const hasVariants = colourways.length > 0 || sizes.length > 0;
-  const variants = hasVariants
-    ? (sizes.length ? sizes : ['']).flatMap(size =>
-      (colourways.length ? colourways : ['']).map(colour => ({
-        '@type': 'Product',
-        name: [product.name, colour, size].filter(Boolean).join(' — '),
-        ...(size ? { size } : {}),
-        ...(colour ? { color: colour } : {}),
-        brand: { '@type': 'Brand', name: 'FSD' },
-        image: [absoluteImageUrl(images.find(image => image.colourway === colour)?.src || images[0]?.src || '')].filter(Boolean),
-      })))
-    : [];
-  const schema = hasVariants
-    ? { '@context': 'https://schema.org', '@type': 'ProductGroup', productGroupID: String(product.id), ...schemaBase, variesBy: [
-      ...(colourways.length ? ['https://schema.org/color'] : []),
-      ...(sizes.length ? ['https://schema.org/size'] : []),
-    ], hasVariant: variants }
-    : { '@context': 'https://schema.org', '@type': 'Product', ...schemaBase };
+  const schema = productStructuredData(product, { images, colourways, sizes });
 
   return `<div class="product-detail-page">
     <div class="product-detail-layout">

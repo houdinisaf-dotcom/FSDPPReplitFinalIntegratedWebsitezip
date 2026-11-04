@@ -79,7 +79,11 @@ try {
   };
   const waitFor = async expression => {
     for (let attempt = 0; attempt < 100; attempt++) {
-      if (await evaluate(expression)) return;
+      try {
+        if (await evaluate(expression)) return;
+      } catch (error) {
+        if (!/Inspected target navigated or closed|Execution context was destroyed|Cannot find context/i.test(error.message)) throw error;
+      }
       await delay(100);
     }
     throw new Error(`Browser condition did not become true: ${expression}`);
@@ -798,8 +802,9 @@ try {
         await waitFor('location.pathname === "/story" && document.querySelector("#fsd-house-archive")?.open');
         await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
       } else {
+        const targetSelector = href.includes('#') ? `#${href.split('#')[1]}` : href;
         await waitFor(`(() => {
-          const target = document.querySelector(${JSON.stringify(href)});
+          const target = document.querySelector(${JSON.stringify(targetSelector)});
           if (!target || !document.querySelector("#fsd-mega-menu").hidden) return false;
           const rect = target.getBoundingClientRect();
           return rect.bottom > 0 && rect.top < window.innerHeight;

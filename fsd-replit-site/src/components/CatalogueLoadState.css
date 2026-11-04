@@ -1,0 +1,10 @@
+.fsd-load-state{padding:28px;border:1px solid #42391e;background:#0a0a0a;color:#ddd6c8;min-height:180px}
+.fsd-load-state>img{vertical-align:middle;margin-right:12px}
+.fsd-load-state>p{font-size:14px;line-height:1.65}
+.fsd-load-state h3{color:#d4af37;font:inherit;font-size:20px}
+.fsd-load-state button{min-height:44px;padding:10px 18px;border:1px solid #d4af37;background:transparent;color:#d4af37;cursor:pointer}
+.fsd-load-state button:focus-visible{outline:2px solid #d4af37;outline-offset:4px}
+.fsd-load-state__skeletons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.fsd-load-state__skeletons span{height:66px;background:linear-gradient(100deg,#171717 25%,#312b1d 45%,#171717 70%);background-size:220% 100%;animation:fsd-load-sheen 1.8s linear infinite}
+@keyframes fsd-load-sheen{to{background-position:-220% 0}}
+@media(prefers-reduced-motion:reduce){.fsd-load-state__skeletons span{animation:none}}

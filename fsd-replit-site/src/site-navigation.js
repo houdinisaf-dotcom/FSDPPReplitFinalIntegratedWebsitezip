@@ -1,4 +1,5 @@
 import { collectionDivisions } from './collection-divisions.js';
+import { CATALOGUE_COLLECTIONS, deriveTechnicalCollections } from './catalogue-collections.js';
 import { products as catalogueProducts } from './catalogue-data.js';
 import { groupProducts } from './collection-showcase/index.js';
 import { hoodedShellCampaign } from './hooded-shell-campaign.js';
@@ -248,6 +249,49 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     items: conceptItems,
     navigationUnavailable: true,
   }));
+  const clothingLineItems = [
+    { id: 'aeroforge', title: 'AEROFORGE' },
+    { id: 'combat', title: 'COMBAT' },
+    { id: 'flex', title: 'FLEX' },
+    { id: 'breeze', title: 'BREEZE' },
+    { id: 'modest-flow', title: 'MODEST FLOW' },
+    { id: 'tiger-series', title: 'FSD TIGER SERIES' },
+    { id: 'scorpion-series', title: 'FSD SCORPION SERIES' },
+  ].map(line => ({
+    id: `clothing-line-${line.id}`,
+    title: line.title,
+    kind: 'clothing-line',
+    href: `#line-${line.id}`,
+    description: `Open the ${line.title} clothing-line section.`,
+  }));
+  groups.push({
+    id: 'clothing-lines',
+    title: 'CLOTHING LINES',
+    description: 'Browse the seven established FSD clothing lines.',
+    href: '#clothing-lines',
+    items: [{
+      id: 'clothing-lines-all',
+      title: 'BROWSE ALL CLOTHING LINES',
+      kind: 'clothing-lines',
+      href: '#clothing-lines',
+      description: 'Open the complete clothing-lines archive.',
+    }, ...clothingLineItems],
+  });
+  groups.push({
+    id: 'catalogue-collections',
+    title: 'ACCESSORIES & TECHNICAL',
+    description: 'Existing FSD accessories and technical catalogue collections.',
+    href: '/#technical-collections-archive',
+    items: deriveTechnicalCollections(products).map(collection => ({
+      id: `catalogue-collection-${collection.id}`,
+      title: collection.title,
+      kind: 'catalogue-collection',
+      href: collection.href,
+      description: `${collection.products.length} existing catalogue pieces. Browse images, colours and current product details.`,
+      ...(collection.bannerImage ? { featureImageSrc: collection.bannerImage.src,
+        featureImageAlt: `${collection.title} — catalogue product photography` } : {}),
+    })),
+  });
   return groups;
 }
 
@@ -660,6 +704,28 @@ function hasVerifiedDestination({
       ownerDocument.querySelector('#catalogue-archive')
       && ownerDocument.querySelector('#products'),
     );
+    const clothingLineTargets = new Set([
+      '#clothing-lines',
+      '#line-aeroforge',
+      '#line-combat',
+      '#line-flex',
+      '#line-breeze',
+      '#line-modest-flow',
+      '#line-tiger-series',
+      '#line-scorpion-series',
+    ]);
+    if (group?.id === 'catalogue-collections') {
+      return !item || CATALOGUE_COLLECTIONS.some(collection => collection.href === item.href);
+    }
+    if (group?.id === 'clothing-lines' && !item) {
+      return clothingLineTargets.has(group.href)
+        && Boolean(ownerDocument.querySelector('[data-fsd-clothing-lines-slot]'));
+    }
+    if (item?.kind === 'clothing-lines' || item?.kind === 'clothing-line') {
+      const target = item?.href || group?.href;
+      return clothingLineTargets.has(target)
+        && Boolean(ownerDocument.querySelector('[data-fsd-clothing-lines-slot]'));
+    }
     if (group?.id === 'shop-all-products' || item?.kind === 'shop-all') {
       return hasShopDestination;
     }
@@ -815,8 +881,10 @@ function renderFeature(menu, group, item, canNavigate) {
           : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/athlete-development.html' ? 'VIEW INITIATIVE'
           : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/academy-grassroots.html' ? 'VIEW INITIATIVE'
         : menu.id === 'house' && ['community-culture', 'global-vision-operations'].includes(group?.id) ? 'VIEW INITIATIVE'
-    : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
+      : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
       : item?.kind === 'shop-all' ? 'SHOP ALL PRODUCTS'
+      : item?.kind === 'clothing-lines' ? 'BROWSE ALL CLOTHING LINES'
+        : item?.kind === 'clothing-line' ? 'VIEW THIS LINE'
       : item?.record ? 'VIEW DETAILS'
       : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
         : item?.kind === 'concept' ? 'EXPLORE COLLECTION'
@@ -1034,6 +1102,10 @@ export function mountNavigation({
     ['#philosophy', 'house'],
     ['#house-menu', 'house'],
     ['#contact', 'private-access'],
+    ['#technical-collections-archive', 'collections'],
+    ...CATALOGUE_COLLECTIONS.map(collection => [
+      collection.href.slice(collection.href.indexOf('#')), 'collections',
+    ]),
   ]);
   const setCurrentPrimary = id => {
     currentPrimaryId = model.some(menu => menu.id === id) ? id : '';

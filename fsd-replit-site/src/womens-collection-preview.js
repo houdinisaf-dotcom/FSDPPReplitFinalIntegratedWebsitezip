@@ -1,5 +1,6 @@
 import './draft-preview.css';
 import './womens-collection-preview.css';
+import { validateProofData } from './proof-data-validation.js';
 
 const basePath = '/__catalogue-preview/fsd-womens-collection/';
 const main = document.querySelector('#womens-review');
@@ -225,7 +226,7 @@ async function loadPage() {
     cache: 'no-store',
   });
   if (!response.ok) throw new Error('The private review data could not be loaded.');
-  const data = await response.json();
+  const data = validateProofData(await response.json());
   if (data.checkoutEnabled !== false || data.paymentsEnabled !== false || data.publicationAuthorized !== false) {
     throw new Error('The private-review access safeguards are invalid.');
   }

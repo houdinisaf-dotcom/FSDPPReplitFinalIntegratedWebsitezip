@@ -1,0 +1,95 @@
+.fsd-technical-archive {
+  position: relative;
+  padding: 0 clamp(20px, 7vw, 100px);
+  border-top: 1px solid rgba(212, 175, 55, .3);
+  background:
+    radial-gradient(ellipse at 84% 8%, rgba(122, 104, 72, .1), transparent 38%),
+    #0b0c0d;
+  isolation: isolate;
+}
+
+.fsd-technical-archive::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(ellipse at 48% 33%, rgba(212, 175, 55, .035), transparent 54%);
+  content: "";
+  pointer-events: none;
+}
+
+.fsd-technical-archive > summary {
+  min-height: 70px;
+  align-items: center;
+  color: #e6dfd2;
+  font: 500 13px/1.4 "Space Mono", monospace;
+  letter-spacing: .13em;
+}
+
+.fsd-technical-archive > summary small {
+  margin-left: auto;
+  color: #8f8779;
+  font: 10px/1.5 "Space Mono", monospace;
+  letter-spacing: .04em;
+}
+
+.fsd-technical-browser {
+  padding: 0 0 54px;
+  color: #e9e4d8;
+}
+
+.fsd-established-collection {
+  scroll-margin-top: calc(var(--fsd-navigation-stack-height, 105px) + 16px);
+  margin: 0 0 74px;
+  border-top: 1px solid color-mix(in srgb, var(--line-accent, #d4af37), transparent 55%);
+}
+
+.fsd-established-collection:last-child { margin-bottom: 0; }
+.fsd-established-collection .fsd-clothing-line__banner { min-width: 0; }
+.fsd-technical-collection-link { text-decoration: none; }
+.fsd-technical-collection-link:hover,
+.fsd-technical-collection-link:focus-visible { color: #f1d982; }
+.fsd-technical-collection-link:focus-visible { outline: 2px solid #d4af37; outline-offset: 4px; }
+
+.fsd-established-collection .fsd-clothing-products {
+  scroll-margin-top: calc(var(--fsd-navigation-stack-height, 105px) + 16px);
+}
+
+.fsd-technical-product__colourways {
+  margin-top: 7px;
+  color: #aaa293;
+  font: 10px/1.55 "DM Sans", sans-serif;
+}
+
+.fsd-technical-product__availability {
+  margin-top: 7px;
+  color: #c6b98e;
+  font: 9px/1.45 "Space Mono", monospace;
+  letter-spacing: .025em;
+}
+
+.fsd-established-collection .fsd-clothing-product__open:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .fsd-technical-archive { padding: 0 20px; }
+  .fsd-technical-archive > summary { flex-wrap: wrap; gap: 5px 12px; padding: 18px 0; }
+  .fsd-technical-archive > summary small { width: 100%; margin-left: 0; }
+  .fsd-established-collection { margin-bottom: 52px; }
+  .fsd-established-collection .fsd-clothing-line__banner { grid-template-columns: 1fr; }
+  .fsd-established-collection .fsd-clothing-line__copy { min-height: 230px; padding: 28px 24px; }
+  .fsd-established-collection .fsd-clothing-products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
+  .fsd-established-collection .fsd-clothing-product__meta { flex-direction: column; gap: 3px; }
+}
+
+@media (max-width: 380px) {
+  .fsd-established-collection .fsd-clothing-line__copy h2 { font-size: 29px; }
+  .fsd-established-collection .fsd-clothing-products { grid-template-columns: 1fr; }
+  .fsd-established-collection .fsd-clothing-product__media { aspect-ratio: 4 / 3.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-established-collection .fsd-clothing-product__media img { transition: none !important; }
+  html { scroll-behavior: auto !important; }
+}

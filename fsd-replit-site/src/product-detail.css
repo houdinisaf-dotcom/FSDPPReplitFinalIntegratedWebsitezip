@@ -1,3 +1,10 @@
+.product-detail-text-link,
+.product-detail-page .catalogue-back {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+}
 #dialog-body {
   display: block;
   min-height: 0;

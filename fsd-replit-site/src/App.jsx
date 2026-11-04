@@ -8,6 +8,10 @@ import { HomeHero } from './components/HomeHero.jsx';
 import { WomensBanner } from './components/WomensBanner.jsx';
 import { FsdLogo } from './brand/Logos.jsx';
 import { PrelaunchSignup } from './components/PrelaunchSignup.jsx';
+import { ClothingLinesBrowser } from './components/ClothingLinesBrowser.jsx';
+import { TechnicalCollectionsBrowser } from './components/TechnicalCollectionsBrowser.jsx';
+import { showProduct, navigateCatalogue } from './catalogue.js';
+import { seoEntryForPath, seoForView, updateDocumentSeo } from './site-seo.js';
 import { useGoldCursor } from './brand/useGoldCursor.js';
 import { setCatalogueResultsRenderer } from './catalogue.js';
 import { routeFromLocation } from './react-router.js';
@@ -19,6 +23,7 @@ import { FSD_MOTION } from './motion-config.js';
 import './tailwind.css';
 import './react-utilities.css';
 import './lazy-image-loading.css';
+import { CatalogueLoading, CatalogueErrorBoundary } from './components/CatalogueLoadState.jsx';
 import 'lenis/dist/lenis.css';
 
 const CatalogList = lazy(() => import('./components/CatalogList.jsx')
@@ -53,14 +58,14 @@ function CataloguePortal({ target }) {
   if (!target) return null;
   return createPortal(
     archiveOpen ? (
-      <Suspense fallback={<div className="fsd-catalog-loading" role="status">Loading catalogue…</div>}>
+      <CatalogueErrorBoundary><Suspense fallback={<CatalogueLoading />}>
         <CatalogList
           products={products}
           view={view}
           onProductSelect={actions.onProductSelect}
           onAddToBag={actions.onAddToBag}
         />
-      </Suspense>
+      </Suspense></CatalogueErrorBoundary>
     ) : null,
     target,
   );
@@ -74,11 +79,15 @@ function AppRouter({ hardwareForgeExtension }) {
   const previousRouteKey = useRef('');
   const [featuredCarouselPortalTarget, setFeaturedCarouselPortalTarget] = useState(null);
   const [cataloguePortalTarget, setCataloguePortalTarget] = useState(null);
+  const [clothingLinesPortalTarget, setClothingLinesPortalTarget] = useState(null);
   const [homeHeroPortalTarget, setHomeHeroPortalTarget] = useState(null);
   const [womensBannerPortalTarget, setWomensBannerPortalTarget] = useState(null);
   const [footerLogoPortalTarget, setFooterLogoPortalTarget] = useState(null);
   const [prelaunchSignupPortalTarget, setPrelaunchSignupPortalTarget] = useState(null);
   const reportRoute = useCallback(nextRoute => setRoute(nextRoute), []);
+  useLayoutEffect(() => {
+    updateDocumentSeo(document, seoForView(route) || seoEntryForPath(window.location.pathname) || seoEntryForPath('/'));
+  }, [route.view, route.target]);
   const navigationReady = useRef(false);
   const contentReady = useRef(false);
   const markRuntimeReady = useCallback(() => {
@@ -100,6 +109,7 @@ function AppRouter({ hardwareForgeExtension }) {
       content?.querySelector('[data-fsd-featured-carousel-slot]') ?? null,
     );
     setCataloguePortalTarget(content?.querySelector('#catalogue-grid') ?? null);
+    setClothingLinesPortalTarget(content?.querySelector('[data-fsd-clothing-lines-slot]') ?? null);
     setHomeHeroPortalTarget(
       content?.querySelector('[data-home-hero-slot]') ?? null,
     );
@@ -167,10 +177,22 @@ function AppRouter({ hardwareForgeExtension }) {
     window.addEventListener('hashchange', syncHashRoute);
     window.addEventListener('popstate', syncHashRoute);
     mountStorefrontRuntime({ onRouteChange: reportRoute });
+    const productDialog = document.querySelector('#product-dialog');
+    const restorePageSeo = () => {
+      if (productDialog?.open) return;
+      updateDocumentSeo(document, seoForView(routeFromLocation(window.location))
+        || seoEntryForPath(window.location.pathname) || seoEntryForPath('/'));
+    };
+    productDialog?.addEventListener('close', restorePageSeo);
+    const entry = seoEntryForPath(window.location.pathname);
+    if (entry?.product) showProduct(entry.product.id);
+    else if (entry?.filter) navigateCatalogue(entry.filter);
+    else if (entry?.hash && !window.location.hash) window.location.hash = entry.hash;
     contentReady.current = true;
     markRuntimeReady();
 
     return () => {
+      productDialog?.removeEventListener('close', restorePageSeo);
       window.removeEventListener('hashchange', syncHashRoute);
       window.removeEventListener('popstate', syncHashRoute);
       storefrontRef.current?.removeAttribute('data-runtime-ready');
@@ -195,6 +217,20 @@ function AppRouter({ hardwareForgeExtension }) {
       {footerLogoPortalTarget && createPortal(<FsdLogo loading="lazy" />, footerLogoPortalTarget)}
       {prelaunchSignupPortalTarget && createPortal(<PrelaunchSignup />, prelaunchSignupPortalTarget)}
       <CataloguePortal target={cataloguePortalTarget} />
+      {clothingLinesPortalTarget && createPortal(
+        <ClothingLinesBrowser onProductSelect={(id, returnFocus) => {
+          reportRoute({ view: 'product', target: String(id) });
+          showProduct(id, { returnFocus });
+        }} />,
+        clothingLinesPortalTarget,
+      )}
+      {clothingLinesPortalTarget && createPortal(
+        <TechnicalCollectionsBrowser onProductSelect={(id, returnFocus) => {
+          reportRoute({ view: 'product', target: String(id) });
+          showProduct(id, { returnFocus });
+        }} />,
+        clothingLinesPortalTarget,
+      )}
       {featuredCarouselPortalTarget && createPortal(
         <CinematicCarousel />,
         featuredCarouselPortalTarget,

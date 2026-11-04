@@ -21,6 +21,7 @@ const mimeTypes = {
   '.jpg': 'image/jpeg',
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
   '.png': 'image/png',
   '.svg': 'image/svg+xml',
   '.webp': 'image/webp',
@@ -35,6 +36,8 @@ function sendText(response, status, message) {
 }
 
 async function serveStatic(request, response) {
+  response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.setHeader('Content-Security-Policy', "base-uri 'self'; object-src 'none'");
   if (!['GET', 'HEAD'].includes(request.method || '')) {
     response.setHeader('Allow', 'GET, HEAD');
     sendText(response, 405, 'Method not allowed');
@@ -50,6 +53,13 @@ async function serveStatic(request, response) {
   }
 
   const relativePath = pathname === '/' ? '/index.html' : pathname;
+  if (/^\/(?:private|admin|cart|checkout)(?:[-/.]|$)/i.test(pathname)) {
+    response.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  }
+  if (relativePath.endsWith('.map')) {
+    sendText(response, 404, 'Not found');
+    return;
+  }
   let filePath = resolve(publicRoot, `.${relativePath}`);
   if (filePath !== publicRoot && !filePath.startsWith(`${publicRoot}${sep}`)) {
     sendText(response, 400, 'Invalid path');
@@ -64,11 +74,12 @@ async function serveStatic(request, response) {
       info = await stat(filePath);
     }
   } catch {
-    if (extname(relativePath)) {
+    if (extname(relativePath) && extname(relativePath) !== '.html') {
       sendText(response, 404, 'Not found');
       return;
     }
-    filePath = resolve(publicRoot, 'index.html');
+    filePath = resolve(publicRoot, '404.html');
+    response.statusCode = 404;
     try {
       info = await stat(filePath);
     } catch {
@@ -82,11 +93,14 @@ async function serveStatic(request, response) {
     return;
   }
 
-  response.statusCode = 200;
+  response.statusCode = response.statusCode === 404 ? 404 : 200;
   response.setHeader('Content-Type', mimeTypes[extname(filePath).toLowerCase()] || 'application/octet-stream');
   response.setHeader('Content-Length', String(info.size));
   response.setHeader('X-Content-Type-Options', 'nosniff');
-  response.setHeader('Cache-Control', extname(filePath) === '.html' ? 'no-cache' : 'public, max-age=3600');
+  const immutableAsset = filePath.startsWith(resolve(publicRoot, 'assets') + sep)
+    && /-[A-Za-z0-9_-]{8,}\.(?:js|css|png|webp|woff2)$/.test(filePath);
+  response.setHeader('Cache-Control', extname(filePath) === '.html'
+    ? 'no-cache' : immutableAsset ? 'public, max-age=31536000, immutable' : 'public, max-age=3600');
   if (request.method === 'HEAD') {
     response.end();
     return;

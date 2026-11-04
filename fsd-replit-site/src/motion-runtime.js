@@ -8,6 +8,7 @@ const toastGenerations = new WeakMap();
 const stickyGenerations = new WeakMap();
 const mountedRotations = new WeakMap();
 const completedReveals = new WeakSet();
+const activeAnimations = new Set();
 let motionFailureReported = false;
 
 const ROW_SELECTOR = '.fsd-product-card, .product-card, .fsd-editorial-card, .fsd-featured-card';
@@ -50,6 +51,7 @@ export async function animateElement(element, keyframes, options = {}) {
   try {
     const { animate } = await loadMotion();
     if (!element.isConnected || generationByElement.get(element) !== generation) return false;
+    if (prefersReducedMotion(element.ownerDocument?.defaultView)) return true;
 
     const controls = animate(element, keyframes, {
       ...options,
@@ -57,6 +59,8 @@ export async function animateElement(element, keyframes, options = {}) {
       ease: options.ease ?? FSD_MOTION.ease,
     });
     playbackByElement.set(element, controls);
+    const activeAnimation = { element, controls };
+    activeAnimations.add(activeAnimation);
 
     try {
       await controls.finished;
@@ -65,6 +69,7 @@ export async function animateElement(element, keyframes, options = {}) {
     }
 
     if (playbackByElement.get(element) === controls) playbackByElement.delete(element);
+    activeAnimations.delete(activeAnimation);
     return generationByElement.get(element) === generation;
   } catch (error) {
     reportMotionFailure(error);
@@ -224,6 +229,9 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   const collectTargets = node => {
     if (!node || node.nodeType !== 1) return;
     const observeReveal = target => {
+      if (target.matches(SECTION_SELECTOR) &&
+          target.querySelector(`${ROW_SELECTOR}, ${HEADING_SELECTOR}`)) return;
+      if (target.parentElement?.closest(ROW_SELECTOR)) return;
       if (!rowObserver || completedReveals.has(target) || observedTargets.has(target)) return;
       observedTargets.add(target);
       rowObserver.observe(target);
@@ -460,6 +468,10 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   const onMotionPreferenceChange = event => {
     if (revealObserverActivated) refreshRevealObserver();
     if (!event.matches) return;
+    for (const animation of activeAnimations) {
+      if (typeof animation.controls.complete === 'function') animation.controls.complete();
+      else animation.controls.stop?.();
+    }
     documentRef.querySelectorAll('[data-motion-hovered]').forEach(element => {
       delete element.dataset.motionHovered;
       element.style.removeProperty('transform');

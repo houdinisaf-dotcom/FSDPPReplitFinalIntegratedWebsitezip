@@ -1,6 +1,8 @@
 import { audiences, categories, customerFacingCategory, getVerifiedProductSpecifications, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
 import { canAddToBag } from './bag.js';
-import { crossfadeMappedImage } from './catalogue-image-gallery.js';
+import { crossfadeMappedImage, cancelMappedImageSwap } from './catalogue-image-gallery.js';
+import { mountImmersiveProductGallery } from './immersive-product-gallery.js';
+import { imageColourwayIndex, normaliseGalleryColourway } from './product-gallery-model.js';
 import { outlineIcon } from './brand/outline-icons.js';
 import { trackEvent } from './analytics.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
@@ -738,6 +740,11 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
     if (!image || !mainImage || !caption) return;
+    const matchedColourway = imageColourwayIndex(activeDialogProduct, image);
+    if (productColourwayOptions(activeDialogProduct).length > 1 && matchedColourway < 0) {
+      showVariantImagePlaceholder(`${activeDialogVariant.colourway} · photograph needs colourway mapping`);
+      return;
+    }
     const placeholder = dialogBody.querySelector('[data-catalogue-variant-placeholder]');
     const gallery = placeholder?.closest('.product-detail-gallery');
     if (mainImage.dataset.fsdImageFailed === 'true' && mainImage.getAttribute('src') === image.src) {
@@ -751,18 +758,22 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     delete mainImage.dataset.fsdImageFailed;
     const zoomButton = mainImage.closest('[data-catalogue-zoom]');
     if (zoomButton) zoomButton.hidden = false;
+    const mappedColourway = productColourwayOptions(activeDialogProduct)[matchedColourway]
+      || image.colourway || image.variant || '';
     crossfadeMappedImage(
       mainImage,
       image.src,
       `${activeDialogProduct.name} — ${image.label}`,
       () => showVariantImagePlaceholder(image.colourway || image.variant || image.size || image.label),
+      {
+        variant: mappedColourway,
+        retainPrevious: normaliseGalleryColourway(mainImage.dataset.fsdImageVariant) === normaliseGalleryColourway(mappedColourway),
+      },
     );
     caption.textContent = image.label;
     dialogBody.querySelectorAll('[data-catalogue-image-index]').forEach(button => {
       button.setAttribute('aria-pressed', String(Number(button.dataset?.catalogueImageIndex) === index));
     });
-    const matchedColourway = productColourwayOptions(activeDialogProduct)
-      .findIndex(option => imageIndexForColourway(activeDialogImages, option) === index);
     if (matchedColourway >= 0) {
       dialogBody.querySelectorAll('[data-catalogue-colourway-index]').forEach(input => {
         input.checked = Number(input.dataset?.catalogueColourwayIndex) === matchedColourway;
@@ -782,6 +793,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     placeholder.hidden = false;
 
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
+    cancelMappedImageSwap(mainImage);
     const zoomButton = mainImage?.closest('[data-catalogue-zoom]');
     if (mainImage) mainImage.hidden = true;
     if (zoomButton) zoomButton.hidden = true;
@@ -790,6 +802,15 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
     if (caption) caption.textContent = `${variantLabel} — image to be added`;
   };
+
+  mountImmersiveProductGallery({
+    dialog,
+    body: dialogBody,
+    getProduct: () => activeDialogProduct,
+    getImages: () => activeDialogImages,
+    getVariant: () => activeDialogVariant,
+    selectImage: selectDialogImage,
+  });
 
   category.addEventListener('change', () => {
     activeCategory = category.value;
@@ -1016,6 +1037,13 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   });
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
+    const photoViewer = document.querySelector('#fsd-product-viewer');
+    if (photoViewer?.open) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      photoViewer.close();
+      return;
+    }
     const sizeGuide = document.querySelector('#fsd-size-guide-dialog');
     if (sizeGuide?.open) {
       event.preventDefault();
@@ -1030,6 +1058,8 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     closeProductForNewDestination();
   }, true);
   dialog.addEventListener('close', () => {
+    // Native close events can arrive after this shared dialog has reopened.
+    if (dialog.open) return;
     const productId = activeDialogProduct?.id;
     productStickyObserver?.disconnect();
     productStickyObserver = null;
@@ -1052,7 +1082,9 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     if (!document.querySelectorAll('dialog[open]').length) {
       document.documentElement?.classList?.remove('fsd-modal-open');
     }
-    const restoreFocus = () => focusTarget?.focus?.({ preventScroll: true });
+    const restoreFocus = () => {
+      if (!dialog.open) focusTarget?.focus?.({ preventScroll: true });
+    };
     if (document.querySelectorAll('dialog[open]').length && typeof window !== 'undefined') {
       window.setTimeout(restoreFocus, 0);
     } else if (typeof requestAnimationFrame === 'function') requestAnimationFrame(restoreFocus);

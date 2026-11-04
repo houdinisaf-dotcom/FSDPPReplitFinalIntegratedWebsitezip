@@ -7,6 +7,7 @@ import { renderNavigationHeader } from './site-navigation.js';
 import { ourStorySection } from './story-section.js';
 import { mountClientBag } from './bag.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
+import { CATALOGUE_COLLECTIONS } from './catalogue-collections.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
 import { mountStorefrontMotion } from './motion-runtime.js';
 import { siteMedia } from './data/site-media.js';
@@ -26,6 +27,7 @@ import './motion-effects.css';
 import './image-placeholders.css';
 import './homepage-phase3.css';
 import './showroom-phase8.css';
+import './immersive-product-gallery.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 
@@ -68,6 +70,10 @@ export function renderStorefrontMarkup() {
   <div data-home-hero-slot></div>
   <div id="collections">
     ${renderCollectionShowcase(collectionDivisions, { editorial: true, products })}
+    <div class="fsd-clothing-discover">
+      <span>THE APPAREL ARCHIVE / SEVEN ESTABLISHED LINES</span>
+      <a href="#clothing-lines">DISCOVER THE CLOTHING LINES <span aria-hidden="true">↗</span></a>
+    </div>
   </div>
   ${hardwareEditorialSection()}
   <section class="fsd-editorial-divider" aria-label="FSD design philosophy">
@@ -77,6 +83,7 @@ export function renderStorefrontMarkup() {
   ${beyondProductSection()}
   ${houseConnectionSection()}
   </main>
+  <div data-fsd-clothing-lines-slot></div>
   <details class="showroom-archive showroom-archive--discover" id="fsd-house-archive">
     <summary>DISCOVER THE FSD HOUSE</summary>
     <div class="showroom-archive-content">
@@ -129,6 +136,22 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
 
   if (item?.record) {
     openProduct(item.record.id, onRouteChange);
+    return;
+  }
+
+  if (menu?.id === 'collections'
+    && (['clothing-line', 'clothing-lines', 'catalogue-collection'].includes(item?.kind)
+      || (['clothing-lines', 'catalogue-collections'].includes(group?.id) && !item))) {
+    const destination = item?.href || group?.href;
+    const url = new URL(destination, window.location.origin);
+    const validTarget = url.origin === window.location.origin
+      && url.pathname === '/'
+      && (['#clothing-lines', '#technical-collections-archive'].includes(url.hash)
+        || CATALOGUE_COLLECTIONS.some(collection =>
+          new URL(collection.href, window.location.origin).hash === url.hash));
+    if (!validTarget) return;
+    window.history.pushState(window.history.state || {}, '', url.href);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
     return;
   }
 

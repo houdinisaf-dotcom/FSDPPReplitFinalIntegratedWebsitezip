@@ -1,0 +1,1212 @@
+{
+  "stage": "Before Priority 2 changes",
+  "banners": [
+    {
+      "id": "aeroforge",
+      "title": "AEROFORGE",
+      "count": 4,
+      "productIds": [
+        18,
+        38,
+        39,
+        51
+      ],
+      "assets": {
+        "banner": null,
+        "logo": null
+      }
+    },
+    {
+      "id": "combat",
+      "title": "COMBAT",
+      "count": 2,
+      "productIds": [
+        33,
+        41
+      ],
+      "assets": {
+        "banner": null,
+        "logo": null
+      }
+    },
+    {
+      "id": "flex",
+      "title": "FLEX",
+      "count": 1,
+      "productIds": [
+        75
+      ],
+      "assets": {
+        "banner": null,
+        "logo": null
+      }
+    },
+    {
+      "id": "breeze",
+      "title": "BREEZE",
+      "count": 1,
+      "productIds": [
+        73
+      ],
+      "assets": {
+        "banner": null,
+        "logo": null
+      }
+    },
+    {
+      "id": "modest-flow",
+      "title": "MODEST FLOW",
+      "count": 1,
+      "productIds": [
+        50
+      ],
+      "assets": {
+        "banner": null,
+        "logo": null
+      }
+    },
+    {
+      "id": "tiger-series",
+      "title": "FSD TIGER SERIES",
+      "count": 1,
+      "productIds": [
+        27
+      ],
+      "assets": {
+        "banner": null,
+        "logo": "/brand/series-references/tiger-patch.webp"
+      }
+    },
+    {
+      "id": "scorpion-series",
+      "title": "FSD SCORPION SERIES",
+      "count": 1,
+      "productIds": [
+        77
+      ],
+      "assets": {
+        "banner": null,
+        "logo": "/brand/series-references/scorpion-patch.webp"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "division": "apparel",
+      "id": "mens-luxury-performance",
+      "title": "MEN’S LUXURY PERFORMANCE",
+      "categories": [
+        "Men’s Performance and Training",
+        "Training Sets",
+        "Combat and MMA",
+        "Lifestyle"
+      ],
+      "count": 36,
+      "productIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        34,
+        35,
+        58,
+        66,
+        67
+      ]
+    },
+    {
+      "division": "apparel",
+      "id": "womens-modest-combat",
+      "title": "WOMEN’S MODEST COMBAT",
+      "categories": [
+        "Modest Activewear",
+        "Sports Hijabs",
+        "Women’s Performance",
+        "Combat and MMA"
+      ],
+      "count": 20,
+      "productIds": [
+        33,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        56,
+        57,
+        73,
+        74,
+        75
+      ]
+    },
+    {
+      "division": "bio-lab",
+      "id": "bio-lab-concepts",
+      "title": "WEARABLE TECHNOLOGY",
+      "categories": [
+        "Smart Tech"
+      ],
+      "count": 6,
+      "productIds": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        65
+      ]
+    },
+    {
+      "division": "hardware",
+      "id": "strength-equipment",
+      "title": "STRENGTH EQUIPMENT",
+      "categories": [
+        "Gym Hardware and Accessories"
+      ],
+      "count": 4,
+      "productIds": [
+        69,
+        70,
+        71,
+        72
+      ]
+    },
+    {
+      "division": "hardware",
+      "id": "combat-equipment",
+      "title": "COMBAT EQUIPMENT",
+      "categories": [
+        "Combat and MMA"
+      ],
+      "count": 4,
+      "productIds": [
+        30,
+        31,
+        32,
+        35
+      ]
+    },
+    {
+      "division": "hardware",
+      "id": "recovery-technology",
+      "title": "RECOVERY TECHNOLOGY",
+      "categories": [],
+      "count": 0,
+      "productIds": []
+    },
+    {
+      "division": "hardware",
+      "id": "performance-accessories",
+      "title": "PERFORMANCE ACCESSORIES",
+      "categories": [
+        "Gym Hardware and Accessories",
+        "Smart Tech"
+      ],
+      "count": 7,
+      "productIds": [
+        52,
+        55,
+        56,
+        57,
+        60,
+        63,
+        65
+      ]
+    },
+    {
+      "division": "global",
+      "id": "flagships",
+      "title": "FSD FLAGSHIPS",
+      "categories": [],
+      "count": 0,
+      "productIds": []
+    },
+    {
+      "division": "global",
+      "id": "promotions",
+      "title": "FSD PROMOTIONS",
+      "categories": [],
+      "count": 0,
+      "productIds": []
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "FSD Ombré Slash Tee",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 2,
+      "name": "FSD Contrast-Panel Training Tee",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 3,
+      "name": "FSD 280 GSM Combat Tee",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 4,
+      "name": "FSD Back-Text Tee",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 5,
+      "name": "FSD Laser-Ventilated Training Tank",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 6,
+      "name": "FSD 500 GSM Combat Hoodie",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 7,
+      "name": "FSD 600 GSM Luxury Hoodie",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 8,
+      "name": "FSD Technical Zip Jacket",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 9,
+      "name": "FSD Hooded Running Shell",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 10,
+      "name": "FSD Cheetah Windrunner",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 11,
+      "name": "FSD Vector-Camo Windrunner",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 12,
+      "name": "FSD Quilted Technical Gilet",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 13,
+      "name": "FSD Spine-Vent Technical Gilet",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 14,
+      "name": "FSD Compression Baselayer Set",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "images": []
+    },
+    {
+      "id": 15,
+      "name": "FSD Long-Sleeve Performance Training Top",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 16,
+      "name": "FSD Strike Men's Training T-Shirt / Short-Sleeve Top",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Combat and MMA"
+      ],
+      "images": []
+    },
+    {
+      "id": 17,
+      "name": "FSD Performance Joggers",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 18,
+      "name": "FSD Aeroforge Training Tee",
+      "category": "Men’s Performance and Training",
+      "audience": "Unisex",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Women’s Performance"
+      ],
+      "images": []
+    },
+    {
+      "id": 19,
+      "name": "FSD Aeroforge Hybrid Short",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 20,
+      "name": "FSD Premium Black & Gold Athletic Shorts",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 22,
+      "name": "FSD Roadwork Short",
+      "category": "Men’s Performance and Training",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 23,
+      "name": "FSD Technical Tracksuit",
+      "category": "Training Sets",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "images": []
+    },
+    {
+      "id": 24,
+      "name": "FSD Low-Light Reflective Tracksuit",
+      "category": "Training Sets",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "images": []
+    },
+    {
+      "id": 25,
+      "name": "FSD Gradient Compression Set",
+      "category": "Training Sets",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "images": []
+    },
+    {
+      "id": 26,
+      "name": "FSD Aeroforge Tech Set (Zip Hoodie & Joggers)",
+      "category": "Training Sets",
+      "audience": "Unisex",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Lifestyle"
+      ],
+      "images": []
+    },
+    {
+      "id": 27,
+      "name": "FSD Tiger-Slash 550 GSM Walkout Hoodie",
+      "category": "Combat and MMA",
+      "audience": "Men’s",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [
+        "Men’s Performance and Training"
+      ],
+      "images": []
+    },
+    {
+      "id": 28,
+      "name": "FSD Championship Walkout Bomber",
+      "category": "Combat and MMA",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 29,
+      "name": "FSD Signature Walkout Jacket",
+      "category": "Combat and MMA",
+      "audience": "Unisex",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 30,
+      "name": "FSD Signature Boxing Gloves (Pair)",
+      "category": "Combat and MMA",
+      "audience": "Unisex",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 31,
+      "name": "FSD Curved Coaching Focus Mitts",
+      "category": "Combat and MMA",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 32,
+      "name": "FSD Custom Sports Mouthguard & Protective Case",
+      "category": "Combat and MMA",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 33,
+      "name": "FSD Women's MMA Performance Rash Guard",
+      "category": "Women’s / Combat Sports",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "Combat Series",
+      "alsoShowIn": [
+        "Combat and MMA",
+        "Women’s Performance"
+      ],
+      "images": [
+        "/assets/products/womens-rashguard-hero.png",
+        "/assets/products/womens-rashguard-front.png",
+        "/assets/products/womens-rashguard-back.png",
+        "/assets/products/womens-rashguard-short-sleeve.png",
+        "/assets/products/womens-rashguard-gusset-detail.png",
+        "/assets/products/womens-rashguard-flatlock-detail.png",
+        "/assets/products/womens-rashguard-graphics-detail.png",
+        "/assets/products/womens-rashguard-hem-detail.png",
+        "/assets/products/womens-rashguard-action-1.png",
+        "/assets/products/womens-rashguard-action-2.png",
+        "/assets/products/womens-rashguard-action-3.png",
+        "/assets/products/womens-rashguard-action-4.png",
+        "/assets/products/womens-rashguard-box.png"
+      ]
+    },
+    {
+      "id": 34,
+      "name": "FSD Strike Men's Combat Shorts",
+      "category": "Men’s / Combat Sports",
+      "audience": "Men’s",
+      "collection": "Standard / Core",
+      "badge": "Combat Series",
+      "alsoShowIn": [
+        "Combat and MMA",
+        "Men’s Performance and Training"
+      ],
+      "images": [
+        "/assets/products/strike-shorts-hero.webp",
+        "/assets/products/strike-shorts-black-gold.webp",
+        "/assets/products/strike-shorts-charcoal-electric-lime.webp",
+        "/assets/products/strike-shorts-navy-ice-blue.webp",
+        "/assets/products/strike-shorts-olive-cream.webp",
+        "/assets/products/strike-shorts-front.webp",
+        "/assets/products/strike-shorts-rear.webp",
+        "/assets/products/strike-shorts-side.webp",
+        "/assets/products/strike-shorts-waistband-detail.webp",
+        "/assets/products/strike-shorts-mesh-detail.webp",
+        "/assets/products/strike-shorts-kick-view.webp"
+      ]
+    },
+    {
+      "id": 35,
+      "name": "FSD Forest Green Luxury Boxing Tracksuit & Gear Kit",
+      "category": "Combat and MMA",
+      "audience": "Unisex",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "images": []
+    },
+    {
+      "id": 38,
+      "name": "FSD Aeroforge Women’s Performance Training Top (Short Sleeve)",
+      "category": "Women’s Performance",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 39,
+      "name": "FSD Aeroforge Women’s Performance Top (Long Sleeve)",
+      "category": "Women’s Performance",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 40,
+      "name": "FSD Women's Performance Training Leggings",
+      "category": "Women’s Performance",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 41,
+      "name": "FSD Strikeflex Women’s Training Trousers",
+      "category": "Women’s Performance",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Combat and MMA"
+      ],
+      "images": []
+    },
+    {
+      "id": 42,
+      "name": "FSD Performance Sports Hijab",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Sports Hijabs"
+      ],
+      "images": []
+    },
+    {
+      "id": 43,
+      "name": "FSD Velocity Sports Hijab",
+      "category": "Women's / Performance Headwear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "Performance Line",
+      "alsoShowIn": [
+        "Modest Activewear",
+        "Sports Hijabs"
+      ],
+      "images": [
+        "/assets/products/velocity-hijab-main-listing.jpg",
+        "/assets/products/velocity-hijab-front-detail.png",
+        "/assets/products/velocity-hijab-rear-view.png",
+        "/assets/products/velocity-hijab-fabric-ventilation.png",
+        "/assets/products/velocity-hijab-branding-detail.png"
+      ]
+    },
+    {
+      "id": 44,
+      "name": "FSD Flow Running Hijab (Presentation Box Edition)",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Sports Hijabs"
+      ],
+      "images": []
+    },
+    {
+      "id": 45,
+      "name": "FSD Cover Extended-Coverage Sports Hijab",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Sports Hijabs"
+      ],
+      "images": []
+    },
+    {
+      "id": 46,
+      "name": "FSD Aegis Modest Performance Gilet",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 47,
+      "name": "FSD Form Women's Modest Training Top",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 48,
+      "name": "FSD Titan Adaptive Training Jacket",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Women’s Performance"
+      ],
+      "images": []
+    },
+    {
+      "id": 49,
+      "name": "FSD Women's Lightweight Modest Training Overshirt",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 50,
+      "name": "FSD Modest Flow Training Trousers",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 51,
+      "name": "FSD Aeroforge Modest Tunic & Jogger Set",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "images": []
+    },
+    {
+      "id": 52,
+      "name": "FSD Precision Barbell Collars (Pair)",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 54,
+      "name": "FSD Olympic Bar & 5-Cutout Bumper Plate Set",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 55,
+      "name": "FSD COMMAND Gym Bag",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Forged Carbon & Gold Edition Signature Line",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 56,
+      "name": "Signature Performance Sports Duffel",
+      "category": "Accessories / Bags",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "Signature Series",
+      "alsoShowIn": [
+        "Women’s Performance",
+        "Gym Hardware and Accessories"
+      ],
+      "images": [
+        "/assets/products/signature-duffel-lifestyle.png",
+        "/assets/products/signature-duffel-overview.png",
+        "/assets/products/signature-duffel-shoe-compartment.png",
+        "/assets/products/signature-duffel-interior-organization.png",
+        "/assets/products/signature-duffel-hardware-detail.png"
+      ]
+    },
+    {
+      "id": 57,
+      "name": "FSD Performance Crew Socks",
+      "category": "Accessories / Footwear",
+      "audience": "Women’s",
+      "collection": "Standard / Core",
+      "badge": "Essentials Line",
+      "alsoShowIn": [
+        "Women’s Performance",
+        "Gym Hardware and Accessories"
+      ],
+      "images": [
+        "/assets/products/performance-socks-side.png",
+        "/assets/products/performance-socks-rear.png",
+        "/assets/products/performance-socks-detail.png",
+        "/assets/products/performance-socks-mesh.png"
+      ]
+    },
+    {
+      "id": 58,
+      "name": "FSD Winter Accessories Set (Beanies and Scarf)",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [
+        "Lifestyle"
+      ],
+      "images": []
+    },
+    {
+      "id": 59,
+      "name": "FSD ALIGN (posture awareness wearable)",
+      "category": "Smart Tech",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 60,
+      "name": "FSD HYDRATE (smart hydration bottle)",
+      "category": "Smart Tech",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 61,
+      "name": "FSD MOTION (smart training apparel)",
+      "category": "Smart Tech",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 62,
+      "name": "FSD NEXUS (smart ring)",
+      "category": "Smart Tech",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 63,
+      "name": "FSD SONIC (training earbuds)",
+      "category": "Smart Tech",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 65,
+      "name": "FSD PULSE (premium step counter)",
+      "category": "Smart Tech",
+      "audience": "Unisex",
+      "collection": "Core (proposed)",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 66,
+      "name": "FSD Black and Gold Signature Hoodie",
+      "category": "Lifestyle",
+      "audience": "Unisex",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 67,
+      "name": "FSD Whalley Range Camo Hoodie & Jogger Set",
+      "category": "Lifestyle",
+      "audience": "Unisex",
+      "collection": "Standard / Core",
+      "badge": "",
+      "alsoShowIn": [
+        "Training Sets"
+      ],
+      "images": []
+    },
+    {
+      "id": 69,
+      "name": "FSD AUREUS FORGED CARBON™ SET",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Hardware Division / Ultra Luxury",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 70,
+      "name": "FSD OBSIDIAN GOLD™ ELITE SET",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Hardware Division / High-Performance Pro",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": [
+        "/assets/products/obsidian-gold-elite-set.webp"
+      ]
+    },
+    {
+      "id": 71,
+      "name": "FSD VANGUARD COMMERCIAL™ PRO SET",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Hardware Division / Commercial Workhorse",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": [
+        "/assets/products/vanguard-commercial-set.webp"
+      ]
+    },
+    {
+      "id": 72,
+      "name": "FSD FOUNDATION UTILITY™ SET",
+      "category": "Gym Hardware and Accessories",
+      "audience": "Unisex",
+      "collection": "Hardware Division / Foundation Tier",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 73,
+      "name": "FSD Breeze Overshirt & Engineered Leggings Set",
+      "category": "Modest Activewear",
+      "audience": "Women’s",
+      "collection": "Women’s Flagship / FSD Breeze",
+      "badge": "",
+      "alsoShowIn": [],
+      "images": [
+        "/fsd-assets/breeze-set-onyx-black-full-length.webp",
+        "/fsd-assets/breeze-set-onyx-black-front.webp",
+        "/fsd-assets/breeze-set-onyx-black-trouser-view.webp",
+        "/fsd-assets/breeze-set-onyx-black.webp",
+        "/fsd-assets/breeze-set-onyx-black-side.webp",
+        "/fsd-assets/breeze-set-deep-olive.webp",
+        "/fsd-assets/breeze-set-warm-taupe-full-length.webp",
+        "/fsd-assets/breeze-set-slate-grey-full-length.webp",
+        "/fsd-assets/breeze-set-slate-grey.webp",
+        "/fsd-assets/breeze-set-midnight-navy.webp",
+        "/fsd-assets/breeze-set-deep-burgundy-full-length.webp",
+        "/fsd-assets/breeze-set-deep-burgundy-alt-full-length.webp",
+        "/fsd-assets/breeze-set-deep-burgundy.webp"
+      ]
+    },
+    {
+      "id": 74,
+      "name": "FSD Apex High-Waisted Compression Leggings",
+      "category": "Women's / Performance Bottoms",
+      "audience": "Women’s",
+      "collection": "Performance Line",
+      "badge": "Performance Line",
+      "alsoShowIn": [
+        "Women’s Performance"
+      ],
+      "images": []
+    },
+    {
+      "id": 75,
+      "name": "FLEX — High-Waisted Sculpt Leggings",
+      "category": "Women's / Performance Bottoms",
+      "audience": "Women’s",
+      "collection": "",
+      "badge": "Sculpt Series",
+      "alsoShowIn": [
+        "Women’s Performance"
+      ],
+      "images": [
+        "/assets/products/flex-leggings-obsidian-front.webp",
+        "/assets/products/flex-leggings-obsidian-pocket.webp",
+        "/assets/products/flex-leggings-sage-front.webp",
+        "/assets/products/flex-leggings-dusty-rose-front.webp",
+        "/assets/products/flex-leggings-espresso-front.webp",
+        "/assets/products/flex-leggings-teal-front.webp",
+        "/assets/products/flex-leggings-obsidian-rear.webp",
+        "/assets/products/flex-leggings-sage-seated.webp",
+        "/assets/products/flex-leggings-sage-rear.webp",
+        "/assets/products/flex-leggings-dusty-rose-rear.webp",
+        "/assets/products/flex-leggings-espresso-rear.webp",
+        "/assets/products/flex-leggings-espresso-pocket.webp",
+        "/assets/products/flex-leggings-teal-rear.webp",
+        "/assets/products/flex-leggings-detail-pocket.webp",
+        "/assets/products/flex-leggings-detail-fabric.webp",
+        "/assets/products/flex-leggings-detail-flatlock-seams.webp",
+        "/assets/products/flex-leggings-dusty-rose-kneeling-lifestyle.webp",
+        "/assets/products/flex-leggings-dusty-rose-pocket-detail.webp",
+        "/assets/products/flex-leggings-dusty-rose-rear-lifestyle.webp",
+        "/assets/products/flex-leggings-dusty-rose-front-lifestyle.webp",
+        "/assets/products/flex-leggings-dusty-rose-side-lifestyle.webp",
+        "/assets/products/flex-leggings-espresso-side-profile.webp",
+        "/assets/products/flex-leggings-teal-side-lifestyle.webp",
+        "/assets/products/flex-leggings-teal-seated-lifestyle.webp",
+        "/assets/products/flex-leggings-sage-lunge-training.webp",
+        "/assets/products/flex-leggings-sage-seated-lifestyle.webp",
+        "/assets/products/flex-leggings-sage-front-lifestyle.webp",
+        "/assets/products/flex-leggings-obsidian-training-lifestyle.webp",
+        "/assets/products/flex-leggings-obsidian-standing-lifestyle.webp",
+        "/assets/products/flex-leggings-obsidian-gym-lifestyle.webp",
+        "/assets/products/flex-leggings-espresso-lifestyle.webp",
+        "/assets/products/flex-leggings-espresso-side-lifestyle.webp"
+      ]
+    },
+    {
+      "id": 76,
+      "name": "FSD Apex Pro Tactical Gym Backpack",
+      "category": "Accessories / Gear",
+      "audience": "Unisex",
+      "collection": "",
+      "badge": "Pro Gear",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 77,
+      "name": "FSD Scorpion Chitin Tactical Gilet",
+      "category": "Outerwear / Tactical",
+      "audience": "",
+      "collection": "",
+      "badge": "Scorpion Series",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 78,
+      "name": "FSD Velocity Element Running Shell (Series 1)",
+      "category": "Outerwear / Performance",
+      "audience": "",
+      "collection": "",
+      "badge": "Performance Shell",
+      "alsoShowIn": [],
+      "images": []
+    },
+    {
+      "id": 79,
+      "name": "FSD Velocity Element Running Shell (Series 2)",
+      "category": "Outerwear / Performance",
+      "audience": "",
+      "collection": "",
+      "badge": "Performance Shell",
+      "alsoShowIn": [],
+      "images": []
+    }
+  ],
+  "unassignedToSevenLines": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    19,
+    20,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28,
+    29,
+    30,
+    31,
+    32,
+    34,
+    35,
+    40,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    52,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    65,
+    66,
+    67,
+    69,
+    70,
+    71,
+    72,
+    74,
+    76,
+    78,
+    79
+  ]
+}

@@ -99,6 +99,7 @@ export const collectionDivisions = [
         title: 'PERFORMANCE ACCESSORIES',
         overview: 'Explore FSD training accessories and connected equipment.',
         categories: ['Gym Hardware and Accessories', 'Smart Tech'],
+        additionalCategories: ['Accessories / Bags', 'Accessories / Footwear', 'Accessories / Gear'],
         productTerms: ['COMMAND', 'CARRY', 'SOCKS', 'COLLARS', 'HYDRATE', 'SONIC', 'PULSE'],
         concepts: ['Anti-Snap Resistance Systems', 'Premium Metal Flasks'],
       },
