@@ -4,6 +4,7 @@
 - [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
 - [House of Performance approvals](house-of-performance-approvals.md) — preserve the flagship and keep pending page media visible in titled placeholders within approval boundaries.
 - [Velocity product approval boundary](velocity-hijab-proof.md) — apply the approved £34.99 update with Black / Gold; keep CORE colourways and the older archive separate.
+- [CORE hijab photo approval](core-hijab-gallery.md) — use CORE Sports Hijab; map photos only to Black/Gold and retain seven colourways.
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.
 - [Breeze set and overshirt separation](breeze-public-set.md) — the combined set is approved at £145; keep the existing £64.99 overshirt and Modest Flow separate.
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.
@@ -12,4 +13,5 @@
 - [Innovation initiative status](initiative-rollout-status.md) — Keep the five-section House landing; group Investor inside House navigation and retain initiative route and safeguard boundaries.
 - [Tactical Shield proposal boundary](tactical-shield-membership.md) — keep services and sign-up unavailable until providers, safeguarding, legal scope, insurance, and terms are confirmed.
 - [Public SEO routing](public-seo-routing.md) — add crawlable entry paths without replacing shopping flows; withhold canonicals and sitemap until the production origin is verified.
-- [Launch priority gate](launch-priority-gate.md) — Priorities 2 and scoped Priority 3 banner interactions authorised; no automatic Priority 4 approval.
+- [Launch priority gate](launch-priority-gate.md) — Priorities 2, scoped 3 and 4 are authorised; review Priority 4 before starting Priority 5.
+- [FSD change scope](fsd-change-scope.md) — keep new work narrow, preserve approved surfaces and catalogue data, and avoid unrequested redesigns.

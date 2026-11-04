@@ -58,7 +58,7 @@ try {
     assert.equal(reducedMotionState.visible, true, 'reduced motion keeps the photograph available');
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
     if (width === 1440) {
-      await evaluate(`window.__motionTestStarted=false;window.__motionTestDone=false;import('/src/motion-runtime.js').then(({animateElement})=>{window.__motionTestStarted=true;return animateElement(document.querySelector('[data-viewer-photo]'),{opacity:[.15,1],y:[18,0]},{duration:2});}).then(()=>{window.__motionTestDone=true;})`);
+      await evaluate(`window.__motionTestStarted=false;window.__motionTestDone=false;window.__motionTestError=null;void import('/src/motion-runtime.js').then(({animateElement})=>{window.__motionTestStarted=true;return animateElement(document.querySelector('[data-viewer-photo]'),{opacity:[.15,1],y:[18,0]},{duration:2});}).then(()=>{window.__motionTestDone=true;}).catch(error=>{window.__motionTestError=String(error)});true`);
       await wait(`window.__motionTestStarted && document.querySelector('[data-viewer-photo]').getAnimations().some(animation=>animation.effect?.getTiming().duration===2000)`, 'motion runtime test animation is active');
       await evaluate(`window.__motionTestReduceAt=performance.now()`);
       await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });

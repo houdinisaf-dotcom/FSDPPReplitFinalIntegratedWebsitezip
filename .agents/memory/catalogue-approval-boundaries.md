@@ -155,11 +155,17 @@ The existing FSD Strike Men’s Combat Shorts record uses only the four user-con
 
 **How to apply:** Keep one product record and show only those four colourways. Earlier names may remain as hidden search aliases, but must not appear as current options. Leave unsupplied material composition unfilled.
 
-The public FSD Aeroforge Training Tee listing may use the uploaded £39.99 product details, SKU, S–XXL sizes, and six curated colourways. Do not show its development-tier label; product photography remains unconfirmed and unmapped.
+The public FSD Aeroforge Training Tee listing may use the uploaded £39.99 product details, SKU, S–XXL sizes, and six curated colourways. The user approved the 17 supplied photos for the existing product gallery, mapped to those colourways.
 
-**Why:** The user chose to update the public master listing after being told it would replace twelve existing colourways with six and add the uploaded specifications.
+**Why:** After reviewing the visual match to the existing variants, the user explicitly approved adding the supplied photos to the existing gallery.
 
-**How to apply:** Update the existing tee record only, preserve its existing category and £39.99 price, use the shared storefront rather than a second Express server, and keep image and stock availability unclaimed.
+**How to apply:** Preserve the existing record, category, price, SKU, sizes, and colourways. Keep the original uploads intact; do not infer stock or new product claims from photo approval.
+
+The FSD Aeroforge Hybrid Short has one approved Black/Green lifestyle photo. Keep it mapped only to that existing colourway; the other five colourways remain without product photos.
+
+**Why:** The user supplied the image labelled “AEROFORGE Hybrid Short,” and it visibly matches the existing Black/Green variant.
+
+**How to apply:** Preserve the single existing product record and all six catalogue colourway values. Keep the standard missing-image placeholder for unphotographed variants until matching approved images arrive.
 
 FSD Apex High-Waisted Compression Leggings is a separate active product, not a replacement for the existing FSD Women’s Performance Training Leggings. The user approved adding it with a clean image placeholder while its referenced photo files are unavailable.
 

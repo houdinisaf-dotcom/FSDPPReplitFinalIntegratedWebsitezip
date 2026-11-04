@@ -73,9 +73,9 @@ export function renderCollectionShowcase(divisions, { editorial = false, product
     const mensProduct = (Array.isArray(products) ? products : [])
       .find(product => mensGroup && matchesGroup(product, mensGroup) && productImagesForDisplay(product).length);
     const mensImages = productImagesForDisplay(mensProduct);
-    const mensCover = mensImages.find(image => /front/i.test(image.src))?.src
+    const mensCover = siteMedia.collectionCards.mens?.src
+      || mensImages.find(image => /front/i.test(image.src))?.src
       || mensImages[0]?.src
-      || siteMedia.collectionCards.mens?.src
       || '';
     const card = (division, groupIndex, number, eyebrow, title, note, className = '', imageSrc = '') => division
       ? `<button class="fsd-editorial-card ${className}" type="button" data-division="${escapeHTML(division.id)}"

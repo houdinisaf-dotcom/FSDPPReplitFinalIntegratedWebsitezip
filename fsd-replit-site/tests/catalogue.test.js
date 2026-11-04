@@ -237,7 +237,7 @@ test('Performance Crew Socks updates the existing three-pair record with four ma
   assert.ok(socks?.images.every(image => existsSync(new URL(`../public${image.src}`, import.meta.url))));
 });
 
-test('women’s MMA rash guard updates its existing record with sizes, sleeve options and cropped views', () => {
+test('women’s MMA rash guard preserves its first image and maps four supplied gallery views', () => {
   const rashGuard = products.find(product => product.id === 33);
   assert.equal(products.filter(product => product.id === 33).length, 1);
   assert.equal(rashGuard?.name, "FSD Women's MMA Performance Rash Guard");
@@ -254,19 +254,13 @@ test('women’s MMA rash guard updates its existing record with sizes, sleeve op
   assert.deepEqual(rashGuard?.options, ['Long Sleeve', 'Short Sleeve']);
   assert.deepEqual(rashGuard?.images.map(image => image.label), [
     'Hero Lifestyle View',
-    'Front / Long Sleeve Technical View',
-    'Back / Long Sleeve Technical View',
-    'Front / Short Sleeve Option',
-    'Detail / Underarm Mesh Gusset',
-    'Detail / Reinforced Flatlock Seam',
-    'Detail / Satin Gold Graphic',
-    'Detail / Anti-Ride-Up Hem',
-    'Action / Grappling View 1',
-    'Action / Grappling View 2',
-    'Combat Movement View',
-    'Rear Branding / Movement View',
-    'Packaging / Presentation Box',
+    'Obsidian & Satin Gold / Seated cage-side lifestyle',
+    'Obsidian & Satin Gold / Fabric and branding detail',
+    'Obsidian & Satin Gold / Grappling action',
+    'Obsidian & Satin Gold / Packaging presentation',
   ]);
+  assert.equal(rashGuard?.images[0]?.src, '/assets/products/womens-rashguard-hero.png');
+  assert.ok(rashGuard?.images.every(image => image.colourway === 'Obsidian & Satin Gold'));
   assert.deepEqual(getVerifiedProductSpecifications(33)?.benefits, rashGuard?.features);
   assert.ok(filterProducts('Women’s / Combat Sports').some(product => product.id === 33));
   assert.ok(filterProducts('Combat and MMA').some(product => product.id === 33));
@@ -492,20 +486,45 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 12);
+  assert.equal(products.filter(p => p.images.length).length, 15);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
       assert.equal(p.colourways, 'Black / Gold');
       assert.equal(image.colourway, 'Black / Gold');
     } else if (image.colourway) {
-      assert.ok(p.colourways.split(';').map(value => value.trim()).includes(image.colourway));
+      const colourways = Array.isArray(p.rowColourways)
+        ? p.rowColourways
+        : p.colourways.split(';').map(value => value.trim());
+      assert.ok(colourways.includes(image.colourway));
     }
   }
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 33, 34, 43, 52, 56, 57, 70, 71, 73, 75]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 18, 19, 33, 34, 42, 43, 52, 56, 57, 70, 71, 73, 75]);
+  assert.deepEqual(products.find(p => p.id === 18).images.map(image => image.src), [
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-fit.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-fabric-detail.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-seated-lifestyle.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-rear-lifestyle.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-womens-fit.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-product.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-rear-product.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-seated-training.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-womens-seated-training.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-neck-label-detail.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-white-green-shoulder-mesh-detail.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-all-black-front.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-black-grey-front.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-sage-black-front.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-charcoal-orange-front.webp',
+    '/assets/products/aeroforge-training-tee/aeroforge-navy-blue-front.webp',
+  ]);
+  assert.deepEqual(products.find(p => p.id === 19).images.map(image => image.src), [
+    '/assets/products/aeroforge-hybrid-short/aeroforge-black-green-lifestyle.webp',
+  ]);
   assert.deepEqual(products.find(p => p.id === 1).images.map(image => image.src), [
     '/images/ombre-indigo.png', '/images/ombre-blue.png',
   ]);
@@ -514,18 +533,10 @@ test('product images use only supplied assets explicitly mapped to products', ()
   ]);
   assert.deepEqual(products.find(p => p.id === 33).images.map(image => image.src), [
     '/assets/products/womens-rashguard-hero.png',
-    '/assets/products/womens-rashguard-front.png',
-    '/assets/products/womens-rashguard-back.png',
-    '/assets/products/womens-rashguard-short-sleeve.png',
-    '/assets/products/womens-rashguard-gusset-detail.png',
-    '/assets/products/womens-rashguard-flatlock-detail.png',
-    '/assets/products/womens-rashguard-graphics-detail.png',
-    '/assets/products/womens-rashguard-hem-detail.png',
-    '/assets/products/womens-rashguard-action-1.png',
-    '/assets/products/womens-rashguard-action-2.png',
-    '/assets/products/womens-rashguard-action-3.png',
-    '/assets/products/womens-rashguard-action-4.png',
-    '/assets/products/womens-rashguard-box.png',
+    '/products/womens-mma-rash-guard/black-gold/lifestyle.webp',
+    '/products/womens-mma-rash-guard/black-gold/fabric.webp',
+    '/products/womens-mma-rash-guard/black-gold/action.webp',
+    '/products/womens-mma-rash-guard/black-gold/packaging.webp',
   ]);
   assert.deepEqual(products.find(p => p.id === 34).images.map(image => image.src), [
     '/assets/products/strike-shorts-hero.webp',
@@ -585,7 +596,7 @@ test('product images use only supplied assets explicitly mapped to products', ()
     '/fsd-assets/breeze-set-deep-burgundy-alt-full-length.webp',
     '/fsd-assets/breeze-set-deep-burgundy.webp',
   ]);
-  for (const id of [42, 45, 60, 61, 62, 63, 65]) {
+  for (const id of [45, 60, 61, 62, 63, 65]) {
     assert.deepEqual(products.find(p => p.id === id).images, []);
   }
 });
@@ -821,7 +832,19 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
       const mediaSection = element('#dialog-body').innerHTML
         .match(/<section class="product-detail-media"[\s\S]*?<\/section>/)?.[0];
       assert.ok(mediaSection);
-      assert.doesNotMatch(mediaSection, /<img\b/);
+      if (id === 42) {
+        assert.match(mediaSection, /catalogue-variant-image-placeholder/);
+        assert.match(mediaSection, /Navy\/Cyan/);
+        assert.match(mediaSection, /src="\/products\/sports-hijab\/black-gold\/hero\.webp"/);
+        assert.equal((mediaSection.match(/data-catalogue-image-index=/g) ?? []).length, 8);
+        const coreHijab = products.find(product => product.id === 42);
+        changeColourway(1, 0);
+        assert.equal(mainImage.src, coreHijab.images[0].src);
+        assert.equal(mainCaption.textContent, coreHijab.images[0].label);
+        assert.equal(selectedColourway.textContent, 'Black/Gold');
+      } else {
+        assert.doesNotMatch(mediaSection, /<img\b/);
+      }
     }
     click('[data-product]', { dataset: { product: '59' } });
     assert.doesNotMatch(element('#dialog-body').innerHTML, /Price at launch|£\d/);
@@ -879,6 +902,7 @@ test('approved aliases find unified entries without merging distinct product lin
     ['FSD Aeroforge Hybrid Training Short', 19],
     ['FSD Performance Training Shorts', 20],
     ['FSD CORE Everyday Sports Hijab', 42],
+    ['FSD Performance Sports Hijab', 42],
     ['FSD Modest Longline Training Top / Tunic', 47],
     ['FSD Modest Longline Training Jacket', 48],
     ['FSD Women’s Training Trousers / Joggers', 50],

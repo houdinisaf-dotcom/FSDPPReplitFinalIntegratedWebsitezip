@@ -223,6 +223,9 @@ function canShowBagAction(product) {
 }
 
 function productColourwayOptions(product) {
+  if (Array.isArray(product.rowColourways)) {
+    return product.rowColourways.map(option => String(option).trim()).filter(Boolean);
+  }
   return typeof product.colourways === 'string'
     ? product.colourways.split(/\s*;\s*/).map(option => option.trim()).filter(Boolean)
     : [];

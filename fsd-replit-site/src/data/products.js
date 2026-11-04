@@ -4,6 +4,28 @@ import { collectionDivisions } from '../collection-divisions.js';
 // Product image configuration. Each entry may include `colourway`, `size`, or
 // `variant` so variant-specific photography can be added without changing UI.
 const imageReferences = {
+  'FSD Aeroforge Training Tee': [
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp', label: 'White / Green / Wide lifestyle view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-fit.webp', label: 'White / Green / Front fit view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-fabric-detail.webp', label: 'White / Green / Fabric detail', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-seated-lifestyle.webp', label: 'White / Green / Seated lifestyle view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-rear-lifestyle.webp', label: 'White / Green / Rear lifestyle view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-womens-fit.webp', label: 'White / Green / Women’s fit view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-product.webp', label: 'White / Green / Front product view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-rear-product.webp', label: 'White / Green / Rear product view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-seated-training.webp', label: 'White / Green / Seated training view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-womens-seated-training.webp', label: 'White / Green / Women’s seated training view', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-neck-label-detail.webp', label: 'White / Green / Neck label detail', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-shoulder-mesh-detail.webp', label: 'White / Green / Shoulder mesh detail', colourway: 'White / Green' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-all-black-front.webp', label: 'All Black / Front product view', colourway: 'All Black' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-black-grey-front.webp', label: 'Black / Grey / Front product view', colourway: 'Black / Grey' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-sage-black-front.webp', label: 'Sage / Black / Front product view', colourway: 'Sage / Black' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-charcoal-orange-front.webp', label: 'Charcoal / Orange / Front product view', colourway: 'Charcoal / Orange' },
+    { src: '/assets/products/aeroforge-training-tee/aeroforge-navy-blue-front.webp', label: 'Navy / Blue / Front product view', colourway: 'Navy / Blue' },
+  ],
+  'FSD Aeroforge Hybrid Short': [
+    { src: '/assets/products/aeroforge-hybrid-short/aeroforge-black-green-lifestyle.webp', label: 'Black/Green / Front lifestyle view', colourway: 'Black/Green' },
+  ],
   'FSD Ombré Slash Tee': [
     { src: '/images/ombre-indigo.png', label: 'Vintage indigo fading to jet black' },
     { src: '/images/ombre-blue.png', label: 'Electric cobalt fading to jet black' },
@@ -53,18 +75,10 @@ const imageReferences = {
   ],
   "FSD Women's MMA Performance Rash Guard": [
     { src: '/assets/products/womens-rashguard-hero.png', label: 'Hero Lifestyle View', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-front.png', label: 'Front / Long Sleeve Technical View', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-back.png', label: 'Back / Long Sleeve Technical View', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-short-sleeve.png', label: 'Front / Short Sleeve Option', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-gusset-detail.png', label: 'Detail / Underarm Mesh Gusset', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-flatlock-detail.png', label: 'Detail / Reinforced Flatlock Seam', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-graphics-detail.png', label: 'Detail / Satin Gold Graphic', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-hem-detail.png', label: 'Detail / Anti-Ride-Up Hem', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-action-1.png', label: 'Action / Grappling View 1', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-action-2.png', label: 'Action / Grappling View 2', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-action-3.png', label: 'Combat Movement View', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-action-4.png', label: 'Rear Branding / Movement View', colourway: 'Obsidian & Satin Gold' },
-    { src: '/assets/products/womens-rashguard-box.png', label: 'Packaging / Presentation Box', colourway: 'Obsidian & Satin Gold' },
+    { src: '/products/womens-mma-rash-guard/black-gold/lifestyle.webp', label: 'Obsidian & Satin Gold / Seated cage-side lifestyle', colourway: 'Obsidian & Satin Gold' },
+    { src: '/products/womens-mma-rash-guard/black-gold/fabric.webp', label: 'Obsidian & Satin Gold / Fabric and branding detail', colourway: 'Obsidian & Satin Gold' },
+    { src: '/products/womens-mma-rash-guard/black-gold/action.webp', label: 'Obsidian & Satin Gold / Grappling action', colourway: 'Obsidian & Satin Gold' },
+    { src: '/products/womens-mma-rash-guard/black-gold/packaging.webp', label: 'Obsidian & Satin Gold / Packaging presentation', colourway: 'Obsidian & Satin Gold' },
   ],
   'FSD Velocity Sports Hijab': [
     { src: '/assets/products/velocity-hijab-main-listing.jpg', label: 'Main Product Listing / Lifestyle Hero', colourway: 'Black / Gold' },
@@ -72,6 +86,16 @@ const imageReferences = {
     { src: '/assets/products/velocity-hijab-rear-view.png', label: 'Rear View', colourway: 'Black / Gold' },
     { src: '/assets/products/velocity-hijab-fabric-ventilation.png', label: 'Fabric & Ventilation Detail', colourway: 'Black / Gold' },
     { src: '/assets/products/velocity-hijab-branding-detail.png', label: 'Branding / Gold Crest Detail', colourway: 'Black / Gold' },
+  ],
+  'CORE Sports Hijab': [
+    { src: '/products/sports-hijab/black-gold/hero.webp', label: 'Black/Gold / Hero portrait', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/front.webp', label: 'Black/Gold / Front portrait', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/side.webp', label: 'Black/Gold / Side profile', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/rear.webp', label: 'Black/Gold / Rear view', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/branding.webp', label: 'Black/Gold / Logo detail', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/fabric.webp', label: 'Black/Gold / Breathable fabric detail', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/outdoor-lifestyle.webp', label: 'Black/Gold / Outdoor running lifestyle', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/training-lifestyle.webp', label: 'Black/Gold / Gym training lifestyle', colourway: 'Black/Gold' },
   ],
   'FSD Performance Crew Socks': [
     { src: '/assets/products/performance-socks-side.png', label: 'Side Profile View', colourway: 'Obsidian & Satin Gold' },
@@ -139,6 +163,9 @@ export const products = masterProducts
     publicationStatus: p['Publication status'] ?? '',
     confirmedPrice: p['Price (£) confirmed'] === '' ? null : Number(p['Price (£) confirmed']),
     colourways: p.Colourways,
+    ...([19, 42].includes(p.id) && typeof p.Colourways === 'string'
+      ? { rowColourways: p.Colourways.split(',').map(value => value.trim()).filter(Boolean) }
+      : {}),
     collection: p['Collection line'],
     collectionIds: Array.isArray(p.collectionIds || p['Collection IDs'])
       ? [...(p.collectionIds || p['Collection IDs'])]

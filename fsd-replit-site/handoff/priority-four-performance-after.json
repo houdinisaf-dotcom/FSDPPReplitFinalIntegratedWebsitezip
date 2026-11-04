@@ -1,0 +1,68 @@
+{
+  "phase": "after",
+  "environment": "Local static production build, cold resource cache, no CPU/network throttling",
+  "window": "1500ms after runtime ready per sample; three samples per width; not field performance",
+  "samples": [
+    {
+      "width": 390,
+      "run": 1,
+      "fcpMs": 1612,
+      "lcpMs": 1632,
+      "cls": 0,
+      "domContentLoadedMs": 742.1999999992549,
+      "transferredBytes": 1312101,
+      "heavy3dImports": 0
+    },
+    {
+      "width": 390,
+      "run": 2,
+      "fcpMs": 532,
+      "lcpMs": 716,
+      "cls": 0.00005765072016460906,
+      "domContentLoadedMs": 289.3999999985099,
+      "transferredBytes": 1298825,
+      "heavy3dImports": 0
+    },
+    {
+      "width": 390,
+      "run": 3,
+      "fcpMs": 500,
+      "lcpMs": 652,
+      "cls": 0.00005765072016460906,
+      "domContentLoadedMs": 302.40000000037253,
+      "transferredBytes": 1298825,
+      "heavy3dImports": 0
+    },
+    {
+      "width": 1440,
+      "run": 1,
+      "fcpMs": 804,
+      "lcpMs": 832,
+      "cls": 0,
+      "domContentLoadedMs": 318.5,
+      "transferredBytes": 1358149,
+      "heavy3dImports": 0
+    },
+    {
+      "width": 1440,
+      "run": 2,
+      "fcpMs": 644,
+      "lcpMs": 896,
+      "cls": 0.0004878587770596081,
+      "domContentLoadedMs": 290,
+      "transferredBytes": 1358149,
+      "heavy3dImports": 0
+    },
+    {
+      "width": 1440,
+      "run": 3,
+      "fcpMs": 556,
+      "lcpMs": 744,
+      "cls": 0.0004874011234225916,
+      "domContentLoadedMs": 292.80000000074506,
+      "transferredBytes": 1358258,
+      "heavy3dImports": 0
+    }
+  ],
+  "runtimeErrors": []
+}

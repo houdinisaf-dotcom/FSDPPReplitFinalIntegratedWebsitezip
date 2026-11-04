@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import master from '../src/master-products.json' with { type: 'json' };
 import { getVerifiedProductSpecifications, products } from '../src/catalogue-data.js';
 import { productSizeOptions, renderProductDetailPage } from '../src/product-detail-page.js';
@@ -25,7 +27,7 @@ test('Aeroforge Training Tee public master record uses the supplied approved val
   assert.equal(source.SKU, 'FSD-AF-T01');
   assert.deepEqual(source.Colourways.split('; ').map(value => value.trim()), expectedColourways);
   assert.deepEqual(productSizeOptions(product), ['S', 'M', 'L', 'XL', 'XXL']);
-  assert.equal(source['Image status'], 'No image confirmed');
+  assert.equal(source['Image status'], 'Approved product photography');
   assert.equal(source['Specification status'], 'verified');
   assert.deepEqual(source['Care instructions'], [
     'Machine wash cold at 30°C',
@@ -39,17 +41,25 @@ test('Aeroforge Training Tee public master record uses the supplied approved val
   assert.equal(Object.hasOwn(product, 'tier'), false);
 });
 
-test('Aeroforge Training Tee product details render its variants without inventing images or stock', () => {
+test('Aeroforge Training Tee maps approved photos to all six colourways without inventing stock', () => {
   const product = products.find(item => item.id === 18);
   const colourways = product.colourways.split(/\s*;\s*/).filter(Boolean);
   const sizes = productSizeOptions(product);
+  const images = product.images;
+  const colourwayImageIndexes = colourways.map(colourway =>
+    images.findIndex(image => image.colourway === colourway));
+  assert.equal(images.length, 17);
+  assert.deepEqual(colourways.map(colourway =>
+    images.filter(image => image.colourway === colourway).length), [12, 1, 1, 1, 1, 1]);
+  assert.ok(colourwayImageIndexes.every(index => index >= 0));
+  assert.ok(images.every(image => image.label && existsSync(join(process.cwd(), 'public', image.src.slice(1)))));
   const markup = renderProductDetailPage({
     product,
-    images: [],
+    images,
     initialImageIndex: 0,
     galleryPlaceholders: [],
     colourways,
-    colourwayImageIndexes: colourways.map(() => -1),
+    colourwayImageIndexes,
     sizes,
     price: { label: '', value: '£39.99' },
     canPurchase: true,
@@ -64,7 +74,7 @@ test('Aeroforge Training Tee product details render its variants without inventi
   assert.match(markup, /Targeted Ventilation/);
   assert.match(markup, /Machine wash cold at 30°C/);
   assert.match(markup, /Availability by size: <strong>\[TO CONFIRM\]/);
-  assert.match(markup, /fsd-image-placeholder/);
-  assert.match(markup, /Image to be added/);
-  assert.doesNotMatch(markup, /Sample \/ Launch Development Tier|InStock|data-catalogue-main-image/);
+  assert.equal((markup.match(/data-catalogue-image-index=/g) || []).length, 17);
+  assert.match(markup, /data-catalogue-main-image/);
+  assert.doesNotMatch(markup, /Sample \/ Launch Development Tier|InStock/);
 });
