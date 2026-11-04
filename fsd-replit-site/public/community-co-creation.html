@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Community Co-Creation is an operating or rollout-underway initiative for structured feedback, workshops, and collaborative testing.">
+  <meta name="description" content="Community Co-Creation is an operating initiative developing structured feedback and co-creation frameworks. No workshops, trials, forums, or submissions are open.">
   <title>FSD | Community Co-Creation</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
@@ -99,6 +99,78 @@
       color: #cdb589;
     }
 
+    .fsd .capability-grid,
+    .fsd .visual-grid,
+    .fsd .badge-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .fsd .capability-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    }
+
+    .fsd .visual-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      width: min(calc(100% - 48px), 1000px);
+      margin: 24px auto;
+    }
+
+    .fsd .badge-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    }
+
+    .fsd .capability-card,
+    .fsd .value-panel,
+    .fsd .progression-panel {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 24px;
+    }
+
+    .fsd .capability-card h3,
+    .fsd .value-panel h2,
+    .fsd .progression-panel h2 {
+      color: #cdb589;
+      font-size: 1.05rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .fsd .visual-placeholder {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px dashed #8a6a44;
+      background: #161412;
+      color: #cdb589;
+      text-align: center;
+    }
+
+    .fsd .visual-placeholder span {
+      color: #d8d0bf;
+      font-size: .9rem;
+    }
+
+    .fsd .badge {
+      border: 1px solid #2a2622;
+      background: #0f0f0f;
+      padding: 18px;
+      color: #e9e1d0;
+      text-align: center;
+    }
+
+    .fsd .progression-panel ul {
+      margin: 20px 0 0;
+      padding-left: 22px;
+      color: #d8d0bf;
+    }
+
     .fsd .page-footer {
       padding-top: 24px;
       text-align: center;
@@ -126,6 +198,10 @@
       .fsd .status {
         padding: 16px;
       }
+
+      .fsd .visual-grid {
+        width: min(calc(100% - 32px), 1000px);
+      }
     }
   </style>
 </head>
@@ -136,13 +212,73 @@
       <div class="tag">FSD / Community &amp; Culture</div>
       <h1 id="community-co-creation-title">Community Co-Creation</h1>
       <p class="hero-intro">Real people. Real ideas. A stronger FSD.</p>
+      <p>This operating initiative is developing consent-based ways for the community to inform future work. No workshops, product trials, or submissions are open.</p>
     </header>
     <hr>
     <section aria-labelledby="community-co-creation-framework-title">
-      <h2 id="community-co-creation-framework-title">Initiative Framework &amp; Rollout</h2>
-      <p>Community Co-Creation is an operating initiative developing structured ways for the community to help shape future FSD products, training experiences, and initiatives. Its framework includes structured feedback, workshops, and collaborative testing.</p>
+      <h2 id="community-co-creation-framework-title">01 / Co-Creation Framework</h2>
+      <p>Community Co-Creation is an operating initiative developing structured ways for customers, athletes, instructors, and practitioners to inform future FSD products, training experiences, and initiatives. Its framework includes structured feedback, workshops, and collaborative testing as potential formats.</p>
+      <p>Any future participation would require clear consent, privacy, safety, moderation, and content-use rules. Feedback does not guarantee that an idea will be adopted. Participation is feedback only; it does not grant shares, tokens, profit-sharing, or voting rights over the company.</p>
+    </section>
+    <hr>
+    <section aria-labelledby="community-co-creation-pillars-title">
+      <h2 id="community-co-creation-pillars-title">02 / Potential Co-Creation Pathways</h2>
+      <div class="capability-grid">
+        <article class="capability-card">
+          <h3>Structured Community Feedback</h3>
+          <p>Design clear ways for community perspectives to inform future work; no feedback channel or submission process is currently open.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Prototype Evaluation</h3>
+          <p>Potential fit, comfort, performance, and durability reviews would require approved protocols and participant safeguards; no product trials are open.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Workshops &amp; Forums</h3>
+          <p>Assess facilitated workshops or moderated forums as future formats; no events, dates, or registrations are confirmed.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Collaborative Development</h3>
+          <p>Consider community insight during future prioritisation; feedback does not guarantee adoption or confer company ownership or decision rights.</p>
+        </article>
+      </div>
+    </section>
+    <div class="visual-grid" aria-label="Illustrative co-creation placeholders">
+      <div class="visual-placeholder" role="img" aria-label="Illustrative community workshop placeholder; no session is operating">
+        <strong>Illustrative workshop setting</strong>
+        <span>No workshop, participant group, or event is represented as operating.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative prototype review placeholder; no product trials are open">
+        <strong>Illustrative prototype review</strong>
+        <span>No product trial, testing panel, or prototype programme is open.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative feedback portal placeholder; no portal or submission system is live">
+        <strong>Illustrative feedback interface</strong>
+        <span>No online forum, feedback portal, or submission system is live.</span>
+      </div>
+    </div>
+    <section class="value-panel" aria-labelledby="community-co-creation-value-title">
+      <h2 id="community-co-creation-value-title">03 / Potential Strategic Value</h2>
+      <div class="badge-grid">
+        <div class="badge">Stronger community relationships</div>
+        <div class="badge">Products informed by real needs</div>
+        <div class="badge">Customer loyalty and brand distinction</div>
+        <div class="badge">Long-term innovation</div>
+      </div>
+      <p class="small">These are potential benefits to assess, not guaranteed outcomes.</p>
+    </section>
+    <section class="progression-panel" aria-labelledby="community-co-creation-conditions-title">
+      <h2 id="community-co-creation-conditions-title">04 / Conditions Before Participation Opens</h2>
+      <ul>
+        <li>Define who can participate and how feedback will be used.</li>
+        <li>Set consent, privacy, data-retention, moderation, and safeguarding practices.</li>
+        <li>Approve safety and quality protocols for any product trial.</li>
+        <li>Define intellectual-property, attribution, and any compensation terms.</li>
+        <li>Confirm legal, funding, staffing, and delivery readiness.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="community-co-creation-status-title">
       <div class="status" role="note">
-        <p><strong>Status:</strong> Operating or rollout underway. This page does not offer workshop registration, product trials, or feedback submissions.</p>
+        <p id="community-co-creation-status-title"><strong>Status:</strong> Operating or rollout underway. This page does not offer workshop registration, product trials, or feedback submissions. No workshop, testing panel, forum, feedback portal, or community event is represented as currently operating.</p>
       </div>
     </section>
     <hr>

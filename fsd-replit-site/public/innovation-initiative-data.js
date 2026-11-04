@@ -49,11 +49,39 @@ window.FSDInnovationInitiatives = Object.freeze({
     {
       id: 'co-creation',
       title: 'Community Co-Creation',
-      summary: 'Creator workshops, structured feedback and product testing.',
-      scope: 'Bring customers, athletes and instructors into feedback sessions, prototype testing, workshops, forums and events that inform future products and experiences.',
-      valuePillars: ['Stronger community relationships', 'Products informed by real needs', 'Customer loyalty and brand distinction'],
-      rollout: ['Set a clear participation framework', 'Establish consent and data-privacy practices', 'Use structured testing and feedback processes', 'Review legal, funding and delivery requirements'],
-      safeguards: ['Participation is feedback only; it does not grant shares, tokens, profit-sharing or voting rights over the company.'],
+      heroSubtitle: 'Real people. Real ideas. A stronger FSD.',
+      summary: 'Operating initiative developing consent-based feedback and co-creation frameworks; no sessions, trials, or submissions are open.',
+      scope: 'Develop structured ways for customers, athletes, instructors, and practitioners to inform future FSD products, training experiences, and initiatives. Workshops, prototype reviews, moderated forums, and digital feedback channels are potential formats only; no sessions, trials, forums, or submission portal are live.',
+      capabilities: [
+        {
+          title: 'Structured Community Feedback',
+          description: 'Design clear, accessible ways for community perspectives to inform future work; no feedback channel or submission process is currently open.',
+        },
+        {
+          title: 'Prototype Evaluation',
+          description: 'Potential fit, comfort, performance, and durability reviews would require approved protocols and participant safeguards; no product trials are open.',
+        },
+        {
+          title: 'Workshops & Forums',
+          description: 'Assess facilitated workshops or moderated forums as future formats; no events, dates, or registrations are confirmed.',
+        },
+        {
+          title: 'Collaborative Development',
+          description: 'Consider community insight during future prioritisation; feedback does not guarantee adoption or confer company ownership or decision rights.',
+        },
+      ],
+      valueLabel: 'Potential strategic value to assess',
+      valuePillars: ['Stronger community relationships', 'Products informed by real needs', 'Customer loyalty and brand distinction', 'Long-term innovation'],
+      rolloutLabel: 'Conditions before participation opens',
+      rollout: ['Define eligible participants and a clear participation framework', 'Set consent, privacy, retention, and moderation practices', 'Approve safety and quality protocols for any product trial', 'Define intellectual-property, attribution, and any compensation terms', 'Confirm legal, safeguarding, staffing, funding, and delivery readiness'],
+      safeguards: [
+        'This page does not offer workshop registration, product trials, or feedback submissions.',
+        'No workshop, testing panel, forum, feedback portal, or community event is represented as currently operating.',
+        'No community feedback or participant data is being collected through this page.',
+        'Participation is feedback only; it does not grant shares, tokens, profit-sharing, or voting rights over the company.',
+        'Uploaded workshop, prototype-review, and portal visuals are illustrative placeholders, not active sessions or systems.',
+      ],
+      note: 'Potential community, product, and brand benefits are aims to assess, not guaranteed outcomes.',
     },
     {
       id: 'performance-partnerships',

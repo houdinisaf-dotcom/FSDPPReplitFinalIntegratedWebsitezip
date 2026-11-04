@@ -57,6 +57,8 @@ test('public initiative copy removes exploratory labels and retains safety and p
     .find(item => item.id === 'genetic-microbiome');
   const circular = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).community
     .find(item => item.id === 'circular-trade-in');
+  const coCreation = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).community
+    .find(item => item.id === 'co-creation');
 
   assert.doesNotMatch(source, /Concept for exploration|not a current product or commitment|exploratory concept|Design Prototype/i);
   assert.match(router, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
@@ -109,6 +111,12 @@ test('public initiative copy removes exploratory labels and retains safety and p
   assert.match(circular.safeguards.join(' '), /Trade-in credit would create a financial liability/);
   assert.match(circular.safeguards.join(' '), /No zero-waste or verified environmental-impact claim is made/);
   assert.match(circular.note, /potential aims to validate, not measured or guaranteed results/);
+  assert.equal(coCreation.capabilities.length, 4);
+  assert.match(coCreation.summary, /no sessions, trials, or submissions are open/i);
+  assert.match(coCreation.scope, /no sessions, trials, forums, or submission portal are live/i);
+  assert.match(coCreation.safeguards.join(' '), /No community feedback or participant data is being collected through this page/);
+  assert.match(coCreation.safeguards.join(' '), /does not grant shares, tokens, profit-sharing, or voting rights over the company/);
+  assert.match(coCreation.note, /not guaranteed outcomes/i);
   assert.match(source, /FSD is not an emergency service/i);
   assert.match(source, /No tests, kits, sample collection, or data analysis are operating/i);
   assert.match(source, /No partner is represented as agreed/i);

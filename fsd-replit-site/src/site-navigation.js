@@ -464,7 +464,7 @@ function makeHouseGroups(divisions) {
           href: '/community-co-creation.html',
           kind: 'initiative',
           status: 'Operating or rollout underway',
-          description: 'Operating initiative for structured feedback, workshops, and collaborative testing. No sessions or submissions are open here.',
+          description: 'Operating initiative for structured feedback and co-creation. No workshops, trials, forums, portal, or submissions are open.',
         },
         {
           id: 'performance-partnerships',

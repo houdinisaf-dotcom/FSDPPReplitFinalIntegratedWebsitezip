@@ -619,10 +619,15 @@ test('Community Co-Creation is an operating initiative without an open submissio
   assert.equal(coCreation?.href, '/community-co-creation.html');
   assert.equal(coCreation?.status, 'Operating or rollout underway');
   assert.notEqual(coCreation?.navigationUnavailable, true);
+  assert.match(coCreation?.description || '', /No workshops, trials, forums, portal, or submissions are open/);
   assert.match(page, /<title>FSD \| Community Co-Creation<\/title>/);
   assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
   assert.match(page, /structured feedback, workshops, and collaborative testing/);
   assert.match(page, /does not offer workshop registration, product trials, or feedback submissions/);
+  assert.match(page, /No workshop, testing panel, forum, feedback portal, or community event is represented as currently operating/);
+  assert.match(page, /Participation is feedback only; it does not grant shares, tokens, profit-sharing, or voting rights over the company/);
+  assert.match(page, /potential benefits to assess, not guaranteed outcomes/);
+  assert.match(page, /Illustrative feedback interface/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b/i);
 });
 
