@@ -8,7 +8,7 @@ Snapshot: 4 November 2026. This reports active storefront catalogue records with
 - FSD Aeroforge Training Tee (ID 18): 17 images across its six existing colourways.
 - FSD Aeroforge Hybrid Short (ID 19): 1 image mapped to Black/Green; its other five colourways have no mapped photo.
 - FSD Women's MMA Performance Rash Guard (ID 33): original first image retained; four supplied standalone views mapped to Obsidian & Satin Gold. Multi-panel boards are not used.
-- CORE Sports Hijab (ID 42): 8 images mapped to Black/Gold; its other six colourways have no mapped photo.
+- CORE Sports Hijab (ID 42): 9 images mapped to Black/Gold; its other six colourways have no mapped photo.
 
 ## Records with no mapped usable gallery photography
 

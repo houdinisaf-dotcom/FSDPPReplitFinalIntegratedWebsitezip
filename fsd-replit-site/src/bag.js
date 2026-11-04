@@ -185,7 +185,7 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       </div>
       <footer class="fsd-bag-footer">
         <div class="fsd-bag-subtotal"><span>Subtotal</span><strong data-bag-subtotal>£0.00</strong></div>
-        <p class="fsd-bag-note">Payment provider: [TO CONFIRM]. No payment provider or checkout is integrated; no order is processed.</p>
+        <p class="fsd-bag-note">No payment provider or checkout is integrated; no order is processed.</p>
         <button type="button" class="fsd-bag-checkout" disabled aria-disabled="true">Checkout disabled</button>
       </footer>
     </div>`;

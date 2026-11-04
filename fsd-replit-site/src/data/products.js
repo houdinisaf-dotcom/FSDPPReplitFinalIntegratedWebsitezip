@@ -96,6 +96,7 @@ const imageReferences = {
     { src: '/products/sports-hijab/black-gold/fabric.webp', label: 'Black/Gold / Breathable fabric detail', colourway: 'Black/Gold' },
     { src: '/products/sports-hijab/black-gold/outdoor-lifestyle.webp', label: 'Black/Gold / Outdoor running lifestyle', colourway: 'Black/Gold' },
     { src: '/products/sports-hijab/black-gold/training-lifestyle.webp', label: 'Black/Gold / Gym training lifestyle', colourway: 'Black/Gold' },
+    { src: '/products/sports-hijab/black-gold/editorial-portrait.webp', label: 'Black/Gold / Editorial portrait', colourway: 'Black/Gold' },
   ],
   'FSD Performance Crew Socks': [
     { src: '/assets/products/performance-socks-side.png', label: 'Side Profile View', colourway: 'Obsidian & Satin Gold' },

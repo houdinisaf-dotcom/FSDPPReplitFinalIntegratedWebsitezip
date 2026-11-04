@@ -146,7 +146,8 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
   );
 }
 
-export function CatalogList({ products = [], view = 'list', onProductSelect, onAddToBag }) {
+export function CatalogList({ products = [], onProductSelect, onAddToBag }) {
+  const view = 'visual';
   const [activeProductId, setActiveProductId] = useState(null);
   const [selectedAngle, setSelectedAngle] = useState('front');
   const [selectedColor, setSelectedColor] = useState('');

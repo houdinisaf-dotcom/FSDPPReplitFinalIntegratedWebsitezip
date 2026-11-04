@@ -124,7 +124,6 @@ function renderSizeOptions(product, sizes) {
       </label>`;
       }).join('')}
     </div>
-    <p class="product-detail-size-availability">Availability by size: <strong>[TO CONFIRM]</strong></p>
     <button class="product-detail-text-link" type="button" data-size-guide>Size guide</button>
   </fieldset>`;
 }
@@ -213,15 +212,17 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
 
 function renderDetails(product, sizes, hardwarePreview = false) {
   if (hardwarePreview) {
-    return `<dl class="product-detail-catalogue-facts">
-      <dt>Category</dt><dd>${safe(product.category || '[TO CONFIRM]')}</dd>
-    </dl>`;
+    return product.category
+      ? `<dl class="product-detail-catalogue-facts">
+          <dt>Category</dt><dd>${safe(product.category)}</dd>
+        </dl>`
+      : '';
   }
   const verified = getVerifiedProductSpecifications(product.id);
   const technicalSpecs = verified?.technicalSpecs || {};
   const details = product.description
     ? `<p>${safe(product.description)}</p>`
-    : '<p>[TO CONFIRM] Product details.</p>';
+    : '';
   const setContents = product.setContents
     ? `<p><strong>Set includes:</strong> ${safe(product.setContents)}</p>`
     : '';
@@ -238,23 +239,21 @@ function renderDetails(product, sizes, hardwarePreview = false) {
     ? `<p><strong>Coverage:</strong> ${safe(product.coverage)}</p>`
     : technicalSpecs.fit
       ? `<p><strong>Fit:</strong> ${safe(technicalSpecs.fit)}</p>`
-      : '<p><strong>Fit:</strong> [TO CONFIRM]</p>';
+      : '';
   const features = verified?.benefits.length
     ? `<ul>${verified.benefits.map(feature => `<li>${safe(feature)}</li>`).join('')}</ul>`
     : '';
   const materials = verified?.materials.length
     ? safe(verified.materials.join(' '))
-    : '[TO CONFIRM] Material composition';
+    : '';
   const specificationLabel = technicalSpecs.fabricWeight ? 'Fabric weight' : 'GSM / specifications';
   const specifications = technicalSpecs.fabricWeight
     ? safe(technicalSpecs.fabricWeight)
     : technicalSpecs.composition
       ? safe(technicalSpecs.composition)
-    : '[TO CONFIRM] Technical specifications';
-  const care = technicalSpecs.care ? safe(technicalSpecs.care) : '[TO CONFIRM]';
-  const deliverySummary = `<p>UK delivery times and fees: [TO CONFIRM]</p>
-    <p>Dispatch timing: [TO CONFIRM]</p>
-    <p>Returns window and process: [TO CONFIRM]</p>`;
+    : '';
+  const care = technicalSpecs.care ? safe(technicalSpecs.care) : '';
+  const deliverySummary = '';
   const sizeRows = sizes.length ? sizes : ['[TO CONFIRM]'];
   return `<div class="product-detail-accordions">
     <details class="product-detail-accordion">
@@ -264,9 +263,9 @@ function renderDetails(product, sizes, hardwarePreview = false) {
     <details class="product-detail-accordion">
       <summary>Fabric and care</summary>
       <div>
-        <p><strong>Material:</strong> ${materials}</p>
-        <p><strong>${specificationLabel}:</strong> ${specifications}</p>
-        <p><strong>Care instructions:</strong> ${care}</p>
+        ${materials ? `<p><strong>Material:</strong> ${materials}</p>` : ''}
+        ${specifications ? `<p><strong>${specificationLabel}:</strong> ${specifications}</p>` : ''}
+        ${care ? `<p><strong>Care instructions:</strong> ${care}</p>` : ''}
       </div>
     </details>
     <details class="product-detail-accordion">
@@ -276,8 +275,7 @@ function renderDetails(product, sizes, hardwarePreview = false) {
     <details class="product-detail-accordion">
       <summary>Size guide</summary>
       <div>
-        <p>Measurements are [TO CONFIRM] body or garment measurements.</p>
-        <p>Model height: [TO CONFIRM]. Model size worn: [TO CONFIRM].</p>
+        <p>${safe(SIZE_GUIDE_FIT_NOTE)}</p>
         <button class="product-detail-text-link" type="button" data-size-guide>Open size guide</button>
       </div>
     </details>
@@ -307,14 +305,14 @@ export function renderProductDetailPage({
        ${sizes.length ? '<p class="product-detail-size-help" data-size-help role="status">Choose a size to continue.</p>' : ''}`
     : `<div class="product-detail-notify" role="note">
         <h3>Notify me when available</h3>
-        <p>Email notifications are not connected. No email is collected. Availability: [TO CONFIRM]</p>
+        <p>Email notifications are not connected. No email is collected.</p>
       </div>`;
   const availability = hardwarePreview
-    ? 'Not available for purchase. Availability details: [TO CONFIRM]'
-    : 'Availability: [TO CONFIRM]';
+    ? 'Not available for purchase.'
+    : '';
   const priceMarkup = price.label || price.value
     ? `<p class="product-detail-price">${price.label ? `<span>${safe(price.label)}</span>` : ''}${price.value ? `<strong>${safe(price.value)}</strong>` : ''}</p>`
-    : '<p class="product-detail-price"><strong>[TO CONFIRM]</strong></p>';
+    : '';
   const schema = productStructuredData(product, { images, colourways, sizes });
 
   return `<div class="product-detail-page">
@@ -332,12 +330,9 @@ export function renderProductDetailPage({
         ${priceMarkup}
         ${renderColourwayOptions(product, colourways, colourwayImageIndexes)}
         ${sizeMarkup}
-        <p class="product-detail-availability">${safe(availability)}</p>
+        ${availability ? `<p class="product-detail-availability">${safe(availability)}</p>` : ''}
         ${actionMarkup}
         <p class="product-detail-delivery-summary">
-          <span>UK delivery: [TO CONFIRM]</span>
-          <span>Dispatch: [TO CONFIRM]</span>
-          <span>Returns: [TO CONFIRM]</span>
           <a href="/delivery-returns.html">Delivery and returns</a>
         </p>
         <button class="product-detail-wishlist" type="button" data-product-wishlist="${product.id}" aria-pressed="false">
@@ -347,7 +342,6 @@ export function renderProductDetailPage({
         <div data-product-specifications-root data-product-id="${product.id}"></div>
       </section>
     </div>
-    <p class="product-detail-disclaimer" role="note">Verified catalogue values are shown where recorded; missing or unconfirmed details are marked [TO CONFIRM].</p>
     ${renderDetails(product, sizes, hardwarePreview)}
     ${renderRelatedProducts(product)}
     ${Array.isArray(product.reviews) && product.reviews.length
@@ -356,7 +350,7 @@ export function renderProductDetailPage({
         </section>`
       : ''}
     ${canPurchase ? `<div class="product-detail-sticky" data-sticky-add-bar hidden>
-      <strong>${safe(product.name)} · ${price.value ? safe(price.value) : '[TO CONFIRM]'}</strong>
+      <strong>${safe(product.name)}${price.value ? ` · ${safe(price.value)}` : ''}</strong>
       <button class="catalogue-bag-add" type="button" data-bag-add="${product.id}" data-sticky-add ${sizes.length ? 'disabled aria-disabled="true"' : ''}>ADD TO BAG</button>
     </div>` : ''}
     <script type="application/ld+json" data-product-jsonld>${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
@@ -368,7 +362,7 @@ export function renderSizeGuideDialog(product, sizes) {
   return `<div class="size-guide-dialog__shell">
     <header><div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
       <button type="button" data-size-guide-close aria-label="Close size guide">×</button></header>
-    <p>${safe(SIZE_GUIDE_FIT_NOTE)} Model height: [TO CONFIRM]. Model size worn: [TO CONFIRM].</p>
+    <p>${safe(SIZE_GUIDE_FIT_NOTE)}</p>
     ${renderSizeGuideTable(section, sizes)}
     <a class="size-guide-full-link" href="/size-guide.html">View the full size guide</a>
   </div>`;

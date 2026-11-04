@@ -32,12 +32,10 @@ const CatalogList = lazy(() => import('./components/CatalogList.jsx')
 function CataloguePortal({ target }) {
   const [products, setProducts] = useState([]);
   const [actions, setActions] = useState({});
-  const [view, setView] = useState('list');
   const [archiveOpen, setArchiveOpen] = useState(false);
-  const renderResults = useCallback((nextProducts, nextActions, nextView) => {
+  const renderResults = useCallback((nextProducts, nextActions) => {
     setProducts(nextProducts);
     setActions(nextActions);
-    setView(nextView);
   }, []);
 
   useLayoutEffect(() => {
@@ -61,7 +59,6 @@ function CataloguePortal({ target }) {
       <CatalogueErrorBoundary><Suspense fallback={<CatalogueLoading />}>
         <CatalogList
           products={products}
-          view={view}
           onProductSelect={actions.onProductSelect}
           onAddToBag={actions.onAddToBag}
         />

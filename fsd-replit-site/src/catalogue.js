@@ -22,7 +22,7 @@ let activeAudience = 'All';
 let activeCollection = 'All';
 let query = '';
 let sort = 'featured';
-let view = 'list';
+let view = 'visual';
 let page = 1;
 let activeDialogProduct = null;
 let activeDialogImages = [];
@@ -45,7 +45,7 @@ const sortOptions = [
   ['price-asc', 'Price: low to high'],
   ['price-desc', 'Price: high to low'],
 ];
-const viewOptions = ['list', 'visual'];
+const viewOptions = ['visual'];
 const isBrowser = () => typeof window !== 'undefined' && Boolean(window.history && window.location);
 const scrollBehavior = () => typeof window === 'undefined' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   ? 'auto'
@@ -77,7 +77,7 @@ function readStateFromURL() {
     collection: shopCollections.some(item => item.id === requestedCollection) ? requestedCollection : 'All',
     query: params.get('q') || '',
     sort: sortOptions.some(([value]) => value === requestedSort) ? requestedSort : 'featured',
-    view: viewOptions.includes(requestedView) ? requestedView : 'list',
+    view: viewOptions.includes(requestedView) ? requestedView : 'visual',
     page: Math.max(1, Number.parseInt(params.get('page') || '1', 10) || 1),
     productId: Number.parseInt(params.get('product') || '', 10) || null,
   };
@@ -125,7 +125,7 @@ function writeStateToURL({ mode = 'replace', productId = null } = {}) {
     ['collection', activeCollection, 'All'],
     ['q', query, ''],
     ['sort', sort, 'featured'],
-    ['view', view, 'list'],
+    ['view', view, 'visual'],
     ['page', String(page), '1'],
   ];
   for (const [key, value, defaultValue] of values) {
@@ -316,17 +316,12 @@ export function catalogueSection() {
       </select></label>
       <label>Find a product<input id="search" type="search" placeholder="Name, colourway or alternate name…" aria-label="Search products"/></label>
       </div>
-     <div class="catalogue-control-bottom">
-       <div id="catalogue-active-filters"></div>
-       <div class="catalogue-view-controls" role="group" aria-label="Catalogue layout">
-         <span>VIEW</span>
-         <button type="button" data-catalogue-view="list" aria-pressed="true">List</button>
-         <button type="button" data-catalogue-view="visual" aria-pressed="false">Visual</button>
-       </div>
-     </div>
+       <div class="catalogue-control-bottom">
+        <div id="catalogue-active-filters"></div>
+      </div>
     </div>
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>
-    <div class="product-grid" id="catalogue-grid" data-view="list"></div>
+     <div class="product-grid" id="catalogue-grid" data-view="visual"></div>
     <nav class="catalogue-pagination" id="catalogue-pagination" aria-label="Product catalogue pages"></nav>
   </section>`;
 }
@@ -416,7 +411,7 @@ function clearFilters({ keepView = false } = {}) {
   activeCollection = 'All';
   query = '';
   sort = 'featured';
-  view = 'list';
+  view = 'visual';
   page = 1;
 }
 
@@ -426,7 +421,7 @@ export function navigateCatalogue({
   collection = 'All',
   query: nextQuery = '',
   sort: nextSort = 'featured',
-  view: nextView = 'list',
+  view: nextView = 'visual',
 } = {}) {
   if (category !== 'All' && !categories.includes(category)) return false;
   if (audience !== 'All' && !audiences.includes(audience)) return false;
@@ -436,7 +431,7 @@ export function navigateCatalogue({
   activeCollection = collection;
   query = nextQuery;
   sort = sortOptions.some(([value]) => value === nextSort) ? nextSort : 'featured';
-  view = viewOptions.includes(nextView) ? nextView : 'list';
+  view = viewOptions.includes(nextView) ? nextView : 'visual';
   page = 1;
   openShopArchive();
   renderResults();
@@ -991,7 +986,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     }
     const viewButton = event.target.closest('[data-catalogue-view]');
     if (viewButton) {
-      view = viewOptions.includes(viewButton.dataset.catalogueView) ? viewButton.dataset.catalogueView : 'list';
+      view = viewOptions.includes(viewButton.dataset.catalogueView) ? viewButton.dataset.catalogueView : 'visual';
       page = 1;
       renderResults();
       writeStateToURL({ mode: 'push' });

@@ -16,7 +16,7 @@ const productFixture = {
   confirmedPrice: 65,
 };
 
-test('product detail markup includes accessible size choices and missing-data labels', () => {
+test('product detail markup includes accessible size choices and leaves unconfirmed fields blank', () => {
   assert.deepEqual(productSizeOptions(productFixture), ['XS', 'S', 'M', 'L', 'XL', 'XXL']);
 
   const markup = renderProductDetailPage({
@@ -33,12 +33,14 @@ test('product detail markup includes accessible size choices and missing-data la
 
   assert.match(markup, /Choose a size/);
   assert.match(markup, /data-product-size/);
-  assert.match(markup, /Availability by size: <strong>\[TO CONFIRM\]/);
+  assert.doesNotMatch(markup, /Availability by size:/);
   assert.match(markup, /data-size-guide/);
   assert.match(markup, /Front view/);
   assert.match(markup, /alt="FSD Test Leggings — Front view"/);
-  assert.match(markup, /Verified catalogue values are shown where recorded; missing or unconfirmed details are marked \[TO CONFIRM\]/);
-  assert.match(markup, /UK delivery: \[TO CONFIRM\]/);
+  assert.doesNotMatch(markup, /Verified catalogue values are shown where recorded/);
+  assert.doesNotMatch(markup, /UK delivery: \[TO CONFIRM\]|Dispatch: \[TO CONFIRM\]|Returns: \[TO CONFIRM\]/);
+  assert.doesNotMatch(markup, /\[TO CONFIRM\] Product details|\[TO CONFIRM\] Material composition|\[TO CONFIRM\] Technical specifications/);
+  assert.match(markup, /href="\/delivery-returns\.html"/);
 });
 
 test('product JSON-LD omits offers until availability has a verified value', () => {
@@ -101,7 +103,7 @@ test('related products stay within the same category and audience', () => {
 test('size guide leaves measurements and body-versus-garment basis unconfirmed', () => {
   const guide = renderSizeGuideDialog(productFixture, productSizeOptions(productFixture));
   assert.match(guide, /Body measurements describe the person; garment measurements describe the item/);
-  assert.match(guide, /Model height: \[TO CONFIRM\]/);
+  assert.doesNotMatch(guide, /Model height: \[TO CONFIRM\]|Model size worn: \[TO CONFIRM\]/);
   assert.match(guide, /<td(?:\s+[^>]*)?>\[TO CONFIRM\]<\/td>/);
   assert.match(guide, /<th scope="col">Waist<\/th>/);
 });

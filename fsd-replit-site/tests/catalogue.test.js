@@ -697,9 +697,9 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     );
     assert.match(element('#catalogue-grid').innerHTML, /class="product-row__trigger"/);
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /class="product-image"|<img\b/);
-    assert.equal(element('#catalogue-grid').dataset.view, 'list');
-    assert.match(catalogueSection(), /data-catalogue-view="visual"/);
-    assert.match(catalogueSection(), /data-catalogue-view="list"/);
+    assert.equal(element('#catalogue-grid').dataset.view, 'visual');
+    assert.match(catalogueSection(), /id="catalogue-grid" data-view="visual"/);
+    assert.doesNotMatch(catalogueSection(), /data-catalogue-view/);
     assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
 
     element('#catalogue-category').value = 'Smart Tech';
@@ -729,10 +729,8 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
       `Showing 1–${initialPageCount} of ${allProductCount} products`,
     );
     assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
-    click('[data-catalogue-view]', { dataset: { catalogueView: 'visual' } });
+    navigateCatalogue({ view: 'list' });
     assert.equal(element('#catalogue-grid').dataset.view, 'visual');
-    click('[data-catalogue-view]', { dataset: { catalogueView: 'list' } });
-    assert.equal(element('#catalogue-grid').dataset.view, 'list');
     click('[data-category-link]', { dataset: { categoryLink: 'Sports Hijabs' } });
     const hijabProductCount = filterProducts('Sports Hijabs').length;
     assert.equal(
@@ -836,7 +834,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
         assert.match(mediaSection, /catalogue-variant-image-placeholder/);
         assert.match(mediaSection, /Navy\/Cyan/);
         assert.match(mediaSection, /src="\/products\/sports-hijab\/black-gold\/hero\.webp"/);
-        assert.equal((mediaSection.match(/data-catalogue-image-index=/g) ?? []).length, 8);
+        assert.equal((mediaSection.match(/data-catalogue-image-index=/g) ?? []).length, 9);
         const coreHijab = products.find(product => product.id === 42);
         changeColourway(1, 0);
         assert.equal(mainImage.src, coreHijab.images[0].src);

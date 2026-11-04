@@ -7,7 +7,7 @@ import { products } from '../src/catalogue-data.js';
 import { productCardImageMarkup, productColourwayImageIndex, productColourwayOptions } from '../src/product-card-media.js';
 import { renderProductDetailPage } from '../src/product-detail-page.js';
 
-test('CORE Sports Hijab gallery maps all eight supplied views only to existing Black/Gold', () => {
+test('CORE Sports Hijab gallery maps all nine supplied views only to existing Black/Gold', () => {
   const source = master.find(item => item.id === 42);
   const product = products.find(item => item.id === 42);
   const velocity = products.find(item => item.id === 43);
@@ -23,7 +23,12 @@ test('CORE Sports Hijab gallery maps all eight supplied views only to existing B
   assert.equal(source.Colourways, 'Navy/Cyan, Black/Gold, Black/White, Olive/Lime, Dark Grey/Silver, Black/Magenta, Burgundy/Pink');
   assert.deepEqual(colourways, ['Navy/Cyan', 'Black/Gold', 'Black/White', 'Olive/Lime', 'Dark Grey/Silver', 'Black/Magenta', 'Burgundy/Pink']);
   assert.deepEqual(imageIndexes, [-1, 0, -1, -1, -1, -1, -1]);
-  assert.equal(product.images.length, 8);
+  assert.equal(product.images.length, 9);
+  assert.deepEqual(product.images.at(-1), {
+    src: '/products/sports-hijab/black-gold/editorial-portrait.webp',
+    label: 'Black/Gold / Editorial portrait',
+    colourway: 'Black/Gold',
+  });
   assert.ok(product.images.every(image => image.colourway === 'Black/Gold' && image.label));
   assert.ok(product.images.every(image => existsSync(join(process.cwd(), 'public', image.src.slice(1)))));
 

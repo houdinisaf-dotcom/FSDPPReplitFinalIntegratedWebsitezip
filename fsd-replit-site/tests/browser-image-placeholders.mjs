@@ -72,7 +72,10 @@ try {
       color.checked = true; color.dispatchEvent(new Event('change', { bubbles: true }));
       document.querySelector('#dialog-body input[data-product-size]').click();
     })()`);
-    assert.ok(await evaluate(`!document.querySelector('[data-catalogue-variant-placeholder]').hidden`));
+    await waitFor(`document.querySelector('[data-catalogue-main-image]')?.dataset.fsdImageVariant === 'All Black' &&
+      document.querySelector('[data-catalogue-main-image]').naturalWidth > 0`);
+    assert.ok(await evaluate(`document.querySelector('[data-catalogue-variant-placeholder]').hidden`),
+      'An approved mapped colourway uses its own photograph instead of a placeholder');
     assert.ok(await evaluate(`!document.querySelector('[data-product-primary-add]').disabled`), 'Missing photos do not disable valid purchase controls');
     assert.ok(await evaluate(`(() => {
       const sticky = document.querySelector('[data-sticky-add-bar]');
