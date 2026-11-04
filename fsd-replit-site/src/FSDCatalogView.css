@@ -147,6 +147,47 @@
   letter-spacing: .1em;
 }
 
+.catalogue-card__swatches {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 14px;
+  color: #cdb589;
+  font-size: 9px;
+}
+.catalogue-card__swatches > button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(205, 181, 137, .24);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.catalogue-card__swatches > button[aria-pressed="true"],
+.catalogue-card__swatches > button:hover,
+.catalogue-card__swatches > button:focus-visible {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, .18);
+}
+.catalogue-card__swatches > button > span:first-child {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 50%;
+  background: var(--catalogue-swatch, #777);
+}
+.catalogue-card__swatches > span[aria-live="polite"] {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .catalogue-card__carousel {
   position: absolute;
   top: 38%;

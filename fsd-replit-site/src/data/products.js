@@ -1,6 +1,8 @@
 import masterProducts from '../master-products.json' with { type: 'json' };
 import { collectionDivisions } from '../collection-divisions.js';
 
+// Product image configuration. Each entry may include `colourway`, `size`, or
+// `variant` so variant-specific photography can be added without changing UI.
 const imageReferences = {
   'FSD Ombré Slash Tee': [
     { src: '/images/ombre-indigo.png', label: 'Vintage indigo fading to jet black' },
@@ -124,6 +126,8 @@ export const products = masterProducts
         src: colourway.image,
         label: `Colourway / ${colourway.name}`,
         colourway: colourway.name,
+          ...(colourway.size ? { size: colourway.size } : {}),
+          ...(colourway.variant ? { variant: colourway.variant } : {}),
         }))
       : [];
     return ({
@@ -288,14 +292,19 @@ export const shopCollections = (apparelDivision?.groups || [])
 
 const searchText = value => value.replace(/[‘’]/g, "'").toLocaleLowerCase('en-GB');
 
-const hasStandaloneProductImage = product => {
-  const imageStatus = String(product.imageStatus ?? '');
+export function productImagesForDisplay(product) {
+  const imageStatus = String(product?.imageStatus ?? '');
   if (/\bconcept board\b|crop single panels|contact sheet|collage/i.test(imageStatus)) {
-    return false;
+    return [];
   }
-  return Array.isArray(product.images) &&
-    product.images.some(image => typeof image?.src === 'string' && image.src.trim().length > 0);
-};
+  return Array.isArray(product?.images)
+    ? product.images.filter(image => typeof image?.src === 'string'
+      && image.src.startsWith('/')
+      && !image.src.startsWith('//'))
+    : [];
+}
+
+const hasStandaloneProductImage = product => productImagesForDisplay(product).length > 0;
 
 export const productsWithUsableImages = Object.freeze(products.filter(hasStandaloneProductImage));
 export const productsMissingUsableImages = Object.freeze(products.filter(product => !hasStandaloneProductImage(product)));

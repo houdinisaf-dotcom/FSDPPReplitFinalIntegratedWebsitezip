@@ -5,6 +5,7 @@ import { hoodedShellCampaign } from './hooded-shell-campaign.js';
 import { getInnovationPageForTitle } from './flagship-pages.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
 import { outlineIcon } from './brand/outline-icons.js';
+import { imagePlaceholderMarkup, installImageErrorFallbacks } from './image-placeholder.js';
 
 export const primaryNavigation = [
   { id: 'collections', label: 'SHOP' },
@@ -792,12 +793,11 @@ function renderFeature(menu, group, item, canNavigate) {
       </div>`
     : image
     ? `<div class="fsd-feature-media fsd-feature-media--1" data-feature-image="${escapeHTML(image.src)}">
-        <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" loading="eager" fetchpriority="auto" decoding="async">
+        <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}"
+          data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(featureTitle)}" data-fsd-image-kind="collection"
+          loading="eager" fetchpriority="auto" decoding="async">
       </div>`
-    : `<div class="fsd-feature-media fsd-feature-media--unmapped" role="group" aria-label="Collection feature for ${escapeHTML(featureTitle)}">
-        <span class="fsd-feature-placeholder-kicker">FSD / COLLECTION</span>
-        <strong>${escapeHTML(featureTitle)}</strong>
-      </div>`;
+    : imagePlaceholderMarkup({ title: featureTitle, kind: 'collection', className: 'fsd-feature-media fsd-feature-media--unmapped' });
   const mediaAction = available
     ? `<button type="button" class="fsd-feature-media-action" data-nav-destination
         aria-label="Open ${escapeHTML(featureTitle)}">
@@ -982,6 +982,7 @@ export function mountNavigation({
   onNavigate = () => {},
 } = {}) {
   if (!root) throw new TypeError('mountNavigation requires the FSD navigation shell.');
+  installImageErrorFallbacks(root.ownerDocument || document);
   const panel = root.querySelector('[data-nav-panel]');
   const content = root.querySelector('[data-nav-content]');
   const mobileToggle = root.querySelector('[data-nav-mobile-toggle]');

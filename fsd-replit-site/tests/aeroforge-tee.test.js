@@ -64,6 +64,7 @@ test('Aeroforge Training Tee product details render its variants without inventi
   assert.match(markup, /Targeted Ventilation/);
   assert.match(markup, /Machine wash cold at 30°C/);
   assert.match(markup, /Availability by size: <strong>\[TO CONFIRM\]/);
-  assert.match(markup, /IMAGE NOT AVAILABLE/);
+  assert.match(markup, /fsd-image-placeholder/);
+  assert.match(markup, /Image to be added/);
   assert.doesNotMatch(markup, /Sample \/ Launch Development Tier|InStock|data-catalogue-main-image/);
 });

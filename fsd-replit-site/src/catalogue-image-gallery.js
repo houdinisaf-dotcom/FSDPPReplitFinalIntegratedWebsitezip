@@ -1,6 +1,6 @@
 const swapsByStage = new WeakMap();
 
-export function crossfadeMappedImage(currentImage, src, alt) {
+export function crossfadeMappedImage(currentImage, src, alt, onError) {
   if (!currentImage || !src) return false;
 
   const stage = currentImage.parentElement;
@@ -56,7 +56,10 @@ export function crossfadeMappedImage(currentImage, src, alt) {
   };
 
   incoming.addEventListener('load', activate, { once: true });
-  incoming.addEventListener('error', () => incoming.remove(), { once: true });
+  incoming.addEventListener('error', () => {
+    incoming.remove();
+    onError?.();
+  }, { once: true });
   incoming.src = src;
   if (incoming.complete && incoming.naturalWidth > 0) activate();
   return true;

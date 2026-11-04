@@ -7,6 +7,12 @@ import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 import { productSizeOptions, renderProductDetailPage, renderSizeGuideDialog } from './product-detail-page.js';
 import { animateAddButton, animateElement, animateWishlistHeart, setStickyAddBarVisible } from './motion-runtime.js';
 import { FSD_MOTION } from './motion-config.js';
+import { productImagesForDisplay } from './data/products.js';
+import {
+  productCardColourwaysMarkup,
+  productCardImageMarkup,
+  productColourwayImageIndex,
+} from './product-card-media.js';
 
 const pageSize = 12;
 let activeCategory = 'All';
@@ -17,6 +23,7 @@ let sort = 'featured';
 let view = 'list';
 let page = 1;
 let activeDialogProduct = null;
+let activeDialogImages = [];
 let activeDialogVariant = { size: '', colourway: '' };
 let dialogReturnFocus = null;
 let dialogReturnFocusIsExplicit = false;
@@ -245,13 +252,14 @@ function normalizedImageLabel(value) {
 }
 
 function imageIndexForColourway(images, colourway) {
-  const target = normalizedImageLabel(colourway);
-  return images.findIndex(image => normalizedImageLabel(image.colourway || image.label) === target);
+  return productColourwayImageIndex(images, colourway);
 }
 
 function card(product) {
   const hardwarePreview = isHardwareVisualPreviewProduct(product);
   const price = displayPrice(product);
+  const colourways = productColourwayOptions(product);
+  const initialColourway = colourways[0] || '';
   const summary = !hardwarePreview
     ? product.colourways || product.priceBasis || product.coverage
     : '';
@@ -261,15 +269,21 @@ function card(product) {
   return `<article class="product-card">
     <button class="product-row__trigger" type="button" data-product="${product.id}"
       data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
+      <span class="product-row__media" data-product-card-image-slot>${productCardImageMarkup(product, {
+        colourway: initialColourway,
+        className: 'product-row__image',
+      })}</span>
       <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
       <span class="product-row__copy">
        <span class="product-row__meta"><span>${safe(customerFacingCategory(product.category))}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}${product.badge ? `<span class="product-row__badge">${safe(product.badge)}</span>` : ''}</span>
         <h3>${safe(product.name)}</h3>
         ${summary ? `<span class="product-row__summary">${safe(summary)}</span>` : ''}
+        ${colourways.length > 1 ? `<span class="product-row__selected-colourway" data-product-card-selected-colourway>${safe(initialColourway)}</span>` : ''}
       </span>
       ${priceMarkup}
        <span class="product-row__action">VIEW DETAILS ${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
     </button>
+    ${productCardColourwaysMarkup(product)}
   </article>`;
 }
 
@@ -538,7 +552,7 @@ function toggleWishlist(button) {
   animateWishlistHeart(icon);
 }
 
-export function showProduct(id, { fromHistory = false, returnFocus = null } = {}) {
+export function showProduct(id, { fromHistory = false, returnFocus = null, initialVariant = {} } = {}) {
   const p = products.find(product => product.id === id);
   if (!p) return;
   const dialog = document.querySelector('#product-dialog');
@@ -564,13 +578,19 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
   const price = displayPrice(p);
   const images = isAegisPrivateProof(p)
     ? [{ label: 'Aegis campaign image', src: `${aegisGiletPreviewPath}media/front-three-quarter` }]
-    : Array.isArray(p.images) ? p.images : [];
+    : productImagesForDisplay(p);
+  activeDialogImages = images;
   const galleryPlaceholders = Array.isArray(p.galleryPlaceholders)
     ? p.galleryPlaceholders.filter(slot => typeof slot === 'string' && slot.trim())
     : [];
   const colourwayOptions = hardwarePreview ? [] : productColourwayOptions(p);
   const colourwayImageIndexes = colourwayOptions.map(option => imageIndexForColourway(images, option));
-  const initialImageIndex = Math.max(0, colourwayImageIndexes.find(index => index >= 0) ?? 0);
+  const firstColourwayImageIndex = colourwayImageIndexes[0] ?? -1;
+  const initialImageIndex = colourwayOptions.length > 1
+    ? firstColourwayImageIndex
+    : colourwayOptions.length && firstColourwayImageIndex >= 0
+      ? firstColourwayImageIndex
+      : images.length ? 0 : -1;
   const dialogBody = document.querySelector('#dialog-body');
   const sizes = productSizeOptions(p);
   activeDialogVariant = { size: '', colourway: colourwayOptions[0] || '' };
@@ -600,6 +620,14 @@ export function showProduct(id, { fromHistory = false, returnFocus = null } = {}
   if (dialog && !dialog.open) dialog.showModal();
   updateProductActionState(p);
   configureProductStickyBar(dialog);
+  const initialColourIndex = colourwayOptions.indexOf(initialVariant.colourway);
+  if (initialColourIndex >= 0) {
+    const colourInput = dialogBody.querySelector(`input[data-catalogue-colourway-index="${initialColourIndex}"]`);
+    if (colourInput) {
+      colourInput.checked = true;
+      colourInput.dispatchEvent?.(new Event('change', { bubbles: true }));
+    }
+  }
   if (!hardwarePreview && typeof document.dispatchEvent === 'function' && typeof CustomEvent !== 'undefined') {
     document.dispatchEvent(new CustomEvent('fsd:product-specifications-open', {
       detail: { productId: p.id },
@@ -631,13 +659,6 @@ function closeProductFromUI() {
   const dialog = document.querySelector('#product-dialog');
   if (isBrowser()) {
     const params = new URLSearchParams(window.location.search);
-    const urlProduct = Number.parseInt(params.get('product') || '', 10);
-    if (urlProduct === activeDialogProduct.id &&
-        window.history.state?.fsdShop?.productId === activeDialogProduct.id) {
-      closeProductDialogWithMotion(dialog);
-      window.history.back();
-      return;
-    }
     params.delete('product');
     const url = new URL(window.location.href);
     url.search = params.toString();
@@ -713,17 +734,35 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   };
 
   const selectDialogImage = index => {
-    const image = activeDialogProduct?.images?.[index];
+    const image = activeDialogImages[index];
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
     if (!image || !mainImage || !caption) return;
-    crossfadeMappedImage(mainImage, image.src, `${activeDialogProduct.name} — ${image.label}`);
+    const placeholder = dialogBody.querySelector('[data-catalogue-variant-placeholder]');
+    const gallery = placeholder?.closest('.product-detail-gallery');
+    if (mainImage.dataset.fsdImageFailed === 'true' && mainImage.getAttribute('src') === image.src) {
+      showVariantImagePlaceholder(image.colourway || image.variant || image.size || image.label);
+      return;
+    }
+    if (placeholder) placeholder.hidden = true;
+    gallery?.classList.remove('has-variant-placeholder');
+    mainImage.hidden = false;
+    mainImage.dataset.fsdImageFallback = 'true';
+    delete mainImage.dataset.fsdImageFailed;
+    const zoomButton = mainImage.closest('[data-catalogue-zoom]');
+    if (zoomButton) zoomButton.hidden = false;
+    crossfadeMappedImage(
+      mainImage,
+      image.src,
+      `${activeDialogProduct.name} — ${image.label}`,
+      () => showVariantImagePlaceholder(image.colourway || image.variant || image.size || image.label),
+    );
     caption.textContent = image.label;
     dialogBody.querySelectorAll('[data-catalogue-image-index]').forEach(button => {
       button.setAttribute('aria-pressed', String(Number(button.dataset?.catalogueImageIndex) === index));
     });
     const matchedColourway = productColourwayOptions(activeDialogProduct)
-      .findIndex(option => imageIndexForColourway(activeDialogProduct.images, option) === index);
+      .findIndex(option => imageIndexForColourway(activeDialogImages, option) === index);
     if (matchedColourway >= 0) {
       dialogBody.querySelectorAll('[data-catalogue-colourway-index]').forEach(input => {
         input.checked = Number(input.dataset?.catalogueColourwayIndex) === matchedColourway;
@@ -732,6 +771,24 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       activeDialogVariant.colourway = productColourwayOptions(activeDialogProduct)[matchedColourway];
       if (selectedColourway) selectedColourway.textContent = activeDialogVariant.colourway;
     }
+  };
+
+  const showVariantImagePlaceholder = variantLabel => {
+    const placeholder = dialogBody.querySelector('[data-catalogue-variant-placeholder]');
+    if (!placeholder) return;
+    const label = placeholder.querySelector('[data-catalogue-variant-label]');
+    if (label) label.textContent = variantLabel;
+    placeholder.setAttribute('aria-label', `${activeDialogProduct?.name || 'FSD product'} — ${variantLabel} image placeholder`);
+    placeholder.hidden = false;
+
+    const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
+    const zoomButton = mainImage?.closest('[data-catalogue-zoom]');
+    if (mainImage) mainImage.hidden = true;
+    if (zoomButton) zoomButton.hidden = true;
+    if (!mainImage) placeholder.closest('.product-detail-gallery')?.classList.add('has-variant-placeholder');
+
+    const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
+    if (caption) caption.textContent = `${variantLabel} — image to be added`;
   };
 
   category.addEventListener('change', () => {
@@ -775,6 +832,9 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       if (selectedColourway) selectedColourway.textContent = colourway;
       const imageIndex = Number(colourwayInput.dataset.catalogueColourwayImageIndex);
       if (imageIndex >= 0) selectDialogImage(imageIndex);
+      else if (productColourwayOptions(activeDialogProduct).length > 1) showVariantImagePlaceholder(colourway);
+      else if (activeDialogImages.length) selectDialogImage(0);
+      else showVariantImagePlaceholder(colourway);
       return;
     }
     const sizeInput = event.target.closest?.('input[data-product-size]');
@@ -790,11 +850,44 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
         return;
       }
       activeDialogVariant.size = sizeInput.value;
+      const sizeSpecificImages = activeDialogImages.filter(image => image.size);
+      if (sizeSpecificImages.length) {
+        const sizeImageIndex = activeDialogImages.findIndex(image =>
+          normalizedImageLabel(image.size) === normalizedImageLabel(sizeInput.value)
+          && (!image.colourway || !activeDialogVariant.colourway
+            || normalizedImageLabel(image.colourway) === normalizedImageLabel(activeDialogVariant.colourway)));
+        if (sizeImageIndex >= 0) selectDialogImage(sizeImageIndex);
+        else showVariantImagePlaceholder([activeDialogVariant.colourway, sizeInput.value].filter(Boolean).join(' / '));
+      }
       updateProductActionState(activeDialogProduct);
     }
   });
 
   document.addEventListener('click', event => {
+    const cardSwatch = event.target.closest?.('[data-catalogue-card-colourway]');
+    if (cardSwatch) {
+      const swatches = cardSwatch.closest('[data-product-card-swatches]');
+      const cardElement = swatches?.closest('.product-card');
+      const productId = Number(swatches?.dataset.productCardSwatches);
+      const product = products.find(item => item.id === productId);
+      if (!product || !cardElement) return;
+      const colourway = productColourwayOptions(product)[Number(cardSwatch.dataset.catalogueCardColourway)];
+      if (!colourway) return;
+      cardElement.querySelectorAll('[data-catalogue-card-colourway]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button === cardSwatch));
+      });
+      cardElement.querySelectorAll('[data-product-card-selected-colourway]').forEach(label => {
+        label.textContent = colourway;
+      });
+      const imageSlot = cardElement.querySelector('[data-product-card-image-slot]');
+      if (imageSlot) {
+        imageSlot.innerHTML = productCardImageMarkup(product, {
+          colourway,
+          className: 'product-row__image',
+        });
+      }
+      return;
+    }
     const sizeGuideButton = event.target.closest('[data-size-guide]');
     if (sizeGuideButton && dialogBody.contains(sizeGuideButton) && activeDialogProduct) {
       openProductSizeGuide(activeDialogProduct);

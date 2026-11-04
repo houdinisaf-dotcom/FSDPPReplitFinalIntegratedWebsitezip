@@ -589,12 +589,13 @@ try {
     await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-row")?.style.width || getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).width'),
     await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-grid")).width'),
   );
-  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).columnGap'), '32px');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).columnGap'), '16px');
   const productRowTracks = await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).gridTemplateColumns.split(" ")');
-  assert.equal(productRowTracks.length, 4);
-  assert.equal(productRowTracks[0], '200px');
-  assert.equal(productRowTracks[2], '90px');
-  assert.equal(productRowTracks[3], '140px');
+  assert.equal(productRowTracks.length, 5);
+  assert.equal(productRowTracks[0], '68px');
+  assert.equal(productRowTracks[1], '160px');
+  assert.equal(productRowTracks[3], '90px');
+  assert.equal(productRowTracks[4], '130px');
   assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-reference")).textAlign'), 'right');
   assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row__action")).justifySelf'), 'end');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").hidden'), true);
@@ -922,11 +923,24 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await assertNoHorizontalPageScroll();
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid img").length === 0 && document.querySelectorAll("#catalogue-grid .product-card").length === document.querySelectorAll("#catalogue-grid .product-row__trigger").length'), true, 'The catalogue should stay in a compact text-row view.');
   await click('[data-catalogue-view="visual"]');
-  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelectorAll("#catalogue-grid [data-catalogue-card-image]").length > 0');
+  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelectorAll("#catalogue-grid .product-card--visual").length > 0 && document.querySelectorAll("#catalogue-grid .catalogue-card__media").length > 0');
   assert.equal(await evaluate('document.querySelector("[data-catalogue-view=\\"visual\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("[data-catalogue-view=\\"list\\"]")?.getAttribute("aria-pressed") === "false" && new URLSearchParams(location.search).get("view") === "visual"'), true, 'Visual layout should be selected and preserved in the URL.');
-  assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid [data-catalogue-card-slide]").length > 0'), true, 'Visual catalogue cards should offer accessible image selectors.');
-  await click('#catalogue-grid [data-catalogue-card-next]');
-  await waitFor('document.querySelector("#catalogue-grid [data-product=\\"1\\"] [data-catalogue-card-image]")?.alt.includes("Electric cobalt fading to jet black")');
+  assert.equal(await evaluate('document.querySelector("#catalogue-grid [data-product=\\"1\\"] .fsd-image-placeholder")?.getAttribute("aria-label")?.includes("FSD Ombré Slash Tee")'), true, 'A product with held concept-board imagery should retain its named placeholder.');
+  await evaluate(`(() => {
+    const search = document.querySelector("#search");
+    search.value = "FSD Women's MMA Performance Rash Guard";
+    search.dispatchEvent(new Event("input", { bubbles: true }));
+  })()`);
+  await waitFor('document.querySelector("#catalogue-count")?.textContent.includes("of 1 product") && !!document.querySelector("#catalogue-grid .product-card--visual:has([data-product=\\"33\\"])")');
+  await waitFor('document.querySelectorAll("#catalogue-grid .product-card--visual:has([data-product=\\"33\\"]) [data-catalogue-card-slide]").length > 1');
+  await click('#catalogue-grid .product-card--visual:has([data-product="33"]) [data-catalogue-card-slide="1"]');
+  await waitFor('document.querySelector("#catalogue-grid .product-card--visual:has([data-product=\\"33\\"]) [data-catalogue-card-slide=\\"1\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#catalogue-grid .product-card--visual:has([data-product=\\"33\\"]) [data-catalogue-card-slide=\\"0\\"]")?.getAttribute("aria-pressed") === "false"');
+  await evaluate(`(() => {
+    const search = document.querySelector("#search");
+    search.value = "";
+    search.dispatchEvent(new Event("input", { bubbles: true }));
+  })()`);
+  await waitFor('!!document.querySelector("#catalogue-grid [data-product=\\"1\\"]")');
   await click('[data-catalogue-view="list"]');
   await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && document.querySelectorAll("#catalogue-grid img").length === 0');
   assert.equal(await evaluate('document.querySelector("[data-catalogue-view=\\"list\\"]")?.getAttribute("aria-pressed") === "true" && !new URLSearchParams(location.search).has("view")'), true, 'List layout should restore the default state in the URL.');
@@ -938,12 +952,12 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await click('#catalogue-grid [data-product="1"]');
   await waitFor('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getAttribute("aria-expanded") === "true" && !!document.querySelector("#catalogue-grid #catalogue-expanded-1")');
   assert.equal(await evaluate('Math.abs(window.scrollY - ' + rowScrollY + ') < 2'), true);
-  assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-1 [data-catalogue-inline-view]").length'), 2);
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-1 [data-catalogue-inline-view]").length'), 0);
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-1 [data-catalogue-inline-colourway]").length'), 2);
-  await click('#catalogue-expanded-1 [data-catalogue-inline-view]:nth-child(2)');
-  await waitFor('document.querySelector("#catalogue-expanded-1 [data-catalogue-inline-image]")?.alt.includes("Electric cobalt fading to jet black")');
+  await click('#catalogue-expanded-1 [data-catalogue-inline-colourway]:nth-child(2)');
+  await waitFor('document.querySelector("#catalogue-expanded-1 .fsd-image-placeholder")?.textContent.toLowerCase().includes("electric cobalt")');
   await click('#catalogue-expanded-1 [data-catalogue-inline-colourway]:first-child');
-  await waitFor('document.querySelector("#catalogue-expanded-1 [data-catalogue-inline-image]")?.alt.includes("Vintage indigo fading to jet black")');
+  await waitFor('document.querySelector("#catalogue-expanded-1 .fsd-image-placeholder")?.textContent.toLowerCase().includes("vintage indigo")');
   await click('#catalogue-expanded-1 .fsd-catalog-row__collapse');
   await waitFor('document.querySelector("#catalogue-expanded-1") === null && document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getAttribute("aria-expanded") === "false"');
   assert.equal(await evaluate('Math.abs(window.scrollY - ' + rowScrollY + ') < 2'), true);

@@ -1,5 +1,6 @@
 - [Catalogue approval boundaries](catalogue-approval-boundaries.md) — existing values remain the default; explicitly approved record updates are narrow exceptions, and missing fields stay blank.
-- [Browser verification caveats](browser-verification.md) — native dialog close events are asynchronous; mixed desktop/mobile CDP measurements can be inconsistent.
+- [Missing imagery policy](image-placeholder-policy.md) — keep all products and sections visible with named black/charcoal placeholders, using the current approved accent.
+- [Browser verification caveats](browser-verification.md) — dialog timing, Chromium viewport limitations, and forcing off-screen lazy-image errors in fallback tests.
 - [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
 - [House of Performance approvals](house-of-performance-approvals.md) — preserve the flagship and keep pending page media visible in titled placeholders within approval boundaries.
 - [Velocity product approval boundary](velocity-hijab-proof.md) — apply the approved £34.99 update with Black / Gold; keep CORE colourways and the older archive separate.
@@ -7,6 +8,6 @@
 - [Breeze set and overshirt separation](breeze-public-set.md) — the combined set is approved at £145; keep the existing £64.99 overshirt and Modest Flow separate.
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.
 - [Customer-facing terminology](customer-facing-terminology.md) — remove visible release/status labels and use neutral product names with existing catalogue values.
-- [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk setup needs a valid app name; package installs must target the nested storefront directory.
+- [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk naming, nested package installs, and exact managed artifact ports for preview verification.
 - [Innovation initiative status](initiative-rollout-status.md) — Keep the five-section House landing; group Investor inside House navigation and retain initiative route and safeguard boundaries.
 - [Tactical Shield proposal boundary](tactical-shield-membership.md) — keep services and sign-up unavailable until providers, safeguarding, legal scope, insurance, and terms are confirmed.

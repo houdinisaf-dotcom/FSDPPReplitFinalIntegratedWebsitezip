@@ -1,4 +1,5 @@
 @import './site-navigation.css';
+@import './image-placeholders.css';
 
 :root {
   --fsd-navigation-announcement-height: 25px;

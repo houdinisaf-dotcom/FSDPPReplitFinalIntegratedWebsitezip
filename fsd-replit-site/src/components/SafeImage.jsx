@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ImagePlaceholder } from './ImagePlaceholder.jsx';
 
 function isSafeAssetPath(src) {
   return typeof src === 'string' && src.startsWith('/') && !src.startsWith('//');
@@ -10,9 +11,13 @@ export function SafeImage({
   className = '',
   placeholder = 'Imagery coming',
   fallbackLabel,
+  placeholderTitle,
+  variantLabel = '',
+  placeholderKind = 'product',
   loading = 'lazy',
   decoding = 'async',
   onError,
+  style,
   ...imageProps
 }) {
   const [failedSource, setFailedSource] = useState(null);
@@ -22,14 +27,13 @@ export function SafeImage({
 
   if (!isSafeAssetPath(src) || failedSource === src) {
     return (
-      <div
-        className={`fsd-safe-image-fallback flex items-center justify-center bg-gunmetal text-xs uppercase tracking-[0.2em] text-titanium ${className}`.trim()}
-        role={alt ? 'img' : undefined}
-        aria-label={alt || undefined}
-        aria-hidden={alt ? undefined : 'true'}
-      >
-        {fallbackLabel ?? placeholder}
-      </div>
+      <ImagePlaceholder
+        title={placeholderTitle || alt?.split(/[—–]/)[0]?.trim() || fallbackLabel || placeholder}
+        variantLabel={variantLabel}
+        kind={placeholderKind}
+        className={className}
+        style={style}
+      />
     );
   }
 
@@ -39,6 +43,7 @@ export function SafeImage({
       src={src}
       alt={alt}
       className={className}
+      style={style}
       loading={loading}
       decoding={decoding}
       onError={event => {

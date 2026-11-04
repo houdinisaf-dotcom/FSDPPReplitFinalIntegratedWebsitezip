@@ -50,3 +50,9 @@ Do not assume headless Chromium desktop emulation has a fine pointer.
 **Why:** This project’s headless browser reports `pointer: fine` as false, and CDP media emulation did not change it. A fine-pointer-only cursor rule therefore computes to the native fallback in that environment.
 
 **How to apply:** In headless checks, validate the injected fine-pointer CSS and the native fallback, and condition computed-cursor assertions on `matchMedia('(pointer: fine)').matches`. Use a real mouse or trackpad to verify the rendered cursor.
+
+Force off-screen lazy images to load when deliberately testing broken-image fallbacks.
+
+**Why:** The homepage fallback test waited for errors on lazy images outside the viewport; no request meant no error event, producing a false timeout.
+
+**How to apply:** In the test only, set the target image's loading mode to eager before assigning a deliberately missing source. Keep production lazy loading intact.

@@ -379,19 +379,20 @@
 #dialog-body .product-detail-sticky {
   position: fixed;
   z-index: 6;
-  left: 50%;
+  left: 0;
+  right: 0;
   bottom: max(12px, env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
   width: min(1230px, calc(100vw - 56px));
-  margin: 0;
+  margin: 0 auto;
   padding: 10px;
   border: 1px solid rgba(232, 215, 186, .3);
   background: rgba(17, 18, 19, .97);
   box-shadow: 0 -8px 24px rgba(0, 0, 0, .24);
-  transform: translateX(-50%);
+  transform: none;
 }
 
 #dialog-body .product-detail-sticky[hidden] { display: none !important; }

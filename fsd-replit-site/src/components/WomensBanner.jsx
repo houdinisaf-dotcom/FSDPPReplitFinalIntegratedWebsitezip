@@ -1,11 +1,14 @@
 import { SafeImage } from './SafeImage.jsx';
+import { siteMedia } from '../data/site-media.js';
 
 export function WomensBanner() {
   return (
     <section className="fsd-modal-hero fsd-modal-hero--womens">
       <SafeImage
         className="fsd-womens-hero-image"
-        src="/fsd-assets/womens-activewear-hero.png"
+        src={siteMedia.womensBanner?.src}
+        placeholderTitle="Women’s Modest Combat"
+        placeholderKind="banner"
         alt=""
         aria-hidden="true"
         loading="eager"

@@ -245,7 +245,7 @@ try {
   assert.ok(deepDiveText.includes('Machine wash cold on delicate cycle'));
   assert.ok(await evaluate('Boolean(document.querySelector(\'#product-dialog [data-bag-add="73"]\'))'));
   const taupeImageIndex = await evaluate(`Number([...document.querySelectorAll('#product-dialog [data-catalogue-colourway-index]')]
-    .find(button => button.textContent.includes('Warm Taupe'))?.dataset.catalogueColourwayImageIndex)`);
+    .find(input => input.value === 'Warm Taupe')?.dataset.catalogueColourwayImageIndex)`);
   assert.ok(taupeImageIndex >= 0);
   await evaluate(`document.querySelector('#product-dialog [data-catalogue-colourway-index="2"]')?.click()`);
   await waitFor('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("breeze-set-warm-taupe-full-length.webp")');

@@ -160,8 +160,10 @@ try {
   assert.equal(await evaluate('document.querySelector("#hardware-editorial").getBoundingClientRect().height > 0'), true);
   const editorialDividerCopy = 'THE REFINEMENT OF LUXURY FASHION. THE ENERGY OF ELITE SPORT. THE PRECISION OF PERFORMANCE ENGINEERING. THE INNOVATION OF MODERN TECHNOLOGY.';
   assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.textContent.trim()'), editorialDividerCopy);
-  assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.previousElementSibling?.id'), 'collections');
-  assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.nextElementSibling?.id'), 'hardware-editorial');
+  assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.previousElementSibling?.id'), 'hardware-editorial');
+  assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.nextElementSibling?.id'), 'innovations');
+  assert.equal(await evaluate('document.querySelector("#innovations")?.nextElementSibling?.id'), 'beyond-fsd');
+  assert.equal(await evaluate('document.querySelector("#beyond-fsd")?.nextElementSibling?.id'), 'brand-community');
   assert.equal(await evaluate('Math.abs(document.querySelector(".fsd-editorial-divider").getBoundingClientRect().width - document.documentElement.clientWidth) < 1'), true);
   assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
   assert.equal(await evaluate('document.querySelector("#catalogue-archive").getClientRects().length'), 0);
@@ -323,7 +325,10 @@ try {
   );
   assert.ok(await evaluate('document.querySelector("#fsd-showcase-dialog [data-aeroforge-product=\\"joggers\\"] a.fsd-product-link").getAttribute("href").endsWith("#aeroforge-performance-joggers")'));
   await click('[data-subcategory-index="0"]');
-  assert.equal(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img") === null'), true);
+  assert.equal(
+    await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").querySelector("img")?.getAttribute("src")'),
+    '/assets/products/velocity-hijab-main-listing.jpg',
+  );
   assert.ok(await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Black / Gold")'));
   assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("Black / Champagne Gold")'));
   assert.ok(!await evaluate('document.querySelector("[data-product-id=\\"43\\"]").closest("article").textContent.includes("£29.99")'));
@@ -363,7 +368,7 @@ try {
   await click('#product-dialog #product-title');
   assert.equal(await evaluate('document.querySelector("#product-dialog")?.open'), true,
     'Clicking product detail content must not dismiss the garment dialog.');
-  await key('Escape');
+  await click('#product-dialog #close-dialog');
   await waitFor('!document.querySelector("#product-dialog")?.open && document.querySelector("#fsd-showcase-dialog")?.open');
   await waitFor('document.activeElement.matches("#fsd-showcase-dialog [data-product-id=\\"69\\"]")');
   assert.equal(await evaluate('document.documentElement.classList.contains("fsd-modal-open")'), true);
@@ -448,7 +453,7 @@ try {
   assert.equal(await evaluate('document.querySelector("[data-dialog-content]").textContent.includes("£699.99") || document.querySelector("[data-dialog-content]").textContent.includes("£299.99")'), false);
   await click('[data-group-index="2"]');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-product-card").length'), 0);
-  assert.equal(await evaluate('document.querySelectorAll(".fsd-concept-card").length'), 3);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-concept-card").length'), 2);
   await click('.fsd-concept-details summary');
   assert.equal(await evaluate('document.querySelectorAll("dialog[open]").length'), 1);
   await evaluate('document.querySelector("[data-group-index=\\"2\\"]").focus()');
@@ -474,7 +479,13 @@ try {
   assert.ok(await evaluate('!document.querySelector("#gallery-archive, #full-gallery")'));
   assert.equal(await evaluate('document.querySelectorAll(\'a[href="#full-gallery"]\').length'), 0);
   await evaluate('location.hash = "#innovations"');
-  await waitFor('document.querySelector("#fsd-house-archive").open && document.querySelectorAll(".fsd-featured-card").length === 2');
+  await waitFor('document.querySelectorAll("#innovations .fsd-featured-card").length === 2');
+  assert.equal(await evaluate('document.querySelector("#innovations").closest("#fsd-house-archive") === null'), true);
+  assert.deepEqual(await evaluate('Array.from(document.querySelectorAll("#innovations .fsd-featured-card__details"), button => button.dataset.product)'), ['33', '34']);
+  await click('#innovations .fsd-featured-card__details');
+  await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.includes("MMA Performance Rash Guard")');
+  await click('#close-dialog');
+  await waitFor('!document.querySelector("#product-dialog")?.open');
   const seoMeta = await evaluate(`({
     title: document.title,
     description: document.querySelector('meta[name="description"]')?.content,
@@ -498,17 +509,17 @@ try {
     swatchCount: document.querySelectorAll(".fsd-featured-card [data-feature-swatch]").length,
     nextDisabled: document.querySelector("[data-feature-next]").disabled
   })`);
-  assert.deepEqual(featuredCarousel.names, ['FSD Ombré Slash Tee', 'FSD Cheetah Windrunner']);
-  assert.deepEqual(featuredCarousel.prices, ['£39.99', '£79.99']);
-  assert.equal(featuredCarousel.imageCount, 0);
+  assert.deepEqual(featuredCarousel.names, ["FSD Women's MMA Performance Rash Guard", "FSD Strike Men's Combat Shorts"]);
+  assert.deepEqual(featuredCarousel.prices, ['£59.99', '£49.99']);
+  assert.equal(featuredCarousel.imageCount, 2);
   assert.equal(featuredCarousel.swatchCount, 0);
 
-  await evaluate('document.querySelector(".fsd-featured-card [data-product=\\"1\\"]").focus({ preventScroll: true })');
-  await click('.fsd-featured-card [data-product="1"]');
+  await evaluate('document.querySelector(".fsd-featured-card [data-product=\\"34\\"]").focus({ preventScroll: true })');
+  await click('.fsd-featured-card [data-product="34"]');
   await waitFor('document.querySelector("#product-dialog").open');
-  assert.ok((await evaluate('document.querySelector("#dialog-body").textContent')).includes('FSD Ombré Slash Tee'));
+  assert.ok((await evaluate('document.querySelector("#dialog-body").textContent')).includes("FSD Strike Men's Combat Shorts"));
   assert.equal(await evaluate('Boolean(document.querySelector("#dialog-body [data-product-specifications-root]"))'), true);
-  assert.equal(await evaluate('document.querySelector("#dialog-body [data-product-specifications-root]").textContent.trim()'), '');
+  assert.match(await evaluate('document.querySelector("#dialog-body [data-product-specifications-root]").textContent'), /Elasticated comfort waistband/);
   assert.equal(await evaluate('document.querySelector("#dialog-body [data-catalogue-main-image]").loading'), 'eager');
   const colourwayCount = await evaluate('document.querySelectorAll("#dialog-body [data-catalogue-colourway-index]").length');
   assert.ok(colourwayCount > 1, 'The selected product should expose its existing colourway controls.');
@@ -520,7 +531,7 @@ try {
   }
   await key('Escape');
   await waitFor('!document.querySelector("#product-dialog").open');
-  await waitFor('document.activeElement.matches(".fsd-featured-card [data-product=\\"1\\"]")');
+  await waitFor('document.activeElement.matches(".fsd-featured-card [data-product=\\"34\\"]")');
 
   await send('Emulation.setDeviceMetricsOverride', {
     width: 402,

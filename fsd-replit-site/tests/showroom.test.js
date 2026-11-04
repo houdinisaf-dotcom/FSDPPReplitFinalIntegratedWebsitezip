@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { customerFacingCategory, products, priceInfo } from '../src/catalogue-data.js';
+import { customerFacingCategory, products, productsWithUsableImages, priceInfo } from '../src/catalogue-data.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase, groupProducts, matchesDraftCardScope } from '../src/collection-showcase/index.js';
 import { featuredProducts, featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
@@ -22,10 +22,15 @@ test('the showroom renders four accessible division controls and one reusable di
 });
 
 test('the editorial home keeps the three primary destinations concise and opens the correct groups', () => {
-  const markup = renderCollectionShowcase(collectionDivisions, { editorial: true });
+  const markup = renderCollectionShowcase(collectionDivisions, { editorial: true, products });
   assert.match(markup, /Men’s Luxury Performance/);
   assert.match(markup, /Women’s Modest Combat/);
   assert.match(markup, /Intelligence in Motion/);
+  assert.equal((markup.match(/class="fsd-editorial-card__image"/g) || []).length, 2);
+  assert.match(markup, /src="\/assets\/products\/strike-shorts-front\.webp"/);
+  assert.match(markup, /src="\/fsd-assets\/womens-modest-combat-preview\.webp"/);
+  assert.doesNotMatch(markup, /src="\/fsd-assets\/8ffe2fd45a06\.webp"/);
+  assert.doesNotMatch(markup, /£|RRP/);
   assert.match(markup, /Training technology and recovery\./);
   assert.match(markup, /data-division="apparel"[\s\S]*?data-group-index="0"/);
   assert.match(markup, /data-division="apparel"[\s\S]*?data-group-index="1"/);
@@ -103,8 +108,9 @@ test('draft previews stay in their assigned group view unless a subcategory is e
 });
 
 test('featured carousel uses only catalogue records with a public RRP and mapped product assets', () => {
-  assert.deepEqual(featuredProducts.map(product => product.id), [1, 10]);
+  assert.deepEqual(featuredProducts.map(product => product.id), [33, 34]);
   assert.ok(featuredProducts.every(product => products.includes(product)));
+  assert.ok(featuredProducts.every(product => productsWithUsableImages.includes(product)));
   assert.ok(featuredProducts.every(product => {
     const price = priceInfo(product);
     return product.images.length > 0 && Boolean(price.value) && !price.label;

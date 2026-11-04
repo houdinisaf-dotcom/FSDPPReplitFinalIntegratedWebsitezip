@@ -1,6 +1,7 @@
 import { alightPreviewPath } from './alight-preview-path.js';
 import { motionPreviewPath } from './motion-preview-path.js';
 import { nexusPreviewPath } from './nexus-preview-path.js';
+import { siteMedia } from './data/site-media.js';
 
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
@@ -129,11 +130,20 @@ export function getInnovationPageForTitle(title) {
 }
 
 function renderAssetSlot(title, variant = 'editorial', description = 'FSD product and editorial imagery.') {
-  return `<figure class="fsd-asset-slot fsd-asset-slot--${variant}" aria-label="Visual placeholder for ${escapeHTML(title)}">
+  const image = siteMedia.pageMedia[title];
+  if (image?.src) {
+    return `<figure class="fsd-asset-slot fsd-asset-slot--${variant}" aria-label="${escapeHTML(title)}">
+      <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt || title)}"
+        data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(title)}" data-fsd-image-kind="banner"
+        loading="lazy" decoding="async"/>
+    </figure>`;
+  }
+  return `<figure class="fsd-asset-slot fsd-asset-slot--${variant} fsd-image-placeholder fsd-image-placeholder--banner" aria-label="Visual placeholder for ${escapeHTML(title)}">
     <div class="fsd-asset-slot-content">
       <span class="fsd-asset-slot-kicker">FSD / PERFORMANCE</span>
       <strong>${escapeHTML(title)}</strong>
       <small>${escapeHTML(description)}</small>
+      <small class="fsd-image-placeholder__note">Image to be added</small>
     </div>
   </figure>`;
 }

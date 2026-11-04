@@ -9,8 +9,16 @@ import { catalogueSection, roadmapSection, innovationsSection, initCatalogue, na
 import { crossfadeMappedImage } from '../src/catalogue-image-gallery.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
-import { featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
+import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
 import { renderNavigationHeader } from '../src/site-navigation.js';
+import { siteMedia } from '../src/data/site-media.js';
+import { imagePlaceholderMarkup, installImageErrorFallbacks } from '../src/image-placeholder.js';
+import {
+  productCardColourwaysMarkup,
+  productCardImageMarkup,
+  productColourwayImageIndex,
+  productColourwayOptions,
+} from '../src/product-card-media.js';
 import { ourStorySection } from '../src/story-section.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from '../src/flagship-pages.js';
 
@@ -26,6 +34,37 @@ test('original source records and approved set tiers are retained; holds and ret
   assert.ok(products.every(p => !retiredProducts.some(r => r.id === p.id)));
   assert.equal(products.filter(p => p.confirmedPrice !== null).length, 44);
   assert.ok(products.every(p => !Object.hasOwn(p, 'suggestedPrice')));
+});
+
+test('product cards expose only recorded colourways and never reuse another colour image', () => {
+  const flex = products.find(product => product.name === 'FLEX — High-Waisted Sculpt Leggings');
+  assert.ok(flex);
+  assert.equal(flex.confirmedPrice, 65);
+  assert.equal(flex.sizes, 'XS; S; M; L; XL; XXL');
+  assert.deepEqual(productColourwayOptions(flex), [
+    'Obsidian Black',
+    'Sage Green',
+    'Dusty Rose',
+    'Espresso Brown',
+    'Teal',
+  ]);
+  const swatches = productCardColourwaysMarkup(flex);
+  assert.equal((swatches.match(/data-catalogue-card-colourway=/g) || []).length, 5);
+  assert.match(swatches, /aria-pressed="true"/);
+
+  const noPhotoProduct = products.find(product => product.id === 3);
+  const noPhotoColourway = productColourwayOptions(noPhotoProduct)[1];
+  const placeholder = productCardImageMarkup(noPhotoProduct, { colourway: noPhotoColourway });
+  assert.match(placeholder, /fsd-image-placeholder/);
+  assert.match(placeholder, new RegExp(noPhotoColourway.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.doesNotMatch(placeholder, /<img\b/);
+
+  const mappedProduct = products.find(product => product.id === 34);
+  const mappedImages = mappedProduct.images;
+  const blackGoldIndex = productColourwayImageIndex(mappedImages, 'Black & Gold');
+  assert.ok(blackGoldIndex >= 0);
+  assert.match(productCardImageMarkup(mappedProduct, { colourway: 'Black & Gold' }), /strike-shorts-black-gold\.webp/);
+  assert.equal(productColourwayImageIndex(mappedImages, 'unrecorded colour'), -1);
 });
 
 test('four supplied tactical and running-shell records are listed without mapping composite boards', () => {
@@ -692,21 +731,18 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
 
     click('[data-product]', { dataset: { product: '10' } });
     assert.equal(element('#product-dialog').open, true);
-    assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
+    assert.match(element('#dialog-body').innerHTML, /fsd-image-placeholder/);
     assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-colourway-index/g) ?? []).length, 3);
-    assert.equal(
-      (element('#dialog-body').innerHTML.match(/data-catalogue-image-index=/g) ?? []).length,
-      products.find(p => p.id === 10).images.length,
-    );
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index=/g) ?? []).length, 0);
     for (const image of products.find(p => p.id === 10).images) {
-      assert.ok(element('#dialog-body').innerHTML.includes(image.label));
+      assert.ok(!element('#dialog-body').innerHTML.includes(`src="${image.src}"`));
     }
     assert.doesNotMatch(element('#dialog-body').innerHTML, /design concept/i);
     assert.ok(element('#dialog-body').innerHTML.includes(priceInfo(products.find(p => p.id === 10)).value));
     assert.doesNotMatch(element('#dialog-body').innerHTML, /Confirmed list price/);
 
     const dialogBody = element('#dialog-body');
-    const mainImage = {};
+    const mainImage = { dataset: {}, closest() { return null; }, getAttribute() { return ''; } };
     const mainCaption = {};
     const selectorButtons = [0, 1, 2].map(() => ({ setAttribute() {} }));
     dialogBody.contains = () => true;
@@ -716,7 +752,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
       ? mainImage
       : selector === '[data-catalogue-selected-colourway]' ? selectedColourway
         : selector === '[data-product-wishlist]' ? wishlistButton
-          : mainCaption;
+          : selector === '[data-catalogue-main-caption]' ? mainCaption : null;
     dialogBody.querySelectorAll = () => selectorButtons;
     const changeColourway = (colourwayIndex, imageIndex) => {
       const input = {
@@ -732,11 +768,6 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
         },
       });
     };
-    changeColourway(1, 1);
-    assert.equal(mainImage.src, products.find(p => p.id === 10).images[1].src);
-    assert.equal(mainCaption.textContent, products.find(p => p.id === 10).images[1].label);
-    assert.equal(selectedColourway.textContent, 'Blizzard ice-white grey camo / black');
-
     click('[data-product]', { dataset: { product: '34' } });
     const strikeProduct = products.find(product => product.id === 34);
     const strikeMarkup = element('#dialog-body').innerHTML;
@@ -762,7 +793,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     assert.match(apexMarkup, /class="product-detail-gallery[^"]*product-detail-gallery--placeholders"/);
     assert.match(apexMarkup, /FSD Apex High-Waisted Compression Leggings/);
     assert.match(apexMarkup, /£65\.00/);
-    assert.equal((apexMarkup.match(/class="catalogue-gallery-placeholder/g) ?? []).length, 3);
+    assert.equal((apexMarkup.match(/\bcatalogue-gallery-placeholder(?=[ "])/g) ?? []).length, 3);
     assert.match(apexMarkup, /Front Full View/);
     assert.match(apexMarkup, /Rear Contour View/);
     assert.match(apexMarkup, /Detail \/ Gold Crest &amp; Waistband/);
@@ -778,12 +809,9 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     }
     assert.equal(element('#product-dialog').open, false);
     click('[data-product]', { dataset: { product: '1' } });
-    assert.equal((element('#dialog-body').innerHTML.match(/<figure\b/g) ?? []).length, 1);
+    assert.match(element('#dialog-body').innerHTML, /fsd-image-placeholder/);
     assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-colourway-index/g) ?? []).length, 2);
-    assert.equal(
-      (element('#dialog-body').innerHTML.match(/data-catalogue-image-index=/g) ?? []).length,
-      products.find(p => p.id === 1).images.length,
-    );
+    assert.equal((element('#dialog-body').innerHTML.match(/data-catalogue-image-index=/g) ?? []).length, 0);
     assert.match(element('#dialog-body').innerHTML, /Vintage indigo fading to jet black/);
     assert.match(element('#dialog-body').innerHTML, /Electric cobalt fading to jet black/);
     for (const id of [42, 45, 60, 61, 62, 63, 65]) {
@@ -941,8 +969,9 @@ test('the complete public page excludes held imagery while retaining internal so
   globalThis.document = document;
   try {
     const dependencies = {
+      siteMedia, imagePlaceholderMarkup, installImageErrorFallbacks,
       catalogueSection, initCatalogue, navigateCatalogue, products,
-      collectionDivisions, renderCollectionShowcase, featuredInnovationsSection, vipAccessSection,
+      collectionDivisions, renderCollectionShowcase, beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       FSD_STORY_PATH: '/story',
       ourStorySection, flagshipPageHashes, renderFlagshipPlaceholderPages,
@@ -961,15 +990,30 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(page, /id="catalogue-archive"/);
     const homepage = page.match(/<main id="home">([\s\S]*?)<\/main>/)?.[1] || '';
     assert.ok(homepage, 'the storefront homepage main landmark should render');
-    assert.doesNotMatch(homepage, /SHOP \/ ALL PRODUCTS|id="catalogue-grid"|id="catalogue-archive"|id="search"|id="fsd-house-archive"|id="innovations"|id="philosophy"|id="contact"/);
+    assert.doesNotMatch(homepage, /SHOP \/ ALL PRODUCTS|id="catalogue-grid"|id="catalogue-archive"|id="search"|id="fsd-house-archive"|id="philosophy"|id="contact"/);
     assert.doesNotMatch(homepage, /Browse the catalogue/i);
     assert.match(homepage, /data-home-hero-slot/);
     const homeHero = readFileSync(new URL('../src/components/HomeHero.jsx', import.meta.url), 'utf8');
-    assert.match(homeHero, /className="fsd-home-hero"/);
+    assert.match(homeHero, /className="fsd-home-hero fsd-phase3-hero"/);
     const womensBanner = readFileSync(new URL('../src/components/WomensBanner.jsx', import.meta.url), 'utf8');
     assert.match(womensBanner, /className="fsd-modal-hero fsd-modal-hero--womens"/);
-    assert.match(womensBanner, /womens-activewear-hero\.png/);
+    assert.match(womensBanner, /siteMedia\.womensBanner/);
+    assert.match(siteMedia.womensBanner.src, /womens-activewear-hero\.png/);
     assert.match(homepage, /class="fsd-showcase fsd-showcase--editorial"/);
+    assert.match(homepage, /id="innovations"/);
+    assert.match(homepage, /data-fsd-featured-carousel-slot/);
+    assert.match(homepage, /id="beyond-fsd"/);
+    assert.match(homepage, /id="brand-community"/);
+    assert.doesNotMatch(homepage, /weighted skipping ropes/i);
+    const sectionOrder = [
+      homepage.indexOf('class="fsd-showcase fsd-showcase--editorial"'),
+      homepage.indexOf('id="hardware-editorial"'),
+      homepage.indexOf('id="innovations"'),
+      homepage.indexOf('id="beyond-fsd"'),
+      homepage.indexOf('id="brand-community"'),
+    ];
+    assert.ok(sectionOrder.every((position, index) => position >= 0 && (index === 0 || position > sectionOrder[index - 1])));
+    assert.equal((homepage.match(/class="fsd-editorial-card /g) || []).length, 3);
     assert.match(homepage, /class="fsd-editorial-divider"/);
     assert.match(homepage, /id="hardware-editorial"/);
     assert.match(page, /<details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">[\s\S]*?<section class="shop" id="products"/);

@@ -1,4 +1,12 @@
 import { customerFacingCategory, isHardwareVisualPreviewProduct, priceInfo } from '../catalogue-data.js';
+import {
+  productCardColourwaysMarkup,
+  productCardImageMarkup,
+  productColourwayOptions,
+} from '../product-card-media.js';
+import { productImagesForDisplay } from '../data/products.js';
+import { siteMedia } from '../data/site-media.js';
+import { imagePlaceholderMarkup } from '../image-placeholder.js';
 import { trackEvent } from '../analytics.js';
 import { FSD_MOTION, prefersReducedMotion } from '../motion-config.js';
 import { animateElement } from '../motion-runtime.js';
@@ -10,13 +18,6 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
   '"': '&quot;',
   "'": '&#39;',
 }[character]));
-
-function hasProductImage(product) {
-  const status = String(product.imageStatus ?? '');
-  const isCompositeOnly = /\bconcept board\b|crop single panels|contact sheet|collage/i.test(status);
-  return !isCompositeOnly && Array.isArray(product.images) &&
-    product.images.some(image => typeof image?.src === 'string' && image.src.trim().length > 0);
-}
 
 const divisionNotes = {
   apparel: 'Performance apparel & modest movement',
@@ -51,7 +52,7 @@ function renderBanner(division, index) {
   </button>`;
 }
 
-export function renderCollectionShowcase(divisions, { editorial = false } = {}) {
+export function renderCollectionShowcase(divisions, { editorial = false, products = [] } = {}) {
   const list = Array.isArray(divisions) ? divisions : [];
   const dialogMarkup = `<dialog id="fsd-showcase-dialog" class="fsd-showcase-dialog" aria-label="FSD collection details" data-showcase-dialog>
       <div class="fsd-dialog-frame">
@@ -68,12 +69,22 @@ export function renderCollectionShowcase(divisions, { editorial = false } = {}) 
     const bioLab = list.find(division => division.id === 'bio-lab');
     const hardware = list.find(division => division.id === 'hardware');
     const global = list.find(division => division.id === 'global');
-    const card = (division, groupIndex, number, eyebrow, title, note, className = '') => division
+    const mensGroup = apparel?.groups?.[0];
+    const mensProduct = (Array.isArray(products) ? products : [])
+      .find(product => mensGroup && matchesGroup(product, mensGroup) && productImagesForDisplay(product).length);
+    const mensImages = productImagesForDisplay(mensProduct);
+    const mensCover = mensImages.find(image => /front/i.test(image.src))?.src
+      || mensImages[0]?.src
+      || siteMedia.collectionCards.mens?.src
+      || '';
+    const card = (division, groupIndex, number, eyebrow, title, note, className = '', imageSrc = '') => division
       ? `<button class="fsd-editorial-card ${className}" type="button" data-division="${escapeHTML(division.id)}"
           data-group-index="${groupIndex}" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog" aria-expanded="false">
-          ${className.includes('fsd-editorial-card--women')
-            ? '<img class="fsd-editorial-card__image" src="/fsd-assets/8ffe2fd45a06.webp" alt="" aria-hidden="true" loading="lazy" decoding="async"/>'
-            : ''}
+          <span class="fsd-editorial-card__media-slot">
+            ${imageSrc
+              ? `<img class="fsd-editorial-card__image" src="${escapeHTML(imageSrc)}" alt="${escapeHTML(title)}" data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(title)}" data-fsd-image-kind="collection" loading="lazy" decoding="async"/>`
+              : imagePlaceholderMarkup({ title, kind: 'collection', className: 'fsd-editorial-card__image-placeholder' })}
+          </span>
           <span class="fsd-editorial-card__eyebrow">${number} <i aria-hidden="true">/</i> ${escapeHTML(eyebrow)}</span>
           <strong>${escapeHTML(title)}</strong>
           <span class="fsd-editorial-card__note">${escapeHTML(note)}</span>
@@ -84,15 +95,15 @@ export function renderCollectionShowcase(divisions, { editorial = false } = {}) 
     return `<section class="fsd-showcase fsd-showcase--editorial" id="universe" aria-labelledby="fsd-showcase-title">
       <header class="fsd-editorial-heading">
         <div>
-          <p class="fsd-showcase-kicker"><span></span> THE FSD COLLECTION SYSTEM</p>
+          <p class="fsd-showcase-kicker"><span></span> 02 / THE FSD COLLECTION SYSTEM</p>
           <h2 id="fsd-showcase-title">Choose your<br/><em>direction.</em></h2>
         </div>
         <p>Explore apparel and training technology through the existing FSD collection menu.</p>
       </header>
       <div class="fsd-editorial-grid">
-        ${card(apparel, 0, '01', 'APPAREL', 'Men’s Luxury Performance', 'Performance apparel and combat training.', 'fsd-editorial-card--men')}
-        ${card(apparel, 1, '02', 'APPAREL', 'Women’s Modest Combat', 'Performance apparel and modest movement.', 'fsd-editorial-card--women')}
-        ${card(bioLab, 0, '03', 'BIO-LAB™', 'Intelligence in Motion', 'Training technology and recovery.', 'fsd-editorial-card--biolab')}
+        ${card(apparel, 0, '01', 'APPAREL', 'Men’s Luxury Performance', 'Performance apparel and combat training.', 'fsd-editorial-card--men', mensCover)}
+        ${card(apparel, 1, '02', 'APPAREL', 'Women’s Modest Combat', 'Performance apparel and modest movement.', 'fsd-editorial-card--women', siteMedia.collectionCards.womens?.src || '')}
+        ${card(bioLab, 0, '03', 'BIO-LAB™', 'Intelligence in Motion', 'Training technology and recovery.', 'fsd-editorial-card--biolab', siteMedia.collectionCards.bioLab?.src || '')}
       </div>
       <nav class="fsd-editorial-secondary" aria-label="Other FSD divisions">
         ${hardware ? `<button id="fsd-division-hardware" type="button" data-division="hardware" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog" aria-expanded="false">Explore Hardware <span aria-hidden="true">↗</span></button>` : ''}
@@ -151,19 +162,30 @@ function productCard(product) {
     ? { label: '', value: '' }
     : masterPrice;
   const description = !isHardwarePreview
-    ? product.coverage || product.priceBasis || product.colourways
+    ? product.coverage || product.priceBasis || (productColourwayOptions(product).length < 2 ? product.colourways : '')
     : '';
-  return `<article class="fsd-product-card fsd-product-card--row">
-    <button class="fsd-product-row" type="button" data-product-id="${escapeHTML(product.id)}"
-      aria-label="View details for ${escapeHTML(product.name)}">
+  const colourway = productColourwayOptions(product)[0] || '';
+  const mediaMarkup = productCardImageMarkup(product, {
+    colourway,
+    className: 'fsd-product-row__image fsd-image-placeholder--compact fsd-product-row__placeholder',
+  });
+  return `<article class="fsd-product-card fsd-product-card--row" data-fsd-product-card="${escapeHTML(product.id)}">
+    <div class="fsd-product-row">
+      <button class="fsd-product-row__media" type="button" data-product-media-id="${escapeHTML(product.id)}"
+        aria-label="View details for ${escapeHTML(product.name)}">
+        <span data-product-card-image-slot>${mediaMarkup}</span>
+      </button>
       <span class="fsd-product-row__meta"><span>${escapeHTML(category)}</span>${audience}</span>
       <span class="fsd-product-row__copy">
         <strong>${escapeHTML(product.name)}</strong>
         ${description ? `<span class="fsd-product-description">${escapeHTML(description)}</span>` : ''}
       </span>
       ${price.label || price.value ? `<span class="fsd-product-reference">${price.label ? `${escapeHTML(price.label)} ` : ''}${price.value ? `<strong>${escapeHTML(price.value)}</strong>` : ''}</span>` : ''}
-      <span class="fsd-product-row__action">VIEW DETAILS <span aria-hidden="true">↗</span></span>
-    </button>
+      <button class="fsd-product-row__action" type="button" data-product-id="${escapeHTML(product.id)}">
+        VIEW DETAILS <span aria-hidden="true">↗</span><span class="sr-only"> for ${escapeHTML(product.name)}</span>
+      </button>
+    </div>
+    ${productCardColourwaysMarkup(product, { className: 'catalogue-card-swatches fsd-product-row__swatches', dataPrefix: 'fsd' })}
   </article>`;
 }
 
@@ -210,7 +232,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
   const mappedHeroProduct = division.id === 'apparel' &&
     group.id === 'womens-modest-combat' &&
     subcategory?.title === 'Performance Hijabs'
-    ? foundProducts.find(product => Number(product.id) === 43 && hasProductImage(product))
+    ? foundProducts.find(product => Number(product.id) === 43 && productImagesForDisplay(product).length)
     : null;
   const mappedHeroImage = mappedHeroProduct?.images?.[0];
   const isWomensCollection = division.id === 'apparel' &&
@@ -218,8 +240,10 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
     !subcategory;
   const heroImageMarkup = mappedHeroImage
     ? `<figure class="fsd-modal-hero__media">
-        <img src="${escapeHTML(mappedHeroImage.src)}"
-          alt="${escapeHTML(mappedHeroProduct.name)} — ${escapeHTML(mappedHeroImage.label)}"/>
+        <img src="${escapeHTML(mappedHeroImage.src)}" class="fsd-modal-hero__image"
+          alt="${escapeHTML(mappedHeroProduct.name)} — ${escapeHTML(mappedHeroImage.label)}"
+          data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(mappedHeroProduct.name)}"
+          data-fsd-image-variant="${escapeHTML(mappedHeroImage.colourway || mappedHeroImage.variant || '')}" data-fsd-image-kind="hero"/>
         <figcaption>FSD VELOCITY / PERFORMANCE HIJABS</figcaption>
       </figure>`
     : '';
@@ -253,6 +277,7 @@ function modalContent(division, group, products, activeGroupIndex, activeSubcate
         <p>${escapeHTML(division.tagline)}</p>
       </div>
       ${heroImageMarkup}
+      ${mappedHeroImage ? '' : imagePlaceholderMarkup({ title, kind: 'hero', className: 'fsd-modal-hero__placeholder' })}
     </div>`}
     <nav class="fsd-group-nav" aria-label="Explore ${escapeHTML(division.title)} collections">
       ${(division.groups || []).map((item, index) => `<button type="button" class="fsd-group-tab${item.prominent ? ' fsd-group-tab--prominent' : ''}${index === activeGroupIndex ? ' is-active' : ''}" data-group-index="${index}" aria-pressed="${index === activeGroupIndex}">
@@ -461,9 +486,30 @@ export function mountCollectionShowcase({
       });
       return;
     }
-    const productButton = event.target.closest('[data-product-id]');
+    const cardSwatch = event.target.closest('[data-fsd-card-colourway]');
+    if (cardSwatch && dialog.contains(cardSwatch)) {
+      const card = cardSwatch.closest('[data-fsd-product-card]');
+      const product = safeProducts.find(item => String(item.id) === card?.dataset.fsdProductCard);
+      const colourway = productColourwayOptions(product)[Number(cardSwatch.dataset.fsdCardColourway)];
+      if (!product || !colourway) return;
+      card.querySelectorAll('[data-fsd-card-colourway]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button === cardSwatch));
+      });
+      card.querySelectorAll('[data-product-card-selected-colourway]').forEach(label => {
+        label.textContent = colourway;
+      });
+      const imageSlot = card.querySelector('[data-product-card-image-slot]');
+      if (imageSlot) {
+        imageSlot.innerHTML = productCardImageMarkup(product, {
+          colourway,
+          className: 'fsd-product-row__image fsd-image-placeholder--compact fsd-product-row__placeholder',
+        });
+      }
+      return;
+    }
+    const productButton = event.target.closest('[data-product-id], [data-product-media-id]');
     if (productButton && dialog.contains(productButton)) {
-      const selectedProduct = safeProducts.find(product => String(product.id) === productButton.dataset.productId);
+      const selectedProduct = safeProducts.find(product => String(product.id) === (productButton.dataset.productId || productButton.dataset.productMediaId));
       if (!selectedProduct) return;
       onProductSelect(selectedProduct.id, productButton);
       return;

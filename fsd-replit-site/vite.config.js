@@ -28,10 +28,25 @@ function staticStoryRoutePlugin() {
   };
 }
 
+function developmentNoIndexPlugin() {
+  return {
+    name: 'fsd-development-noindex',
+    apply: 'serve',
+    transformIndexHtml(html) {
+      if (/<meta\s+name=["']robots["']/iu.test(html)) return html;
+      return html.replace(
+        /<\/head>/iu,
+        '    <meta name="robots" content="noindex, nofollow, noarchive"/>\n  </head>',
+      );
+    },
+  };
+}
+
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    developmentNoIndexPlugin(),
     draftReviewPlugin(),
     aeroforgePrivatePreviewPlugin(),
     modestFlowPrivatePreviewPlugin(),

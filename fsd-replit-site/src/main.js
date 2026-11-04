@@ -2,13 +2,15 @@ import { catalogueSection, initCatalogue, navigateCatalogue, showProduct } from 
 import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
-import { featuredInnovationsSection, vipAccessSection, initCatalogueNavigation } from './showroom-sections.js';
+import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation } from './showroom-sections.js';
 import { renderNavigationHeader } from './site-navigation.js';
 import { ourStorySection } from './story-section.js';
 import { mountClientBag } from './bag.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
 import { mountStorefrontMotion } from './motion-runtime.js';
+import { siteMedia } from './data/site-media.js';
+import { imagePlaceholderMarkup, installImageErrorFallbacks } from './image-placeholder.js';
 import './style.css';
 import './catalogue.css';
 import './product-detail.css';
@@ -21,33 +23,40 @@ import './flagship-pages.css';
 import './bag.css';
 import './globals.css';
 import './motion-effects.css';
+import './image-placeholders.css';
+import './homepage-phase3.css';
+
+if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 
 export function renderStorefrontHeader() {
   const currentBrandMarkup = '<span data-fsd-logo-slot="header"></span>';
   return renderNavigationHeader(currentBrandMarkup);
 }
 
-function openProduct(id, onRouteChange = () => {}, returnFocus = null) {
+function openProduct(id, onRouteChange = () => {}, returnFocus = null, initialVariant = {}) {
   onRouteChange({ view: 'product', target: String(id) });
-  showProduct(id, { returnFocus });
+  showProduct(id, { returnFocus, initialVariant });
 }
 
 function hardwareEditorialSection() {
-  return `<section class="showroom-engineering" id="hardware-editorial" aria-labelledby="hardware-editorial-title">
+  return `<section class="showroom-engineering showroom-engineering--campaign" id="hardware-editorial" aria-labelledby="hardware-editorial-title">
     <div class="showroom-engineering-copy">
-      <p class="section-kicker">FSD HARDWARE <span class="period">/</span> COMBAT SYSTEMS</p>
+      <p class="section-kicker">03 / FSD HARDWARE <span class="period">/</span> COMBAT SYSTEMS</p>
       <h2 id="hardware-editorial-title">ENGINEERED FOR<br/>THE DEMANDS OF<br/><span>PERFORMANCE.</span></h2>
        <p>Equipment that earns its place in your training.</p>
       <ol class="showroom-engineering-list">
         <li><span>01</span> Strength equipment · dumbbell collections</li>
         <li><span>02</span> Boxing and combat equipment</li>
-        <li><span>03</span> Training accessories · weighted skipping ropes</li>
-        <li><span>04</span> Recovery equipment</li>
+        <li><span>03</span> Recovery equipment</li>
       </ol>
       <button class="showroom-engineering-link" type="button" data-open-hardware>EXPLORE HARDWARE <span aria-hidden="true">↗</span></button>
     </div>
     <figure class="showroom-engineering-media">
-      <img src="/fsd-assets/8ffe2fd45a06.webp" alt="FSD athlete in modest combat training apparel, pictured during a boxing session." loading="lazy" fetchpriority="low" width="1050" height="960"/>
+      ${siteMedia.hardwareFeature?.src
+        ? `<img class="showroom-engineering-image" src="${siteMedia.hardwareFeature.src}" alt="${siteMedia.hardwareFeature.alt}"
+          data-fsd-image-fallback="true" data-fsd-image-title="FSD Hardware" data-fsd-image-kind="banner"
+          loading="lazy" fetchpriority="low" width="1050" height="960"/>`
+        : imagePlaceholderMarkup({ title: 'FSD Hardware', kind: 'banner', className: 'showroom-engineering-image' })}
       <figcaption><span>FSD COMBAT / TRAINING CAMPAIGN</span><span>APPAREL & MOVEMENT</span></figcaption>
     </figure>
   </section>`;
@@ -57,17 +66,19 @@ export function renderStorefrontMarkup() {
   return `<main id="home">
   <div data-home-hero-slot></div>
   <div id="collections">
-    ${renderCollectionShowcase(collectionDivisions, { editorial: true })}
+    ${renderCollectionShowcase(collectionDivisions, { editorial: true, products })}
   </div>
+  ${hardwareEditorialSection()}
   <section class="fsd-editorial-divider" aria-label="FSD design philosophy">
     <p>THE REFINEMENT OF LUXURY FASHION. THE ENERGY OF ELITE SPORT. THE PRECISION OF PERFORMANCE ENGINEERING. THE INNOVATION OF MODERN TECHNOLOGY.</p>
   </section>
-  ${hardwareEditorialSection()}
+  ${featuredInnovationsSection()}
+  ${beyondProductSection()}
+  ${houseConnectionSection()}
   </main>
   <details class="showroom-archive showroom-archive--discover" id="fsd-house-archive">
     <summary>DISCOVER THE FSD HOUSE</summary>
     <div class="showroom-archive-content">
-      ${featuredInnovationsSection()}
       ${ourStorySection()}
       ${renderInnovationHubIndex({ includePrivatePreviews: import.meta.env.DEV })}
       ${renderFlagshipPlaceholderPages()}
@@ -81,7 +92,7 @@ export function renderStorefrontMarkup() {
   </details>
   <div id="prelaunch-signup" data-prelaunch-signup-slot></div>
   <footer><div class="footer-brand"><span data-fsd-logo-slot="footer"></span></div>
-    <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Website prototype.</span>
+    <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Fitness &amp; Self-Defence.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD COLLECTIONS</a><a href="#products">BROWSE CATALOGUE</a>
       <a href="#contact">VIP ACCESS</a></nav>
       <nav class="footer-links" aria-label="Corporate navigation"><a href="${FSD_STORY_PATH}">THE HOUSE / OUR STORY</a><a href="#fsd-division-global">FSD GLOBAL</a></nav>
@@ -221,14 +232,14 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
 
 function startMainExperience(clientBag, onRouteChange = () => {}) {
   initCatalogue({
-    onProductSelect: (id, returnFocus) => openProduct(id, onRouteChange, returnFocus),
+    onProductSelect: (id, returnFocus, variant) => openProduct(id, onRouteChange, returnFocus, variant),
     onAddToBag: clientBag.addToBag,
   });
   const collectionShowcase = mountCollectionShowcase({
     root: document.querySelector('#collections'),
     divisions: collectionDivisions,
     products,
-    onProductSelect: (id, returnFocus) => openProduct(id, onRouteChange, returnFocus),
+    onProductSelect: (id, returnFocus, variant) => openProduct(id, onRouteChange, returnFocus, variant),
     onExploreCollection(group) {
       onRouteChange({ view: 'collection', target: group.id });
       showCatalogueDestination({

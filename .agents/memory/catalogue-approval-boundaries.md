@@ -15,11 +15,11 @@ Approval to display inventory does not fill missing manufacturer details such as
 
 **How to apply:** Leave omitted values blank and distinguish verified product data from assumptions.
 
-Image mapping approval remains separate from production display approval.
+Image mapping approval remains separate from production display approval. Legacy product image lists can contain concept-board composites or individual crops, so a non-empty image list alone does not make it suitable for public product previews.
 
 **Why:** A visible image can otherwise be mistaken for verified product photography or evidence of a technical claim.
 
-**How to apply:** Use only explicitly approved image roles; keep source archives intact and do not infer product specifications from campaign artwork.
+**How to apply:** Use only explicitly approved image roles and verified standalone product photography for public previews; keep source archives intact and do not infer product specifications from campaign artwork.
 
 The reviewed Performance/Cover hijab and HYDRATE, MOTION, NEXUS, SONIC and PULSE
 step-counter image candidates were not approved for product mappings. The

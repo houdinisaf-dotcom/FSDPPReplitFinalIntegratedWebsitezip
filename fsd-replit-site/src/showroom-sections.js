@@ -1,14 +1,63 @@
 import { products, priceInfo } from './catalogue-data.js';
-import { FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
+import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
+
+const featuredProductIds = [33, 34];
 
 export const featuredProducts = products.filter(product => {
   const price = priceInfo(product);
-  return [1, 10].includes(product.id) && product.images?.length > 0 && price.value && !price.label;
+  return featuredProductIds.includes(product.id)
+    && price.value
+    && !price.label;
 });
 
 export function featuredInnovationsSection() {
   return `<section class="showroom-featured" id="innovations" aria-labelledby="featured-title">
     <div data-fsd-featured-carousel-slot></div>
+  </section>`;
+}
+
+export function beyondProductSection() {
+  return `<section class="showroom-beyond" id="beyond-fsd" aria-labelledby="beyond-fsd-title">
+    <div class="showroom-beyond__intro">
+      <p class="section-kicker">05 / BEYOND THE PRODUCT</p>
+      <h2 id="beyond-fsd-title">Explore the<br/><em>FSD universe.</em></h2>
+      <p>Explore existing FSD directions across material research, community and operations.</p>
+      <a class="showroom-beyond__hub" href="#innovation-hub">EXPLORE THE INNOVATION HUB <span aria-hidden="true">↗</span></a>
+    </div>
+    <nav class="showroom-beyond__paths" aria-label="Explore FSD initiatives">
+      <a class="showroom-beyond__path" href="${FSD_HOUSE_PAGE_PATH}#bio-lab">
+        <span>01 / MATERIALS &amp; APPAREL</span>
+        <strong>Bio-Lab™</strong>
+        <small>Adaptive fabrics / Smart Apparel</small>
+        <b aria-hidden="true">↗</b>
+      </a>
+      <a class="showroom-beyond__path" href="/community-co-creation.html">
+        <span>02 / COMMUNITY &amp; CULTURE</span>
+        <strong>Community Co-Creation</strong>
+        <small>Workshops / feedback / collaboration</small>
+        <b aria-hidden="true">↗</b>
+      </a>
+      <a class="showroom-beyond__path" href="${FSD_HOUSE_PAGE_PATH}#global/innovation">
+        <span>03 / GLOBAL VISION</span>
+        <strong>Operations &amp; Infrastructure</strong>
+        <small>Testing / modular systems / supply chain</small>
+        <b aria-hidden="true">↗</b>
+      </a>
+    </nav>
+  </section>`;
+}
+
+export function houseConnectionSection() {
+  return `<section class="showroom-house-connection" id="brand-community" aria-labelledby="brand-community-title">
+    <div class="showroom-house-connection__statement">
+      <p class="section-kicker">06 / COMMUNITY &amp; BRAND</p>
+      <h2 id="brand-community-title">Capability is not a costume.<br/><em>It is a practice.</em></h2>
+    </div>
+    <div class="showroom-house-connection__copy">
+      <p>Explore the purpose, founder story and community initiatives behind FSD.</p>
+      <a href="${FSD_STORY_PATH}">DISCOVER THE HOUSE <span aria-hidden="true">↗</span></a>
+    </div>
+    <span class="showroom-house-connection__mark" aria-hidden="true">FSD <i>/</i> FITNESS &amp; SELF-DEFENCE</span>
   </section>`;
 }
 

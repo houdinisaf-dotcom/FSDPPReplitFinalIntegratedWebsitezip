@@ -2,23 +2,30 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, LayoutGroup, MotionConfig, motion } from 'motion/react';
 import '../CatalogList.css';
 import { ProductDetail } from './ProductDetail.jsx';
+import { ImagePlaceholder } from './ImagePlaceholder.jsx';
 import { SafeImage } from './SafeImage.jsx';
 import { customerFacingCategory } from '../catalogue-data.js';
+import { imageSwatchBackground, productImagesForDisplay } from '../data/products.js';
+import { productColourwayImageIndex, productColourwayOptions } from '../product-card-media.js';
 import { FSD_MOTION } from '../motion-config.js';
 
-function colourwaysFor(product) {
-  return Array.isArray(product.rowColourways) ? product.rowColourways : [];
-}
-
-function VisualProductCard({ product, isOpen, onToggle, children }) {
-  const images = Array.isArray(product.images)
-    ? product.images.filter(image => typeof image?.src === 'string' && image.src.startsWith('/'))
-    : [];
+function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onToggle, children }) {
+  const images = productImagesForDisplay(product);
+  const colourways = productColourwayOptions(product);
+  const hasColourways = colourways.length > 1;
+  const [cardColourway, setSelectedColourway] = useState(colourways[0] || '');
+  const selectedColourway = isOpen ? selectedColor : cardColourway;
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeImage = images.length ? images[activeIndex % images.length] : null;
+  useEffect(() => {
+    if (isOpen) setSelectedColourway(selectedColor);
+  }, [isOpen, selectedColor]);
+  const visibleImages = hasColourways
+    ? images.filter(image => productColourwayImageIndex([image], selectedColourway) === 0)
+    : images;
+  const activeImage = visibleImages.length ? visibleImages[activeIndex % visibleImages.length] : null;
   const updateImage = nextIndex => {
-    if (!images.length) return;
-    setActiveIndex((nextIndex + images.length) % images.length);
+    if (!visibleImages.length) return;
+    setActiveIndex((nextIndex + visibleImages.length) % visibleImages.length);
   };
 
   return (
@@ -37,7 +44,7 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
         aria-expanded={isOpen}
         aria-controls={`catalogue-expanded-${product.id}`}
         aria-label={`${isOpen ? 'Collapse' : 'View details for'} ${product.name}`}
-        onClick={onToggle}
+        onClick={event => onToggle(event, selectedColourway)}
       >
         <span className="catalogue-card__media" aria-live="polite">
           {activeImage ? (
@@ -46,14 +53,17 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
                   data-catalogue-card-image
                   src={activeImage.src}
                   alt={`${product.name} — ${activeImage.label}`}
-                  fallbackLabel="IMAGE NOT AVAILABLE"
+                  placeholderTitle={product.name}
+              variantLabel={activeImage.colourway || activeImage.variant || ''}
                 />
               </motion.span>
           ) : (
-            <span className="catalogue-card__image-empty">
-              <span>IMAGE NOT AVAILABLE</span>
-              <strong>{product.galleryPlaceholders?.[0] || product.name}</strong>
-            </span>
+            <ImagePlaceholder
+              title={product.name}
+              variantLabel={hasColourways ? selectedColourway : product.galleryPlaceholders?.[0] || colourways[0] || ''}
+              kind="product"
+              className="catalogue-card__image-empty"
+            />
           )}
           {product.badge && <span className="catalogue-card__badge">{product.badge}</span>}
         </span>
@@ -72,7 +82,31 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
           <span className="catalogue-card__action">{isOpen ? 'COLLAPSE DETAILS' : 'VIEW DETAILS'} <span aria-hidden="true">↗</span></span>
         </span>
       </button>
-      {images.length > 1 && (
+      {hasColourways && (
+        <div className="catalogue-card__swatches" role="group" aria-label={`Colour options for ${product.name}`}>
+          {colourways.map(colourway => {
+            const swatch = imageSwatchBackground(colourway, product.colourwayPalette);
+            return (
+              <button
+                key={`${product.id}-${colourway}`}
+                type="button"
+                aria-label={`Choose ${colourway} for ${product.name}`}
+                aria-pressed={selectedColourway === colourway}
+                onClick={() => {
+                  setSelectedColourway(colourway);
+                  if (isOpen) onColourChange(colourway);
+                  setActiveIndex(0);
+                }}
+              >
+                <span aria-hidden="true" style={swatch ? { '--catalogue-swatch': swatch } : undefined} />
+                <span className="sr-only">{colourway}</span>
+              </button>
+            );
+          })}
+          <span aria-live="polite">{selectedColourway}</span>
+        </div>
+      )}
+      {visibleImages.length > 1 && (
         <div className="catalogue-card__carousel" role="group" aria-label={`Image carousel for ${product.name}`}>
           <button
             type="button"
@@ -83,7 +117,7 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
             ‹
           </button>
           <span className="catalogue-card__dots">
-            {images.map((image, index) => (
+            {visibleImages.map((image, index) => (
               <button
                 key={`${product.id}-${image.label}-${index}`}
                 type="button"
@@ -105,7 +139,7 @@ function VisualProductCard({ product, isOpen, onToggle, children }) {
         </div>
       )}
       <span className="sr-only" aria-live="polite">
-        {activeImage ? `${activeImage.label}, image ${activeIndex + 1} of ${images.length}` : 'No mapped product image'}
+        {activeImage ? `${activeImage.label}, image ${activeIndex + 1} of ${visibleImages.length}` : 'No mapped image for this colour'}
       </span>
       {children}
     </motion.article>
@@ -147,7 +181,7 @@ export function CatalogList({ products = [], view = 'list', onProductSelect, onA
     setActiveProductId(null);
   }, [activeProductId, visibleProductIds, products]);
 
-  const toggleProduct = (product, event, shouldRestoreFocus = false) => {
+  const toggleProduct = (product, event, shouldRestoreFocus = false, initialColourway = '') => {
     event.stopPropagation();
     pendingScrollY.current = window.scrollY;
     const nextId = activeProductId === product.id ? null : product.id;
@@ -157,8 +191,14 @@ export function CatalogList({ products = [], view = 'list', onProductSelect, onA
         element: event.currentTarget,
         top: event.currentTarget.getBoundingClientRect().top,
       };
-      setSelectedAngle(product.images?.[0]?.label || 'front');
-      setSelectedColor(colourwaysFor(product)[0] || '');
+      const images = productImagesForDisplay(product);
+      const colourways = productColourwayOptions(product);
+      const colourway = colourways.includes(initialColourway) ? initialColourway : colourways[0] || '';
+      const initialIndex = colourways.length > 1
+        ? productColourwayImageIndex(images, colourway)
+        : images.length ? 0 : -1;
+      setSelectedAngle(initialIndex >= 0 ? images[initialIndex].label : null);
+      setSelectedColor(colourway);
     } else {
       pendingRowAnchor.current = null;
     }
@@ -202,7 +242,14 @@ export function CatalogList({ products = [], view = 'list', onProductSelect, onA
                   key={product.id}
                   product={product}
                   isOpen={isOpen}
-                  onToggle={event => toggleProduct(product, event)}
+                  selectedColor={selectedColor}
+                  onColourChange={colourway => {
+                    setSelectedColor(colourway);
+                    const images = productImagesForDisplay(product);
+                    const index = productColourwayImageIndex(images, colourway);
+                    setSelectedAngle(index >= 0 ? images[index].label : null);
+                  }}
+                  onToggle={(event, colourway) => toggleProduct(product, event, false, colourway)}
                 >
                   <AnimatePresence initial={false}>
                     {isOpen && (

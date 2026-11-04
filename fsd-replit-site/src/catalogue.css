@@ -50,6 +50,12 @@
   background: rgba(200, 170, 114, .08);
   color: #f1eee8;
 }
+.catalogue-card-swatches__selected {
+  flex: 1 0 100%;
+  color: #cdb589;
+  font-size: 9px;
+  line-height: 1.35;
+}
 .catalogue-swatch-dot {
   width: 15px;
   height: 15px;

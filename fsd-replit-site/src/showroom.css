@@ -471,9 +471,6 @@ html, body { overflow-x: clip; }
   background: linear-gradient(180deg, rgba(205,177,124,.62), transparent);
   content: "";
 }
-.fsd-editorial-card--women {
-  background: #121315;
-}
 .fsd-editorial-card__image {
   position: absolute;
   inset: 0;
@@ -481,15 +478,18 @@ html, body { overflow-x: clip; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 69% 32%;
-  opacity: .62;
+  object-position: center 32%;
+  opacity: .68;
   transition: transform 450ms ease, opacity 250ms ease;
 }
-.fsd-editorial-card--women::after {
+.fsd-editorial-card--women .fsd-editorial-card__image {
+  object-position: 69% 32%;
+}
+.fsd-editorial-card::after {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(0deg, rgba(8,9,10,.96) 0%, rgba(8,9,10,.74) 40%, rgba(8,9,10,.08) 100%);
+  background: linear-gradient(0deg, rgba(8,9,10,.96) 0%, rgba(8,9,10,.72) 42%, rgba(8,9,10,.10) 100%);
   content: "";
 }
 .fsd-editorial-card--biolab {
@@ -499,7 +499,7 @@ html, body { overflow-x: clip; }
 }
 .fsd-editorial-card:hover { border-color: rgba(221,193,138,.68); transform: translateY(-2px); }
 .fsd-editorial-card > :not(.fsd-editorial-card__image) { position: relative; z-index: 1; }
-.fsd-editorial-card--women:hover .fsd-editorial-card__image { opacity: .75; transform: scale(1.035); }
+.fsd-editorial-card:hover .fsd-editorial-card__image { opacity: .8; transform: scale(1.035); }
 .fsd-editorial-card:focus-visible { outline: 2px solid #e1c68e; outline-offset: 3px; }
 .fsd-editorial-card__eyebrow { margin-bottom: 22px; color: #c8aa72; font-size: 8px; letter-spacing: .17em; }
 .fsd-editorial-card__eyebrow i { padding: 0 5px; color: #78746c; font-style: normal; }

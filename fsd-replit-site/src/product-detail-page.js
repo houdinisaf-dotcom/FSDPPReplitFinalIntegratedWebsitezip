@@ -5,6 +5,8 @@ import {
   safe,
 } from './catalogue-data.js';
 import { renderSizeGuideTable, sizeGuideSectionForProduct, SIZE_GUIDE_FIT_NOTE } from './size-guide-data.js';
+import { imagePlaceholderMarkup } from './image-placeholder.js';
+import { productImagesForDisplay } from './data/products.js';
 
 export function productSizeOptions(product) {
   return String(product?.sizes || '')
@@ -45,11 +47,12 @@ function renderRelatedProducts(product) {
     <h3 id="product-related-title">Related products</h3>
     <div class="product-detail-related__grid">
       ${related.map(item => {
-        const image = item.images?.[0];
+        const image = productImagesForDisplay(item)[0];
         return `<button class="product-detail-related__item" type="button" data-related-product="${item.id}">
           ${image
-            ? `<img src="${safe(image.src)}" alt="${safe(item.name)} — ${safe(image.label)}" loading="lazy" />`
-            : `<span class="product-detail-related__placeholder" role="img" aria-label="${safe(item.name)} image not available">IMAGE NOT AVAILABLE</span>`}
+            ? `<img src="${safe(image.src)}" alt="${safe(item.name)} — ${safe(image.label)}" loading="lazy"
+                data-fsd-image-fallback="true" data-fsd-image-title="${safe(item.name)}" data-fsd-image-kind="product"/>`
+            : imagePlaceholderMarkup({ title: item.name, kind: 'product', className: 'fsd-image-placeholder--compact product-detail-related__placeholder' })}
           <span>${safe(item.name)}</span>
           <small>${safe(item.category)}</small>
         </button>`;
@@ -123,18 +126,53 @@ function renderSizeOptions(product, sizes) {
   </fieldset>`;
 }
 
-function renderGallery(product, images, initialImageIndex, galleryPlaceholders) {
+function renderGallery(product, images, initialImageIndex, galleryPlaceholders, initialVariant = '') {
   const selectedImage = images[initialImageIndex];
-  if (!selectedImage && galleryPlaceholders.length) {
-    return `<div class="product-detail-gallery product-detail-gallery--placeholders" role="group" aria-label="${safe(product.name)} image gallery">
-      ${galleryPlaceholders.map((label, index) => `<div class="catalogue-gallery-placeholder${index === 0 ? ' catalogue-gallery-placeholder--primary' : ''}" role="note">
-        <span>VIEW ${String(index + 1).padStart(2, '0')}</span><strong>${safe(label)}</strong><small>[TO CONFIRM] Product photography</small>
-      </div>`).join('')}
-    </div>`;
-  }
   if (!selectedImage) {
-    return `<div class="product-detail-gallery product-detail-gallery--empty" role="note">
-      <span>IMAGE NOT AVAILABLE</span><strong>${safe(product.name)}</strong>
+    const variantPlaceholder = `<div class="fsd-image-placeholder fsd-image-placeholder--detail catalogue-variant-image-placeholder"
+        data-catalogue-variant-placeholder hidden role="img" aria-label="${safe(product.name)} image placeholder">
+        <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
+        <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
+        <span class="fsd-image-placeholder__variant" data-catalogue-variant-label>${safe(initialVariant)}</span>
+        <small class="fsd-image-placeholder__note">Image to be added</small>
+      </div>`;
+    if (images.length) {
+      const initialImage = images[0];
+      return `<div class="product-detail-gallery">
+        <figure class="catalogue-selector__main">
+          <div class="product-detail-image-stage">
+            <button type="button" class="product-detail-image-zoom" data-catalogue-zoom aria-pressed="false" aria-label="Zoom product image" hidden>
+              <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
+                data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
+                data-fsd-image-variant="${safe(initialImage.colourway || initialImage.variant || initialImage.size || '')}" data-fsd-image-kind="detail"
+                src="${safe(initialImage.src)}" alt="${safe(product.name)} — ${safe(initialImage.label)}"
+                loading="eager" fetchpriority="high" decoding="async" />
+            </button>
+            ${variantPlaceholder.replace(' hidden ', ' ')}
+          </div>
+          <figcaption data-catalogue-main-caption>${safe(initialVariant || 'Product image to be added')}</figcaption>
+        </figure>
+        ${images.length > 1 ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Choose a product view">
+          ${images.map((image, index) => `<button type="button" class="catalogue-selector__thumb"
+            data-catalogue-image-index="${index}" aria-label="Show ${safe(image.label)}" aria-pressed="false">
+            <img src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}"
+              data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
+              data-fsd-image-variant="${safe(image.colourway || image.variant || image.size || '')}" data-fsd-image-kind="gallery"
+              loading="lazy" decoding="async" />
+            <span>${safe(image.label)}</span>
+          </button>`).join('')}
+        </div>` : ''}
+      </div>`;
+    }
+    const labels = galleryPlaceholders.length ? galleryPlaceholders : ['Product photography'];
+    return `<div class="product-detail-gallery product-detail-gallery--placeholders${labels.length === 1 ? ' product-detail-gallery--single' : ''}" role="group" aria-label="${safe(product.name)} image gallery">
+      ${labels.map((label, index) => imagePlaceholderMarkup({
+        title: product.name,
+        variantLabel: label,
+        kind: 'gallery',
+        className: `catalogue-gallery-placeholder${index === 0 ? ' catalogue-gallery-placeholder--primary' : ''}`,
+      })).join('')}
+      ${variantPlaceholder}
     </div>`;
   }
   return `<div class="product-detail-gallery">
@@ -142,16 +180,28 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders) 
       <div class="product-detail-image-stage">
         <button type="button" class="product-detail-image-zoom" data-catalogue-zoom aria-pressed="false" aria-label="Zoom product image">
           <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
+            data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
+            data-fsd-image-variant="${safe(selectedImage.colourway || selectedImage.variant || selectedImage.size || '')}" data-fsd-image-kind="detail"
             src="${safe(selectedImage.src)}" alt="${safe(product.name)} — ${safe(selectedImage.label)}"
             loading="eager" fetchpriority="high" decoding="async" />
         </button>
+        <div class="fsd-image-placeholder fsd-image-placeholder--detail catalogue-variant-image-placeholder"
+          data-catalogue-variant-placeholder hidden role="img" aria-label="${safe(product.name)} image placeholder">
+          <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
+          <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
+          <span class="fsd-image-placeholder__variant" data-catalogue-variant-label>${safe(initialVariant)}</span>
+          <small class="fsd-image-placeholder__note">Image to be added</small>
+        </div>
       </div>
       <figcaption data-catalogue-main-caption>${safe(selectedImage.label)}</figcaption>
     </figure>
     ${images.length > 1 ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Choose a product view">
       ${images.map((image, index) => `<button type="button" class="catalogue-selector__thumb"
         data-catalogue-image-index="${index}" aria-label="Show ${safe(image.label)}" aria-pressed="${index === initialImageIndex}">
-        <img src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}" loading="lazy" decoding="async" />
+        <img src="${safe(image.src)}" alt="${safe(product.name)} — ${safe(image.label)}"
+          data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
+          data-fsd-image-variant="${safe(image.colourway || image.variant || image.size || '')}" data-fsd-image-kind="gallery"
+          loading="lazy" decoding="async" />
         <span>${safe(image.label)}</span>
       </button>`).join('')}
     </div>` : ''}
@@ -169,6 +219,12 @@ function renderDetails(product, sizes, hardwarePreview = false) {
   const details = product.description
     ? `<p>${safe(product.description)}</p>`
     : '<p>[TO CONFIRM] Product details.</p>';
+  const setContents = product.setContents
+    ? `<p><strong>Set includes:</strong> ${safe(product.setContents)}</p>`
+    : '';
+  const sizeSummary = sizes.length
+    ? `<p><strong>Sizes:</strong> ${safe(sizes.join(' / '))}</p>`
+    : '';
   const alias = product.alias?.trim() && /^confirmed$/i.test(product.aliasStatus || '')
     ? `<p><strong>Also appears as:</strong> ${safe(product.alias)}</p>`
     : '';
@@ -200,7 +256,7 @@ function renderDetails(product, sizes, hardwarePreview = false) {
   return `<div class="product-detail-accordions">
     <details class="product-detail-accordion">
       <summary>Details and fit</summary>
-      <div>${details}${sku}${alias}${fit}${features}</div>
+      <div>${details}${setContents}${sizeSummary}${sku}${alias}${fit}${features}</div>
     </details>
     <details class="product-detail-accordion">
       <summary>Fabric and care</summary>
@@ -239,7 +295,7 @@ export function renderProductDetailPage({
 }) {
   const breadcrumbCategory = product.category || 'FSD Collection';
   const description = product.description || '';
-  const imageMarkup = renderGallery(product, images, initialImageIndex, galleryPlaceholders);
+  const imageMarkup = renderGallery(product, images, initialImageIndex, galleryPlaceholders, colourways[0] || '');
   const rotationMarkup = renderRotationViewer(product, images[0]);
   const sizeMarkup = renderSizeOptions(product, sizes);
   const actionMarkup = canPurchase

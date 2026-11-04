@@ -1,12 +1,11 @@
 import { motion } from 'motion/react';
-import { imageSwatchBackground } from '../data/products.js';
+import { imageSwatchBackground, productImagesForDisplay } from '../data/products.js';
+import { productColourwayImageIndex, productColourwayOptions } from '../product-card-media.js';
+import { productSizeOptions } from '../product-detail-page.js';
+import { ImagePlaceholder } from './ImagePlaceholder.jsx';
 import { SafeImage } from './SafeImage.jsx';
 import { animateAddButton } from '../motion-runtime.js';
 import { FSD_MOTION } from '../motion-config.js';
-
-function colourwaysFor(product) {
-  return Array.isArray(product.rowColourways) ? product.rowColourways : [];
-}
 
 function normalizedImageLabel(value) {
   return String(value || '')
@@ -16,7 +15,7 @@ function normalizedImageLabel(value) {
 }
 
 function matchingImageIndex(images, colourway) {
-  return images.findIndex(image => normalizedImageLabel(image.colourway || image.label) === normalizedImageLabel(colourway));
+  return productColourwayImageIndex(images, colourway);
 }
 
 function deepDiveHref(productId) {
@@ -37,19 +36,19 @@ export function ProductDetail({
   onAddToBag,
   onCollapse,
 }) {
-  const images = Array.isArray(product.images) ? product.images : [];
-  const selectedImage = images.find(image => image.label === selectedAngle) || images[0];
-  const colourways = colourwaysFor(product);
+  const images = productImagesForDisplay(product);
+  const selectedImage = images.find(image => image.label === selectedAngle) || (selectedAngle ? images[0] : null);
+  const colourways = productColourwayOptions(product);
 
   const chooseColourway = colourway => {
     setSelectedColor(colourway);
     const imageIndex = matchingImageIndex(images, colourway);
-    if (imageIndex >= 0) setSelectedAngle(images[imageIndex].label);
+    setSelectedAngle(imageIndex >= 0 ? images[imageIndex].label : null);
   };
 
   const chooseImage = image => {
     setSelectedAngle(image.label);
-    const matchingColourway = image.colourway || colourways.find(colourway =>
+      const matchingColourway = image.colourway || image.variant || colourways.find(colourway =>
       normalizedImageLabel(image.label) === normalizedImageLabel(colourway));
     if (matchingColourway) setSelectedColor(matchingColourway);
   };
@@ -75,16 +74,19 @@ export function ProductDetail({
                 data-catalogue-inline-image
                 src={selectedImage.src}
                 alt={`${product.name} — ${selectedImage.label}`}
-                fallbackLabel="IMAGE NOT AVAILABLE"
+                  placeholderTitle={product.name}
+                  variantLabel={selectedImage.colourway || selectedImage.variant || selectedImage.size || ''}
               />
             </motion.div>
             <figcaption>{selectedImage.label}</figcaption>
           </figure>
         ) : (
-          <div className="fsd-catalog-detail__image-empty" role="note">
-            <span>IMAGE NOT AVAILABLE</span>
-            <strong>{product.name}</strong>
-          </div>
+          <ImagePlaceholder
+            title={product.name}
+            variantLabel={selectedColor || product.galleryPlaceholders?.[0] || ''}
+            kind="detail"
+            className="fsd-catalog-detail__image-empty"
+          />
         )}
 
         {images.length > 1 && (
@@ -120,7 +122,7 @@ export function ProductDetail({
             ))}
           </dl>
 
-          {colourways.length > 0 && (
+          {colourways.length > 1 && (
             <fieldset className="fsd-catalog-detail__colourways">
               <legend>COLOURWAY EDITION</legend>
               <div>
@@ -162,7 +164,7 @@ export function ProductDetail({
               event.stopPropagation();
               if (!onDeepDive) return;
               event.preventDefault();
-              onDeepDive(product.id, event.currentTarget);
+              onDeepDive(product.id, event.currentTarget, { colourway: selectedColor });
             }}
           >
             <span>Click here for more</span><span aria-hidden="true">→</span>
@@ -173,10 +175,14 @@ export function ProductDetail({
               className="fsd-catalog-detail__bag"
               onClick={event => {
                 event.stopPropagation();
-                if (onAddToBag?.(product.id)) animateAddButton(event.currentTarget);
+                if (productSizeOptions(product).length) {
+                  onDeepDive?.(product.id, event.currentTarget, { colourway: selectedColor });
+                  return;
+                }
+                if (onAddToBag?.(product.id, { colourway: selectedColor })) animateAddButton(event.currentTarget);
               }}
             >
-              Add to Bag
+              {productSizeOptions(product).length ? 'Choose size' : 'Add to Bag'}
             </button>
           )}
           <button

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PRELAUNCH_CONSENT_COPY, PRELAUNCH_LAUNCH_OFFER } from '../prelaunch-copy.js';
+import { PRELAUNCH_CONSENT_COPY } from '../prelaunch-copy.js';
 import '../prelaunch-signup.css';
 
 const feedbackFor = (code, ok) => {
@@ -54,7 +54,7 @@ export function PrelaunchSignup() {
       <div className="fsd-prelaunch-copy">
         <p className="fsd-prelaunch-kicker">FSD / FIRST ACCESS</p>
         <h2 id="fsd-prelaunch-title">Get pre-launch updates</h2>
-        <p>Hear about FSD launch news and the launch offer: <strong>{PRELAUNCH_LAUNCH_OFFER}</strong></p>
+        <p>Register your interest in FSD launch news.</p>
         <p className="fsd-prelaunch-note">This form records your sign-up only; email updates are not connected yet.</p>
       </div>
       <form className="fsd-prelaunch-form" onSubmit={handleSubmit} noValidate>
