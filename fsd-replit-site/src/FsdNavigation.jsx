@@ -2,15 +2,18 @@ import { createPortal } from 'react-dom';
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { products } from './data/products.js';
 import { collectionDivisions } from './collection-divisions.js';
-import { renderStorefrontHeader } from './main.js';
-import { mountNavigation } from './site-navigation.js';
+import { mountNavigation, renderNavigationHeader } from './site-navigation.js';
 import { FsdSearchModal } from './FsdSearchModal.jsx';
 import { FsdLogo } from './brand/Logos.jsx';
+import './site-navigation.css';
 
 export function FsdNavigation({ onNavigate, onReady, hardwareForgeExtension }) {
   const containerRef = useRef(null);
   const [logoTarget, setLogoTarget] = useState(null);
-  const markup = useMemo(() => renderStorefrontHeader(), []);
+  const markup = useMemo(
+    () => renderNavigationHeader('<span data-fsd-logo-slot="header"></span>'),
+    [],
+  );
 
   useLayoutEffect(() => {
     const container = containerRef.current;

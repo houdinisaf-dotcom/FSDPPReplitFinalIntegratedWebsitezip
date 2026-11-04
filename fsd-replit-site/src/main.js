@@ -15,6 +15,7 @@ import { imagePlaceholderMarkup, installImageErrorFallbacks } from './image-plac
 import { HOUSE_PAGE_REGISTRY } from './data/house-page-readiness.js';
 import { renderHouseDestinationIndex } from './house-pages/house-destination-index.js';
 import { ourStorySection } from './story-section.js';
+import { renderSiteFooter } from './site-footer.js';
 import './style.css';
 import './catalogue.css';
 import './product-detail.css';
@@ -32,6 +33,8 @@ import './homepage-phase3.css';
 import './showroom-phase8.css';
 import './immersive-product-gallery.css';
 import './house-pages/house-destination-index.css';
+import './site-cta.css';
+import './site-footer.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 
@@ -116,21 +119,7 @@ export function renderStorefrontMarkup() {
     ${catalogueSection()}
   </details>
   <div id="prelaunch-signup" data-prelaunch-signup-slot></div>
-  <footer><div class="footer-brand"><span data-fsd-logo-slot="footer"></span></div>
-    <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Fitness &amp; Self-Defence.</span>
-      <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD COLLECTIONS</a><a href="#products">BROWSE CATALOGUE</a>
-      <a href="#contact">VIP ACCESS</a></nav>
-      <nav class="footer-links" aria-label="Corporate navigation">${storyFooterLink}<a href="#fsd-division-global">FSD GLOBAL</a></nav>
-      <nav class="footer-links" aria-label="Customer information">
-        <a href="/delivery-returns.html">Delivery &amp; Returns</a>
-        <a href="/size-guide.html">Size Guide</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-      <div id="fsd-react-footer-utilities"></div>
-      <small class="footer-pending">Investor information and legal copy remain [TO CONFIRM - LEGAL REVIEW].</small></div>
-    <a href="#home">BACK TO TOP ↑</a></footer>
+  ${renderSiteFooter({ storyLinkMarkup: storyFooterLink, homeHref: '#home' })}
   <dialog id="product-dialog" aria-labelledby="product-title"><button id="close-dialog" aria-label="Close product details">✕</button><div id="dialog-body"></div></dialog>`;
 }
 

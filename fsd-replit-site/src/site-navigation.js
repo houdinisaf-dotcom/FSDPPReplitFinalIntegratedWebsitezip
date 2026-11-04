@@ -569,7 +569,7 @@ function makePrivateGroups() {
     ['collection-announcements', 'COLLECTION ANNOUNCEMENTS',
       'Collection announcements are part of VIP Access. No sign-up is collected here.', true],
     ['private-enquiries', 'PRIVATE ENQUIRIES',
-      'Private access information is not yet connected to an enquiry destination.', false],
+      'A considered point of connection for strategic partnerships, commercial opportunities and private business matters.', true, '/enquiries.html'],
   ];
   return details.map(([id, title, description, hasDestination, explicitDestination]) => ({
     id,

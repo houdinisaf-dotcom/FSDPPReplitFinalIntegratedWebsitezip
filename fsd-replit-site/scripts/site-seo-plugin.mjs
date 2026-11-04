@@ -50,7 +50,10 @@ export function siteSeoPlugin(projectRoot) {
           if (isHouseDraftRoute(path)) return next();
           const entry = seoEntryForPath(path);
           let html;
-          if (entry && path !== '/') {
+          if (path === '/enquiries.html') {
+            html = await readFile(resolve(projectRoot, 'enquiries.html'), 'utf8');
+            html = await server.transformIndexHtml(path, html);
+          } else if (entry && path !== '/') {
             html = renderEntry(await readFile(resolve(projectRoot, 'index.html'), 'utf8'), entry);
             html = await server.transformIndexHtml(path, html);
           } else if (path.endsWith('.html') && !path.includes('..')) {

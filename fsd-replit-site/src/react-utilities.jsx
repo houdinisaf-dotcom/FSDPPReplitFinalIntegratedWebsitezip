@@ -2,14 +2,6 @@ import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { ProductSpecificationsView } from './ProductSpecificationsView.js';
 
-const socialProfiles = [
-  { name: 'Facebook', glyph: 'f' },
-  { name: 'Instagram', glyph: '◎' },
-  { name: 'TikTok', glyph: '♪' },
-  { name: 'YouTube', glyph: '▶' },
-  { name: 'LinkedIn', glyph: 'in' },
-];
-
 function getSavedTheme() {
   try {
     return window.localStorage.getItem('fsd-theme') === 'light' ? 'light' : 'dark';
@@ -110,19 +102,6 @@ function FooterUtilities({ theme, onToggleTheme }) {
       >
         {theme === 'dark' ? 'Dark mode · on' : 'Dark mode · off'}
       </button>
-      <nav className="fsd-social-placeholders flex flex-wrap items-center gap-2" aria-label="Social profile links">
-        {socialProfiles.map(({ name, glyph }) => (
-          <span
-            className="fsd-social-placeholder inline-flex items-center justify-center"
-            key={name}
-            role="img"
-            aria-label={`${name} profile link not configured`}
-            title={`${name} profile link not configured`}
-          >
-            {glyph}
-          </span>
-        ))}
-      </nav>
     </div>
   );
 }

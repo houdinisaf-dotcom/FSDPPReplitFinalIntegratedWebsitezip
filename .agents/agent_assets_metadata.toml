@@ -1078,3 +1078,45 @@ mtime_ms = 1793828456879
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/87c28885-c235-4cf6-840a-52b6d2fc70dc/1062a77b-e3a0-4835-929b-e69963e7d62b"
 storage_version_token = "1793828502449265"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "lsZ1ytfryrNDsdrthVsAz"
+uri = "file://generated-artifacts/screenshots/private-enquiries-desktop.jpg"
+type = "image"
+title = "Private Enquiries — Desktop"
+description = "Actual FSD Private Enquiries page at 1440px wide."
+logical_id = "533a3a5f-0f33-4f58-88f0-9f1f0d6c1993"
+content_hash = "sha256:fae5f70d1472f864fbe8523eb254ff16b4b09c7d403f3a90c1cbf782e26a47d4"
+size = 81892
+mtime_ms = 1793834850083
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/533a3a5f-0f33-4f58-88f0-9f1f0d6c1993/17dbfe8d-b115-4c11-8db7-49a97bbd5b23"
+storage_version_token = "1793834873717915"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "UQG_w4xip86B7iVE-dHxV"
+uri = "file://generated-artifacts/screenshots/private-enquiries-mobile.jpg"
+type = "image"
+title = "Private Enquiries — Mobile"
+description = "Actual FSD Private Enquiries page at a 402px mobile viewport."
+logical_id = "bfbc449e-c146-4474-9c56-cd288b405a9c"
+content_hash = "sha256:956d14d3a57b037e89c661085e77bc6e43cefbdd8d860949d14e010c72f866c1"
+size = 38317
+mtime_ms = 1793834851435
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/bfbc449e-c146-4474-9c56-cd288b405a9c/a854c01b-3d05-485d-8fc4-697b25bdcc8c"
+storage_version_token = "1793834874427333"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "ecTHd3JSBL0qa4pguGKtF"
+uri = "file://generated-artifacts/screenshots/private-enquiries-full-page.jpg"
+type = "image"
+title = "Private Enquiries — Full Page"
+description = "Full-page capture showing the three-stage enquiry flow and shared footer."
+logical_id = "768db360-5019-4c2b-9e07-3641172dc32d"
+content_hash = "sha256:b2d069129e331feb9425a3b988a5d980a6644830ece93b210dc866ff16c039b6"
+size = 193668
+mtime_ms = 1793834853807
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/768db360-5019-4c2b-9e07-3641172dc32d/21bf2ea3-7425-461a-9543-03e5df39c2cc"
+storage_version_token = "1793834875120837"
+content_type = "image/jpeg"

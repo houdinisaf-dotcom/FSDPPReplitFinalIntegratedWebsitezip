@@ -175,6 +175,28 @@ try {
   await waitFor('Boolean(document.querySelector("#catalogue-grid .product-card--visual-open .fsd-catalog-detail"))');
   await evaluate('document.querySelector("#catalogue-grid [data-catalogue-deep-dive]")?.click()');
   await waitFor('Boolean(document.querySelector("#product-dialog")?.open)');
+  const quantityProductId = await evaluate(`(() => {
+    const button = [...document.querySelectorAll("#catalogue-grid .product-card--visual > .product-row__trigger")]
+      .find(candidate => candidate.dataset.canAddToBag === "true");
+    button?.click();
+    return Number(button?.dataset.product) || 0;
+  })()`);
+  assert.ok(quantityProductId, 'A confirmed-price product should be available for the bag quantity check.');
+  await waitFor(`Boolean(document.querySelector("#dialog-body [data-bag-add=\\"${quantityProductId}\\"]"))`);
+  await evaluate(`(() => {
+    const size = document.querySelector("#dialog-body input[data-product-size]:not([data-out-of-stock='true'])");
+    size?.click();
+    const quantity = document.querySelector("#dialog-body [data-product-quantity]");
+    if (!quantity) return false;
+    quantity.value = "3";
+    quantity.dispatchEvent(new Event("change", { bubbles: true }));
+    return true;
+  })()`).then(value => assert.equal(value, true, 'The purchasable product should expose a quantity control.'));
+  const beforeBagCount = await evaluate(`Object.values(JSON.parse(localStorage.getItem("fsd-client-bag-v1") || "{}"))
+    .reduce((total, quantity) => total + quantity, 0)`);
+  await evaluate(`document.querySelector("#dialog-body [data-bag-add=\\"${quantityProductId}\\"]")?.click()`);
+  await waitFor(`Object.values(JSON.parse(localStorage.getItem("fsd-client-bag-v1") || "{}"))
+    .reduce((total, quantity) => total + quantity, 0) === ${beforeBagCount + 3}`);
   await evaluate('document.querySelector("#close-dialog")?.click()');
   await waitFor('!document.querySelector("#product-dialog")?.open');
   await evaluate('document.querySelector("#catalogue-grid .product-card--visual-open > .product-row__trigger")?.click()');

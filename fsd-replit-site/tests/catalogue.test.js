@@ -18,6 +18,7 @@ import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
 import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
 import { renderNavigationHeader } from '../src/site-navigation.js';
+import { renderSiteFooter } from '../src/site-footer.js';
 import { siteMedia } from '../src/data/site-media.js';
 import { HOUSE_PAGE_REGISTRY, shouldDisableHouseHref } from '../src/data/house-page-readiness.js';
 import { imagePlaceholderMarkup, installImageErrorFallbacks } from '../src/image-placeholder.js';
@@ -710,7 +711,10 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
       initialPageCount,
     );
     assert.match(element('#catalogue-grid').innerHTML, /class="product-row__trigger"/);
-    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /class="product-image"|<img\b/);
+    assert.match(
+      element('#catalogue-grid').innerHTML,
+      /\/assets\/products\/contrast-panel-training-tee\/luminous-aqua-deep-teal-navy-white\/front\.webp/,
+    );
     assert.equal(element('#catalogue-grid').dataset.view, 'visual');
     assert.match(catalogueSection(), /id="catalogue-grid" data-view="visual"/);
     assert.match(element('#catalogue-grid').innerHTML, /data-content-status="CONTENT PENDING"/);
@@ -1035,6 +1039,7 @@ test('the complete public page excludes held imagery while retaining internal so
       catalogueSection, initCatalogue, navigateCatalogue, products,
       collectionDivisions, renderCollectionShowcase, beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
+      renderSiteFooter,
       FSD_STORY_PATH: '/story',
       ourStorySection, flagshipPageHashes, renderFlagshipPlaceholderPages,
       renderInnovationHubIndex, renderBioLabPlaceholderPages, renderHouseDestinationIndex,

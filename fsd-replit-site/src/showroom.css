@@ -33,9 +33,6 @@
 .showroom-vip .primary-btn { margin-top: 15px; }
 .showroom-vip .primary-btn:disabled { opacity: .55; cursor: not-allowed; }
 .showroom-vip > .showroom-vip-status { font-size: 11px !important; color: #96969c !important; max-width: 500px !important; }
-.footer-links { display: flex; flex-wrap: wrap; gap: 12px 22px; max-width: 500px; }
-.footer-links a { color: #b3a78e; font-size: 10px; }
-.footer-pending { display: block; margin-top: 14px; max-width: 500px; line-height: 1.7; color: #8e8e94; letter-spacing: .02em; }
 .manifesto { isolation: isolate; background: #0b0d11; }
 .story-shell { position: relative; z-index: 10; }
 

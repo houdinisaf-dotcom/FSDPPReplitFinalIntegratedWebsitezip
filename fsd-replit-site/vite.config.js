@@ -82,6 +82,7 @@ export default defineConfig({
       },
       input: {
         main: resolve(projectRoot, 'index.html'),
+        privateEnquiries: resolve(projectRoot, 'enquiries.html'),
         sizeGuide: resolve(projectRoot, 'size-guide.html'),
         standaloneNavigation: resolve(projectRoot, 'src/standalone-navigation.js'),
       },

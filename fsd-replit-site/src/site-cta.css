@@ -1,0 +1,68 @@
+.fsd-cta {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 13px 18px;
+  font: 700 10px/1.25 "DM Sans", sans-serif;
+  letter-spacing: .16em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.fsd-cta--primary {
+  background: #d4af37;
+  color: #0a0a0a;
+}
+
+.fsd-cta--secondary {
+  border-color: rgb(212 175 55 / 52%);
+  background: transparent;
+  color: #eee8d8;
+}
+
+.fsd-cta--text {
+  min-height: 34px;
+  justify-content: flex-start;
+  padding: 5px 0;
+  background: transparent;
+  color: #d7c08c;
+  letter-spacing: .12em;
+}
+
+.fsd-cta:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.fsd-cta--primary:hover:not(:disabled) {
+  background: #e3c96e;
+}
+
+.fsd-cta--secondary:hover:not(:disabled) {
+  border-color: #d4af37;
+  color: #d4af37;
+}
+
+.fsd-cta--text:hover:not(:disabled) {
+  color: #f0d888;
+}
+
+.fsd-cta:focus-visible {
+  outline: 2px solid #f0d888;
+  outline-offset: 4px;
+}
+
+.fsd-cta:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-cta { transition: none; }
+  .fsd-cta:hover:not(:disabled) { transform: none; }
+}

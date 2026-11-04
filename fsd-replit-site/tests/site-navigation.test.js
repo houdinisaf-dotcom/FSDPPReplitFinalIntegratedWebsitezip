@@ -804,7 +804,7 @@ test('Community First Aid & Safety Skills does not claim an unconfirmed training
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b|certified provider is currently delivering/i);
 });
 
-test('Private Access remains informational and collects no sign-ups', () => {
+test('Private Access keeps sign-ups closed and routes private enquiries to the standalone page', () => {
   const access = menu.find(item => item.id === 'private-access');
   assert.equal(access.groups.length, 4);
   assert.ok(access.description.includes('deferred'));
@@ -815,8 +815,9 @@ test('Private Access remains informational and collects no sign-ups', () => {
   assert.equal(access.groups[1].href, '');
   assert.equal(access.groups[1].navigationUnavailable, true);
   assert.equal(access.groups[2].href, '#contact');
-  assert.equal(access.groups[3].href, '');
-  assert.equal(access.groups[3].navigationUnavailable, true);
+  assert.equal(access.groups[3].href, '/enquiries.html');
+  assert.equal(access.groups[3].navigationUnavailable, false);
+  assert.ok(access.groups[3].description.includes('strategic partnerships'));
   assert.ok(access.groups.every(group => group.items.every(item => !item.record)));
 });
 
