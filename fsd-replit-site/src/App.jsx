@@ -10,7 +10,13 @@ import { FsdLogo } from './brand/Logos.jsx';
 import { PrelaunchSignup } from './components/PrelaunchSignup.jsx';
 import { ClothingLinesBrowser } from './components/ClothingLinesBrowser.jsx';
 import { TechnicalCollectionsBrowser } from './components/TechnicalCollectionsBrowser.jsx';
-import { showProduct, navigateCatalogue } from './catalogue.js';
+import { CategoryFilterTabs } from './components/CategoryFilterTabs.jsx';
+import {
+  readStateFromURL,
+  selectCatalogueGarmentCategory,
+  showProduct,
+  navigateCatalogue,
+} from './catalogue.js';
 import { seoEntryForPath, seoForView, updateDocumentSeo } from './site-seo.js';
 import { useGoldCursor } from './brand/useGoldCursor.js';
 import { setCatalogueResultsRenderer } from './catalogue.js';
@@ -23,19 +29,22 @@ import { FSD_MOTION } from './motion-config.js';
 import './tailwind.css';
 import './react-utilities.css';
 import './lazy-image-loading.css';
+import './collection-route.css';
 import { CatalogueLoading, CatalogueErrorBoundary } from './components/CatalogueLoadState.jsx';
 import 'lenis/dist/lenis.css';
 
 const CatalogList = lazy(() => import('./components/CatalogList.jsx')
   .then(module => ({ default: module.CatalogList })));
 
-function CataloguePortal({ target }) {
+function CataloguePortal({ target, tabsTarget }) {
   const [products, setProducts] = useState([]);
   const [actions, setActions] = useState({});
+  const [garmentTabs, setGarmentTabs] = useState({ categories: [], activeId: 'all' });
   const [archiveOpen, setArchiveOpen] = useState(false);
-  const renderResults = useCallback((nextProducts, nextActions) => {
+  const renderResults = useCallback((nextProducts, nextActions, _view, nextGarmentTabs) => {
     setProducts(nextProducts);
     setActions(nextActions);
+    if (nextGarmentTabs) setGarmentTabs(nextGarmentTabs);
   }, []);
 
   useLayoutEffect(() => {
@@ -54,17 +63,28 @@ function CataloguePortal({ target }) {
   }, [target]);
 
   if (!target) return null;
-  return createPortal(
-    archiveOpen ? (
-      <CatalogueErrorBoundary><Suspense fallback={<CatalogueLoading />}>
-        <CatalogList
-          products={products}
-          onProductSelect={actions.onProductSelect}
-          onAddToBag={actions.onAddToBag}
-        />
-      </Suspense></CatalogueErrorBoundary>
-    ) : null,
-    target,
+  return (
+    <>
+      {archiveOpen && createPortal(
+        <CatalogueErrorBoundary><Suspense fallback={<CatalogueLoading />}>
+          <CatalogList
+            products={products}
+            onProductSelect={actions.onProductSelect}
+            onAddToBag={actions.onAddToBag}
+          />
+        </Suspense></CatalogueErrorBoundary>,
+        target,
+      )}
+      {archiveOpen && tabsTarget && garmentTabs.categories.length > 0 && createPortal(
+        <CategoryFilterTabs
+          categories={garmentTabs.categories}
+          activeId={garmentTabs.activeId}
+          onChange={selectCatalogueGarmentCategory}
+          ariaLabel="Filter products by type"
+        />,
+        tabsTarget,
+      )}
+    </>
   );
 }
 
@@ -76,12 +96,20 @@ function AppRouter({ hardwareForgeExtension }) {
   const previousRouteKey = useRef('');
   const [featuredCarouselPortalTarget, setFeaturedCarouselPortalTarget] = useState(null);
   const [cataloguePortalTarget, setCataloguePortalTarget] = useState(null);
+  const [catalogueTabsPortalTarget, setCatalogueTabsPortalTarget] = useState(null);
   const [clothingLinesPortalTarget, setClothingLinesPortalTarget] = useState(null);
   const [homeHeroPortalTarget, setHomeHeroPortalTarget] = useState(null);
   const [womensBannerPortalTarget, setWomensBannerPortalTarget] = useState(null);
   const [footerLogoPortalTarget, setFooterLogoPortalTarget] = useState(null);
   const [prelaunchSignupPortalTarget, setPrelaunchSignupPortalTarget] = useState(null);
   const reportRoute = useCallback(nextRoute => setRoute(nextRoute), []);
+  const collectionEntry = seoEntryForPath(window.location.pathname);
+  const standaloneCollectionType = collectionEntry?.route?.view === 'collection'
+    ? (String(collectionEntry.route.target || '').startsWith('line-') ? 'line' : 'catalogue')
+    : '';
+  const standaloneLineId = standaloneCollectionType === 'line'
+    ? String(collectionEntry.route.target).slice('line-'.length)
+    : null;
   useLayoutEffect(() => {
     updateDocumentSeo(document, seoForView(route) || seoEntryForPath(window.location.pathname) || seoEntryForPath('/'));
   }, [route.view, route.target]);
@@ -106,6 +134,7 @@ function AppRouter({ hardwareForgeExtension }) {
       content?.querySelector('[data-fsd-featured-carousel-slot]') ?? null,
     );
     setCataloguePortalTarget(content?.querySelector('#catalogue-grid') ?? null);
+    setCatalogueTabsPortalTarget(content?.querySelector('[data-catalogue-garment-tabs]') ?? null);
     setClothingLinesPortalTarget(content?.querySelector('[data-fsd-clothing-lines-slot]') ?? null);
     setHomeHeroPortalTarget(
       content?.querySelector('[data-home-hero-slot]') ?? null,
@@ -181,10 +210,6 @@ function AppRouter({ hardwareForgeExtension }) {
         || seoEntryForPath(window.location.pathname) || seoEntryForPath('/'));
     };
     productDialog?.addEventListener('close', restorePageSeo);
-    const entry = seoEntryForPath(window.location.pathname);
-    if (entry?.product) showProduct(entry.product.id);
-    else if (entry?.filter) navigateCatalogue(entry.filter);
-    else if (entry?.hash && !window.location.hash) window.location.hash = entry.hash;
     contentReady.current = true;
     markRuntimeReady();
 
@@ -196,12 +221,22 @@ function AppRouter({ hardwareForgeExtension }) {
     };
   }, [cataloguePortalTarget, markRuntimeReady, reportRoute]);
 
+  useLayoutEffect(() => {
+    const entry = seoEntryForPath(window.location.pathname);
+    if (entry?.product) showProduct(entry.product.id);
+    else if (entry?.filter) {
+      navigateCatalogue({ ...readStateFromURL(), ...entry.filter, historyMode: 'replace' });
+    }
+    else if (entry?.hash && !window.location.hash) window.location.hash = entry.hash;
+  }, [cataloguePortalTarget, route.view, route.target]);
+
   return (
     <div
       ref={storefrontRef}
       data-fsd-storefront
       data-current-view={route.view}
       data-active-target={route.target ?? ''}
+      data-fsd-standalone-collection={standaloneCollectionType || undefined}
     >
       <FsdNavigation
         onNavigate={handleNavigation}
@@ -213,12 +248,16 @@ function AppRouter({ hardwareForgeExtension }) {
       {womensBannerPortalTarget && createPortal(<WomensBanner />, womensBannerPortalTarget)}
       {footerLogoPortalTarget && createPortal(<FsdLogo loading="lazy" />, footerLogoPortalTarget)}
       {prelaunchSignupPortalTarget && createPortal(<PrelaunchSignup />, prelaunchSignupPortalTarget)}
-      <CataloguePortal target={cataloguePortalTarget} />
+      <CataloguePortal target={cataloguePortalTarget} tabsTarget={catalogueTabsPortalTarget} />
       {clothingLinesPortalTarget && createPortal(
-        <ClothingLinesBrowser onProductSelect={(id, returnFocus) => {
+        <ClothingLinesBrowser
+          key={standaloneLineId || 'archive'}
+          standaloneLineId={standaloneLineId}
+          onProductSelect={(id, returnFocus) => {
           reportRoute({ view: 'product', target: String(id) });
           showProduct(id, { returnFocus });
-        }} />,
+          }}
+        />,
         clothingLinesPortalTarget,
       )}
       {clothingLinesPortalTarget && createPortal(

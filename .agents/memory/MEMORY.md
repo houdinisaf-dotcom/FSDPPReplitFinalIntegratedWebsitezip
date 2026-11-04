@@ -2,7 +2,7 @@
 - [Missing imagery policy](image-placeholder-policy.md) — keep all products and sections visible with named black/charcoal placeholders, using the current approved accent.
 - [Browser verification caveats](browser-verification.md) — dialog timing, Chromium viewport limitations, and forcing off-screen lazy-image errors in fallback tests.
 - [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
-- [House of Performance approvals](house-of-performance-approvals.md) — preserve the flagship and keep pending page media visible in titled placeholders within approval boundaries.
+- [House of Performance approvals](house-of-performance-approvals.md) — keep House as a route index; isolate each destination and gate unapproved routes.
 - [Velocity product approval boundary](velocity-hijab-proof.md) — apply the approved £34.99 update with Black / Gold; keep CORE colourways and the older archive separate.
 - [CORE hijab photo approval](core-hijab-gallery.md) — use CORE Sports Hijab; map photos only to Black/Gold and retain seven colourways.
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.
@@ -15,3 +15,4 @@
 - [Public SEO routing](public-seo-routing.md) — add crawlable entry paths without replacing shopping flows; withhold canonicals and sitemap until the production origin is verified.
 - [Launch priority gate](launch-priority-gate.md) — Priorities 2, scoped 3 and 4 are authorised; review Priority 4 before starting Priority 5.
 - [FSD change scope](fsd-change-scope.md) — keep new work narrow, preserve approved surfaces and catalogue data, and avoid unrequested redesigns.
+- [PDP image pairing](pdp-image-pairing.md) — Pair approved photos by selected colourway and preserve each original image’s proportions.

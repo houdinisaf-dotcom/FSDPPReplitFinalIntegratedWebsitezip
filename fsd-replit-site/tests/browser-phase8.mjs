@@ -112,12 +112,17 @@ try {
     const response = await fetch(`https://${domain}${href.split('#')[0]}`);
     assert.equal(response.status, 200, `Destination must load: ${href}`);
   }
-  for (const [hash, title] of [['bio-lab/smart-apparel', 'Smart Apparel'], ['bio-lab/adaptive-fabrics', 'Adaptive Technical Fabrics']]) {
-    await send('Page.navigate', { url: `https://${domain}/the-house.html#${hash}` });
-    await waitFor(`document.querySelector("h1")?.textContent.toLowerCase().includes(${JSON.stringify(title.toLowerCase())})`);
+  for (const [id, title] of [
+    ['smart-apparel-nfc', 'Smart Apparel & NFC Authentication'],
+    ['adaptive-technical-fabrics', 'Adaptive Technical Fabrics'],
+  ]) {
+    await send('Page.navigate', { url: `https://${domain}/#${id}` });
+    await waitFor(`location.pathname === "/" && location.hash === ${JSON.stringify(`#${id}`)}
+      && document.querySelector(${JSON.stringify(`#${id} h2`)})?.textContent.trim() === ${JSON.stringify(title)}`);
+    assert.equal(await evaluate('document.querySelector("#bio-lab-archive")?.open'), true);
   }
   assert.deepEqual(errors, [], 'No uncaught browser exceptions.');
-  console.log('Phase 8 browser checks passed: all destinations respond, House research routes render, no uncaught exceptions.');
+  console.log('Phase 8 browser checks passed: all destinations respond, the Bio-Lab entry point resolves, and no uncaught exceptions occur.');
 } finally {
   for (const request of pending.values()) clearTimeout(request.timer);
   socket?.close();

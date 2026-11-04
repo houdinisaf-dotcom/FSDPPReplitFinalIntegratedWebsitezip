@@ -2,6 +2,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { products, priceInfo, productImagesForDisplay } from '../data/products.js';
 import { deriveClothingLineMembership, CLOTHING_LINE_ASSETS, CLOTHING_LINES } from '../clothing-lines.js';
 import { SafeImage } from './SafeImage.jsx';
+import { CategoryFilterTabs } from './CategoryFilterTabs.jsx';
+import {
+  garmentCategoryOptions,
+  productHasGarmentCategory,
+  WOMENS_BRANDING_ASSIGNMENT_STATUS,
+} from '../data/garment-category-map.js';
 import { confirmedCollectionText } from '../catalogue-collections.js';
 import { COLLECTION_MOTION_CONFIG, getCollectionMotionEntry, resolveCollectionLogo } from '../collection-motion-config.js';
 import './ClothingLinesBrowser.css';
@@ -16,7 +22,10 @@ function CollectionLogoLayer({ logo, lineTitle, className = '', onImageError }) 
   return (
     <span className={`${className} fsd-clothing-nav__logo-text`}>
       <span>{logo.collectionName || lineTitle}</span>
-      <small>{logo.status === 'unassigned' ? 'LOGO UNASSIGNED' : logo.status === 'excluded' ? 'LOGO EXCLUDED' : logo.status === 'broken' ? 'LOGO UNAVAILABLE' : 'ORIGINAL LOGO PENDING'}</small>
+      <small className="sr-only">{logo.status === 'unassigned'
+        ? WOMENS_BRANDING_ASSIGNMENT_STATUS
+        : logo.status === 'excluded' ? 'LOGO EXCLUDED'
+          : logo.status === 'broken' ? 'LOGO UNAVAILABLE' : 'ORIGINAL LOGO PENDING'}</small>
     </span>
   );
 }
@@ -62,7 +71,7 @@ export function ActiveCollectionMark({ line, reducedMotion, transitionDuration, 
   const label = `${logo.collectionName || line.title} collection logo: ${
     status === 'ready' ? 'approved original artwork' :
       status === 'broken' ? 'approved original artwork could not be loaded' :
-        status === 'unassigned' ? 'not assigned' :
+      status === 'unassigned' ? WOMENS_BRANDING_ASSIGNMENT_STATUS.toLocaleLowerCase('en-GB') :
           status === 'excluded' ? 'not approved for display' : 'original artwork pending'
   }`;
 
@@ -73,6 +82,7 @@ export function ActiveCollectionMark({ line, reducedMotion, transitionDuration, 
       aria-label={label}
       data-active-collection={logo.collectionId}
       data-logo-state={status}
+      data-branding-assignment={status === 'unassigned' ? WOMENS_BRANDING_ASSIGNMENT_STATUS : undefined}
       data-logo-key={logo.key || ''}
       style={{ '--collection-transition-duration': `${transitionDuration}ms` }}
     >
@@ -98,15 +108,25 @@ export function ActiveCollectionMark({ line, reducedMotion, transitionDuration, 
   );
 }
 
-export function ClothingLinesBrowser({ onProductSelect }) {
-  const [expanded, setExpanded] = useState(false);
-  const [activeLine, setActiveLine] = useState('aeroforge');
+export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null }) {
+  const [expanded, setExpanded] = useState(Boolean(standaloneLineId));
+  const [activeLine, setActiveLine] = useState(standaloneLineId || 'aeroforge');
+  const [activeGarmentCategory, setActiveGarmentCategory] = useState('all');
   const [motionReady, setMotionReady] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(() => reduceMotion());
   const archiveRef = useRef(null);
   const memberships = deriveClothingLineMembership(products);
   const lines = memberships.lines;
+  const isStandaloneLine = Boolean(standaloneLineId);
+  const isOpen = expanded || isStandaloneLine;
+  const linesToRender = isStandaloneLine
+    ? lines.filter(line => line.id === standaloneLineId)
+    : lines;
   const transitionDuration = Number(COLLECTION_MOTION_CONFIG.interaction.transitionDurationMs);
+
+  useEffect(() => {
+    setActiveGarmentCategory('all');
+  }, [activeLine]);
 
   useEffect(() => {
     const preference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -123,7 +143,7 @@ export function ClothingLinesBrowser({ onProductSelect }) {
 
   const scrollTo = useCallback((targetId, updateHash = true) => {
     if (!targetId) return;
-    if (!expanded) setExpanded(true);
+    if (!isOpen) setExpanded(true);
     const hash = `#${targetId}`;
     if (updateHash && window.location.hash !== hash) {
       window.history.pushState(window.history.state || {}, '', hash);
@@ -134,7 +154,7 @@ export function ClothingLinesBrowser({ onProductSelect }) {
         : document.getElementById(targetId);
       target?.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
     }));
-  }, [expanded]);
+  }, [isOpen]);
 
   useEffect(() => {
     const syncHash = ({ initial = false } = {}) => {
@@ -170,7 +190,7 @@ export function ClothingLinesBrowser({ onProductSelect }) {
   }, [scrollTo]);
 
   useEffect(() => {
-    if (!expanded) return undefined;
+    if (!isOpen) return undefined;
     const sections = CLOTHING_LINES.map(line => document.getElementById(`line-${line.id}`)).filter(Boolean);
     if (!sections.length) return undefined;
     let frame = 0;
@@ -210,10 +230,10 @@ export function ClothingLinesBrowser({ onProductSelect }) {
       window.removeEventListener('resize', scheduleUpdate);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [expanded]);
+  }, [isOpen]);
 
   useEffect(() => {
-    if (!expanded) return;
+    if (!isOpen) return;
     const selected = document.querySelector('.fsd-clothing-nav [aria-current="location"]');
     const rail = selected?.parentElement;
     if (!selected || !rail) return;
@@ -222,10 +242,10 @@ export function ClothingLinesBrowser({ onProductSelect }) {
     const left = item.left < viewport.left ? item.left - viewport.left - 8
       : item.right > viewport.right ? item.right - viewport.right + 8 : 0;
     if (left) rail.scrollBy({ left, behavior: reduceMotion() ? 'instant' : 'smooth' });
-  }, [activeLine, expanded]);
+  }, [activeLine, isOpen]);
 
   useEffect(() => {
-    if (!expanded) {
+    if (!isOpen) {
       setMotionReady(false);
       return undefined;
     }
@@ -280,10 +300,10 @@ export function ClothingLinesBrowser({ onProductSelect }) {
       observer?.disconnect();
       motionPreference?.removeEventListener?.('change', onPreferenceChange);
     };
-  }, [expanded]);
+  }, [isOpen]);
 
   useEffect(() => {
-    if (!expanded || !window.matchMedia?.('(pointer: fine) and (min-width: 761px)').matches
+    if (!isOpen || !window.matchMedia?.('(pointer: fine) and (min-width: 761px)').matches
       || reducedMotion) return undefined;
     const visuals = [...(archiveRef.current?.querySelectorAll('.fsd-clothing-line__visual') || [])];
     if (!visuals.length || !('IntersectionObserver' in window)) return undefined;
@@ -320,15 +340,21 @@ export function ClothingLinesBrowser({ onProductSelect }) {
       if (frame) window.cancelAnimationFrame(frame);
       visuals.forEach(visual => visual.style.removeProperty('--banner-drift'));
     };
-  }, [expanded, reducedMotion]);
+  }, [isOpen, reducedMotion]);
 
   return (
     <details
       ref={archiveRef}
       className={`showroom-archive fsd-clothing-archive${motionReady ? ' fsd-motion-ready' : ''}`}
       id="clothing-lines-archive"
-      open={expanded}
-      onToggle={event => setExpanded(event.currentTarget.open)}
+      open={isOpen}
+      onToggle={event => {
+        if (isStandaloneLine && !event.currentTarget.open) {
+          event.currentTarget.open = true;
+          return;
+        }
+        setExpanded(event.currentTarget.open);
+      }}
     >
       <summary
         id="clothing-lines"
@@ -340,7 +366,7 @@ export function ClothingLinesBrowser({ onProductSelect }) {
         <span>THE CLOTHING LINES</span>
         <small>Seven established collections / public catalogue only</small>
       </summary>
-      {expanded && (
+      {isOpen && (
         <div className="fsd-clothing-browser">
           <nav className="fsd-clothing-nav" aria-label="Clothing line sections" style={{
             '--collection-transition-duration': `${transitionDuration}ms`,
@@ -352,12 +378,24 @@ export function ClothingLinesBrowser({ onProductSelect }) {
                 const logo = resolveCollectionLogo(line.id);
                 const configured = getCollectionMotionEntry(line.id);
                 const collectionName = configured?.name || logo.collectionName || line.title;
-                return (
+                const className = activeLine === line.id ? 'is-active' : '';
+                const style = { '--line-accent': COLLECTION_MOTION_CONFIG.theme.primaryAccent };
+                return isStandaloneLine ? (
+                  <a
+                    key={line.id}
+                    className={className}
+                    style={style}
+                    href={`/collections/${line.id}`}
+                    aria-current={activeLine === line.id ? 'page' : undefined}
+                  >
+                    {collectionName}
+                  </a>
+                ) : (
                   <button
                     key={line.id}
                     type="button"
-                    className={activeLine === line.id ? 'is-active' : ''}
-                    style={{ '--line-accent': COLLECTION_MOTION_CONFIG.theme.primaryAccent }}
+                    className={className}
+                    style={style}
                     aria-current={activeLine === line.id ? 'location' : undefined}
                     onClick={() => scrollTo(`line-${line.id}`)}
                   >
@@ -378,10 +416,15 @@ export function ClothingLinesBrowser({ onProductSelect }) {
             Existing apparel, gathered by line. Every detail opens through the current product experience.
           </p>
 
-          {lines.map((line, index) => {
+          {linesToRender.map(line => {
+            const index = lines.findIndex(item => item.id === line.id);
             const featureProduct = line.products.find(product => memberships.imageFor(product)) || line.products[0];
             const featureImage = featureProduct ? memberships.imageFor(featureProduct) : null;
             const bannerAsset = CLOTHING_LINE_ASSETS[line.id]?.banner;
+            const mobileBannerAsset = CLOTHING_LINE_ASSETS[line.id]?.mobileBanner;
+            const categoryOptions = garmentCategoryOptions(line.products);
+            const visibleProducts = line.products.filter(product => activeGarmentCategory === 'all'
+              || productHasGarmentCategory(product, activeGarmentCategory));
             return (
               <section
                 key={line.id}
@@ -408,30 +451,43 @@ export function ClothingLinesBrowser({ onProductSelect }) {
                       </button>
                     )}
                   </div>
-                  <div className="fsd-clothing-line__visual" data-reveal-key={`${line.id}:visual`}>
-                    {featureImage || bannerAsset ? (
-                      <SafeImage
-                        className="fsd-clothing-line__image"
-                        src={bannerAsset || featureImage?.src}
-                        alt={featureImage ? `${featureProduct.name} — ${featureImage.label}` : `${line.title} campaign image`}
-                        placeholderTitle={line.title}
-                        placeholderKind="banner"
-                      />
-                    ) : (
-                      <div className="fsd-clothing-line__image-pending" role="img" aria-label={`${line.title} photography not yet approved`}>
-                        <span>FSD / {line.title}</span>
-                        <strong>Campaign image pending</strong>
-                      </div>
+                  <div
+                    className="fsd-clothing-line__visual"
+                    data-reveal-key={`${line.id}:visual`}
+                    data-banner-status={bannerAsset ? 'APPROVED' : 'CONTENT PENDING'}
+                    data-mobile-banner-status={mobileBannerAsset ? 'APPROVED' : 'CONTENT PENDING'}
+                  >
+                    <SafeImage
+                      className="fsd-clothing-line__image"
+                      src={bannerAsset || mobileBannerAsset || featureImage?.src}
+                      mobileSrc={mobileBannerAsset}
+                      alt={bannerAsset || mobileBannerAsset
+                        ? `${line.title} collection image`
+                        : featureImage ? `${featureProduct.name} — ${featureImage.label}` : `${line.title} collection image`}
+                      placeholderTitle={line.title}
+                      placeholderKind="banner"
+                    />
+                    {(bannerAsset || featureImage) && (
+                      <span className="fsd-clothing-line__visual-caption">
+                        {bannerAsset ? 'COLLECTION IMAGE' : 'PUBLIC CATALOGUE PHOTOGRAPHY'}
+                      </span>
                     )}
-                    <span className="fsd-clothing-line__visual-caption">
-                      {bannerAsset ? 'COLLECTION IMAGE' : featureImage ? 'PUBLIC CATALOGUE PHOTOGRAPHY' : 'COLLECTION IMAGE SLOT'}
-                    </span>
                   </div>
                 </header>
 
                 {line.products.length ? (
-                  <div className="fsd-clothing-products" id={`line-products-${line.id}`}>
-                    {line.products.map(product => {
+                  <>
+                    <div className="fsd-clothing-line__category-browser">
+                      <p className="fsd-clothing-line__category-label">Filter by product type</p>
+                      <CategoryFilterTabs
+                        categories={categoryOptions}
+                        activeId={activeGarmentCategory}
+                        onChange={setActiveGarmentCategory}
+                        ariaLabel={`Filter ${line.title} products by type`}
+                      />
+                    </div>
+                    <div className="fsd-clothing-products" id={`line-products-${line.id}`}>
+                    {visibleProducts.map(product => {
                       const image = memberships.imageFor(product);
                       const price = money(product);
                       return (
@@ -442,7 +498,10 @@ export function ClothingLinesBrowser({ onProductSelect }) {
                             onClick={event => onProductSelect?.(product.id, event.currentTarget)}
                             aria-label={`View ${product.name}`}
                           >
-                            <span className="fsd-clothing-product__media">
+                            <span
+                              className="fsd-clothing-product__media"
+                              data-content-status={image ? 'APPROVED' : 'CONTENT PENDING'}
+                            >
                               {image ? (
                                 <SafeImage
                                   src={image.src}
@@ -454,7 +513,7 @@ export function ClothingLinesBrowser({ onProductSelect }) {
                                 <span className="fsd-clothing-product__placeholder">
                                   <span>FSD / PRODUCT IMAGE</span>
                                   <strong>{product.name}</strong>
-                                  <small>Approved standalone image pending</small>
+                                  <small className="sr-only">CONTENT PENDING</small>
                                 </span>
                               )}
                             </span>
@@ -501,7 +560,8 @@ export function ClothingLinesBrowser({ onProductSelect }) {
                         </article>
                       );
                     })}
-                  </div>
+                    </div>
+                  </>
                 ) : (
                   <p className="fsd-clothing-line__empty">
                     No public catalogue pieces are assigned to this line yet. The collection remains open for future verified products.

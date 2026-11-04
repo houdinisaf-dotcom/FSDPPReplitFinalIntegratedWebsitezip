@@ -1,0 +1,48 @@
+[data-fsd-storefront][data-fsd-standalone-collection="catalogue"] [data-storefront-content] > :not(#catalogue-archive):not(footer):not(dialog),
+[data-fsd-storefront][data-fsd-standalone-collection="line"] [data-storefront-content] > :not([data-fsd-clothing-lines-slot]):not(footer):not(dialog) {
+  display: none !important;
+}
+
+[data-fsd-storefront][data-fsd-standalone-collection="catalogue"] #catalogue-archive,
+[data-fsd-storefront][data-fsd-standalone-collection="line"] #clothing-lines-archive {
+  display: block;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+[data-fsd-storefront][data-fsd-standalone-collection="catalogue"] #catalogue-archive > summary,
+[data-fsd-storefront][data-fsd-standalone-collection="line"] #clothing-lines-archive > summary {
+  display: none !important;
+}
+
+[data-fsd-storefront][data-fsd-standalone-collection="line"] [data-fsd-clothing-lines-slot] > :not(#clothing-lines-archive) {
+  display: none !important;
+}
+
+.catalogue-garment-category-browser {
+  margin: 0 auto 1.25rem;
+  max-width: 1680px;
+  padding: 0 clamp(1rem, 3vw, 2.5rem);
+}
+
+.catalogue-garment-category-browser__label {
+  margin: 0 0 0.7rem;
+  color: #a89d88;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.fsd-clothing-line__category-browser {
+  margin: 1.25rem 0 1.75rem;
+}
+
+.fsd-clothing-line__category-label {
+  margin: 0 0 0.7rem;
+  color: #a89d88;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}

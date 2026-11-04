@@ -596,7 +596,7 @@
   #catalogue-grid.product-grid[data-view="visual"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 320px) {
   #catalogue-grid.product-grid[data-view="visual"] { grid-template-columns: 1fr; }
 }
 
@@ -609,4 +609,105 @@
   .product-row__name,
   .product-card--visual,
   .catalogue-card__media > img { transition: none; }
+}
+
+/* Keep the SHOP catalogue editorial and image-led without boxed card chrome. */
+.product-grid[data-view="visual"] .product-card--visual {
+  border: 0;
+  background: transparent;
+  transition: none;
+}
+
+.product-grid[data-view="visual"] .product-card--visual:hover,
+.product-grid[data-view="visual"] .product-card--visual:focus-within {
+  transform: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.catalogue-card__media {
+  background: #111213;
+}
+
+.catalogue-card__media > img,
+.catalogue-card__media > .fsd-safe-image-fallback {
+  object-fit: contain;
+}
+
+.catalogue-card__image-empty {
+  gap: 10px;
+  padding: 16px;
+}
+
+.catalogue-card__image-empty strong {
+  font-size: clamp(13px, 1.05vw, 15px);
+}
+
+.catalogue-card__copy {
+  min-height: 178px;
+  gap: 7px;
+  padding: 16px 4px 12px;
+}
+
+.catalogue-card__copy .product-row__name {
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.32;
+}
+
+.catalogue-card__copy .product-row__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.catalogue-card__action {
+  color: #d6bd8a;
+  transition: color 180ms ease;
+}
+
+.product-card--visual:hover .catalogue-card__action,
+.product-card--visual:focus-within .catalogue-card__action {
+  color: #f1d99c;
+}
+
+.catalogue-card__swatches {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+@media (max-width: 760px) {
+  #catalogue-grid.product-grid[data-view="visual"] {
+    gap: 18px 12px;
+  }
+
+  .catalogue-card__copy {
+    min-height: 158px;
+    gap: 6px;
+    padding: 12px 3px 10px;
+  }
+
+  .catalogue-card__copy .product-row__name {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .catalogue-card__copy .product-row__summary {
+    font-size: 9px;
+  }
+
+  .catalogue-card__image-empty {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .catalogue-card__swatches {
+    gap: 6px;
+    padding-bottom: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalogue-card__action { transition: none; }
 }

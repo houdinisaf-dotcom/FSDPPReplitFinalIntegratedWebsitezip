@@ -42,13 +42,10 @@ function routeFromDestination(destination) {
   if (destination?.replace(/\/+$/, '') === FSD_STORY_PATH) {
     return { view: 'story', target: 'our-story' };
   }
-  if (destination === FSD_HOUSE_PAGE_PATH || destination?.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) {
-    return {
-      view: 'house',
-      target: destination === FSD_HOUSE_PAGE_PATH
-        ? 'the-house-page'
-        : destination.slice(FSD_HOUSE_PAGE_PATH.length + 1),
-    };
+  if (destination?.startsWith('/collections/')) {
+    const pathname = destination.split(/[?#]/, 1)[0].replace(/\/+$/, '') || '/';
+    const entry = seoEntryForPath(pathname);
+    if (entry) return entry.route;
   }
   return routeFromHash(destination);
 }
@@ -58,7 +55,6 @@ export function routeFromLocation(location = {}) {
 
   const pathname = String(location.pathname || '/').replace(/\/+$/, '') || '/';
   if (pathname === FSD_STORY_PATH) return { view: 'story', target: 'our-story' };
-  if (pathname === FSD_HOUSE_PAGE_PATH) return { view: 'house', target: 'the-house-page' };
   const entry = seoEntryForPath(pathname);
   if (entry) return entry.route;
   return routeFromHash('');
@@ -67,6 +63,7 @@ export function routeFromLocation(location = {}) {
 export function resolveFsdRoute({ menu, group, item } = {}) {
   if (group?.id === 'catalogue-collections' || item?.kind === 'catalogue-collection') {
     const destination = item?.href || group?.href || '';
+    if (destination.startsWith('/collections/')) return routeFromDestination(destination);
     return routeFromHash(destination.slice(destination.indexOf('#')));
   }
   if (item?.kind === 'draft-product') {

@@ -53,7 +53,7 @@ test('section destinations map to their existing FSD sections', () => {
   assert.deepEqual(routeFromHash('#line-scorpion-series'), { view: 'collection', target: 'line-scorpion-series' });
 });
 
-test('Clothing Lines SHOP destinations resolve to their section hashes, not legacy showcase routes', () => {
+test('Clothing Lines SHOP destinations resolve to dedicated collection routes', () => {
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'collections' },
     group: { id: 'clothing-lines', href: '#clothing-lines' },
@@ -61,8 +61,28 @@ test('Clothing Lines SHOP destinations resolve to their section hashes, not lega
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'collections' },
     group: { id: 'clothing-lines' },
-    item: { id: 'clothing-line-aeroforge', kind: 'clothing-line', href: '#line-aeroforge' },
+    item: {
+      id: 'clothing-line-aeroforge',
+      kind: 'clothing-line',
+      href: '/collections/aeroforge',
+    },
   }), { view: 'collection', target: 'line-aeroforge' });
+  assert.deepEqual(routeFromLocation({ pathname: '/collections/flex', hash: '' }), {
+    view: 'collection',
+    target: 'line-flex',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/collections/men', hash: '' }), {
+    view: 'collection',
+    target: 'men',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/collections/women', hash: '' }), {
+    view: 'collection',
+    target: 'women',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/', hash: '#line-aeroforge' }), {
+    view: 'collection',
+    target: 'line-aeroforge',
+  });
 });
 
 test('the brand story has a direct path route while retaining hash-route compatibility', () => {
@@ -88,26 +108,26 @@ test('the brand story has a direct path route while retaining hash-route compati
   });
 });
 
-test('the public House page has a direct route from the House navigation', () => {
+test('legacy House hashes no longer resolve to a shared House-page view', () => {
   assert.deepEqual(routeFromLocation({ pathname: FSD_HOUSE_PAGE_PATH, hash: '' }), {
-    view: 'house',
-    target: 'the-house-page',
+    view: 'home',
+    target: null,
   });
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'house' },
-    group: { id: 'our-story', href: `${FSD_HOUSE_PAGE_PATH}#brand/founder` },
-    item: { kind: 'destination', href: `${FSD_HOUSE_PAGE_PATH}#brand/founder` },
+    group: { id: 'our-story', href: '/story' },
+    item: { kind: 'destination', href: '/story' },
   }), {
-    view: 'house',
-    target: 'brand/founder',
+    view: 'story',
+    target: 'our-story',
   });
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'house' },
     group: { id: 'community-culture' },
-    item: { kind: 'destination', href: '/the-house.html#community/co-creation' },
+    item: { kind: 'destination', href: '/community-co-creation.html' },
   }), {
-    view: 'house',
-    target: 'community/co-creation',
+    view: 'home',
+    target: null,
   });
 });
 

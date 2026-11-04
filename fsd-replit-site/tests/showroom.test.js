@@ -156,13 +156,13 @@ test('garment studies are accessible non-purchasable concepts with real research
   assert.equal((markup.match(/data-garment-choice=/g) || []).length, 3);
   assert.match(markup, /aria-pressed="true"/);
   assert.match(markup, /NOT FOR SALE/);
-  assert.match(markup, /the-house\.html#bio-lab\/adaptive-fabrics/);
+  assert.match(markup, /#adaptive-technical-fabrics/);
   assert.match(markup, /not purchasable or customisable garments/);
   assert.doesNotMatch(markup, /£|\$|add to bag/i);
   assert.deepEqual(garmentStudyDefinitions.map(item => item.title), [
     'Performance Leggings', 'Technical Tank', 'Run Jacket',
   ]);
-  assert.ok(garmentStudyDefinitions.some(item => item.destination.endsWith('#bio-lab/smart-apparel')));
+  assert.ok(garmentStudyDefinitions.some(item => item.destination.endsWith('#smart-apparel-nfc')));
   const vision = houseConnectionSection();
   assert.match(vision, /Train\. Wear\. Belong\.<br\/><em>Be Stronger Together\.<\/em>/);
   assert.match(vision, /id="brand-community"/);

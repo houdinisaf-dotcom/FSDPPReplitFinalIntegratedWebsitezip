@@ -14,6 +14,8 @@ export function SafeImage({
   placeholderTitle,
   variantLabel = '',
   placeholderKind = 'product',
+  mobileSrc,
+  mobileMedia = '(max-width: 760px)',
   loading = 'lazy',
   decoding = 'async',
   onError,
@@ -22,10 +24,17 @@ export function SafeImage({
 }) {
   const [failedSource, setFailedSource] = useState(null);
   useEffect(() => {
-    setFailedSource(current => (current === src ? current : null));
-  }, [src]);
+    setFailedSource(null);
+  }, [src, mobileSrc]);
 
-  if (!isSafeAssetPath(src) || failedSource === src) {
+  const hasMobileSource = isSafeAssetPath(mobileSrc);
+  const mobileSourceUrl = hasMobileSource && typeof document !== 'undefined'
+    ? new URL(mobileSrc, document.baseURI).href
+    : mobileSrc;
+  const mobileSourceFailed = hasMobileSource && failedSource === mobileSourceUrl;
+  const desktopSourceFailed = failedSource === src;
+
+  if (!isSafeAssetPath(src) || desktopSourceFailed) {
     return (
       <ImagePlaceholder
         title={placeholderTitle || alt?.split(/[—–]/)[0]?.trim() || fallbackLabel || placeholder}
@@ -37,7 +46,7 @@ export function SafeImage({
     );
   }
 
-  return (
+  const image = (
     <img
       {...imageProps}
       src={src}
@@ -47,9 +56,22 @@ export function SafeImage({
       loading={loading}
       decoding={decoding}
       onError={event => {
+        const failedMobileSource = hasMobileSource
+          && event.currentTarget.currentSrc === mobileSourceUrl;
+        if (failedMobileSource) {
+          setFailedSource(mobileSourceUrl);
+          return;
+        }
         setFailedSource(src);
         onError?.(event);
       }}
     />
+  );
+  if (!hasMobileSource || mobileSourceFailed) return image;
+  return (
+    <picture>
+      <source media={mobileMedia} srcSet={mobileSrc} />
+      {image}
+    </picture>
   );
 }

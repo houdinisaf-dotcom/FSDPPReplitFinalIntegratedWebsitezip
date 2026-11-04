@@ -1,4 +1,5 @@
 import { audiences, categories, customerFacingCategory, getVerifiedProductSpecifications, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
+import { CLOTHING_LINES, productBelongsToLine } from './clothing-lines.js';
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage, cancelMappedImageSwap } from './catalogue-image-gallery.js';
 import { mountImmersiveProductGallery } from './immersive-product-gallery.js';
@@ -11,6 +12,11 @@ import { animateAddButton, animateElement, animateWishlistHeart, setStickyAddBar
 import { FSD_MOTION } from './motion-config.js';
 import { productImagesForDisplay } from './data/products.js';
 import {
+  GARMENT_CATEGORY_DEFINITIONS,
+  garmentCategoryOptions,
+  productHasGarmentCategory,
+} from './data/garment-category-map.js';
+import {
   productCardColourwaysMarkup,
   productCardImageMarkup,
   productColourwayImageIndex,
@@ -20,6 +26,8 @@ const pageSize = 12;
 let activeCategory = 'All';
 let activeAudience = 'All';
 let activeCollection = 'All';
+let activeLine = 'All';
+let activeGarmentCategory = 'all';
 let query = '';
 let sort = 'featured';
 let view = 'visual';
@@ -56,6 +64,8 @@ function currentState() {
     category: activeCategory,
     audience: activeAudience,
     collection: activeCollection,
+    line: activeLine,
+    garmentCategory: activeGarmentCategory,
     query,
     sort,
     view,
@@ -63,18 +73,25 @@ function currentState() {
   };
 }
 
-function readStateFromURL() {
+export function readStateFromURL() {
   if (!isBrowser()) return currentState();
   const params = new URLSearchParams(window.location.search);
   const requestedCategory = params.get('category');
   const requestedAudience = params.get('audience');
   const requestedCollection = params.get('collection');
+  const requestedLine = params.get('line');
+  const requestedGarmentCategory = params.get('garment');
   const requestedSort = params.get('sort');
   const requestedView = params.get('view');
   return {
     category: categories.includes(requestedCategory) ? requestedCategory : 'All',
     audience: audiences.includes(requestedAudience) ? requestedAudience : 'All',
     collection: shopCollections.some(item => item.id === requestedCollection) ? requestedCollection : 'All',
+    line: CLOTHING_LINES.some(item => item.id === requestedLine) ? requestedLine : 'All',
+    garmentCategory: requestedGarmentCategory === 'all'
+      || GARMENT_CATEGORY_DEFINITIONS.some(category => category.id === requestedGarmentCategory)
+      ? requestedGarmentCategory
+      : 'all',
     query: params.get('q') || '',
     sort: sortOptions.some(([value]) => value === requestedSort) ? requestedSort : 'featured',
     view: viewOptions.includes(requestedView) ? requestedView : 'visual',
@@ -87,6 +104,8 @@ function applyState(state) {
   activeCategory = state.category;
   activeAudience = state.audience;
   activeCollection = state.collection;
+  activeLine = state.line || 'All';
+  activeGarmentCategory = state.garmentCategory || 'all';
   query = state.query;
   sort = state.sort;
   view = state.view;
@@ -94,10 +113,26 @@ function applyState(state) {
 }
 
 function updateControls() {
+  const lineControl = document.querySelector('#catalogue-line');
+  if (lineControl) {
+    const lineScope = filterProducts(activeCategory, '', activeAudience, activeCollection);
+    const availableLines = CLOTHING_LINES.filter(line =>
+      lineScope.some(product => productBelongsToLine(product, line.id)));
+    const availableLineIds = new Set(availableLines.map(line => line.id));
+    const visibleLines = CLOTHING_LINES.filter(line =>
+      availableLineIds.has(line.id) || line.id === activeLine);
+    const options = [
+      '<option value="All">All clothing lines</option>',
+      ...visibleLines.map(line => `<option value="${safe(line.id)}">${safe(line.title)}${availableLineIds.has(line.id) ? '' : ' — no matching products'}</option>`),
+    ].join('');
+    if (lineControl.innerHTML !== options) lineControl.innerHTML = options;
+    lineControl.value = activeLine;
+  }
   const controls = [
     ['#catalogue-category', activeCategory],
     ['#catalogue-audience', activeAudience],
     ['#catalogue-collection', activeCollection],
+    ['#catalogue-line', activeLine],
     ['#search', query],
     ['#catalogue-sort', sort],
   ];
@@ -113,6 +148,14 @@ function updateControls() {
   document.querySelectorAll?.('[data-catalogue-view]')?.forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.catalogueView === view));
   });
+  const heading = document.querySelector('#products .section-heading h2');
+  if (heading) {
+    const title = activeAudience === 'Women’s' ? 'SHOP / WOMEN’S'
+      : activeAudience === 'Men’s' ? 'SHOP / MEN’S'
+        : activeAudience === 'Unisex' ? 'SHOP / UNISEX'
+          : 'SHOP / ALL PRODUCTS';
+    heading.innerHTML = `${title}<span class="period">.</span>`;
+  }
 }
 
 function writeStateToURL({ mode = 'replace', productId = null } = {}) {
@@ -123,6 +166,8 @@ function writeStateToURL({ mode = 'replace', productId = null } = {}) {
     ['category', activeCategory, 'All'],
     ['audience', activeAudience, 'All'],
     ['collection', activeCollection, 'All'],
+    ['line', activeLine, 'All'],
+    ['garment', activeGarmentCategory, 'all'],
     ['q', query, ''],
     ['sort', sort, 'featured'],
     ['view', view, 'visual'],
@@ -176,6 +221,14 @@ function activeFilterMarkup() {
   if (activeCollection !== 'All') {
     const collection = shopCollections.find(item => item.id === activeCollection);
     chips.push(['collection', activeCollection, collection?.label || activeCollection]);
+  }
+  if (activeLine !== 'All') {
+    const line = CLOTHING_LINES.find(item => item.id === activeLine);
+    chips.push(['line', activeLine, line?.title || activeLine]);
+  }
+  if (activeGarmentCategory !== 'all') {
+    const category = GARMENT_CATEGORY_DEFINITIONS.find(item => item.id === activeGarmentCategory);
+    chips.push(['garment', activeGarmentCategory, category?.label || activeGarmentCategory]);
   }
   if (activeCategory !== 'All') chips.push(['category', activeCategory, customerFacingCategory(activeCategory)]);
   if (activeAudience !== 'All') chips.push(['audience', activeAudience, activeAudience]);
@@ -262,8 +315,11 @@ function imageIndexForColourway(images, colourway) {
 
 function card(product) {
   const hardwarePreview = isHardwareVisualPreviewProduct(product);
+  const publicImages = productImagesForDisplay(product);
   const price = displayPrice(product);
   const colourways = productColourwayOptions(product);
+  const hasUnmappedColourway = colourways.some(colourway => imageIndexForColourway(publicImages, colourway) < 0);
+  const contentStatus = publicImages.length && !hasUnmappedColourway ? 'APPROVED' : 'CONTENT PENDING';
   const initialColourway = colourways[0] || '';
   const summary = !hardwarePreview
     ? product.colourways || product.priceBasis || product.coverage
@@ -271,10 +327,10 @@ function card(product) {
   const priceMarkup = price.label || price.value
     ? `<span class="product-row__price">${price.label ? `<small>${safe(price.label)}</small>` : ''}${price.value ? `<strong>${safe(price.value)}</strong>` : ''}</span>`
     : '';
-  return `<article class="product-card">
+  return `<article class="product-card" data-content-status="${contentStatus}">
     <button class="product-row__trigger" type="button" data-product="${product.id}"
       data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
-      <span class="product-row__media" data-product-card-image-slot>${productCardImageMarkup(product, {
+      <span class="product-row__media" data-product-card-image-slot data-content-status="${contentStatus}">${productCardImageMarkup(product, {
         colourway: initialColourway,
         className: 'product-row__image',
       })}</span>
@@ -297,11 +353,19 @@ export function catalogueSection() {
     <div class="section-heading"><div><p class="section-kicker">THE FSD COLLECTION</p>
       <h2>SHOP / ALL PRODUCTS<span class="period">.</span></h2></div>
       <p>Find FSD products by collection, category and audience.</p></div>
+    <div class="catalogue-garment-category-browser">
+      <p class="catalogue-garment-category-browser__label">Browse by product type</p>
+      <div id="catalogue-garment-category-tabs" data-catalogue-garment-tabs></div>
+    </div>
     <div class="catalogue-control-panel">
       <div class="toolbar catalogue-toolbar">
       <label>Collection<select id="catalogue-collection" aria-label="Filter by collection">
         <option value="All">All collections</option>
         ${shopCollections.map(collection => `<option value="${safe(collection.id)}">${safe(collection.label)}</option>`).join('')}
+      </select></label>
+      <label>Clothing line<select id="catalogue-line" aria-label="Filter by clothing line">
+        <option value="All">All clothing lines</option>
+        ${CLOTHING_LINES.map(line => `<option value="${safe(line.id)}">${safe(line.title)}</option>`).join('')}
       </select></label>
       <label>Category<select id="catalogue-category" aria-label="Filter by category">
         <option value="All">All categories</option>
@@ -331,6 +395,11 @@ export function setCatalogueResultsRenderer(renderer) {
     throw new TypeError('Catalogue results renderer must be a function or null.');
   }
   catalogueResultsRenderer = renderer;
+  if (renderer && typeof document !== 'undefined') {
+    const grid = document.querySelector('#catalogue-grid');
+    if (grid) grid.innerHTML = '';
+    renderResults();
+  }
 }
 
 export function roadmapSection() {
@@ -356,10 +425,20 @@ export function innovationsSection() {
 }
 
 function renderResults() {
-  const filtered = sortedProducts(filterProducts(activeCategory, query, activeAudience, activeCollection));
+  updateControls();
+  const unsearchedScope = filterProducts(activeCategory, '', activeAudience, activeCollection);
+  const lineTabScope = activeLine === 'All'
+    ? unsearchedScope
+    : unsearchedScope.filter(product => productBelongsToLine(product, activeLine));
+  const garmentTabs = garmentCategoryOptions(lineTabScope);
+  const categoryScope = filterProducts(activeCategory, query, activeAudience, activeCollection);
+  const lineScope = activeLine === 'All'
+    ? categoryScope
+    : categoryScope.filter(product => productBelongsToLine(product, activeLine));
+  const filtered = sortedProducts(lineScope.filter(product => activeGarmentCategory === 'all'
+    || productHasGarmentCategory(product, activeGarmentCategory)));
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   page = Math.min(page, totalPages);
-  updateControls();
   activeFilterMarkup();
   const start = (page - 1) * pageSize;
   document.querySelector('#catalogue-count').textContent = filtered.length
@@ -392,7 +471,10 @@ function renderResults() {
   });
   const grid = document.querySelector('#catalogue-grid');
   if (catalogueResultsRenderer) {
-    catalogueResultsRenderer(visibleProducts, catalogueRowActions, view);
+    catalogueResultsRenderer(visibleProducts, catalogueRowActions, view, {
+      categories: garmentTabs,
+      activeId: activeGarmentCategory,
+    });
   } else {
     grid.innerHTML = filtered.length
       ? filtered.slice(start, start + pageSize).map(card).join('')
@@ -409,6 +491,8 @@ function clearFilters({ keepView = false } = {}) {
   activeCategory = 'All';
   activeAudience = 'All';
   activeCollection = 'All';
+  activeLine = 'All';
+  activeGarmentCategory = 'all';
   query = '';
   sort = 'featured';
   view = 'visual';
@@ -419,28 +503,46 @@ export function navigateCatalogue({
   category = 'All',
   audience = 'All',
   collection = 'All',
+  line = 'All',
+  garmentCategory = 'all',
   query: nextQuery = '',
   sort: nextSort = 'featured',
   view: nextView = 'visual',
+  historyMode = 'push',
 } = {}) {
   if (category !== 'All' && !categories.includes(category)) return false;
   if (audience !== 'All' && !audiences.includes(audience)) return false;
   if (collection !== 'All' && !shopCollections.some(item => item.id === collection)) return false;
+  if (line !== 'All' && !CLOTHING_LINES.some(item => item.id === line)) return false;
+  if (garmentCategory !== 'all'
+    && !GARMENT_CATEGORY_DEFINITIONS.some(item => item.id === garmentCategory)) return false;
   activeCategory = category;
   activeAudience = audience;
   activeCollection = collection;
+  activeLine = line;
+  activeGarmentCategory = garmentCategory;
   query = nextQuery;
   sort = sortOptions.some(([value]) => value === nextSort) ? nextSort : 'featured';
   view = viewOptions.includes(nextView) ? nextView : 'visual';
   page = 1;
   openShopArchive();
   renderResults();
-  writeStateToURL({ mode: 'push' });
+  writeStateToURL({ mode: historyMode === 'replace' ? 'replace' : 'push' });
   if (typeof CustomEvent === 'function') {
     document.dispatchEvent?.(new CustomEvent('fsd:navigation-active', { detail: { id: 'collections' } }));
   }
   document.querySelector('#products')?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
   focusResultCount();
+  return true;
+}
+
+export function selectCatalogueGarmentCategory(garmentCategory) {
+  if (garmentCategory !== 'all'
+    && !GARMENT_CATEGORY_DEFINITIONS.some(item => item.id === garmentCategory)) return false;
+  activeGarmentCategory = garmentCategory;
+  page = 1;
+  renderResults();
+  writeStateToURL({ mode: 'push' });
   return true;
 }
 
@@ -690,7 +792,7 @@ function restoreFromURL({ scrollY } = {}) {
   openShopArchive();
   const archive = document.querySelector('#catalogue-archive');
   const hasShopState = isBrowser() && [...new URLSearchParams(window.location.search).keys()]
-    .some(key => ['category', 'audience', 'collection', 'q', 'sort', 'view', 'page', 'product'].includes(key));
+    .some(key => ['category', 'audience', 'collection', 'line', 'garment', 'q', 'sort', 'view', 'page', 'product'].includes(key));
   if (archive) archive.open = hasShopState
     || Number.isFinite(scrollY)
     || (isBrowser() && window.location.hash === '#products');
@@ -712,6 +814,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   const category = document.querySelector('#catalogue-category');
   const audience = document.querySelector('#catalogue-audience');
   const collection = document.querySelector('#catalogue-collection');
+  const line = document.querySelector('#catalogue-line');
   const sortSelect = document.querySelector('#catalogue-sort');
   const search = document.querySelector('#search');
   const dialog = document.querySelector('#product-dialog');
@@ -720,7 +823,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   const initialState = readStateFromURL();
   applyState(initialState);
   const initialShopState = isBrowser() && [...new URLSearchParams(window.location.search).keys()]
-    .some(key => ['category', 'audience', 'collection', 'q', 'sort', 'view', 'page', 'product'].includes(key));
+    .some(key => ['category', 'audience', 'collection', 'line', 'garment', 'q', 'sort', 'view', 'page', 'product'].includes(key));
   const archive = document.querySelector('#catalogue-archive');
   if (archive) archive.open = initialShopState || (isBrowser() && window.location.hash === '#products');
   updateControls();
@@ -731,6 +834,79 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     page = 1;
     renderResults();
     writeStateToURL({ mode: 'push' });
+  };
+
+  const updateEditorialGalleryLayout = hasSecondary => {
+    const layout = dialogBody.querySelector('.product-detail-layout');
+    const featureGrid = dialogBody.querySelector('.product-detail-gallery__feature-grid');
+    const panel = dialogBody.querySelector('[data-catalogue-secondary-panel]');
+    if (layout) layout.dataset.catalogueHasSecondary = String(hasSecondary);
+    if (featureGrid) {
+      featureGrid.classList.toggle('has-secondary', hasSecondary);
+      featureGrid.classList.toggle('is-single', !hasSecondary);
+    }
+    if (panel) panel.hidden = !hasSecondary;
+  };
+
+  const syncSecondaryGalleryImage = (primaryIndex, primaryImage, primaryColourwayIndex) => {
+    const panel = dialogBody.querySelector('[data-catalogue-secondary-panel]');
+    const secondaryImage = dialogBody.querySelector('[data-catalogue-secondary-image]');
+    const placeholder = dialogBody.querySelector('[data-catalogue-secondary-placeholder]');
+    const caption = dialogBody.querySelector('[data-catalogue-secondary-caption]');
+    const colourways = productColourwayOptions(activeDialogProduct);
+    if (!panel || !secondaryImage || !primaryImage) {
+      updateEditorialGalleryLayout(false);
+      return;
+    }
+
+    const secondaryIndex = activeDialogImages.findIndex((candidate, candidateIndex) => {
+      if (candidateIndex === primaryIndex || candidate.src === primaryImage.src) return false;
+      const candidateColourwayIndex = imageColourwayIndex(activeDialogProduct, candidate);
+      if (colourways.length > 1) {
+        return primaryColourwayIndex >= 0 && candidateColourwayIndex === primaryColourwayIndex;
+      }
+      return candidateColourwayIndex < 0
+        || primaryColourwayIndex < 0
+        || candidateColourwayIndex === primaryColourwayIndex;
+    });
+    if (secondaryIndex < 0) {
+      updateEditorialGalleryLayout(false);
+      return;
+    }
+
+    const image = activeDialogImages[secondaryIndex];
+    const imageColourway = colourways[imageColourwayIndex(activeDialogProduct, image)]
+      || image.colourway || image.variant || image.size || '';
+    const previousImageColourway = secondaryImage.dataset.fsdImageVariant || '';
+    updateEditorialGalleryLayout(true);
+    secondaryImage.hidden = false;
+    secondaryImage.dataset.fsdImageFallback = 'true';
+    secondaryImage.dataset.fsdImageTitle = activeDialogProduct.name;
+    secondaryImage.dataset.fsdImageVariant = imageColourway;
+    delete secondaryImage.dataset.fsdImageFailed;
+    if (placeholder) {
+      placeholder.hidden = true;
+      const label = placeholder.querySelector('[data-catalogue-secondary-variant]');
+      if (label) label.textContent = imageColourway;
+    }
+    if (caption) caption.textContent = image.label;
+    crossfadeMappedImage(
+      secondaryImage,
+      image.src,
+      `${activeDialogProduct.name} — ${image.label}`,
+      () => {
+        secondaryImage.hidden = true;
+        if (placeholder) {
+          const label = placeholder.querySelector('[data-catalogue-secondary-variant]');
+          if (label) label.textContent = imageColourway;
+          placeholder.hidden = false;
+        }
+      },
+      {
+        variant: imageColourway,
+        retainPrevious: normaliseGalleryColourway(previousImageColourway) === normaliseGalleryColourway(imageColourway),
+      },
+    );
   };
 
   const selectDialogImage = index => {
@@ -780,6 +956,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       activeDialogVariant.colourway = productColourwayOptions(activeDialogProduct)[matchedColourway];
       if (selectedColourway) selectedColourway.textContent = activeDialogVariant.colourway;
     }
+    syncSecondaryGalleryImage(index, image, matchedColourway);
   };
 
   const showVariantImagePlaceholder = variantLabel => {
@@ -799,6 +976,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
 
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
     if (caption) caption.textContent = `${variantLabel} — image to be added`;
+    updateEditorialGalleryLayout(false);
   };
 
   mountImmersiveProductGallery({
@@ -820,6 +998,10 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   });
   collection.addEventListener('change', () => {
     activeCollection = collection.value;
+    commitFilterChange();
+  });
+  line.addEventListener('change', () => {
+    activeLine = line.value;
     commitFilterChange();
   });
   sortSelect.addEventListener('change', () => {
@@ -998,6 +1180,8 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       if (key === 'category') activeCategory = 'All';
       if (key === 'audience') activeAudience = 'All';
       if (key === 'collection') activeCollection = 'All';
+      if (key === 'line') activeLine = 'All';
+      if (key === 'garment') activeGarmentCategory = 'all';
       if (key === 'q') query = '';
       commitFilterChange();
       return;

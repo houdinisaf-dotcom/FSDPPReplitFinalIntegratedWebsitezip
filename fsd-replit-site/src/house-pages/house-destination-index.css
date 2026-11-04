@@ -1,0 +1,76 @@
+#fsd-house-archive .house-destination-index {
+  padding: 0 0 1.5rem;
+}
+
+#fsd-house-archive .house-destination-index__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+#fsd-house-archive .house-destination-index__division {
+  min-width: 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(212 175 55 / 24%);
+}
+
+#fsd-house-archive .house-destination-index__division h3 {
+  margin: 0 0 0.8rem;
+  color: #d4af37;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+#fsd-house-archive .house-destination-index__division ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#fsd-house-archive .house-destination-index__link {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  color: #e9e1d0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+#fsd-house-archive a.house-destination-index__link:hover,
+#fsd-house-archive a.house-destination-index__link:focus-visible {
+  color: #d4af37;
+}
+
+#fsd-house-archive .house-destination-index__link.is-disabled {
+  color: #a9a398;
+  cursor: not-allowed;
+}
+
+#fsd-house-archive .house-destination-index__status {
+  flex: 0 0 auto;
+  color: #a9a398;
+  font-size: 0.63rem;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 640px) {
+  #fsd-house-archive .house-destination-index__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #fsd-house-archive .house-destination-index__link {
+    transition: none;
+  }
+}

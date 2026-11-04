@@ -56,7 +56,7 @@ export const innovationHubPages = Object.freeze([
     initiative: true,
     houseRoute: 'bio-lab/smart-apparel',
     action: 'VIEW SMART APPAREL INITIATIVE',
-    actionHref: '/the-house.html#bio-lab/smart-apparel',
+    actionHref: '#smart-apparel-nfc',
   },
   {
     id: 'adaptive-technical-fabrics',
@@ -85,7 +85,7 @@ const standalonePages = Object.freeze([
     summary: 'Active infrastructure initiative exploring transportable spaces for training, limited apparel display, product testing, and community education. No Pod or site is live.',
     modules: ['Training & Product Testing', 'Limited Apparel Display', 'Community Education', 'Site, Safety & Operating Model'],
     action: 'VIEW GLOBAL VISION & OPERATIONS',
-    actionHref: '/the-house.html#global/pods',
+    actionHref: '/fsd-pods.html',
     initiative: true,
   },
   {
@@ -233,9 +233,7 @@ function renderTacticalShieldContent() {
 }
 
 export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}) {
-  const conceptLinks = innovationHubPages.map(page => `<a class="fsd-innovation-card" href="${page.initiative
-    ? `${escapeHTML('/the-house.html#')}${escapeHTML(page.houseRoute)}`
-    : `#${escapeHTML(page.id)}`}">
+  const conceptLinks = innovationHubPages.map(page => `<a class="fsd-innovation-card" href="#${escapeHTML(page.id)}">
     <span class="fsd-innovation-card-index">${String(innovationHubPages.indexOf(page) + 1).padStart(2, '0')}</span>
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHTML(page.title)}</strong>
@@ -323,4 +321,8 @@ function renderPage(page) {
 
 export function renderFlagshipPlaceholderPages() {
   return flagshipPageDefinitions.map(renderPage).join('');
+}
+
+export function renderBioLabPlaceholderPages() {
+  return innovationHubPages.map(renderPage).join('');
 }

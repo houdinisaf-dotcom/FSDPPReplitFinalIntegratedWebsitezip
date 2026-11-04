@@ -9,7 +9,14 @@ import {
   primaryNavigation,
   renderNavigationHeader,
 } from '../src/site-navigation.js';
-import { transformHousePageContent } from '../src/standalone-navigation-pages.js';
+import { renderHouseDraftPage } from '../src/standalone-navigation-pages.js';
+import { renderHouseDestinationIndex } from '../src/house-pages/house-destination-index.js';
+import {
+  HOUSE_FLAGSHIP_DRAFTS,
+  HOUSE_PAGE_REGISTRY,
+  isHouseDraftBuildFile,
+  shouldDisableHouseHref,
+} from '../src/data/house-page-readiness.js';
 
 const menu = createNavigationModel();
 
@@ -111,6 +118,20 @@ test('Fight Promotions exposes its verified page routes and keeps other concepts
   assert.match(page, /FSD conceptualizes professional fight promotions/);
   assert.match(page, /Concept for exploration\. Not a current product or commitment\./);
   assert.match(page, /No FSD location, event, or service is represented as operational\./);
+  assert.match(page, /The images are illustrative concept renderings and do not depict actual FSD events, venues, affiliated fighters, or partners\./);
+  assert.equal((page.match(/class="visual-card /g) || []).length, 6);
+  assert.match(page, /hero-arena\.webp/);
+  for (const image of [
+    'hero-arena.webp',
+    'corner-support.webp',
+    'crowd-atmosphere.webp',
+    'weigh-in-stage.webp',
+    'boxing-gloves.webp',
+    'broadcast-desk.webp',
+    'ring-walk.webp',
+  ]) {
+    assert.ok(existsSync(new URL(`../public/images/house/fight-promotions/${image}`, import.meta.url)), `Missing Fight Promotions image: ${image}`);
+  }
   assert.doesNotMatch(page, /We collaborate with elite athletes|<form\b|BOOK NOW|BUY NOW/i);
 });
 
@@ -190,48 +211,73 @@ test('Academy & Grassroots Programmes is an operating initiative page', () => {
   assert.doesNotMatch(page, /<form\b|BOOK NOW|BUY NOW|£\d/i);
 });
 
-test('The House page keeps only Founder Story from its original brand sections', () => {
+test('House destinations use independent routes and preview only approved internal draft placeholders', () => {
   const house = menu.find(section => section.id === 'house');
   const group = house?.groups.find(item => item.id === 'our-story');
-  const pagePath = new URL('../public/the-house.html', import.meta.url);
-  const page = transformHousePageContent(readFileSync(pagePath, 'utf8'));
-  const inlineScript = page.match(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script\s*>/i)?.[1] ?? '';
+  const flagships = house?.groups.find(item => item.id === 'flagships');
+  const founderPage = HOUSE_PAGE_REGISTRY.find(page => page.id === 'founder-story');
+  const founderHtml = renderHouseDraftPage(founderPage);
+  const flagshipHtml = renderHouseDraftPage(HOUSE_PAGE_REGISTRY.find(page => page.id === 'dublin'));
+  const storefront = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 
   assert.ok(group);
   assert.deepEqual(group.items.map(item => item.title), [
     'Founder Story',
   ]);
-  assert.equal(group.items[0].href, '/the-house.html#brand/founder');
+  assert.equal(group.items[0].href, '/story');
   assert.equal(group.items[0].kind, 'destination');
-  assert.ok(existsSync(pagePath));
-  assert.match(page, /<title>FSD \| The House<\/title>/);
-  assert.match(page, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
-  assert.match(page, /<div data-fsd-standalone-navigation><\/div>/);
-  assert.doesNotMatch(page, /Archive & Version History|Brand Story & Archive|OUR STORY & ARCHIVE|brand\/(?:archive|purpose|identity|press)|Purpose & Positioning|Brand Identity Standard|Press & Media Kit/);
-  assert.match(page, /The Architecture of Purpose/);
-  assert.match(page, /Fitness\. Discipline\. Progress\. Built on evidence rather than assertion\./);
-  assert.match(page, /Shaped by hands-on experience across frontline environments/);
-  assert.match(page, /Uncompromising Standards/);
-  assert.doesNotMatch(page, /The founder’s verified biography will appear here/);
-  assert.match(page, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
-  assert.doesNotMatch(page, /<a href="\/investor\.html">INVESTOR RELATIONS<\/a>/);
-  assert.match(page, /--bk:#0B0C0E/);
-  assert.match(page, /--gold:#C8AA72/);
-  assert.match(page, /--vg:#C8AA72/);
-  assert.match(page, /<nav class="house-sections" id="house-sections" aria-label="The House sections"><\/nav>/);
-  assert.doesNotMatch(page, /<div class="mega"|COLLECTION GROUPS|SUBCATEGORIES/);
-  assert.match(page, /id="initiative-disclaimer" role="note" hidden/);
-  assert.match(inlineScript, /const P=/);
-  assert.match(inlineScript, /,M=/);
-  assert.match(inlineScript, /window\.configureFSDInnovationRoutes\(P,M\)/);
-  assert.match(inlineScript, /const publicHouseGroups=new Set\(\['brand','bio-lab','community','global'\]\)/);
-  assert.match(inlineScript, /P\.brand\.subs\.map/);
-  assert.match(inlineScript, /addEventListener\('hashchange',render\)/);
-  assert.doesNotMatch(inlineScript, /publicInvestorCopy|investorMenu|investorOverview/);
-  assert.match(page, /<script src="\/innovation-initiative-data\.js"><\/script>/);
-  assert.match(page, /<script src="\/innovation-initiative-router\.js"><\/script>/);
-  assert.doesNotMatch(page, /A6FF00|C6A36A/);
-  assert.doesNotMatch(page, /private preview|private draft/i);
+  assert.deepEqual(flagships.items.map(item => item.title), HOUSE_FLAGSHIP_DRAFTS.map(item => item.title));
+  assert.deepEqual(flagships.items.map(item => item.href), HOUSE_FLAGSHIP_DRAFTS.map(item => item.path));
+  assert.ok(flagships.items.every(item => /no operating site or service is represented/i.test(item.description)));
+  assert.equal((founderHtml.match(/<main\b/g) || []).length, 1);
+  assert.equal((founderHtml.match(/<h1\b/g) || []).length, 1);
+  assert.equal((founderHtml.match(/class="hero"/g) || []).length, 1);
+  assert.equal((founderHtml.match(/<footer\b/g) || []).length, 1);
+  assert.match(founderHtml, /name="robots" content="noindex,nofollow"/);
+  assert.match(founderHtml, /Founder Story is not ready for publication/);
+  assert.doesNotMatch(founderHtml, /lifelong athlete|countless hours in the gym/i);
+  assert.equal((flagshipHtml.match(/<main\b/g) || []).length, 1);
+  assert.equal((flagshipHtml.match(/<h1\b/g) || []).length, 1);
+  assert.equal((flagshipHtml.match(/class="hero"/g) || []).length, 1);
+  assert.equal((flagshipHtml.match(/<footer\b/g) || []).length, 1);
+  assert.match(flagshipHtml, /No approved location, operator, or service details are available/);
+  const houseArchiveStart = storefront.indexOf('id="fsd-house-archive"');
+  const houseArchiveEnd = storefront.indexOf('</details>', houseArchiveStart);
+  const houseArchive = storefront.slice(houseArchiveStart, houseArchiveEnd);
+  assert.match(houseArchive, /\$\{renderHouseDestinationIndex\(\)\}/);
+  assert.doesNotMatch(houseArchive, /ourStorySection|renderInnovationHubIndex|renderBioLabPlaceholderPages|renderFlagshipPlaceholderPages/);
+  assert.ok(storefront.indexOf('id="bio-lab-archive"') > houseArchiveEnd);
+  assert.doesNotMatch(storefront, /function renderHousePreviewPages|window\.configureFSDInnovationRoutes/);
+});
+
+test('House publication policy previews drafts in development and disables their production links', () => {
+  assert.equal(HOUSE_PAGE_REGISTRY.length, 22);
+  assert.equal(shouldDisableHouseHref('/story', true), true);
+  assert.equal(shouldDisableHouseHref('/flagships/dublin.html', true), true);
+  assert.equal(shouldDisableHouseHref('/investor.html', true), true);
+  assert.equal(shouldDisableHouseHref('/security-vision.html', true), false);
+  assert.equal(shouldDisableHouseHref('/story'), false);
+  assert.equal(isHouseDraftBuildFile('the-house.html'), true);
+  assert.equal(isHouseDraftBuildFile('investor.html'), true);
+  assert.equal(isHouseDraftBuildFile('story/index.html'), true);
+  assert.equal(isHouseDraftBuildFile('flagships/dublin.html'), true);
+  assert.equal(isHouseDraftBuildFile('security-vision.html'), false);
+});
+
+test('the homepage House archive links to destinations instead of rendering sibling page bodies', () => {
+  const developmentIndex = renderHouseDestinationIndex({ production: false });
+  const productionIndex = renderHouseDestinationIndex({ production: true });
+  const developmentHrefs = [...developmentIndex.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+  const productionHrefs = [...productionIndex.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+  const notReadyPages = HOUSE_PAGE_REGISTRY.filter(page => page.readiness === 'NOT_READY');
+  const publicPages = HOUSE_PAGE_REGISTRY.filter(page => page.readiness === 'PUBLIC');
+
+  assert.deepEqual(developmentHrefs, HOUSE_PAGE_REGISTRY.map(page => page.path));
+  assert.deepEqual(productionHrefs, publicPages.map(page => page.path));
+  assert.equal((productionIndex.match(/class="house-destination-index__link is-disabled"/g) || []).length, notReadyPages.length);
+  assert.doesNotMatch(developmentIndex, /\/the-house\.html#/);
+  assert.doesNotMatch(developmentIndex, /<main\b|<header\b|class="hero"/);
+  assert.match(developmentIndex, /id="house-division-1"/);
 });
 
 test('Shop foregrounds collection groups and removes the redundant All Products group', () => {
@@ -284,7 +330,7 @@ test('SHOP Clothing Lines adds seven explicit destinations and a browse-all acti
     id,
     title,
     'clothing-line',
-    `#line-${id}`,
+    `/collections/${id}`,
   ]));
   assert.deepEqual(
     [clothingGroup.items[0].kind, clothingGroup.items[0].href],
@@ -394,13 +440,14 @@ test('Bio-Lab and Hardware reuse current division groups and product records', (
   ]);
   assert.ok(bioLab.groups[0].items.length > 0);
   assert.equal(bioLab.groups[1].items[0].title, 'Browse Innovation Hub');
+  assert.equal(bioLab.groups[1].href, '#innovation-hub');
   assert.equal(bioLab.groups[1].items[0].href, '#innovation-hub');
   assert.ok(bioLab.groups[1].items.some(item =>
     item.title === 'Adaptive Technical Fabrics'
-      && item.href === '/the-house.html#bio-lab/adaptive-fabrics'));
+      && item.href === '#adaptive-technical-fabrics'));
   assert.ok(bioLab.groups[1].items.some(item =>
     item.title === 'Smart Apparel & NFC Authentication'
-      && item.href === '/the-house.html#bio-lab/smart-apparel'));
+      && item.href === '#smart-apparel-nfc'));
   assert.deepEqual(hardware.groups.map(group => group.title), [
     ...collectionDivisions.find(division => division.id === 'hardware').groups.map(group => group.title),
   ]);
@@ -470,21 +517,21 @@ test('House navigation maps the public initiative homes and rollout details', ()
     'COMMUNITY & CULTURE',
   ]);
   assert.ok(house.groups.filter(group => group.href).every(group =>
-    ['/the-house.html#brand/founder', '/the-house.html#community/co-creation', '/the-house.html#global/pods', '/investor.html'].includes(group.href)));
+    ['/story', '/community-co-creation.html', '/fsd-pods.html', '/investor.html'].includes(group.href)));
   const story = house.groups.find(group => group.id === 'our-story');
   const flagships = house.groups.find(group => group.id === 'flagships');
   const fightPromotions = house.groups.find(group => group.id === 'fight-promotions');
   const community = house.groups.find(group => group.id === 'community-culture');
   const globalOperations = house.groups.find(group => group.id === 'global-vision-operations');
   const investor = house.groups.find(group => group.id === 'investor-relations');
-  assert.equal(story.href, '/the-house.html#brand/founder');
+  assert.equal(story.href, '/story');
   assert.deepEqual(story.items.map(item => item.title), [
     'Founder Story',
   ]);
   assert.equal(story.items[0].description, 'Fitness. Discipline. Progress.');
-  assert.equal(story.description, 'Explore The Architecture of Purpose and the FSD manifesto.');
-  assert.ok(story.items.every(item => item.href.startsWith('/the-house.html#brand/')));
-  assert.ok(flagships.items.every(item => /no location or service is represented as operational/i.test(item.description)));
+  assert.equal(story.description, 'Founder Story.');
+  assert.ok(story.items.every(item => item.href === '/story'));
+  assert.ok(flagships.items.every(item => /no operating site or service is represented/i.test(item.description)));
   assert.equal(flagships.href, '');
   assert.equal(flagships.sourceDivisionId, 'global');
   assert.equal(flagships.sourceGroupIndex, 0);
@@ -508,7 +555,7 @@ test('House navigation maps the public initiative homes and rollout details', ()
   assert.equal(community.items[3].href, '/community-first-aid.html');
   assert.equal(community.items[3].kind, 'initiative');
   assert.equal(community.items[3].status, 'Operating or rollout underway');
-  assert.ok(community.items.slice(4).every(item => item.href.startsWith('/the-house.html#community/')));
+  assert.ok(community.items.every(item => item.href.endsWith('.html')));
   assert.deepEqual(globalOperations.items.map(item => item.title), [
     'FSD Pods',
     'Autonomous Pop-Ups & Predictive Stock',
@@ -535,7 +582,7 @@ test('House navigation maps the public initiative homes and rollout details', ()
   assert.equal(globalOperations.items[5].href, '/security-vision.html');
   assert.equal(globalOperations.items[5].kind, 'initiative');
   assert.equal(globalOperations.items[5].status, 'Strategic expansion; not operational');
-  assert.ok(globalOperations.items.slice(6).every(item => item.href.startsWith('/the-house.html#global/')));
+  assert.ok(globalOperations.items.every(item => item.href.endsWith('.html')));
   assert.equal(investor.href, '/investor.html');
   assert.equal(investor.navigationUnavailable, false);
 });
@@ -577,7 +624,7 @@ test('Autonomous Pop-Ups & Predictive Stock is an initiative without claiming li
   assert.match(page, /No live forecasting model or automated stock system is available/);
   assert.match(page, /not unstaffed or cashier-less retail/);
   assert.match(page, /click-and-collect, and location-based availability require future system development/);
-  assert.match(page, /No live inventory, location, or demand data is shown/);
+  assert.doesNotMatch(page, /class="visual-placeholder"|Illustrative (?:dashboard|mobile interface) placeholder/);
   assert.match(retail?.description || '', /not unstaffed or cashier-less retail/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
 });
@@ -599,7 +646,7 @@ test('Mobile Testing Labs is an initiative with consent safeguards and no live-t
   assert.match(page, /anonymised performance and fit insights with participant consent/);
   assert.match(page, /No mobile testing unit, venue, test, or data-collection activity is currently represented as operational/);
   assert.match(page, /No biometric sensor tracking or biometric data collection is in confirmed scope/);
-  assert.match(page, /No live terminal, participant data, or feedback system is shown/);
+  assert.doesNotMatch(page, /class="visual-placeholder"|Illustrative (?:mobile unit|participant feedback interface) placeholder/);
   assert.match(testingLabs?.description || '', /biometric sensor tracking is not in confirmed scope/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
 });
@@ -689,7 +736,7 @@ test('Community Co-Creation is an operating initiative without an open submissio
   assert.match(page, /No workshop, testing panel, forum, feedback portal, or community event is represented as currently operating/);
   assert.match(page, /Participation is feedback only; it does not grant shares, tokens, profit-sharing, or voting rights over the company/);
   assert.match(page, /potential benefits to assess, not guaranteed outcomes/);
-  assert.match(page, /Illustrative feedback interface/);
+  assert.doesNotMatch(page, /class="visual-placeholder"|Illustrative feedback interface/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b/i);
 });
 
@@ -733,7 +780,7 @@ test('Circular Trade-In describes the initiative without opening a return or cre
   assert.match(page, /No partner or operating process is confirmed/);
   assert.match(page, /No zero-waste or verified environmental-impact claim is made/);
   assert.match(page, /potential aims, not verified outcomes or guarantees/);
-  assert.match(page, /Illustrative trade-in counter/);
+  assert.doesNotMatch(page, /class="visual-placeholder"|Illustrative trade-in counter/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b|trade-in credit is available/i);
 });
 

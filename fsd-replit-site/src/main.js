@@ -4,14 +4,17 @@ import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
 import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation, mountGarmentStudies } from './showroom-sections.js';
 import { renderNavigationHeader } from './site-navigation.js';
-import { ourStorySection } from './story-section.js';
 import { mountClientBag } from './bag.js';
-import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
+import { FSD_HOUSE_PAGE_PATH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { CATALOGUE_COLLECTIONS } from './catalogue-collections.js';
-import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
+import { seoEntryForPath } from './site-seo.js';
+import { flagshipPageHashes, renderBioLabPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
 import { mountStorefrontMotion } from './motion-runtime.js';
 import { siteMedia } from './data/site-media.js';
 import { imagePlaceholderMarkup, installImageErrorFallbacks } from './image-placeholder.js';
+import { HOUSE_PAGE_REGISTRY } from './data/house-page-readiness.js';
+import { renderHouseDestinationIndex } from './house-pages/house-destination-index.js';
+import { ourStorySection } from './story-section.js';
 import './style.css';
 import './catalogue.css';
 import './product-detail.css';
@@ -28,8 +31,11 @@ import './image-placeholders.css';
 import './homepage-phase3.css';
 import './showroom-phase8.css';
 import './immersive-product-gallery.css';
+import './house-pages/house-destination-index.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
+
+const housePagePaths = new Set(HOUSE_PAGE_REGISTRY.map(page => page.path));
 
 export function renderStorefrontHeader() {
   const currentBrandMarkup = '<span data-fsd-logo-slot="header"></span>';
@@ -66,6 +72,11 @@ function hardwareEditorialSection() {
 }
 
 export function renderStorefrontMarkup() {
+  const storyFooterLink = housePagePaths.has(FSD_STORY_PATH)
+    && import.meta.env.PROD
+    ? '<a aria-disabled="true" tabindex="-1">THE HOUSE / OUR STORY</a>'
+    : `<a href="${FSD_STORY_PATH}">THE HOUSE / OUR STORY</a>`;
+
   return `<main id="home">
   <div data-home-hero-slot></div>
   <div id="collections">
@@ -84,14 +95,20 @@ export function renderStorefrontMarkup() {
   ${houseConnectionSection()}
   </main>
   <div data-fsd-clothing-lines-slot></div>
+  ${ourStorySection()}
   <details class="showroom-archive showroom-archive--discover" id="fsd-house-archive">
     <summary>DISCOVER THE FSD HOUSE</summary>
     <div class="showroom-archive-content">
-      ${ourStorySection()}
-      ${renderInnovationHubIndex({ includePrivatePreviews: import.meta.env.DEV })}
-      ${renderFlagshipPlaceholderPages()}
+      ${renderHouseDestinationIndex()}
       ${import.meta.env.DEV ? '<div data-dev-review-slot></div>' : ''}
       ${vipAccessSection()}
+    </div>
+  </details>
+  <details class="showroom-archive showroom-archive--catalogue" id="bio-lab-archive">
+    <summary>FSD BIO-LAB™ / INNOVATION HUB</summary>
+    <div class="showroom-archive-content">
+      ${renderInnovationHubIndex()}
+      ${renderBioLabPlaceholderPages()}
     </div>
   </details>
   <details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">
@@ -103,7 +120,7 @@ export function renderStorefrontMarkup() {
     <div><p>STRENGTH / DISCIPLINE / CONFIDENCE</p><span>© ${new Date().getFullYear()} FSD. Fitness &amp; Self-Defence.</span>
       <nav class="footer-links" aria-label="Footer navigation"><a href="#universe">FSD COLLECTIONS</a><a href="#products">BROWSE CATALOGUE</a>
       <a href="#contact">VIP ACCESS</a></nav>
-      <nav class="footer-links" aria-label="Corporate navigation"><a href="${FSD_STORY_PATH}">THE HOUSE / OUR STORY</a><a href="#fsd-division-global">FSD GLOBAL</a></nav>
+      <nav class="footer-links" aria-label="Corporate navigation">${storyFooterLink}<a href="#fsd-division-global">FSD GLOBAL</a></nav>
       <nav class="footer-links" aria-label="Customer information">
         <a href="/delivery-returns.html">Delivery &amp; Returns</a>
         <a href="/size-guide.html">Size Guide</a>
@@ -144,13 +161,22 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
       || (['clothing-lines', 'catalogue-collections'].includes(group?.id) && !item))) {
     const destination = item?.href || group?.href;
     const url = new URL(destination, window.location.origin);
-    const validTarget = url.origin === window.location.origin
+    const validCollectionPath = url.origin === window.location.origin
+      && seoEntryForPath(url.pathname)?.route?.view === 'collection';
+    const validHash = url.origin === window.location.origin
       && url.pathname === '/'
       && (['#clothing-lines', '#technical-collections-archive'].includes(url.hash)
+        || CATALOGUE_COLLECTIONS.some(collection => collection.kind === 'clothing-line'
+          && `#line-${collection.id}` === url.hash)
         || CATALOGUE_COLLECTIONS.some(collection =>
           new URL(collection.href, window.location.origin).hash === url.hash));
-    if (!validTarget) return;
+    if (!validCollectionPath && !validHash) return;
     window.history.pushState(window.history.state || {}, '', url.href);
+    if (validCollectionPath) {
+      onRouteChange(resolveFsdRoute(selection));
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
     window.dispatchEvent(new HashChangeEvent('hashchange'));
     return;
   }
@@ -199,24 +225,10 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
       || destination === '/community-first-aid.html'
       || destination === '/security-vision.html'
       || destination === '/investor.html'
+      || housePagePaths.has(destination)
       || destination === FSD_HOUSE_PAGE_PATH
       || destination.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) {
       window.location.assign(destination);
-      return;
-    }
-    if (destination.replace(/\/+$/, '') === FSD_STORY_PATH) {
-      const storyUrl = new URL(FSD_STORY_PATH, window.location.origin);
-      if (window.location.pathname.replace(/\/+$/, '') !== FSD_STORY_PATH || window.location.hash) {
-        window.history.pushState(window.history.state || {}, '', storyUrl);
-      }
-      const storyTarget = document.querySelector(FSD_STORY_HASH);
-      for (let parent = storyTarget?.parentElement; parent; parent = parent.parentElement) {
-        if (parent instanceof HTMLDetailsElement) parent.open = true;
-      }
-      storyTarget?.scrollIntoView({
-        behavior: scrollBehavior(),
-        block: 'start',
-      });
       return;
     }
     if ((flagshipPageHashes.has(destination) || resolveFsdRoute({ item: { href: destination } }).view === 'page')

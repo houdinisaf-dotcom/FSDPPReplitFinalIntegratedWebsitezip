@@ -15,6 +15,12 @@ Wait for native dialog close-handler cleanup before asserting focus restoration 
 
 **How to apply:** Assert the final focus/scroll-lock cleanup state, and ignore a queued old close event if the dialog has already reopened.
 
+CDP `Runtime.evaluate` wait predicates must return serializable primitives, not DOM nodes.
+
+**Why:** Returning a matched element with `returnByValue` can fail with “Object reference chain is too long,” which looks like an application error even when the page is healthy.
+
+**How to apply:** Wrap selector checks in `Boolean(...)` and return strings, numbers, or booleans from browser-test expressions.
+
 Do not trust responsive measurements after switching an already-loaded desktop Chromium target to `mobile: true`.
 
 **Why:** In this project, mobile emulation after page load left `innerWidth` at 1120px and scaled the visual viewport, even after reload, making screenshots appear cropped or zoomed.

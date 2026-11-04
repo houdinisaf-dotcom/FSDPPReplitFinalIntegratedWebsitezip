@@ -40,7 +40,7 @@ test('all named initiatives are public and mapped to their approved platform hom
 test('public initiative copy removes exploratory labels and retains safety and privacy boundaries', () => {
   const source = readPublic('innovation-initiative-data.js');
   const router = readPublic('innovation-initiative-router.js');
-  const publicPage = readPublic('the-house.html');
+  const publicPage = readPublic('fsd-pods.html');
   const context = { window: {} };
   vm.runInNewContext(source, context);
   const smartApparel = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).bioLab
@@ -120,5 +120,5 @@ test('public initiative copy removes exploratory labels and retains safety and p
   assert.match(source, /FSD is not an emergency service/i);
   assert.match(source, /No tests, kits, sample collection, or data analysis are operating/i);
   assert.match(source, /No partner is represented as agreed/i);
-  assert.doesNotMatch(publicPage, /No location, service, event or product described is represented as operational or available for sale/i);
+  assert.match(publicPage, /No FSD Pod, location, or service is currently represented as operational/);
 });

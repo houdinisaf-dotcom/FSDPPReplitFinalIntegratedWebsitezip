@@ -176,6 +176,12 @@
     }
 
     @media (max-width: 600px) {
+      .fsd h1 {
+        font-size: clamp(1.75rem, 7vw, 2.25rem);
+        letter-spacing: .04em;
+        overflow-wrap: anywhere;
+      }
+
       .fsd section {
         width: min(calc(100% - 32px), 1000px);
         padding: 44px 0;
@@ -236,20 +242,6 @@
         </article>
       </div>
     </section>
-    <div class="visual-grid" aria-label="Illustrative research placeholders">
-      <div class="visual-placeholder" role="img" aria-label="Illustrative research laboratory placeholder; no testing facility is represented">
-        <strong>Illustrative research-lab placeholder</strong>
-        <span>No laboratory, sample handling, or testing service is represented as operating.</span>
-      </div>
-      <div class="visual-placeholder" role="img" aria-label="Illustrative data visualisation placeholder; no genetic result or profile is shown">
-        <strong>Illustrative research visualisation</strong>
-        <span>No genetic predisposition, metabolic pathway, or customer profile is shown.</span>
-      </div>
-      <div class="visual-placeholder" role="img" aria-label="Illustrative consultation placeholder; no clinical consultation is available">
-        <strong>Illustrative consultation placeholder</strong>
-        <span>No practitioner, clinical partner, or personalised consultation is available.</span>
-      </div>
-    </div>
     <section class="value-panel" aria-labelledby="genetic-microbiome-value-title">
       <h2 id="genetic-microbiome-value-title">03 / Potential Research Value</h2>
       <div class="badge-grid">

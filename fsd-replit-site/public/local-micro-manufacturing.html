@@ -181,6 +181,12 @@
     }
 
     @media (max-width: 600px) {
+      .fsd h1 {
+        font-size: clamp(1.75rem, 7vw, 2.25rem);
+        letter-spacing: .04em;
+        overflow-wrap: anywhere;
+      }
+
       .fsd section {
         width: min(calc(100% - 32px), 1000px);
         padding: 44px 0;
@@ -242,20 +248,6 @@
         </article>
       </div>
     </section>
-    <div class="visual-grid" aria-label="Illustrative micro-manufacturing placeholders">
-      <div class="visual-placeholder" role="img" aria-label="Illustrative local workshop placeholder; no manufacturing site is operating">
-        <strong>Illustrative workshop placeholder</strong>
-        <span>No manufacturing hub, partner, or production site is represented as operational.</span>
-      </div>
-      <div class="visual-placeholder" role="img" aria-label="Illustrative logo application equipment placeholder; no production process is live">
-        <strong>Precision application placeholder</strong>
-        <span>No equipment or local production process is represented as live.</span>
-      </div>
-      <div class="visual-placeholder" role="img" aria-label="Illustrative quality control and packaging placeholder; no fulfillment operation is live">
-        <strong>Quality &amp; packaging placeholder</strong>
-        <span>No product inspection or regional fulfillment operation is represented as active.</span>
-      </div>
-    </div>
     <section class="value-panel" aria-labelledby="local-micro-manufacturing-value-title">
       <h2 id="local-micro-manufacturing-value-title">03 / Potential Strategic Value</h2>
       <div class="badge-grid">

@@ -26,6 +26,22 @@ const imageReferences = {
   'FSD Aeroforge Hybrid Short': [
     { src: '/assets/products/aeroforge-hybrid-short/aeroforge-black-green-lifestyle.webp', label: 'Black/Green / Front lifestyle view', colourway: 'Black/Green' },
   ],
+  'FSD Aeroforge Tech Set (Zip Hoodie & Joggers)': [
+    { src: '/assets/products/aeroforge-tech-set/black-green/01-full-set-front.webp', label: 'Black/Green / Full set front view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/02-full-set-rear.webp', label: 'Black/Green / Full set rear view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/03-standing-training.webp', label: 'Black/Green / Standing training view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/04-running-lifestyle.webp', label: 'Black/Green / Running lifestyle view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/05-jump-rope-training.webp', label: 'Black/Green / Jump-rope training view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/06-front-portrait.webp', label: 'Black/Green / Front portrait view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/07-seated-womens-lifestyle.webp', label: 'Black/Green / Seated women’s lifestyle view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/08-seated-mens-lifestyle.webp', label: 'Black/Green / Seated men’s lifestyle view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/09-joggers-front.webp', label: 'Black/Green / Joggers front view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/10-joggers-rear.webp', label: 'Black/Green / Joggers rear view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/11-hoodie-front.webp', label: 'Black/Green / Hoodie front view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/12-hoodie-rear.webp', label: 'Black/Green / Hoodie rear view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/13-womens-wide-lifestyle.webp', label: 'Black/Green / Women’s wide lifestyle view', colourway: 'Black/Green' },
+    { src: '/assets/products/aeroforge-tech-set/black-green/14-mens-wide-lifestyle.webp', label: 'Black/Green / Men’s wide lifestyle view', colourway: 'Black/Green' },
+  ],
   'FSD Ombré Slash Tee': [
     { src: '/images/ombre-indigo.png', label: 'Vintage indigo fading to jet black' },
     { src: '/images/ombre-blue.png', label: 'Electric cobalt fading to jet black' },
@@ -164,7 +180,7 @@ export const products = masterProducts
     publicationStatus: p['Publication status'] ?? '',
     confirmedPrice: p['Price (£) confirmed'] === '' ? null : Number(p['Price (£) confirmed']),
     colourways: p.Colourways,
-    ...([19, 42].includes(p.id) && typeof p.Colourways === 'string'
+    ...([19, 26, 42].includes(p.id) && typeof p.Colourways === 'string'
       ? { rowColourways: p.Colourways.split(',').map(value => value.trim()).filter(Boolean) }
       : {}),
     collection: p['Collection line'],

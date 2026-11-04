@@ -3,8 +3,9 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { copyFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { standaloneNavigationPagesPlugin } from './src/standalone-navigation-pages.js';
+import { HOUSE_DRAFT_BUILD_FILES } from './src/data/house-page-readiness.js';
 import { draftReviewPlugin } from './scripts/draft-review-plugin.mjs';
 import { aeroforgePrivatePreviewPlugin } from './scripts/aeroforge-private-preview-plugin.mjs';
 import { modestFlowPrivatePreviewPlugin } from './scripts/modest-flow-private-preview-plugin.mjs';
@@ -16,15 +17,21 @@ import { siteSeoPlugin } from './scripts/site-seo-plugin.mjs';
 
 const projectRoot = fileURLToPath(new URL('.', import.meta.url));
 
-function staticStoryRoutePlugin() {
+function blockedHouseRoutePlugin() {
   return {
-    name: 'fsd-static-story-route',
+    name: 'fsd-blocked-house-draft-routes',
     apply: 'build',
-    async closeBundle() {
+    closeBundle: {
+      order: 'post',
+      async handler() {
       const output = resolve(projectRoot, 'dist');
-      const storyDirectory = resolve(output, 'story');
-      await mkdir(storyDirectory, { recursive: true });
-      await copyFile(resolve(output, 'index.html'), resolve(storyDirectory, 'index.html'));
+        const notFoundPage = resolve(output, '404.html');
+        for (const fileName of HOUSE_DRAFT_BUILD_FILES) {
+          const destination = resolve(output, fileName);
+          await mkdir(dirname(destination), { recursive: true });
+          await copyFile(notFoundPage, destination);
+        }
+      },
     },
   };
 }
@@ -55,7 +62,7 @@ export default defineConfig({
     womensCollectionPrivatePreviewPlugin(),
     hardwareForgePrivatePreviewPlugin(),
     prelaunchSignupApiPlugin(),
-    staticStoryRoutePlugin(),
+    blockedHouseRoutePlugin(),
     standaloneNavigationPagesPlugin(projectRoot),
     siteSeoPlugin(projectRoot),
   ],

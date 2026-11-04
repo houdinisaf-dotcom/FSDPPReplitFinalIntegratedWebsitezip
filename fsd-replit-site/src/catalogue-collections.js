@@ -14,10 +14,11 @@ const technicalGroups = collectionDivisions.flatMap(division => (division.groups
 export const CATALOGUE_COLLECTIONS = Object.freeze([
   ...CLOTHING_LINES.map(line => Object.freeze({
     id: line.id, title: line.title, kind: 'clothing-line',
-    href: `#line-${line.id}`, accentColour: line.colour,
+    href: `/collections/${line.id}`, accentColour: line.colour,
     linkedCatalogueCollection: line.id,
     logoAsset: resolveCollectionLogo(line.id).src,
     bannerImageReference: CLOTHING_LINE_ASSETS[line.id]?.banner || null,
+    mobileBannerImageReference: CLOTHING_LINE_ASSETS[line.id]?.mobileBanner || null,
   })),
   ...technicalGroups.map(group => Object.freeze({
     id: group.id, title: group.title, kind: 'catalogue-collection',
@@ -25,6 +26,7 @@ export const CATALOGUE_COLLECTIONS = Object.freeze([
     linkedCatalogueCollection: group.id, divisionId: group.divisionId,
     logoAsset: COLLECTION_IMAGE_ASSETS[group.id]?.logo || null,
     bannerImageReference: COLLECTION_IMAGE_ASSETS[group.id]?.banner || null,
+    mobileBannerImageReference: COLLECTION_IMAGE_ASSETS[group.id]?.mobileBanner || null,
   })),
 ]);
 

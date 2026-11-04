@@ -95,7 +95,7 @@
 .catalogue-dialog-images figcaption { padding: 10px; color: #555c66; font-size: 12px; }
 .catalogue-dialog-images .catalogue-placeholder { min-height: 370px; }
 #product-dialog {
-  width: min(1260px, calc(100vw - 36px));
+  width: min(1500px, calc(100vw - 28px));
   max-width: none;
   max-height: min(940px, calc(100dvh - 32px));
   overflow: auto;

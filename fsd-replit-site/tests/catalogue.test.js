@@ -5,13 +5,21 @@ import master from '../src/master-products.json' with { type: 'json' };
 import additional from '../src/additional-catalog.json' with { type: 'json' };
 import { galleryProductIds, galleryProducts } from '../src/gallery.js';
 import { products, heldProducts, retiredProducts, categories, filterProducts, getVerifiedProductSpecifications, imageSwatchBackground, priceInfo, safe } from '../src/catalogue-data.js';
-import { catalogueSection, roadmapSection, innovationsSection, initCatalogue, navigateCatalogue } from '../src/catalogue.js';
+import {
+  catalogueSection,
+  roadmapSection,
+  innovationsSection,
+  initCatalogue,
+  navigateCatalogue,
+  selectCatalogueGarmentCategory,
+} from '../src/catalogue.js';
 import { crossfadeMappedImage } from '../src/catalogue-image-gallery.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
 import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
 import { renderNavigationHeader } from '../src/site-navigation.js';
 import { siteMedia } from '../src/data/site-media.js';
+import { HOUSE_PAGE_REGISTRY, shouldDisableHouseHref } from '../src/data/house-page-readiness.js';
 import { imagePlaceholderMarkup, installImageErrorFallbacks } from '../src/image-placeholder.js';
 import {
   productCardColourwaysMarkup,
@@ -20,7 +28,13 @@ import {
   productColourwayOptions,
 } from '../src/product-card-media.js';
 import { ourStorySection } from '../src/story-section.js';
-import { flagshipPageHashes, renderFlagshipPlaceholderPages, renderInnovationHubIndex } from '../src/flagship-pages.js';
+import {
+  flagshipPageHashes,
+  renderBioLabPlaceholderPages,
+  renderFlagshipPlaceholderPages,
+  renderInnovationHubIndex,
+} from '../src/flagship-pages.js';
+import { renderHouseDestinationIndex } from '../src/house-pages/house-destination-index.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
   assert.equal(master.length, 79);
@@ -486,7 +500,7 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 15);
+  assert.equal(products.filter(p => p.images.length).length, 16);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
@@ -502,7 +516,7 @@ test('colourways share one record, verified image references exist, and unknown 
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 18, 19, 33, 34, 42, 43, 52, 56, 57, 70, 71, 73, 75]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 18, 19, 26, 33, 34, 42, 43, 52, 56, 57, 70, 71, 73, 75]);
   assert.deepEqual(products.find(p => p.id === 18).images.map(image => image.src), [
     '/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp',
     '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-fit.webp',
@@ -699,6 +713,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /class="product-image"|<img\b/);
     assert.equal(element('#catalogue-grid').dataset.view, 'visual');
     assert.match(catalogueSection(), /id="catalogue-grid" data-view="visual"/);
+    assert.match(element('#catalogue-grid').innerHTML, /data-content-status="CONTENT PENDING"/);
     assert.doesNotMatch(catalogueSection(), /data-catalogue-view/);
     assert.match(element('#catalogue-pagination').innerHTML, /Page 1 of \d+/);
 
@@ -737,6 +752,16 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
       element('#catalogue-count').textContent,
       `Showing 1–${hijabProductCount} of ${hijabProductCount} products`,
     );
+    navigateCatalogue({ audience: 'Women’s' });
+    const womenCount = filterProducts('All', '', 'Women’s').length;
+    assert.equal(
+      element('#catalogue-count').textContent,
+      `Showing 1–${Math.min(12, womenCount)} of ${womenCount} products`,
+    );
+    assert.equal(selectCatalogueGarmentCategory('sports-hijabs'), true);
+    assert.equal(element('#catalogue-count').textContent, 'Showing 1–4 of 4 products');
+    assert.equal((element('#catalogue-grid').innerHTML.match(/class="product-card"/g) ?? []).length, 4);
+    assert.equal(selectCatalogueGarmentCategory('not-a-category'), false);
 
     click('[data-product]', { dataset: { product: '10' } });
     assert.equal(element('#product-dialog').open, true);
@@ -870,6 +895,20 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
       assert.equal(element('#dialog-body').innerHTML, beforeHeldAttempt);
     }
 
+    navigateCatalogue({ audience: 'Women’s' });
+    assert.match(element('#catalogue-line').innerHTML, /aeroforge/);
+    navigateCatalogue({ audience: 'Women’s', line: 'aeroforge' });
+    assert.equal(element('#catalogue-count').textContent, 'Showing 1–3 of 3 products');
+    assert.match(element('#catalogue-grid').innerHTML, /data-product="38"/);
+    assert.match(element('#catalogue-grid').innerHTML, /data-product="39"/);
+    assert.match(element('#catalogue-grid').innerHTML, /data-product="51"/);
+    assert.doesNotMatch(element('#catalogue-grid').innerHTML, /data-product="18"/);
+    assert.equal(selectCatalogueGarmentCategory('leggings'), true);
+    assert.equal(element('#catalogue-count').textContent, 'No matching products');
+    assert.match(element('#catalogue-active-filters').innerHTML, /AEROFORGE/);
+    assert.match(element('#catalogue-active-filters').innerHTML, /Leggings/);
+
+    navigateCatalogue({ audience: 'All', collection: 'All', line: 'All' });
     element('#catalogue-category').value = 'Gym Hardware and Accessories';
     handlers.get('#catalogue-category:change')();
     const hardwareProductCount = filterProducts('Gym Hardware and Accessories').length;
@@ -881,7 +920,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /No visual matches for these filters/);
     assert.match(element('#catalogue-grid').innerHTML, /VIEW DETAILS/);
-    const renderedHardwareCards = [...element('#catalogue-grid').innerHTML.matchAll(/<article class="product-card">[\s\S]*?<\/article>/g)]
+    const renderedHardwareCards = [...element('#catalogue-grid').innerHTML.matchAll(/<article class="product-card"[^>]*>[\s\S]*?<\/article>/g)]
       .map(([markup]) => markup);
     for (const id of [69, 70, 71, 72]) {
       const previewCard = renderedHardwareCards.find(markup => markup.includes(`data-product="${id}"`));
@@ -975,7 +1014,8 @@ test('the complete public page excludes held imagery while retaining internal so
   const source = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8')
     .replace(/^import .+;\r?\n/gm, '')
     .replace(/^export /gm, '')
-    .replaceAll('import.meta.env.DEV', 'false');
+    .replaceAll('import.meta.env.DEV', 'false')
+    .replaceAll('import.meta.env.PROD', 'false');
   const elements = new Map();
   const document = {
     querySelector(selector) {
@@ -997,7 +1037,8 @@ test('the complete public page excludes held imagery while retaining internal so
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       FSD_STORY_PATH: '/story',
       ourStorySection, flagshipPageHashes, renderFlagshipPlaceholderPages,
-      renderInnovationHubIndex,
+      renderInnovationHubIndex, renderBioLabPlaceholderPages, renderHouseDestinationIndex,
+      HOUSE_PAGE_REGISTRY, shouldDisableHouseHref,
       renderHardwareForgePreview: () => '',
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
       initCatalogueNavigation() {}, showProduct() {}, mountClientBag() { return { addToBag() {} }; },

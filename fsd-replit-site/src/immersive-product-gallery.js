@@ -176,7 +176,8 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
         <span data-gallery-count aria-live="polite"></span>
         <button type="button" data-gallery-step="1" aria-label="Next selected-colourway view">→</button>
         <button type="button" data-gallery-fullscreen>FULL-SCREEN / INSPECT</button>`;
-      gallery.querySelector('figure')?.after(tools);
+      const featureGrid = gallery.querySelector('.product-detail-gallery__feature-grid');
+      (featureGrid || gallery.querySelector('figure'))?.after(tools);
       const imageStage = gallery.querySelector('.product-detail-image-stage');
       if (imageStage) {
         imageStage.tabIndex = 0;

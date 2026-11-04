@@ -1,5 +1,6 @@
 import { products, priceInfo } from './catalogue-data.js';
-import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
+import { FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
+import { shouldDisableHouseHref } from './data/house-page-readiness.js';
 import { siteMedia } from './data/site-media.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
 
@@ -31,8 +32,8 @@ export function beyondProductSection() {
     {
       group: 'WEAR',
       concepts: [
-        ['Smart Apparel', 'OPERATING OR ROLLOUT UNDERWAY', 'No live NFC authentication, content portal, rewards, or data collection.', `${FSD_HOUSE_PAGE_PATH}#bio-lab/smart-apparel`],
-        ['Adaptive Technical Fabrics', 'OPERATING OR ROLLOUT UNDERWAY', 'Material research only; no fabric product is represented as available.', `${FSD_HOUSE_PAGE_PATH}#bio-lab/adaptive-fabrics`],
+        ['Smart Apparel', 'OPERATING OR ROLLOUT UNDERWAY', 'No live NFC authentication, content portal, rewards, or data collection.', '#smart-apparel-nfc'],
+        ['Adaptive Technical Fabrics', 'OPERATING OR ROLLOUT UNDERWAY', 'Material research only; no fabric product is represented as available.', '#adaptive-technical-fabrics'],
         ['Circular Trade-In', 'OPERATING OR ROLLOUT UNDERWAY', 'No return service, eligibility, collection, or credit terms are available.', '/circular-trade-in.html'],
       ],
     },
@@ -78,19 +79,19 @@ export const garmentStudyDefinitions = [
     id: 'leggings',
     title: 'Performance Leggings',
     note: 'A study in movement, fit, and technical fabric.',
-    destination: `${FSD_HOUSE_PAGE_PATH}#bio-lab/adaptive-fabrics`,
+    destination: '#adaptive-technical-fabrics',
   },
   {
     id: 'tank',
     title: 'Technical Tank',
     note: 'A study in training layers and connected apparel.',
-    destination: `${FSD_HOUSE_PAGE_PATH}#bio-lab/smart-apparel`,
+    destination: '#smart-apparel-nfc',
   },
   {
     id: 'jacket',
     title: 'Run Jacket',
     note: 'A study in protection, mobility, and material response.',
-    destination: `${FSD_HOUSE_PAGE_PATH}#bio-lab/adaptive-fabrics`,
+    destination: '#adaptive-technical-fabrics',
   },
 ];
 
@@ -171,6 +172,10 @@ export function mountGarmentStudies(root = document) {
 }
 
 export function houseConnectionSection() {
+  const storyLink = shouldDisableHouseHref(FSD_STORY_PATH)
+    ? '<a aria-disabled="true" tabindex="-1">DISCOVER THE HOUSE <span aria-hidden="true">↗</span></a>'
+    : `<a href="${FSD_STORY_PATH}">DISCOVER THE HOUSE <span aria-hidden="true">↗</span></a>`;
+
   return `<section class="showroom-house-connection" id="brand-community" aria-labelledby="brand-community-title">
     <div class="showroom-house-connection__statement">
       <p class="section-kicker">06 / COMMUNITY &amp; BRAND</p>
@@ -178,7 +183,7 @@ export function houseConnectionSection() {
     </div>
     <div class="showroom-house-connection__copy">
       <p>A wider FSD vision for performance, apparel and equipment, personal-safety skills, community, and future product research.</p>
-      <a href="${FSD_STORY_PATH}">DISCOVER THE HOUSE <span aria-hidden="true">↗</span></a>
+      ${storyLink}
     </div>
     <span class="showroom-house-connection__mark" aria-hidden="true">FSD <i>/</i> FITNESS &amp; SELF-DEFENCE</span>
   </section>`;

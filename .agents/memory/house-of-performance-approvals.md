@@ -86,3 +86,15 @@ The user explicitly authorized the complete supplied FSD The House website, incl
 **Why:** The user asked for direct integration into the main project with no private framing, requested production publication, and confirmed UK legal advice cleared this specific supplied page for public circulation.
 
 **How to apply:** Keep this page and its supplied content publicly accessible at its dedicated route. Do not generalize this approval to unrelated drafts, unverified claims, checkout, or other private concepts.
+
+For newly added House destinations, the user chose to preview not-ready pages in development and disable their links and routes in production until they are approved.
+
+**Why:** The user wants the complete House journey available for internal review without presenting unfinished pages as public content.
+
+**How to apply:** Keep current approved pages public. Show explicit draft status in development; do not publish unfinished Founder, Flagship, Investor, or other unapproved content, and do not infer approval from the broader House-page authorization.
+
+The House disclosure is a destination index, not a container for page bodies. Every destination must load at its own URL, and scrolling must remain within that page. Keep the approved homepage story section outside the route index.
+
+**Why:** The user explicitly requested independent House pages with no stacked sibling content while preserving the homepage and existing mega-menus.
+
+**How to apply:** Keep the House view to navigable links. Do not append full destination sections to the homepage or menu overlay. Continue to show development-only draft status and block unapproved routes from production.

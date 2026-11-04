@@ -66,13 +66,55 @@
     }
 
     .fsd .hero {
-      padding: 90px 24px 56px;
-      text-align: center;
+      padding: 70px 24px 56px;
+    }
+
+    .fsd .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+      align-items: center;
+      gap: clamp(28px, 4vw, 56px);
+      width: min(calc(100% - 48px), 1000px);
+      margin: 0 auto;
+    }
+
+    .fsd .hero-copy {
+      min-width: 0;
+    }
+
+    .fsd .hero h1 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.05;
+      letter-spacing: -.025em;
+    }
+
+    .fsd .hero-media {
+      position: relative;
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      background: #141414;
+    }
+
+    .fsd .hero-media img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+    }
+
+    .fsd .hero-media figcaption {
+      padding: 9px 12px;
+      background: #111;
+      color: #e9e1d0;
+      font-size: .72rem;
+      letter-spacing: .04em;
     }
 
     .fsd .hero-intro {
       max-width: 760px;
-      margin: 0 auto;
+      margin: 0;
       font-size: 1.2rem;
       letter-spacing: .06em;
     }
@@ -99,6 +141,72 @@
       color: #cdb589;
     }
 
+    .fsd .visual-gallery {
+      width: min(calc(100% - 48px), 1000px);
+      padding: 56px 0 64px;
+    }
+
+    .fsd .visual-gallery-head {
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+
+    .fsd .visual-gallery-head h2 {
+      margin-bottom: 10px;
+    }
+
+    .fsd .visual-gallery-head p:last-child {
+      margin-bottom: 0;
+    }
+
+    .fsd .visual-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+      gap: 26px 18px;
+    }
+
+    .fsd .visual-card {
+      min-width: 0;
+      margin: 0;
+    }
+
+    .fsd .visual-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #141414;
+      object-fit: cover;
+    }
+
+    .fsd .visual-card--landscape img {
+      aspect-ratio: 16 / 9;
+    }
+
+    .fsd .visual-card--portrait img {
+      aspect-ratio: 4 / 5;
+    }
+
+    .fsd .visual-card--square img {
+      aspect-ratio: 1;
+    }
+
+    .fsd .visual-card figcaption {
+      padding-top: 9px;
+      color: #d8d0bf;
+      font-size: .84rem;
+      line-height: 1.45;
+    }
+
+    .fsd .visual-card figcaption span {
+      display: block;
+      margin-top: 4px;
+      color: #8a6a44;
+      font-size: .66rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
     .fsd .page-footer {
       padding-top: 24px;
       text-align: center;
@@ -116,7 +224,31 @@
       }
 
       .fsd .hero {
-        padding: 64px 16px 40px;
+        padding: 64px 0 40px;
+      }
+
+      .fsd .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        width: min(calc(100% - 32px), 1000px);
+      }
+
+      .fsd .hero-media img {
+        aspect-ratio: 4 / 3;
+      }
+
+      .fsd .visual-gallery {
+        width: min(calc(100% - 32px), 1000px);
+        padding: 42px 0;
+      }
+
+      .fsd .visual-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 12px;
+      }
+
+      .fsd .visual-card figcaption {
+        font-size: .75rem;
       }
 
       .fsd hr {
@@ -133,16 +265,63 @@
   <div data-fsd-standalone-navigation></div>
   <main class="fsd">
     <header class="hero" aria-labelledby="fight-promotions-title">
-      <div class="tag">FSD / Concept · Fight Promotions</div>
-      <h1 id="fight-promotions-title">Professional Fight Promotions</h1>
-      <p class="hero-intro">Aligned with combat sport, by partnership.</p>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="tag">FSD / Concept · Fight Promotions</div>
+          <h1 id="fight-promotions-title">Professional Fight Promotions</h1>
+          <p class="hero-intro">Aligned with combat sport, by partnership.</p>
+        </div>
+        <figure class="hero-media">
+          <img
+            src="/images/house/fight-promotions/hero-arena.webp"
+            alt="Illustrative concept scene of a boxer entering a dramatic arena"
+            fetchpriority="high"
+            decoding="async"
+          >
+          <figcaption>Illustrative concept image — not an actual FSD event.</figcaption>
+        </figure>
+      </div>
     </header>
     <hr>
     <section aria-labelledby="fight-framework-title">
       <h2 id="fight-framework-title">Design Prototype &amp; Framework</h2>
       <p>FSD conceptualizes professional fight promotions that champion technical mastery, discipline, and uncompromising athletic standards. The framework is designed around potential collaboration with elite athletes and promotion partners to elevate the presentation of combat sports.</p>
       <div class="warn" role="note">
-        <p><strong>Notice:</strong> Concept for exploration. Not a current product or commitment. No FSD location, event, or service is represented as operational.</p>
+        <p><strong>Notice:</strong> Concept for exploration. Not a current product or commitment. No FSD location, event, or service is represented as operational. No fighter affiliation or partnership is confirmed. The images are illustrative concept renderings and do not depict actual FSD events, venues, affiliated fighters, or partners.</p>
+      </div>
+    </section>
+    <hr>
+    <section class="visual-gallery" aria-labelledby="fight-visuals-title">
+      <div class="visual-gallery-head">
+        <div class="tag">Illustrative direction</div>
+        <h2 id="fight-visuals-title">Fight Promotions in concept</h2>
+        <p>These user-supplied visual concepts explore possible sport presentation. They are not records of real FSD events, venues, fighters, or partners.</p>
+      </div>
+      <div class="visual-grid">
+        <figure class="visual-card visual-card--portrait">
+          <img src="/images/house/fight-promotions/corner-support.webp" alt="Illustrative concept of a boxer receiving corner support between rounds" loading="lazy" decoding="async">
+          <figcaption>Corner support<span>Illustrative concept</span></figcaption>
+        </figure>
+        <figure class="visual-card visual-card--landscape">
+          <img src="/images/house/fight-promotions/crowd-atmosphere.webp" alt="Illustrative concept of an audience watching a boxing event" loading="lazy" decoding="async">
+          <figcaption>Audience atmosphere<span>Illustrative concept</span></figcaption>
+        </figure>
+        <figure class="visual-card visual-card--landscape">
+          <img src="/images/house/fight-promotions/weigh-in-stage.webp" alt="Illustrative concept of a boxing weigh-in and media stage" loading="lazy" decoding="async">
+          <figcaption>Event presentation<span>Illustrative concept</span></figcaption>
+        </figure>
+        <figure class="visual-card visual-card--square">
+          <img src="/images/house/fight-promotions/boxing-gloves.webp" alt="Illustrative concept still life of boxing gloves and hand wraps" loading="lazy" decoding="async">
+          <figcaption>Equipment detail<span>Illustrative concept</span></figcaption>
+        </figure>
+        <figure class="visual-card visual-card--landscape">
+          <img src="/images/house/fight-promotions/broadcast-desk.webp" alt="Illustrative concept of a ringside broadcast desk in an arena" loading="lazy" decoding="async">
+          <figcaption>Media production<span>Illustrative concept</span></figcaption>
+        </figure>
+        <figure class="visual-card visual-card--portrait">
+          <img src="/images/house/fight-promotions/ring-walk.webp" alt="Illustrative concept of a boxer walking toward the ring" loading="lazy" decoding="async">
+          <figcaption>Ring walk<span>Illustrative concept</span></figcaption>
+        </figure>
       </div>
     </section>
     <hr>

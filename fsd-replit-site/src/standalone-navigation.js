@@ -1,6 +1,8 @@
 import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { mountNavigation, renderNavigationHeader } from './site-navigation.js';
+import { mountHousePageRuntime } from './house-pages/house-page-runtime.js';
+import { mountHousePageEnrichment } from './house-pages/house-page-enrichment.js';
 import './standalone-navigation.css';
 
 const host = document.querySelector('[data-fsd-standalone-navigation]');
@@ -23,3 +25,6 @@ if (host) {
     },
   });
 }
+
+mountHousePageRuntime();
+mountHousePageEnrichment();

@@ -40,10 +40,10 @@ test('pending media uses labeled responsive placeholders rather than unapproved 
   assert.match(html, /Illustrative portal mock-up only; no live member area is available/);
   assert.match(html, /Illustrative training imagery only; no class or provider is confirmed/);
   assert.match(html, /VIEW SMART APPAREL INITIATIVE/);
-  assert.match(html, /href="\/the-house\.html#bio-lab\/smart-apparel"/);
+  assert.match(html, /href="#smart-apparel-nfc"/);
   assert.match(html, /FSD BIO-LAB™ \/ ACTIVE INITIATIVE/);
   assert.match(html, /Low-footprint modular training, retail, and community infrastructure/);
-  assert.match(html, /href="\/the-house\.html#global\/pods"/);
+  assert.match(html, /href="\/fsd-pods\.html"/);
   assert.doesNotMatch(html, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.doesNotMatch(html, /<img\b|data:image\//i);
 });
@@ -53,7 +53,7 @@ test('Innovation Hub links to all concepts and keeps private proofs out of produ
   assert.equal((publicHtml.match(/class="fsd-innovation-card"/g) || []).length, 8);
   assert.match(publicHtml, /ACTIVE BIO-LAB INITIATIVE/);
   assert.match(publicHtml, /related concepts and design prototypes are for exploration, not current products or commitments/);
-  assert.match(publicHtml, /\/the-house\.html#bio-lab\/adaptive-fabrics/);
+  assert.match(publicHtml, /href="#adaptive-technical-fabrics"/);
   assert.doesNotMatch(publicHtml, /__catalogue-preview/);
 
   const developmentHtml = renderInnovationHubIndex({ includePrivatePreviews: true });

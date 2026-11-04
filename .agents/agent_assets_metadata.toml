@@ -1008,3 +1008,73 @@ mtime_ms = 1793793005080
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/983f80d6-f61e-48ca-918b-3484520c76fa/421d6a83-3e4b-4e5c-8529-7dabedd283fa"
 storage_version_token = "1793793042838928"
 content_type = "image/png"
+
+[[outputs]]
+id = "jJM6vOaRO0vhORboy-YFU"
+uri = "file://screenshots/collection-grid-visual-verification.html"
+type = "html"
+title = "FSD product-grid visual comparison"
+description = "Before/after SHOP product-card screenshots at desktop, laptop, tablet, and mobile widths, with responsive AEROFORGE and technical collection screenshots."
+logical_id = "74483862-24bc-4aa1-88fb-8e395ab9a5b8"
+content_hash = "sha256:94a2bf2a1a14a90595aeea1c70e4d7401b37887791fbcf698d911486df1fbb7c"
+size = 2366486
+mtime_ms = 1793813300687
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/74483862-24bc-4aa1-88fb-8e395ab9a5b8/1f266b46-7b7d-4e3e-8dd1-d4bd4646b0d9"
+storage_version_token = "1793813311282361"
+content_type = "text/html"
+
+[[outputs]]
+id = "1Jjsyov5hijlvkP0hDSro"
+uri = "file://generated-artifacts/screenshots/catalogue-women-desktop-after.jpg"
+type = "image"
+title = "Women’s catalogue — desktop"
+description = "Verified 4-column product grid at 1440px."
+logical_id = "c6f10507-26a9-42e7-81b3-6b40fd5a9cf9"
+content_hash = "sha256:7a9a83bd304328ca1952c5cbf27a462a3d1f7f23876688d032626f55758e41f3"
+size = 167588
+mtime_ms = 1793828454871
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c6f10507-26a9-42e7-81b3-6b40fd5a9cf9/2d0b1750-744b-4b45-8064-aff8acb8c829"
+storage_version_token = "1793828500277151"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "4ZUVxH19t_CJuXIh81C3W"
+uri = "file://generated-artifacts/screenshots/catalogue-women-laptop-after.jpg"
+type = "image"
+title = "Women’s catalogue — laptop"
+description = "Verified 4-column product grid at 1366px."
+logical_id = "78bcd2e9-732d-4887-b8d7-70a9de80aa06"
+content_hash = "sha256:fa1dee00408ec935ef514daee269635d8e0516bb4a59d8ef2b2d3b8d0545cd06"
+size = 160865
+mtime_ms = 1793828455531
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/78bcd2e9-732d-4887-b8d7-70a9de80aa06/784c746d-bf69-4e4d-9b39-926c75ab0d32"
+storage_version_token = "1793828501017304"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "gYWnOz3_nEbqmLXQ818iq"
+uri = "file://generated-artifacts/screenshots/catalogue-women-tablet-after.jpg"
+type = "image"
+title = "Women’s catalogue — tablet"
+description = "Verified 3-column product grid at 768px."
+logical_id = "820f486e-d468-4e04-b8ee-056fb052cd64"
+content_hash = "sha256:692e7506e183d78616c467ace07315b0cb530da07a23ea61a62f7b7e1b60ebae"
+size = 117503
+mtime_ms = 1793828456263
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/820f486e-d468-4e04-b8ee-056fb052cd64/dd415e63-713b-495e-b7fd-42b98b6f2acc"
+storage_version_token = "1793828501742834"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "awvUd-JVdG39L3-ZfTsIT"
+uri = "file://generated-artifacts/screenshots/catalogue-women-mobile-after.jpg"
+type = "image"
+title = "Women’s catalogue — mobile"
+description = "Verified 2-column product grid at 402px."
+logical_id = "87c28885-c235-4cf6-840a-52b6d2fc70dc"
+content_hash = "sha256:c07f8de1963710c2cb6dc8ca85a4b6cc5de58d74e717cb383a4ece0c2bac9380"
+size = 68221
+mtime_ms = 1793828456879
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/87c28885-c235-4cf6-840a-52b6d2fc70dc/1062a77b-e3a0-4835-929b-e69963e7d62b"
+storage_version_token = "1793828502449265"
+content_type = "image/jpeg"

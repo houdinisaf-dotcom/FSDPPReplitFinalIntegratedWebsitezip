@@ -2,7 +2,7 @@ import { readFile, writeFile, readdir, mkdir, stat } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { applySeoToHtml, storefrontSeoRoutes, seoEntryForPath, escapeSeo, plainText, validatedProductionOrigin } from '../src/site-seo.js';
 import { productionOrigin } from '../site.config.js';
-import { transformHousePageContent } from '../src/standalone-navigation-pages.js';
+import { isHouseDraftBuildFile, isHouseDraftRoute } from '../src/data/house-page-readiness.js';
 
 const excluded = /(?:^|\/)(?:404|private|admin|cart|checkout)(?:[-/.]|$)/i;
 export function sitemapXml(entries, origin) {
@@ -47,6 +47,7 @@ export function siteSeoPlugin(projectRoot) {
           const path = new URL(request.url || '/', 'http://fsd.local').pathname;
           if (!['GET', 'HEAD'].includes(request.method)) return next();
           if (path.startsWith('/__') || path.startsWith('/api/')) return next();
+          if (isHouseDraftRoute(path)) return next();
           const entry = seoEntryForPath(path);
           let html;
           if (entry && path !== '/') {
@@ -55,7 +56,6 @@ export function siteSeoPlugin(projectRoot) {
           } else if (path.endsWith('.html') && !path.includes('..')) {
             try {
               html = await readFile(resolve(publicRoot, `.${path}`), 'utf8');
-              if (path === '/the-house.html') html = transformHousePageContent(html);
               if (!excluded.test(path)) html = applySeoToHtml(html, publicEntry(path, html));
             } catch { /* Unknown files are handled below. */ }
           } else if (path === '/robots.txt') {
@@ -84,8 +84,13 @@ export function siteSeoPlugin(projectRoot) {
       async handler() {
         const output = resolve(projectRoot, 'dist');
         baseHtml = await readFile(resolve(output, 'index.html'), 'utf8');
-        const entries = [...storefrontSeoRoutes];
-        for (const file of (await readdir(publicRoot)).filter(file => file.endsWith('.html') && !excluded.test(`/${file}`))) {
+        const publicRoutes = storefrontSeoRoutes.filter(entry => !isHouseDraftRoute(entry.path));
+        const entries = [...publicRoutes];
+        for (const file of (await readdir(publicRoot)).filter(file =>
+          file.endsWith('.html')
+          && !excluded.test(`/${file}`)
+          && !isHouseDraftBuildFile(file)
+          && !isHouseDraftRoute(`/${file}`))) {
           const path = `/${file}`;
           const destination = resolve(output, file);
           const html = await readFile(destination, 'utf8');
@@ -93,7 +98,7 @@ export function siteSeoPlugin(projectRoot) {
           entries.push(entry);
           await writeFile(destination, applySeoToHtml(html, entry));
         }
-        for (const entry of storefrontSeoRoutes.filter(item => item.path !== '/')) {
+        for (const entry of publicRoutes.filter(item => item.path !== '/')) {
           const destination = resolve(output, `.${entry.path}`, 'index.html');
           await mkdir(dirname(destination), { recursive: true });
           await writeFile(destination, renderEntry(baseHtml.replace(/<noscript>[\s\S]*?<\/noscript>/i, ''), entry));

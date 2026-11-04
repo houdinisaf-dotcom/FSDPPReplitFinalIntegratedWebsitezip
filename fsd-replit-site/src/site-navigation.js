@@ -4,6 +4,7 @@ import { products as catalogueProducts } from './catalogue-data.js';
 import { groupProducts } from './collection-showcase/index.js';
 import { hoodedShellCampaign } from './hooded-shell-campaign.js';
 import { getInnovationPageForTitle } from './flagship-pages.js';
+import { HOUSE_FLAGSHIP_DRAFTS, shouldDisableHouseHref } from './data/house-page-readiness.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
 import { outlineIcon } from './brand/outline-icons.js';
 import { imagePlaceholderMarkup, installImageErrorFallbacks } from './image-placeholder.js';
@@ -261,7 +262,7 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     id: `clothing-line-${line.id}`,
     title: line.title,
     kind: 'clothing-line',
-    href: `#line-${line.id}`,
+    href: `/collections/${line.id}`,
     description: `Open the ${line.title} clothing-line section.`,
   }));
   groups.push({
@@ -323,15 +324,29 @@ function makeHouseGroups(divisions) {
   const global = divisionById(divisions, 'global');
   const flagship = global?.groups?.[0];
   const promotions = global?.groups?.[1];
+  const flagshipDraftByTitle = new Map(HOUSE_FLAGSHIP_DRAFTS.map(page => [page.title, page]));
   const storySections = [
     ['founder', 'Founder Story', 'Fitness. Discipline. Progress.'],
   ].map(([id, title, description]) => ({
     id: `our-story-${id}`,
     title,
     kind: 'destination',
-    href: `${FSD_HOUSE_PAGE_PATH}#brand/${id}`,
+    href: FSD_STORY_PATH,
+    navigationUnavailable: shouldDisableHouseHref(FSD_STORY_PATH),
     description,
   }));
+  const flagshipItems = (flagship?.concepts || []).map((title, index) => {
+    const page = flagshipDraftByTitle.get(title);
+    const href = page?.path || '';
+    return {
+      id: `flagships-${page?.id || index}`,
+      title,
+      kind: 'destination',
+      href,
+      navigationUnavailable: !href || shouldDisableHouseHref(href),
+      description: 'Location details are being prepared. No operating site or service is represented.',
+    };
+  });
   const fightPromotionRoutes = new Map([
     ['Professional Fight Promotions', '/fight-promotions.html'],
     ['Live Events', '/live-events.html'],
@@ -412,14 +427,15 @@ function makeHouseGroups(divisions) {
     id,
     title,
     description,
-    href: `${FSD_HOUSE_PAGE_PATH}#${initiatives[0]?.hash || 'global/innovation'}`,
+    href: initiatives[0]?.href || '',
     sourceDivisionId: global?.id || 'global',
     sourceGroupIndex: -1,
     items: initiatives.map(initiative => ({
       id: `${id}-${initiative.id}`,
       title: initiative.title,
       kind: initiative.kind || 'destination',
-      href: initiative.href || `${FSD_HOUSE_PAGE_PATH}#${initiative.hash}`,
+      href: initiative.href || '',
+      navigationUnavailable: shouldDisableHouseHref(initiative.href || ''),
       description: initiative.description,
       status: initiative.status,
     })),
@@ -427,15 +443,16 @@ function makeHouseGroups(divisions) {
 
   return [
     staticGroup('our-story', 'OUR STORY', storySections[0].href,
-      'Explore The Architecture of Purpose and the FSD manifesto.',
+      'Founder Story.',
       null, 0, {
         items: storySections,
+        navigationUnavailable: shouldDisableHouseHref(storySections[0].href),
         status: 'EDITORIAL / FOUNDER STORY',
-        chapterCount: '01 FOUNDATIONAL CHAPTER',
-        houseCodeCount: '05 WORKING PRINCIPLES',
       }),
     staticGroup('flagships', 'FLAGSHIPS', '',
-      global?.description || 'FSD flagship locations.', flagship, 0),
+      'FSD flagship locations.', flagship, 0, {
+        items: flagshipItems,
+      }),
     staticGroup('fight-promotions', 'FIGHT PROMOTIONS', '',
       'Exploratory fight-promotion concepts. No event, location, or service is represented as operational.',
       promotions, 1, { items: fightPromotionItems }),
@@ -498,7 +515,8 @@ function makeHouseGroups(divisions) {
         },
       ]),
     staticGroup('investor-relations', 'INVESTOR RELATIONS', '/investor.html',
-      'Investor relations, proposed funding pathway, planning assumptions, and roadmap.'),
+      'Investor Relations; no public investor dossier is currently available.',
+      null, 0, { navigationUnavailable: shouldDisableHouseHref('/investor.html') }),
     initiativeGroup('community-culture', 'COMMUNITY & CULTURE',
       'Active House & Universe initiatives across co-creation, partnerships, reuse, and community safety.',
       [
@@ -657,7 +675,7 @@ export function createNavigationModel({
       description: 'Browse Bio-Lab products and active material-science and connected-apparel initiatives.',
       sourceDivisionId: 'bio-lab',
       sourceGroupIndex: bioLabMenu.groups.length,
-      href: `${FSD_HOUSE_PAGE_PATH}#bio-lab`,
+      href: '#innovation-hub',
       items: [{
         id: 'innovation-hub-index',
         title: 'Browse Innovation Hub',
@@ -668,13 +686,13 @@ export function createNavigationModel({
         id: 'adaptive-technical-fabrics',
         title: 'Adaptive Technical Fabrics',
         kind: 'destination',
-        href: `${FSD_HOUSE_PAGE_PATH}#bio-lab/adaptive-fabrics`,
+        href: '#adaptive-technical-fabrics',
         description: 'Material science, moisture management, and garment durability.',
       }, {
         id: 'smart-apparel-nfc-concept',
         title: 'Smart Apparel & NFC Authentication',
         kind: 'destination',
-        href: `${FSD_HOUSE_PAGE_PATH}#bio-lab/smart-apparel`,
+        href: '#smart-apparel-nfc',
         sourceDivisionId: 'bio-lab',
         sourceGroupIndex: bioLabMenu.groups.length,
         description: 'Garment authentication, useful product information, and digital content.',
@@ -706,13 +724,9 @@ function hasVerifiedDestination({
     );
     const clothingLineTargets = new Set([
       '#clothing-lines',
-      '#line-aeroforge',
-      '#line-combat',
-      '#line-flex',
-      '#line-breeze',
-      '#line-modest-flow',
-      '#line-tiger-series',
-      '#line-scorpion-series',
+      ...CATALOGUE_COLLECTIONS
+        .filter(collection => collection.kind === 'clothing-line')
+        .flatMap(collection => [collection.href, `#line-${collection.id}`]),
     ]);
     if (group?.id === 'catalogue-collections') {
       return !item || CATALOGUE_COLLECTIONS.some(collection => collection.href === item.href);

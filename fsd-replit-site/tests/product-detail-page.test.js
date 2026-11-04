@@ -35,6 +35,7 @@ test('product detail markup includes accessible size choices and leaves unconfir
   assert.match(markup, /data-product-size/);
   assert.doesNotMatch(markup, /Availability by size:/);
   assert.match(markup, /data-size-guide/);
+  assert.match(markup, /class="product-detail-summary">A supplied catalogue description\./);
   assert.match(markup, /Front view/);
   assert.match(markup, /alt="FSD Test Leggings — Front view"/);
   assert.doesNotMatch(markup, /Verified catalogue values are shown where recorded/);

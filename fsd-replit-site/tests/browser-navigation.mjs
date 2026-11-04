@@ -201,18 +201,18 @@ try {
   await waitFor('Number.parseFloat(getComputedStyle(document.querySelector(".fsd-reading-progress")).getPropertyValue("--fsd-reading-progress")) < 0.02');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-social-placeholder").length'), 5);
   await send('Page.navigate', { url: `https://${domain}/#philosophy` });
-  await waitFor('document.querySelector("#fsd-house-archive")?.open');
+  await waitFor('document.querySelector("#philosophy") && !document.querySelector("#fsd-house-archive")?.open');
   await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
   assert.ok(await evaluate('document.querySelector("#philosophy").getBoundingClientRect().top >= -1'));
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools")');
   await send('Page.navigate', { url: `https://${domain}/story` });
-  await waitFor('document.querySelector("#fsd-house-archive")?.open');
-  await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
-  assert.ok(await evaluate('Boolean(document.querySelector(".fsd-reading-progress"))'));
-  assert.equal(await evaluate('document.querySelector("[data-fsd-storefront]").dataset.currentView'), 'story');
-  assert.equal(await evaluate('document.querySelector(".fsd-primary-nav [data-nav-primary=\\"house\\"]")?.textContent.trim()'), 'THE HOUSE');
-  assert.ok(await evaluate('Boolean(document.querySelector(\'footer a[href="/story"]\'))'));
+  await waitFor('location.pathname === "/story" && document.querySelector("main h1")?.textContent.trim() === "Founder Story"');
+  assert.equal(await evaluate('document.querySelectorAll("main, main h1, .hero, footer").length'), 4);
+  assert.equal(await evaluate('Boolean(document.querySelector(".fsd-reading-progress"))'), true);
+  assert.equal(await evaluate('Boolean(document.querySelector("[data-fsd-storefront]"))'), false);
+  await waitFor('Boolean(document.querySelector("[data-fsd-standalone-navigation] [data-navigation-shell]"))');
+  assert.equal(await evaluate('Boolean(document.querySelector("[data-fsd-standalone-navigation] [data-navigation-shell]"))'), true);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools")');
   assert.equal(await evaluate('document.querySelector(".fsd-primary-nav [data-nav-primary=\\"house\\"]")?.textContent.trim()'), 'THE HOUSE');
@@ -226,7 +226,7 @@ try {
     await evaluate('Array.from(document.querySelectorAll("#fsd-mega-menu [data-nav-item] span:nth-child(2)"), item => item.textContent.trim())'),
     ['Founder Story'],
   );
-  assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3")?.textContent.trim()'), 'Founder Story');
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-copy h3")?.textContent.trim()'), 'THE FSD STORY & ARCHIVE');
   await moveTo('#fsd-mega-menu [data-nav-group="2"]');
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"2\\"]")?.getAttribute("aria-pressed") === "true"');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"] span:nth-child(2)")?.textContent.trim()'), 'Professional Fight Promotions');
@@ -435,24 +435,17 @@ try {
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^OPEN INVESTOR RELATIONS/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/investor.html" && document.querySelectorAll("main .investor-card").length === 3');
-  await send('Page.navigate', { url: `https://${domain}/the-house.html` });
-  await waitFor('location.pathname === "/the-house.html" && document.querySelector(".fsd-primary-nav [data-nav-primary=\\"house\\"]")?.textContent.trim() === "THE HOUSE"');
-  assert.deepEqual(
-    await evaluate('Array.from(document.querySelectorAll("#house-sections a strong"), item => item.textContent.trim())'),
-    ['Founder Story'],
-  );
-  assert.equal(await evaluate('document.querySelectorAll(".mega, #m1, #m2, #m3").length'), 0);
-  assert.equal(await evaluate('document.querySelectorAll("#house-sections a[href=\\"#brand/archive\\"]").length'), 0);
-  assert.equal(await evaluate('["Archive & Version History", "Purpose & Positioning", "Brand Identity Standard", "Press & Media Kit"].some(label => document.body.textContent.includes(label))'), false);
-  assert.equal(await evaluate('document.querySelector("#main").textContent.includes("Investor Relations")'), false);
-  for (const removedSection of ['archive', 'purpose', 'identity', 'press']) {
-    await send('Page.navigate', { url: `https://${domain}/the-house.html#brand/${removedSection}` });
-    await waitFor('location.pathname === "/the-house.html" && location.hash === "#brand" && document.querySelector("#hero h1")?.textContent === "FOUNDER STORY"');
-  }
-  await send('Page.navigate', { url: `https://${domain}/the-house.html#brand/founder` });
-  await waitFor('document.querySelector("#hero h1")?.textContent === "THE ARCHITECTURE OF PURPOSE"');
-  await click('#house-sections a[href="#brand/founder"]');
-  await waitFor('location.hash === "#brand/founder" && document.querySelector("#hero h1")?.textContent === "THE ARCHITECTURE OF PURPOSE"');
+  await send('Page.navigate', { url: `https://${domain}/story` });
+  await waitFor('location.pathname === "/story" && document.querySelector("main h1")?.textContent.trim() === "Founder Story"');
+  assert.equal(await evaluate('document.querySelectorAll("main").length'), 1);
+  assert.equal(await evaluate('document.querySelectorAll("main h1").length'), 1);
+  assert.equal(await evaluate('document.querySelectorAll(".hero").length'), 1);
+  assert.equal(await evaluate('document.querySelectorAll("footer").length'), 1);
+  assert.equal(await evaluate('document.body.textContent.includes("Archive & Version History")'), false);
+  assert.equal(await evaluate('document.body.textContent.includes("Press & Media Kit")'), false);
+  await send('Page.navigate', { url: `https://${domain}/flagships/dublin.html` });
+  await waitFor('location.pathname === "/flagships/dublin.html" && document.querySelector("main h1")?.textContent.trim() === "Dublin"');
+  assert.equal(await evaluate('document.querySelectorAll("main, main h1, .hero, footer").length'), 4);
   await click('.fsd-primary-nav [data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
   await click('[data-nav-close]');
@@ -591,19 +584,30 @@ try {
     await evaluate('Boolean([...document.querySelectorAll("#fsd-showcase-dialog .fsd-product-row__meta > span:first-child")].find(node => node.textContent === "Women\'s Performance"))'),
     true,
   );
-  assert.equal(
-    await evaluate('document.querySelector("#fsd-showcase-dialog .fsd-product-row")?.style.width || getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).width'),
-    await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-grid")).width'),
-  );
-  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).columnGap'), '16px');
-  const productRowTracks = await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).gridTemplateColumns.split(" ")');
-  assert.equal(productRowTracks.length, 5);
-  assert.equal(productRowTracks[0], '68px');
-  assert.equal(productRowTracks[1], '160px');
-  assert.equal(productRowTracks[3], '90px');
-  assert.equal(productRowTracks[4], '130px');
-  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-reference")).textAlign'), 'right');
-  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row__action")).justifySelf'), 'end');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-grid")).display'), 'grid');
+  const productGridTracks = await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-grid")).gridTemplateColumns.trim().split(/\\s+/)');
+  assert.equal(productGridTracks.length, 4);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).flexDirection'), 'column');
+  const productCardWidth = Number.parseFloat(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row")).width'));
+  const productGridWidth = Number.parseFloat(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-grid")).width'));
+  assert.ok(productCardWidth > 0 && productCardWidth < productGridWidth / 2);
+  const productMediaRatio = await evaluate(`(() => {
+    const media = document.querySelector("#fsd-showcase-dialog .fsd-product-row__media");
+    const rect = media.getBoundingClientRect();
+    return rect.width / rect.height;
+  })()`);
+  assert.ok(Math.abs(productMediaRatio - 0.8) < 0.02);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-reference")).textAlign'), 'left');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-row__action")).alignSelf'), 'flex-start');
+  for (const [width, height, expectedColumns] of [[1280, 900, 4], [768, 1024, 3], [390, 844, 2], [360, 800, 2], [320, 800, 1]]) {
+    await send('Emulation.setDeviceMetricsOverride', {
+      width, height, deviceScaleFactor: 1, mobile: false,
+    });
+    await waitFor(`getComputedStyle(document.querySelector("#fsd-showcase-dialog .fsd-product-grid")).gridTemplateColumns.trim().split(/\\s+/).length === ${expectedColumns}`);
+  }
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").hidden'), true);
   await key('Escape');
   await waitFor('!document.querySelector("#fsd-showcase-dialog").open');
@@ -669,7 +673,7 @@ try {
   };
 
   const closeRouteAndReset = async () => {
-    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/the-house.html" || location.pathname.startsWith("/__catalogue-preview/")')) {
+    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/story" || location.pathname.startsWith("/flagships/") || location.pathname === "/the-house.html" || location.pathname.startsWith("/__catalogue-preview/")')) {
       await send('Page.navigate', { url: `https://${domain}/` });
       await waitFor('!!document.querySelector(".fsd-primary-nav")');
     }
@@ -703,13 +707,10 @@ try {
       return;
     }
 
-    if (destination === '/the-house.html' || destination?.startsWith('/the-house.html#')) {
+    if (destination === '/story' || destination?.startsWith('/flagships/')) {
       await click(selector);
-      const expectedHash = destination.includes('#') ? destination.slice(destination.indexOf('#')) : '';
-      await waitFor(`location.pathname === "/the-house.html"
-        && location.hash === ${JSON.stringify(expectedHash)}
-        && document.querySelector('.fsd-primary-nav [data-nav-primary="house"]')
-        && document.querySelector("#hero h1")`);
+      await waitFor(`location.pathname === ${JSON.stringify(destination)}
+        && document.querySelector("main h1")?.textContent.trim() === ${JSON.stringify(item.title)}`);
       return;
     }
 
@@ -901,7 +902,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     search.dispatchEvent(new Event("input", { bubbles: true }));
   })()`);
   await waitFor('document.querySelector("#catalogue-count").textContent.includes("of 1 product") && !!document.querySelector("#catalogue-grid [data-product=\\"43\\"]")');
-  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && !!document.querySelector("[data-catalogue-view=\\"visual\\"]")');
+  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "visual" && !!document.querySelector("#catalogue-grid .product-card--visual .catalogue-card__media")');
   assert.deepEqual(await evaluate('Object.fromEntries(new URLSearchParams(location.search))'), {
     category: 'Modest Activewear',
     audience: 'Women’s',
@@ -918,7 +919,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   })()`);
   await send('Page.reload');
   await waitFor('performance.getEntriesByType("navigation")[0]?.type === "reload" && document.readyState === "complete" && document.querySelector("#catalogue-count")');
-  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#catalogue-grid").dataset.view === "list" && document.querySelector("#catalogue-count")?.textContent.includes("of 1 product")');
+  await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelector("#catalogue-count")?.textContent.includes("of 1 product")');
   await evaluate(`(() => {
     const search = document.querySelector("#search");
     search.value = "FSD product that does not exist";
@@ -926,12 +927,28 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   })()`);
   await waitFor('document.querySelector("#catalogue-count").textContent === "No matching products" && !!document.querySelector("#catalogue-grid [data-clear-filters]")');
   await click('#catalogue-grid [data-clear-filters]');
-  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "list"');
+  await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "visual"');
   await assertNoHorizontalPageScroll();
-  assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid img").length === 0 && document.querySelectorAll("#catalogue-grid .product-card").length === document.querySelectorAll("#catalogue-grid .product-row__trigger").length'), true, 'The catalogue should stay in a compact text-row view.');
-  await click('[data-catalogue-view="visual"]');
-  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "visual" && document.querySelectorAll("#catalogue-grid .product-card--visual").length > 0 && document.querySelectorAll("#catalogue-grid .catalogue-card__media").length > 0');
-  assert.equal(await evaluate('document.querySelector("[data-catalogue-view=\\"visual\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("[data-catalogue-view=\\"list\\"]")?.getAttribute("aria-pressed") === "false" && new URLSearchParams(location.search).get("view") === "visual"'), true, 'Visual layout should be selected and preserved in the URL.');
+  assert.equal(await evaluate(`(() => {
+    const grid = document.querySelector("#catalogue-grid");
+    const cards = [...grid.querySelectorAll(".product-card")];
+    return grid.dataset.view === "visual"
+      && getComputedStyle(grid).display === "grid"
+      && getComputedStyle(grid).gridTemplateColumns.trim().split(/\\s+/).length === 4
+      && cards.length > 0
+      && cards.every(card => card.classList.contains("product-card--visual") && card.querySelector(".catalogue-card__media"))
+      && !grid.querySelector(".fsd-catalog-row:not(.product-card--visual)")
+      && !document.querySelector("[data-catalogue-view]");
+  })()`), true, 'SHOP should keep its filterable products in the image-led grid without a vertical-list view.');
+  for (const [width, height, expectedColumns] of [[1280, 900, 4], [768, 1024, 3], [390, 844, 2], [360, 800, 2], [320, 800, 1]]) {
+    await send('Emulation.setDeviceMetricsOverride', {
+      width, height, deviceScaleFactor: 1, mobile: false,
+    });
+    await waitFor(`getComputedStyle(document.querySelector("#catalogue-grid")).gridTemplateColumns.trim().split(/\\s+/).length === ${expectedColumns}`);
+  }
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
   assert.equal(await evaluate('document.querySelector("#catalogue-grid [data-product=\\"1\\"] .fsd-image-placeholder")?.getAttribute("aria-label")?.includes("FSD Ombré Slash Tee")'), true, 'A product with held concept-board imagery should retain its named placeholder.');
   await evaluate(`(() => {
     const search = document.querySelector("#search");
@@ -948,17 +965,19 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     search.dispatchEvent(new Event("input", { bubbles: true }));
   })()`);
   await waitFor('!!document.querySelector("#catalogue-grid [data-product=\\"1\\"]")');
-  await click('[data-catalogue-view="list"]');
-  await waitFor('document.querySelector("#catalogue-grid").dataset.view === "list" && document.querySelectorAll("#catalogue-grid img").length === 0');
-  assert.equal(await evaluate('document.querySelector("[data-catalogue-view=\\"list\\"]")?.getAttribute("aria-pressed") === "true" && !new URLSearchParams(location.search).has("view")'), true, 'List layout should restore the default state in the URL.');
 
-  // Product rows expand in place and preserve the list's exact scroll position.
+  // Product cards expand in place and preserve the catalogue scroll position.
   await evaluate('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.scrollIntoView({ block: "center" })');
   await waitFor('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getBoundingClientRect().top >= 0');
-  const rowScrollY = await evaluate('window.scrollY');
+  const firstProductCardSelector = '#catalogue-grid [data-product="1"]';
+  const firstProductCardTop = await evaluate(`document.querySelector(${JSON.stringify(firstProductCardSelector)}).getBoundingClientRect().top`);
   await click('#catalogue-grid [data-product="1"]');
   await waitFor('document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getAttribute("aria-expanded") === "true" && !!document.querySelector("#catalogue-grid #catalogue-expanded-1")');
-  assert.equal(await evaluate('Math.abs(window.scrollY - ' + rowScrollY + ') < 2'), true);
+  assert.equal(
+    await evaluate(`Math.abs(document.querySelector(${JSON.stringify(firstProductCardSelector)}).getBoundingClientRect().top - ${firstProductCardTop}) < 2`),
+    true,
+    'Expanding a product card should keep the card anchored in the viewport.',
+  );
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-1 [data-catalogue-inline-view]").length'), 0);
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-1 [data-catalogue-inline-colourway]").length'), 2);
   await click('#catalogue-expanded-1 [data-catalogue-inline-colourway]:nth-child(2)');
@@ -967,30 +986,34 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await waitFor('document.querySelector("#catalogue-expanded-1 .fsd-image-placeholder")?.textContent.toLowerCase().includes("vintage indigo")');
   await click('#catalogue-expanded-1 .fsd-catalog-row__collapse');
   await waitFor('document.querySelector("#catalogue-expanded-1") === null && document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getAttribute("aria-expanded") === "false"');
-  assert.equal(await evaluate('Math.abs(window.scrollY - ' + rowScrollY + ') < 2'), true);
+  assert.equal(
+    await evaluate(`Math.abs(document.querySelector(${JSON.stringify(firstProductCardSelector)}).getBoundingClientRect().top - ${firstProductCardTop}) < 2`),
+    true,
+    'Collapsing a product card should restore its original viewport position.',
+  );
   await click('#catalogue-grid [data-product="1"]');
   await waitFor('!!document.querySelector("#catalogue-expanded-1")');
-   const secondProductId = await evaluate('document.querySelectorAll("#catalogue-grid [data-product]")[1]?.dataset.product');
-   assert.ok(secondProductId, 'A second product row should be available for the anchoring check.');
-   const secondProductSelector = `#catalogue-grid [data-product="${secondProductId}"]`;
-   await evaluate(`document.querySelector(${JSON.stringify(secondProductSelector)}).scrollIntoView({ block: "center", behavior: "instant" })`);
-   const secondProductTop = await evaluate(`document.querySelector(${JSON.stringify(secondProductSelector)}).getBoundingClientRect().top`);
-   await click(secondProductSelector);
-   await waitFor(`!!document.querySelector("#catalogue-expanded-${secondProductId}")`);
-   assert.equal(
-     await evaluate(`Math.abs(document.querySelector(${JSON.stringify(secondProductSelector)}).getBoundingClientRect().top - ${secondProductTop}) < 2`),
-     true,
-     'Switching expanded products should keep the clicked row in the same viewport position.',
-   );
-   await key('Escape');
-   await waitFor(`document.querySelector("#catalogue-expanded-${secondProductId}") === null && document.querySelector(${JSON.stringify(secondProductSelector)})?.getAttribute("aria-expanded") === "false"`);
-   assert.equal(
-     await evaluate(`document.activeElement === document.querySelector(${JSON.stringify(secondProductSelector)})`),
-     true,
-     'Escape should close the inline detail and restore focus to its row.',
-   );
-   await click('#catalogue-grid [data-product="1"]');
-   await waitFor('!!document.querySelector("#catalogue-expanded-1")');
+  const secondProductId = await evaluate('document.querySelectorAll("#catalogue-grid [data-product]")[1]?.dataset.product');
+  assert.ok(secondProductId, 'A second product card should be available for the anchoring check.');
+  const secondProductSelector = `#catalogue-grid [data-product="${secondProductId}"]`;
+  await evaluate(`document.querySelector(${JSON.stringify(secondProductSelector)}).scrollIntoView({ block: "center", behavior: "instant" })`);
+  const secondProductTop = await evaluate(`document.querySelector(${JSON.stringify(secondProductSelector)}).getBoundingClientRect().top`);
+  await click(secondProductSelector);
+  await waitFor(`!!document.querySelector("#catalogue-expanded-${secondProductId}")`);
+  assert.equal(
+    await evaluate(`Math.abs(document.querySelector(${JSON.stringify(secondProductSelector)}).getBoundingClientRect().top - ${secondProductTop}) < 2`),
+    true,
+    'Switching expanded products should keep the clicked card in the same viewport position.',
+  );
+  await key('Escape');
+  await waitFor(`document.querySelector("#catalogue-expanded-${secondProductId}") === null && document.querySelector(${JSON.stringify(secondProductSelector)})?.getAttribute("aria-expanded") === "false"`);
+  assert.equal(
+    await evaluate(`document.activeElement === document.querySelector(${JSON.stringify(secondProductSelector)})`),
+    true,
+    'Escape should close the inline detail and restore focus to its card.',
+  );
+  await click('#catalogue-grid [data-product="1"]');
+  await waitFor('!!document.querySelector("#catalogue-expanded-1")');
   await click('#catalogue-expanded-1 [data-catalogue-deep-dive]');
   await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.trim() === "FSD Ombré Slash Tee"');
   await click('#close-dialog');
@@ -1275,7 +1298,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
   await click('footer a[href="#products"]');
   await waitFor('document.querySelector("#catalogue-archive").open');
-  await waitFor('document.querySelector("#catalogue-grid")?.dataset.view === "list"');
+  await waitFor('document.querySelector("#catalogue-grid")?.dataset.view === "visual"');
   await waitFor('!!document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")');
   const addableProductId = await evaluate('document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")?.dataset.product');
   assert.ok(addableProductId, 'The catalogue should expose at least one confirmed addable product.');
@@ -1307,8 +1330,8 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await send('Emulation.setDeviceMetricsOverride', {
     width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
   });
-  await send('Page.navigate', { url: `https://${domain}/the-house.html` });
-  await waitFor('document.querySelector("[data-fsd-standalone-navigation] .fsd-header") && document.querySelector("[data-nav-primary=\\"house\\"]")');
+  await send('Page.navigate', { url: `https://${domain}/story` });
+  await waitFor('document.querySelector("[data-fsd-standalone-navigation] .fsd-header") && document.querySelector("[data-nav-primary=\\"house\\"]") && document.querySelector("main h1")?.textContent.trim() === "Founder Story"');
   await click('[data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
   assert.equal(await evaluate('document.querySelector("#menu-section-title")?.textContent.trim()'), 'THE HOUSE');
