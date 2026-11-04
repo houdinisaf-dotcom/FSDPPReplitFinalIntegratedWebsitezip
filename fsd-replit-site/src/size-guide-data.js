@@ -25,6 +25,22 @@ export const SIZE_GUIDE_FIT_NOTE =
 export const SIZE_GUIDE_MEASURE_NOTE =
   'Use a flexible measuring tape and keep it level without pulling tight. Exact tape placement for each measurement is [TO CONFIRM].';
 
+// Add only complete, product-specific charts backed by approved measurements.
+// Products without an entry remain CONTENT PENDING and never inherit a generic chart.
+export const PRODUCT_SIZE_GUIDES = Object.freeze({});
+
+export function productSizeGuideForProduct(product) {
+  const guide = PRODUCT_SIZE_GUIDES[Number(product?.id)];
+  if (!guide || !guide.unit || !Array.isArray(guide.measurements) || !guide.measurements.length) return null;
+  if (!Array.isArray(guide.rows) || !guide.rows.length) return null;
+  const measurements = guide.measurements.map(value => String(value).trim());
+  if (measurements.some(value => !value)) return null;
+  const completeRows = guide.rows.every(row =>
+    String(row?.size || '').trim() &&
+    measurements.every(measurement => String(row.values?.[measurement] ?? '').trim()));
+  return completeRows ? guide : null;
+}
+
 const escapeHtml = value => String(value)
   .replace(/&/g, '&amp;')
   .replace(/</g, '&lt;')

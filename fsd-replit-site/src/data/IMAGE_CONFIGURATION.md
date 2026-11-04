@@ -13,6 +13,10 @@ The shared placeholder keeps the visual slot available until approved photograph
    `image` path per colourway, with optional `size` or `variant`.
 5. Keep image approval metadata accurate. Records marked as composite/contact-sheet
    imagery retain their products and controls but show placeholders rather than boards.
+6. Reordering means changing the order of that product's image entries. Replacing a
+   photo means updating its `src` while retaining the correct product and variant.
+   Removing a gallery photo means removing its entry; check for other references
+   before deleting the underlying asset file.
 
 Example:
 

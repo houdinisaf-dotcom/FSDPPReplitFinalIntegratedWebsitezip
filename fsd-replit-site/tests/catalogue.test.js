@@ -500,7 +500,7 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 16);
+  assert.equal(products.filter(p => p.images.length).length, 17);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
@@ -516,7 +516,7 @@ test('colourways share one record, verified image references exist, and unknown 
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 10, 18, 19, 26, 33, 34, 42, 43, 52, 56, 57, 70, 71, 73, 75]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 2, 10, 18, 19, 26, 33, 34, 42, 43, 52, 56, 57, 70, 71, 73, 75]);
   assert.deepEqual(products.find(p => p.id === 18).images.map(image => image.src), [
     '/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp',
     '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-fit.webp',

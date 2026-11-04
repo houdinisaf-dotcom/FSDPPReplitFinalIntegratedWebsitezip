@@ -4,11 +4,12 @@ import {
   products,
   safe,
 } from './catalogue-data.js';
-import { renderSizeGuideTable, sizeGuideSectionForProduct, SIZE_GUIDE_FIT_NOTE } from './size-guide-data.js';
+import { productSizeGuideForProduct } from './size-guide-data.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
 import { productImagesForDisplay } from './data/products.js';
 import { rotationFramesForProduct } from './product-rotation-assets.js';
 import { productStructuredData } from './product-structured-data.js';
+import { MAX_BAG_QUANTITY } from './bag.js';
 
 export function productSizeOptions(product) {
   return String(product?.sizes || '')
@@ -307,7 +308,15 @@ function renderDetails(product, sizes, hardwarePreview = false) {
     : '';
   const care = technicalSpecs.care ? safe(technicalSpecs.care) : '';
   const deliverySummary = '';
-  const sizeRows = sizes.length ? sizes : ['[TO CONFIRM]'];
+  const sizeGuideMarkup = sizes.length
+    ? `<details class="product-detail-accordion">
+        <summary>Size guide</summary>
+        <div>
+          <p>View product-specific sizing information.</p>
+          <button class="product-detail-text-link" type="button" data-size-guide>Open size guide</button>
+        </div>
+      </details>`
+    : '';
   return `<div class="product-detail-accordions">
     <details class="product-detail-accordion">
       <summary>Details and fit</summary>
@@ -325,14 +334,16 @@ function renderDetails(product, sizes, hardwarePreview = false) {
       <summary>Delivery and returns</summary>
       <div>${deliverySummary}<a href="/delivery-returns.html">Full delivery and returns information</a></div>
     </details>
-    <details class="product-detail-accordion">
-      <summary>Size guide</summary>
-      <div>
-        <p>${safe(SIZE_GUIDE_FIT_NOTE)}</p>
-        <button class="product-detail-text-link" type="button" data-size-guide>Open size guide</button>
-      </div>
-    </details>
+    ${sizeGuideMarkup}
   </div>`;
+}
+
+function renderVerifiedSizeGuideTable(guide) {
+  return `<div class="size-guide-table-wrap"><table>
+    <caption>Measurements in ${safe(guide.unit)}</caption>
+    <thead><tr><th scope="col">Size</th>${guide.measurements.map(measurement => `<th scope="col">${safe(measurement)}</th>`).join('')}</tr></thead>
+    <tbody>${guide.rows.map(row => `<tr><th scope="row">${safe(row.size)}</th>${guide.measurements.map(measurement => `<td data-label="${safe(measurement)}">${safe(row.values[measurement])}</td>`).join('')}</tr>`).join('')}</tbody>
+  </table></div>`;
 }
 
 export function renderProductDetailPage({
@@ -374,6 +385,14 @@ export function renderProductDetailPage({
         <h3>Notify me when available</h3>
         <p>Email notifications are not connected. No email is collected.</p>
       </div>`;
+  const quantityMarkup = canPurchase
+    ? `<label class="product-detail-quantity" for="product-quantity-${product.id}">
+        <span>Quantity</span>
+        <input id="product-quantity-${product.id}" type="number" inputmode="numeric"
+          min="1" max="${MAX_BAG_QUANTITY}" step="1" value="1"
+          data-product-quantity aria-label="Quantity" />
+      </label>`
+    : '';
   const availability = hardwarePreview
     ? 'Not available for purchase.'
     : '';
@@ -402,6 +421,7 @@ export function renderProductDetailPage({
         ${renderColourwayOptions(product, colourways, colourwayImageIndexes)}
         ${sizeMarkup}
         ${availability ? `<p class="product-detail-availability">${safe(availability)}</p>` : ''}
+        ${quantityMarkup}
         ${actionMarkup}
         <p class="product-detail-delivery-summary">
           <a href="/delivery-returns.html">Delivery and returns</a>
@@ -428,13 +448,20 @@ export function renderProductDetailPage({
   </div>`;
 }
 
-export function renderSizeGuideDialog(product, sizes) {
-  const section = sizeGuideSectionForProduct(product);
+export function renderSizeGuideDialog(product) {
+  const guide = productSizeGuideForProduct(product);
+  if (!guide) {
+    return `<div class="size-guide-dialog__shell" data-size-guide-status="CONTENT PENDING">
+      <header><div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
+        <button type="button" data-size-guide-close aria-label="Close size guide">×</button></header>
+      <p class="size-guide-pending" role="status">Product-specific measurements are not available for this item yet.</p>
+    </div>`;
+  }
   return `<div class="size-guide-dialog__shell">
     <header><div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
       <button type="button" data-size-guide-close aria-label="Close size guide">×</button></header>
-    <p>${safe(SIZE_GUIDE_FIT_NOTE)}</p>
-    ${renderSizeGuideTable(section, sizes)}
+    ${guide.fitNote ? `<p>${safe(guide.fitNote)}</p>` : ''}
+    ${renderVerifiedSizeGuideTable(guide)}
     <a class="size-guide-full-link" href="/size-guide.html">View the full size guide</a>
   </div>`;
 }

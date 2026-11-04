@@ -1062,6 +1062,10 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       }
       updateProductActionState(activeDialogProduct);
     }
+    const quantityInput = event.target.closest?.('input[data-product-quantity]');
+    if (quantityInput && dialogBody.contains(quantityInput)) {
+      quantityInput.setCustomValidity('');
+    }
   });
 
   document.addEventListener('click', event => {
@@ -1144,12 +1148,24 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
         dialogBody.querySelector('input[data-product-size]')?.focus();
         return;
       }
-      const added = onAddToBag(Number(bagButton.dataset.bagAdd), { ...activeDialogVariant });
+      const quantityInput = dialogBody.querySelector('[data-product-quantity]');
+      const quantity = quantityInput ? quantityInput.valueAsNumber : 1;
+      const maxQuantity = Number(quantityInput?.max) || 99;
+      if (!Number.isInteger(quantity) || quantity < 1 || quantity > maxQuantity) {
+        quantityInput?.setCustomValidity(`Enter a whole number from 1 to ${maxQuantity}.`);
+        quantityInput?.reportValidity?.();
+        quantityInput?.focus();
+        if (actionStatus) actionStatus.textContent = `Choose a quantity from 1 to ${maxQuantity}.`;
+        return;
+      }
+      quantityInput?.setCustomValidity('');
+      const added = onAddToBag(Number(bagButton.dataset.bagAdd), { ...activeDialogVariant }, quantity);
       if (actionStatus) {
         actionStatus.textContent = added
-          ? 'Added to your bag. Checkout is disabled.'
+          ? `${quantity > 1 ? `${quantity} items added` : 'Added'} to your bag. Checkout is disabled.`
           : 'This item could not be added to the bag.';
       }
+      if (added && quantityInput) quantityInput.value = '1';
       if (added) animateAddButton(bagButton);
       return;
     }

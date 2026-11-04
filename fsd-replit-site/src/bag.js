@@ -4,7 +4,7 @@ import { outlineIcon } from './brand/outline-icons.js';
 import { showCartToast } from './motion-runtime.js';
 
 export const CLIENT_BAG_STORAGE_KEY = 'fsd-client-bag-v1';
-const MAX_QUANTITY = 99;
+export const MAX_BAG_QUANTITY = 99;
 
 function normalizeVariant(variant = {}) {
   return {
@@ -74,7 +74,7 @@ export function createClientBag(products, storage) {
         const quantity = Number(storedQuantity);
         if (!line || !eligibleProducts.has(line.productId) || !Number.isInteger(quantity) || quantity <= 0) continue;
         const lineId = makeLineId(line.productId, line);
-        quantities[lineId] = Math.min(quantity, MAX_QUANTITY);
+        quantities[lineId] = Math.min(quantity, MAX_BAG_QUANTITY);
       }
     }
   } catch {
@@ -106,7 +106,7 @@ export function createClientBag(products, storage) {
       }
       const lineId = makeLineId(numericId, variant);
       quantities[lineId] = Math.min(
-        MAX_QUANTITY,
+        MAX_BAG_QUANTITY,
         (quantities[lineId] || 0) + numericAmount,
       );
       persist();
@@ -119,7 +119,7 @@ export function createClientBag(products, storage) {
       if (!line || !eligibleProducts.has(line.productId) || !Number.isInteger(numericQuantity)) return false;
       if (numericQuantity <= 0) return remove(lineId);
       if (!Object.hasOwn(quantities, lineId)) return false;
-      quantities[lineId] = Math.min(numericQuantity, MAX_QUANTITY);
+      quantities[lineId] = Math.min(numericQuantity, MAX_BAG_QUANTITY);
       persist();
       return true;
     },
@@ -253,21 +253,23 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
     });
   };
 
-  const addToBag = (id, variant = {}) => {
+  const addToBag = (id, variant = {}, quantity = 1) => {
     const product = products.find(item => Number(item.id) === Number(id));
-    const added = bag.add(id, 1, variant);
+    const added = bag.add(id, quantity, variant);
     if (added) {
       const variantText = [
         variant.size && `size ${variant.size}`,
         variant.colourway && variant.colourway,
       ].filter(Boolean).join(' / ');
-      status.textContent = `${product.name}${variantText ? `, ${variantText}` : ''} added to your bag. Checkout is disabled.`;
+      const quantityText = quantity > 1 ? `${quantity} × ` : '';
+      status.textContent = `${quantityText}${product.name}${variantText ? `, ${variantText}` : ''} added to your bag. Checkout is disabled.`;
       placeToastForLayer();
-      showCartToast(toast, `${product.name}${variantText ? ` · ${variantText}` : ''} added to your bag. Checkout is disabled.`);
+      showCartToast(toast, `${quantityText}${product.name}${variantText ? ` · ${variantText}` : ''} added to your bag. Checkout is disabled.`);
       render();
       trackEvent('product_added_to_bag', {
         product_id: product.id,
         product_category: product.category,
+        product_quantity: quantity,
         product_size: variant.size || undefined,
         product_colourway: variant.colourway || undefined,
       });

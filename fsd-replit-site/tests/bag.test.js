@@ -38,6 +38,17 @@ test('bag adds, updates quantity, removes lines, and calculates GBP totals in pe
   assert.equal(bag.subtotal(), 0);
 });
 
+test('bag adds the requested quantity to the selected product variant', () => {
+  const bag = createClientBag(products, createStorage());
+  const variant = { size: 'M', colourway: 'Obsidian Black' };
+
+  assert.equal(bag.add(43, 4, variant), true);
+  assert.deepEqual(
+    bag.items().map(({ productId, size, colourway, quantity }) => [productId, size, colourway, quantity]),
+    [[43, 'M', 'Obsidian Black', 4]],
+  );
+});
+
 test('bag rejects invalid items and restores only valid, bounded persisted quantities', () => {
   const storage = createStorage('{"1":4,"43":2,"2":8,"777":1,"10":300}');
   const bag = createClientBag(products, storage);

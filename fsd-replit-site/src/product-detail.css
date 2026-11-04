@@ -321,6 +321,38 @@
   min-height: 52px;
 }
 
+#dialog-body .product-detail-quantity {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: min(100%, 220px);
+  min-height: 48px;
+  color: #e4dbca;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+#dialog-body .product-detail-quantity input {
+  width: 76px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid rgba(232, 215, 186, .35);
+  border-radius: 0;
+  background: #0a0a0a;
+  color: #f2eee6;
+  font: inherit;
+  font-size: 15px;
+  text-align: center;
+}
+
+#dialog-body .product-detail-quantity input:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+}
+
 #dialog-body .product-detail-add:disabled,
 #dialog-body .product-detail-sticky button:disabled {
   opacity: .58;

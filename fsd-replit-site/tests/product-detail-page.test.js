@@ -35,6 +35,8 @@ test('product detail markup includes accessible size choices and leaves unconfir
   assert.match(markup, /data-product-size/);
   assert.doesNotMatch(markup, /Availability by size:/);
   assert.match(markup, /data-size-guide/);
+  assert.match(markup, /data-product-quantity/);
+  assert.match(markup, /max="99"/);
   assert.match(markup, /class="product-detail-summary">A supplied catalogue description\./);
   assert.match(markup, /Front view/);
   assert.match(markup, /alt="FSD Test Leggings — Front view"/);
@@ -80,6 +82,7 @@ test('notification state collects no email when no notification provider is conn
   assert.match(markup, /Email notifications are not connected\. No email is collected/);
   assert.doesNotMatch(markup, /type="email"/);
   assert.doesNotMatch(markup, /data-bag-add=/);
+  assert.doesNotMatch(markup, /data-product-quantity/);
 });
 
 test('related products stay within the same category and audience', () => {
@@ -101,10 +104,25 @@ test('related products stay within the same category and audience', () => {
   assert.doesNotMatch(markup, /data-related-product="1"/);
 });
 
-test('size guide leaves measurements and body-versus-garment basis unconfirmed', () => {
+test('product size guides do not expose generic or unconfirmed measurement tables', () => {
   const guide = renderSizeGuideDialog(productFixture, productSizeOptions(productFixture));
-  assert.match(guide, /Body measurements describe the person; garment measurements describe the item/);
-  assert.doesNotMatch(guide, /Model height: \[TO CONFIRM\]|Model size worn: \[TO CONFIRM\]/);
-  assert.match(guide, /<td(?:\s+[^>]*)?>\[TO CONFIRM\]<\/td>/);
-  assert.match(guide, /<th scope="col">Waist<\/th>/);
+  assert.match(guide, /data-size-guide-status="CONTENT PENDING"/);
+  assert.match(guide, /Product-specific measurements are not available for this item yet\./);
+  assert.doesNotMatch(guide, /\[TO CONFIRM\]|<table|View the full size guide/);
+});
+
+test('products without confirmed sizes do not show a size guide control', () => {
+  const product = { ...productFixture, sizes: '' };
+  const markup = renderProductDetailPage({
+    product,
+    images: [{ label: 'Front view', src: '/product-front.jpg' }],
+    initialImageIndex: 0,
+    galleryPlaceholders: [],
+    colourways: [],
+    colourwayImageIndexes: [],
+    sizes: [],
+    price: { label: '', value: '£65.00' },
+    canPurchase: true,
+  });
+  assert.doesNotMatch(markup, /<summary>Size guide<\/summary>|data-size-guide/);
 });

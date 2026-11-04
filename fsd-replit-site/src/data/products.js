@@ -4,6 +4,17 @@ import { collectionDivisions } from '../collection-divisions.js';
 // Product image configuration. Each entry may include `colourway`, `size`, or
 // `variant` so variant-specific photography can be added without changing UI.
 const imageReferences = {
+  'FSD Contrast-Panel Training Tee': [
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/front.webp', label: 'Luminous aqua / deep teal navy / white / Front view', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/back.webp', label: 'Luminous aqua / deep teal navy / white / Back view', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/hero.webp', label: 'Luminous aqua / deep teal navy / white / Lifestyle hero', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/front-alternate.webp', label: 'Luminous aqua / deep teal navy / white / Alternate front view', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/side.webp', label: 'Luminous aqua / deep teal navy / white / Side profile', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/training.webp', label: 'Luminous aqua / deep teal navy / white / Training view', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/branding-detail.webp', label: 'Luminous aqua / deep teal navy / white / Branding detail', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/panel-detail.webp', label: 'Luminous aqua / deep teal navy / white / Panel and sleeve detail', colourway: 'Luminous aqua / deep teal navy / white' },
+    { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/fabric-detail.webp', label: 'Luminous aqua / deep teal navy / white / Fabric detail', colourway: 'Luminous aqua / deep teal navy / white' },
+  ],
   'FSD Aeroforge Training Tee': [
     { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp', label: 'White / Green / Wide lifestyle view', colourway: 'White / Green' },
     { src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-fit.webp', label: 'White / Green / Front fit view', colourway: 'White / Green' },
