@@ -150,6 +150,11 @@ export const products = masterProducts
     options: Array.isArray(p.Options) ? p.Options : [],
     ...(p.Materials ? { materials: p.Materials } : {}),
     ...(Array.isArray(p.Features) && p.Features.length ? { features: p.Features } : {}),
+    ...(p.SKU ? { sku: p.SKU } : {}),
+    ...(p['Fabric weight'] ? { fabricWeight: p['Fabric weight'] } : {}),
+    ...(Array.isArray(p['Care instructions']) && p['Care instructions'].length
+      ? { careInstructions: p['Care instructions'] }
+      : {}),
     description: p.Description ?? '',
     shortDescription: p['Short description'] ?? '',
     setContents: p['Set contents'] ?? '',
@@ -166,6 +171,15 @@ export const products = masterProducts
 
 // Add records here only after the complete specification set has been verified.
 export const verifiedProductSpecifications = Object.freeze({
+  18: {
+    approvalStatus: 'verified',
+    materials: [products.find(product => product.id === 18)?.materials].filter(Boolean),
+    benefits: products.find(product => product.id === 18)?.features ?? [],
+    technicalSpecs: {
+      fabricWeight: products.find(product => product.id === 18)?.fabricWeight ?? '',
+      care: products.find(product => product.id === 18)?.careInstructions?.join('; ') ?? '',
+    },
+  },
   56: {
     approvalStatus: 'verified',
     materials: [products.find(product => product.id === 56)?.materials].filter(Boolean),
@@ -231,7 +245,7 @@ export function normalizeVerifiedSpecifications(record) {
     ? record.technicalSpecs
     : {};
   const technicalSpecs = Object.fromEntries(
-    ['composition', 'fit', 'care']
+    ['composition', 'fabricWeight', 'fit', 'care']
       .map(key => [key, typeof technicalSource[key] === 'string' ? technicalSource[key].trim() : ''])
       .filter(([, value]) => value),
   );

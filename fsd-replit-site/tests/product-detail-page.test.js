@@ -37,7 +37,7 @@ test('product detail markup includes accessible size choices and missing-data la
   assert.match(markup, /data-size-guide/);
   assert.match(markup, /Front view/);
   assert.match(markup, /alt="FSD Test Leggings — Front view"/);
-  assert.match(markup, /Concepts, capabilities, specifications, pricing and availability are not confirmed/);
+  assert.match(markup, /Verified catalogue values are shown where recorded; missing or unconfirmed details are marked \[TO CONFIRM\]/);
   assert.match(markup, /UK delivery: \[TO CONFIRM\]/);
 });
 

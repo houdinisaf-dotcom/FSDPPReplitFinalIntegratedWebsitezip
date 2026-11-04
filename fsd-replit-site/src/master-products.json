@@ -264,13 +264,31 @@
     "Audience": "Unisex",
     "Price (£) confirmed": "39.99",
     "Suggested price (£) – to confirm": "",
-    "Colourways": "12 colourways in the catalogue (Black/Green, Black/Red, Black/Grey, White/Green, White/Grey, Navy/Blue, Sage/Black, Khaki/Tan, Charcoal/Orange, Maroon/Black, Royal/White, All Black)",
+    "Colourways": "White / Green; All Black; Black / Grey; Sage / Black; Charcoal / Orange; Navy / Blue",
+    "SKU": "FSD-AF-T01",
+    "Sizes": "S; M; L; XL; XXL",
+    "Materials": "88% Recycled Technical Polyester; 12% Elastane Poly-Blend",
+    "Fabric weight": "180 GSM",
+    "Features": [
+      "Targeted Ventilation: Ergonomic dot-matrix gradient mesh paneling mapped across the shoulders and side body for high-output airflow and heat dissipation.",
+      "Geometric Weave Body: Advanced micro-perforated structural knit engineered for moisture-wicking and quick-dry performance.",
+      "Ergonomic Raglan Construction: Designed for unrestricted mobility during heavy lifting, combat training, and dynamic movement.",
+      "Branding & Details: High-definition heat-pressed neon FSD chest logo, structured inner collar ribbing, and a custom woven FSD Aeroforge size/branding label."
+    ],
+    "Care instructions": [
+      "Machine wash cold at 30°C",
+      "Do not tumble dry",
+      "Do not iron directly on graphics"
+    ],
+    "Description": "Engineered for high-output performance and elite combat training. Built with advanced micro-perforated structural knit and targeted ventilation.",
+    "Short description": "Engineered for high-output performance and elite combat training. Built with advanced micro-perforated structural knit and targeted ventilation.",
+    "Specification status": "verified",
     "Collection line": "Standard / Core",
     "Image status": "No image confirmed",
     "Source": "Catalogue",
     "Also appears as": "FSD Aeroforge Training Tee (Unisex / Multi-Color)",
     "Alias status": "Confirmed",
-    "Notes": "General athletic training line, distinct from Strike combat tops. All 12 supplied colourways retained."
+    "Notes": "General athletic training line, distinct from Strike combat tops. Six curated colourways and supplied technical details approved for the public listing; product photography not confirmed."
   },
   {
     "id": 19,

@@ -172,6 +172,9 @@ function renderDetails(product, sizes, hardwarePreview = false) {
   const alias = product.alias?.trim() && /^confirmed$/i.test(product.aliasStatus || '')
     ? `<p><strong>Also appears as:</strong> ${safe(product.alias)}</p>`
     : '';
+  const sku = product.sku
+    ? `<p><strong>Product code:</strong> ${safe(product.sku)}</p>`
+    : '';
   const fit = product.coverage
     ? `<p><strong>Coverage:</strong> ${safe(product.coverage)}</p>`
     : technicalSpecs.fit
@@ -183,8 +186,11 @@ function renderDetails(product, sizes, hardwarePreview = false) {
   const materials = verified?.materials.length
     ? safe(verified.materials.join(' '))
     : '[TO CONFIRM] Material composition';
-  const specifications = technicalSpecs.composition
-    ? safe(technicalSpecs.composition)
+  const specificationLabel = technicalSpecs.fabricWeight ? 'Fabric weight' : 'GSM / specifications';
+  const specifications = technicalSpecs.fabricWeight
+    ? safe(technicalSpecs.fabricWeight)
+    : technicalSpecs.composition
+      ? safe(technicalSpecs.composition)
     : '[TO CONFIRM] Technical specifications';
   const care = technicalSpecs.care ? safe(technicalSpecs.care) : '[TO CONFIRM]';
   const deliverySummary = `<p>UK delivery times and fees: [TO CONFIRM]</p>
@@ -194,13 +200,13 @@ function renderDetails(product, sizes, hardwarePreview = false) {
   return `<div class="product-detail-accordions">
     <details class="product-detail-accordion">
       <summary>Details and fit</summary>
-      <div>${details}${alias}${fit}${features}</div>
+      <div>${details}${sku}${alias}${fit}${features}</div>
     </details>
     <details class="product-detail-accordion">
       <summary>Fabric and care</summary>
       <div>
         <p><strong>Material:</strong> ${materials}</p>
-        <p><strong>GSM / specifications:</strong> ${specifications}</p>
+        <p><strong>${specificationLabel}:</strong> ${specifications}</p>
         <p><strong>Care instructions:</strong> ${care}</p>
       </div>
     </details>
@@ -318,7 +324,7 @@ export function renderProductDetailPage({
         <div data-product-specifications-root data-product-id="${product.id}"></div>
       </section>
     </div>
-    <p class="product-detail-disclaimer" role="note">Concepts, capabilities, specifications, pricing and availability are not confirmed. Verified catalogue values are shown where recorded; missing details are marked [TO CONFIRM].</p>
+    <p class="product-detail-disclaimer" role="note">Verified catalogue values are shown where recorded; missing or unconfirmed details are marked [TO CONFIRM].</p>
     ${renderDetails(product, sizes, hardwarePreview)}
     ${renderRelatedProducts(product)}
     ${Array.isArray(product.reviews) && product.reviews.length

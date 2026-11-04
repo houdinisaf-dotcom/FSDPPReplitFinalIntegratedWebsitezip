@@ -224,6 +224,7 @@ function verifiedSpecificationRows(product) {
   if (!specifications) return [];
   const technicalLabels = {
     composition: 'Composition',
+    fabricWeight: 'Fabric weight',
     fit: 'Fit and coverage',
     care: 'Care instructions',
   };
