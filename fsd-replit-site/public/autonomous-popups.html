@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Autonomous Pop-Ups & Predictive Stock is an operating or rollout-underway Global Vision initiative focused on flexible retail and demand-informed inventory planning.">
+  <meta name="description" content="Autonomous Pop-Ups & Predictive Stock is an active Global Vision initiative exploring staffed flexible retail and demand-informed inventory planning. No locations or systems are live.">
   <title>FSD | Autonomous Pop-Ups &amp; Predictive Stock</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
@@ -112,6 +112,70 @@
       color: #cdb589;
     }
 
+    .fsd .capability-grid,
+    .fsd .visual-grid,
+    .fsd .badge-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .fsd .capability-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    }
+
+    .fsd .visual-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    }
+
+    .fsd .badge-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    }
+
+    .fsd .capability-card,
+    .fsd .value-panel,
+    .fsd .progression-panel {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 24px;
+    }
+
+    .fsd .capability-card h3,
+    .fsd .value-panel h2,
+    .fsd .progression-panel h2 {
+      color: #cdb589;
+      font-size: 1.05rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .fsd .visual-placeholder {
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px dashed #8a6a44;
+      background: #161412;
+      color: #cdb589;
+      text-align: center;
+    }
+
+    .fsd .visual-placeholder span {
+      color: #d8d0bf;
+      font-size: .9rem;
+    }
+
+    .fsd .badge {
+      border: 1px solid #2a2622;
+      background: #0f0f0f;
+      padding: 18px;
+      color: #e9e1d0;
+      text-align: center;
+    }
+
     .fsd .page-footer {
       padding-top: 24px;
       text-align: center;
@@ -149,17 +213,68 @@
       <div class="tag">FSD / Global Vision · Retail Innovation</div>
       <h1 id="autonomous-popups-title">Autonomous Pop-Ups &amp; Predictive Stock</h1>
       <p class="hero-intro">Flexible retail. Smarter inventory. Closer to our communities.</p>
+      <p>This active initiative assesses staffed temporary retail and demand-informed inventory planning. No pop-up location, forecast system, or connected stock service is live.</p>
     </header>
     <hr>
     <section aria-labelledby="autonomous-popups-framework-title">
-      <h2 id="autonomous-popups-framework-title">Initiative Framework &amp; Rollout</h2>
-      <p>This initiative is developing flexible pop-up retail and data-informed stock planning intended to bring FSD apparel and accessories closer to customers and better align inventory with local demand.</p>
+      <h2 id="autonomous-popups-framework-title">01 / Retail &amp; Inventory Framework</h2>
+      <p>The initiative explores temporary, staffed retail formats alongside data-informed stock planning, with the aim of bringing FSD apparel and accessories closer to customers and aligning stock with local demand.</p>
+      <p>Any reduction in oversupply or improvement in availability is a goal, not a measured result. Gyms, events, universities, business hubs, and community spaces are potential venue categories—not confirmed sites or partners.</p>
+    </section>
+    <hr>
+    <section aria-labelledby="autonomous-popups-pillars-title">
+      <h2 id="autonomous-popups-pillars-title">02 / Operational Pillars</h2>
+      <div class="capability-grid">
+        <article class="capability-card">
+          <h3>Flexible Retail Locations</h3>
+          <p>Staffed pop-ups may be assessed for suitable venues. No location, partner, event schedule, or opening date is confirmed.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Predictive Stock Planning</h3>
+          <p>Explore demand-informed planning to help reduce oversupply. No live forecasting model or automated stock system is available.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Customer Engagement</h3>
+          <p>Mobile retail may support product discovery and community engagement. No activation or event is scheduled.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Connected Experience</h3>
+          <p>Online stock views, click-and-collect, and location-based availability require future system development and partner approval; none are live.</p>
+        </article>
+      </div>
+    </section>
+    <div class="visual-grid" aria-label="Illustrative interface placeholders">
+      <div class="visual-placeholder" role="img" aria-label="Illustrative inventory dashboard placeholder; no live data">
+        <strong>Illustrative dashboard placeholder</strong>
+        <span>No live inventory, location, or demand data is shown.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative mobile stock interface placeholder; no live service">
+        <strong>Illustrative mobile interface placeholder</strong>
+        <span>No stock-sync, click-and-collect, or location service is available.</span>
+      </div>
+    </div>
+    <section class="value-panel" aria-labelledby="autonomous-popups-value-title">
+      <h2 id="autonomous-popups-value-title">03 / Potential Strategic Value</h2>
+      <div class="badge-grid">
+        <div class="badge">Access new customer segments</div>
+        <div class="badge">More efficient inventory management</div>
+        <div class="badge">Increased brand visibility</div>
+        <div class="badge">Flexible revenue opportunities</div>
+      </div>
+      <p class="small">These are intended value areas, not verified outcomes.</p>
+    </section>
+    <section class="progression-panel" aria-labelledby="autonomous-popups-conditions-title">
+      <h2 id="autonomous-popups-conditions-title">04 / Progression Requirements</h2>
       <ul>
-        <li><strong>Potential retail settings:</strong> Gyms, events, universities, and business hubs are planning categories—not confirmed venues or partners.</li>
-        <li><strong>Predictive stock planning:</strong> The initiative explores demand-informed planning to reduce oversupply. No predictive stock system is represented as live.</li>
+        <li>Confirm suitable sites and establish written partner terms.</li>
+        <li>Develop reliable inventory systems and validate data quality, privacy, and security.</li>
+        <li>Complete applicable legal, planning, and regulatory reviews.</li>
+        <li>Set financial, operational, staffing, and reputational controls before any pilot.</li>
       </ul>
+    </section>
+    <section aria-labelledby="autonomous-popups-status-title">
       <div class="status" role="note">
-        <p><strong>Status:</strong> Operating or rollout underway. No pop-up locations, venue partnerships, or predictive-stock service is currently represented as operational.</p>
+        <p id="autonomous-popups-status-title"><strong>Status:</strong> Operating or rollout underway. “Autonomous” means data-informed planning, not unstaffed or cashier-less retail. No pop-up locations, venue partnerships, event schedules, predictive-stock service, online stock integration, click-and-collect, or location-based availability are represented as operational or available.</p>
       </div>
     </section>
     <hr>

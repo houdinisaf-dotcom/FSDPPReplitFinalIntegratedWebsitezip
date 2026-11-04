@@ -9,6 +9,18 @@ Rule: The user approved the public status “Operating or rollout underway” fo
 
 **How to apply:** Use active/rollout status for the 11 items while retaining their individual safeguards. Ask for verified details before adding dates, operating locations, partnerships, or additional initiatives. Keep unrelated product concepts separate.
 
+Smart Apparel & NFC Authentication is an active initiative, not a live NFC product or service. Authentication, a content portal, rewards, event access, and data collection are not represented as operating or available; NFC does not measure biometrics.
+
+**Why:** The user approved the upload as a replacement page, while the source describes proposed capabilities and requires privacy, security, manufacturing, and governance checks before progression.
+
+**How to apply:** Present the four NFC capability areas and strategic value only as initiative scope. Do not claim live authentication, member benefits, rewards, events, or data use; offers and events require separate approval.
+
+FSD Pods is an active infrastructure initiative, but no Pod, location, launch date, partner, training schedule, retail stock, nutrition offering, or community event is confirmed. Potential uses include training, limited apparel display, product testing, and community education.
+
+**Why:** The user approved an aligned replacement page, while the uploaded layout contains proposed uses and visual placeholders rather than evidence of an operating facility or service.
+
+**How to apply:** Keep each use conditional and preserve the gates for premises, planning and applicable local permissions, safety, security, insurance, operating model, and local demand. Do not imply rapid deployment or a live Pod.
+
 Security Provisions is approved for public strategic disclosure, but remains a proposed expansion rather than an operating service or active tender. Deployment and contracting depend on corporate structuring, applicable SIA status, insurance, and legal compliance.
 
 **Why:** The user confirmed the security claims were approved for public use, while the supplied page explicitly says the tender is not operational and lists conditions for deployment.
@@ -33,11 +45,11 @@ FSD Pods is an operating or rollout-underway initiative; the physical pod, locat
 
 **How to apply:** Present the initiative as operating or in rollout, but do not claim a physical pod, location, or service is currently operational or add unverified deployment details.
 
-Autonomous Pop-Ups & Predictive Stock is an operating or rollout-underway Global Vision initiative. Gyms, events, universities, and business hubs are potential venue categories from the source copy, not confirmed locations or partners; no live stock service is claimed.
+Autonomous Pop-Ups & Predictive Stock is an operating or rollout-underway Global Vision initiative. Gyms, events, universities, and business hubs are potential venue categories, not confirmed locations or partners; no live stock service is claimed. “Autonomous” means data-informed planning, not unstaffed or cashier-less retail.
 
 **Why:** The source describes prospective venue types and demand-informed inventory planning, while the approved initiative status does not confirm specific deployments or systems.
 
-**How to apply:** Keep prospective venue examples clearly labeled, avoid implying venue partnerships, and state that pop-up locations and predictive-stock services are not currently operational unless confirmed later.
+**How to apply:** Keep venue examples prospective and avoid implying partnerships. Online stock, click-and-collect, location-based availability, and predictive-stock services remain future possibilities unless confirmed later.
 
 Mobile Testing Labs is an operating or rollout-underway Global Vision initiative. The source scope includes mobile product trials and anonymised performance and fit feedback with participant consent; no unit, venue, test, or data collection is represented as live.
 

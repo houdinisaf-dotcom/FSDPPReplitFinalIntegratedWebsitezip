@@ -12,11 +12,37 @@ window.FSDInnovationInitiatives = Object.freeze({
     {
       id: 'smart-apparel',
       title: 'Smart Apparel & NFC Authentication',
-      summary: 'Garment authentication, useful product information and digital content.',
-      scope: 'Integrate NFC garment access for authenticity checks, care and sizing information, and digital content such as training videos; future member offers and events require separate approval.',
-      valuePillars: ['Product and brand authentication', 'Useful connected-apparel experience', 'Deeper customer engagement'],
+      summary: 'Active initiative exploring NFC-enabled garment authentication, product information and digital content.',
+      scope: 'Assess low-profile NFC integration in woven labels or garment construction as a possible route to product-authentication checks, care and sizing information, and digital content. No NFC-enabled garment, portal, or rewards programme is represented as available.',
+      capabilities: [
+        {
+          title: 'Tap to Connect',
+          description: 'Explore optional NFC access to digital services; no live member area is available.',
+        },
+        {
+          title: 'Verify Authenticity',
+          description: 'Assess product-authentication checks and provenance; no product-level verification service is claimed.',
+        },
+        {
+          title: 'Unlock Digital Content',
+          description: 'Scope approved training content and product-support information; no content portal is live.',
+        },
+        {
+          title: 'Extended Experiences',
+          description: 'Consider member offers, event access, early product drops, and digital services only after separate approval; none are currently available.',
+        },
+      ],
+      valueLabel: 'Potential strategic value',
+      valuePillars: ['Brand protection', 'Deeper customer engagement', 'New revenue opportunities', 'Premium product experience'],
+      rolloutLabel: 'Progression requirements',
       rollout: ['Validate customer value and manufacturing feasibility', 'Complete privacy, security and data-protection review', 'Define compatible product and content flows', 'Pilot only after technical and governance checks'],
-      safeguards: ['NFC does not measure biometrics. The “FSD Rewards” screen shown in concept artwork is illustrative, not a live service.'],
+      safeguards: [
+        'NFC does not measure biometrics.',
+        'No NFC-enabled garment, authentication backend, digital content portal, rewards, or event-access service is represented as live.',
+        'Member offers and events require separate approval.',
+        'Any data use must pass privacy, security, and legal review before a pilot.',
+      ],
+      note: 'Value areas are aims, not verified outcomes. Product compatibility, technical performance, partners, and launch dates are not confirmed.',
     },
   ],
   community: [
@@ -62,20 +88,78 @@ window.FSDInnovationInitiatives = Object.freeze({
     {
       id: 'pods',
       title: 'FSD Pods',
-      summary: 'Modular training, retail and community-learning infrastructure.',
-      scope: 'Develop compact, low-footprint spaces that can combine training sessions, limited apparel retail, community education and product testing.',
-      valuePillars: ['Local brand presence', 'Community access and engagement', 'Training, retail and product-testing opportunities'],
-      rollout: ['Define ownership and operating model', 'Secure suitable premises and planning permission', 'Complete safety, security and insurance planning', 'Validate local demand before a site commitment'],
-      safeguards: ['No operating location or launch date is listed. Nutrition products shown in concept artwork are not offered.'],
+      heroSubtitle: 'Low-footprint modular infrastructure for training, retail, and community learning.',
+      summary: 'Active infrastructure initiative exploring low-footprint modular spaces; no FSD Pod or location is live.',
+      scope: 'Assess compact, transportable spaces as potential local hubs for training, product and equipment testing, limited apparel display, and community education. These are possible uses, not live services; site selection and operating feasibility remain unconfirmed.',
+      capabilities: [
+        {
+          title: 'Training Sessions',
+          description: 'A compact training space is a possible use; no sessions, coaches, staffing, equipment list, or schedule are confirmed.',
+        },
+        {
+          title: 'Apparel Retail',
+          description: 'Limited display or retail may be assessed; no inventory, prices, or sales offer are confirmed.',
+        },
+        {
+          title: 'Product & Equipment Testing',
+          description: 'Testing may be considered; no programme, products, or partner facility is confirmed.',
+        },
+        {
+          title: 'Community Education',
+          description: 'Workshops or community learning may be assessed; no event, class, or provider is confirmed.',
+        },
+        {
+          title: 'Nutrition Products',
+          description: 'Not in confirmed scope; no supplements, hydration products, or nutrition advice are offered.',
+        },
+      ],
+      valueLabel: 'Potential strategic value',
+      valuePillars: ['Local brand presence', 'New revenue opportunities', 'Community engagement', 'Product testing'],
+      rolloutLabel: 'Progression requirements',
+      rollout: ['Define ownership and operating model', 'Secure suitable premises and planning permission; confirm any applicable local-authority licensing', 'Complete safety, security and insurance planning', 'Validate local demand before a site commitment'],
+      safeguards: [
+        'No pod, operating location, launch date, or operating partner is confirmed.',
+        'Training sessions, retail stock, nutrition products, community events, and services are not represented as live or available.',
+        'Nutrition and hydration offerings are outside confirmed scope and require separate commercial and compliance review.',
+        'The uploaded visual placeholders are not images of operating facilities or locations.',
+      ],
+      note: 'Potential uses and value areas are subject to planning, safety, insurance, operating-model, and local-demand validation.',
     },
     {
       id: 'predictive-popups',
       title: 'Autonomous Pop-Ups & Predictive Stock',
-      summary: 'Staffed flexible retail supported by demand-led inventory planning.',
-      scope: 'Coordinate staffed pop-ups at suitable gyms, events, universities and community locations with data-informed stock planning and, where supported, online stock and click-and-collect.',
-      valuePillars: ['Access to new customer groups', 'More efficient inventory planning', 'Flexible brand visibility and retail'],
-      rollout: ['Select sites and partners', 'Establish reliable data and inventory systems', 'Complete legal, planning and regulatory reviews', 'Pilot with financial, operational and reputational controls'],
-      safeguards: ['“Autonomous” means data-led planning, not unstaffed or cashier-less retail. No event or site schedule is listed.'],
+      heroSubtitle: 'Flexible retail. Smarter inventory. Closer to our communities.',
+      summary: 'Active initiative exploring staffed pop-up retail and demand-informed stock planning; no locations or systems are live.',
+      scope: 'Assess temporary, staffed retail at suitable gyms, events, universities, business hubs, and community locations alongside data-informed inventory planning. Online stock views, click-and-collect, and location-based availability remain future possibilities only; no site, schedule, or integrated service is confirmed.',
+      capabilities: [
+        {
+          title: 'Flexible Retail Locations',
+          description: 'Potential venue categories include gyms, events, universities, business hubs, and community locations; no venue, partner, or schedule is confirmed.',
+        },
+        {
+          title: 'Predictive Stock Planning',
+          description: 'Explore demand-informed planning to help reduce oversupply; no live forecasting model or automated stock system is available.',
+        },
+        {
+          title: 'Customer Engagement',
+          description: 'Mobile retail may support product discovery and community engagement; no event or activation is scheduled.',
+        },
+        {
+          title: 'Connected Experience',
+          description: 'Online stock, click-and-collect, and location-based availability require future system development and partner approval; none are live.',
+        },
+      ],
+      valueLabel: 'Potential strategic value',
+      valuePillars: ['Access new customer segments', 'More efficient inventory management', 'Increased brand visibility', 'Flexible revenue opportunities'],
+      rolloutLabel: 'Progression requirements',
+      rollout: ['Select suitable sites and establish written partner terms', 'Establish reliable data and inventory systems', 'Complete legal, planning and regulatory reviews', 'Pilot with financial, operational and reputational controls'],
+      safeguards: [
+        '“Autonomous” means data-informed planning, not unstaffed or cashier-less retail.',
+        'No pop-up location, venue partnership, event schedule, or opening date is confirmed.',
+        'No predictive-stock service, online stock integration, click-and-collect, or location-based availability is represented as live.',
+        'Demand forecasts and potential benefits are not measured or guaranteed; data use requires privacy and security review.',
+      ],
+      note: 'Venue types are examples, not confirmed sites or partners. All value areas are aims, not verified outcomes.',
     },
     {
       id: 'mobile-testing-labs',

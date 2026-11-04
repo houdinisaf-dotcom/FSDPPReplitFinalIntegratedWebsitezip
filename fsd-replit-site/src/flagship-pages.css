@@ -167,6 +167,13 @@
   margin: 18px auto 0;
 }
 
+.fsd-page-subtitle {
+  margin: 18px auto 0;
+  color: #e9e7e1;
+  font: 500 clamp(15px, 2vw, 20px)/1.6 Manrope, sans-serif;
+  letter-spacing: 0.07em;
+}
+
 .fsd-asset-slot {
   position: relative;
   display: grid;
@@ -283,6 +290,131 @@
   font: 400 11px/1.7 "DM Sans", sans-serif;
 }
 
+.fsd-shield-content {
+  display: grid;
+  gap: clamp(30px, 5vw, 64px);
+  margin-top: clamp(30px, 5vw, 64px);
+}
+
+.fsd-shield-section {
+  margin: 0;
+  padding-top: clamp(22px, 3vw, 36px);
+  border-top: 1px solid rgba(200, 170, 114, 0.2);
+}
+
+.fsd-shield-kicker {
+  margin: 0 0 12px;
+  color: #c8aa72;
+  font: 700 9px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.fsd-shield-section > h3 {
+  margin: 0;
+  color: #f1f0ec;
+  font: 700 clamp(18px, 2.3vw, 25px)/1.3 Manrope, sans-serif;
+  letter-spacing: 0.015em;
+}
+
+.fsd-shield-section > p:not(.fsd-shield-kicker) {
+  max-width: 880px;
+  margin: 16px 0 0;
+  color: #a7a9ad;
+  font: 400 14px/1.8 "DM Sans", sans-serif;
+}
+
+.fsd-shield-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.fsd-shield-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid rgba(138, 146, 156, 0.23);
+  background: linear-gradient(145deg, rgba(25, 28, 32, 0.92), rgba(12, 14, 16, 0.96));
+}
+
+.fsd-shield-card h4 {
+  margin: 0;
+  color: #c8aa72;
+  font: 700 12px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.fsd-shield-card p {
+  margin: 12px 0 0;
+  color: #a7a9ad;
+  font: 400 12px/1.75 "DM Sans", sans-serif;
+}
+
+.fsd-shield-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fsd-shield-visual-grid .fsd-asset-slot {
+  aspect-ratio: 16 / 9;
+}
+
+.fsd-shield-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fsd-shield-badge {
+  display: grid;
+  min-height: 76px;
+  place-items: center;
+  padding: 16px;
+  border: 1px solid rgba(138, 146, 156, 0.2);
+  background: #0d0f11;
+  color: #e9e7e1;
+  font: 600 10px/1.6 Manrope, sans-serif;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.fsd-shield-notice {
+  padding: clamp(20px, 3vw, 34px);
+  border-left: 2px solid #c8aa72;
+  background: rgba(200, 170, 114, 0.06);
+}
+
+.fsd-shield-notice > p:not(.fsd-shield-kicker) {
+  margin: 0;
+  color: #b5b6b8;
+  font: 400 12px/1.8 "DM Sans", sans-serif;
+}
+
+.fsd-shield-notice > p + p {
+  margin-top: 12px !important;
+}
+
+.fsd-shield-notice strong {
+  color: #e9e7e1;
+}
+
+.fsd-shield-footer {
+  padding-top: 24px;
+  border-top: 1px solid rgba(138, 146, 156, 0.18);
+  color: #8e939a;
+  font: 600 9px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.17em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .fsd-page-actions {
   display: flex;
   flex-wrap: wrap;
@@ -324,6 +456,11 @@
   .fsd-page-module-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .fsd-shield-card-grid,
+  .fsd-shield-badge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
@@ -337,7 +474,10 @@
   }
 
   .fsd-innovation-grid,
-  .fsd-page-module-grid {
+  .fsd-page-module-grid,
+  .fsd-shield-card-grid,
+  .fsd-shield-badge-grid,
+  .fsd-shield-visual-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 

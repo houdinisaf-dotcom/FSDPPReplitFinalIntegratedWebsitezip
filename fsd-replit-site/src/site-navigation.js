@@ -413,7 +413,7 @@ function makeHouseGroups(divisions) {
           href: '/autonomous-popups.html',
           kind: 'initiative',
           status: 'Operating or rollout underway',
-          description: 'Operating initiative exploring flexible pop-up retail and demand-informed stock planning. No venue or stock service is currently operational.',
+          description: 'Staffed flexible retail and demand-informed stock planning. No venue or stock service is live; “autonomous” refers to planning, not unstaffed or cashier-less retail.',
         },
         {
           id: 'mobile-testing-labs',

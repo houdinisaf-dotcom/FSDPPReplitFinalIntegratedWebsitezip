@@ -307,7 +307,7 @@ try {
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/autonomous-popups.html" && document.querySelector("#autonomous-popups-title")?.textContent.trim() === "Autonomous Pop-Ups & Predictive Stock"');
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No pop-up locations, venue partnerships, or predictive-stock service is currently represented as operational/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No pop-up locations, venue partnerships, event schedules, predictive-stock service, online stock integration, click-and-collect, or location-based availability are represented as operational or available/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
   await click('.fsd-primary-nav [data-nav-primary="house"]');

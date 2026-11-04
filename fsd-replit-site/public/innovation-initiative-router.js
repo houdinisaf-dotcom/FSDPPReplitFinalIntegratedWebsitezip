@@ -11,22 +11,37 @@ window.configureFSDInnovationRoutes = (P, M) => {
   }[character]));
   const hero = P['global/innovation']?.bn || P.global?.bn || '';
   const activeStatus = 'ACTIVE INITIATIVE · ROLLOUT UNDERWAY';
-  const toPage = (item, groupId, kicker) => ({
-    kicker,
-    title: item.title,
-    tag: item.summary,
-    status: activeStatus,
-    body: [
+  const toPage = (item, groupId, kicker) => {
+    const capabilities = Array.isArray(item.capabilities) ? item.capabilities : [];
+    const body = [
       `<strong>Delivery scope:</strong> ${escape(item.scope)}`,
-      `<strong>Value pillars:</strong> ${item.valuePillars.map(escape).join(' · ')}`,
-      `<strong>Rollout framework:</strong> ${item.rollout.map(escape).join(' → ')}`,
-    ],
-    bul: item.safeguards.map(escape),
-    note: 'Initiative status is active. Specific owners, partners, locations and milestone dates are not listed where they have not been supplied.',
-    gid: groupId,
-    group: false,
-    bn: hero,
-  });
+      ...(capabilities.length ? ['<strong>Functional ecosystem &amp; features:</strong>'] : []),
+      `<strong>${escape(item.valueLabel || 'Value pillars')}:</strong> ${item.valuePillars.map(escape).join(' · ')}`,
+      `<strong>${escape(item.rolloutLabel || 'Rollout framework')}:</strong> ${item.rollout.map(escape).join(' → ')}`,
+    ];
+    const noteParts = [
+      ...(item.safeguards || []),
+      item.note,
+      'Initiative status is active. Specific owners, partners, locations and milestone dates are not listed where they have not been supplied.',
+    ].filter(Boolean);
+
+    return {
+      kicker,
+      title: item.title,
+      tag: item.heroSubtitle
+        ? `${escape(item.heroSubtitle)}<br><span style="font-size:14px;color:#ddd">${escape(item.summary)}</span>`
+        : escape(item.summary),
+      status: activeStatus,
+      body,
+      bul: capabilities.length
+        ? capabilities.map(capability => `<strong>${escape(capability.title)}:</strong> ${escape(capability.description)}`)
+        : item.safeguards.map(escape),
+      note: noteParts.map(escape).join(' · '),
+      gid: groupId,
+      group: false,
+      bn: hero,
+    };
+  };
   const toGroupPage = (groupId, title, kicker, items, summary) => ({
     kicker,
     title,

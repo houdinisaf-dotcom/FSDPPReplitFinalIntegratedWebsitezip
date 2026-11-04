@@ -37,6 +37,13 @@ test('pending media uses labeled responsive placeholders rather than unapproved 
   assert.equal((html.match(/class="fsd-asset-slot fsd-asset-slot--/g) || []).length, 44);
   assert.match(html, /FSD \/ PERFORMANCE/);
   assert.match(html, /FSD product and editorial imagery/);
+  assert.match(html, /Illustrative portal mock-up only; no live member area is available/);
+  assert.match(html, /Illustrative training imagery only; no class or provider is confirmed/);
+  assert.match(html, /VIEW SMART APPAREL INITIATIVE/);
+  assert.match(html, /href="\/the-house\.html#bio-lab\/smart-apparel"/);
+  assert.match(html, /FSD BIO-LAB™ \/ ACTIVE INITIATIVE/);
+  assert.match(html, /Low-footprint modular training, retail, and community infrastructure/);
+  assert.match(html, /href="\/the-house\.html#global\/pods"/);
   assert.doesNotMatch(html, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.doesNotMatch(html, /<img\b|data:image\//i);
 });
@@ -58,6 +65,14 @@ test('Innovation Hub links to all concepts and keeps private proofs out of produ
 test('new page content does not enable membership sign-up, checkout, or unverified claims', () => {
   const html = renderFlagshipPlaceholderPages();
   assert.match(html, /REGISTRATION NOT OPEN/);
+  assert.match(html, /Practical skills\. Greater confidence\. Stronger communities\./);
+  assert.match(html, /Online Learning/);
+  assert.match(html, /Practical Training/);
+  assert.match(html, /Member Support/);
+  assert.match(html, /Real-World Relevance/);
+  assert.match(html, /POTENTIAL STRATEGIC VALUE/);
+  assert.match(html, /04 \/ CONDITIONS BEFORE PROGRESSION/);
+  assert.match(html, /Terms, benefits, providers, and access details are unconfirmed/);
   assert.match(html, /PARTNERSHIP ENQUIRIES NOT CONNECTED/);
   assert.match(html, /FSD \/ GLOBAL VISION &amp; OPERATIONS/);
   assert.match(html, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);

@@ -511,8 +511,12 @@ test('Autonomous Pop-Ups & Predictive Stock is an initiative without claiming li
   assert.notEqual(retail?.navigationUnavailable, true);
   assert.match(page, /<title>FSD \| Autonomous Pop-Ups &amp; Predictive Stock<\/title>/);
   assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
-  assert.match(page, /not confirmed venues or partners/);
-  assert.match(page, /No predictive stock system is represented as live/);
+  assert.match(page, /No location, partner, event schedule, or opening date is confirmed/);
+  assert.match(page, /No live forecasting model or automated stock system is available/);
+  assert.match(page, /not unstaffed or cashier-less retail/);
+  assert.match(page, /click-and-collect, and location-based availability require future system development/);
+  assert.match(page, /No live inventory, location, or demand data is shown/);
+  assert.match(retail?.description || '', /not unstaffed or cashier-less retail/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
 });
 

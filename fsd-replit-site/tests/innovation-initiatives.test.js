@@ -41,10 +41,43 @@ test('public initiative copy removes exploratory labels and retains safety and p
   const source = readPublic('innovation-initiative-data.js');
   const router = readPublic('innovation-initiative-router.js');
   const publicPage = readPublic('the-house.html');
+  const context = { window: {} };
+  vm.runInNewContext(source, context);
+  const smartApparel = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).bioLab
+    .find(item => item.id === 'smart-apparel');
+  const pods = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
+    .find(item => item.id === 'pods');
+  const popups = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
+    .find(item => item.id === 'predictive-popups');
 
   assert.doesNotMatch(source, /Concept for exploration|not a current product or commitment|Potential value|Conditions before progression/i);
   assert.match(router, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
   assert.match(source, /NFC does not measure biometrics/i);
+  assert.equal(smartApparel.capabilities.length, 4);
+  assert.deepEqual(smartApparel.capabilities.map(item => item.title), [
+    'Tap to Connect',
+    'Verify Authenticity',
+    'Unlock Digital Content',
+    'Extended Experiences',
+  ]);
+  assert.match(smartApparel.scope, /No NFC-enabled garment, portal, or rewards programme is represented as available/);
+  assert.match(smartApparel.safeguards.join(' '), /Member offers and events require separate approval/);
+  assert.match(router, /Functional ecosystem &amp; features/);
+  assert.match(router, /capabilities\.map/);
+  assert.equal(pods.capabilities.length, 5);
+  assert.match(pods.summary, /no FSD Pod or location is live/i);
+  assert.match(pods.heroSubtitle, /Low-footprint modular infrastructure/);
+  assert.match(pods.scope, /These are possible uses, not live services/i);
+  assert.match(pods.capabilities.find(item => item.title === 'Nutrition Products').description, /Not in confirmed scope/);
+  assert.match(pods.rollout.join(' '), /planning permission/i);
+  assert.match(pods.rollout.join(' '), /local-authority licensing/i);
+  assert.match(pods.rollout.join(' '), /safety, security and insurance/i);
+  assert.match(pods.safeguards.join(' '), /No pod, operating location, launch date, or operating partner is confirmed/);
+  assert.equal(popups.capabilities.length, 4);
+  assert.match(popups.summary, /no locations or systems are live/i);
+  assert.match(popups.scope, /Online stock views, click-and-collect, and location-based availability remain future possibilities only/i);
+  assert.match(popups.safeguards.join(' '), /not unstaffed or cashier-less retail/i);
+  assert.match(popups.safeguards.join(' '), /privacy and security review/i);
   assert.match(source, /FSD is not an emergency service/i);
   assert.match(source, /No tests, kits or data collection are operating/i);
   assert.match(source, /No partner is represented as agreed/i);

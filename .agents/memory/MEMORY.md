@@ -9,3 +9,4 @@
 - [Customer-facing terminology](customer-facing-terminology.md) — remove visible release/status labels and use neutral product names with existing catalogue values.
 - [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk setup needs a valid app name; package installs must target the nested storefront directory.
 - [Innovation initiative status](initiative-rollout-status.md) — Keep the five-section House landing; group Investor inside House navigation and retain initiative route and safeguard boundaries.
+- [Tactical Shield proposal boundary](tactical-shield-membership.md) — keep services and sign-up unavailable until providers, safeguarding, legal scope, insurance, and terms are confirmed.
