@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Local Micro-Manufacturing is an operating or rollout-underway Global Vision initiative exploring small-batch production closer to FSD communities.">
+  <meta name="description" content="Local Micro-Manufacturing is an active Global Vision initiative assessing small-batch production. No partner, hub, production site, or service is live.">
   <title>FSD | Local Micro-Manufacturing</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
@@ -99,6 +99,77 @@
       color: #cdb589;
     }
 
+    .fsd .capability-grid,
+    .fsd .visual-grid,
+    .fsd .badge-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .fsd .capability-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    }
+
+    .fsd .visual-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      width: min(calc(100% - 48px), 1000px);
+      margin: 24px auto;
+    }
+
+    .fsd .badge-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    }
+
+    .fsd .capability-card,
+    .fsd .value-panel,
+    .fsd .progression-panel {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 24px;
+    }
+
+    .fsd .capability-card h3,
+    .fsd .value-panel h2,
+    .fsd .progression-panel h2 {
+      color: #cdb589;
+      font-size: 1.05rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .fsd .visual-placeholder {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px dashed #8a6a44;
+      background: #161412;
+      color: #cdb589;
+      text-align: center;
+    }
+
+    .fsd .visual-placeholder span {
+      color: #d8d0bf;
+      font-size: .9rem;
+    }
+
+    .fsd .badge {
+      border: 1px solid #2a2622;
+      background: #0f0f0f;
+      padding: 18px;
+      color: #e9e1d0;
+      text-align: center;
+    }
+
+    .fsd .small {
+      margin-top: 12px;
+      font-size: .85rem;
+    }
+
     .fsd .page-footer {
       padding-top: 24px;
       text-align: center;
@@ -126,6 +197,10 @@
       .fsd .status {
         padding: 16px;
       }
+
+      .fsd .visual-grid {
+        width: min(calc(100% - 32px), 1000px);
+      }
     }
   </style>
 </head>
@@ -136,13 +211,74 @@
       <div class="tag">FSD / Global Vision · Supply Chain</div>
       <h1 id="local-micro-manufacturing-title">Local Micro-Manufacturing</h1>
       <p class="hero-intro">On-demand production. Closer to our communities.</p>
+      <p>This active initiative assesses local, small-batch production. No manufacturing partner, hub, production site, or service is live.</p>
     </header>
     <hr>
     <section aria-labelledby="local-micro-manufacturing-framework-title">
-      <h2 id="local-micro-manufacturing-framework-title">Initiative Framework &amp; Rollout</h2>
-      <p>The Local Micro-Manufacturing initiative is developing a framework for small-scale local hubs that could produce FSD apparel and equipment on demand. Its aims include shorter lead times, lower transport emissions, and greater customisation.</p>
+      <h2 id="local-micro-manufacturing-framework-title">01 / The Production Framework</h2>
+      <p>The initiative is assessing whether a local, small-batch production framework could support FSD apparel and selected equipment, subject to quality, safety, cost, and commercial feasibility.</p>
+      <p>Potential partners and locations remain unconfirmed. Custom fit, design variations, and community- or event-specific ranges are feasibility questions, not current customer offerings.</p>
+      <p>Potential aims to assess include shorter lead times, lower transport emissions, reduced material waste, and selected customisation; none are measured or promised.</p>
+    </section>
+    <hr>
+    <section aria-labelledby="local-micro-manufacturing-capabilities-title">
+      <h2 id="local-micro-manufacturing-capabilities-title">02 / Production Capabilities</h2>
+      <div class="capability-grid">
+        <article class="capability-card">
+          <h3>Small-Batch Production</h3>
+          <p>Assess whether smaller production runs closer to customers can meet FSD quality, safety, cost, and delivery requirements; no production is underway.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Selected Customisation</h3>
+          <p>Potential fit or design variations may be evaluated for feasibility; custom orders and event-specific ranges are not available.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Quality &amp; Performance</h3>
+          <p>Any future process would need documented material, safety, and performance checks; no local process or test result is confirmed.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Local Partnerships</h3>
+          <p>Potential manufacturing and skills partners may be assessed; no partner, location, or programme is confirmed.</p>
+        </article>
+      </div>
+    </section>
+    <div class="visual-grid" aria-label="Illustrative micro-manufacturing placeholders">
+      <div class="visual-placeholder" role="img" aria-label="Illustrative local workshop placeholder; no manufacturing site is operating">
+        <strong>Illustrative workshop placeholder</strong>
+        <span>No manufacturing hub, partner, or production site is represented as operational.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative logo application equipment placeholder; no production process is live">
+        <strong>Precision application placeholder</strong>
+        <span>No equipment or local production process is represented as live.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative quality control and packaging placeholder; no fulfillment operation is live">
+        <strong>Quality &amp; packaging placeholder</strong>
+        <span>No product inspection or regional fulfillment operation is represented as active.</span>
+      </div>
+    </div>
+    <section class="value-panel" aria-labelledby="local-micro-manufacturing-value-title">
+      <h2 id="local-micro-manufacturing-value-title">03 / Potential Strategic Value</h2>
+      <div class="badge-grid">
+        <div class="badge">More responsive inventory</div>
+        <div class="badge">Selected customisation</div>
+        <div class="badge">Local skills and partner opportunities</div>
+        <div class="badge">Material waste and transport impact to measure</div>
+      </div>
+      <p class="small">These are aims for assessment, not verified outcomes.</p>
+    </section>
+    <section class="progression-panel" aria-labelledby="local-micro-manufacturing-conditions-title">
+      <h2 id="local-micro-manufacturing-conditions-title">04 / Progression Requirements</h2>
+      <ul>
+        <li>Identify and qualify suitable manufacturing partners and locations.</li>
+        <li>Validate production cost, capacity, quality, safety, and performance.</li>
+        <li>Complete legal, regulatory, and intellectual-property review.</li>
+        <li>Measure environmental and operational impacts before making claims.</li>
+        <li>Confirm funding and risk controls before any production pilot.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="local-micro-manufacturing-status-title">
       <div class="status" role="note">
-        <p><strong>Status:</strong> Operating or rollout underway. No local manufacturing hub, production site, or service is currently represented as operational.</p>
+        <p id="local-micro-manufacturing-status-title"><strong>Status:</strong> Operating or rollout underway. No local manufacturing hub, production site, or service is currently represented as operational. No manufacturing partner or custom-order service is confirmed. No delivery-time, material-waste, or emissions reduction is measured or promised.</p>
       </div>
     </section>
     <hr>

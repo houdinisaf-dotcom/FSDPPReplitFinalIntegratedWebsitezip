@@ -556,8 +556,11 @@ test('Local Micro-Manufacturing is an initiative without claiming live productio
   assert.notEqual(manufacturing?.navigationUnavailable, true);
   assert.match(page, /<title>FSD \| Local Micro-Manufacturing<\/title>/);
   assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
-  assert.match(page, /shorter lead times, lower transport emissions, and greater customisation/);
+  assert.match(page, /Potential aims to assess include shorter lead times, lower transport emissions, reduced material waste, and selected customisation; none are measured or promised/);
   assert.match(page, /No local manufacturing hub, production site, or service is currently represented as operational/);
+  assert.match(page, /No manufacturing partner or custom-order service is confirmed/);
+  assert.match(page, /No delivery-time, material-waste, or emissions reduction is measured or promised/);
+  assert.match(manufacturing?.description || '', /environmental benefits are not verified/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
 });
 
@@ -577,7 +580,10 @@ test('Genetic & Microbiome Personalisation is a research initiative, not a healt
   assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
   assert.match(page, /strict privacy protections and appropriate clinical oversight/);
   assert.match(page, /No genetic or microbiome testing, data analysis, or personalised health guidance is represented as currently available/);
+  assert.match(page, /No sample collection is operating/);
   assert.match(page, /No clinical partnership is identified on this page/);
+  assert.match(page, /No claim is made that DNA predicts injury or optimises training/);
+  assert.match(research?.description || '', /No testing, sample collection, data analysis, or personalised health guidance is available/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|clinical advice is available/i);
 });
 
@@ -652,10 +658,15 @@ test('Circular Trade-In describes the initiative without opening a return or cre
   assert.equal(tradeIn?.href, '/circular-trade-in.html');
   assert.equal(tradeIn?.status, 'Operating or rollout underway');
   assert.notEqual(tradeIn?.navigationUnavailable, true);
+  assert.match(tradeIn?.description || '', /No trade-ins, eligibility, or credit terms are available/);
   assert.match(page, /<title>FSD \| Circular Trade-In Programme<\/title>/);
   assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
   assert.match(page, /inspection, repair, resale, and recycling pathways/);
   assert.match(page, /does not currently accept trade-in requests or specify eligibility, credit, collection, or processing terms/);
+  assert.match(page, /No partner or operating process is confirmed/);
+  assert.match(page, /No zero-waste or verified environmental-impact claim is made/);
+  assert.match(page, /potential aims, not verified outcomes or guarantees/);
+  assert.match(page, /Illustrative trade-in counter/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|<form\b|trade-in credit is available/i);
 });
 

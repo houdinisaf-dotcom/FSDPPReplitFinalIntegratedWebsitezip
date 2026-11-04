@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Genetic & Microbiome Personalisation is a long-horizon research initiative with strict scientific, clinical, and privacy safeguards.">
+  <meta name="description" content="Genetic & Microbiome Personalisation is a long-horizon research initiative. No testing, sample collection, data analysis, or personalised health guidance is available.">
   <title>FSD | Genetic &amp; Microbiome Personalisation</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
@@ -99,6 +99,72 @@
       color: #cdb589;
     }
 
+    .fsd .capability-grid,
+    .fsd .visual-grid,
+    .fsd .badge-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .fsd .capability-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    }
+
+    .fsd .visual-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      width: min(calc(100% - 48px), 1000px);
+      margin: 24px auto;
+    }
+
+    .fsd .badge-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    }
+
+    .fsd .capability-card,
+    .fsd .value-panel,
+    .fsd .progression-panel {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 24px;
+    }
+
+    .fsd .capability-card h3,
+    .fsd .value-panel h2,
+    .fsd .progression-panel h2 {
+      color: #cdb589;
+      font-size: 1.05rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .fsd .visual-placeholder {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px dashed #8a6a44;
+      background: #161412;
+      color: #cdb589;
+      text-align: center;
+    }
+
+    .fsd .visual-placeholder span {
+      color: #d8d0bf;
+      font-size: .9rem;
+    }
+
+    .fsd .badge {
+      border: 1px solid #2a2622;
+      background: #0f0f0f;
+      padding: 18px;
+      color: #e9e1d0;
+      text-align: center;
+    }
+
     .fsd .page-footer {
       padding-top: 24px;
       text-align: center;
@@ -126,6 +192,10 @@
       .fsd .status {
         padding: 16px;
       }
+
+      .fsd .visual-grid {
+        width: min(calc(100% - 32px), 1000px);
+      }
     }
   </style>
 </head>
@@ -135,14 +205,74 @@
     <header class="hero" aria-labelledby="genetic-microbiome-title">
       <div class="tag">FSD / Global Vision · Science &amp; Data</div>
       <h1 id="genetic-microbiome-title">Genetic &amp; Microbiome Personalisation</h1>
-      <p class="hero-intro">Science-led research into training, nutrition, and wellbeing.</p>
+      <p class="hero-intro">Long-horizon research. Responsible science. Clear safeguards.</p>
+      <p>This initiative assesses research questions only. No genetic or microbiome testing, sample collection, data analysis, or personalised health guidance is available.</p>
     </header>
     <hr>
     <section aria-labelledby="genetic-microbiome-framework-title">
-      <h2 id="genetic-microbiome-framework-title">Research Framework &amp; Rollout</h2>
-      <p>The initiative is investigating whether future scientific research could inform general training, nutrition, and recovery guidance. Any work involving genetic or microbiome data would require strict privacy protections and appropriate clinical oversight.</p>
+      <h2 id="genetic-microbiome-framework-title">01 / Research Framework</h2>
+      <p>The initiative assesses whether independently validated research could ever inform general, non-personalised training or nutrition education. No individual interpretation, diagnosis, treatment, or health recommendation is in confirmed scope.</p>
+      <p>Any future work involving genetic or microbiome information would require strict privacy protections and appropriate clinical oversight. No genetic or microbiome data is currently collected or analysed.</p>
+    </section>
+    <hr>
+    <section aria-labelledby="genetic-microbiome-pillars-title">
+      <h2 id="genetic-microbiome-pillars-title">02 / Research &amp; Governance Pillars</h2>
+      <div class="capability-grid">
+        <article class="capability-card">
+          <h3>Evidence &amp; Validation</h3>
+          <p>Review whether reliable scientific evidence exists for any proposed application; no findings or validated method are available.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Clinical &amp; Research Governance</h3>
+          <p>Any future study would require appropriately qualified independent partners, ethics review, and relevant regulatory approvals; no partner is confirmed.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Data Privacy &amp; Stewardship</h3>
+          <p>Any future research would require informed consent, data minimisation, security, and safeguarding controls. No genetic or microbiome data is collected or analysed.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Appropriate Scope</h3>
+          <p>This is not a testing, diagnostic, treatment, or personalised health service. No individual training or nutrition guidance is offered.</p>
+        </article>
+      </div>
+    </section>
+    <div class="visual-grid" aria-label="Illustrative research placeholders">
+      <div class="visual-placeholder" role="img" aria-label="Illustrative research laboratory placeholder; no testing facility is represented">
+        <strong>Illustrative research-lab placeholder</strong>
+        <span>No laboratory, sample handling, or testing service is represented as operating.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative data visualisation placeholder; no genetic result or profile is shown">
+        <strong>Illustrative research visualisation</strong>
+        <span>No genetic predisposition, metabolic pathway, or customer profile is shown.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative consultation placeholder; no clinical consultation is available">
+        <strong>Illustrative consultation placeholder</strong>
+        <span>No practitioner, clinical partner, or personalised consultation is available.</span>
+      </div>
+    </div>
+    <section class="value-panel" aria-labelledby="genetic-microbiome-value-title">
+      <h2 id="genetic-microbiome-value-title">03 / Potential Research Value</h2>
+      <div class="badge-grid">
+        <div class="badge">Responsible scientific learning</div>
+        <div class="badge">Potential for general education</div>
+        <div class="badge">Carefully governed research opportunities</div>
+        <div class="badge">Long-horizon innovation</div>
+      </div>
+      <p class="small">These are possible areas for research, not verified outcomes or available services.</p>
+    </section>
+    <section class="progression-panel" aria-labelledby="genetic-microbiome-conditions-title">
+      <h2 id="genetic-microbiome-conditions-title">04 / Conditions Before Any Application</h2>
+      <ul>
+        <li>Review independent evidence and clinical validity.</li>
+        <li>Identify appropriately qualified clinical and research partners.</li>
+        <li>Complete ethics, legal, and regulatory review.</li>
+        <li>Define informed consent, privacy, security, and safeguarding controls.</li>
+        <li>Confirm scientific validation and an appropriate non-clinical scope.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="genetic-microbiome-status-title">
       <div class="status" role="note">
-        <p><strong>Status:</strong> Operating or rollout underway. No genetic or microbiome testing, data analysis, or personalised health guidance is represented as currently available. No clinical partnership is identified on this page.</p>
+        <p id="genetic-microbiome-status-title"><strong>Status:</strong> Operating or rollout underway. No genetic or microbiome testing, data analysis, or personalised health guidance is represented as currently available. No sample collection is operating. No clinical partnership is identified on this page. No claim is made that DNA predicts injury or optimises training.</p>
       </div>
     </section>
     <hr>

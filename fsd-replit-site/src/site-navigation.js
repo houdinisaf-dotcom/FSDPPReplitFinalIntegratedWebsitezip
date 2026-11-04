@@ -431,7 +431,7 @@ function makeHouseGroups(divisions) {
           href: '/local-micro-manufacturing.html',
           kind: 'initiative',
           status: 'Operating or rollout underway',
-          description: 'Operating initiative developing plans for local, small-batch production. No manufacturing hub or service is currently operational.',
+          description: 'Active initiative assessing small-batch production. No partner, hub, site, or custom-order service is live; environmental benefits are not verified.',
         },
         {
           id: 'genetic-microbiome',
@@ -440,7 +440,7 @@ function makeHouseGroups(divisions) {
           href: '/genetic-microbiome.html',
           kind: 'initiative',
           status: 'Operating or rollout underway',
-          description: 'Long-horizon research with strict scientific and privacy gates. No testing or personalised health service is represented as available.',
+          description: 'Long-horizon research with strict scientific and privacy gates. No testing, sample collection, data analysis, or personalised health guidance is available; no clinical partner is confirmed.',
         },
         {
           id: 'security-provisions',
@@ -482,7 +482,7 @@ function makeHouseGroups(divisions) {
           href: '/circular-trade-in.html',
           kind: 'initiative',
           status: 'Operating or rollout underway',
-          description: 'Operating circularity initiative exploring inspection, repair, resale, and recycling pathways. Trade-ins are not offered here.',
+          description: 'Operating circularity initiative assessing inspection, repair, reuse, resale, and recycling pathways. No trade-ins, eligibility, or credit terms are available.',
         },
         {
           id: 'first-aid-safety',

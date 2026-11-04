@@ -51,6 +51,12 @@ test('public initiative copy removes exploratory labels and retains safety and p
     .find(item => item.id === 'predictive-popups');
   const mobileLabs = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
     .find(item => item.id === 'mobile-testing-labs');
+  const manufacturing = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
+    .find(item => item.id === 'local-micro-manufacturing');
+  const genetics = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
+    .find(item => item.id === 'genetic-microbiome');
+  const circular = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).community
+    .find(item => item.id === 'circular-trade-in');
 
   assert.doesNotMatch(source, /Concept for exploration|not a current product or commitment|exploratory concept|Design Prototype/i);
   assert.match(router, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
@@ -85,8 +91,26 @@ test('public initiative copy removes exploratory labels and retains safety and p
   assert.match(mobileLabs.scope, /Biometric sensor tracking is not in confirmed scope/);
   assert.match(mobileLabs.safeguards.join(' '), /No biometric sensor tracking or biometric data collection is in confirmed scope/);
   assert.match(mobileLabs.safeguards.join(' '), /informed participant consent/);
+  assert.equal(manufacturing.capabilities.length, 4);
+  assert.match(manufacturing.summary, /no partner, hub, production site, or service is live/i);
+  assert.match(manufacturing.scope, /no partner, manufacturing hub, production site, or custom-order service is confirmed/i);
+  assert.match(manufacturing.safeguards.join(' '), /No delivery-time, material-waste, or emissions reduction is measured or promised/);
+  assert.match(manufacturing.note, /not verified results or promises/);
+  assert.equal(genetics.capabilities.length, 4);
+  assert.match(genetics.summary, /no testing, sample collection, data analysis, or personalised health guidance is available/i);
+  assert.match(genetics.scope, /No individual interpretation, diagnosis, treatment, or health recommendation is in confirmed scope/);
+  assert.match(genetics.safeguards.join(' '), /No tests, kits, sample collection, or data analysis are operating/);
+  assert.match(genetics.safeguards.join(' '), /No claim is made that DNA predicts injury or optimises training/);
+  assert.match(genetics.safeguards.join(' '), /No clinical or research partnership is represented as agreed/);
+  assert.equal(circular.capabilities.length, 4);
+  assert.match(circular.summary, /no trade-in service or partner is live/i);
+  assert.match(circular.scope, /No product eligibility, trade-in credit, collection, processing, or resale terms are confirmed or available/);
+  assert.match(circular.rollout.join(' '), /Define credit, funding, accounting, legal, and consumer terms/);
+  assert.match(circular.safeguards.join(' '), /Trade-in credit would create a financial liability/);
+  assert.match(circular.safeguards.join(' '), /No zero-waste or verified environmental-impact claim is made/);
+  assert.match(circular.note, /potential aims to validate, not measured or guaranteed results/);
   assert.match(source, /FSD is not an emergency service/i);
-  assert.match(source, /No tests, kits or data collection are operating/i);
+  assert.match(source, /No tests, kits, sample collection, or data analysis are operating/i);
   assert.match(source, /No partner is represented as agreed/i);
   assert.doesNotMatch(publicPage, /No location, service, event or product described is represented as operational or available for sale/i);
 });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Circular Trade-In is an operating or rollout-underway initiative exploring product reuse, repair, resale, and recycling pathways.">
+  <meta name="description" content="Circular Trade-In is an operating initiative assessing product reuse, repair, resale, and recycling pathways. No trade-ins or credit terms are available.">
   <title>FSD | Circular Trade-In Programme</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
@@ -99,6 +99,78 @@
       color: #cdb589;
     }
 
+    .fsd .capability-grid,
+    .fsd .visual-grid,
+    .fsd .badge-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .fsd .capability-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    }
+
+    .fsd .visual-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      width: min(calc(100% - 48px), 1000px);
+      margin: 24px auto;
+    }
+
+    .fsd .badge-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    }
+
+    .fsd .capability-card,
+    .fsd .value-panel,
+    .fsd .progression-panel {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 24px;
+    }
+
+    .fsd .capability-card h3,
+    .fsd .value-panel h2,
+    .fsd .progression-panel h2 {
+      color: #cdb589;
+      font-size: 1.05rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .fsd .visual-placeholder {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px dashed #8a6a44;
+      background: #161412;
+      color: #cdb589;
+      text-align: center;
+    }
+
+    .fsd .visual-placeholder span {
+      color: #d8d0bf;
+      font-size: .9rem;
+    }
+
+    .fsd .badge {
+      border: 1px solid #2a2622;
+      background: #0f0f0f;
+      padding: 18px;
+      color: #e9e1d0;
+      text-align: center;
+    }
+
+    .fsd .progression-panel ul {
+      margin: 20px 0 0;
+      padding-left: 22px;
+      color: #d8d0bf;
+    }
+
     .fsd .page-footer {
       padding-top: 24px;
       text-align: center;
@@ -126,6 +198,10 @@
       .fsd .status {
         padding: 16px;
       }
+
+      .fsd .visual-grid {
+        width: min(calc(100% - 32px), 1000px);
+      }
     }
   </style>
 </head>
@@ -136,13 +212,74 @@
       <div class="tag">FSD / Community &amp; Culture · Sustainability</div>
       <h1 id="circular-trade-in-title">Circular Trade-In Programme</h1>
       <p class="hero-intro">Wear. Return. Reuse. A more circular approach.</p>
+      <p>This operating initiative is assessing potential product-reuse pathways. No trade-ins, collection, or resale service is available.</p>
     </header>
     <hr>
     <section aria-labelledby="circular-trade-in-framework-title">
-      <h2 id="circular-trade-in-framework-title">Initiative Framework &amp; Rollout</h2>
-      <p>The Circular Trade-In Programme is developing a framework to extend the useful life of FSD apparel and equipment through potential inspection, repair, resale, and recycling pathways. Its aims are to reduce textile waste and support more circular product use.</p>
+      <h2 id="circular-trade-in-framework-title">01 / Circularity Framework</h2>
+      <p>The Circular Trade-In Programme is developing a framework to extend the useful life of FSD apparel and equipment through potential inspection, repair, resale, and recycling pathways. These are proposed routes to assess, not a service currently offered.</p>
+      <p>Potential environmental and commercial benefits remain objectives to measure. No waste reduction, resale outcome, or cost efficiency has been verified.</p>
+    </section>
+    <hr>
+    <section aria-labelledby="circular-trade-in-pillars-title">
+      <h2 id="circular-trade-in-pillars-title">02 / Potential Programme Pathways</h2>
+      <div class="capability-grid">
+        <article class="capability-card">
+          <h3>Inspection &amp; Grading</h3>
+          <p>Define how product condition, safety, and hygiene could be assessed; no inspection or grading service is operating.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Repair &amp; Refurbishment</h3>
+          <p>Assess whether suitable products can be repaired or refurbished to documented standards; no repair offer or process is available.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Reuse &amp; Resale</h3>
+          <p>Explore whether eligible products could be safely reused or resold; no pre-loved stock, resale channel, or eligibility policy is live.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Recycling &amp; Responsible Routing</h3>
+          <p>Assess appropriate end-of-life routes with qualified providers; no recycling partner, destination, or zero-waste outcome is confirmed.</p>
+        </article>
+      </div>
+    </section>
+    <div class="visual-grid" aria-label="Illustrative programme placeholders">
+      <div class="visual-placeholder" role="img" aria-label="Illustrative trade-in counter; no collection service is operating">
+        <strong>Illustrative trade-in counter</strong>
+        <span>No collection point or trade-in service is represented as operating.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative inspection station; no grading process is operating">
+        <strong>Illustrative inspection station</strong>
+        <span>No grading, repair, or product-safety process is represented as active.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative pre-loved display; no resale stock is available">
+        <strong>Illustrative pre-loved display</strong>
+        <span>No pre-loved inventory, resale channel, or retail partner is confirmed.</span>
+      </div>
+    </div>
+    <section class="value-panel" aria-labelledby="circular-trade-in-value-title">
+      <h2 id="circular-trade-in-value-title">03 / Potential Value to Assess</h2>
+      <div class="badge-grid">
+        <div class="badge">Longer product use</div>
+        <div class="badge">More accessible reuse options</div>
+        <div class="badge">Customer retention</div>
+        <div class="badge">Operating efficiencies</div>
+        <div class="badge">Environmental impact to measure</div>
+      </div>
+      <p class="small">These are potential aims, not verified outcomes or guarantees.</p>
+    </section>
+    <section class="progression-panel" aria-labelledby="circular-trade-in-conditions-title">
+      <h2 id="circular-trade-in-conditions-title">04 / Conditions Before Any Launch</h2>
+      <ul>
+        <li>Define accepted products, condition criteria, and eligibility.</li>
+        <li>Select suitable partners and collection infrastructure.</li>
+        <li>Set inspection, repair, safety, hygiene, and resale standards.</li>
+        <li>Define credit, funding, accounting, legal, and consumer terms.</li>
+        <li>Validate unit economics and measure environmental impacts before making claims.</li>
+      </ul>
+    </section>
+    <section aria-labelledby="circular-trade-in-status-title">
       <div class="status" role="note">
-        <p><strong>Status:</strong> Operating or rollout underway. This page does not currently accept trade-in requests or specify eligibility, credit, collection, or processing terms.</p>
+        <p id="circular-trade-in-status-title"><strong>Status:</strong> Operating or rollout underway. This page does not currently accept trade-in requests or specify eligibility, credit, collection, or processing terms. No partner or operating process is confirmed. No zero-waste or verified environmental-impact claim is made.</p>
       </div>
     </section>
     <hr>
