@@ -167,7 +167,9 @@ try {
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundPosition'), '50% 35%');
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundSize'), 'cover');
   assert.doesNotMatch(
-    await evaluate('document.body.innerText'),
+    // Phase 8 explicitly labels its non-purchasable garment studies as concepts.
+    // That exception must not permit draft/status labels on real merchandise.
+    await evaluate('document.body.innerText.replace(document.querySelector("[data-garment-studies]")?.innerText || "", "")'),
     /CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING|PLACEHOLDER/i,
   );
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');

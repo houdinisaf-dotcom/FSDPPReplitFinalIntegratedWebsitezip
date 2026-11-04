@@ -1,0 +1,268 @@
+.showroom-beyond {
+  grid-template-columns: minmax(250px, .72fr) minmax(0, 1.28fr);
+  align-items: start;
+  gap: clamp(34px, 6vw, 84px);
+}
+
+.showroom-beyond__intro { position: sticky; top: 120px; }
+.showroom-concepts { border-top: 1px solid rgba(214, 195, 158, .24); }
+.showroom-concepts__group { border-bottom: 1px solid rgba(214, 195, 158, .24); }
+.showroom-concepts__group > summary {
+  display: grid;
+  min-height: 72px;
+  grid-template-columns: 34px minmax(0, 1fr) auto 18px;
+  align-items: center;
+  gap: 12px;
+  color: #eeeae1;
+  cursor: pointer;
+  list-style: none;
+}
+.showroom-concepts__group > summary::-webkit-details-marker { display: none; }
+.showroom-concepts__group > summary::after {
+  color: #c8aa72;
+  content: "+";
+  font: 300 20px/1 var(--fsd-display);
+  text-align: right;
+}
+.showroom-concepts__group[open] > summary::after { content: "−"; }
+.showroom-concepts__group > summary > span,
+.showroom-concepts__group > summary > small {
+  color: #c8aa72;
+  font-size: 8px;
+  letter-spacing: .15em;
+}
+.showroom-concepts__group > summary > strong {
+  font: 500 clamp(15px, 1.55vw, 19px)/1.2 var(--fsd-display);
+  letter-spacing: -.035em;
+}
+.showroom-concepts__group > summary > small { color: #8d887e; white-space: nowrap; }
+.showroom-concepts__group > summary:focus-visible {
+  outline: 2px solid #e1c68e;
+  outline-offset: 4px;
+}
+.showroom-concepts__group ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 0 14px;
+  padding: 0;
+  background: rgba(214, 195, 158, .13);
+  list-style: none;
+}
+.showroom-concepts__group li { min-width: 0; background: #111214; }
+.showroom-concepts__group li a {
+  position: relative;
+  display: flex;
+  min-height: 132px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 17px 34px 16px 16px;
+  color: #eeeae1;
+  text-decoration: none;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+.showroom-concepts__group li a:hover { transform: translateY(-2px); }
+.showroom-concepts__group li a:focus-visible,
+.showroom-garment-study__choice:focus-visible,
+.showroom-garment-study__detail a:focus-visible {
+  outline: 2px solid #e1c68e;
+  outline-offset: 3px;
+}
+.showroom-concepts__group li a > strong {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.showroom-concepts__group li a > span {
+  margin-top: 8px;
+  color: #c8aa72;
+  font-size: 7px;
+  letter-spacing: .1em;
+  line-height: 1.5;
+}
+.showroom-concepts__group li a > small {
+  margin-top: 6px;
+  color: #a7a49c;
+  font-size: 10px;
+  line-height: 1.55;
+}
+.showroom-concepts__group li a > b {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #c8aa72;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.showroom-garment-study {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(210px, .7fr) minmax(0, 1.3fr);
+  gap: 24px 42px;
+  margin-top: 4px;
+  padding: clamp(24px, 4vw, 48px);
+  border: 1px solid rgba(214, 195, 158, .22);
+  background:
+    radial-gradient(ellipse at 78% 4%, rgba(193, 159, 101, .12), transparent 36%),
+    #0c0d0f;
+}
+.showroom-garment-study__heading .section-kicker { color: #c8aa72; }
+.showroom-garment-study__heading h3 {
+  margin: 13px 0 9px;
+  color: #eeeae1;
+  font: 500 clamp(29px, 4vw, 47px)/1 var(--fsd-display);
+  letter-spacing: -.065em;
+}
+.showroom-garment-study__heading h3 em { color: #c8aa72; font-style: normal; }
+.showroom-garment-study__heading > p:last-child {
+  max-width: 270px;
+  color: #a7a49c;
+  font-size: 11px;
+  line-height: 1.75;
+}
+.showroom-garment-study__body {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(140px, .78fr) minmax(0, 1fr);
+  gap: 18px;
+}
+.showroom-garment-study__preview {
+  position: relative;
+  display: grid;
+  aspect-ratio: 4 / 5;
+  align-self: start;
+  overflow: hidden;
+  place-items: stretch;
+  background:
+    linear-gradient(150deg, rgba(201, 173, 121, .10), transparent 47%),
+    #17181a;
+}
+.showroom-garment-study__preview::after {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(200, 170, 114, .23);
+  content: "";
+  pointer-events: none;
+}
+.showroom-garment-study__image,
+.showroom-garment-study__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+}
+.showroom-garment-study__image { position: absolute; inset: 0; }
+.showroom-garment-study__placeholder {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  padding: 20px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 38%, rgba(193, 159, 101, .2), transparent 40%),
+    linear-gradient(155deg, #24231f, #111214 72%);
+}
+.showroom-garment-study__placeholder .fsd-image-placeholder__mark { color: #c8aa72; }
+.showroom-garment-study__placeholder .fsd-image-placeholder__title {
+  max-width: 180px;
+  color: #f0eadd;
+  font: 500 19px/1.15 var(--fsd-display);
+}
+.showroom-garment-study__placeholder .fsd-image-placeholder__variant {
+  color: #c8aa72;
+  font-size: 7px;
+  letter-spacing: .12em;
+}
+.showroom-garment-study__preview-label {
+  position: absolute;
+  z-index: 1;
+  right: 20px;
+  bottom: 19px;
+  left: 20px;
+  color: #d7c39d;
+  font-size: 7px;
+  letter-spacing: .17em;
+  pointer-events: none;
+}
+.showroom-garment-study__selection { display: flex; min-width: 0; flex-direction: column; }
+.showroom-garment-study__choices { border-top: 1px solid rgba(214, 195, 158, .2); }
+.showroom-garment-study__choice {
+  display: grid;
+  width: 100%;
+  min-height: 62px;
+  grid-template-columns: 27px minmax(0, 1fr) 15px;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 2px;
+  border: 0;
+  border-bottom: 1px solid rgba(214, 195, 158, .2);
+  background: transparent;
+  color: #aaa69e;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+.showroom-garment-study__choice:hover { transform: translateX(3px); }
+.showroom-garment-study__choice[aria-pressed="true"] { color: #f1e8d6; }
+.showroom-garment-study__choice > span { color: #8d887e; font-size: 8px; letter-spacing: .1em; }
+.showroom-garment-study__choice[aria-pressed="true"] > span,
+.showroom-garment-study__choice[aria-pressed="true"] > b { color: #c8aa72; }
+.showroom-garment-study__choice > strong { font-size: 11px; font-weight: 600; line-height: 1.4; }
+.showroom-garment-study__symbol svg { display: block; width: 27px; height: 32px; }
+.showroom-garment-study__choice > b { color: #79756c; font-size: 12px; font-weight: 400; }
+.showroom-garment-study__detail { margin-top: auto; padding: 19px 0 0; }
+.showroom-garment-study__detail > span {
+  color: #c8aa72;
+  font-size: 7px;
+  letter-spacing: .14em;
+}
+.showroom-garment-study__detail h4 {
+  margin: 9px 0 5px;
+  color: #eeeae1;
+  font: 500 19px/1.2 var(--fsd-display);
+  letter-spacing: -.035em;
+}
+.showroom-garment-study__detail p { margin: 0; color: #a7a49c; font-size: 10px; line-height: 1.6; }
+.showroom-garment-study__detail a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  border-bottom: 1px solid rgba(200, 170, 114, .48);
+  color: #e0d6c2;
+  font-size: 7px;
+  letter-spacing: .12em;
+  text-decoration: none;
+}
+.showroom-garment-study__detail a b { color: #c8aa72; font-size: 13px; font-weight: 400; }
+
+.showroom-house-connection { padding-block: clamp(58px, 7vw, 88px); }
+.showroom-house-connection h2 { font-size: clamp(34px, 4.4vw, 58px); }
+
+@media (max-width: 760px) {
+  .showroom-beyond { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .showroom-beyond__intro { position: static; }
+  .showroom-concepts__group > summary { min-height: 66px; grid-template-columns: 28px minmax(0, 1fr) auto 16px; gap: 8px; }
+  .showroom-concepts__group > summary > small { font-size: 7px; }
+  .showroom-concepts__group ul { grid-template-columns: minmax(0, 1fr); }
+  .showroom-concepts__group li a { min-height: 105px; padding: 14px 34px 14px 14px; }
+  .showroom-garment-study { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .showroom-garment-study__heading > p:last-child { max-width: 420px; }
+  .showroom-garment-study__body { grid-template-columns: minmax(115px, .7fr) minmax(0, 1fr); gap: 13px; }
+}
+
+@media (max-width: 420px) {
+  .showroom-concepts__group > summary { grid-template-columns: 23px minmax(0, 1fr) 16px; }
+  .showroom-concepts__group > summary > small { grid-column: 2; grid-row: 2; margin-top: -14px; }
+  .showroom-concepts__group > summary::after { grid-column: 3; grid-row: 1 / span 2; }
+  .showroom-garment-study { padding: 20px 16px; }
+  .showroom-garment-study__body { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showroom-concepts__group li a,
+  .showroom-garment-study__choice { transition: none; }
+}

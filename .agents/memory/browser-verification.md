@@ -3,6 +3,12 @@ name: Browser verification caveats
 description: Native dialog timing and low-level Chromium mobile-emulation limitations
 ---
 
+CDP keyboard activation of native buttons and disclosure summaries requires the full Enter key event, including its carriage-return text.
+
+**Why:** A keydown/keyup pair without text focused the controls but did not trigger native activation, while clicking worked. This produced false interaction failures.
+
+**How to apply:** Send Enter with virtual key code 13 and `text: '\r'` / `unmodifiedText: '\r'` on `keyDown`, then `keyUp`. Wait for the storefront runtime before interacting.
+
 Wait for native dialog close-handler cleanup before asserting focus restoration or reopening the same panel.
 
 **Why:** Removing the `open` state happens synchronously, but the native `close` event is queued. Checking only `dialog.open` produced false failures and exposed a possible stale-event reopening race.

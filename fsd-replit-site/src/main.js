@@ -2,7 +2,7 @@ import { catalogueSection, initCatalogue, navigateCatalogue, showProduct } from 
 import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
-import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation } from './showroom-sections.js';
+import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation, mountGarmentStudies } from './showroom-sections.js';
 import { renderNavigationHeader } from './site-navigation.js';
 import { ourStorySection } from './story-section.js';
 import { mountClientBag } from './bag.js';
@@ -25,6 +25,7 @@ import './globals.css';
 import './motion-effects.css';
 import './image-placeholders.css';
 import './homepage-phase3.css';
+import './showroom-phase8.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 
@@ -252,6 +253,7 @@ function startMainExperience(clientBag, onRouteChange = () => {}) {
     },
   });
   initCatalogueNavigation();
+  mountGarmentStudies();
   document.querySelector('[data-open-hardware]')?.addEventListener('click', () => {
     onRouteChange({ view: 'hardware', target: 'hardware' });
     document.querySelector('#fsd-division-hardware')?.click();

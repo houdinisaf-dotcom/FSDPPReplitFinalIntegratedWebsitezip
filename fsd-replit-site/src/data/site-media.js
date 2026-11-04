@@ -28,4 +28,11 @@ export const siteMedia = Object.freeze({
     src: '/fsd-assets/8ffe2fd45a06.webp',
     alt: 'FSD athlete in modest combat training apparel, pictured during a boxing session.',
   }),
+  // Approved replacement map for the homepage garment studies. Keep null until
+  // product-specific concept imagery is approved; do not reuse catalogue crops.
+  garmentStudies: Object.freeze({
+    leggings: null,
+    tank: null,
+    jacket: null,
+  }),
 });

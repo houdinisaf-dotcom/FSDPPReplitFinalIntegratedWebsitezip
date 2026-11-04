@@ -33,6 +33,13 @@ Edit `src/data/site-media.js`. Use an approved `{ src, alt }` object, or `null`
 while an image is unavailable. It contains the home hero, women's banner,
 homepage collection cards, and hardware editorial image.
 
+The `garmentStudies` map in the same file supplies the homepage's three
+non-purchasable garment-study previews (`leggings`, `tank`, and `jacket`).
+Keep each entry `null` until approved imagery is supplied. When approved,
+replace the entry with `{ src: '/fsd-assets/approved-file.webp', alt: '...' }`.
+These concept studies are not product gallery or variant records; do not add
+them to catalogue product/variant management or use unrelated product crops.
+
 For page-specific visual slots, add a `{ src, alt }` entry in `pageMedia` keyed by
 the exact slot title rendered by the page. Existing slot dimensions remain unchanged.
 The men's collection uses an approved image from its catalogue first, then its

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { customerFacingCategory, products, productsWithUsableImages, priceInfo } from '../src/catalogue-data.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase, groupProducts, matchesDraftCardScope } from '../src/collection-showcase/index.js';
-import { featuredProducts, featuredInnovationsSection, vipAccessSection } from '../src/showroom-sections.js';
+import { beyondProductSection, featuredProducts, featuredInnovationsSection, garmentStudiesSection, garmentStudyDefinitions, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
 
 test('the showroom renders four accessible division controls and one reusable dialog', () => {
   const markup = renderCollectionShowcase(collectionDivisions);
@@ -128,4 +128,42 @@ test('deferred VIP access cannot collect or pretend to submit personal data', ()
   assert.match(markup, /disabled aria-describedby="vip-status"/);
   assert.match(markup, /not collecting sign-ups yet/);
   assert.doesNotMatch(markup, /<form|<input|mailto:|action=|subscribe/i);
+});
+
+test('concept discovery groups retain approved rollout status and explicit availability boundaries', () => {
+  const markup = beyondProductSection();
+  for (const group of ['TRAIN & BELONG', 'WEAR', 'BUILT CLOSER', 'TOGETHER & TOMORROW']) {
+    assert.match(markup, new RegExp(group));
+  }
+  for (const concept of [
+    'Tactical Shield Membership', 'Community Co-Creation', 'Community Resilience',
+    'Smart Apparel', 'Adaptive Technical Fabrics', 'Circular Trade-In',
+    'Autonomous Pop-Ups & Predictive Stock', 'FSD Pods', 'Mobile Testing Labs',
+    'Local Micro-Manufacturing', 'Performance-Linked Partnerships',
+    'Genetic & Microbiome Personalisation',
+  ]) assert.ok(markup.includes(concept), `Missing concept: ${concept}`);
+  assert.match(markup, /PROPOSAL · REGISTRATION NOT OPEN/);
+  assert.match(markup, /OPERATING OR ROLLOUT UNDERWAY/);
+  assert.match(markup, /no membership service or registration is available/i);
+  assert.match(markup, /no specific partner, live testing programme, or connected enquiry channel/i);
+  assert.doesNotMatch(markup, /Coming soon|Open to enquiries|Join the waiting list/i);
+  assert.equal((markup.match(/<details class="showroom-concepts__group"/g) || []).length, 4);
+});
+
+test('garment studies are accessible non-purchasable concepts with real research destinations', () => {
+  const markup = garmentStudiesSection();
+  for (const label of ['Performance Leggings', 'Technical Tank', 'Run Jacket']) assert.ok(markup.includes(label));
+  assert.equal((markup.match(/data-garment-choice=/g) || []).length, 3);
+  assert.match(markup, /aria-pressed="true"/);
+  assert.match(markup, /NOT FOR SALE/);
+  assert.match(markup, /the-house\.html#bio-lab\/adaptive-fabrics/);
+  assert.match(markup, /not purchasable or customisable garments/);
+  assert.doesNotMatch(markup, /£|\$|add to bag/i);
+  assert.deepEqual(garmentStudyDefinitions.map(item => item.title), [
+    'Performance Leggings', 'Technical Tank', 'Run Jacket',
+  ]);
+  assert.ok(garmentStudyDefinitions.some(item => item.destination.endsWith('#bio-lab/smart-apparel')));
+  const vision = houseConnectionSection();
+  assert.match(vision, /Train\. Wear\. Belong\.<br\/><em>Be Stronger Together\.<\/em>/);
+  assert.match(vision, /id="brand-community"/);
 });

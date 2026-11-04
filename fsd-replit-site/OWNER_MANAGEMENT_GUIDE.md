@@ -67,6 +67,9 @@ These changes are also source edits, not owner-editable controls.
 
 - The homepage hero, women’s banner and hardware editorial image are mapped in
   `src/data/site-media.js` (`homeHero`, `womensBanner`, and `hardwareFeature`).
+- The three non-purchasable garment-study previews use `garmentStudies` in the
+  same file. Keep the entries `null` until approved study imagery is available;
+  these are not product or customisation records.
 - Page-specific image slots use `pageMedia`, keyed by the exact slot title.
 - Keep each existing image slot and its responsive sizing. Provide accurate alt
   text; use a placeholder rather than unrelated photography.
