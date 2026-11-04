@@ -57,6 +57,12 @@ Mobile Testing Labs is an operating or rollout-underway Global Vision initiative
 
 **How to apply:** Present testing and feedback as the initiative framework, not a live service. Keep prospective venues distinct from confirmed sites and do not imply that data is currently being collected.
 
+Biometric sensor tracking and biometric data collection are not in the confirmed Mobile Testing Labs scope.
+
+**Why:** The uploaded sensor imagery is illustrative and does not confirm approved instrumentation or a live data-collection protocol.
+
+**How to apply:** Keep feedback within consent-based, anonymised fit and performance insights; do not imply sensor tracking or active data collection.
+
 Local Micro-Manufacturing is an operating or rollout-underway Global Vision initiative. Its scope is local, small-batch production; no manufacturing hub, production site, or service is represented as operational.
 
 **Why:** The source describes intended benefits and exploratory hubs but provides no confirmed sites, partners, or production operations.

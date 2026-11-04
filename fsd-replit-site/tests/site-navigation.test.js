@@ -536,6 +536,9 @@ test('Mobile Testing Labs is an initiative with consent safeguards and no live-t
   assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
   assert.match(page, /anonymised performance and fit insights with participant consent/);
   assert.match(page, /No mobile testing unit, venue, test, or data-collection activity is currently represented as operational/);
+  assert.match(page, /No biometric sensor tracking or biometric data collection is in confirmed scope/);
+  assert.match(page, /No live terminal, participant data, or feedback system is shown/);
+  assert.match(testingLabs?.description || '', /biometric sensor tracking is not in confirmed scope/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|exploratory concept/i);
 });
 

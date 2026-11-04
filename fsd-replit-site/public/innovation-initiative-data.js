@@ -164,11 +164,38 @@ window.FSDInnovationInitiatives = Object.freeze({
     {
       id: 'mobile-testing-labs',
       title: 'Mobile Testing Labs',
-      summary: 'Mobile apparel trials, structured feedback and qualified demonstrations.',
-      scope: 'Bring apparel trials and training demonstrations to suitable events, gyms and universities; gather fit, comfort and durability feedback with clear consent.',
-      valuePillars: ['Stronger customer insight', 'Better-informed product decisions', 'Public engagement and access'],
-      rollout: ['Select suitable locations and delivery partners', 'Secure planning approvals', 'Set consent, privacy and safeguarding processes', 'Confirm qualified instructors, funding and risk controls'],
-      safeguards: ['Feedback and performance data require clear consent and a privacy notice. Demonstrations are led by qualified instructors.'],
+      heroSubtitle: 'Real-world testing. Real people. Real insights.',
+      summary: 'Active initiative for mobile product trials and consent-based feedback; no unit, venue, trial, or data collection is live.',
+      scope: 'Develop a mobile framework for apparel and equipment trials and training demonstrations at suitable events, gyms, and universities. Future feedback may cover fit, comfort, durability, and anonymised performance insights with informed consent and privacy controls. Biometric sensor tracking is not in confirmed scope.',
+      capabilities: [
+        {
+          title: 'On-Site Product Testing',
+          description: 'Potential hands-on apparel, equipment, and training-experience trials; no product or training trial is active.',
+        },
+        {
+          title: 'Participant Feedback',
+          description: 'Future feedback may cover fit, comfort, durability, and non-biometric performance observations, with informed consent and a privacy notice. No data is currently collected.',
+        },
+        {
+          title: 'Innovation Support',
+          description: 'Verified findings may inform future product development; no test results or findings are currently available.',
+        },
+        {
+          title: 'Community Engagement',
+          description: 'Qualified-led demonstrations and education may be considered; no instructors, partners, or events are confirmed.',
+        },
+      ],
+      valueLabel: 'Potential strategic value',
+      valuePillars: ['Stronger customer insights', 'Improved product development', 'Increased brand visibility', 'Access to new customer segments'],
+      rolloutLabel: 'Progression requirements',
+      rollout: ['Select suitable locations and delivery partners', 'Secure planning and regulatory approvals', 'Set participant-consent, privacy and safeguarding processes', 'Confirm qualified instructors, funding and operational and reputational risk controls'],
+      safeguards: [
+        'No mobile testing unit, venue, trial, or data-collection activity is currently represented as operational.',
+        'No biometric sensor tracking or biometric data collection is in confirmed scope.',
+        'Future feedback requires informed participant consent, a privacy notice, and appropriate safeguarding review.',
+        'Demonstrations require qualified instructors; no provider or event is confirmed.',
+      ],
+      note: 'Potential value areas are aims, not verified outcomes. The uploaded visual placeholders do not show operating equipment, participants, or a live data system.',
     },
     {
       id: 'local-micro-manufacturing',

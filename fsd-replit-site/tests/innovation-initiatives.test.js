@@ -49,8 +49,10 @@ test('public initiative copy removes exploratory labels and retains safety and p
     .find(item => item.id === 'pods');
   const popups = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
     .find(item => item.id === 'predictive-popups');
+  const mobileLabs = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
+    .find(item => item.id === 'mobile-testing-labs');
 
-  assert.doesNotMatch(source, /Concept for exploration|not a current product or commitment|Potential value|Conditions before progression/i);
+  assert.doesNotMatch(source, /Concept for exploration|not a current product or commitment|exploratory concept|Design Prototype/i);
   assert.match(router, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
   assert.match(source, /NFC does not measure biometrics/i);
   assert.equal(smartApparel.capabilities.length, 4);
@@ -78,6 +80,11 @@ test('public initiative copy removes exploratory labels and retains safety and p
   assert.match(popups.scope, /Online stock views, click-and-collect, and location-based availability remain future possibilities only/i);
   assert.match(popups.safeguards.join(' '), /not unstaffed or cashier-less retail/i);
   assert.match(popups.safeguards.join(' '), /privacy and security review/i);
+  assert.equal(mobileLabs.capabilities.length, 4);
+  assert.match(mobileLabs.summary, /no unit, venue, trial, or data collection is live/i);
+  assert.match(mobileLabs.scope, /Biometric sensor tracking is not in confirmed scope/);
+  assert.match(mobileLabs.safeguards.join(' '), /No biometric sensor tracking or biometric data collection is in confirmed scope/);
+  assert.match(mobileLabs.safeguards.join(' '), /informed participant consent/);
   assert.match(source, /FSD is not an emergency service/i);
   assert.match(source, /No tests, kits or data collection are operating/i);
   assert.match(source, /No partner is represented as agreed/i);

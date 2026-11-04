@@ -422,7 +422,7 @@ function makeHouseGroups(divisions) {
           href: '/mobile-testing-labs.html',
           kind: 'initiative',
           status: 'Operating or rollout underway',
-          description: 'Operating initiative for mobile product trials and consent-based feedback. No testing unit or venue is currently operational.',
+          description: 'Active initiative for mobile trials and consent-based feedback. No unit, venue, test, or data collection is live; biometric sensor tracking is not in confirmed scope.',
         },
         {
           id: 'local-micro-manufacturing',

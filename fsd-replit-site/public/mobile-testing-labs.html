@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Mobile Testing Labs is an operating or rollout-underway Global Vision initiative for product trials and consent-based feedback.">
+  <meta name="description" content="Mobile Testing Labs is an active Global Vision initiative for product trials and consent-based feedback. No testing unit, venue, trial, or data collection is live.">
   <title>FSD | Mobile Testing Labs</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
@@ -112,6 +112,72 @@
       color: #cdb589;
     }
 
+    .fsd .capability-grid,
+    .fsd .visual-grid,
+    .fsd .badge-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .fsd .capability-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    }
+
+    .fsd .visual-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      width: min(calc(100% - 48px), 1000px);
+      margin: 24px auto;
+    }
+
+    .fsd .badge-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    }
+
+    .fsd .capability-card,
+    .fsd .value-panel,
+    .fsd .progression-panel {
+      border: 1px solid #2a2622;
+      background: #161412;
+      padding: 24px;
+    }
+
+    .fsd .capability-card h3,
+    .fsd .value-panel h2,
+    .fsd .progression-panel h2 {
+      color: #cdb589;
+      font-size: 1.05rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .fsd .visual-placeholder {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 24px 0;
+      padding: 24px;
+      border: 1px dashed #8a6a44;
+      background: #161412;
+      color: #cdb589;
+      text-align: center;
+    }
+
+    .fsd .visual-placeholder span {
+      color: #d8d0bf;
+      font-size: .9rem;
+    }
+
+    .fsd .badge {
+      border: 1px solid #2a2622;
+      background: #0f0f0f;
+      padding: 18px;
+      color: #e9e1d0;
+      text-align: center;
+    }
+
     .fsd .page-footer {
       padding-top: 24px;
       text-align: center;
@@ -139,6 +205,10 @@
       .fsd .status {
         padding: 16px;
       }
+
+      .fsd .visual-grid {
+        width: min(calc(100% - 32px), 1000px);
+      }
     }
   </style>
 </head>
@@ -149,18 +219,72 @@
       <div class="tag">FSD / Global Vision · Testing Infrastructure</div>
       <h1 id="mobile-testing-labs-title">Mobile Testing Labs</h1>
       <p class="hero-intro">Real-world testing. Real people. Real insights.</p>
+      <p>This active initiative assesses mobile product trials and consent-based feedback. No testing unit, venue, trial, or data-collection activity is live.</p>
     </header>
     <hr>
     <section aria-labelledby="mobile-testing-labs-framework-title">
-      <h2 id="mobile-testing-labs-framework-title">Initiative Framework &amp; Rollout</h2>
-      <p>This initiative is developing mobile testing units to bring FSD apparel, equipment, and training experiences closer to practitioners, while gathering feedback to guide future development.</p>
+      <h2 id="mobile-testing-labs-framework-title">01 / The Testing Framework</h2>
+      <p>The initiative assesses how mobile testing units could support apparel and equipment trials, training-experience demonstrations, and structured feedback closer to practitioners.</p>
+      <p>Events, gyms, and universities are potential settings, not confirmed venues or partners. The approved scope allows anonymised performance and fit insights with participant consent, subject to a privacy notice and appropriate safeguarding controls.</p>
+    </section>
+    <hr>
+    <section aria-labelledby="mobile-testing-labs-capabilities-title">
+      <h2 id="mobile-testing-labs-capabilities-title">02 / Core Capabilities</h2>
+      <div class="capability-grid">
+        <article class="capability-card">
+          <h3>On-Site Product Testing</h3>
+          <p>Potential hands-on apparel, equipment, and training-experience trials; no product or training trial is active.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Real-World Data &amp; Insights</h3>
+          <p>Future anonymised performance and fit insights may be gathered with participant consent. No data is currently collected, and biometric sensor tracking is not in confirmed scope.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Innovation Support</h3>
+          <p>Verified findings may inform future product development; no test results or findings are currently available.</p>
+        </article>
+        <article class="capability-card">
+          <h3>Community Engagement</h3>
+          <p>Qualified-led demonstrations and education may be considered; no instructor, provider, or event is confirmed.</p>
+        </article>
+      </div>
+    </section>
+    <div class="visual-grid" aria-label="Illustrative testing-lab placeholders">
+      <div class="visual-placeholder" role="img" aria-label="Illustrative mobile testing unit placeholder; no operating unit is shown">
+        <strong>Illustrative mobile unit placeholder</strong>
+        <span>No testing vehicle or mobile lab is represented as operational.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative fit and comfort assessment placeholder; no biometric sensors">
+        <strong>Fit &amp; comfort assessment placeholder</strong>
+        <span>No biometric sensor tracking or live sensor data is shown.</span>
+      </div>
+      <div class="visual-placeholder" role="img" aria-label="Illustrative participant feedback interface; no data collection is active">
+        <strong>Participant feedback interface placeholder</strong>
+        <span>No live terminal, participant data, or feedback system is shown.</span>
+      </div>
+    </div>
+    <section class="value-panel" aria-labelledby="mobile-testing-labs-value-title">
+      <h2 id="mobile-testing-labs-value-title">03 / Potential Strategic Value</h2>
+      <div class="badge-grid">
+        <div class="badge">Stronger customer insights</div>
+        <div class="badge">Improved product development</div>
+        <div class="badge">Increased brand visibility</div>
+        <div class="badge">Access to new customer segments</div>
+      </div>
+      <p class="small">These are intended value areas, not verified outcomes.</p>
+    </section>
+    <section class="progression-panel" aria-labelledby="mobile-testing-labs-conditions-title">
+      <h2 id="mobile-testing-labs-conditions-title">04 / Progression Requirements</h2>
       <ul>
-        <li><strong>Potential testing settings:</strong> Events, gyms, and universities are prospective settings, not confirmed venues or partners.</li>
-        <li><strong>On-site product testing:</strong> The framework includes hands-on product and training-experience trials; no current trial is represented as active.</li>
-        <li><strong>Participant feedback:</strong> The source scope calls for anonymised performance and fit insights with participant consent. No data-collection activity is represented as live.</li>
+        <li>Confirm suitable locations and delivery partners.</li>
+        <li>Complete planning and regulatory reviews.</li>
+        <li>Set participant-consent, privacy, and safeguarding processes before any data collection.</li>
+        <li>Confirm qualified instructors, funding, and operational and reputational risk controls.</li>
       </ul>
+    </section>
+    <section aria-labelledby="mobile-testing-labs-status-title">
       <div class="status" role="note">
-        <p><strong>Status:</strong> Operating or rollout underway. No mobile testing unit, venue, test, or data-collection activity is currently represented as operational.</p>
+        <p id="mobile-testing-labs-status-title"><strong>Status:</strong> Operating or rollout underway. No mobile testing unit, venue, test, or data-collection activity is currently represented as operational. No biometric sensor tracking or biometric data collection is in confirmed scope. Demonstrations require qualified instructors; no provider or event is confirmed.</p>
       </div>
     </section>
     <hr>
