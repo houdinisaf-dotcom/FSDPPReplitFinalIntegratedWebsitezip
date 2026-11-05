@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './_group.css';
 import '../../../../../../fsd-replit-site/src/standalone-navigation.css';
+import '../../../../../../fsd-replit-site/src/bag.css';
 import '../../../../../../fsd-replit-site/src/showroom.css';
 import '../../../../../../fsd-replit-site/src/homepage-phase3.css';
 import approvedFsdHeaderLogo from '../../../../../../fsd-replit-site/brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
@@ -16,38 +17,23 @@ const defaultItemIndex = Math.max(0, shopModel.groups[0].items.findIndex(
 ));
 
 const currentHomeOverrides = `
-.ffp-current-home{--fsd-navigation-announcement-height:22px;--fsd-navigation-shell-height:62px;--fsd-navigation-stack-height:84px;min-height:100dvh;background:#090a0c;color:#f1eee7}
-.ffp-current-home .announcement.fsd-announcement{position:relative;top:auto;z-index:61;height:22px;min-height:22px;padding:5px 12px;border-bottom:1px solid rgba(199,169,111,.18);background:#090a0c;color:#d2bd92;font-size:9px;line-height:11px;letter-spacing:.3em;text-align:center}
-.ffp-current-home .fsd-navigation-shell{position:fixed;top:22px;right:0;left:0;z-index:60;width:100%;background:#090a0c}
-.ffp-current-home .header.fsd-header{height:62px;justify-content:flex-start;gap:0;padding:0 24vw 0 52px;border-bottom:1px solid rgba(215,207,189,.12);background:#090a0c}
-.ffp-current-home .header.fsd-header .fsd-brand-logo{width:86px;max-height:49px;object-fit:contain}
-.ffp-current-home .header.fsd-header .fsd-brand{margin-right:80px}
-.ffp-current-home .header.fsd-header .fsd-primary-nav{flex:0 0 auto;gap:17px;margin:0}
-.ffp-current-home .fsd-primary-trigger{min-height:42px;font-size:9px;letter-spacing:.17em}
-.ffp-current-home .fsd-header-note{margin-left:74px;font-size:6.5px;letter-spacing:.13em}
-.ffp-current-home .header.fsd-header .fsd-search-trigger,.ffp-current-home .header.fsd-header .fsd-bag-toggle{min-height:36px;gap:6px;padding:0 4px;font-size:8px;letter-spacing:.12em}
-.ffp-current-home .header.fsd-header .fsd-search-trigger{margin-left:3px}
-.ffp-current-home .header.fsd-header .fsd-bag-toggle{min-width:69px;border:1px solid rgba(215,207,189,.22)}
-.ffp-current-home .header.fsd-header .fsd-bag-toggle{margin-left:0}
-.ffp-current-home .fsd-search-icon{width:15px;height:15px}
-.ffp-current-home .fsd-boxing-bag-icon{width:13px;height:20px;color:#c8aa72}
-.ffp-current-home .fsd-boxing-bag-icon__chain,.ffp-current-home .fsd-boxing-bag-icon__body,.ffp-current-home .fsd-boxing-bag-icon__seam,.ffp-current-home .fsd-boxing-bag-icon__highlight{stroke:currentColor;stroke-width:1.1}
-.ffp-current-home .fsd-bag-count{display:grid;min-width:14px;height:14px;place-items:center;border-radius:50%;background:#292821;color:#d8d1bf;font-size:7px}
+.ffp-current-home{--fsd-navigation-announcement-height:25px;--fsd-navigation-shell-height:80px;--fsd-navigation-stack-height:105px;min-height:100dvh;background:#090a0c;color:#f1eee7}
+.ffp-current-home .announcement.fsd-announcement{position:relative;top:auto;z-index:61;height:25px;min-height:25px;padding:7px 12px;border-bottom:1px solid rgba(199,169,111,.18);background:#090a0c;color:#d2bd92;font-size:9px;line-height:11px;letter-spacing:.3em;text-align:center}
+.ffp-current-home .fsd-navigation-shell{position:fixed;top:25px;right:0;left:0;z-index:60;width:100%;background:#090a0c}
+.ffp-current-home .header.fsd-header{background:#090a0c}
+.ffp-current-home .header.fsd-header .fsd-brand{position:absolute;top:50%;left:64px;transform:translateY(-50%)}
+.ffp-current-home .header.fsd-header .fsd-primary-nav{position:absolute;top:0;left:273px;display:flex;height:100%;flex:0 0 auto;align-items:center;justify-content:flex-start;gap:28px;margin:0;white-space:nowrap}
+.ffp-current-home .header.fsd-header .fsd-primary-trigger{flex:0 0 auto;font-size:10px;font-weight:500;white-space:nowrap}
+.ffp-current-home .header.fsd-header .fsd-header-note{position:absolute;top:50%;left:925px;transform:translateY(-50%)}
+.ffp-current-home .header.fsd-header .fsd-search-trigger{position:absolute;top:50%;left:1047px;transform:translateY(-50%)}
+.ffp-current-home .header.fsd-header .fsd-bag-toggle{position:absolute;top:50%;right:64px;transform:translateY(-50%);font-size:8px}
+.ffp-current-home .header.fsd-header .fsd-brand-logo{width:clamp(96px,8.3vw,124px);max-height:64px}
 .ffp-current-home .ffp-current-search{display:inline-flex;align-items:center;gap:5px;color:#d8d4cb;text-decoration:none}
 .ffp-current-home .ffp-current-search:hover{color:#e7cb98}
-.ffp-current-home .fsd-navigation-spacer{height:62px}
-.ffp-current-home .ffp-current-frame{position:relative;margin:14px 14px 0;overflow:hidden;border:1px solid rgba(229,219,199,.2);background:#090a0c}
-.ffp-current-home .fsd-phase3-hero{min-height:clamp(680px,calc(100svh - 30px),900px)}
-.ffp-current-home .fsd-phase3-hero .fsd-home-hero__content{position:absolute;top:52px;left:57px;width:calc(100% - 114px);margin:0;padding:0}
-.ffp-current-home .fsd-phase3-hero .fsd-home-kicker{font-size:8px;letter-spacing:.21em}
-.ffp-current-home .fsd-phase3-hero .fsd-home-kicker span{width:27px}
-.ffp-current-home .fsd-phase3-hero h1{max-width:650px;margin:29px 0 19px;font-size:clamp(64px,6.6vw,84px);line-height:.9;letter-spacing:-.085em}
-.ffp-current-home .fsd-phase3-hero .fsd-home-intro{font-size:12px;line-height:1.8}
-.ffp-current-home .fsd-phase3-hero .fsd-home-actions{margin-top:31px}
-.ffp-current-home .fsd-phase3-hero .fsd-home-primary{min-height:42px;gap:16px;padding:0 14px;font-size:8px;letter-spacing:.12em}
-.ffp-current-home .fsd-phase3-hero .fsd-home-signoff{margin-top:46px;font-size:7px;letter-spacing:.2em}
-.ffp-current-home .fsd-phase3-hero__frame-line{right:27.2%}
-.ffp-current-home .fsd-phase3-hero__frame-mark{right:calc(27.2% - 3px)}
+.ffp-current-home .fsd-navigation-spacer{height:80px}
+.ffp-current-home .ffp-current-frame{position:relative;margin:18px 18px 0;overflow:hidden;border:1px solid rgba(229,219,199,.2);background:#090a0c}
+.ffp-current-home .fsd-phase3-hero .fsd-home-hero__content{position:absolute;top:67px;left:71px;width:calc(100% - 142px);margin:0;padding:0}
+.ffp-current-home .fsd-phase3-hero h1{margin-top:35px}
 .ffp-current-home .fsd-current-menu{max-height:min(580px,calc(100dvh - 84px))}
 .ffp-current-home .fsd-current-menu .fsd-mega-inner{padding-top:22px;padding-bottom:22px}
 .ffp-current-home .fsd-current-menu .fsd-mega-heading{min-height:51px;margin-bottom:12px}
@@ -57,9 +43,9 @@ const currentHomeOverrides = `
 .ffp-current-home .fsd-current-menu .fsd-feature-cta{cursor:pointer}
 .ffp-current-home .fsd-current-menu .fsd-feature-cta:disabled{cursor:not-allowed}
 .ffp-current-home .ffp-current-header-notice{position:absolute;right:18px;top:calc(100% + 8px);z-index:3;padding:8px 12px;border:1px solid rgba(200,170,114,.3);background:#0d0e10;color:#c5c2bb;font-size:9px}
-@media(max-width:1100px){.ffp-current-home .fsd-header-note{display:none}.ffp-current-home .header.fsd-header{padding-inline:25px}}
-@media(max-width:900px){.ffp-current-home .fsd-navigation-shell{top:22px}.ffp-current-home .header.fsd-header{height:62px}.ffp-current-home .fsd-navigation-spacer{height:62px}}
-@media(max-width:760px){.ffp-current-home .ffp-current-frame{margin:10px 10px 0}.ffp-current-home .fsd-phase3-hero{min-height:clamp(590px,calc(100svh - 94px),820px)}.ffp-current-home .fsd-phase3-hero .fsd-home-hero__content{top:auto;bottom:86px;left:21px;width:calc(100% - 42px);margin:0}.ffp-current-home .fsd-phase3-hero h1{font-size:clamp(45px,11vw,68px)}.ffp-current-home .fsd-phase3-hero .fsd-home-signoff{margin-top:34px}}
+@media(max-width:1100px){.ffp-current-home .header.fsd-header{display:flex;justify-content:space-between;gap:clamp(12px,2vw,28px);padding-inline:25px}.ffp-current-home .header.fsd-header .fsd-brand,.ffp-current-home .header.fsd-header .fsd-primary-nav,.ffp-current-home .header.fsd-header .fsd-header-note,.ffp-current-home .header.fsd-header .fsd-search-trigger,.ffp-current-home .header.fsd-header .fsd-bag-toggle{position:relative;top:auto;left:auto;right:auto;transform:none}.ffp-current-home .header.fsd-header .fsd-brand-logo{width:clamp(72px,10vw,96px)}.ffp-current-home .header.fsd-header .fsd-primary-nav{flex:1 1 auto;gap:clamp(10px,1.6vw,18px);margin:0}.ffp-current-home .fsd-header-note{display:none}}
+@media(max-width:900px){.ffp-current-home .fsd-navigation-shell{top:25px}.ffp-current-home .header.fsd-header{height:80px}.ffp-current-home .fsd-navigation-spacer{height:80px}}
+@media(max-width:760px){.ffp-current-home .ffp-current-frame{margin:10px 10px 0}.ffp-current-home .fsd-phase3-hero .fsd-home-hero__content{top:auto;bottom:86px;left:21px;width:calc(100% - 42px);margin:0}}
 `;
 
 type ShopMenuItem = {
@@ -225,7 +211,7 @@ export function FsdCurrentHome({ initialShopOpen = false }: { initialShopOpen?: 
       />
       {notice && <p className="ffp-current-header-notice" role="status">{notice}</p>}
       <div className="ffp-current-frame">
-        <section className="fsd-home-hero fsd-phase3-hero" aria-label="FSD homepage hero">
+        <section className="fsd-home-hero fsd-phase3-hero" aria-labelledby="fsd-home-title">
           <div className="fsd-home-hero__image" aria-hidden="true" style={{ backgroundImage: 'none' }}>
             <img className="fsd-home-hero__asset" src={`${ASSET}fsd-home-hero.webp`} alt="" />
           </div>
@@ -233,7 +219,7 @@ export function FsdCurrentHome({ initialShopOpen = false }: { initialShopOpen?: 
           <div className="fsd-phase3-hero__frame" aria-hidden="true"><span className="fsd-phase3-hero__frame-line" /><span className="fsd-phase3-hero__frame-mark" /></div>
           <div className="fsd-home-hero__content">
             <p className="fsd-home-kicker"><span /> 01 / PERFORMANCE / DISCIPLINE / IDENTITY</p>
-            <h1>Made to Move,<br /><em>Made to Belong.</em></h1>
+            <h1 id="fsd-home-title">Made to Move,<br /><em>Made to Belong.</em></h1>
             <p className="fsd-home-intro">Fitness &amp; Self-Defence.<br />A house for those who train with purpose.</p>
             <div className="fsd-home-actions"><a className="fsd-home-primary" href="#universe">Explore the collections <span aria-hidden="true">↗</span></a></div>
             <p className="fsd-home-signoff">FSD <span>/</span> FITNESS &amp; SELF-DEFENCE</p>
