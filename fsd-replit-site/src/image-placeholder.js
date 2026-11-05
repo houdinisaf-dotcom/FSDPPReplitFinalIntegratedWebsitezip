@@ -20,11 +20,11 @@ export function imagePlaceholderMarkup({
   const accessibleTitle = [title, variantLabel].filter(Boolean).join(' — ');
 
   return `<span class="fsd-image-placeholder fsd-image-placeholder--${safeKind}${safeClassName ? ` ${safeClassName}` : ''}"
-      role="img" aria-label="${escapeHTML(`${accessibleTitle} image placeholder`)}">
+      role="img" aria-label="${escapeHTML(`${accessibleTitle} [ASSET PENDING]`)}">
     <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / ${safeKind} media</span>
     <strong class="fsd-image-placeholder__title">${escapeHTML(title)}</strong>
     ${variantLabel ? `<span class="fsd-image-placeholder__variant">${escapeHTML(variantLabel)}</span>` : ''}
-    <small class="fsd-image-placeholder__note">Image to be added</small>
+    <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
   </span>`;
 }
 
@@ -56,7 +56,7 @@ export function installImageErrorFallbacks(documentRef = document) {
     placeholder.className = `fsd-image-placeholder fsd-image-placeholder--${kind} fsd-image-placeholder--fill`;
     placeholder.dataset.fsdGeneratedPlaceholder = 'true';
     placeholder.setAttribute('role', 'img');
-    placeholder.setAttribute('aria-label', `${[title, variantLabel].filter(Boolean).join(' — ')} image placeholder`);
+    placeholder.setAttribute('aria-label', `${[title, variantLabel].filter(Boolean).join(' — ')} [ASSET PENDING]`);
 
     const mark = documentRef.createElement('span');
     mark.className = 'fsd-image-placeholder__mark';
@@ -69,7 +69,7 @@ export function installImageErrorFallbacks(documentRef = document) {
 
     const note = documentRef.createElement('small');
     note.className = 'fsd-image-placeholder__note';
-    note.textContent = 'Image to be added';
+    note.textContent = '[ASSET PENDING]';
 
     placeholder.append(mark, heading);
     if (variantLabel) {

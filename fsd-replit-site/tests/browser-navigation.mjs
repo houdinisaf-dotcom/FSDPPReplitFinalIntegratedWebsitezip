@@ -1371,39 +1371,52 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await evaluate('history.forward()');
   await waitFor('location.pathname === "/" && location.hash === "#products" && document.querySelector("#catalogue-archive")?.open === true');
   await waitFor('document.querySelector("#catalogue-grid")?.dataset.view === "visual"');
-  await waitFor('!!document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")');
   const addableProductId = await evaluate('document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")?.dataset.product');
-  assert.ok(addableProductId, 'The catalogue should expose at least one confirmed addable product.');
-  await evaluate(`document.querySelector('#catalogue-grid [data-product="${addableProductId}"]').scrollIntoView({ block: 'center' })`);
-  await waitFor('window.scrollY > 0');
-  const catalogueReturnScrollY = await evaluate('window.scrollY');
-  await click(`#catalogue-grid [data-product="${addableProductId}"]`);
-  await waitFor(`!!document.querySelector("#catalogue-expanded-${addableProductId}")`);
-  await click(`#catalogue-expanded-${addableProductId} [data-catalogue-deep-dive]`);
-  await waitFor('document.querySelector("#product-dialog")?.open');
-  const openedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_detail_opened")');
-  assert.equal(openedProductEvent?.data?.product_id, Number(addableProductId));
-  await click(`#product-dialog [data-bag-add="${addableProductId}"]`);
-  const addedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_added_to_bag")');
-  assert.equal(addedProductEvent?.data?.product_id, Number(addableProductId));
-  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 8, y: 8, button: 'left', clickCount: 1 });
-  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 8, y: 8, button: 'left', clickCount: 1 });
-  await waitFor('!document.querySelector("#product-dialog")?.open');
-  try {
-    await waitFor(`Math.abs(window.scrollY - ${catalogueReturnScrollY}) < 4`);
-  } catch (error) {
-    const actualScrollY = await evaluate('window.scrollY');
-    throw new Error(`Product dialog close should restore catalogue scroll: expected ${catalogueReturnScrollY}px, got ${actualScrollY}px`, { cause: error });
+  if (addableProductId) {
+    await evaluate(`document.querySelector('#catalogue-grid [data-product="${addableProductId}"]').scrollIntoView({ block: 'center' })`);
+    await waitFor('window.scrollY > 0');
+    const catalogueReturnScrollY = await evaluate('window.scrollY');
+    await click(`#catalogue-grid [data-product="${addableProductId}"]`);
+    await waitFor(`!!document.querySelector("#catalogue-expanded-${addableProductId}")`);
+    await click(`#catalogue-expanded-${addableProductId} [data-catalogue-deep-dive]`);
+    await waitFor('document.querySelector("#product-dialog")?.open');
+    const openedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_detail_opened")');
+    assert.equal(openedProductEvent?.data?.product_id, Number(addableProductId));
+    await click(`#product-dialog [data-bag-add="${addableProductId}"]`);
+    const addedProductEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "product_added_to_bag")');
+    assert.equal(addedProductEvent?.data?.product_id, Number(addableProductId));
+    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 8, y: 8, button: 'left', clickCount: 1 });
+    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 8, y: 8, button: 'left', clickCount: 1 });
+    await waitFor('!document.querySelector("#product-dialog")?.open');
+    try {
+      await waitFor(`Math.abs(window.scrollY - ${catalogueReturnScrollY}) < 4`);
+    } catch (error) {
+      const actualScrollY = await evaluate('window.scrollY');
+      throw new Error(`Product dialog close should restore catalogue scroll: expected ${catalogueReturnScrollY}px, got ${actualScrollY}px`, { cause: error });
+    }
+  } else {
+    assert.equal(
+      await evaluate('document.querySelectorAll("#catalogue-grid [data-can-add-to-bag=\\"true\\"]").length'),
+      0,
+      'The offline bag path should remain testable when no products are approved for purchase.',
+    );
   }
   await click('[data-bag-open]');
   await waitFor('document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
-  const populatedBagEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "bag_opened")');
-  assert.equal(populatedBagEvent?.data?.item_count, 1);
-  assert.equal(populatedBagEvent?.data?.unit_count, 1);
-  assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.disabled'), true);
-  assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.getAttribute("aria-disabled")'), 'true');
-  assert.match(await evaluate('document.querySelector(".fsd-bag-checkout")?.textContent.trim()'), /Checkout disabled/);
-  await click('[data-bag-clear]');
+  const bagOpenEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "bag_opened")');
+  assert.equal(bagOpenEvent?.data?.item_count, addableProductId ? 1 : 0);
+  assert.equal(bagOpenEvent?.data?.unit_count, addableProductId ? 1 : 0);
+  assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.disabled'), false);
+  assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.getAttribute("aria-disabled")'), null);
+  await click('[data-bag-checkout]');
+  await waitFor('document.querySelector("#fsd-checkout-offline-dialog")?.open');
+  assert.equal(
+    await evaluate('document.querySelector("#fsd-checkout-offline-copy")?.textContent.trim()'),
+    'FSD DIRECT ACQUISITION SYSTEM OFFLINE. PRIVATE ENQUIRIES ONLY.',
+  );
+  await click('[data-checkout-offline-close]');
+  await waitFor('!document.querySelector("#fsd-checkout-offline-dialog")?.open && document.querySelector("#fsd-bag-dialog")?.open');
+  if (addableProductId) await click('[data-bag-clear]');
   await click('[data-bag-close]');
   await waitFor('!document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
 

@@ -13,7 +13,7 @@ test('named placeholders escape product and variant text and contain no substitu
   assert.match(html, /FSD &lt;Test&gt;/);
   assert.match(html, /Black &amp; Lime/);
   assert.match(html, /role="img"/);
-  assert.match(html, /Image to be added/);
+  assert.match(html, /\[ASSET PENDING\]/);
   assert.doesNotMatch(html, /<img|<script/);
 });
 
@@ -32,7 +32,7 @@ test('the Bio-Lab collection keeps its named placeholder and active collection t
   const html = renderCollectionShowcase(collectionDivisions, { editorial: true, products });
   assert.equal((html.match(/class="fsd-editorial-card /g) || []).length, 3);
   assert.match(html, /fsd-editorial-card--biolab/);
-  assert.match(html, /Intelligence in Motion image placeholder/);
+  assert.match(html, /Intelligence in Motion \[ASSET PENDING\]/);
   assert.match(html, /data-division="bio-lab"/);
 });
 
@@ -61,7 +61,10 @@ test('featured records no longer depend on having a photo and placeholder styles
   const featuredSource = readFileSync(new URL('../src/showroom-sections.js', import.meta.url), 'utf8');
   assert.doesNotMatch(featuredSource, /productsWithUsableImages\.includes/);
   const css = readFileSync(new URL('../src/image-placeholders.css', import.meta.url), 'utf8');
-  assert.match(css, /--fsd-placeholder-gold:\s*#cdb589/i);
+  assert.match(css, /--fsd-placeholder-gold:\s*#D4AF37/i);
+  assert.match(css, /background:\s*#0A0A0A/i);
+  assert.match(css, /shield-refined\.png/);
+  assert.match(css, /Space Mono.*ui-monospace/);
   assert.doesNotMatch(css, /lime|#b9ff42|185,\s*255,\s*66/i);
   assert.match(css, /aspect-ratio: 4 \/ 5/);
   assert.match(css, /max-width: 760px/);

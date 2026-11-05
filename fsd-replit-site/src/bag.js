@@ -209,10 +209,26 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       <footer class="fsd-bag-footer">
         <div class="fsd-bag-subtotal"><span>Subtotal</span><strong data-bag-subtotal>£0.00</strong></div>
         <p class="fsd-bag-note">No payment provider or checkout is integrated; no order is processed.</p>
-        <button type="button" class="fsd-bag-checkout" disabled aria-disabled="true">Checkout disabled</button>
+        <button type="button" class="fsd-bag-checkout" data-bag-checkout
+          aria-haspopup="dialog" aria-controls="fsd-checkout-offline-dialog">Checkout</button>
       </footer>
     </div>`;
   documentRef.body.append(dialog);
+  const checkoutDialog = documentRef.createElement('dialog');
+  checkoutDialog.id = 'fsd-checkout-offline-dialog';
+  checkoutDialog.className = 'fsd-checkout-offline-dialog';
+  checkoutDialog.setAttribute('aria-labelledby', 'fsd-checkout-offline-title');
+  checkoutDialog.setAttribute('aria-describedby', 'fsd-checkout-offline-copy');
+  checkoutDialog.innerHTML = `
+    <div class="fsd-checkout-offline-shell">
+      <p class="fsd-checkout-offline-kicker">FSD / ACQUISITION SYSTEM</p>
+      <h2 id="fsd-checkout-offline-title">Checkout unavailable</h2>
+      <p id="fsd-checkout-offline-copy">FSD DIRECT ACQUISITION SYSTEM OFFLINE. PRIVATE ENQUIRIES ONLY.</p>
+      <button type="button" class="fsd-checkout-offline-close" data-checkout-offline-close>
+        Close
+      </button>
+    </div>`;
+  documentRef.body.append(checkoutDialog);
   const toast = documentRef.createElement('div');
   toast.className = 'fsd-add-toast';
   toast.dataset.cartToast = '';
@@ -230,6 +246,8 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
   const lines = dialog.querySelector('[data-bag-lines]');
   const subtotal = dialog.querySelector('[data-bag-subtotal]');
   const status = dialog.querySelector('[data-bag-status]');
+  const checkoutButton = dialog.querySelector('[data-bag-checkout]');
+  const checkoutCloseButton = checkoutDialog.querySelector('[data-checkout-offline-close]');
   let returnFocus = null;
 
   const render = () => {
@@ -315,6 +333,14 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       dialog.close();
       return;
     }
+    if (event.target.closest?.('[data-bag-checkout]')) {
+      if (!checkoutDialog.open) {
+        checkoutButton.setAttribute('aria-expanded', 'true');
+        checkoutDialog.showModal();
+        checkoutCloseButton.focus({ preventScroll: true });
+      }
+      return;
+    }
     if (event.target.closest?.('[data-bag-clear]')) {
       bag.clear();
       status.textContent = 'Your bag has been cleared.';
@@ -341,6 +367,22 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
   dialog.addEventListener('cancel', event => {
     event.preventDefault();
     dialog.close('escape');
+  });
+
+  checkoutDialog.addEventListener('click', event => {
+    if (event.target === checkoutDialog || event.target.closest?.('[data-checkout-offline-close]')) {
+      checkoutDialog.close();
+    }
+  });
+
+  checkoutDialog.addEventListener('cancel', event => {
+    event.preventDefault();
+    checkoutDialog.close('escape');
+  });
+
+  checkoutDialog.addEventListener('close', () => {
+    checkoutButton.setAttribute('aria-expanded', 'false');
+    if (dialog.open && checkoutButton.isConnected) checkoutButton.focus({ preventScroll: true });
   });
 
   dialog.addEventListener('close', () => {

@@ -15,13 +15,13 @@ export function ImagePlaceholder({
     <span
       className={`fsd-image-placeholder fsd-image-placeholder--${safeKind}${compact ? ' fsd-image-placeholder--compact' : ''}${className ? ` ${className}` : ''}`}
       role="img"
-      aria-label={`${accessibleTitle} image placeholder`}
+      aria-label={`${accessibleTitle} [ASSET PENDING]`}
       style={style}
     >
       <span className="fsd-image-placeholder__mark" aria-hidden="true">FSD / {safeKind} media</span>
       <strong className="fsd-image-placeholder__title">{title}</strong>
       {variantLabel && <span className="fsd-image-placeholder__variant">{variantLabel}</span>}
-      <small className="fsd-image-placeholder__note">Image to be added</small>
+      <small className="fsd-image-placeholder__note">[ASSET PENDING]</small>
     </span>
   );
 }

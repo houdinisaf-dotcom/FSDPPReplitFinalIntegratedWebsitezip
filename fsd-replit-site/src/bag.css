@@ -179,16 +179,69 @@
 .fsd-bag-checkout {
   width: 100%;
   min-height: 48px;
-  border: 1px solid rgba(201, 173, 120, .27);
-  background: rgba(201, 173, 120, .08);
-  color: #bcb5a7;
-  cursor: not-allowed;
+  border: 1px solid #D4AF37;
+  background: transparent;
+  color: #D4AF37;
+  cursor: pointer;
   font: inherit;
   font-size: 9px;
   letter-spacing: .16em;
   text-transform: uppercase;
+  transition: background-color 180ms ease, color 180ms ease;
 }
-.fsd-bag-dialog :focus-visible { outline: 2px solid #e3c990; outline-offset: 3px; }
+.fsd-bag-checkout:hover,
+.fsd-bag-checkout:focus-visible { background: #D4AF37; color: #0A0A0A; }
+.fsd-bag-dialog :focus-visible,
+.fsd-checkout-offline-dialog :focus-visible { outline: 2px solid #e3c990; outline-offset: 3px; }
+
+.fsd-checkout-offline-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-width: 100%;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid rgba(212, 175, 55, .58);
+  background: #0A0A0A;
+  color: #f1eee6;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .72);
+}
+.fsd-checkout-offline-dialog::backdrop {
+  background: rgba(0, 0, 0, .76);
+  backdrop-filter: blur(5px);
+}
+.fsd-checkout-offline-shell { padding: clamp(26px, 6vw, 44px); }
+.fsd-checkout-offline-kicker {
+  margin: 0 0 18px;
+  color: #D4AF37;
+  font: 700 9px/1.4 "Space Mono", ui-monospace, monospace;
+  letter-spacing: .14em;
+}
+.fsd-checkout-offline-shell h2 {
+  margin: 0;
+  color: #f1eee6;
+  font: 500 clamp(24px, 5vw, 34px)/1.12 Manrope, sans-serif;
+  letter-spacing: -.035em;
+}
+.fsd-checkout-offline-shell > p:not(.fsd-checkout-offline-kicker) {
+  margin: 18px 0 28px;
+  color: #ddd5c4;
+  font: 600 11px/1.7 "Space Mono", ui-monospace, monospace;
+  letter-spacing: .06em;
+}
+.fsd-checkout-offline-close {
+  min-width: 120px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgba(212, 175, 55, .64);
+  background: transparent;
+  color: #D4AF37;
+  cursor: pointer;
+  font: 700 9px/1.4 "Space Mono", ui-monospace, monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.fsd-checkout-offline-close:hover { background: #D4AF37; color: #0A0A0A; }
 
 .catalogue-bag-add {
   min-height: 40px;
@@ -240,7 +293,9 @@
   .fsd-bag-header { min-height: 82px; padding: 15px 18px; }
   .fsd-bag-body { padding: 8px 18px 18px; }
   .fsd-bag-footer { padding-right: 18px; padding-left: 18px; }
+  .fsd-checkout-offline-dialog { width: calc(100vw - 24px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fsd-bag-toggle { transition: none; }
+  .fsd-bag-toggle,
+  .fsd-bag-checkout { transition: none; }
 }

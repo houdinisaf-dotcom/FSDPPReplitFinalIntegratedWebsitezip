@@ -76,10 +76,14 @@ try {
       document.querySelector('[data-catalogue-main-image]').naturalWidth > 0`);
     assert.ok(await evaluate(`document.querySelector('[data-catalogue-variant-placeholder]').hidden`),
       'An approved mapped colourway uses its own photograph instead of a placeholder');
-    assert.ok(await evaluate(`!document.querySelector('[data-product-primary-add]').disabled`), 'Missing photos do not disable valid purchase controls');
+    assert.equal(
+      await evaluate(`document.querySelector('[data-product-primary-add]')`),
+      null,
+      'Products without approved purchase eligibility must not expose an add-to-bag action.',
+    );
     assert.ok(await evaluate(`(() => {
       const sticky = document.querySelector('[data-sticky-add-bar]');
-      if (sticky.hidden) return true;
+      if (!sticky || sticky.hidden) return true;
       const bounds = sticky.getBoundingClientRect();
       return bounds.left >= -1 && bounds.right <= innerWidth + 1;
     })()`), `Sticky purchase controls stay within the ${width}px viewport`);
@@ -101,6 +105,19 @@ try {
   await waitFor(`document.querySelector('.fsd-home-hero .fsd-image-placeholder') &&
     document.querySelector('.fsd-editorial-card--men .fsd-image-placeholder') &&
     document.querySelector('.fsd-featured-card__media .fsd-image-placeholder')`);
+  assert.ok(await evaluate(`(() => {
+    const placeholders = [
+      document.querySelector('.fsd-home-hero .fsd-image-placeholder'),
+      document.querySelector('.fsd-editorial-card--men .fsd-image-placeholder'),
+      document.querySelector('.fsd-featured-card__media .fsd-image-placeholder'),
+    ];
+    return placeholders.every(placeholder => {
+      const watermark = getComputedStyle(placeholder, '::after').backgroundImage;
+      return placeholder.textContent.includes('[ASSET PENDING]')
+        && getComputedStyle(placeholder).backgroundColor === 'rgb(10, 10, 10)'
+        && watermark.includes('shield-refined');
+    });
+  })()`), 'Broken product and collection assets show the black FSD shield fallback');
   assert.ok(await evaluate(`imageSlotDimensions.every(([selector, width, height]) => {
     const rect = document.querySelector(selector).getBoundingClientRect();
     return Math.abs(rect.width - width) < 1 && Math.abs(rect.height - height) < 1;

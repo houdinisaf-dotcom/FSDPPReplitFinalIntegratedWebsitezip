@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { deriveTechnicalCollections, confirmedCollectionText } from '../catalogue-collections.js';
 import { products, priceInfo, productImagesForDisplay } from '../data/products.js';
 import { SafeImage } from './SafeImage.jsx';
+import { ImagePlaceholder } from './ImagePlaceholder.jsx';
 import './TechnicalCollectionsBrowser.css';
 
 const reduceMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -171,14 +172,11 @@ export function TechnicalCollectionsBrowser({ onProductSelect }) {
                          loading="lazy"
                       />
                     ) : (
-                      <div
+                      <ImagePlaceholder
                         className="fsd-clothing-line__image-pending"
-                        role="img"
-                        aria-label={`${collection.title} approved photography pending`}
-                      >
-                        <span>FSD / {collection.title}</span>
-                        <strong>Approved collection image pending</strong>
-                      </div>
+                        title={collection.title}
+                        kind="banner"
+                      />
                     )}
                     <span className="fsd-clothing-line__visual-caption">
                       {bannerImage?.src ? 'APPROVED PRODUCT IMAGE' : 'COLLECTION IMAGE SLOT'}

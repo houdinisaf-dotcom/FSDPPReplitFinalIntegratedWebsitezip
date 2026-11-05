@@ -167,11 +167,11 @@ function renderSecondaryGalleryPanel(product, image, variantLabel = '') {
       <div class="product-detail-gallery__secondary-stage">
         ${imageMarkup}
         <div class="fsd-image-placeholder fsd-image-placeholder--detail product-detail-gallery__secondary-placeholder"
-          data-catalogue-secondary-placeholder hidden role="img" aria-label="${safe(product.name)} image placeholder">
+          data-catalogue-secondary-placeholder hidden role="img" aria-label="${safe(product.name)} [ASSET PENDING]">
           <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
           <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
           <span class="fsd-image-placeholder__variant" data-catalogue-secondary-variant>${safe(variantLabel)}</span>
-          <small class="fsd-image-placeholder__note">Image to be added</small>
+          <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
         </div>
       </div>
       <figcaption data-catalogue-secondary-caption>${image ? safe(image.label) : ''}</figcaption>
@@ -182,11 +182,11 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
   const selectedImage = images[initialImageIndex];
   if (!selectedImage) {
     const variantPlaceholder = `<div class="fsd-image-placeholder fsd-image-placeholder--detail catalogue-variant-image-placeholder"
-        data-catalogue-variant-placeholder hidden role="img" aria-label="${safe(product.name)} image placeholder">
+        data-catalogue-variant-placeholder hidden role="img" aria-label="${safe(product.name)} [ASSET PENDING]">
         <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
         <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
         <span class="fsd-image-placeholder__variant" data-catalogue-variant-label>${safe(initialVariant)}</span>
-        <small class="fsd-image-placeholder__note">Image to be added</small>
+        <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
       </div>`;
     if (images.length) {
       const initialImage = images[0];
@@ -203,7 +203,7 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
               </button>
               ${variantPlaceholder.replace(' hidden ', ' ')}
             </div>
-            <figcaption data-catalogue-main-caption>${safe(initialVariant || 'Product image to be added')}</figcaption>
+            <figcaption data-catalogue-main-caption>${safe(initialVariant || '[ASSET PENDING]')}</figcaption>
           </figure>
           ${images.length > 1 ? renderSecondaryGalleryPanel(product, null, initialVariant) : ''}
         </div>
@@ -244,11 +244,11 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
               loading="eager" fetchpriority="high" decoding="async" />
           </button>
           <div class="fsd-image-placeholder fsd-image-placeholder--detail catalogue-variant-image-placeholder"
-            data-catalogue-variant-placeholder hidden role="img" aria-label="${safe(product.name)} image placeholder">
+            data-catalogue-variant-placeholder hidden role="img" aria-label="${safe(product.name)} [ASSET PENDING]">
             <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
             <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
             <span class="fsd-image-placeholder__variant" data-catalogue-variant-label>${safe(initialVariant)}</span>
-            <small class="fsd-image-placeholder__note">Image to be added</small>
+            <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
           </div>
         </div>
         <figcaption data-catalogue-main-caption>${safe(selectedImage.label)}</figcaption>

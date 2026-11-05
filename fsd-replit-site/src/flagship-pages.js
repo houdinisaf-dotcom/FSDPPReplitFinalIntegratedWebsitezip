@@ -143,7 +143,7 @@ function renderAssetSlot(title, variant = 'editorial', description = 'FSD produc
       <span class="fsd-asset-slot-kicker">FSD / PERFORMANCE</span>
       <strong>${escapeHTML(title)}</strong>
       <small>${escapeHTML(description)}</small>
-      <small class="fsd-image-placeholder__note">Image to be added</small>
+      <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
     </div>
   </figure>`;
 }

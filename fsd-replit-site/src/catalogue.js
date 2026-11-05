@@ -970,7 +970,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     if (!placeholder) return;
     const label = placeholder.querySelector('[data-catalogue-variant-label]');
     if (label) label.textContent = variantLabel;
-    placeholder.setAttribute('aria-label', `${activeDialogProduct?.name || 'FSD product'} — ${variantLabel} image placeholder`);
+    placeholder.setAttribute('aria-label', `${activeDialogProduct?.name || 'FSD product'} — ${variantLabel} [ASSET PENDING]`);
     placeholder.hidden = false;
 
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
@@ -981,7 +981,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     if (!mainImage) placeholder.closest('.product-detail-gallery')?.classList.add('has-variant-placeholder');
 
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
-    if (caption) caption.textContent = `${variantLabel} — image to be added`;
+    if (caption) caption.textContent = `${variantLabel} — [ASSET PENDING]`;
     updateEditorialGalleryLayout(false);
   };
 

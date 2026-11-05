@@ -1,5 +1,5 @@
 .fsd-image-placeholder {
-  --fsd-placeholder-gold: #cdb589;
+  --fsd-placeholder-gold: #D4AF37;
   position: relative;
   isolation: isolate;
   display: grid;
@@ -13,34 +13,36 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   padding: clamp(16px, 3vw, 28px);
-  border: 1px solid rgba(205, 181, 137, .34);
-  background:
-    linear-gradient(135deg, transparent 49.7%, rgba(205, 181, 137, .11) 50%, transparent 50.3%),
-    radial-gradient(ellipse at 50% 42%, rgba(205, 181, 137, .11), transparent 61%),
-    linear-gradient(145deg, #202321, #111413 62%, #090b0b);
+  border: 1px solid rgba(212, 175, 55, .34);
+  background: #0A0A0A;
   color: #eff1e9;
   text-align: center;
 }
 
 .fsd-image-placeholder::before {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   inset: 10px;
-  border: 1px solid rgba(205, 181, 137, .13);
+  border: 1px solid rgba(212, 175, 55, .13);
   content: "";
 }
 
 .fsd-image-placeholder::after {
   position: absolute;
-  z-index: -1;
-  right: -24%;
-  bottom: -38%;
-  width: 72%;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: min(58%, 240px);
   aspect-ratio: 1;
-  border: 1px solid rgba(205, 181, 137, .14);
-  border-radius: 50%;
-  box-shadow: 0 0 0 18px rgba(205, 181, 137, .025), 0 0 0 38px rgba(205, 181, 137, .02);
+  background: url('../brand-review/shield-refined-matte/assets/shield-refined.png') center / contain no-repeat;
   content: "";
+  opacity: .12;
+  transform: translate(-50%, -50%);
+}
+
+.fsd-image-placeholder > * {
+  position: relative;
+  z-index: 1;
 }
 
 .fsd-image-placeholder__mark {
@@ -65,10 +67,9 @@
 }
 
 .fsd-image-placeholder__note {
-  color: #aeb79f;
-  font: 600 8px/1.4 Manrope, sans-serif;
-  letter-spacing: .15em;
-  text-transform: uppercase;
+  color: var(--fsd-placeholder-gold);
+  font: 600 8px/1.4 "Space Mono", ui-monospace, monospace;
+  letter-spacing: .12em;
 }
 
 .fsd-image-placeholder--collection {
