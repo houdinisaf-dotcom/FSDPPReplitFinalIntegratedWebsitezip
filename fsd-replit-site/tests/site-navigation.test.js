@@ -808,8 +808,10 @@ test('Private Access keeps sign-ups closed and routes private enquiries to the s
   const access = menu.find(item => item.id === 'private-access');
   assert.equal(access.groups.length, 4);
   assert.ok(access.description.includes('deferred'));
-  assert.equal(access.groups[0].href, '#tactical-shield-membership');
-  assert.equal(access.groups[0].navigationUnavailable, false);
+  assert.equal(access.groups[0].href, '');
+  assert.equal(access.groups[0].navigationUnavailable, true);
+  assert.equal(access.groups[0].items[0].href, '');
+  assert.equal(access.groups[0].items[0].navigationUnavailable, true);
   assert.ok(access.groups[0].description.includes('registration is not open'));
   assert.ok(access.groups[1].description.includes('not collecting sign-ups'));
   assert.equal(access.groups[1].href, '');

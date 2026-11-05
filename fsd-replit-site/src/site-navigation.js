@@ -563,7 +563,7 @@ function makeHouseGroups(divisions) {
 function makePrivateGroups() {
   const details = [
     ['tactical-shield-membership', 'TACTICAL SHIELD MEMBERSHIP',
-      'Membership information only. Terms and benefits are not confirmed; registration is not open and no sign-up data is collected.', true, '#tactical-shield-membership'],
+      'Membership information only. Terms and benefits are not confirmed; registration is not open and no sign-up data is collected.', false],
     ['vip-registration', 'VIP ACCESS REGISTRATION',
       'Registration is not collecting sign-ups yet. The destination and approved privacy and consent details are still required.', false],
     ['collection-announcements', 'COLLECTION ANNOUNCEMENTS',
@@ -787,11 +787,11 @@ function hasVerifiedDestination({
       || explicitTarget === '/circular-trade-in.html'
       || explicitTarget === '/community-first-aid.html'
       || explicitTarget === '/security-vision.html'
+      || explicitTarget === '/enquiries.html'
       || explicitTarget === '/investor.html'
       || explicitTarget === FSD_HOUSE_PAGE_PATH
       || explicitTarget.startsWith(`${FSD_HOUSE_PAGE_PATH}#`)) return true;
-    if (menu?.id === 'private-access'
-      && ['#tactical-shield-membership', '#contact'].includes(explicitTarget)) return true;
+    if (menu?.id === 'private-access' && explicitTarget === '#contact') return true;
     if (explicitTarget.replace(/\/+$/, '') === FSD_STORY_PATH) {
       return Boolean(
         ownerDocument.querySelector(FSD_STORY_HASH)

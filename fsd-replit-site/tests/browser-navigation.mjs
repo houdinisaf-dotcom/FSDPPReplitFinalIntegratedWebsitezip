@@ -1362,9 +1362,8 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "private-access" && !document.querySelector("#fsd-mega-menu")?.hidden');
   assert.equal(await evaluate('document.querySelector("#menu-section-title")?.textContent.trim()'), 'PRIVATE ACCESS');
   assert.equal(await evaluate('Boolean(document.querySelector("#primary-group-list") && document.querySelector("#sub-category-list") && document.querySelector("#feature-card, .feature-card"))'), true);
-  assert.equal(await evaluate('document.querySelector("#modal-action-btn")?.disabled'), false);
-  await click('#modal-action-btn');
-  await waitFor('location.pathname === "/" && location.hash === "#tactical-shield-membership"');
+  assert.equal(await evaluate('document.querySelector("#modal-action-btn")?.disabled'), true);
+  assert.equal(await evaluate('location.pathname === "/investor.html" && location.hash === ""'), true);
 
   assert.deepEqual(browserErrors, []);
   console.log('Navigation browser checks passed: shared menus on House, Investor Relations, and Private Access; links, search and catalogue analytics, bag analytics, collection analytics, mobile draft routing, keyboard/focus, and overflow.');
