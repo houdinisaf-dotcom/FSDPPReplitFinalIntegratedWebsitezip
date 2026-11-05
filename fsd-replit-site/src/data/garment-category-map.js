@@ -119,20 +119,3 @@ export function garmentCategoryOptions(products = [], { allLabel = 'All products
   ];
 }
 
-export const WOMENS_BRANDING_ASSIGNMENT_STATUS = 'BRANDING ASSIGNMENT PENDING';
-
-// No product-level logo concept is recorded. The unisex Aeroforge tee is
-// explicitly cross-listed in Women's Performance, but its logo is not assigned.
-export const WOMENS_BRANDING_PENDING_PRODUCT_IDS = Object.freeze([
-  18, 33, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 56, 57, 73, 74, 75,
-]);
-
-export const WOMENS_PRODUCT_BRANDING_ASSIGNMENTS = Object.freeze(
-  Object.fromEntries(WOMENS_BRANDING_PENDING_PRODUCT_IDS.map(id => [
-    id,
-    Object.freeze({
-      concept: null,
-      status: WOMENS_BRANDING_ASSIGNMENT_STATUS,
-    }),
-  ])),
-);

@@ -1,5 +1,6 @@
 import { audiences, categories, customerFacingCategory, getVerifiedProductSpecifications, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
-import { CLOTHING_LINES, productBelongsToLine } from './clothing-lines.js';
+import { CLOTHING_LINES } from './clothing-lines.js';
+import { catalogueRelationshipFor } from './data/catalogue-relationships.js';
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage, cancelMappedImageSwap } from './catalogue-image-gallery.js';
 import { mountImmersiveProductGallery } from './immersive-product-gallery.js';
@@ -14,13 +15,17 @@ import { productImagesForDisplay } from './data/products.js';
 import {
   GARMENT_CATEGORY_DEFINITIONS,
   garmentCategoryOptions,
-  productHasGarmentCategory,
 } from './data/garment-category-map.js';
 import {
   productCardColourwaysMarkup,
   productCardImageMarkup,
   productColourwayImageIndex,
 } from './product-card-media.js';
+
+const productBelongsToLine = (product, lineId) =>
+  catalogueRelationshipFor(product)?.clothingLineIds.includes(lineId) ?? false;
+const productHasGarmentCategory = (product, categoryId) =>
+  catalogueRelationshipFor(product)?.garmentCategoryIds.includes(categoryId) ?? false;
 
 const pageSize = 12;
 let activeCategory = 'All';

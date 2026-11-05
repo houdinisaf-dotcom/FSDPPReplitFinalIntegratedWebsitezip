@@ -8,10 +8,12 @@ import {
   garmentCategoriesForProduct,
   garmentCategoryOptions,
   productHasGarmentCategory,
+} from '../src/data/garment-category-map.js';
+import {
   WOMENS_BRANDING_ASSIGNMENT_STATUS,
   WOMENS_BRANDING_PENDING_PRODUCT_IDS,
   WOMENS_PRODUCT_BRANDING_ASSIGNMENTS,
-} from '../src/data/garment-category-map.js';
+} from '../src/brand/product-branding.js';
 
 test('garment browsing keeps the active master catalogue and its approved values intact', () => {
   assert.equal(products.length, 73);

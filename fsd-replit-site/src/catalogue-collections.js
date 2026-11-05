@@ -16,6 +16,7 @@ export const CATALOGUE_COLLECTIONS = Object.freeze([
     id: line.id, title: line.title, kind: 'clothing-line',
     href: `/collections/${line.id}`, accentColour: line.colour,
     linkedCatalogueCollection: line.id,
+    brandReference: line.brandReference,
     logoAsset: resolveCollectionLogo(line.id).src,
     bannerImageReference: CLOTHING_LINE_ASSETS[line.id]?.banner || null,
     mobileBannerImageReference: CLOTHING_LINE_ASSETS[line.id]?.mobileBanner || null,

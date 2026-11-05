@@ -19,6 +19,8 @@ export const MARK_NAMES = {
   signature: 'Signature Mark',
 };
 
+export const WOMENS_PRIMARY_MARK = 'serene';
+
 // Serene Monogram remains the primary womenswear emblem.
 // Companion is the secondary line mark that changes by collection line.
 export const WOMENS_LINES = [

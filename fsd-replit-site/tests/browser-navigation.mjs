@@ -199,7 +199,11 @@ try {
   );
   await evaluate('window.scrollTo(0, 0)');
   await waitFor('Number.parseFloat(getComputedStyle(document.querySelector(".fsd-reading-progress")).getPropertyValue("--fsd-reading-progress")) < 0.02');
-  assert.equal(await evaluate('document.querySelectorAll(".fsd-social-placeholder").length'), 5);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-social-placeholder").length'), 0,
+    'Do not render placeholder social links without approved destinations.');
+  assert.equal(await evaluate(`Array.from(document.querySelectorAll('footer a[href]'))
+    .some(link => new URL(link.href, location.href).origin !== location.origin)`), false,
+  'The footer should not expose unapproved external social destinations.');
   await send('Page.navigate', { url: `https://${domain}/#philosophy` });
   await waitFor('document.querySelector("#philosophy") && !document.querySelector("#fsd-house-archive")?.open');
   await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');

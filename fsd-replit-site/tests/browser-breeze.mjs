@@ -134,7 +134,11 @@ try {
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("#search") && !!document.querySelector("#catalogue-grid")');
-  await evaluate('document.querySelector(\'footer a[href="#products"]\')?.click()');
+  await evaluate('document.querySelector(\'footer a[href="/#collections"]\')?.click()');
+  await waitFor('location.hash === "#collections"');
+  await evaluate(`document.querySelector('#catalogue-archive > summary')
+    ?.scrollIntoView({ behavior: 'instant', block: 'center' })`);
+  await evaluate('document.querySelector("#catalogue-archive > summary")?.click()');
   await waitFor('document.querySelector("#catalogue-archive")?.open');
   await evaluate(`(() => {
     const collection = document.querySelector('#catalogue-collection');

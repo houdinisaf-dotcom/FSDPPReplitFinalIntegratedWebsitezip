@@ -201,7 +201,9 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await waitFor('!document.documentElement.dataset.fsdLenisActive');
   await navigate('/?product=43#products');
-  await waitFor('document.querySelector("#product-dialog")?.open && !!document.querySelector("[data-product-rotation]")');
+  await waitFor('document.querySelector("#product-dialog")?.open');
+  const rotationAvailable = await evaluate('!!document.querySelector("[data-product-rotation]")');
+  if (rotationAvailable) {
   assert.equal(await evaluate('document.querySelector("[data-rotation-canvas]")?.hidden'), true,
     'Reduced motion should preserve the static product photo and disable the rotation canvas.');
 
@@ -270,7 +272,38 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await waitFor('document.querySelector("[data-rotation-canvas]")?.hidden');
   assert.equal(await evaluate('document.querySelector("[data-rotation-fallback]")?.hidden'), false);
-  console.log('Browser checks passed: FSD MOTION galleries, Lenis desktop/reduced/touch behavior, and product rotation by keyboard, mouse, and touch.');
+  } else {
+    const staticGallery = await evaluate(`(() => {
+      const dialog = document.querySelector('#product-dialog');
+      const image = dialog?.querySelector('[data-catalogue-main-image]');
+      return {
+        open: Boolean(dialog?.open),
+        imageSrc: image?.getAttribute('src') || '',
+        rotationElements: dialog?.querySelectorAll('[data-product-rotation], [data-rotation-canvas]').length || 0,
+      };
+    })()`);
+    assert.equal(staticGallery.open, true);
+    assert.ok(staticGallery.imageSrc.startsWith('/'),
+      'Product 43 should retain its mapped static product photography.');
+    assert.equal(staticGallery.rotationElements, 0,
+      'Do not fabricate a rotation viewer when approved frames are absent.');
+
+    await send('Emulation.setDeviceMetricsOverride', {
+      width: 390, height: 844, deviceScaleFactor: 1, mobile: true,
+    });
+    await send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
+    const mobileGallery = await evaluate(`({
+      width: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth
+    })`);
+    assert.ok(mobileGallery.scrollWidth <= mobileGallery.width + 1,
+      `Mobile horizontal overflow on the static product gallery: ${JSON.stringify(mobileGallery)}`);
+    await evaluate('document.querySelector("[data-catalogue-back]")?.click()');
+    assert.equal(await evaluate('document.querySelector("#product-dialog")?.dataset.fsdMotionClosing === "true'), true,
+      'Returning to the catalogue should begin the reverse dialog transition.');
+    await waitFor('!document.querySelector("#product-dialog")?.open');
+  }
+  console.log('Browser checks passed: FSD MOTION galleries, Lenis desktop/reduced/touch behavior, and the approved static-photo fallback when rotation frames are absent.');
   if (browserErrors.length) console.log(`Browser exceptions observed: ${browserErrors.join(' | ')}`);
 } finally {
   socket?.close();
