@@ -1134,3 +1134,17 @@ mtime_ms = 1793904849047
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e064ff5b-1772-4880-b387-0e3f4f2e038e/5099dd68-e023-4795-923c-432f91db580b"
 storage_version_token = "1793904906418717"
 content_type = "text/html"
+
+[[outputs]]
+id = "Askt6Ot-W7QwQWLUSu1Nw"
+uri = "file://generated-artifacts/FSD-Fitness-Self-Defence-Website.zip"
+type = "unspecified"
+title = "FSD website source ZIP"
+description = "Complete FSD website project with source, public assets, content, docs, tests and package lockfile. Build output and node_modules are omitted; the ZIP includes commands to restore and run them."
+logical_id = "d0b35124-6182-4260-8c2a-c674491a03fb"
+content_hash = "sha256:5df1fe21bcd4bc04e0dd58c2e698b6e0c68c88f2f193d6011bafed6b051fa678"
+size = 96465914
+mtime_ms = 1793906430970
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/d0b35124-6182-4260-8c2a-c674491a03fb/b86cbd78-1bc4-4456-bb08-c1c9f4f78623"
+storage_version_token = "1793906441814367"
+content_type = "application/octet-stream"
