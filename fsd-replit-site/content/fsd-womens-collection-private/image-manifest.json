@@ -13,7 +13,11 @@
       "height": 1536,
       "file": "content/fsd-womens-collection-private/assets/womens-01.webp",
       "contentType": "image/webp",
-      "duplicateOf": null
+      "duplicateOf": null,
+      "assignment": {
+        "status": "audit-only",
+        "reason": "Outfit identity is unconfirmed; excluded from BREEZE, Modest Flow, and all product galleries."
+      }
     },
     {
       "id": "womens-02",
@@ -24,7 +28,11 @@
       "height": 1402,
       "file": "content/fsd-womens-collection-private/assets/womens-02.webp",
       "contentType": "image/webp",
-      "duplicateOf": null
+      "duplicateOf": null,
+      "assignment": {
+        "status": "audit-only",
+        "reason": "Outfit identity is unconfirmed; excluded from BREEZE, Modest Flow, and all product galleries."
+      }
     },
     {
       "id": "womens-03",
@@ -35,7 +43,11 @@
       "height": 1536,
       "file": "content/fsd-womens-collection-private/assets/womens-03.webp",
       "contentType": "image/webp",
-      "duplicateOf": null
+      "duplicateOf": null,
+      "assignment": {
+        "status": "audit-only",
+        "reason": "Outfit identity is unconfirmed; excluded from BREEZE, Modest Flow, and all product galleries."
+      }
     },
     {
       "id": "womens-04",
@@ -288,7 +300,11 @@
       "height": 941,
       "file": "content/fsd-womens-collection-private/assets/womens-26.webp",
       "contentType": "image/webp",
-      "duplicateOf": null
+      "duplicateOf": null,
+      "assignment": {
+        "status": "audit-only",
+        "reason": "Black outfit identity and any connection to the zip-neck group are unconfirmed; excluded from every product gallery."
+      }
     },
     {
       "id": "womens-27",
@@ -574,7 +590,11 @@
       "height": 1536,
       "file": "content/fsd-womens-collection-private/assets/womens-52.webp",
       "contentType": "image/webp",
-      "duplicateOf": null
+      "duplicateOf": null,
+      "assignment": {
+        "status": "audit-only",
+        "reason": "Brown activewear product and colourway are unconfirmed; excluded from FLEX and every other product gallery."
+      }
     },
     {
       "id": "womens-53",
@@ -585,7 +605,11 @@
       "height": 1536,
       "file": "content/fsd-womens-collection-private/assets/womens-53.webp",
       "contentType": "image/webp",
-      "duplicateOf": null
+      "duplicateOf": null,
+      "assignment": {
+        "status": "audit-only",
+        "reason": "Brown activewear product and colourway are unconfirmed; excluded from FLEX and every other product gallery."
+      }
     }
   ]
 }

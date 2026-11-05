@@ -28,7 +28,7 @@ test('all three product proofs are private and have no buying or publication cap
 });
 
 test('the three product groups use standalone photographs and keep composites out of their galleries', () => {
-  const expectedCounts = { flex: 11, 'zip-neck': 12, breeze: 6 };
+  const expectedCounts = { flex: 9, 'zip-neck': 12, breeze: 6 };
   for (const [slug, count] of Object.entries(expectedCounts)) {
     const preview = createWomensCollectionPreview(slug);
     const images = preview.product.variants.flatMap(variant => variant.images);
@@ -38,7 +38,7 @@ test('the three product groups use standalone photographs and keep composites ou
   }
 });
 
-test('FLEX catalogue values remain references; the brown-tone photos are not confirmed as a colourway', () => {
+test('FLEX uses only its approved photo group and excludes unconfirmed brown outfits', () => {
   const flex = createWomensCollectionPreview('flex').product;
   const master = masterProducts.find(product => product.id === 40);
   assert.equal(master['Price (£) confirmed'], '49.99');
@@ -46,8 +46,9 @@ test('FLEX catalogue values remain references; the brown-tone photos are not con
   assert.equal(flex.price.display, '');
   assert.equal(flex.price.type, 'master-reference');
   assert.equal(flex.price.approvedForSale, false);
-  assert.equal(flex.variants[1].approval, 'unconfirmed');
-  assert.equal(flex.variants[1].images.length, 2);
+  assert.deepEqual(flex.variants.map(variant => variant.id), ['black-gold']);
+  assert.ok(flex.variants.flatMap(variant => variant.images)
+    .every(image => !['womens-52', 'womens-53'].includes(image.id)));
 });
 
 test('zip-neck top stays distinct from AEROFORGE and has no master price assigned', () => {
@@ -75,8 +76,20 @@ test('BREEZE boards are excluded and missing standalone colour images remain exp
 test('audit accounts for all 53 images and isolates duplicates and composite boards', () => {
   const audit = createWomensCollectionAudit();
   assert.equal(audit.totalSourceImages, 53);
-  assert.equal(audit.excludedOrUnassignedCount, 24);
-  assert.equal(audit.references.length, 24);
+  assert.equal(audit.excludedOrUnassignedCount, 26);
+  assert.equal(audit.references.length, 26);
+  const auditOnlyIds = ['womens-01', 'womens-02', 'womens-03', 'womens-26', 'womens-52', 'womens-53'];
+  assert.ok(auditOnlyIds.every(id => audit.references.some(reference =>
+    reference.id === id && reference.kind === 'Audit-only outfit')));
+  for (const slug of ['flex', 'zip-neck', 'breeze']) {
+    const productImages = createWomensCollectionPreview(slug).product.variants
+      .flatMap(variant => variant.images);
+    assert.ok(auditOnlyIds.every(id => !productImages.some(image => image.id === id)));
+  }
+  assert.ok(auditOnlyIds.every(id =>
+    womensCollectionSourceManifest.assets.find(asset => asset.id === id)?.assignment?.status === 'audit-only'));
+  assert.ok(audit.references.filter(reference => auditOnlyIds.includes(reference.id))
+    .every(reference => /excluded/i.test(reference.note)));
   assert.deepEqual(
     audit.references.filter(reference => reference.index >= 7 && reference.index <= 12).map(reference => reference.index),
     [7, 8, 9, 10, 11, 12],
@@ -85,6 +98,15 @@ test('audit accounts for all 53 images and isolates duplicates and composite boa
     audit.references.some(reference => reference.index === index)));
   assert.ok(audit.references.filter(reference => reference.index >= 7 && reference.index <= 12)
     .every(reference => reference.logoStatus.startsWith('Duplicate')));
+  const productImageIds = ['flex', 'zip-neck', 'breeze'].flatMap(slug =>
+    createWomensCollectionPreview(slug).product.variants.flatMap(variant =>
+      variant.images.map(image => image.id)));
+  const auditImageIds = audit.references.map(reference => reference.id);
+  assert.equal(new Set([...productImageIds, ...auditImageIds]).size, womensCollectionSourceManifest.assets.length);
+  assert.deepEqual(
+    [...productImageIds, ...auditImageIds].sort(),
+    womensCollectionSourceManifest.assets.map(asset => asset.id).sort(),
+  );
 });
 
 test('the source archive and all preview media are present without modifying master data', () => {

@@ -29,15 +29,6 @@ const productDefinitions = [
         note: 'This is the existing master-record colour only; it does not confirm the source photos or approve a sale.',
         imageIds: ids(42, 43, 44, 45, 46, 47, 48, 49, 50),
       },
-      {
-        id: 'brown-reference',
-        label: 'Brown-tone image reference',
-        swatch: '#756052',
-        sourceLabel: 'Unconfirmed visual reference',
-        approval: 'unconfirmed',
-        note: 'Two supplied photos show a brown-toned coordinated look. Colourway and product association are not confirmed.',
-        imageIds: ids(52, 53),
-      },
     ],
     specifications: [
       ['Materials', 'Pending verification'],
@@ -193,9 +184,9 @@ const productDefinitions = [
 ];
 
 const referenceNotes = {
-  1: ['Additional reference', 'Modest outfit photograph; product identity and relationship to the named products are not confirmed.'],
-  2: ['Additional reference', 'Modest outfit photograph; product identity and relationship to the named products are not confirmed.'],
-  3: ['Additional reference', 'Modest outfit photograph; product identity and relationship to the named products are not confirmed.'],
+  1: ['Audit-only outfit', 'Product identity is unconfirmed. Excluded from BREEZE, Modest Flow, and all product galleries.'],
+  2: ['Audit-only outfit', 'Product identity is unconfirmed. Excluded from BREEZE, Modest Flow, and all product galleries.'],
+  3: ['Audit-only outfit', 'Product identity is unconfirmed. Excluded from BREEZE, Modest Flow, and all product galleries.'],
   4: ['BREEZE-labelled board', 'Composite board with an alternate logo and unverified product claims. Excluded from product gallery and copy.'],
   5: ['Colour reference board', 'Composite colour board; product mapping and standalone colourway images are not confirmed.'],
   6: ['Colour reference board', 'Composite colour board; product mapping and standalone colourway images are not confirmed.'],
@@ -206,7 +197,7 @@ const referenceNotes = {
   11: ['Exact duplicate', 'Pixel-identical to an existing Modest Flow visual. Kept separate; not reclassified or added to a new product.'],
   12: ['Exact duplicate', 'Pixel-identical to an existing Modest Flow visual. Kept separate; not reclassified or added to a new product.'],
   25: ['Campaign board', 'General campaign artwork; no distinct product identity confirmed.'],
-  26: ['Unassigned photograph', 'Black outfit photograph; possible relation to the zip-neck group, but product identity is not confirmed.'],
+  26: ['Audit-only outfit', 'Black outfit photograph. Zip-neck association is unconfirmed; excluded from every product gallery.'],
   27: ['BREEZE-labelled board', 'Composite feature and colour board; alternate logo and unverified claims. Excluded from product gallery and copy.'],
   28: ['BREEZE-labelled board', 'Composite colour and view board. Logo and claims are not verified; excluded from product gallery.'],
   30: ['BREEZE composite', 'Multi-view burgundy board. Useful as an audit reference only; not used as a gallery photo.'],
@@ -217,6 +208,8 @@ const referenceNotes = {
   35: ['BREEZE composite', 'Multi-view black board. The standalone photos are used instead.'],
   41: ['BREEZE composite', 'Colour lineup and detail board. It is not used as a product image; no standalone detail photographs are supplied.'],
   51: ['FLEX feature board', 'Contains unverified feature claims and a mark not confirmed against the approved website logo. Excluded from product copy and gallery.'],
+  52: ['Audit-only outfit', 'Brown activewear photograph. Product and colourway identity are unconfirmed; excluded from FLEX and every other product gallery.'],
+  53: ['Audit-only outfit', 'Brown activewear photograph. Product and colourway identity are unconfirmed; excluded from FLEX and every other product gallery.'],
 };
 
 function resolveImage(id, context) {
@@ -315,7 +308,7 @@ export function createWomensCollectionAudit() {
     sourceArchive: imageManifest.sourceArchive,
     sourceArchiveSha256: imageManifest.sourceArchiveSha256,
     totalSourceImages: imageManifest.originalTiffCount,
-    productImageCounts: { flex: 11, zipNeck: 12, breeze: 6 },
+    productImageCounts: { flex: 9, zipNeck: 12, breeze: 6 },
     excludedOrUnassignedCount: references.length,
     references,
     links: {
