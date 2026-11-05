@@ -2,6 +2,13 @@
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 export const modules: ModuleMap = {
   "./components/mockups/fsd-catalogue/Current.tsx": () => import("../components/mockups/fsd-catalogue/Current.tsx"),
+  "./components/mockups/fsd-house/ClothingGalleryEditorial.tsx": () => import("../components/mockups/fsd-house/ClothingGalleryEditorial.tsx"),
+  "./components/mockups/fsd-house/Current.tsx": () => import("../components/mockups/fsd-house/Current.tsx"),
+  "./components/mockups/fsd-house/Dropdown.tsx": () => import("../components/mockups/fsd-house/Dropdown.tsx"),
+  "./components/mockups/fsd-house/Floating.tsx": () => import("../components/mockups/fsd-house/Floating.tsx"),
+  "./components/mockups/fsd-house/HousePlus.tsx": () => import("../components/mockups/fsd-house/HousePlus.tsx"),
+  "./components/mockups/fsd-phase3/Current.tsx": () => import("../components/mockups/fsd-phase3/Current.tsx"),
+  "./components/mockups/fsd-phase3/Phase3.tsx": () => import("../components/mockups/fsd-phase3/Phase3.tsx"),
   "./components/mockups/fsd-final-proposal/DesktopPDP.tsx": () => import("../components/mockups/fsd-final-proposal/DesktopPDP.tsx"),
   "./components/mockups/fsd-final-proposal/Footer.tsx": () => import("../components/mockups/fsd-final-proposal/Footer.tsx"),
   "./components/mockups/fsd-final-proposal/Homepage.tsx": () => import("../components/mockups/fsd-final-proposal/Homepage.tsx"),
@@ -9,12 +16,5 @@ export const modules: ModuleMap = {
   "./components/mockups/fsd-final-proposal/MobilePDP.tsx": () => import("../components/mockups/fsd-final-proposal/MobilePDP.tsx"),
   "./components/mockups/fsd-final-proposal/SearchQuickView.tsx": () => import("../components/mockups/fsd-final-proposal/SearchQuickView.tsx"),
   "./components/mockups/fsd-final-proposal/ShopMenu.tsx": () => import("../components/mockups/fsd-final-proposal/ShopMenu.tsx"),
-  "./components/mockups/fsd-final-proposal/WomensCollection.tsx": () => import("../components/mockups/fsd-final-proposal/WomensCollection.tsx"),
-  "./components/mockups/fsd-house/ClothingGalleryEditorial.tsx": () => import("../components/mockups/fsd-house/ClothingGalleryEditorial.tsx"),
-  "./components/mockups/fsd-house/Current.tsx": () => import("../components/mockups/fsd-house/Current.tsx"),
-  "./components/mockups/fsd-house/Dropdown.tsx": () => import("../components/mockups/fsd-house/Dropdown.tsx"),
-  "./components/mockups/fsd-house/Floating.tsx": () => import("../components/mockups/fsd-house/Floating.tsx"),
-  "./components/mockups/fsd-house/HousePlus.tsx": () => import("../components/mockups/fsd-house/HousePlus.tsx"),
-  "./components/mockups/fsd-phase3/Current.tsx": () => import("../components/mockups/fsd-phase3/Current.tsx"),
-  "./components/mockups/fsd-phase3/Phase3.tsx": () => import("../components/mockups/fsd-phase3/Phase3.tsx")
+  "./components/mockups/fsd-final-proposal/WomensCollection.tsx": () => import("../components/mockups/fsd-final-proposal/WomensCollection.tsx")
 };
