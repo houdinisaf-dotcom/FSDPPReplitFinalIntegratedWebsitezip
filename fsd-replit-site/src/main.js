@@ -213,6 +213,7 @@ export function navigateFsdSelection(selection, onRouteChange = () => {}) {
       || destination === '/circular-trade-in.html'
       || destination === '/community-first-aid.html'
       || destination === '/security-vision.html'
+      || destination === '/enquiries.html'
       || destination === '/investor.html'
       || housePagePaths.has(destination)
       || destination === FSD_HOUSE_PAGE_PATH

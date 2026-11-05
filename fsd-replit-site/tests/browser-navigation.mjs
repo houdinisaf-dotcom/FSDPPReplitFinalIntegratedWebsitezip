@@ -448,10 +448,10 @@ try {
   assert.equal(await evaluate('document.body.textContent.includes("Archive & Version History")'), false);
   assert.equal(await evaluate('document.body.textContent.includes("Press & Media Kit")'), false);
   await send('Page.navigate', { url: `https://${domain}/flagships/dublin.html` });
-  await waitFor('location.pathname === "/flagships/dublin.html" && document.querySelector("main h1")?.textContent.trim() === "Dublin"');
+  await waitFor('location.pathname === "/flagships/dublin.html" && document.querySelector("main h1")?.textContent.trim() === "Dublin" && document.documentElement.dataset.fsdStatus === "NOT READY"');
   assert.equal(await evaluate('document.querySelectorAll("main, main h1, .hero, footer").length'), 4);
-  assert.equal(await evaluate('document.documentElement.dataset.fsdStatus'), 'NOT READY FOR PUBLICATION');
-  assert.equal(await evaluate('Boolean(document.querySelector(".fsd-primary-nav"))'), false);
+  assert.equal(await evaluate('document.documentElement.dataset.fsdStatus'), 'NOT READY');
+  assert.equal(await evaluate('Boolean(document.querySelector(".fsd-primary-nav"))'), true);
   await send('Page.navigate', { url: `https://${domain}/cryo-zero.html` });
   await waitFor('location.pathname === "/cryo-zero.html" && document.querySelector(".cryo-page h1")?.textContent === "Cryo-Zero Recovery Chambers" && document.querySelector(".fsd-primary-nav")');
   assert.match(await evaluate('document.querySelector(".cryo-page .status-note")?.textContent'), /Information in preparation/);
@@ -675,7 +675,7 @@ try {
   };
 
   const closeRouteAndReset = async () => {
-    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/story" || location.pathname.startsWith("/flagships/") || location.pathname === "/the-house.html" || location.pathname.startsWith("/__catalogue-preview/")')) {
+    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/enquiries.html" || location.pathname === "/story" || location.pathname.startsWith("/flagships/") || location.pathname === "/the-house.html" || location.pathname.startsWith("/__catalogue-preview/")')) {
       await send('Page.navigate', { url: `https://${domain}/` });
       await waitFor('!!document.querySelector(".fsd-primary-nav")');
     }
@@ -706,6 +706,12 @@ try {
     if (destination === '/investor.html' || destination?.startsWith('/investor.html#')) {
       await click(selector);
       await waitFor('location.pathname === "/investor.html" && document.querySelector("main.fsd-house-draft[data-fsd-house-destination]") && document.querySelector("html")?.dataset.fsdStatus === "NOT READY FOR PUBLICATION" && document.querySelector("[data-fsd-house-draft-ribbon]")');
+      return;
+    }
+
+    if (destination === '/enquiries.html') {
+      await click(selector);
+      await waitFor('Boolean(location.pathname === "/enquiries.html" && document.querySelector("#private-enquiries-title"))');
       return;
     }
 
