@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { deriveTechnicalCollections, confirmedCollectionText } from '../catalogue-collections.js';
-import { products, priceInfo, productImagesForDisplay } from '../data/products.js';
+import { products, priceInfo, productImagesForDisplay, productActionImageForDisplay } from '../data/products.js';
 import { SafeImage } from './SafeImage.jsx';
 import { ImagePlaceholder } from './ImagePlaceholder.jsx';
+import { ProductColourwaySwatches } from './ProductColourwaySwatches.jsx';
 import './TechnicalCollectionsBrowser.css';
 
 const reduceMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -19,6 +20,7 @@ function availabilityFor(product) {
 
 function TechnicalProductCard({ product, onProductSelect }) {
   const image = productImagesForDisplay(product)[0] || null;
+  const actionImage = productActionImageForDisplay(product, image);
   const price = money(product);
   const availability = availabilityFor(product);
 
@@ -32,6 +34,7 @@ function TechnicalProductCard({ product, onProductSelect }) {
       >
         <span className="fsd-clothing-product__media">
           {image ? (
+            <>
             <SafeImage
               src={image.src}
               alt={`${product.name} — ${image.label}`}
@@ -39,6 +42,19 @@ function TechnicalProductCard({ product, onProductSelect }) {
               placeholderKind="product"
               loading="lazy"
             />
+            {actionImage && actionImage.src !== image?.src && (
+              <span className="fsd-clothing-product__action-image" aria-hidden="true">
+                <SafeImage
+                  data-card-action-image
+                  src={actionImage.src}
+                  alt=""
+                  loading="lazy"
+                  placeholderTitle={product.name}
+                  placeholderKind="product"
+                />
+              </span>
+            )}
+            </>
           ) : (
             <ImagePlaceholder title={product.name} kind="product" />
           )}
@@ -55,6 +71,7 @@ function TechnicalProductCard({ product, onProductSelect }) {
         {availability && <span className="fsd-technical-product__availability">{availability}</span>}
         <span className="fsd-clothing-product__action">VIEW DETAILS <span aria-hidden="true">↗</span></span>
       </button>
+      <ProductColourwaySwatches product={product} />
     </article>
   );
 }

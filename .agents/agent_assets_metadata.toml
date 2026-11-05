@@ -1120,3 +1120,17 @@ mtime_ms = 1793834853807
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/768db360-5019-4c2b-9e07-3641172dc32d/21bf2ea3-7425-461a-9543-03e5df39c2cc"
 storage_version_token = "1793834875120837"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "w1h6bo7WlnuHtibJSIqx3"
+uri = "file://generated-artifacts/fsd-approved-redesign/evidence.html"
+type = "html"
+title = "FSD visual evidence — before and after"
+description = "Self-contained gallery of real application captures: collection grids across four widths, before/after mobile and desktop, action reveal, search quick view, and desktop/mobile product detail."
+logical_id = "e064ff5b-1772-4880-b387-0e3f4f2e038e"
+content_hash = "sha256:29e2209cc32c0d3563548d0807279fab93f0a98dc621314e3095ca1631bd88df"
+size = 1514650
+mtime_ms = 1793904849047
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e064ff5b-1772-4880-b387-0e3f4f2e038e/5099dd68-e023-4795-923c-432f91db580b"
+storage_version_token = "1793904906418717"
+content_type = "text/html"

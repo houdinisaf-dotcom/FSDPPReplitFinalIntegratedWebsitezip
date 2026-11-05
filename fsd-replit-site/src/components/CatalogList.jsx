@@ -11,7 +11,8 @@ import { FSD_MOTION } from '../motion-config.js';
 
 function isActionRevealImage(image) {
   const label = String(image?.label || '').toLocaleLowerCase('en-GB');
-  return /\b(action|training|in use|worn)\b/.test(label) && !/\b(fabric|detail|product detail)\b/.test(label);
+  return /\b(action|training|sparring|in[-\s]motion|in[-\s]use)\b/.test(label)
+    && !/\b(fabric|detail|product detail)\b/.test(label);
 }
 
 function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onToggle, children }) {

@@ -941,10 +941,13 @@ main h2[id] { scroll-margin-block-start: 96px; }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  #catalogue-grid.product-grid[data-view="visual"] .product-card--visual:hover .catalogue-card__hover-action,
-  #catalogue-grid.product-grid[data-view="visual"] .product-card--visual:focus-within .catalogue-card__hover-action {
+  #catalogue-grid.product-grid[data-view="visual"] .product-card--visual:hover .catalogue-card__hover-action {
     opacity: 1;
   }
+}
+
+#catalogue-grid.product-grid[data-view="visual"] .product-card--visual:focus-within .catalogue-card__hover-action {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

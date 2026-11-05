@@ -1,0 +1,29 @@
+.fsd-product-colourway-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  padding: 1px 0 2px;
+}
+
+.fsd-product-colourway-swatches__dot {
+  display: block;
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  overflow: hidden;
+  border: 1px solid rgb(241 238 232 / 36%);
+  border-radius: 50%;
+}
+
+@media (max-width: 620px) {
+  .fsd-product-colourway-swatches {
+    gap: 6px;
+  }
+
+  .fsd-product-colourway-swatches__dot {
+    width: 11px;
+    height: 11px;
+    flex-basis: 11px;
+  }
+}

@@ -375,6 +375,21 @@ export function productImagesForDisplay(product) {
     : [];
 }
 
+export function productActionImageForDisplay(product, primaryImage) {
+  if (!primaryImage?.src || !primaryImage?.colourway) return null;
+  const primaryColourway = String(primaryImage.colourway).trim();
+  if (!primaryColourway) return null;
+
+  return productImagesForDisplay(product).find(image => {
+    const label = String(image?.label ?? '');
+    return image?.src
+      && image.src !== primaryImage.src
+      && String(image.colourway ?? '').trim() === primaryColourway
+      && /\b(?:action|training|sparring|in[-\s]motion|in[-\s]use)\b/i.test(label)
+      && !/\b(?:fabric|detail)\b/i.test(label);
+  }) ?? null;
+}
+
 const hasStandaloneProductImage = product => productImagesForDisplay(product).length > 0;
 
 export const productsWithUsableImages = Object.freeze(products.filter(hasStandaloneProductImage));

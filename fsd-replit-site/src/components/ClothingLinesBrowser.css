@@ -337,16 +337,37 @@
 }
 .fsd-clothing-product__open:hover .fsd-clothing-product__name { color: #f1d982; }
 .fsd-clothing-product__media {
+  position: relative;
+  overflow: hidden;
   display: block;
   width: 100%;
   aspect-ratio: 4 / 4.6;
   overflow: hidden;
   background: color-mix(in srgb, var(--line-accent), #111214 86%);
 }
-.fsd-clothing-product__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease-out; }
+.fsd-clothing-product__media img { width: 100%; height: 100%; object-fit: contain; transition: transform 400ms ease-out; }
+.fsd-clothing-product__action-image {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+.fsd-clothing-product__action-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 @media (hover: hover) and (pointer: fine) {
   .fsd-clothing-product__open:hover .fsd-clothing-product__media img { transform: scale(1.05); }
+  .fsd-clothing-product__open:hover .fsd-clothing-product__action-image { opacity: 1; }
 }
+.fsd-clothing-product__open:focus-within .fsd-clothing-product__action-image { opacity: 1; }
 .fsd-clothing-product__meta {
   display: flex;
   justify-content: space-between;
@@ -496,6 +517,7 @@
   .fsd-clothing-nav__links a,
   .fsd-clothing-nav__links a::after,
   .fsd-clothing-product__media img,
+  .fsd-clothing-product__action-image,
   .fsd-clothing-product__view,
   .fsd-clothing-line,
   .fsd-clothing-line__visual,

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { products, priceInfo, productImagesForDisplay } from '../data/products.js';
+import { products, priceInfo, productImagesForDisplay, productActionImageForDisplay } from '../data/products.js';
 import { deriveClothingLineMembership, CLOTHING_LINE_ASSETS, CLOTHING_LINES } from '../clothing-lines.js';
 import { SafeImage } from './SafeImage.jsx';
 import { ImagePlaceholder } from './ImagePlaceholder.jsx';
+import { ProductColourwaySwatches } from './ProductColourwaySwatches.jsx';
 import { CategoryFilterTabs } from './CategoryFilterTabs.jsx';
 import { WOMENS_BRANDING_ASSIGNMENT_STATUS } from '../brand/product-branding.js';
 import {
@@ -500,6 +501,7 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
                     <div className="fsd-clothing-products" id={`line-products-${line.id}`}>
                     {visibleProducts.map(product => {
                       const image = memberships.imageFor(product);
+                      const actionImage = productActionImageForDisplay(product, image);
                       const price = money(product);
                       return (
                         <article className="fsd-clothing-product" key={product.id} data-clothing-product-id={product.id} data-reveal-key={`${line.id}:product:${product.id}`}>
@@ -514,12 +516,26 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
                               data-content-status={image ? 'APPROVED' : 'CONTENT PENDING'}
                             >
                               {image ? (
+                                <>
                                 <SafeImage
                                   src={image.src}
                                   alt={`${product.name} — ${image.label}`}
                                   placeholderTitle={product.name}
                                   placeholderKind="product"
                                 />
+                              {actionImage && actionImage.src !== image?.src && (
+                                <span className="fsd-clothing-product__action-image" aria-hidden="true">
+                                  <SafeImage
+                                    data-card-action-image
+                                    src={actionImage.src}
+                                    alt=""
+                                    loading="lazy"
+                                    placeholderTitle={product.name}
+                                    placeholderKind="product"
+                                  />
+                                </span>
+                              )}
+                                </>
                               ) : (
                                 <ImagePlaceholder title={product.name} kind="product" />
                               )}
@@ -534,6 +550,7 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
                             {price && <span className="fsd-clothing-product__price">{price}</span>}
                             <span className="fsd-clothing-product__action">VIEW DETAILS <span aria-hidden="true">↗</span></span>
                           </button>
+                          <ProductColourwaySwatches product={product} />
                           {(() => {
                             const mappedImages = productImagesForDisplay(product);
                             const seenSources = new Set([image?.src]);

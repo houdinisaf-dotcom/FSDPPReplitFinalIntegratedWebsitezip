@@ -57,11 +57,11 @@ For cold deep links, use an instant initial scroll even when the storefront uses
 
 **How to apply:** Keep instant scrolling limited to initial route restoration; retain the site’s smooth or reduced-motion behavior for deliberate in-page navigation.
 
-Do not assume headless Chromium desktop emulation has a fine pointer.
+Do not assume headless Chromium desktop emulation has a fine pointer or hover support.
 
-**Why:** This project’s headless browser reports `pointer: fine` as false, and CDP media emulation did not change it. A fine-pointer-only cursor rule therefore computes to the native fallback in that environment.
+**Why:** This project’s headless browser reports both `pointer: fine` and `hover: hover` as false, and CDP media emulation did not change them. Mouse events can still activate `:hover`, but rules inside a hover media query remain inactive.
 
-**How to apply:** In headless checks, validate the injected fine-pointer CSS and the native fallback, and condition computed-cursor assertions on `matchMedia('(pointer: fine)').matches`. Use a real mouse or trackpad to verify the rendered cursor.
+**How to apply:** In headless checks, validate keyboard `:focus-within` behavior for hover-reveal content and condition media-query assertions on `matchMedia`. Use a real mouse or trackpad to verify the desktop hover state; do not weaken production hover rules to accommodate headless limitations.
 
 Force off-screen lazy images to load when deliberately testing broken-image fallbacks.
 

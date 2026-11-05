@@ -250,6 +250,17 @@ try {
     assert.equal(crumbs[0], 'SHOP', `${line} is missing its Shop breadcrumb.`);
     assert.ok(['WOMEN', 'MEN'].includes(crumbs[1]), `${line} is missing its audience breadcrumb.`);
     assert.ok(crumbs[2], `${line} is missing its collection breadcrumb.`);
+    if (line === 'aeroforge') {
+      const swatches = await evaluate(`(() => {
+        const group = document.querySelector('#line-products-aeroforge .fsd-product-colourway-swatches');
+        return {
+          count: group?.querySelectorAll('[role="img"]').length || 0,
+          label: group?.getAttribute('aria-label') || '',
+        };
+      })()`);
+      assert.ok(swatches.count > 1, 'AEROFORGE cards should show mapped colourway swatches.');
+      assert.ok(swatches.label.includes('White / Green'), 'The swatch group should preserve recorded colourway names.');
+    }
   }
 
   for (const viewport of [
