@@ -1172,6 +1172,10 @@ export function mountNavigation({
       syncExpanded();
       return;
     }
+    if (prefersReducedMotion()) {
+      syncExpanded();
+      return;
+    }
 
     media.classList.add('fsd-feature-media--transitioning');
     if (outgoingImage) {
@@ -1335,7 +1339,9 @@ export function mountNavigation({
   const schedulePointerClose = () => {
     clearTimeout(pointerTimer);
     pointerTimer = window.setTimeout(() => {
-      if (!pointerInside && isOpen) closeMenu({ restoreFocus: panel.contains(document.activeElement) });
+      if (!pointerInside && isOpen && !isMobile()) {
+        closeMenu({ restoreFocus: panel.contains(document.activeElement) });
+      }
     }, 230);
   };
 
@@ -1537,7 +1543,7 @@ export function mountNavigation({
   };
 
   const onDocumentClick = event => {
-    if (isOpen && !root.contains(event.target)) {
+    if (isOpen && !event.composedPath().includes(root)) {
       closeMenu({ restoreFocus: panel.contains(document.activeElement) });
     }
   };
@@ -1547,7 +1553,7 @@ export function mountNavigation({
     clearTimeout(pointerTimer);
   };
   const onRootPointerLeave = event => {
-    if (event.pointerType !== 'mouse') return;
+    if (event.pointerType !== 'mouse' || isMobile()) return;
     pointerInside = false;
     schedulePointerClose();
   };

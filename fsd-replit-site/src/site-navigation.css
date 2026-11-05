@@ -732,7 +732,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fsd-navigation-shell,
-  .header.fsd-header {
+  .header.fsd-header,
+  .fsd-feature-media--transitioning img {
     transition-duration: 0.01ms;
   }
 }
@@ -1018,13 +1019,20 @@ body.fsd-mobile-nav-open {
 
   .fsd-feature-media,
   .fsd-feature-media--unmapped {
+    height: clamp(190px, 30vh, 240px);
     min-height: 190px;
-    max-height: 36vh;
+    max-height: none;
+  }
+
+  .fsd-feature-media--unmapped.fsd-image-placeholder--collection {
+    height: clamp(190px, 30vh, 240px);
+    min-height: 190px;
+    aspect-ratio: auto;
   }
 
   .fsd-feature-media img {
     min-height: 95px;
-    max-height: 36vh;
+    max-height: none;
   }
 
   .fsd-feature-copy {

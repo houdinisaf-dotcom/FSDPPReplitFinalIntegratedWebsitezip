@@ -75,6 +75,24 @@ Exclude interactive zoom-surface geometry from generic layout transitions, and v
 
 **How to apply:** Keep zoom dimensions unanimated, check computed size and real pan movement, and test swiping again after closing a magnified viewer so viewer state cannot disable the underlying gallery.
 
+For navigation rows that rerender on selection, use `event.composedPath()` for document-level outside-click checks instead of checking whether the current target is still inside the navigation.
+
+**Why:** Rendering replaces the clicked row before the event reaches the document listener. A current-DOM containment check can mistake that internal selection for an outside click and close the mobile menu.
+
+**How to apply:** When a delegated click can replace its target during bubbling, check the original event path to distinguish internal menu actions from outside clicks.
+
+Keep mobile navigation preview frames the same size for loaded images and collection placeholders.
+
+**Why:** Collection placeholders carry intrinsic aspect-ratio and minimum-height rules that can override the navigation frame and make image-free selections taller than image selections.
+
+**How to apply:** When changing responsive preview dimensions, override the placeholder’s intrinsic sizing in the menu context and assert both states in a browser test.
+
+Recheck the current responsive mode when a delayed pointer-close timer fires.
+
+**Why:** A timer scheduled while the menu is desktop-sized can run after the viewport changes, closing a mobile sheet even though mobile pointer-leave behavior should not close it.
+
+**How to apply:** Guard both pointer-leave scheduling and the delayed callback against the current mobile breakpoint.
+
 Retry temporary Chromium-profile cleanup after shutdown rather than treating an `ENOTEMPTY` removal error as an application failure.
 
 **Why:** Chromium child processes can finish writing profile/cache files just after the parent exit, even when every browser assertion passed.

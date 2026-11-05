@@ -94,6 +94,26 @@ try {
       `The site must prevent horizontal page scrolling: ${JSON.stringify(overflow)}`);
     await evaluate('window.scrollTo({ left: 0, top: window.scrollY, behavior: "instant" })');
   };
+  const assertMobileMenuFits = async () => {
+    const bounds = await evaluate(`(() => {
+      const panel = document.querySelector("#fsd-mega-menu");
+      const inner = panel.querySelector(".fsd-mega-inner");
+      const rect = panel.getBoundingClientRect();
+      return {
+        viewport: document.documentElement.clientWidth,
+        left: rect.left,
+        right: rect.right,
+        panelWidth: panel.clientWidth,
+        panelScrollWidth: panel.scrollWidth,
+        innerWidth: inner.clientWidth,
+        innerScrollWidth: inner.scrollWidth,
+      };
+    })()`);
+    assert.ok(bounds.left >= -1 && bounds.right <= bounds.viewport + 1
+      && bounds.panelScrollWidth <= bounds.panelWidth + 1
+      && bounds.innerScrollWidth <= bounds.innerWidth + 1,
+    `The mobile menu must fit without horizontal overflow: ${JSON.stringify(bounds)}`);
+  };
   const click = selector => evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
   const moveTo = async selector => {
     const rect = await evaluate(`(() => {
@@ -1174,9 +1194,10 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
 
   // Mobile uses the same hierarchy with clear category, group and detail steps.
   await send('Emulation.setDeviceMetricsOverride', {
-    width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
+    width: 390, height: 844, deviceScaleFactor: 1, mobile: false,
   });
-  await delay(150);
+  await send('Page.navigate', { url: `https://${domain}/` });
+  await waitFor('document.readyState === "complete" && window.innerWidth === 390 && !!document.querySelector("[data-nav-mobile-toggle]")');
   const mobileNavMetrics = await evaluate(`(() => {
     const announcement = document.querySelector(".announcement.fsd-announcement").getBoundingClientRect();
     const shell = document.querySelector(".fsd-navigation-shell").getBoundingClientRect();
@@ -1188,10 +1209,13 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
       shellHeight: shell.height,
       spacerHeight: spacer.height,
       viewportWidth: window.innerWidth,
+      visualViewportScale: window.visualViewport.scale,
     };
   })()`);
   assert.ok(
     mobileNavMetrics.position === 'fixed'
+      && mobileNavMetrics.viewportWidth === 390
+      && mobileNavMetrics.visualViewportScale === 1
       && Math.abs(mobileNavMetrics.announcementHeight - 23) < 1
       && Math.abs(mobileNavMetrics.shellTop - mobileNavMetrics.announcementHeight) < 1
       && Math.abs(mobileNavMetrics.spacerHeight - mobileNavMetrics.shellHeight) < 1,
@@ -1227,6 +1251,67 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'groups');
   await click('#fsd-mega-menu [data-nav-group="0"]');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu").dataset.step'), 'detail');
+  await assertMobileMenuFits();
+  const crossfadeGroupIndex = navigationModel.find(menu => menu.id === 'collections')
+    .groups.findIndex(group => group.items.some(item => item.title === 'Performance Hijabs'));
+  const crossfadeGroup = navigationModel.find(menu => menu.id === 'collections').groups[crossfadeGroupIndex];
+  const firstImageItemIndex = crossfadeGroup.items.findIndex(item => item.title === 'Performance Hijabs');
+  const secondImageItemIndex = crossfadeGroup.items.findIndex(item => item.title === 'FSD Breeze Set');
+  const emptyImageItemIndex = crossfadeGroup.items.findIndex(item => item.title === 'Women’s MMA Rash Guard');
+  assert.ok([firstImageItemIndex, secondImageItemIndex, emptyImageItemIndex].every(index => index >= 0));
+  const selectMobilePreviewItem = async index => {
+    await evaluate(`(() => {
+      const item = document.querySelector('#fsd-mega-menu [data-nav-item="${index}"]');
+      item.focus({ preventScroll: true });
+    })()`);
+  };
+  const resetMobileMenuToCrossfadeGroup = async () => {
+    await evaluate(`(() => {
+      const panel = document.querySelector("#fsd-mega-menu");
+      if (!panel.hidden) document.querySelector("[data-nav-close]").click();
+      document.querySelector("[data-nav-mobile-toggle]").click();
+      document.querySelector('.fsd-mobile-primary-list [data-nav-primary="collections"]').click();
+      document.querySelector('#fsd-mega-menu [data-nav-group="${crossfadeGroupIndex}"]').click();
+    })()`);
+    await waitFor(`!document.querySelector("#fsd-mega-menu").hidden && document.querySelector("#fsd-mega-menu").dataset.step === "detail" && document.querySelector(".fsd-feature-media img")?.getAttribute("src") === "/fsd-assets/4acbbfb65f79.webp"`);
+  };
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
+  await resetMobileMenuToCrossfadeGroup();
+  const mobilePreviewBounds = await evaluate('document.querySelector(".fsd-feature-media").getBoundingClientRect().toJSON()');
+  await selectMobilePreviewItem(secondImageItemIndex);
+  await waitFor(`document.querySelector('#fsd-mega-menu [data-nav-item="${secondImageItemIndex}"]')?.getAttribute("aria-pressed") === "true"`);
+  await waitFor(`document.querySelector(".fsd-feature-media")?.dataset.featureImage === "/fsd-assets/breeze-set-onyx-black-full-length.webp" && document.querySelectorAll(".fsd-feature-media img").length === 2`);
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-media").classList.contains("fsd-feature-media--transitioning")'), true);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-feature-media img")).transitionDuration'), '0.2s');
+  await assertMobileMenuFits();
+  await waitFor('document.querySelectorAll(".fsd-feature-media img").length === 1 && !document.querySelector(".fsd-feature-media").classList.contains("fsd-feature-media--transitioning")');
+  await selectMobilePreviewItem(emptyImageItemIndex);
+  await waitFor(`document.querySelector('#fsd-mega-menu [data-nav-item="${emptyImageItemIndex}"]')?.getAttribute("aria-pressed") === "true"`);
+  await waitFor('document.querySelector(".fsd-feature-media--transitioning .fsd-feature-image--outgoing.is-fading") !== null && !document.querySelector(".fsd-feature-media img:not(.fsd-feature-image--outgoing)")');
+  await assertMobileMenuFits();
+  await waitFor('document.querySelectorAll(".fsd-feature-media img").length === 0 && !document.querySelector(".fsd-feature-media").classList.contains("fsd-feature-media--transitioning")');
+  const emptyPreviewBounds = await evaluate('document.querySelector(".fsd-feature-media").getBoundingClientRect().toJSON()');
+  assert.ok(Math.abs(mobilePreviewBounds.width - emptyPreviewBounds.width) < 1
+    && Math.abs(mobilePreviewBounds.height - emptyPreviewBounds.height) < 1,
+  `The mobile preview area should keep its size across image and empty states: ${JSON.stringify({ mobilePreviewBounds, emptyPreviewBounds })}`);
+
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  await resetMobileMenuToCrossfadeGroup();
+  await selectMobilePreviewItem(firstImageItemIndex);
+  await waitFor(`document.querySelector('#fsd-mega-menu [data-nav-item="${firstImageItemIndex}"]')?.getAttribute("aria-pressed") === "true"`);
+  await waitFor('document.querySelector(".fsd-feature-media img")?.getAttribute("src") === "/fsd-assets/4acbbfb65f79.webp"');
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-media").classList.contains("fsd-feature-media--transitioning")'), false);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-feature-media img").length'), 1);
+  await selectMobilePreviewItem(secondImageItemIndex);
+  await waitFor(`document.querySelector('#fsd-mega-menu [data-nav-item="${secondImageItemIndex}"]')?.getAttribute("aria-pressed") === "true"`);
+  await waitFor('document.querySelector(".fsd-feature-media img")?.getAttribute("src") === "/fsd-assets/breeze-set-onyx-black-full-length.webp"');
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-media").classList.contains("fsd-feature-media--transitioning")'), false);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-feature-media img").length'), 1);
+  await selectMobilePreviewItem(emptyImageItemIndex);
+  await waitFor(`document.querySelector('#fsd-mega-menu [data-nav-item="${emptyImageItemIndex}"]')?.getAttribute("aria-pressed") === "true"`);
+  await waitFor('document.querySelector(".fsd-feature-media--unmapped") && !document.querySelector(".fsd-feature-media img")');
+  assert.equal(await evaluate('document.querySelector(".fsd-feature-media").classList.contains("fsd-feature-media--transitioning")'), false);
+  await assertMobileMenuFits();
   await assertNoHorizontalPageScroll();
   assert.equal(await evaluate('window.scrollY'), startingScrollY);
   await capture('fsd-navigation-mobile.jpg');
