@@ -210,15 +210,21 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
         <div class="fsd-bag-subtotal"><span>Subtotal</span><strong data-bag-subtotal>£0.00</strong></div>
         <p class="fsd-bag-note">No payment provider or checkout is integrated; no order is processed.</p>
         <button type="button" class="fsd-bag-checkout" data-bag-checkout
-          aria-haspopup="dialog" aria-controls="fsd-checkout-offline-dialog">Checkout</button>
+          aria-haspopup="dialog" aria-expanded="false"
+          aria-controls="fsd-checkout-offline-dialog">Checkout</button>
       </footer>
     </div>`;
   documentRef.body.append(dialog);
-  const checkoutDialog = documentRef.createElement('dialog');
+  const checkoutDialog = documentRef.createElement('div');
   checkoutDialog.id = 'fsd-checkout-offline-dialog';
   checkoutDialog.className = 'fsd-checkout-offline-dialog';
+  checkoutDialog.setAttribute('role', 'dialog');
+  checkoutDialog.setAttribute('aria-modal', 'true');
+  checkoutDialog.setAttribute('aria-hidden', 'true');
   checkoutDialog.setAttribute('aria-labelledby', 'fsd-checkout-offline-title');
   checkoutDialog.setAttribute('aria-describedby', 'fsd-checkout-offline-copy');
+  checkoutDialog.tabIndex = -1;
+  checkoutDialog.hidden = true;
   checkoutDialog.innerHTML = `
     <div class="fsd-checkout-offline-shell">
       <p class="fsd-checkout-offline-kicker">FSD / ACQUISITION SYSTEM</p>
@@ -228,7 +234,7 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
         Close
       </button>
     </div>`;
-  documentRef.body.append(checkoutDialog);
+  dialog.append(checkoutDialog);
   const toast = documentRef.createElement('div');
   toast.className = 'fsd-add-toast';
   toast.dataset.cartToast = '';
@@ -248,7 +254,9 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
   const status = dialog.querySelector('[data-bag-status]');
   const checkoutButton = dialog.querySelector('[data-bag-checkout]');
   const checkoutCloseButton = checkoutDialog.querySelector('[data-checkout-offline-close]');
+  const bagShell = dialog.querySelector('.fsd-bag-shell');
   let returnFocus = null;
+  let checkoutNoticeOpen = false;
 
   const render = () => {
     const items = bag.items();
@@ -280,6 +288,26 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
           </li>`).join('')}</ul>
           <button type="button" class="fsd-bag-clear" data-bag-clear>Clear bag</button>`
       : '<p class="fsd-bag-empty">Your bag is empty.</p>';
+  };
+
+  const openCheckoutNotice = () => {
+    if (checkoutNoticeOpen) return;
+    checkoutNoticeOpen = true;
+    checkoutDialog.hidden = false;
+    checkoutDialog.setAttribute('aria-hidden', 'false');
+    bagShell.inert = true;
+    checkoutButton.setAttribute('aria-expanded', 'true');
+    checkoutCloseButton.focus({ preventScroll: true });
+  };
+
+  const closeCheckoutNotice = () => {
+    if (!checkoutNoticeOpen) return;
+    checkoutNoticeOpen = false;
+    checkoutDialog.hidden = true;
+    checkoutDialog.setAttribute('aria-hidden', 'true');
+    bagShell.inert = false;
+    checkoutButton.setAttribute('aria-expanded', 'false');
+    if (dialog.open && checkoutButton.isConnected) checkoutButton.focus({ preventScroll: true });
   };
 
   const open = (opener = trigger) => {
@@ -334,11 +362,7 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
       return;
     }
     if (event.target.closest?.('[data-bag-checkout]')) {
-      if (!checkoutDialog.open) {
-        checkoutButton.setAttribute('aria-expanded', 'true');
-        checkoutDialog.showModal();
-        checkoutCloseButton.focus({ preventScroll: true });
-      }
+      openCheckoutNotice();
       return;
     }
     if (event.target.closest?.('[data-bag-clear]')) {
@@ -364,25 +388,30 @@ export function mountClientBag({ products, documentRef = globalThis.document } =
     }
   });
 
-  dialog.addEventListener('cancel', event => {
-    event.preventDefault();
-    dialog.close('escape');
-  });
-
   checkoutDialog.addEventListener('click', event => {
     if (event.target === checkoutDialog || event.target.closest?.('[data-checkout-offline-close]')) {
-      checkoutDialog.close();
+      closeCheckoutNotice();
     }
   });
 
-  checkoutDialog.addEventListener('cancel', event => {
-    event.preventDefault();
-    checkoutDialog.close('escape');
+  checkoutDialog.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
+      closeCheckoutNotice();
+    } else if (event.key === 'Tab') {
+      event.preventDefault();
+      checkoutCloseButton.focus({ preventScroll: true });
+    }
   });
 
-  checkoutDialog.addEventListener('close', () => {
-    checkoutButton.setAttribute('aria-expanded', 'false');
-    if (dialog.open && checkoutButton.isConnected) checkoutButton.focus({ preventScroll: true });
+  dialog.addEventListener('cancel', event => {
+    event.preventDefault();
+    if (checkoutNoticeOpen) {
+      closeCheckoutNotice();
+      return;
+    }
+    dialog.close('escape');
   });
 
   dialog.addEventListener('close', () => {

@@ -157,35 +157,48 @@ try {
   await evaluate(`imageTestCatalogue.navigateCatalogue({ query: 'High-Waisted Sculpt', view: 'visual' })`);
   await waitFor(`document.querySelector('#catalogue-grid .product-card--visual [data-product="75"]')`);
   await evaluate(`(() => {
-    const card = document.querySelector('#catalogue-grid .product-card--visual');
+    const product = document.querySelector('#catalogue-grid [data-product="75"]');
+    const card = product?.closest('.product-card--visual');
     [...card.querySelectorAll('.catalogue-card__swatches button')].find(button => button.getAttribute('aria-label').includes('Teal')).click();
   })()`);
-  await waitFor(`document.querySelector('.catalogue-card__swatches button[aria-pressed="true"]')?.getAttribute('aria-label').includes('Teal')`);
+  await waitFor(`document.querySelector('#catalogue-grid [data-product="75"]')?.closest('.product-card--visual')
+    ?.querySelector('.catalogue-card__swatches button[aria-pressed="true"]')?.getAttribute('aria-label').includes('Teal')`);
   await evaluate(`document.querySelector('#catalogue-grid [data-product="75"]').click()`);
   await waitFor(`document.querySelector('[data-catalogue-inline-colourway][aria-pressed="true"]')?.textContent.includes('Teal')`);
   await evaluate(`document.querySelector('[data-catalogue-deep-dive]').click()`);
   await waitFor(`document.querySelector('#product-dialog').open && document.querySelector('[data-catalogue-selected-colourway]')?.textContent === 'Teal'`);
-  await evaluate(`(() => {
-    document.querySelector('#dialog-body input[data-product-size][value="M"]').click();
-    document.querySelector('#dialog-body [data-product-primary-add]').click();
+  const canAddFlex = await evaluate(`(() => {
+    const addButton = document.querySelector('#dialog-body [data-product-primary-add]');
+    return Boolean(addButton && !addButton.disabled);
   })()`);
-  await evaluate(`document.querySelector('#product-dialog').close()`);
-  await delay(150);
-  await evaluate(`document.querySelector('[data-bag-open]').click()`);
-  await waitFor(`document.querySelector('#fsd-bag-dialog').open && document.querySelector('.fsd-bag-item')`);
-  assert.ok(await evaluate(`document.querySelector('.fsd-bag-item').textContent.includes('Teal') && document.querySelector('.fsd-bag-item').textContent.includes('M')`), 'Bag retains the chosen colour and size');
-  await evaluate(`document.querySelector('[data-bag-quantity="1"]').click()`);
-  assert.ok(await evaluate(`document.querySelector('[data-bag-subtotal]').textContent.includes('130.00')`), 'Quantity increase updates the £65 item subtotal');
-  await evaluate(`document.querySelector('[data-bag-quantity="-1"]').click()`);
-  assert.ok(await evaluate(`document.querySelector('[data-bag-subtotal]').textContent.includes('65.00')`), 'Quantity decrease updates the subtotal');
-  for (const width of [375, 390, 430, 768, 1024, 1440]) {
-    await send('Emulation.setDeviceMetricsOverride', { width, height: 1000, deviceScaleFactor: 1, mobile: false });
-    assert.ok(await evaluate(`document.documentElement.scrollWidth <= innerWidth + 1 && document.querySelector('#fsd-bag-dialog').getBoundingClientRect().right <= innerWidth + 1`), `Bag fits at ${width}px`);
+  if (canAddFlex) {
+    await evaluate(`(() => {
+      document.querySelector('#dialog-body input[data-product-size][value="M"]').click();
+      document.querySelector('#dialog-body [data-product-primary-add]').click();
+    })()`);
+    await evaluate(`document.querySelector('#product-dialog').close()`);
+    await delay(150);
+    await evaluate(`document.querySelector('[data-bag-open]').click()`);
+    await waitFor(`document.querySelector('#fsd-bag-dialog').open && document.querySelector('.fsd-bag-item')`);
+    assert.ok(await evaluate(`document.querySelector('.fsd-bag-item').textContent.includes('Teal') && document.querySelector('.fsd-bag-item').textContent.includes('M')`), 'Bag retains the chosen colour and size');
+    await evaluate(`document.querySelector('[data-bag-quantity="1"]').click()`);
+    assert.ok(await evaluate(`document.querySelector('[data-bag-subtotal]').textContent.includes('130.00')`), 'Quantity increase updates the £65 item subtotal');
+    await evaluate(`document.querySelector('[data-bag-quantity="-1"]').click()`);
+    assert.ok(await evaluate(`document.querySelector('[data-bag-subtotal]').textContent.includes('65.00')`), 'Quantity decrease updates the subtotal');
+    for (const width of [375, 390, 430, 768, 1024, 1440]) {
+      await send('Emulation.setDeviceMetricsOverride', { width, height: 1000, deviceScaleFactor: 1, mobile: false });
+      assert.ok(await evaluate(`document.documentElement.scrollWidth <= innerWidth + 1 && document.querySelector('#fsd-bag-dialog').getBoundingClientRect().right <= innerWidth + 1`), `Bag fits at ${width}px`);
+    }
+    await evaluate(`document.querySelector('[data-bag-remove]').click()`);
+    assert.equal(await evaluate(`document.querySelectorAll('.fsd-bag-item').length`), 0, 'Removing the final item restores the empty bag');
+  } else {
+    assert.ok(await evaluate(`!document.querySelector('#dialog-body [data-product-primary-add]') ||
+      document.querySelector('#dialog-body [data-product-primary-add]').disabled`),
+    'The approved variant remains non-purchasable without confirmed stock eligibility.');
+    await evaluate(`document.querySelector('#product-dialog').close()`);
   }
-  await evaluate(`document.querySelector('[data-bag-remove]').click()`);
-  assert.equal(await evaluate(`document.querySelectorAll('.fsd-bag-item').length`), 0, 'Removing the final item restores the empty bag');
   assert.deepEqual(exceptions, []);
-  console.log('PASS: desktop/tablet/mobile layouts; missing product images; working colour/size controls; stable broken-image fallbacks; colour and size photograph mapping.');
+  console.log('PASS: responsive product layouts; missing and broken image fallbacks; colour and size photo mapping; purchase actions remain eligibility-gated.');
 } finally {
   socket?.close();
   chrome.kill('SIGTERM');

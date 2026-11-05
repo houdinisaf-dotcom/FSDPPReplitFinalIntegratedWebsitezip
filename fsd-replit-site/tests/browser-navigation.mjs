@@ -135,9 +135,7 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("[data-division=\\"apparel\\"]")');
   await waitFor('!!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools") && !!document.querySelector(".fsd-reading-progress")');
-  await waitFor('!!document.querySelector("[data-fsd-luxury-entry]")');
-  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-fsd-luxury-entry]")).backgroundColor'), 'rgb(10, 10, 10)');
-  assert.equal(await evaluate('!!document.querySelector("[data-fsd-luxury-entry] img")'), true);
+  await waitFor('!!document.querySelector("[data-fsd-luxury-entry] img") && getComputedStyle(document.querySelector("[data-fsd-luxury-entry]")).backgroundColor === "rgb(10, 10, 10)"');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-site-footer__top > .fsd-site-footer__column").length'), 4);
   assert.equal(await evaluate('document.querySelector(".fsd-site-footer__newsletter-controls input")?.disabled'), true);
   assert.equal(await evaluate('document.querySelector(".fsd-site-footer__newsletter-controls button")?.disabled'), true);
@@ -1408,14 +1406,25 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(bagOpenEvent?.data?.unit_count, addableProductId ? 1 : 0);
   assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.disabled'), false);
   assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.getAttribute("aria-disabled")'), null);
+  assert.equal(await evaluate('document.querySelector("[data-bag-checkout]")?.getAttribute("aria-expanded")'), 'false');
   await click('[data-bag-checkout]');
-  await waitFor('document.querySelector("#fsd-checkout-offline-dialog")?.open');
+  await waitFor('document.querySelector("#fsd-checkout-offline-dialog") && !document.querySelector("#fsd-checkout-offline-dialog").hidden');
+  assert.equal(await evaluate('document.querySelector("#fsd-checkout-offline-dialog")?.getAttribute("role")'), 'dialog');
+  assert.equal(await evaluate('document.querySelector("#fsd-checkout-offline-dialog")?.getAttribute("aria-modal")'), 'true');
+  assert.equal(await evaluate('document.querySelector("[data-bag-checkout]")?.getAttribute("aria-expanded")'), 'true');
   assert.equal(
     await evaluate('document.querySelector("#fsd-checkout-offline-copy")?.textContent.trim()'),
     'FSD DIRECT ACQUISITION SYSTEM OFFLINE. PRIVATE ENQUIRIES ONLY.',
   );
   await click('[data-checkout-offline-close]');
-  await waitFor('!document.querySelector("#fsd-checkout-offline-dialog")?.open && document.querySelector("#fsd-bag-dialog")?.open');
+  await waitFor('document.querySelector("#fsd-checkout-offline-dialog")?.hidden && document.querySelector("#fsd-bag-dialog")?.open && document.querySelector("[data-bag-checkout]")?.getAttribute("aria-expanded") === "false" && document.activeElement.matches("[data-bag-checkout]")');
+  assert.equal(await evaluate('document.querySelector("[data-bag-checkout]")?.getAttribute("aria-expanded")'), 'false');
+  assert.equal(await evaluate('document.activeElement.matches("[data-bag-checkout]")'), true, 'Closing the offline notice returns focus to Checkout.');
+  await click('[data-bag-checkout]');
+  await waitFor('!document.querySelector("#fsd-checkout-offline-dialog")?.hidden');
+  await key('Escape');
+  await waitFor('document.querySelector("#fsd-checkout-offline-dialog")?.hidden && document.querySelector("#fsd-bag-dialog")?.open && document.activeElement.matches("[data-bag-checkout]")');
+  assert.equal(await evaluate('document.activeElement.matches("[data-bag-checkout]")'), true, 'Escape closes the offline notice and restores focus.');
   if (addableProductId) await click('[data-bag-clear]');
   await click('[data-bag-close]');
   await waitFor('!document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');

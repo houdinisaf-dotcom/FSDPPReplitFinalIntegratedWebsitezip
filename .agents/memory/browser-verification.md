@@ -86,3 +86,9 @@ Use the layout viewport's content width for page-edge alignment checks, not the 
 **Why:** Headless Chromium reported a 1440px inner width but 1425px content width with a native scrollbar. A correctly full-width banner ended at the content edge, creating a false alignment failure against inner width.
 
 **How to apply:** Compare content-edge geometry with `document.documentElement.clientWidth`, retaining a small subpixel tolerance. Keep separate overflow checks.
+
+Do not stack a second native dialog over the shopping bag for checkout notices.
+
+**Why:** In Chromium, Escape dismissed both the checkout notice and the underlying bag dialog, making the return-to-bag flow unreliable.
+
+**How to apply:** Keep the bag as the single native modal and render the offline notice as an accessible overlay inside it. Trap Escape and Tab in the overlay, then restore focus to the Checkout button.
