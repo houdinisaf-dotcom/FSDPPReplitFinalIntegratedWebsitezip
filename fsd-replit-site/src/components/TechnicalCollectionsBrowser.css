@@ -83,6 +83,10 @@
   .fsd-established-collection .fsd-clothing-product__meta { flex-direction: column; gap: 3px; }
 }
 
+@media (min-width: 621px) and (max-width: 760px) {
+  .fsd-established-collection .fsd-clothing-products { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
 @media (max-width: 340px) {
   .fsd-established-collection .fsd-clothing-line__copy h2 { font-size: 29px; }
   .fsd-established-collection .fsd-clothing-products { grid-template-columns: 1fr; }

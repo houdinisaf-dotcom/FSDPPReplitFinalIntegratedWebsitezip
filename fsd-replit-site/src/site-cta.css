@@ -5,7 +5,7 @@
   justify-content: center;
   gap: 12px;
   border: 1px solid transparent;
-  border-radius: 2px;
+  border-radius: 0;
   padding: 13px 18px;
   font: 700 10px/1.25 "DM Sans", sans-serif;
   letter-spacing: .16em;
@@ -16,14 +16,15 @@
 }
 
 .fsd-cta--primary {
-  background: #d4af37;
-  color: #0a0a0a;
+  border-color: #d4af37;
+  background: #0a0a0a;
+  color: #d4af37;
 }
 
 .fsd-cta--secondary {
-  border-color: rgb(212 175 55 / 52%);
+  border-color: #d4af37;
   background: transparent;
-  color: #eee8d8;
+  color: #d4af37;
 }
 
 .fsd-cta--text {
@@ -40,7 +41,7 @@
 }
 
 .fsd-cta--primary:hover:not(:disabled) {
-  background: #e3c96e;
+  background: #171717;
 }
 
 .fsd-cta--secondary:hover:not(:disabled) {

@@ -40,11 +40,7 @@ function TechnicalProductCard({ product, onProductSelect }) {
               loading="lazy"
             />
           ) : (
-            <span className="fsd-clothing-product__placeholder">
-              <span>FSD / PRODUCT IMAGE</span>
-              <strong>{product.name}</strong>
-              <small>Approved standalone image pending</small>
-            </span>
+            <ImagePlaceholder title={product.name} kind="product" />
           )}
         </span>
         <span className="fsd-clothing-product__meta">

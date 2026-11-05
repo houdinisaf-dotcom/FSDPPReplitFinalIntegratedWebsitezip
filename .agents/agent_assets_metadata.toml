@@ -1027,56 +1027,56 @@ content_type = "text/html"
 id = "1Jjsyov5hijlvkP0hDSro"
 uri = "file://generated-artifacts/screenshots/catalogue-women-desktop-after.jpg"
 type = "image"
-title = "Women’s catalogue — desktop"
-description = "Verified 4-column product grid at 1440px."
+title = "SHOP grid — Desktop"
+description = "Actual responsive catalogue capture after the grid and fallback updates."
 logical_id = "c6f10507-26a9-42e7-81b3-6b40fd5a9cf9"
-content_hash = "sha256:7a9a83bd304328ca1952c5cbf27a462a3d1f7f23876688d032626f55758e41f3"
-size = 167588
-mtime_ms = 1793828454871
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c6f10507-26a9-42e7-81b3-6b40fd5a9cf9/2d0b1750-744b-4b45-8064-aff8acb8c829"
-storage_version_token = "1793828500277151"
+content_hash = "sha256:5827d8dcf2904a78fc0842f2b86870c1e0c9f58d535a80cf05e597b029c02944"
+size = 172347
+mtime_ms = 1793890634080
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c6f10507-26a9-42e7-81b3-6b40fd5a9cf9/4e4876a3-fed0-4ed1-bbc2-e5b228bea680"
+storage_version_token = "1793891024184541"
 content_type = "image/jpeg"
 
 [[outputs]]
 id = "4ZUVxH19t_CJuXIh81C3W"
 uri = "file://generated-artifacts/screenshots/catalogue-women-laptop-after.jpg"
 type = "image"
-title = "Women’s catalogue — laptop"
-description = "Verified 4-column product grid at 1366px."
+title = "SHOP grid — Laptop"
+description = "Actual responsive catalogue capture after the grid and fallback updates."
 logical_id = "78bcd2e9-732d-4887-b8d7-70a9de80aa06"
-content_hash = "sha256:fa1dee00408ec935ef514daee269635d8e0516bb4a59d8ef2b2d3b8d0545cd06"
-size = 160865
-mtime_ms = 1793828455531
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/78bcd2e9-732d-4887-b8d7-70a9de80aa06/784c746d-bf69-4e4d-9b39-926c75ab0d32"
-storage_version_token = "1793828501017304"
+content_hash = "sha256:0a3132b6540f48d64a63c0d46663a0510bc924b078d5d50c58d9ba73270c45cf"
+size = 166810
+mtime_ms = 1793890634660
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/78bcd2e9-732d-4887-b8d7-70a9de80aa06/94a12bee-59b3-435e-b21e-0446f9031e14"
+storage_version_token = "1793891025067633"
 content_type = "image/jpeg"
 
 [[outputs]]
 id = "gYWnOz3_nEbqmLXQ818iq"
 uri = "file://generated-artifacts/screenshots/catalogue-women-tablet-after.jpg"
 type = "image"
-title = "Women’s catalogue — tablet"
-description = "Verified 3-column product grid at 768px."
+title = "SHOP grid — Tablet"
+description = "Actual responsive catalogue capture after the grid and fallback updates."
 logical_id = "820f486e-d468-4e04-b8ee-056fb052cd64"
-content_hash = "sha256:692e7506e183d78616c467ace07315b0cb530da07a23ea61a62f7b7e1b60ebae"
-size = 117503
-mtime_ms = 1793828456263
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/820f486e-d468-4e04-b8ee-056fb052cd64/dd415e63-713b-495e-b7fd-42b98b6f2acc"
-storage_version_token = "1793828501742834"
+content_hash = "sha256:75594815939120498eeb9c1420a08292c3d1e7fd4ac8b5079a7b9484689463bc"
+size = 118817
+mtime_ms = 1793890635360
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/820f486e-d468-4e04-b8ee-056fb052cd64/4cdb5dfe-6813-43d4-892a-becef31fe1d7"
+storage_version_token = "1793891025796104"
 content_type = "image/jpeg"
 
 [[outputs]]
 id = "awvUd-JVdG39L3-ZfTsIT"
 uri = "file://generated-artifacts/screenshots/catalogue-women-mobile-after.jpg"
 type = "image"
-title = "Women’s catalogue — mobile"
-description = "Verified 2-column product grid at 402px."
+title = "SHOP grid — Mobile"
+description = "Actual responsive catalogue capture after the grid and fallback updates."
 logical_id = "87c28885-c235-4cf6-840a-52b6d2fc70dc"
-content_hash = "sha256:c07f8de1963710c2cb6dc8ca85a4b6cc5de58d74e717cb383a4ece0c2bac9380"
-size = 68221
-mtime_ms = 1793828456879
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/87c28885-c235-4cf6-840a-52b6d2fc70dc/1062a77b-e3a0-4835-929b-e69963e7d62b"
-storage_version_token = "1793828502449265"
+content_hash = "sha256:d43ef697aeba04d62e9121e1ca482f4c2a09c26b6eeb998a7a3c84ca1b04c07e"
+size = 69972
+mtime_ms = 1793890636020
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/87c28885-c235-4cf6-840a-52b6d2fc70dc/9c53f966-dc98-4a62-a3a7-7f3caa503f7f"
+storage_version_token = "1793891026522243"
 content_type = "image/jpeg"
 
 [[outputs]]

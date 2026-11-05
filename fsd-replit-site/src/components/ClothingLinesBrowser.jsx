@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { products, priceInfo, productImagesForDisplay } from '../data/products.js';
 import { deriveClothingLineMembership, CLOTHING_LINE_ASSETS, CLOTHING_LINES } from '../clothing-lines.js';
 import { SafeImage } from './SafeImage.jsx';
+import { ImagePlaceholder } from './ImagePlaceholder.jsx';
 import { CategoryFilterTabs } from './CategoryFilterTabs.jsx';
 import { WOMENS_BRANDING_ASSIGNMENT_STATUS } from '../brand/product-branding.js';
 import {
@@ -520,11 +521,7 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
                                   placeholderKind="product"
                                 />
                               ) : (
-                                <span className="fsd-clothing-product__placeholder">
-                                  <span>FSD / PRODUCT IMAGE</span>
-                                  <strong>{product.name}</strong>
-                                  <small className="sr-only">CONTENT PENDING</small>
-                                </span>
+                                <ImagePlaceholder title={product.name} kind="product" />
                               )}
                             </span>
                             <span className="fsd-clothing-product__meta">
