@@ -52,7 +52,7 @@ function validatePrivateAssets() {
     }
   }
   const audit = createWomensCollectionAudit();
-  if (audit.references.length !== 24 || audit.excludedOrUnassignedCount !== 24) {
+  if (audit.references.length !== 26 || audit.excludedOrUnassignedCount !== 26) {
     throw new Error('The FSD women’s image audit must account for all excluded source images.');
   }
 }

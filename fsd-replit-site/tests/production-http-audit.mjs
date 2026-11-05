@@ -22,6 +22,7 @@ try {
   }
   const manifest = JSON.parse(await readFile('dist/seo-route-manifest.json', 'utf8'));
   const titles = [];
+  const descriptions = [];
   const sharingImages = new Set();
   for (const route of manifest.routes) {
     const response = await fetch(base + route.path);
@@ -35,6 +36,7 @@ try {
     assert.match(html, /favicon.svg/, route.path);
     assert.doesNotMatch(html, /replit\.dev|https:\/\/example\.com/, route.path);
     titles.push(html.match(/<title>([\s\S]*?)<\/title>/)[1]);
+    descriptions.push(html.match(/<meta name="description" content="([^"]+)"/)[1]);
     if (/^\/(?:products|collections)\//.test(route.path)) {
       const graph = JSON.parse(html.match(/<script[^>]*data-fsd-page-schema[^>]*>([\s\S]*?)<\/script>/)[1]);
       assert.ok(graph['@graph'].length > 0, `server-delivered structured data: ${route.path}`);
@@ -43,17 +45,38 @@ try {
     if (!manifest.productionOrigin) assert.doesNotMatch(html, /rel="canonical"/, route.path);
   }
   assert.equal(new Set(titles).size, titles.length, 'every public route has a unique title');
+  assert.equal(new Set(descriptions).size, descriptions.length, 'every public route has a unique meta description');
   for (const image of sharingImages) {
     assert.equal((await fetch(new URL(image, base), { method: 'HEAD' })).status, 200, `sharing image: ${image}`);
   }
-  assert.equal((await fetch(base + '/favicon.svg', { method: 'HEAD' })).status, 200);
+  for (const icon of [
+    '/favicon.svg',
+    '/brand/favicon-16.png',
+    '/brand/favicon-32.png',
+    '/brand/favicon-48.png',
+    '/brand/favicon-64.png',
+    '/brand/apple-touch-icon.png',
+    '/brand/favicon-192.png',
+    '/brand/favicon-512.png',
+  ]) {
+    assert.equal((await fetch(base + icon, { method: 'HEAD' })).status, 200, icon);
+  }
+  for (const path of ['/enquiries.html', '/size-guide.html']) {
+    const html = await (await fetch(base + path)).text();
+    for (const icon of ['favicon-16.png', 'favicon-32.png', 'favicon-48.png', 'favicon-64.png', 'apple-touch-icon.png', 'site.webmanifest']) {
+      assert.match(html, new RegExp(icon.replace('.', '\\.'), 'i'), `${path} should include ${icon}`);
+    }
+  }
   assert.match((await fetch(base + '/site.webmanifest')).headers.get('content-type'), /application\/manifest\+json/);
   assert.equal((await fetch(base + '/__catalogue-preview/fsd-womens-collection/flex/')).status, 404);
   for (const path of ['/.env', '/.git/config', '/server.js']) assert.equal((await fetch(base + path)).status, 404);
   for (const path of ['/no-such-fsd-page', '/no-such-fsd-page.html', '/products/unknown-product']) {
     const response = await fetch(base + path);
     assert.equal(response.status, 404);
-    assert.match(await response.text(), /Page not found/);
+    const html = await response.text();
+    assert.match(html, /Page not found/);
+    assert.match(html, /This destination is currently unavailable\./);
+    assert.match(html, /class="fsd-404-home-button" href="\/">Home<\/a>/);
     assert.equal((await fetch(base + path, { method: 'HEAD' })).status, 404);
   }
   const files = await readdir('dist/assets');
@@ -70,6 +93,11 @@ try {
   assert.match(robots, /Disallow: \/admin/);
   assert.match(robots, /Disallow: \/checkout/);
   assert.doesNotMatch(robots, /replit.dev|example.com/);
+  if (!manifest.productionOrigin) {
+    assert.equal(manifest.sitemapReady, false);
+    assert.doesNotMatch(robots, /Sitemap:/);
+    assert.equal((await fetch(base + '/sitemap.xml')).status, 404);
+  }
   console.log(`PASS production-build HTTP audit: ${manifest.routes.length} public routes, unique metadata, sharing tags, branded 404/HEAD, robots, source-map denial and immutable vendor assets.`);
   console.log(manifest.productionOrigin
     ? 'Canonical URLs and sitemap use the configured production origin.'

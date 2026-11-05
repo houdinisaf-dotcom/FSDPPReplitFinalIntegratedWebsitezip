@@ -14,3 +14,5 @@ Withhold production canonical URLs and sitemap output until a real production or
 **Why:** The owner explicitly prohibited a fabricated production URL. During the launch audit the deployment service reported no active deployment; a development hostname is not an acceptable substitute.
 
 **How to apply:** Obtain the current production URL from deployment metadata before configuring it. After the first publish, configure that verified origin, rebuild and republish, then check live canonical links, sitemap and external social cards. Local build tests do not verify live production.
+
+The owner explicitly chose to defer canonical and sitemap output until publication when asked how to handle the missing production origin.

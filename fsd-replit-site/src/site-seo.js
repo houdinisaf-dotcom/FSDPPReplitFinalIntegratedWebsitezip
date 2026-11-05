@@ -134,7 +134,10 @@ export function applySeoToHtml(html, entry, origin = productionOrigin) {
   }
   return cleaned.replace(/<\/head>/i, `${seoHeadMarkup(entry, origin)}
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/brand/favicon-64.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
   </head>`);

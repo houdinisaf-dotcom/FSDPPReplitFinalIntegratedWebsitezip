@@ -9,7 +9,10 @@ import {
   createWomensCollectionPreview,
   womensCollectionSourceManifest,
 } from '../src/womens-collection-campaign.js';
-import { womensCollectionPrivatePreviewPlugin } from '../scripts/womens-collection-private-preview-plugin.mjs';
+import {
+  validateWomensCollectionPrivateAssets,
+  womensCollectionPrivatePreviewPlugin,
+} from '../scripts/womens-collection-private-preview-plugin.mjs';
 
 const appRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const collageIndexes = new Set([4, 5, 6, 25, 27, 28, 30, 31, 32, 33, 34, 35, 41, 51]);
@@ -74,6 +77,7 @@ test('BREEZE boards are excluded and missing standalone colour images remain exp
 });
 
 test('audit accounts for all 53 images and isolates duplicates and composite boards', () => {
+  assert.doesNotThrow(() => validateWomensCollectionPrivateAssets());
   const audit = createWomensCollectionAudit();
   assert.equal(audit.totalSourceImages, 53);
   assert.equal(audit.excludedOrUnassignedCount, 26);

@@ -33,6 +33,9 @@ test('metadata replaces duplicates, escapes content and uses no fabricated domai
   assert.match(html, /og:image/);
   assert.match(html, /twitter:card/);
   assert.match(html, /favicon.svg/);
+  for (const icon of ['favicon-16.png', 'favicon-32.png', 'favicon-48.png', 'favicon-64.png', 'apple-touch-icon.png', 'site.webmanifest']) {
+    assert.match(html, new RegExp(icon.replace('.', '\\.')));
+  }
   assert.match(html, /Keep this content/);
   assert.doesNotMatch(html, /example.com|rel="canonical"|property="og:url"/);
   const deployed = applySeoToHtml(source, entry, 'https://fsd.example');
@@ -51,10 +54,14 @@ test('production origins reject development hosts and sitemap only contains real
   assert.doesNotMatch(xml, /\/admin|\/private|\/cart|\/checkout|replit.dev/);
 });
 
-test('public 404 preserves the site palette/layout and exposes recovery links without indexing', async () => {
+test('public 404 uses the FSD shield, exact recovery message and gold Home button without indexing', async () => {
   const html = await readFile(new URL('../public/404.html', import.meta.url), 'utf8');
   assert.equal((html.match(/<h1>/g) || []).length, 1);
   assert.match(html, /name="robots" content="noindex,follow"/);
-  assert.match(html, /href="\/#clothing-lines"/);
+  assert.match(html, /src="\/favicon\.svg"/);
+  assert.match(html, /This destination is currently unavailable\./);
+  assert.match(html, /class="fsd-404-home-button" href="\/">Home<\/a>/);
+  assert.match(html, /background:#d4af37/);
+  assert.doesNotMatch(html, /href="\/#clothing-lines"/);
   assert.match(html, /policy-pages.css/);
 });
