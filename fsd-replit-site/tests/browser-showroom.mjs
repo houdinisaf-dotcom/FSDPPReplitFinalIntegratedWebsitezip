@@ -352,7 +352,12 @@ try {
   await waitFor('document.querySelector("#product-dialog")?.open');
   assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("/assets/products/velocity-hijab-main-listing.jpg")'));
   assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Black / Gold")'));
-  assert.ok(await evaluate('document.querySelector("#product-dialog [data-bag-add]")'));
+  assert.equal(
+    await evaluate('document.querySelector("#product-dialog [data-bag-add]") === null'),
+    true,
+    'The current Velocity record has no confirmed SKU or stock, so bag controls stay disabled.',
+  );
+  assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Notify me when available")'));
   assert.ok(!await evaluate('document.querySelector("#product-dialog").textContent.includes("£29.99")'));
   assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("£34.99")'));
   assert.ok(await evaluate('document.querySelectorAll("#product-dialog [data-catalogue-image-index]").length > 1'));
@@ -504,15 +509,16 @@ try {
   await waitFor(`document.title === ${JSON.stringify(seoForView({ view: 'product', target: '33' }).title)}`);
   await click('#close-dialog');
   await waitFor('!document.querySelector("#product-dialog")?.open');
+  const currentSeoLocation = await evaluate('({pathname:location.pathname,hash:location.hash})');
+  const underlyingSeo = seoForView(routeFromLocation(currentSeoLocation))
+    || seoEntryForPath(currentSeoLocation.pathname) || seoEntryForPath('/');
+  await waitFor(`document.title === ${JSON.stringify(underlyingSeo.title)}`);
   const seoMeta = await evaluate(`({
     title: document.title,
     description: document.querySelector('meta[name="description"]')?.content,
     ogImage: document.querySelector('meta[property="og:image"]')?.content,
     twitterImage: document.querySelector('meta[name="twitter:image"]')?.content
   })`);
-  const currentSeoLocation = await evaluate('({pathname:location.pathname,hash:location.hash})');
-  const underlyingSeo = seoForView(routeFromLocation(currentSeoLocation))
-    || seoEntryForPath(currentSeoLocation.pathname) || seoEntryForPath('/');
   assert.deepEqual(seoMeta, {
     title: underlyingSeo.title,
     description: underlyingSeo.description,

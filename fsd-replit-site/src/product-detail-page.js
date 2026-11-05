@@ -137,10 +137,79 @@ function galleryVariantKey(image) {
     .replace(/\s+/g, ' ');
 }
 
+function normalizedGalleryLabel(image) {
+  return String(image?.label || '')
+    .toLocaleLowerCase('en-GB')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function gallerySide(image, side) {
+  const label = normalizedGalleryLabel(image);
+  return side === 'front'
+    ? /\bfront\b/.test(label)
+    : /\b(?:rear|back)\b/.test(label);
+}
+
+function galleryProductViewRank(image) {
+  const label = normalizedGalleryLabel(image);
+  if (/\bproduct\b/.test(label)) return 0;
+  if (/\b(?:lifestyle|training|action)\b/.test(label)) return 2;
+  return 1;
+}
+
+function preferredGallerySideIndex(images, side, variant, hasMultipleColourways) {
+  const preferredVariant = galleryVariantKey({ variant });
+  const candidates = images
+    .map((image, index) => ({ image, index }))
+    .filter(({ image }) => {
+      if (!gallerySide(image, side)) return false;
+      if (!/\bproduct\b/.test(normalizedGalleryLabel(image))) return false;
+      const candidateVariant = galleryVariantKey(image);
+      return hasMultipleColourways
+        ? Boolean(preferredVariant && candidateVariant === preferredVariant)
+        : !preferredVariant || !candidateVariant || candidateVariant === preferredVariant;
+    })
+    .sort((a, b) => galleryProductViewRank(a.image) - galleryProductViewRank(b.image));
+
+  return candidates[0]?.index ?? -1;
+}
+
+export function editorialGalleryPrimaryImageIndex(
+  images,
+  fallbackIndex,
+  preferredVariant = '',
+  hasMultipleColourways = false,
+) {
+  const fallback = images[fallbackIndex];
+  if (!fallback) return fallbackIndex;
+
+  const variant = preferredVariant || fallback.colourway || fallback.variant || '';
+  const frontIndex = preferredGallerySideIndex(images, 'front', variant, hasMultipleColourways);
+  const rearIndex = preferredGallerySideIndex(images, 'rear', variant, hasMultipleColourways);
+
+  // Only switch away from the source-selected default when an approved,
+  // variant-matched pair explicitly labelled as product views is present.
+  // Lifestyle and portrait galleries retain their curated default order.
+  return frontIndex >= 0 && rearIndex >= 0 ? frontIndex : fallbackIndex;
+}
+
 function secondaryGalleryImageIndex(images, primaryIndex, preferredVariant = '', hasMultipleColourways = false) {
   const primary = images[primaryIndex] || images[0];
   if (!primary) return -1;
   const primaryVariant = galleryVariantKey(primary) || galleryVariantKey({ variant: preferredVariant });
+
+  if (gallerySide(primary, 'front') && /\bproduct\b/.test(normalizedGalleryLabel(primary))) {
+    const rearIndex = preferredGallerySideIndex(
+      images,
+      'rear',
+      primaryVariant,
+      hasMultipleColourways,
+    );
+    if (rearIndex >= 0 && rearIndex !== primaryIndex && images[rearIndex]?.src !== primary.src) {
+      return rearIndex;
+    }
+  }
 
   return images.findIndex((image, index) => {
     if (index === primaryIndex || image.src === primary.src) return false;

@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { products } from '../src/catalogue-data.js';
+import { productImagesForDisplay } from '../src/data/products.js';
 import {
+  editorialGalleryPrimaryImageIndex,
   productSizeOptions,
   renderProductDetailPage,
   renderSizeGuideDialog,
@@ -15,6 +17,50 @@ const productFixture = {
   sizes: 'XS; S; M; L; XL; XXL',
   confirmedPrice: 65,
 };
+
+test('editorial product galleries pair approved front and rear photos for the selected colourway', () => {
+  const product = products.find(item => item.id === 18);
+  const images = productImagesForDisplay(product);
+
+  const frontIndex = editorialGalleryPrimaryImageIndex(
+    images,
+    0,
+    'White / Green',
+    true,
+  );
+  const markup = renderProductDetailPage({
+    product,
+    images,
+    initialImageIndex: frontIndex,
+    galleryPlaceholders: [],
+    colourways: ['White / Green', 'All Black'],
+    colourwayImageIndexes: [0, 12],
+    sizes: productSizeOptions(product),
+    price: { label: '', value: '£39.99' },
+    canPurchase: false,
+  });
+
+  assert.match(images[frontIndex].label, /Front product view/);
+  assert.match(markup, /data-catalogue-main-caption>White \/ Green \/ Front product view/);
+  assert.match(markup, /data-catalogue-secondary-caption>White \/ Green \/ Rear product view/);
+});
+
+test('editorial gallery selection retains the mapped default when a same-variant front/rear pair is absent', () => {
+  const images = [
+    { label: 'White / Green / Lifestyle hero', colourway: 'White / Green', src: '/hero.webp' },
+    { label: 'All Black / Front product view', colourway: 'All Black', src: '/black-front.webp' },
+  ];
+
+  assert.equal(editorialGalleryPrimaryImageIndex(images, 0, 'White / Green', true), 0);
+});
+
+test('curated Velocity lifestyle hero remains first rather than being replaced by portrait views', () => {
+  const product = products.find(item => item.id === 43);
+  const images = productImagesForDisplay(product);
+
+  assert.equal(images[0].src, '/assets/products/velocity-hijab-main-listing.jpg');
+  assert.equal(editorialGalleryPrimaryImageIndex(images, 0, 'Black / Gold'), 0);
+});
 
 test('product detail markup includes accessible size choices and leaves unconfirmed fields blank', () => {
   assert.deepEqual(productSizeOptions(productFixture), ['XS', 'S', 'M', 'L', 'XL', 'XXL']);

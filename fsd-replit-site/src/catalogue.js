@@ -8,7 +8,12 @@ import { imageColourwayIndex, normaliseGalleryColourway } from './product-galler
 import { outlineIcon } from './brand/outline-icons.js';
 import { trackEvent } from './analytics.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
-import { productSizeOptions, renderProductDetailPage, renderSizeGuideDialog } from './product-detail-page.js';
+import {
+  editorialGalleryPrimaryImageIndex,
+  productSizeOptions,
+  renderProductDetailPage,
+  renderSizeGuideDialog,
+} from './product-detail-page.js';
 import { animateAddButton, animateElement, animateWishlistHeart, setStickyAddBarVisible } from './motion-runtime.js';
 import { FSD_MOTION } from './motion-config.js';
 import { productImagesForDisplay } from './data/products.js';
@@ -693,15 +698,30 @@ export function showProduct(id, { fromHistory = false, returnFocus = null, initi
     : [];
   const colourwayOptions = hardwarePreview ? [] : productColourwayOptions(p);
   const colourwayImageIndexes = colourwayOptions.map(option => imageIndexForColourway(images, option));
-  const firstColourwayImageIndex = colourwayImageIndexes[0] ?? -1;
-  const initialImageIndex = colourwayOptions.length > 1
-    ? firstColourwayImageIndex
-    : colourwayOptions.length && firstColourwayImageIndex >= 0
-      ? firstColourwayImageIndex
+  const hasRequestedColourway = colourwayOptions.includes(initialVariant.colourway);
+  const requestedColourway = hasRequestedColourway
+    ? initialVariant.colourway
+    : colourwayOptions[0] || '';
+  const requestedColourwayIndex = requestedColourway
+    ? colourwayOptions.indexOf(requestedColourway)
+    : -1;
+  const requestedImageIndex = requestedColourwayIndex >= 0
+    ? colourwayImageIndexes[requestedColourwayIndex]
+    : -1;
+  const fallbackImageIndex = requestedImageIndex >= 0
+    ? requestedImageIndex
+    : colourwayOptions.length > 1
+      ? -1
       : images.length ? 0 : -1;
+  const initialImageIndex = editorialGalleryPrimaryImageIndex(
+    images,
+    fallbackImageIndex,
+    requestedColourway,
+    colourwayOptions.length > 1,
+  );
   const dialogBody = document.querySelector('#dialog-body');
   const sizes = productSizeOptions(p);
-  activeDialogVariant = { size: '', colourway: colourwayOptions[0] || '' };
+  activeDialogVariant = { size: '', colourway: requestedColourway };
   dialogBody.innerHTML = renderProductDetailPage({
     product: p,
     images,
@@ -728,7 +748,9 @@ export function showProduct(id, { fromHistory = false, returnFocus = null, initi
   if (dialog && !dialog.open) dialog.showModal();
   updateProductActionState(p);
   configureProductStickyBar(dialog);
-  const initialColourIndex = colourwayOptions.indexOf(initialVariant.colourway);
+  const initialColourIndex = hasRequestedColourway
+    ? colourwayOptions.indexOf(requestedColourway)
+    : -1;
   if (initialColourIndex >= 0) {
     const colourInput = dialogBody.querySelector(`input[data-catalogue-colourway-index="${initialColourIndex}"]`);
     if (colourInput) {

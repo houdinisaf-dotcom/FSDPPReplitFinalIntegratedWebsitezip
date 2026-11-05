@@ -247,7 +247,12 @@ try {
   assert.ok(deepDiveText.includes('88% Performance Polyester'));
   assert.ok(deepDiveText.includes('Four-way mechanical stretch'));
   assert.ok(deepDiveText.includes('Machine wash cold on delicate cycle'));
-  assert.ok(await evaluate('Boolean(document.querySelector(\'#product-dialog [data-bag-add="73"]\'))'));
+  assert.equal(
+    await evaluate('Boolean(document.querySelector(\'#product-dialog [data-bag-add="73"]\'))'),
+    false,
+    'The Breeze set has no confirmed SKU or stock, so its bag controls stay unavailable.',
+  );
+  assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Notify me when available")'));
   const taupeImageIndex = await evaluate(`Number([...document.querySelectorAll('#product-dialog [data-catalogue-colourway-index]')]
     .find(input => input.value === 'Warm Taupe')?.dataset.catalogueColourwayImageIndex)`);
   assert.ok(taupeImageIndex >= 0);
