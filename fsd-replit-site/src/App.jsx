@@ -32,6 +32,7 @@ import './lazy-image-loading.css';
 import './collection-route.css';
 import { CatalogueLoading, CatalogueErrorBoundary } from './components/CatalogueLoadState.jsx';
 import { LuxuryEntryOverlay } from './components/LuxuryEntryOverlay.jsx';
+import { HardwareEditorialSection } from './components/HardwareEditorialSection.jsx';
 import 'lenis/dist/lenis.css';
 
 const CatalogList = lazy(() => import('./components/CatalogList.jsx')
@@ -114,6 +115,7 @@ function AppRouter({ hardwareForgeExtension }) {
   const [collectionBreadcrumbPortalTarget, setCollectionBreadcrumbPortalTarget] = useState(null);
   const [clothingLinesPortalTarget, setClothingLinesPortalTarget] = useState(null);
   const [homeHeroPortalTarget, setHomeHeroPortalTarget] = useState(null);
+  const [hardwareEditorialPortalTarget, setHardwareEditorialPortalTarget] = useState(null);
   const [womensBannerPortalTarget, setWomensBannerPortalTarget] = useState(null);
   const [footerLogoPortalTarget, setFooterLogoPortalTarget] = useState(null);
   const [prelaunchSignupPortalTarget, setPrelaunchSignupPortalTarget] = useState(null);
@@ -158,7 +160,7 @@ function AppRouter({ hardwareForgeExtension }) {
         isPrimary ? 'h1' : 'h2',
       );
     }
-  }, [route.view, route.target, standaloneCollectionType]);
+  }, [route.view, route.target, standaloneCollectionType, hardwareEditorialPortalTarget]);
   const navigationReady = useRef(false);
   const contentReady = useRef(false);
   const markRuntimeReady = useCallback(() => {
@@ -187,6 +189,9 @@ function AppRouter({ hardwareForgeExtension }) {
     setClothingLinesPortalTarget(content?.querySelector('[data-fsd-clothing-lines-slot]') ?? null);
     setHomeHeroPortalTarget(
       content?.querySelector('[data-home-hero-slot]') ?? null,
+    );
+    setHardwareEditorialPortalTarget(
+      content?.querySelector('[data-fsd-react-section="hardware-editorial"]') ?? null,
     );
     setFooterLogoPortalTarget(
       content?.querySelector('[data-fsd-logo-slot="footer"]') ?? null,
@@ -299,6 +304,15 @@ function AppRouter({ hardwareForgeExtension }) {
       {homeHeroPortalTarget && createPortal(
         <HomeHero headingTag={hasRouteSpecificHeading ? 'h2' : 'h1'} />,
         homeHeroPortalTarget,
+      )}
+      {hardwareEditorialPortalTarget && createPortal(
+        <HardwareEditorialSection
+          onOpenHardware={() => {
+            reportRoute({ view: 'hardware', target: 'hardware' });
+            document.querySelector('#fsd-division-hardware')?.click();
+          }}
+        />,
+        hardwareEditorialPortalTarget,
       )}
       {womensBannerPortalTarget && createPortal(<WomensBanner />, womensBannerPortalTarget)}
       {footerLogoPortalTarget && createPortal(<FsdLogo loading="lazy" />, footerLogoPortalTarget)}

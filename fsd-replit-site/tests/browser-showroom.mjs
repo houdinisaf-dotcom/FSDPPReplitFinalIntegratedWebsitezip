@@ -160,6 +160,12 @@ try {
   assert.equal(await evaluate('document.querySelectorAll("#hardware-editorial").length'), 1);
   assert.equal(await evaluate('document.querySelector("#hardware-editorial").closest("#fsd-house-archive") === null'), true);
   assert.equal(await evaluate('document.querySelector("#hardware-editorial").getBoundingClientRect().height > 0'), true);
+  assert.equal(await evaluate('document.querySelector("#hardware-editorial .showroom-engineering-copy") !== null'), true);
+  await click('#hardware-editorial [data-open-hardware]');
+  await waitFor('document.querySelector("#fsd-showcase-dialog")?.open');
+  assert.equal(await evaluate('document.querySelector("[data-current-view]")?.dataset.currentView'), 'hardware');
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-showcase-dialog")?.open');
   const editorialDividerCopy = 'THE REFINEMENT OF LUXURY FASHION. THE ENERGY OF ELITE SPORT. THE PRECISION OF PERFORMANCE ENGINEERING. THE INNOVATION OF MODERN TECHNOLOGY.';
   assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.textContent.trim()'), editorialDividerCopy);
   assert.equal(await evaluate('document.querySelector(".fsd-editorial-divider")?.previousElementSibling?.id'), 'hardware-editorial');

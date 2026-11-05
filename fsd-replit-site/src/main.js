@@ -10,8 +10,7 @@ import { CATALOGUE_COLLECTIONS } from './catalogue-collections.js';
 import { seoEntryForPath } from './site-seo.js';
 import { flagshipPageHashes, renderBioLabPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
 import { mountStorefrontMotion } from './motion-runtime.js';
-import { siteMedia } from './data/site-media.js';
-import { imagePlaceholderMarkup, installImageErrorFallbacks } from './image-placeholder.js';
+import { installImageErrorFallbacks } from './image-placeholder.js';
 import { HOUSE_PAGE_REGISTRY } from './data/house-page-readiness.js';
 import { renderHouseDestinationIndex } from './house-pages/house-destination-index.js';
 import { ourStorySection } from './story-section.js';
@@ -51,30 +50,6 @@ function openProduct(id, onRouteChange = () => {}, returnFocus = null, initialVa
   showProduct(id, { returnFocus, initialVariant });
 }
 
-function hardwareEditorialSection() {
-  return `<section class="showroom-engineering showroom-engineering--campaign" id="hardware-editorial" aria-labelledby="hardware-editorial-title">
-    <div class="showroom-engineering-copy">
-      <p class="section-kicker">03 / FSD HARDWARE <span class="period">/</span> COMBAT SYSTEMS</p>
-      <h2 id="hardware-editorial-title">ENGINEERED FOR<br/>THE DEMANDS OF<br/><span>PERFORMANCE.</span></h2>
-       <p>Equipment that earns its place in your training.</p>
-      <ol class="showroom-engineering-list">
-        <li><span>01</span> Strength equipment · dumbbell collections</li>
-        <li><span>02</span> Boxing and combat equipment</li>
-        <li><span>03</span> Recovery equipment</li>
-      </ol>
-      <button class="showroom-engineering-link" type="button" data-open-hardware>EXPLORE HARDWARE <span aria-hidden="true">↗</span></button>
-    </div>
-    <figure class="showroom-engineering-media">
-      ${siteMedia.hardwareFeature?.src
-        ? `<img class="showroom-engineering-image" src="${siteMedia.hardwareFeature.src}" alt="${siteMedia.hardwareFeature.alt}"
-          data-fsd-image-fallback="true" data-fsd-image-title="FSD Hardware" data-fsd-image-kind="banner"
-          loading="lazy" fetchpriority="low" width="1050" height="960"/>`
-        : imagePlaceholderMarkup({ title: 'FSD Hardware', kind: 'banner', className: 'showroom-engineering-image' })}
-      <figcaption><span>FSD COMBAT / TRAINING CAMPAIGN</span><span>APPAREL & MOVEMENT</span></figcaption>
-    </figure>
-  </section>`;
-}
-
 export function renderStorefrontMarkup() {
   const storyFooterLink = housePagePaths.has(FSD_STORY_PATH)
     && import.meta.env.PROD
@@ -90,7 +65,12 @@ export function renderStorefrontMarkup() {
       <a href="#clothing-lines">DISCOVER THE CLOTHING LINES <span aria-hidden="true">↗</span></a>
     </div>
   </div>
-  ${hardwareEditorialSection()}
+  <section
+    class="showroom-engineering showroom-engineering--campaign"
+    id="hardware-editorial"
+    aria-labelledby="hardware-editorial-title"
+    data-fsd-react-section="hardware-editorial"
+  ></section>
   <section class="fsd-editorial-divider" aria-label="FSD design philosophy">
     <p>THE REFINEMENT OF LUXURY FASHION. THE ENERGY OF ELITE SPORT. THE PRECISION OF PERFORMANCE ENGINEERING. THE INNOVATION OF MODERN TECHNOLOGY.</p>
   </section>
@@ -280,10 +260,6 @@ function startMainExperience(clientBag, onRouteChange = () => {}) {
   });
   initCatalogueNavigation();
   mountGarmentStudies();
-  document.querySelector('[data-open-hardware]')?.addEventListener('click', () => {
-    onRouteChange({ view: 'hardware', target: 'hardware' });
-    document.querySelector('#fsd-division-hardware')?.click();
-  });
   return collectionShowcase;
 }
 

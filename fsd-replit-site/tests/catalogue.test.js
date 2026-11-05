@@ -1035,7 +1035,7 @@ test('the complete public page excludes held imagery while retaining internal so
   globalThis.document = document;
   try {
     const dependencies = {
-      siteMedia, imagePlaceholderMarkup, installImageErrorFallbacks,
+      installImageErrorFallbacks,
       catalogueSection, initCatalogue, navigateCatalogue, products,
       collectionDivisions, renderCollectionShowcase, beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
@@ -1083,7 +1083,11 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.ok(sectionOrder.every((position, index) => position >= 0 && (index === 0 || position > sectionOrder[index - 1])));
     assert.equal((homepage.match(/class="fsd-editorial-card /g) || []).length, 3);
     assert.match(homepage, /class="fsd-editorial-divider"/);
-    assert.match(homepage, /id="hardware-editorial"/);
+    const hardwareEditorial = readFileSync(new URL('../src/components/HardwareEditorialSection.jsx', import.meta.url), 'utf8');
+    assert.match(hardwareEditorial, /data-open-hardware/);
+    assert.match(hardwareEditorial, /onClick={onOpenHardware}/);
+    assert.match(hardwareEditorial, /siteMedia\.hardwareFeature/);
+    assert.match(homepage, /id="hardware-editorial"[^>]*data-fsd-react-section="hardware-editorial"/);
     assert.match(page, /<details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">[\s\S]*?<section class="shop" id="products"/);
     assert.doesNotMatch(page, /id="gallery-archive"|id="full-gallery"|DESIGN LIBRARY|IMAGE ARCHIVE/i);
     assert.doesNotMatch(page, /FSD PRODUCT DESIGN LIBRARY|THE FULL VISUAL EDIT|74 designs/i);
