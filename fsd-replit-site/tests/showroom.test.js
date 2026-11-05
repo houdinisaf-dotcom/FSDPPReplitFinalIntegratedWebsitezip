@@ -145,6 +145,8 @@ test('concept discovery groups retain approved rollout status and explicit avail
   assert.match(markup, /PROPOSAL · REGISTRATION NOT OPEN/);
   assert.match(markup, /OPERATING OR ROLLOUT UNDERWAY/);
   assert.match(markup, /no membership service or registration is available/i);
+  assert.match(markup, /<button class="showroom-concepts__unavailable" type="button" disabled>[\s\S]*?Tactical Shield Membership[\s\S]*?<\/button>/);
+  assert.doesNotMatch(markup, /href="#tactical-shield-membership"/);
   assert.match(markup, /no specific partner, live testing programme, or connected enquiry channel/i);
   assert.doesNotMatch(markup, /Coming soon|Open to enquiries|Join the waiting list/i);
   assert.equal((markup.match(/<details class="showroom-concepts__group"/g) || []).length, 4);

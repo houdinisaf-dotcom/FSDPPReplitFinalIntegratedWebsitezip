@@ -50,7 +50,7 @@
   list-style: none;
 }
 .showroom-concepts__group li { min-width: 0; background: #111214; }
-.showroom-concepts__group li a {
+.showroom-concepts__group li :is(a, .showroom-concepts__unavailable) {
   position: relative;
   display: flex;
   min-height: 132px;
@@ -61,6 +61,17 @@
   text-decoration: none;
   transition: transform 180ms ease, opacity 180ms ease;
 }
+.showroom-concepts__group li .showroom-concepts__unavailable {
+  box-sizing: border-box;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  opacity: 1;
+  cursor: default;
+}
 .showroom-concepts__group li a:hover { transform: translateY(-2px); }
 .showroom-concepts__group li a:focus-visible,
 .showroom-garment-study__choice:focus-visible,
@@ -68,25 +79,25 @@
   outline: 2px solid #e1c68e;
   outline-offset: 3px;
 }
-.showroom-concepts__group li a > strong {
+.showroom-concepts__group li :is(a, .showroom-concepts__unavailable) > strong {
   font-size: 12px;
   font-weight: 600;
   line-height: 1.45;
 }
-.showroom-concepts__group li a > span {
+.showroom-concepts__group li :is(a, .showroom-concepts__unavailable) > span {
   margin-top: 8px;
   color: #c8aa72;
   font-size: 7px;
   letter-spacing: .1em;
   line-height: 1.5;
 }
-.showroom-concepts__group li a > small {
+.showroom-concepts__group li :is(a, .showroom-concepts__unavailable) > small {
   margin-top: 6px;
   color: #a7a49c;
   font-size: 10px;
   line-height: 1.55;
 }
-.showroom-concepts__group li a > b {
+.showroom-concepts__group li :is(a, .showroom-concepts__unavailable) > b {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -248,7 +259,7 @@
   .showroom-concepts__group > summary { min-height: 66px; grid-template-columns: 28px minmax(0, 1fr) auto 16px; gap: 8px; }
   .showroom-concepts__group > summary > small { font-size: 7px; }
   .showroom-concepts__group ul { grid-template-columns: minmax(0, 1fr); }
-  .showroom-concepts__group li a { min-height: 105px; padding: 14px 34px 14px 14px; }
+  .showroom-concepts__group li :is(a, .showroom-concepts__unavailable) { min-height: 105px; padding: 14px 34px 14px 14px; }
   .showroom-garment-study { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .showroom-garment-study__heading > p:last-child { max-width: 420px; }
   .showroom-garment-study__body { grid-template-columns: minmax(115px, .7fr) minmax(0, 1fr); gap: 13px; }
@@ -263,6 +274,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .showroom-concepts__group li a,
+  .showroom-concepts__group li :is(a, .showroom-concepts__unavailable),
   .showroom-garment-study__choice { transition: none; }
 }

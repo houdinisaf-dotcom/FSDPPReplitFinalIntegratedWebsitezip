@@ -24,7 +24,7 @@ export function beyondProductSection() {
     {
       group: 'TRAIN & BELONG',
       concepts: [
-        ['Tactical Shield Membership', 'PROPOSAL · REGISTRATION NOT OPEN', 'Proposal only; no membership service or registration is available.', '#tactical-shield-membership'],
+        ['Tactical Shield Membership', 'PROPOSAL · REGISTRATION NOT OPEN', 'Proposal only; no membership service or registration is available.', null],
         ['Community Co-Creation', 'OPERATING OR ROLLOUT UNDERWAY', 'No workshops, trials, portal, or submission channel is open.', '/community-co-creation.html'],
         ['Community Resilience', 'OPERATING OR ROLLOUT UNDERWAY', 'No provider, venue, or training programme is confirmed.', '/community-first-aid.html'],
       ],
@@ -55,12 +55,19 @@ export function beyondProductSection() {
     },
   ];
 
-  const groupsMarkup = initiatives.map(({ group, concepts }, index) => `<details class="showroom-concepts__group">
-    <summary><span>${String(index + 1).padStart(2, '0')}</span><strong>${group}</strong><small>${String(concepts.length).padStart(2, '0')} INITIATIVES</small></summary>
-    <ul>${concepts.map(([title, status, boundary, href]) => `<li>
-      <a href="${href}"><strong>${title}</strong><span>${status}</span><small>${boundary}</small><b aria-hidden="true">↗</b></a>
-    </li>`).join('')}</ul>
-  </details>`).join('');
+  const groupsMarkup = initiatives.map(({ group, concepts }, index) => {
+    const conceptsMarkup = concepts.map(([title, status, boundary, href]) => {
+      const content = `<strong>${title}</strong><span>${status}</span><small>${boundary}</small><b aria-hidden="true">↗</b>`;
+      const card = href
+        ? `<a href="${href}">${content}</a>`
+        : `<button class="showroom-concepts__unavailable" type="button" disabled>${content}</button>`;
+      return `<li>${card}</li>`;
+    }).join('');
+    return `<details class="showroom-concepts__group">
+      <summary><span>${String(index + 1).padStart(2, '0')}</span><strong>${group}</strong><small>${String(concepts.length).padStart(2, '0')} INITIATIVES</small></summary>
+      <ul>${conceptsMarkup}</ul>
+    </details>`;
+  }).join('');
 
   return `<section class="showroom-beyond" id="beyond-fsd" aria-labelledby="beyond-fsd-title">
     <div class="showroom-beyond__intro">

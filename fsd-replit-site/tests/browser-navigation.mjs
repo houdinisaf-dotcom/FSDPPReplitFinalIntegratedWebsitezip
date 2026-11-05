@@ -1092,6 +1092,9 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   }
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu form, #fsd-mega-menu input")'), null);
   assert.equal(await evaluate('document.querySelector("#contact button").disabled'), true);
+  assert.equal(await evaluate('document.querySelector(".showroom-concepts__unavailable")?.disabled'), true);
+  assert.equal(await evaluate('document.querySelector(".showroom-concepts__unavailable")?.textContent.includes("Tactical Shield Membership")'), true);
+  assert.equal(await evaluate('document.querySelector(\'a[href="#tactical-shield-membership"]\')'), null);
 
   // Escape closes only the top modal layer, then the underlying mega-menu.
   await click('.fsd-primary-trigger[data-nav-primary="hardware"]');
@@ -1163,7 +1166,9 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && document.querySelector("#fsd-mega-menu").dataset.step === "groups"');
   assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-group] span:nth-child(2)")?.textContent.trim()'), 'OUR STORY');
   await click('#fsd-mega-menu [data-nav-group="0"]');
-  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail" && document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Founder Story"');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "detail" && document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "THE FSD STORY & ARCHIVE"');
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item]")?.textContent.includes("Founder Story")'), true);
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item]")?.dataset.navAvailable'), 'true');
   assert.equal(await evaluate('document.querySelectorAll("#fsd-mega-menu [data-nav-item]").length'), 1);
   await click('[data-nav-close]');
   await waitFor('document.querySelector("#fsd-mega-menu").hidden');
@@ -1282,8 +1287,9 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await send('Input.insertText', { text: 'house codes' });
   await waitFor('Boolean(document.querySelector(\'[data-search-page="brand-story-archive"]\'))');
   await click('[data-search-page="brand-story-archive"]');
-  await waitFor('location.pathname === "/story" && document.querySelector("#fsd-house-archive")?.open');
-  await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+  await waitFor('location.pathname === "/story" && document.querySelector("main.fsd-house-draft[data-fsd-house-destination]") && document.querySelector("main h1")?.textContent.trim() === "Founder Story"');
+  assert.equal(await evaluate('document.querySelector("#fsd-house-archive")'), null);
+  assert.equal(await evaluate('document.querySelector(\'meta[name="robots"]\')?.content'), 'noindex,nofollow');
 
   await send('Emulation.setDeviceMetricsOverride', {
     width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
@@ -1307,7 +1313,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
-  await click('footer a[href="#products"]');
+  await click('footer a[href="/#catalogue-archive"]');
   await waitFor('document.querySelector("#catalogue-archive").open');
   await waitFor('document.querySelector("#catalogue-grid")?.dataset.view === "visual"');
   await waitFor('!!document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")');
