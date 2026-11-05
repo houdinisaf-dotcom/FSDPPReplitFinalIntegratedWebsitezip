@@ -438,7 +438,7 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"4\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "INVESTOR RELATIONS"');
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^OPEN INVESTOR RELATIONS/);
   await click('#fsd-mega-menu .fsd-feature-cta');
-  await waitFor('location.pathname === "/investor.html" && document.querySelectorAll("main .investor-card").length === 3');
+  await waitFor('location.pathname === "/investor.html" && document.querySelector("main.fsd-house-draft[data-fsd-house-destination]") && document.querySelector("html")?.dataset.fsdStatus === "NOT READY FOR PUBLICATION" && document.querySelector("[data-fsd-house-draft-ribbon]")');
   await send('Page.navigate', { url: `https://${domain}/story` });
   await waitFor('location.pathname === "/story" && document.querySelector("main h1")?.textContent.trim() === "Founder Story"');
   assert.equal(await evaluate('document.querySelectorAll("main").length'), 1);
@@ -450,10 +450,8 @@ try {
   await send('Page.navigate', { url: `https://${domain}/flagships/dublin.html` });
   await waitFor('location.pathname === "/flagships/dublin.html" && document.querySelector("main h1")?.textContent.trim() === "Dublin"');
   assert.equal(await evaluate('document.querySelectorAll("main, main h1, .hero, footer").length'), 4);
-  await click('.fsd-primary-nav [data-nav-primary="house"]');
-  await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
-  await click('[data-nav-close]');
-  await waitFor('document.querySelector("#fsd-mega-menu").hidden');
+  assert.equal(await evaluate('document.documentElement.dataset.fsdStatus'), 'NOT READY FOR PUBLICATION');
+  assert.equal(await evaluate('Boolean(document.querySelector(".fsd-primary-nav"))'), false);
   await send('Page.navigate', { url: `https://${domain}/cryo-zero.html` });
   await waitFor('location.pathname === "/cryo-zero.html" && document.querySelector(".cryo-page h1")?.textContent === "Cryo-Zero Recovery Chambers" && document.querySelector(".fsd-primary-nav")');
   assert.match(await evaluate('document.querySelector(".cryo-page .status-note")?.textContent'), /Information in preparation/);
@@ -707,7 +705,7 @@ try {
     const destination = item?.href || group.href;
     if (destination === '/investor.html' || destination?.startsWith('/investor.html#')) {
       await click(selector);
-      await waitFor('location.pathname === "/investor.html" && document.querySelector(".hero h1")?.textContent.includes("FSD Investor Relations") && document.querySelectorAll("main .investor-card").length === 3');
+      await waitFor('location.pathname === "/investor.html" && document.querySelector("main.fsd-house-draft[data-fsd-house-destination]") && document.querySelector("html")?.dataset.fsdStatus === "NOT READY FOR PUBLICATION" && document.querySelector("[data-fsd-house-draft-ribbon]")');
       return;
     }
 
@@ -806,6 +804,9 @@ try {
       if (href === '/story') {
         await waitFor('location.pathname === "/story" && document.querySelector("#fsd-house-archive")?.open');
         await waitFor('document.querySelector("#philosophy")?.getBoundingClientRect().top < 180');
+      } else if (href.startsWith('/collections/')) {
+        const lineId = href.slice('/collections/'.length);
+        await waitFor(`location.pathname === ${JSON.stringify(href)} && document.querySelector("#line-products-${lineId}") && document.querySelector("#clothing-lines-archive")?.open`);
       } else {
         const targetSelector = href.includes('#') ? `#${href.split('#')[1]}` : href;
         await waitFor(`(() => {
@@ -1348,7 +1349,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await waitFor('document.querySelector("#fsd-mega-menu").hidden');
 
   await send('Page.navigate', { url: `https://${domain}/investor.html` });
-  await waitFor('document.querySelector("[data-fsd-standalone-navigation] .fsd-header") && document.querySelector(".metrics-grid .metric-card")');
+  await waitFor('document.querySelector("[data-fsd-standalone-navigation] .fsd-header") && document.querySelector("main.fsd-house-draft[data-fsd-house-destination]") && document.querySelector("[data-fsd-house-draft-ribbon]")');
   await click('[data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu")?.dataset.primary === "house" && !document.querySelector("#fsd-mega-menu")?.hidden');
   await click('#fsd-mega-menu [data-nav-group="4"]');

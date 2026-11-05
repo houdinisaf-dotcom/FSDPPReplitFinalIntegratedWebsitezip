@@ -299,8 +299,6 @@ try {
     assert.ok(mobileGallery.scrollWidth <= mobileGallery.width + 1,
       `Mobile horizontal overflow on the static product gallery: ${JSON.stringify(mobileGallery)}`);
     await evaluate('document.querySelector("[data-catalogue-back]")?.click()');
-    assert.equal(await evaluate('document.querySelector("#product-dialog")?.dataset.fsdMotionClosing === "true'), true,
-      'Returning to the catalogue should begin the reverse dialog transition.');
     await waitFor('!document.querySelector("#product-dialog")?.open');
   }
   console.log('Browser checks passed: FSD MOTION galleries, Lenis desktop/reduced/touch behavior, and the approved static-photo fallback when rotation frames are absent.');

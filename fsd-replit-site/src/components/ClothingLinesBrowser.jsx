@@ -3,10 +3,10 @@ import { products, priceInfo, productImagesForDisplay } from '../data/products.j
 import { deriveClothingLineMembership, CLOTHING_LINE_ASSETS, CLOTHING_LINES } from '../clothing-lines.js';
 import { SafeImage } from './SafeImage.jsx';
 import { CategoryFilterTabs } from './CategoryFilterTabs.jsx';
+import { WOMENS_BRANDING_ASSIGNMENT_STATUS } from '../brand/product-branding.js';
 import {
   garmentCategoryOptions,
   productHasGarmentCategory,
-  WOMENS_BRANDING_ASSIGNMENT_STATUS,
 } from '../data/garment-category-map.js';
 import { confirmedCollectionText } from '../catalogue-collections.js';
 import { COLLECTION_MOTION_CONFIG, getCollectionMotionEntry, resolveCollectionLogo } from '../collection-motion-config.js';
