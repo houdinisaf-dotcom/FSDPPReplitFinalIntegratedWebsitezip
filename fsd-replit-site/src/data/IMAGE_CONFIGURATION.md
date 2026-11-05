@@ -3,6 +3,10 @@
 Missing images must never remove a product, collection, banner, hero, or its controls.
 The shared placeholder keeps the visual slot available until approved photography is added.
 
+Production minimum source dimensions and the current WebP audit are documented in
+[`IMAGE_SIZE_STANDARDS.md`](../../IMAGE_SIZE_STANDARDS.md). Size qualification is not
+image approval or product identification.
+
 ## Products and variants
 
 1. Put approved standalone files in `public/assets/products/`.
