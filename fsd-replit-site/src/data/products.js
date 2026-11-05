@@ -171,6 +171,10 @@ export const products = masterProducts
   .filter(p => !p['Publication status'] || p['Publication status'] === 'Active')
   .map(p => {
     const references = imageReferences[p['Product name']] ?? [];
+    const stockQuantity = p['Stock quantity'] ?? p.stockQuantity;
+    const normalizedStockQuantity = stockQuantity === undefined || stockQuantity === ''
+      ? null
+      : Number(stockQuantity);
     const colourwayImages = Array.isArray(p['Colourway palette'])
       ? p['Colourway palette'].filter(colourway =>
         typeof colourway.image === 'string' && colourway.image.trim())
@@ -190,6 +194,9 @@ export const products = masterProducts
     audience: p.Audience,
     publicationStatus: p['Publication status'] ?? '',
     confirmedPrice: p['Price (£) confirmed'] === '' ? null : Number(p['Price (£) confirmed']),
+    ...(Number.isFinite(normalizedStockQuantity)
+      ? { stockQuantity: normalizedStockQuantity }
+      : {}),
     colourways: p.Colourways,
     ...([19, 26, 42].includes(p.id) && typeof p.Colourways === 'string'
       ? { rowColourways: p.Colourways.split(',').map(value => value.trim()).filter(Boolean) }

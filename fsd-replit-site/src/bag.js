@@ -1,4 +1,4 @@
-import { safe } from './catalogue-data.js';
+import { productImagesForDisplay, safe } from './catalogue-data.js';
 import { trackEvent } from './analytics.js';
 import { outlineIcon } from './brand/outline-icons.js';
 import { showCartToast } from './motion-runtime.js';
@@ -39,14 +39,37 @@ function resolveLineId(idOrLineId, variant = {}) {
   return Number.isInteger(productId) ? makeLineId(productId, variant) : '';
 }
 
-export function canAddToBag(product) {
+export function getBagEligibilityIssues(product) {
   const id = Number(product?.id);
   const price = Number(product?.confirmedPrice);
   const priceNotes = `${product?.priceBasis ?? ''} ${product?.notes ?? ''}`;
-  return Number.isInteger(id) &&
-    Number.isFinite(price) &&
-    price > 0 &&
-    !/\b(?:reference only|not for sale)\b/i.test(priceNotes);
+  const imageStatus = String(product?.imageStatus ?? '');
+  const stockStatus = String(product?.stockStatus ?? product?.availability ?? '').trim();
+  const stockQuantity = Number(product?.stockQuantity);
+  const hasPositiveStock = Number.isSafeInteger(stockQuantity) && stockQuantity > 0;
+  const hasAvailableStockStatus = /^(?:in[\s-]?stock|available(?: now)?)$/i.test(stockStatus);
+  const hasApprovedStandaloneMedia = productImagesForDisplay(product).length > 0
+    && /\b(?:approved|standalone)\b/i.test(imageStatus)
+    && !/\b(?:concept board|collage|contact sheet|placeholder|not confirmed|no image|brief only|reference only|pending|unconfirmed|unapproved)\b/i.test(imageStatus)
+    && !/\bnot\s+(?:approved|standalone)\b/i.test(imageStatus);
+  const issues = [];
+
+  if (!Number.isInteger(id) || id <= 0) issues.push('product identity');
+  if (product?.publicationStatus !== 'Active') issues.push('active publication status');
+  if (!Number.isFinite(price) || price <= 0 || /\b(?:reference only|not for sale)\b/i.test(priceNotes)) {
+    issues.push('confirmed price');
+  }
+  if (typeof product?.sku !== 'string' || !product.sku.trim() || /^(?:tbd|pending|unassigned)$/i.test(product.sku.trim())) {
+    issues.push('SKU');
+  }
+  if (!hasPositiveStock && !hasAvailableStockStatus) issues.push('confirmed in-stock status');
+  if (!hasApprovedStandaloneMedia) issues.push('approved standalone product media');
+
+  return issues;
+}
+
+export function canAddToBag(product) {
+  return getBagEligibilityIssues(product).length === 0;
 }
 
 function resolveStorage(storage) {

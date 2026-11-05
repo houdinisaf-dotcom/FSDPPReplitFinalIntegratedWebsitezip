@@ -1,7 +1,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { canAddToBag, createClientBag } from '../src/bag.js';
+import { canAddToBag, createClientBag, getBagEligibilityIssues } from '../src/bag.js';
 import { products } from '../src/catalogue-data.js';
+
+const readyProduct = overrides => ({
+  id: 999,
+  name: 'Verified product',
+  category: 'Training',
+  publicationStatus: 'Active',
+  confirmedPrice: 12.5,
+  sku: 'FSD-VERIFIED-999',
+  stockQuantity: 3,
+  imageStatus: 'Approved standalone product photography',
+  images: [{
+    src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-product.webp',
+    label: 'Front view',
+  }],
+  ...overrides,
+});
 
 function createStorage(initial = null) {
   const values = new Map(initial ? [['fsd-client-bag-v1', initial]] : []);
@@ -12,18 +28,29 @@ function createStorage(initial = null) {
   };
 }
 
-test('bag only accepts current master records with a confirmed non-reference price', () => {
-  assert.equal(canAddToBag(products.find(product => product.id === 1)), true);
-  assert.equal(canAddToBag(products.find(product => product.id === 43)), true);
-  assert.equal(canAddToBag(products.find(product => product.id === 57)), true);
+test('bag requires active status, confirmed price, SKU, stock, and approved standalone media', () => {
+  assert.equal(products.some(canAddToBag), false);
+  assert.deepEqual(
+    getBagEligibilityIssues(products.find(product => product.id === 18)),
+    ['active publication status', 'confirmed in-stock status'],
+  );
   assert.equal(canAddToBag(products.find(product => product.id === 2)), false);
+  assert.equal(canAddToBag(readyProduct({ stockQuantity: undefined, stockStatus: 'Out of stock' })), false);
+  assert.equal(canAddToBag(readyProduct({ publicationStatus: '' })), false);
+  assert.equal(canAddToBag(readyProduct({ sku: '' })), false);
+  assert.equal(canAddToBag(readyProduct({ imageStatus: 'Concept board; crop single panels' })), false);
+  assert.equal(canAddToBag(readyProduct({ imageStatus: 'Not approved; standalone reference' })), false);
+  assert.equal(canAddToBag(products.find(product => product.id === 74)), false);
+  assert.equal(canAddToBag(products.find(product => product.id === 76)), false);
+  assert.equal(canAddToBag(readyProduct({ stockQuantity: undefined, stockStatus: 'In stock' })), true);
+  assert.equal(canAddToBag(readyProduct()), true);
   assert.equal(canAddToBag({ id: 777, confirmedPrice: 0 }), false);
   assert.equal(canAddToBag({ id: 778, confirmedPrice: 12.5, priceBasis: 'Reference only' }), false);
 });
 
 test('bag adds, updates quantity, removes lines, and calculates GBP totals in pence', () => {
   const storage = createStorage();
-  const bag = createClientBag(products, storage);
+  const bag = createClientBag([readyProduct({ id: 1, confirmedPrice: 39.99 })], storage);
 
   assert.equal(bag.add(1), true);
   assert.equal(bag.add(1, 2), true);
@@ -39,7 +66,7 @@ test('bag adds, updates quantity, removes lines, and calculates GBP totals in pe
 });
 
 test('bag adds the requested quantity to the selected product variant', () => {
-  const bag = createClientBag(products, createStorage());
+  const bag = createClientBag([readyProduct({ id: 43, confirmedPrice: 34.99 })], createStorage());
   const variant = { size: 'M', colourway: 'Obsidian Black' };
 
   assert.equal(bag.add(43, 4, variant), true);
@@ -51,7 +78,11 @@ test('bag adds the requested quantity to the selected product variant', () => {
 
 test('bag rejects invalid items and restores only valid, bounded persisted quantities', () => {
   const storage = createStorage('{"1":4,"43":2,"2":8,"777":1,"10":300}');
-  const bag = createClientBag(products, storage);
+  const bag = createClientBag([
+    readyProduct({ id: 1, confirmedPrice: 39.99 }),
+    readyProduct({ id: 10, confirmedPrice: 79.99 }),
+    readyProduct({ id: 43, confirmedPrice: 34.99 }),
+  ], storage);
 
   assert.deepEqual(
     bag.items().map(item => [item.product.id, item.quantity]),
@@ -67,7 +98,7 @@ test('bag rejects invalid items and restores only valid, bounded persisted quant
 
 test('bag keeps size and colourway variants as separate legacy-compatible lines', () => {
   const storage = createStorage();
-  const bag = createClientBag(products, storage);
+  const bag = createClientBag([readyProduct({ id: 43, confirmedPrice: 34.99 })], storage);
 
   assert.equal(bag.add(43, 1, { size: 'M', colourway: 'Black / Gold' }), true);
   assert.equal(bag.add(43, 1, { size: 'L', colourway: 'Black / Gold' }), true);
@@ -83,7 +114,7 @@ test('bag keeps size and colourway variants as separate legacy-compatible lines'
     ],
   );
 
-  const restored = createClientBag(products, storage);
+  const restored = createClientBag([readyProduct({ id: 43, confirmedPrice: 34.99 })], storage);
   assert.equal(restored.itemCount(), 3);
   const line = restored.items().find(item => item.size === 'L');
   assert.equal(restored.setQuantity(line.lineId, 2), true);
