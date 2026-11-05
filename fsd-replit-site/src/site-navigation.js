@@ -34,12 +34,27 @@ const privatePreviewTargets = new Map([
   [weightedRopePreviewPath, `${weightedRopePreviewPath}media/weighted-rope-campaign`],
   [hoodedShellPreviewPath, `${hoodedShellPreviewPath}media/${hoodedShellCampaign.id}`],
 ]);
-const femaleCombatCampaign = Object.freeze({
-  featureImageSrc: '/fsd-assets/8ffe2fd45a06.webp',
-  featureImageAlt: 'Female FSD athlete wearing a hijab during boxing training.',
-});
-
 export const navigationAssetBindings = Object.freeze({
+  'Performance Hijabs': Object.freeze({
+    src: '/fsd-assets/4acbbfb65f79.webp',
+    alt: 'FSD performance sports hijab in black and gold.',
+  }),
+  'Sports Hijabs': Object.freeze({
+    src: '/fsd-assets/4acbbfb65f79.webp',
+    alt: 'FSD performance sports hijab in black and gold.',
+  }),
+  'FSD Breeze Set': Object.freeze({
+    src: '/fsd-assets/breeze-set-onyx-black-full-length.webp',
+    alt: 'FSD Breeze Onyx Black set, full-length product photo.',
+  }),
+  BREEZE: Object.freeze({
+    src: '/fsd-assets/breeze-set-onyx-black-full-length.webp',
+    alt: 'FSD Breeze Onyx Black set, full-length product photo.',
+  }),
+  COMBAT: Object.freeze({
+    src: '/fsd-assets/8ffe2fd45a06.webp',
+    alt: 'FSD women’s combat collection, athlete training in boxing gloves.',
+  }),
   'FSD NEXUS (smart ring)': Object.freeze({
     src: '/fsd-assets/3daa9883cec9.webp',
     alt: 'FSD Nexus smart ring in golden shadows.',
@@ -106,10 +121,6 @@ function makeSubcategoryItems(group, divisionId, groupIndex, subcategories = gro
     sourceDivisionId: divisionId,
     sourceGroupIndex: groupIndex,
     sourceSubcategoryIndex: group.subcategories?.indexOf(subcategory) ?? -1,
-    ...(divisionId === 'apparel' &&
-      (group.id === 'womens-modest-combat' || /combat|training/i.test(subcategory.title))
-      ? femaleCombatCampaign
-      : {}),
     description: subcategory.concepts?.length
       ? subcategory.concepts.join(' · ')
       : '',
@@ -125,10 +136,6 @@ function makeSubcategoryItems(group, divisionId, groupIndex, subcategories = gro
       sourceDivisionId: divisionId,
       sourceGroupIndex: groupIndex,
       sourceSubcategoryIndex: -1,
-      ...(/combat|training/i.test(category) &&
-        (divisionId === 'apparel' || divisionId === 'hardware')
-        ? femaleCombatCampaign
-        : {}),
     });
   }
 
@@ -150,9 +157,6 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
       sourceGroupIndex,
       sourceSubcategoryIndex: -1,
       ...(innovationPage ? { href: `#${innovationPage.id}` } : {}),
-      ...(division.id === 'hardware' && sourceGroup.id === 'combat-equipment'
-        ? femaleCombatCampaign
-        : {}),
       description: innovationPage
         ? 'Product details, features, and availability.'
         : 'Part of the FSD collection.',
@@ -166,27 +170,20 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
   } else {
     const records = groupProducts(sourceGroup, products);
     const recordItems = records.map(record => {
-        const binding = navigationAssetBindings[record.name];
-        const campaignBinding = division.id === 'hardware'
-          && sourceGroup.id === 'combat-equipment'
-          && record.id === 30
-          ? femaleCombatCampaign
-          : null;
-        return {
-          id: `${sourceGroup.id}-product-${record.id}`,
-          title: record.name,
-          kind: 'product',
-          record,
-          source: { productTerms: [record.name] },
-          sourceGroup,
-          sourceDivisionId: division.id,
-          sourceGroupIndex,
-          sourceSubcategoryIndex: -1,
-          ...(binding
-            ? { featureImageSrc: binding.src, featureImageAlt: binding.alt }
-            : campaignBinding),
-        };
-      });
+      const binding = navigationAssetBindings[record.name];
+      return {
+        id: `${sourceGroup.id}-product-${record.id}`,
+        title: record.name,
+        kind: 'product',
+        record,
+        source: { productTerms: [record.name] },
+        sourceGroup,
+        sourceDivisionId: division.id,
+        sourceGroupIndex,
+        sourceSubcategoryIndex: -1,
+        ...(binding ? { featureImageSrc: binding.src, featureImageAlt: binding.alt } : {}),
+      };
+    });
     items = records.length
       ? [...recordItems, ...(division.id === 'bio-lab' ? conceptItems() : [])]
       : conceptItems();
@@ -229,6 +226,12 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     kind: 'clothing-line',
     href: `/collections/${line.id}`,
     description: `Open the ${line.title} collection.`,
+    ...(navigationAssetBindings[line.title]
+      ? {
+          featureImageSrc: navigationAssetBindings[line.title].src,
+          featureImageAlt: navigationAssetBindings[line.title].alt,
+        }
+      : {}),
   }));
   const womenLineItems = clothingLineItems.filter(item =>
     CLOTHING_LINES.find(line => `clothing-line-${line.id}` === item.id)?.audience === 'WOMEN');

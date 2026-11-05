@@ -6,6 +6,7 @@ import { categories, filterProducts, products } from '../src/catalogue-data.js';
 import {
   createNavigationModel,
   getNavigationFeature,
+  navigationAssetBindings,
   primaryNavigation,
   renderNavigationHeader,
 } from '../src/site-navigation.js';
@@ -416,16 +417,53 @@ test('mega-menu image previews use only explicit single-image bindings', () => {
   const mensIndex = menu[0].groups.findIndex(group => group.id === 'mens-luxury-performance');
   const conceptFeature = getNavigationFeature(menu[0], mensIndex, 1);
   assert.equal(conceptFeature.item, '2-in-1 Combat Training Shorts & Tanks');
-  assert.deepEqual(conceptFeature.imageSources, ['/fsd-assets/8ffe2fd45a06.webp']);
+  assert.deepEqual(conceptFeature.imageSources, []);
 
   const women = menu[0].groups.find(group => group.id === 'womens-modest-combat');
   const hijabIndex = women.items.findIndex(item => item.title === 'Performance Hijabs');
   const womenIndex = menu[0].groups.indexOf(women);
   const hijabFeature = getNavigationFeature(menu[0], womenIndex, hijabIndex);
-  assert.deepEqual(hijabFeature.imageSources, ['/fsd-assets/8ffe2fd45a06.webp']);
+  assert.deepEqual(hijabFeature.imageSources, ['/fsd-assets/4acbbfb65f79.webp']);
 
   assert.ok(women.items.some(item => item.title === 'Performance Hijabs'));
   assert.ok(women.items.some(item => item.title === 'Sports Hijabs'));
+  const sportsHijabsIndex = women.items.findIndex(item => item.title === 'Sports Hijabs');
+  assert.deepEqual(
+    getNavigationFeature(menu[0], womenIndex, sportsHijabsIndex).imageSources,
+    ['/fsd-assets/4acbbfb65f79.webp'],
+  );
+  for (const unmatchedTitle of [
+    'Women’s MMA Rash Guard',
+    'Performance Training Tops',
+    'Performance Leggings & Strikeflex Trousers',
+    'FSD Modest Flow Training Trousers',
+  ]) {
+    const itemIndex = women.items.findIndex(item => item.title === unmatchedTitle);
+    assert.ok(itemIndex >= 0, `${unmatchedTitle} remains in the menu`);
+    assert.deepEqual(
+      getNavigationFeature(menu[0], womenIndex, itemIndex).imageSources,
+      [],
+      `${unmatchedTitle} stays image-free without an exact source`,
+    );
+  }
+
+  const womensCollections = menu[0].groups.find(group => group.id === 'womens-collections');
+  const womensCollectionsIndex = menu[0].groups.indexOf(womensCollections);
+  const breezeLineIndex = womensCollections.items.findIndex(item => item.title === 'BREEZE');
+  assert.deepEqual(
+    getNavigationFeature(menu[0], womensCollectionsIndex, breezeLineIndex).imageSources,
+    ['/fsd-assets/breeze-set-onyx-black-full-length.webp'],
+  );
+  const combatLineIndex = womensCollections.items.findIndex(item => item.title === 'COMBAT');
+  assert.deepEqual(
+    getNavigationFeature(menu[0], womensCollectionsIndex, combatLineIndex).imageSources,
+    ['/fsd-assets/8ffe2fd45a06.webp'],
+  );
+  const breezeSetIndex = women.items.findIndex(item => item.title === 'FSD Breeze Set');
+  assert.deepEqual(
+    getNavigationFeature(menu[0], womenIndex, breezeSetIndex).imageSources,
+    ['/fsd-assets/breeze-set-onyx-black-full-length.webp'],
+  );
 
   const bioLab = menu.find(section => section.id === 'bio-lab');
   const nexusGroup = bioLab.groups[0];
@@ -435,6 +473,11 @@ test('mega-menu image previews use only explicit single-image bindings', () => {
   assert.deepEqual(nexusFeature.imageSources, ['/fsd-assets/3daa9883cec9.webp']);
   assert.equal(existsSync(new URL('../public/fsd-assets/3daa9883cec9.webp', import.meta.url)), true);
 
+  for (const [item, binding] of Object.entries(navigationAssetBindings)) {
+    assert.match(binding.src, /^\/fsd-assets\/[^/]+\.webp$/i, `${item} uses one standalone WebP`);
+    assert.equal(existsSync(new URL(`../public${binding.src}`, import.meta.url)), true, `${item} source exists`);
+  }
+
   for (const section of menu) {
     for (const [groupIndex, group] of section.groups.entries()) {
       for (const [itemIndex] of group.items.entries()) {
@@ -442,6 +485,7 @@ test('mega-menu image previews use only explicit single-image bindings', () => {
         assert.ok(feature.imageSources.length <= 1, `${section.label} / ${group.title} / ${feature.item} must not show a multi-image fallback`);
         for (const imagePath of feature.imageSources) {
           assert.match(imagePath, /^\/fsd-assets\/[^/]+\.webp$/i);
+          assert.equal(existsSync(new URL(`../public${imagePath}`, import.meta.url)), true);
         }
       }
     }
@@ -455,7 +499,7 @@ test('Bio-Lab and Hardware reuse current division groups and product records', (
   assert.ok(combatEquipmentIndex >= 0);
   assert.deepEqual(
     getNavigationFeature(hardware, combatEquipmentIndex, 0).imageSources,
-    ['/fsd-assets/8ffe2fd45a06.webp'],
+    [],
   );
   assert.deepEqual(bioLab.groups.map(group => group.title), [
     'WEARABLE TECHNOLOGY',
