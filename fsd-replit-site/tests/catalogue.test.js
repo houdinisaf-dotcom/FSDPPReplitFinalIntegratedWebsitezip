@@ -866,8 +866,10 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
         assert.equal((mediaSection.match(/data-catalogue-image-index=/g) ?? []).length, 9);
         const coreHijab = products.find(product => product.id === 42);
         changeColourway(1, 0);
-        assert.equal(mainImage.src, coreHijab.images[0].src);
-        assert.equal(mainCaption.textContent, coreHijab.images[0].label);
+        const frontPortrait = coreHijab.images.find(image => /Front portrait/.test(image.label));
+        assert.equal(mainImage.src, frontPortrait.src);
+        assert.equal(mainCaption.textContent, frontPortrait.label);
+        assert.match(element('#dialog-body').innerHTML, /src="\/products\/sports-hijab\/black-gold\/rear\.webp"/);
         assert.equal(selectedColourway.textContent, 'Black/Gold');
       } else {
         assert.doesNotMatch(mediaSection, /<img\b/);

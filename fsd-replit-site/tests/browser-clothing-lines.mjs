@@ -123,23 +123,18 @@ try {
     await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
     await wait(`!document.querySelector('#product-dialog').open`, 'product closes');
     assert.equal(await evaluate(`document.querySelector('#clothing-lines-archive').open`), true);
+    await wait(`document.activeElement === document.querySelector('[data-clothing-product-id="75"] button')`, 'focus returns to product card');
     assert.equal(await evaluate(`document.activeElement === document.querySelector('[data-clothing-product-id="75"] button')`), true, 'focus returns to product card');
     if (width === 1440) {
       await evaluate(`document.querySelector('[data-clothing-product-id="75"] button').click()`);
-      await wait(`document.querySelector('#product-dialog')?.open`, 'reopen for variant purchase');
+      await wait(`document.querySelector('#product-dialog')?.open`, 'reopen for variant selection');
       await evaluate(`document.querySelector('#product-dialog [data-catalogue-colourway-index="1"]').click()`);
       await evaluate(`document.querySelector('#product-dialog [data-product-size][value="M"]').click()`);
-      await evaluate(`document.querySelector('#product-dialog [data-bag-add]').click()`);
-      await evaluate(`document.querySelector('[data-bag-open]').click()`);
-      await wait(`document.querySelector('dialog:has([data-bag-close])')?.open`, 'bag opens');
-      const bagText = await evaluate(`document.querySelector('dialog:has([data-bag-close])').textContent`);
-      assert.ok(bagText.includes('FLEX') && bagText.includes('Sage Green'), 'correct product and colour in bag');
-      assert.ok(bagText.includes('M'), 'selected size retained');
-      await evaluate(`document.querySelector('dialog [data-bag-quantity="1"]').click()`);
-      await wait(`document.querySelector('dialog:has([data-bag-close])').textContent.includes('£130.00')`, 'quantity and subtotal');
-      await evaluate(`document.querySelector('[data-bag-clear]').click(); document.querySelector('[data-bag-close]').click()`);
+      assert.equal(await evaluate(`Boolean(document.querySelector('#product-dialog [data-bag-add]'))`), false,
+        'FLEX has no confirmed SKU or stock, so Add to Bag remains unavailable.');
+      assert.ok(await evaluate(`document.querySelector('#product-dialog').textContent.includes('Notify me when available')`));
       await evaluate(`document.querySelector('#product-dialog').close()`);
-      console.log('PASS catalogue imagery, colour/size selection and bag quantity/subtotal');
+      console.log('PASS catalogue imagery, colour/size selection and stock-gated bag controls');
     }
     console.log(`PASS clothing banners, automatic scroll/logo, manual navigation and product details: ${width}px`);
   }

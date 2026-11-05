@@ -54,6 +54,27 @@ test('editorial gallery selection retains the mapped default when a same-variant
   assert.equal(editorialGalleryPrimaryImageIndex(images, 0, 'White / Green', true), 0);
 });
 
+test('mapped CORE hijab photos can form a same-colourway front/rear detail pair', () => {
+  const product = products.find(item => item.id === 42);
+  const images = productImagesForDisplay(product);
+  const heroIndex = images.findIndex(image => /Hero portrait/.test(image.label));
+  const frontIndex = editorialGalleryPrimaryImageIndex(images, heroIndex, 'Black/Gold', true);
+
+  assert.match(images[frontIndex].label, /Front portrait/);
+  const markup = renderProductDetailPage({
+    product,
+    images,
+    initialImageIndex: frontIndex,
+    galleryPlaceholders: [],
+    colourways: ['Black/Gold', 'Black/White'],
+    colourwayImageIndexes: [heroIndex, -1],
+    sizes: productSizeOptions(product),
+    price: { label: '', value: '' },
+    canPurchase: false,
+  });
+  assert.match(markup, /data-catalogue-secondary-caption>Black\/Gold \/ Rear view/);
+});
+
 test('curated Velocity lifestyle hero remains first rather than being replaced by portrait views', () => {
   const product = products.find(item => item.id === 43);
   const images = productImagesForDisplay(product);

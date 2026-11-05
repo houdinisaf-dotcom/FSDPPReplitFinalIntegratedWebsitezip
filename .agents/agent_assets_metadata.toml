@@ -1148,3 +1148,115 @@ mtime_ms = 1793906430970
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/d0b35124-6182-4260-8c2a-c674491a03fb/b86cbd78-1bc4-4456-bb08-c1c9f4f78623"
 storage_version_token = "1793906441814367"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "uQYxv7yM4avwX-GrPqpvP"
+uri = "file://generated-artifacts/fsd-pdp-before-desktop.jpg"
+type = "image"
+title = "PDP before — desktop, 1440×1000"
+description = "Actual product detail page before the front/rear pairing change."
+logical_id = "5842304d-1d12-4f9f-bdf1-7c5799cc91b5"
+content_hash = "sha256:b7c6eb8be51e5d14bbfaf2921cb8d929826f616e524bc9ba37476ad7bfb31f48"
+size = 132291
+mtime_ms = 1793919551407
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5842304d-1d12-4f9f-bdf1-7c5799cc91b5/e24a440c-385b-4b09-8456-48908a300a1a"
+storage_version_token = "1793920032221781"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "PcjxMHgX7J5mlz2zoc3p-"
+uri = "file://generated-artifacts/fsd-pdp-after-desktop.jpg"
+type = "image"
+title = "PDP after — desktop, 1440×1000"
+description = "Actual FSD Aeroforge Training Tee page showing approved front and rear product views beside the purchase panel."
+logical_id = "2170d5be-065c-499f-bba3-16eed54165f1"
+content_hash = "sha256:df24db1fd6e491ff2189e0677b3a343a29718827a1e58c036d11d07f77e66a28"
+size = 137937
+mtime_ms = 1793919572015
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/2170d5be-065c-499f-bba3-16eed54165f1/4284438d-c779-473b-adb3-80b34da53a43"
+storage_version_token = "1793920032938340"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "bMHhQEfhfisXY0EFh6g3c"
+uri = "file://generated-artifacts/fsd-pdp-before-mobile.jpg"
+type = "image"
+title = "PDP before — mobile, 390×844"
+description = "Actual product detail page before the gallery change at a mobile viewport."
+logical_id = "9e2521dc-4a10-4341-b726-97bbcd4554fc"
+content_hash = "sha256:8b39714674d5d5c66cf093e5696397d2e3d70a8b37ee517a22da47b535fa939e"
+size = 37364
+mtime_ms = 1793919551422
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/9e2521dc-4a10-4341-b726-97bbcd4554fc/1e422cfe-53ad-4d8e-9136-0e7925346476"
+storage_version_token = "1793920033607506"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "ul6-1zrGL_NWEO_dv-6Ld"
+uri = "file://generated-artifacts/fsd-pdp-after-mobile.jpg"
+type = "image"
+title = "PDP after — mobile, 390×844"
+description = "Actual FSD product detail page after the gallery change at a mobile viewport."
+logical_id = "b605df04-ecbd-4f7b-8f85-98bed1a46f40"
+content_hash = "sha256:3ac057d8dd12cdb57eb38019029d2a627727f19f09cb5bdd891cf8d749c3e4b1"
+size = 43726
+mtime_ms = 1793919573683
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/b605df04-ecbd-4f7b-8f85-98bed1a46f40/f20b2bd1-dd48-4e3e-a8f8-0526be7dd4a1"
+storage_version_token = "1793920034304145"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "gR4CwP_sX3kc4lYTC5mre"
+uri = "file://generated-artifacts/fsd-shop-women-desktop.jpg"
+type = "image"
+title = "Women’s collection — desktop, 1440px"
+description = "Full-page screenshot of the live image-led collection grid at desktop width."
+logical_id = "e33d51e0-c350-4ed6-ae35-a205345c54da"
+content_hash = "sha256:018be7ae6999c8d6a1aee761130eea75c8506e80b5aa8cea2c4182ea93b04aac"
+size = 343782
+mtime_ms = 1793919657774
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e33d51e0-c350-4ed6-ae35-a205345c54da/bb13b318-7eb3-426c-8b78-5c71f2839400"
+storage_version_token = "1793920034980378"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "OlJ3nvm7TN3bVOEcgexwT"
+uri = "file://generated-artifacts/fsd-shop-women-laptop.jpg"
+type = "image"
+title = "Women’s collection — laptop, 1366px"
+description = "Full-page screenshot of the live collection grid at laptop width."
+logical_id = "032a0ff0-5aed-43a4-b54a-dcc54b9c84a9"
+content_hash = "sha256:6b14e9a370f1a84a09172b83f88b65e15294136350bf5c1d2a32d4c4772eb746"
+size = 323817
+mtime_ms = 1793919660666
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/032a0ff0-5aed-43a4-b54a-dcc54b9c84a9/31ffedb3-c633-4eea-b985-791837453514"
+storage_version_token = "1793920035636872"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "kywghQEpVWcz2S5cZt_4Y"
+uri = "file://generated-artifacts/fsd-shop-women-tablet.jpg"
+type = "image"
+title = "Women’s collection — tablet, 768px"
+description = "Full-page screenshot of the live collection grid at tablet width, showing three columns."
+logical_id = "25f429d8-0be6-4f36-a35e-03a4238737d2"
+content_hash = "sha256:98273203e6ab39a8517e847836e45063abab7e7ef6a2af8a338af6c35e3318bb"
+size = 260716
+mtime_ms = 1793919662938
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/25f429d8-0be6-4f36-a35e-03a4238737d2/c9a3b420-d0ce-428c-8829-ba9f3fb951b5"
+storage_version_token = "1793920036266630"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "pxih4uSVNo03XIBnZF88p"
+uri = "file://generated-artifacts/fsd-shop-women-mobile.jpg"
+type = "image"
+title = "Women’s collection — mobile, 402px"
+description = "Full-page screenshot of the live collection grid at mobile width, showing two columns and clean pending-asset fallbacks."
+logical_id = "c671b8aa-cf7c-420a-b13e-acb37af3cb4c"
+content_hash = "sha256:a2e066d3e0a8789b0ed08027f22a87251fead993262753b1f63e5419978ed298"
+size = 213578
+mtime_ms = 1793919664970
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c671b8aa-cf7c-420a-b13e-acb37af3cb4c/d17926f7-639c-4697-abbf-482e65f04478"
+storage_version_token = "1793920036901135"
+content_type = "image/jpeg"

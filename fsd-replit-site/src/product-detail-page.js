@@ -164,7 +164,6 @@ function preferredGallerySideIndex(images, side, variant, hasMultipleColourways)
     .map((image, index) => ({ image, index }))
     .filter(({ image }) => {
       if (!gallerySide(image, side)) return false;
-      if (!/\bproduct\b/.test(normalizedGalleryLabel(image))) return false;
       const candidateVariant = galleryVariantKey(image);
       return hasMultipleColourways
         ? Boolean(preferredVariant && candidateVariant === preferredVariant)
@@ -183,14 +182,16 @@ export function editorialGalleryPrimaryImageIndex(
 ) {
   const fallback = images[fallbackIndex];
   if (!fallback) return fallbackIndex;
+  // Keep the explicitly approved Velocity listing hero as its first product
+  // detail image; its curated gallery order is distinct from the other pairs.
+  if (/\bmain product listing\b/i.test(fallback.label || '')) return fallbackIndex;
 
   const variant = preferredVariant || fallback.colourway || fallback.variant || '';
   const frontIndex = preferredGallerySideIndex(images, 'front', variant, hasMultipleColourways);
   const rearIndex = preferredGallerySideIndex(images, 'rear', variant, hasMultipleColourways);
 
   // Only switch away from the source-selected default when an approved,
-  // variant-matched pair explicitly labelled as product views is present.
-  // Lifestyle and portrait galleries retain their curated default order.
+  // variant-matched front/rear pair is present. Otherwise retain the original.
   return frontIndex >= 0 && rearIndex >= 0 ? frontIndex : fallbackIndex;
 }
 
@@ -199,7 +200,7 @@ function secondaryGalleryImageIndex(images, primaryIndex, preferredVariant = '',
   if (!primary) return -1;
   const primaryVariant = galleryVariantKey(primary) || galleryVariantKey({ variant: preferredVariant });
 
-  if (gallerySide(primary, 'front') && /\bproduct\b/.test(normalizedGalleryLabel(primary))) {
+  if (gallerySide(primary, 'front')) {
     const rearIndex = preferredGallerySideIndex(
       images,
       'rear',

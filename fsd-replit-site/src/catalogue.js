@@ -1060,7 +1060,15 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       const selectedColourway = dialogBody.querySelector('[data-catalogue-selected-colourway]');
       if (selectedColourway) selectedColourway.textContent = colourway;
       const imageIndex = Number(colourwayInput.dataset.catalogueColourwayImageIndex);
-      if (imageIndex >= 0) selectDialogImage(imageIndex);
+      if (imageIndex >= 0) {
+        const pairedImageIndex = editorialGalleryPrimaryImageIndex(
+          activeDialogImages,
+          imageIndex,
+          colourway,
+          productColourwayOptions(activeDialogProduct).length > 1,
+        );
+        selectDialogImage(pairedImageIndex);
+      }
       else if (productColourwayOptions(activeDialogProduct).length > 1) showVariantImagePlaceholder(colourway);
       else if (activeDialogImages.length) selectDialogImage(0);
       else showVariantImagePlaceholder(colourway);
