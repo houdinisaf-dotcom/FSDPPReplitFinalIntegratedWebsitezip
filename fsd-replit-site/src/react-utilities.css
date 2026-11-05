@@ -85,8 +85,8 @@ html[data-theme="light"] .fsd-mega-menu {
 
 html[data-theme="light"] .header a,
 html[data-theme="light"] .header button,
-html[data-theme="light"] .fsd-mega-menu a,
-html[data-theme="light"] .fsd-mega-menu button,
+html[data-theme="light"] .fsd-mega-menu a:not(.fsd-feature-cta):not(.fsd-feature-media-action),
+html[data-theme="light"] .fsd-mega-menu button:not(.fsd-feature-cta):not(.fsd-feature-media-action),
 html[data-theme="light"] footer a,
 html[data-theme="light"] footer p,
 html[data-theme="light"] footer span {
@@ -149,6 +149,191 @@ html[data-theme="light"] .fsd-react-control {
 html[data-theme="light"] .fsd-react-control:hover {
   background: #dfd7c9;
   color: #111;
+}
+
+/* Keep the fixed navigation readable after its dark-mode scroll treatment. */
+html[data-theme="light"] .fsd-navigation-shell,
+html[data-theme="light"] .fsd-navigation-shell.is-scrolled,
+html[data-theme="light"] .fsd-navigation-shell.is-open,
+html[data-theme="light"] .fsd-navigation-shell .header.fsd-header,
+html[data-theme="light"] .fsd-navigation-shell.is-scrolled .header.fsd-header,
+html[data-theme="light"] .header.fsd-header.fsd-glass-surface {
+  border-color: rgb(35 32 26 / 18%);
+  background-color: #f5f1e8;
+  color: #171717;
+}
+
+html[data-theme="light"] .header.fsd-header .fsd-primary-trigger,
+html[data-theme="light"] .header.fsd-header .fsd-search-trigger,
+html[data-theme="light"] .header.fsd-header .fsd-bag-toggle,
+html[data-theme="light"] .header.fsd-header .fsd-mobile-toggle {
+  color: #28251f;
+}
+
+html[data-theme="light"] .header.fsd-header .fsd-header-note {
+  color: #59564f;
+}
+
+html[data-theme="light"] .header.fsd-header .fsd-bag-toggle {
+  border-color: rgb(35 32 26 / 32%);
+}
+
+html[data-theme="light"] .header.fsd-header .fsd-bag-count {
+  background: #dfd7c9;
+  color: #28251f;
+}
+
+html[data-theme="light"] .header.fsd-header :focus-visible,
+html[data-theme="light"] .fsd-react-control:focus-visible,
+html[data-theme="light"] .catalogue-control-panel :focus-visible,
+html[data-theme="light"] .fsd-category-tabs__item:focus-visible,
+html[data-theme="light"] .fsd-site-footer :focus-visible,
+html[data-theme="light"] .fsd-search-dialog :focus-visible {
+  outline-color: #73551d;
+}
+
+/* Light catalogue surfaces need their own readable toolbar contrast. */
+html[data-theme="light"] .shop .catalogue-control-panel {
+  border-color: rgb(35 32 26 / 24%);
+  background: #e9e4da;
+}
+
+html[data-theme="light"] .catalogue-toolbar label {
+  color: #3f3b34;
+}
+
+html[data-theme="light"] .shop .catalogue-count,
+html[data-theme="light"] .catalogue-view-controls,
+html[data-theme="light"] .catalogue-view-state {
+  color: #59564f;
+}
+
+html[data-theme="light"] .shop .section-kicker,
+html[data-theme="light"] .shop .section-heading > p {
+  color: #59564f;
+}
+
+html[data-theme="light"] .catalogue-toolbar select,
+html[data-theme="light"] .catalogue-toolbar input {
+  border-color: #898477;
+  background-color: #f9f7f1;
+  color: #25231e;
+}
+
+html[data-theme="light"] .catalogue-view-controls button,
+html[data-theme="light"] .catalogue-chip,
+html[data-theme="light"] .catalogue-clear-all {
+  border-color: #898477;
+  color: #39362f;
+}
+
+html[data-theme="light"] .catalogue-view-controls button[aria-pressed="true"] {
+  border-color: #39362f;
+  background: #39362f;
+  color: #fff;
+}
+
+html[data-theme="light"] .catalogue-garment-category-browser__label,
+html[data-theme="light"] #catalogue-garment-category-tabs button {
+  color: #59564f;
+}
+
+html[data-theme="light"] #dialog-body .product-detail-purchase .section-kicker {
+  color: #73551d;
+}
+
+html[data-theme="light"] .fsd-search-dialog .fsd-search-kicker,
+html[data-theme="light"] .fsd-search-dialog .fsd-search-suggestions > p,
+html[data-theme="light"] .fsd-search-dialog .fsd-search-close span:last-child {
+  color: #73551d;
+}
+
+html[data-theme="light"] .fsd-mega-menu .fsd-mega-heading h2 {
+  color: #171717;
+}
+
+html[data-theme="light"] .fsd-mega-menu .fsd-mega-eyebrow,
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-column > h3,
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-empty {
+  color: #59564f;
+}
+
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-option:hover,
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-option:focus-visible,
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-option.is-active,
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-group:hover,
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-group:focus-visible,
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-group.is-active {
+  color: #28251f;
+}
+
+html[data-theme="light"] .fsd-mega-menu .fsd-nav-arrow,
+html[data-theme="light"] .fsd-mega-menu .fsd-mega-close-icon {
+  color: #70551d;
+}
+
+html[data-theme="light"] .fsd-category-tabs {
+  --category-tabs-ink: #28251f;
+  --category-tabs-muted: #59564f;
+  --category-tabs-gold: #73551d;
+  --category-tabs-line: rgb(35 32 26 / 28%);
+}
+
+html[data-theme="light"] .fsd-category-tabs .fsd-category-tabs__item {
+  background: rgb(255 255 255 / 28%);
+  color: #59564f;
+}
+
+html[data-theme="light"] .fsd-category-tabs .fsd-category-tabs__item:hover,
+html[data-theme="light"] .fsd-category-tabs .fsd-category-tabs__item[aria-pressed="true"] {
+  border-color: #73551d;
+  background: #dfd7c9;
+  color: #28251f;
+}
+
+html[data-theme="light"] .fsd-category-tabs .fsd-category-tabs__count,
+html[data-theme="light"] .fsd-category-tabs .fsd-category-tabs__item[aria-pressed="true"] .fsd-category-tabs__count {
+  border-color: rgb(35 32 26 / 28%);
+  color: #59564f;
+}
+
+/* Preserve the bag's dark panel instead of applying the page footer palette. */
+html[data-theme="light"] .fsd-bag-dialog .fsd-bag-footer {
+  border-color: rgb(224 212 190 / 18%);
+  background: #101214;
+  color: #f1eee8;
+}
+
+html[data-theme="light"] .fsd-bag-dialog .fsd-bag-subtotal span {
+  color: #c5c0b6;
+}
+
+html[data-theme="light"] .fsd-bag-dialog .fsd-bag-subtotal strong {
+  color: #f1dfba;
+}
+
+html[data-theme="light"] .fsd-bag-dialog .fsd-bag-note {
+  color: #c5c0b6;
+}
+
+html[data-theme="light"] .fsd-bag-dialog .fsd-bag-checkout {
+  color: #e5c76f;
+}
+
+/* Dark gold accents lose contrast on the warm light footer background. */
+html[data-theme="light"] .fsd-site-footer .fsd-site-footer__group h3,
+html[data-theme="light"] .fsd-site-footer .fsd-site-footer__newsletter h3 {
+  color: #70551d;
+}
+
+html[data-theme="light"] .fsd-site-footer .fsd-site-footer__bottom {
+  color: #59564f;
+}
+
+html[data-theme="light"] .fsd-site-footer .fsd-site-footer__bottom small,
+html[data-theme="light"] .fsd-site-footer .fsd-site-footer__group a:hover,
+html[data-theme="light"] .fsd-site-footer .fsd-site-footer__bottom a:hover {
+  color: #59564f;
 }
 
 @media (prefers-reduced-motion: reduce) {
