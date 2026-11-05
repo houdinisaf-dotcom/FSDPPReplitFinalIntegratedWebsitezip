@@ -3,11 +3,11 @@ name: Catalogue approval boundaries
 description: How to interpret product decisions and unresolved manufacturer details
 ---
 
-The latest site-wide directive supersedes earlier customer-facing status and visibility holds: show existing products, categories and features as current offerings, without CONCEPT, DRAFT, PREVIEW, PENDING REVIEW, PRIVATE VIEWING or PLACEHOLDER labels. Existing master values are approved; missing values stay blank.
+The latest site-wide directive supersedes earlier customer-facing status and visibility holds: show existing products, categories and features as current offerings, without CONCEPT, DRAFT, PREVIEW, PENDING REVIEW, PRIVATE VIEWING or PLACEHOLDER labels. Keep blank-publication-status records at their current public visibility, but do not infer, rewrite, or present their source status as Active. Existing master values are approved; missing values stay blank.
 
-**Why:** The user later explicitly directed that all existing inventory be treated as production-ready and selected approval of existing catalogue values.
+**Why:** The user directed that existing inventory be treated as production-ready and approved existing catalogue values. After learning that 61 of 79 master records have blank publication status, the user chose to keep their current public visibility rather than hide them or make them preview-only.
 
-**How to apply:** Keep every existing record. Use only values already present in the master catalogue; do not invent specifications, prices, materials, claims or product mappings. Do not change payment or checkout controls solely as part of removing status copy.
+**How to apply:** Keep every existing record and preserve blank status values exactly. Keep blank-status records visible under the current catalogue behavior unless the user changes this policy; never describe the blank status itself as Active. Use only values already present in the master catalogue; do not invent specifications, prices, materials, claims or product mappings. Do not change payment or checkout controls solely as part of removing status copy.
 
 Approval to display inventory does not fill missing manufacturer details such as set contents, increments or technical construction.
 
