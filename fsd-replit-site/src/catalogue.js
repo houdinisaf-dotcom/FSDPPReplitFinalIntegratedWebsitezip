@@ -128,7 +128,7 @@ function updateControls() {
       availableLineIds.has(line.id) || line.id === activeLine);
     const options = [
       '<option value="All">All clothing lines</option>',
-      ...visibleLines.map(line => `<option value="${safe(line.id)}">${safe(line.title)}${availableLineIds.has(line.id) ? '' : ' — no matching products'}</option>`),
+      ...visibleLines.map(line => `<option value="${safe(line.id)}">${safe(line.title)}${availableLineIds.has(line.id) ? '' : ' — The Collection is currently being curated.'}</option>`),
     ].join('');
     if (lineControl.innerHTML !== options) lineControl.innerHTML = options;
     lineControl.value = activeLine;
@@ -449,7 +449,7 @@ function renderResults() {
   const start = (page - 1) * pageSize;
   document.querySelector('#catalogue-count').textContent = filtered.length
     ? `Showing ${start + 1}–${Math.min(start + pageSize, filtered.length)} of ${filtered.length} ${filtered.length === 1 ? 'product' : 'products'}`
-    : 'No matching products';
+    : 'The Collection is currently being curated.';
   const visibleProducts = filtered.slice(start, start + pageSize).map(product => {
     const hardwarePreview = isHardwareVisualPreviewProduct(product);
     const specificationRows = verifiedSpecificationRows(product);

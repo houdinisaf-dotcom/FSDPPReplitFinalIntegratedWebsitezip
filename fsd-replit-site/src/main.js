@@ -35,6 +35,7 @@ import './immersive-product-gallery.css';
 import './house-pages/house-destination-index.css';
 import './site-cta.css';
 import './site-footer.css';
+import './ui-interactions.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 

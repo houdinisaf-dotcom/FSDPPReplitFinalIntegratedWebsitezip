@@ -4,6 +4,7 @@
 - [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
 - [House of Performance approvals](house-of-performance-approvals.md) — keep House as a route index; isolate each destination and gate unapproved routes.
 - [Private enquiry delivery](private-enquiry-delivery.md) — email is the approved destination, but submission stays disabled until provider, inbox, privacy, and retention are configured.
+- [Footer newsletter gate](footer-newsletter-gate.md) — keep footer sign-up inactive until delivery, consent, privacy, and retention are configured.
 - [Velocity product approval boundary](velocity-hijab-proof.md) — apply the approved £34.99 update with Black / Gold; keep CORE colourways and the older archive separate.
 - [CORE hijab photo approval](core-hijab-gallery.md) — use CORE Sports Hijab; map photos only to Black/Gold and retain seven colourways.
 - [Modest Flow draft boundary](modest-flow-draft-boundary.md) — the coordinated set remains separate from the existing trousers record; keep commercial details pending.

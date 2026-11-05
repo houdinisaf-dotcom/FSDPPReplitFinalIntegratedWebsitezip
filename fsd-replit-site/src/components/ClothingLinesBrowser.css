@@ -48,7 +48,7 @@
   font: 10px/1.5 "Space Mono", monospace;
   letter-spacing: .04em;
 }
-.fsd-clothing-browser { padding: 0 0 54px; color: #e9e4d8; }
+.fsd-clothing-browser { padding: 0 0 var(--fsd-shop-section-gap, 54px); color: #e9e4d8; }
 .fsd-clothing-nav {
   position: sticky;
   z-index: 20;
@@ -191,7 +191,7 @@
 .fsd-clothing-line {
   /* The shared document scroll-padding already accounts for the site header. */
   scroll-margin-top: 80px;
-  margin: 0 0 74px;
+  margin: 0 0 var(--fsd-shop-section-gap, 74px);
   border-top: 1px solid color-mix(in srgb, var(--line-accent), transparent 55%);
   opacity: .92;
   transition: opacity .3s ease;
@@ -502,7 +502,7 @@
   .fsd-clothing-nav__links a { min-height: 53px; padding: 0 3px; font-size: 9px; }
   .fsd-clothing-nav__active-mark { flex-basis: 76px; width: 76px; height: 44px; }
   .fsd-clothing-product__views-rail { gap: 8px; }
-  .fsd-clothing-line { margin-bottom: 52px; scroll-margin-top: 72px; }
+  .fsd-clothing-line { margin-bottom: var(--fsd-shop-section-gap, 52px); scroll-margin-top: 72px; }
   .fsd-clothing-line__banner { grid-template-columns: 1fr; }
   .fsd-clothing-line__copy { min-height: 230px; padding: 28px 24px; }
   .fsd-clothing-line__visual, .fsd-clothing-line__image, .fsd-clothing-line__image-pending { min-height: 270px; max-height: 370px; }

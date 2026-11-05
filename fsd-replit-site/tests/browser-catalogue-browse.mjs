@@ -216,12 +216,12 @@ try {
     line.value = "aeroforge";
     line.dispatchEvent(new Event("change", { bubbles: true }));
   })()`);
-  await waitFor('new URLSearchParams(location.search).get("line") === "aeroforge" && document.querySelector("#catalogue-count")?.textContent === "No matching products"');
+  await waitFor('new URLSearchParams(location.search).get("line") === "aeroforge" && document.querySelector("#catalogue-count")?.textContent === "The Collection is currently being curated."');
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-grid .product-card--visual").length'), 0);
   assert.equal(await evaluate('document.querySelector("#catalogue-active-filters")?.textContent.includes("Leggings") && document.querySelector("#catalogue-active-filters")?.textContent.includes("AEROFORGE")'), true);
 
   await send('Page.reload', { ignoreCache: true });
-  await waitFor('new URLSearchParams(location.search).get("line") === "aeroforge" && new URLSearchParams(location.search).get("garment") === "leggings" && document.querySelector("#catalogue-count")?.textContent === "No matching products"');
+  await waitFor('new URLSearchParams(location.search).get("line") === "aeroforge" && new URLSearchParams(location.search).get("garment") === "leggings" && document.querySelector("#catalogue-count")?.textContent === "The Collection is currently being curated."');
   await evaluate('history.back()');
   await waitFor('new URLSearchParams(location.search).get("line") === null && new URLSearchParams(location.search).get("garment") === "leggings" && document.querySelector("#catalogue-count")?.textContent.includes("of 4 products")');
 
@@ -256,12 +256,20 @@ try {
     await waitFor('Boolean(document.querySelector("#line-products-aeroforge"))');
     const grid = await evaluate(`(() => {
       const element = document.querySelector("#line-products-aeroforge");
+      const browser = document.querySelector(".fsd-clothing-browser");
+      const section = document.querySelector(".fsd-clothing-line");
+      const catalogue = document.querySelector("#products.shop");
       return {
         columns: getComputedStyle(element).gridTemplateColumns.trim().split(/\\s+/).length,
+        browserBottomSpace: getComputedStyle(browser).paddingBottom,
+        sectionBottomSpace: getComputedStyle(section).marginBottom,
+        catalogueBottomSpace: getComputedStyle(catalogue).paddingBottom,
         horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
       };
     })()`);
     assert.equal(grid.columns, viewport.columns, `AEROFORGE line grid has the wrong ${viewport.name} column count.`);
+    assert.equal(grid.browserBottomSpace, grid.sectionBottomSpace, `Shop section spacing is inconsistent at ${viewport.name}.`);
+    assert.equal(grid.browserBottomSpace, grid.catalogueBottomSpace, `Catalogue and collection spacing is inconsistent at ${viewport.name}.`);
     assert.equal(grid.horizontalOverflow, false, `AEROFORGE line grid overflows at ${viewport.name}.`);
   }
 

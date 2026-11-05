@@ -1,0 +1,15 @@
+button:not(:disabled):active,
+input[type="submit"]:not(:disabled):active,
+[role="button"]:not([aria-disabled="true"]):active,
+a.fsd-cta:active {
+  scale: .98;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button:not(:disabled):active,
+  input[type="submit"]:not(:disabled):active,
+  [role="button"]:not([aria-disabled="true"]):active,
+  a.fsd-cta:active {
+    scale: 1;
+  }
+}

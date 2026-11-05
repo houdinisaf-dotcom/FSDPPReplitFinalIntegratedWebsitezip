@@ -135,9 +135,41 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("[data-division=\\"apparel\\"]")');
   await waitFor('!!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools") && !!document.querySelector(".fsd-reading-progress")');
+  await waitFor('!!document.querySelector("[data-fsd-luxury-entry]")');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-fsd-luxury-entry]")).backgroundColor'), 'rgb(10, 10, 10)');
+  assert.equal(await evaluate('!!document.querySelector("[data-fsd-luxury-entry] img")'), true);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-site-footer__top > .fsd-site-footer__column").length'), 4);
+  assert.equal(await evaluate('document.querySelector(".fsd-site-footer__newsletter-controls input")?.disabled'), true);
+  assert.equal(await evaluate('document.querySelector(".fsd-site-footer__newsletter-controls button")?.disabled'), true);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-site-footer__top")).gridTemplateColumns.trim().split(/\\s+/).length'), 4);
+  await waitFor('!document.querySelector("[data-fsd-luxury-entry]")');
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 768, height: 1024, deviceScaleFactor: 1, mobile: true,
+  });
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-site-footer__top")).gridTemplateColumns.trim().split(/\\s+/).length'), 2);
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 402, height: 874, deviceScaleFactor: 1, mobile: true,
+  });
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-site-footer__top")).gridTemplateColumns.trim().split(/\\s+/).length'), 1);
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,
+  });
+  await delay(150);
   await delay(350);
   assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-navigation-shell]")).backgroundColor'), 'rgba(0, 0, 0, 0)');
   assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-navigation-shell] .fsd-header")).backgroundColor'), 'rgba(0, 0, 0, 0)');
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
+  const activeButton = await evaluate(`(() => {
+    const rect = document.querySelector('[data-nav-primary="collections"]').getBoundingClientRect();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+  })()`);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', ...activeButton });
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', ...activeButton, button: 'left', clickCount: 1 });
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-nav-primary=\\"collections\\"]")).scale'), '0.98');
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 10, y: 900, button: 'left', clickCount: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 10, y: 900 });
+  await waitFor('document.querySelector("#fsd-mega-menu").hidden');
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await evaluate('window.scrollTo({ top: 50, left: 0, behavior: "instant" })');
   await delay(50);
   assert.equal(await evaluate('document.querySelector("[data-navigation-shell]")?.classList.contains("is-scrolled")'), false);
@@ -948,7 +980,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
     search.value = "FSD product that does not exist";
     search.dispatchEvent(new Event("input", { bubbles: true }));
   })()`);
-  await waitFor('document.querySelector("#catalogue-count").textContent === "No matching products" && !!document.querySelector("#catalogue-grid [data-clear-filters]")');
+  await waitFor('document.querySelector("#catalogue-count").textContent === "The Collection is currently being curated." && !!document.querySelector("#catalogue-grid [data-clear-filters]")');
   await click('#catalogue-grid [data-clear-filters]');
   await waitFor('document.querySelector("#catalogue-count").textContent.includes("of ") && document.querySelector("#catalogue-collection").value === "All" && document.querySelector("#catalogue-category").value === "All" && document.querySelector("#catalogue-audience").value === "All" && document.querySelector("#catalogue-sort").value === "featured" && document.querySelector("#catalogue-grid").dataset.view === "visual"');
   await assertNoHorizontalPageScroll();
@@ -1217,7 +1249,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await waitFor('document.querySelector("#catalogue-archive").open && document.querySelector("#fsd-mega-menu").hidden && document.querySelector("#catalogue-collection").value === "womens-modest-combat" && document.querySelector("#search").value === "Hijab"');
   await assertNoHorizontalPageScroll();
   await waitFor('(() => { const rect = document.querySelector("#products").getBoundingClientRect(); return rect.bottom > 0 && rect.top < window.innerHeight; })()');
-  assert.equal(await evaluate('document.querySelector("#catalogue-count").textContent !== "No matching products"'), true);
+  assert.equal(await evaluate('document.querySelector("#catalogue-count").textContent !== "The Collection is currently being curated."'), true);
   await click('[data-nav-mobile-toggle]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.step === "primary"');
   await key('Escape');
@@ -1295,6 +1327,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('document.querySelector("#fsd-search-dialog").textContent.includes("£")'), false);
   await click('.fsd-search-empty .fsd-search-all');
   await waitFor(`!document.querySelector("#fsd-search-dialog").open && document.querySelector("#catalogue-archive").open && document.querySelector("#search").value === ${JSON.stringify('FSD Ombré Slash Tee')}`);
+  assert.equal(await evaluate('document.querySelector("[data-fsd-luxury-entry]") === null'), true);
 
   await click('[data-search-open]');
   await waitFor('document.querySelector("#fsd-search-dialog")?.open');

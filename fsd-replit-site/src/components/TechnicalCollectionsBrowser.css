@@ -33,13 +33,13 @@
 }
 
 .fsd-technical-browser {
-  padding: 0 0 54px;
+  padding: 0 0 var(--fsd-shop-section-gap, 54px);
   color: #e9e4d8;
 }
 
 .fsd-established-collection {
   scroll-margin-top: calc(var(--fsd-navigation-stack-height, 105px) + 16px);
-  margin: 0 0 74px;
+  margin: 0 0 var(--fsd-shop-section-gap, 74px);
   border-top: 1px solid color-mix(in srgb, var(--line-accent, #d4af37), transparent 55%);
 }
 
@@ -76,7 +76,7 @@
   .fsd-technical-archive { padding: 0 20px; }
   .fsd-technical-archive > summary { flex-wrap: wrap; gap: 5px 12px; padding: 18px 0; }
   .fsd-technical-archive > summary small { width: 100%; margin-left: 0; }
-  .fsd-established-collection { margin-bottom: 52px; }
+  .fsd-established-collection { margin-bottom: var(--fsd-shop-section-gap, 52px); }
   .fsd-established-collection .fsd-clothing-line__banner { grid-template-columns: 1fr; }
   .fsd-established-collection .fsd-clothing-line__copy { min-height: 230px; padding: 28px 24px; }
   .fsd-established-collection .fsd-clothing-products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }

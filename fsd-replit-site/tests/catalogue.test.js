@@ -908,7 +908,7 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     assert.match(element('#catalogue-grid').innerHTML, /data-product="51"/);
     assert.doesNotMatch(element('#catalogue-grid').innerHTML, /data-product="18"/);
     assert.equal(selectCatalogueGarmentCategory('leggings'), true);
-    assert.equal(element('#catalogue-count').textContent, 'No matching products');
+    assert.equal(element('#catalogue-count').textContent, 'The Collection is currently being curated.');
     assert.match(element('#catalogue-active-filters').innerHTML, /AEROFORGE/);
     assert.match(element('#catalogue-active-filters').innerHTML, /Leggings/);
 
@@ -1096,7 +1096,9 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(page, /AEROFORGE represents FSD’s direction in technical training apparel/);
     assert.doesNotMatch(page, /IN DEVELOPMENT|PRE-LAUNCH|FSD DEVELOPMENT ROADMAP/i);
     assert.doesNotMatch(page, /Sign up today/i);
-    assert.doesNotMatch(page, /<form|type="email"/i);
+    assert.doesNotMatch(page, /<form\b/i);
+    assert.match(page, /<input id="fsd-newsletter-email"[^>]*type="email"[^>]*disabled aria-disabled="true"/i);
+    assert.match(page, /<button type="button" disabled aria-disabled="true">JOIN<\/button>/i);
     assert.ok(page.indexOf('data-home-hero-slot') < page.indexOf('class="fsd-showcase fsd-showcase--editorial"'));
     assert.ok(page.indexOf('class="fsd-showcase"') < page.indexOf('id="innovations"'));
     assert.ok(page.indexOf('id="innovations"') < page.indexOf('id="philosophy"'));

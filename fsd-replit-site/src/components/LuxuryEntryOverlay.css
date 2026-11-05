@@ -1,0 +1,39 @@
+.fsd-luxury-entry {
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #0a0a0a;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.fsd-luxury-entry.is-leaving {
+  opacity: 0;
+}
+
+.fsd-luxury-entry__logo {
+  display: block;
+  width: min(190px, 42vw);
+  max-height: 92px;
+  object-fit: contain;
+  animation: fsd-entry-logo-pulse 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes fsd-entry-logo-pulse {
+  0%,
+  100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-luxury-entry,
+  .fsd-luxury-entry__logo {
+    animation: none;
+    transition: none;
+  }
+}

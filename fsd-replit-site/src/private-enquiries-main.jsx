@@ -4,6 +4,7 @@ import './style.css';
 import './private-enquiries.css';
 import './site-cta.css';
 import './site-footer.css';
+import './ui-interactions.css';
 import './bag.css';
 
 const root = document.getElementById('private-enquiries-root');

@@ -31,6 +31,7 @@ import './react-utilities.css';
 import './lazy-image-loading.css';
 import './collection-route.css';
 import { CatalogueLoading, CatalogueErrorBoundary } from './components/CatalogueLoadState.jsx';
+import { LuxuryEntryOverlay } from './components/LuxuryEntryOverlay.jsx';
 import 'lenis/dist/lenis.css';
 
 const CatalogList = lazy(() => import('./components/CatalogList.jsx')
@@ -300,5 +301,10 @@ function AppRouter({ hardwareForgeExtension }) {
 
 export default function App({ hardwareForgeExtension }) {
   useGoldCursor();
-  return <AppRouter hardwareForgeExtension={hardwareForgeExtension} />;
+  return (
+    <>
+      <LuxuryEntryOverlay />
+      <AppRouter hardwareForgeExtension={hardwareForgeExtension} />
+    </>
+  );
 }
