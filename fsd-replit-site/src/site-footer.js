@@ -3,7 +3,7 @@ const FOOTER_GROUPS = [
     label: 'Shop',
     links: [
       ['Collections', '/#collections'],
-      ['Full catalogue', '/#catalogue-archive'],
+      ['Full catalogue', '/#products'],
     ],
   },
   {

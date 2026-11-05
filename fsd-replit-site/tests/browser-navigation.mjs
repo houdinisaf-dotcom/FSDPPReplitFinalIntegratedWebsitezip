@@ -1310,11 +1310,19 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(submittedSearchEvent?.data?.destination_type, 'product');
   assert.equal(Object.hasOwn(submittedSearchEvent.data, 'query'), false);
 
+  await send('Page.navigate', { url: `https://${domain}/#products` });
+  await waitFor('location.pathname === "/" && location.hash === "#products" && document.querySelector("#catalogue-archive")?.open');
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
+  assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
+  await evaluate('history.replaceState({}, "", "/")');
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
-  await click('footer a[href="/#catalogue-archive"]');
-  await waitFor('document.querySelector("#catalogue-archive").open');
+  await click('footer a[href="/#products"]');
+  await waitFor('location.pathname === "/" && location.hash === "#products" && document.querySelector("#catalogue-archive")?.open === true');
+  await evaluate('history.back()');
+  await waitFor('location.pathname === "/" && location.hash === "" && !document.querySelector("#catalogue-archive").open');
+  await evaluate('history.forward()');
+  await waitFor('location.pathname === "/" && location.hash === "#products" && document.querySelector("#catalogue-archive")?.open === true');
   await waitFor('document.querySelector("#catalogue-grid")?.dataset.view === "visual"');
   await waitFor('!!document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")');
   const addableProductId = await evaluate('document.querySelector("#catalogue-grid [data-can-add-to-bag=\\"true\\"]")?.dataset.product');
@@ -1343,6 +1351,15 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await click('[data-bag-clear]');
   await click('[data-bag-close]');
   await waitFor('!document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
+
+  await send('Page.navigate', { url: `https://${domain}/enquiries.html` });
+  await waitFor('Boolean(location.pathname === "/enquiries.html" && document.querySelector("#private-enquiries-title"))');
+  await click('footer a[href="/#products"]');
+  await waitFor('location.pathname === "/" && location.hash === "#products" && document.querySelector("#catalogue-archive")?.open === true');
+  await evaluate('history.back()');
+  await waitFor('Boolean(location.pathname === "/enquiries.html" && document.querySelector("#private-enquiries-title"))');
+  await evaluate('history.forward()');
+  await waitFor('location.pathname === "/" && location.hash === "#products" && document.querySelector("#catalogue-archive")?.open === true');
 
   await send('Emulation.setDeviceMetricsOverride', {
     width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false,

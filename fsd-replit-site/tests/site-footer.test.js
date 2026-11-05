@@ -11,7 +11,7 @@ test('shared footer uses existing destinations and the private enquiry route', (
 
   for (const path of [
     '/#collections',
-    '/#catalogue-archive',
+    '/#products',
     '/the-house.html',
     '/fight-promotions.html',
     '/investor.html',
