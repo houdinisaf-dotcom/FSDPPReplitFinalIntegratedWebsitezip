@@ -10,6 +10,7 @@ import { productImagesForDisplay } from './data/products.js';
 import { rotationFramesForProduct } from './product-rotation-assets.js';
 import { productStructuredData } from './product-structured-data.js';
 import { MAX_BAG_QUANTITY } from './bag.js';
+import { CLOTHING_LINES, productBelongsToLine } from './clothing-lines.js';
 
 export function productSizeOptions(product) {
   return String(product?.sizes || '')
@@ -359,6 +360,12 @@ export function renderProductDetailPage({
   hardwarePreview = false,
 }) {
   const breadcrumbCategory = product.category || 'FSD Collection';
+  const breadcrumbLine = CLOTHING_LINES.find(line => productBelongsToLine(product, line.id));
+  const detailBreadcrumb = breadcrumbLine
+    ? `<li><a href="/collections/${safe(breadcrumbLine.id)}">${safe(breadcrumbLine.title)}</a></li>`
+    : product.category
+      ? `<li><a href="#products" data-category-link="${safe(product.category)}">${safe(product.category)}</a></li>`
+      : '';
   const description = product.description || '';
   const initialImage = images[initialImageIndex];
   const hasSecondaryImage = Boolean(initialImage && secondaryGalleryImageIndex(
@@ -409,8 +416,9 @@ export function renderProductDetailPage({
       <section class="product-detail-media" aria-label="${safe(product.name)} product images">${imageMarkup}${rotationMarkup}</section>
       <section class="product-detail-purchase" aria-labelledby="product-title">
         <nav class="catalogue-breadcrumbs" aria-label="Breadcrumb"><ol>
-          <li><a href="#products" data-shop-breadcrumb>Collections</a></li>
-          <li><a href="#products" data-category-link="${safe(product.category)}">${safe(breadcrumbCategory)}</a></li>
+          <li><a href="#products" data-shop-breadcrumb>SHOP</a></li>
+          ${product.audience ? `<li>${safe(product.audience)}</li>` : ''}
+          ${detailBreadcrumb}
           <li aria-current="page">${safe(product.name)}</li>
         </ol></nav>
         <button class="catalogue-back" type="button" data-catalogue-back>RETURN TO THE HOUSE</button>

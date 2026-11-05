@@ -44,7 +44,8 @@
   left: 0;
   z-index: 60;
   width: 100%;
-  background: #090a0c;
+  background: transparent;
+  transition: background-color 300ms ease-in-out;
 }
 
 .fsd-navigation-spacer {
@@ -59,7 +60,25 @@
   height: 80px;
   padding: 0 clamp(20px, 5vw, 76px);
   border-bottom: 1px solid rgba(215, 207, 189, 0.12);
-  background: rgba(9, 10, 12, 0.98);
+  background: transparent;
+  transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out;
+}
+
+.fsd-navigation-shell.is-scrolled {
+  background: #0a0a0a;
+}
+
+.fsd-navigation-shell.is-scrolled .header.fsd-header {
+  border-bottom-color: rgba(212, 175, 55, 0.2);
+  background: #0a0a0a;
+}
+
+.fsd-navigation-shell:not(.is-scrolled) {
+  background: transparent;
+}
+
+.fsd-navigation-shell:not(.is-scrolled) .header.fsd-header {
+  background: transparent;
 }
 
 .header.fsd-header .fsd-brand {
@@ -678,6 +697,44 @@
   background: rgba(200, 170, 114, 0.08);
   color: #9d9687;
   cursor: not-allowed;
+}
+
+.fsd-primary-trigger[data-nav-primary="collections"] {
+  color: #d4af37;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-inner {
+  padding-block: clamp(30px, 3.2vw, 48px);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-columns {
+  gap: clamp(24px, 3.2vw, 54px);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-group {
+  padding-block: 14px;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta {
+  border: 1px solid #d4af37;
+  border-radius: 0;
+  background: #0a0a0a;
+  color: #d4af37;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:hover,
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:focus-visible {
+  border-color: #d4af37;
+  background: #d4af37;
+  color: #0a0a0a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-navigation-shell,
+  .header.fsd-header {
+    transition-duration: 0.01ms;
+  }
 }
 
 .fsd-mobile-stepbar,

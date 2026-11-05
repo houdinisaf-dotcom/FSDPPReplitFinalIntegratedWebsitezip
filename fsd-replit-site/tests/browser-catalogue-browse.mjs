@@ -156,6 +156,11 @@ try {
   await send('Runtime.enable');
   await send('DOM.enable');
   await navigate('/collections/women');
+  assert.deepEqual(
+    await evaluate('Array.from(document.querySelectorAll("#catalogue-archive .catalogue-breadcrumbs li"), item => item.textContent.trim())'),
+    ['SHOP', 'WOMEN'],
+    'The standalone Women’s collection should show its breadcrumb.',
+  );
 
   for (const viewport of [
     { name: 'desktop', width: 1440, height: 900, mobile: false, columns: 4 },
@@ -234,8 +239,33 @@ try {
     assert.ok(page.cards > 0, `The ${line} route rendered no product cards.`);
     assert.equal(page.cards, page.uniqueCards, `The ${line} route duplicated product cards.`);
     assert.ok(page.height < 15000, `The ${line} route appears to contain stacked pages (${page.height}px).`);
+    const crumbs = await evaluate(`Array.from(document.querySelectorAll("#line-${line} .catalogue-breadcrumbs li"), item => item.textContent.trim())`);
+    assert.equal(crumbs[0], 'SHOP', `${line} is missing its Shop breadcrumb.`);
+    assert.ok(['WOMEN', 'MEN'].includes(crumbs[1]), `${line} is missing its audience breadcrumb.`);
+    assert.ok(crumbs[2], `${line} is missing its collection breadcrumb.`);
   }
 
+  for (const viewport of [
+    { name: 'desktop', width: 1440, height: 900, mobile: false, columns: 4 },
+    { name: 'laptop', width: 1280, height: 900, mobile: false, columns: 4 },
+    { name: 'tablet', width: 768, height: 1024, mobile: true, columns: 3 },
+    { name: 'mobile', width: 402, height: 874, mobile: true, columns: 2 },
+  ]) {
+    await setViewport(viewport.width, viewport.height, viewport.mobile);
+    await send('Page.navigate', { url: `https://${domain}/collections/aeroforge` });
+    await waitFor('Boolean(document.querySelector("#line-products-aeroforge"))');
+    const grid = await evaluate(`(() => {
+      const element = document.querySelector("#line-products-aeroforge");
+      return {
+        columns: getComputedStyle(element).gridTemplateColumns.trim().split(/\\s+/).length,
+        horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
+      };
+    })()`);
+    assert.equal(grid.columns, viewport.columns, `AEROFORGE line grid has the wrong ${viewport.name} column count.`);
+    assert.equal(grid.horizontalOverflow, false, `AEROFORGE line grid overflows at ${viewport.name}.`);
+  }
+
+  await setViewport(402, 874, true);
   for (const collection of [
     { path: '/collections/men', expectedCount: 23 },
     { path: '/collections/accessories', expectedCount: 11 },
@@ -257,6 +287,9 @@ try {
     assert.ok(page.resultText.includes(`of ${collection.expectedCount} products`),
       `${collection.path} returned an unexpected product total: ${page.resultText}`);
     assert.equal(page.horizontalOverflow, false, `${collection.path} overflows horizontally.`);
+    const crumbs = await evaluate(`Array.from(document.querySelectorAll("#catalogue-archive .catalogue-breadcrumbs li"), item => item.textContent.trim())`);
+    assert.equal(crumbs[0], 'SHOP');
+    assert.ok(crumbs[1], `${collection.path} is missing its collection breadcrumb.`);
   }
 
   assert.deepEqual(browserErrors, []);

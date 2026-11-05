@@ -1,5 +1,6 @@
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { imageSwatchBackground, productImagesForDisplay } from '../data/products.js';
+import { CLOTHING_LINES, productBelongsToLine } from '../clothing-lines.js';
 import { productColourwayImageIndex, productColourwayOptions } from '../product-card-media.js';
 import { productSizeOptions } from '../product-detail-page.js';
 import { ImagePlaceholder } from './ImagePlaceholder.jsx';
@@ -39,6 +40,7 @@ export function ProductDetail({
   const images = productImagesForDisplay(product);
   const selectedImage = images.find(image => image.label === selectedAngle) || (selectedAngle ? images[0] : null);
   const colourways = productColourwayOptions(product);
+  const breadcrumbLine = CLOTHING_LINES.find(line => productBelongsToLine(product, line.id));
 
   const chooseColourway = colourway => {
     setSelectedColor(colourway);
@@ -70,13 +72,24 @@ export function ProductDetail({
               layoutId={`catalogue-product-image-${product.id}`}
               className="fsd-catalog-detail__image-stage fsd-catalog-detail__shared-image"
             >
-              <SafeImage
-                data-catalogue-inline-image
-                src={selectedImage.src}
-                alt={`${product.name} — ${selectedImage.label}`}
-                  placeholderTitle={product.name}
-                  variantLabel={selectedImage.colourway || selectedImage.variant || selectedImage.size || ''}
-              />
+              <AnimatePresence initial={false} mode="sync">
+                <motion.div
+                  key={`${selectedImage.src}-${selectedImage.label}`}
+                  className="fsd-catalog-detail__image-fade"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                >
+                  <SafeImage
+                    data-catalogue-inline-image
+                    src={selectedImage.src}
+                    alt={`${product.name} — ${selectedImage.label}`}
+                    placeholderTitle={product.name}
+                    variantLabel={selectedImage.colourway || selectedImage.variant || selectedImage.size || ''}
+                  />
+                </motion.div>
+              </AnimatePresence>
             </motion.div>
             <figcaption>{selectedImage.label}</figcaption>
           </figure>
@@ -112,6 +125,20 @@ export function ProductDetail({
       <div className="fsd-catalog-detail__copy">
         <div>
           {product.collection && <p className="fsd-catalog-detail__eyebrow">{product.collection}</p>}
+          <nav className="catalogue-breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/#products">SHOP</a></li>
+              {product.audience && <li>{product.audience}</li>}
+              {breadcrumbLine
+                ? <li><a href={`/collections/${breadcrumbLine.id}`}>{breadcrumbLine.title}</a></li>
+                : product.category && (
+                  <li>
+                    <a href="#products" data-category-link={product.category}>{product.category}</a>
+                  </li>
+                )}
+              <li aria-current="page">{product.name}</li>
+            </ol>
+          </nav>
           <h3 id={`catalogue-expanded-title-${product.id}`}>{product.name}</h3>
           <dl className="fsd-catalog-detail__facts">
             {(product.rowDetails || []).map(([label, value]) => (

@@ -135,6 +135,18 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav") && !!document.querySelector("[data-division=\\"apparel\\"]")');
   await waitFor('!!document.querySelector("#fsd-react-footer-utilities .fsd-footer-tools") && !!document.querySelector(".fsd-reading-progress")');
+  await delay(350);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-navigation-shell]")).backgroundColor'), 'rgba(0, 0, 0, 0)');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-navigation-shell] .fsd-header")).backgroundColor'), 'rgba(0, 0, 0, 0)');
+  await evaluate('window.scrollTo({ top: 50, left: 0, behavior: "instant" })');
+  await delay(50);
+  assert.equal(await evaluate('document.querySelector("[data-navigation-shell]")?.classList.contains("is-scrolled")'), false);
+  await evaluate('window.scrollTo({ top: 51, left: 0, behavior: "instant" })');
+  await waitFor('document.querySelector("[data-navigation-shell]")?.classList.contains("is-scrolled")');
+  await delay(350);
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-navigation-shell]")).backgroundColor'), 'rgb(10, 10, 10)');
+  await evaluate('window.scrollTo({ top: 0, left: 0, behavior: "instant" })');
+  await waitFor('!document.querySelector("[data-navigation-shell]")?.classList.contains("is-scrolled")');
   const hasFinePointer = await evaluate('matchMedia("(pointer: fine)").matches');
   const desktopCursor = await evaluate('getComputedStyle(document.querySelector("a[href]")).cursor');
   const cursorStylesheet = await evaluate('document.getElementById("fsd-cursor")?.textContent ?? ""');

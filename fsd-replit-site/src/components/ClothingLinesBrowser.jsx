@@ -433,6 +433,15 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
                 style={{ '--line-accent': line.colour }}
                 aria-labelledby={`line-title-${line.id}`}
               >
+                {isStandaloneLine && (
+                  <nav className="catalogue-breadcrumbs" aria-label="Breadcrumb">
+                    <ol>
+                      <li><a href="/#products">SHOP</a></li>
+                      {line.audience && <li>{line.audience}</li>}
+                      <li aria-current="page">{line.title}</li>
+                    </ol>
+                  </nav>
+                )}
                 <header className="fsd-clothing-line__banner">
                   <div className="fsd-clothing-line__copy">
                     <p className="fsd-clothing-line__eyebrow">

@@ -1,5 +1,6 @@
 import { collectionDivisions } from './collection-divisions.js';
 import { CATALOGUE_COLLECTIONS, deriveTechnicalCollections } from './catalogue-collections.js';
+import { CLOTHING_LINES } from './clothing-lines.js';
 import { products as catalogueProducts } from './catalogue-data.js';
 import { groupProducts } from './collection-showcase/index.js';
 import { hoodedShellCampaign } from './hooded-shell-campaign.js';
@@ -222,6 +223,34 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     mensGroup.items = [...mensGroup.items, makeHoodedShellCampaignMenuItem()];
   }
 
+  const clothingLineItems = CLOTHING_LINES.map(line => ({
+    id: `clothing-line-${line.id}`,
+    title: line.title,
+    kind: 'clothing-line',
+    href: `/collections/${line.id}`,
+    description: `Open the ${line.title} collection.`,
+  }));
+  const womenLineItems = clothingLineItems.filter(item =>
+    CLOTHING_LINES.find(line => `clothing-line-${line.id}` === item.id)?.audience === 'WOMEN');
+  const menLineItems = clothingLineItems.filter(item =>
+    CLOTHING_LINES.find(line => `clothing-line-${line.id}` === item.id)?.audience === 'MEN');
+  groups.push(
+    {
+      id: 'womens-collections',
+      title: 'WOMEN’S COLLECTIONS',
+      description: 'Browse the established women’s apparel collections.',
+      href: '#clothing-lines',
+      items: womenLineItems,
+    },
+    {
+      id: 'mens-collections',
+      title: 'MEN’S COLLECTIONS',
+      description: 'Browse the established Tiger and Scorpion collections.',
+      href: '#clothing-lines',
+      items: menLineItems,
+    },
+  );
+
   const capsuleItems = makeSubcategoryItems(
     mens,
     division.id,
@@ -250,24 +279,9 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
     items: conceptItems,
     navigationUnavailable: true,
   }));
-  const clothingLineItems = [
-    { id: 'aeroforge', title: 'AEROFORGE' },
-    { id: 'combat', title: 'COMBAT' },
-    { id: 'flex', title: 'FLEX' },
-    { id: 'breeze', title: 'BREEZE' },
-    { id: 'modest-flow', title: 'MODEST FLOW' },
-    { id: 'tiger-series', title: 'FSD TIGER SERIES' },
-    { id: 'scorpion-series', title: 'FSD SCORPION SERIES' },
-  ].map(line => ({
-    id: `clothing-line-${line.id}`,
-    title: line.title,
-    kind: 'clothing-line',
-    href: `/collections/${line.id}`,
-    description: `Open the ${line.title} clothing-line section.`,
-  }));
   groups.push({
     id: 'clothing-lines',
-    title: 'CLOTHING LINES',
+    title: 'ALL COLLECTIONS',
     description: 'Browse the seven established FSD clothing lines.',
     href: '#clothing-lines',
     items: [{
@@ -276,7 +290,7 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
       kind: 'clothing-lines',
       href: '#clothing-lines',
       description: 'Open the complete clothing-lines archive.',
-    }, ...clothingLineItems],
+    }],
   });
   groups.push({
     id: 'catalogue-collections',
@@ -1064,6 +1078,7 @@ export function mountNavigation({
   onNavigate = () => {},
 } = {}) {
   if (!root) throw new TypeError('mountNavigation requires the FSD navigation shell.');
+  const windowRef = root.ownerDocument?.defaultView || window;
   installImageErrorFallbacks(root.ownerDocument || document);
   const panel = root.querySelector('[data-nav-panel]');
   const content = root.querySelector('[data-nav-content]');
@@ -1550,6 +1565,11 @@ export function mountNavigation({
   document.addEventListener('fsd:navigation-active', onCurrentNavigation);
   window.addEventListener('hashchange', updateCurrentFromHash);
   window.addEventListener('popstate', updateCurrentFromHash);
+  const updateHeaderScrollState = () => {
+    root.classList.toggle('is-scrolled', windowRef.scrollY > 50);
+  };
+  updateHeaderScrollState();
+  windowRef.addEventListener('scroll', updateHeaderScrollState, { passive: true });
   const sectionObserver = typeof IntersectionObserver === 'function'
     ? new IntersectionObserver(entries => {
       const visible = entries.filter(entry => entry.isIntersecting)
@@ -1588,6 +1608,7 @@ export function mountNavigation({
     document.removeEventListener('click', onDocumentClick);
     window.removeEventListener('hashchange', updateCurrentFromHash);
     window.removeEventListener('popstate', updateCurrentFromHash);
+    windowRef.removeEventListener('scroll', updateHeaderScrollState);
     sectionObserver?.disconnect();
     document.body.classList.remove('fsd-mobile-nav-open');
   };

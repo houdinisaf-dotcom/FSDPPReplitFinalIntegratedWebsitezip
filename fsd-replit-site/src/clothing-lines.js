@@ -3,13 +3,13 @@ import { COLLECTION_IMAGE_ASSETS } from './collection-image-config.js';
 import { resolveCollectionBranding } from './brand/collection-branding.js';
 
 export const CLOTHING_LINES = Object.freeze([
-  { id: 'aeroforge', title: 'AEROFORGE', eyebrow: 'WOMEN’S TECHNICAL PERFORMANCE', brandReference: resolveCollectionBranding('aeroforge'), colour: '#1C2541' },
-  { id: 'combat', title: 'COMBAT', eyebrow: 'WOMEN’S COMBAT TRAINING', brandReference: resolveCollectionBranding('combat'), colour: '#5E1A22' },
-  { id: 'flex', title: 'FLEX', eyebrow: 'WOMEN’S TRAINING LEGGINGS', brandReference: resolveCollectionBranding('flex'), colour: '#6F767D' },
-  { id: 'breeze', title: 'BREEZE', eyebrow: 'WOMEN’S LIGHT LAYERS', brandReference: resolveCollectionBranding('breeze'), colour: '#4B5A3A' },
-  { id: 'modest-flow', title: 'MODEST FLOW', eyebrow: 'WOMEN’S MODEST PERFORMANCE', brandReference: resolveCollectionBranding('modest-flow'), colour: '#A08670' },
-  { id: 'tiger-series', title: 'FSD TIGER SERIES', eyebrow: 'MEN’S PERFORMANCE / TIGER', brandReference: resolveCollectionBranding('tiger-series'), colour: '#D4AF37' },
-  { id: 'scorpion-series', title: 'FSD SCORPION SERIES', eyebrow: 'TACTICAL APPAREL / SCORPION', brandReference: resolveCollectionBranding('scorpion-series'), colour: '#C8AA72' },
+  { id: 'aeroforge', title: 'AEROFORGE', audience: 'WOMEN', eyebrow: 'WOMEN’S TECHNICAL PERFORMANCE', brandReference: resolveCollectionBranding('aeroforge'), colour: '#1C2541' },
+  { id: 'combat', title: 'COMBAT', audience: 'WOMEN', eyebrow: 'WOMEN’S COMBAT TRAINING', brandReference: resolveCollectionBranding('combat'), colour: '#5E1A22' },
+  { id: 'flex', title: 'FLEX', audience: 'WOMEN', eyebrow: 'WOMEN’S TRAINING LEGGINGS', brandReference: resolveCollectionBranding('flex'), colour: '#6F767D' },
+  { id: 'breeze', title: 'BREEZE', audience: 'WOMEN', eyebrow: 'WOMEN’S LIGHT LAYERS', brandReference: resolveCollectionBranding('breeze'), colour: '#4B5A3A' },
+  { id: 'modest-flow', title: 'MODEST FLOW', audience: 'WOMEN', eyebrow: 'WOMEN’S MODEST PERFORMANCE', brandReference: resolveCollectionBranding('modest-flow'), colour: '#A08670' },
+  { id: 'tiger-series', title: 'FSD TIGER SERIES', audience: 'MEN', eyebrow: 'MEN’S PERFORMANCE / TIGER', brandReference: resolveCollectionBranding('tiger-series'), colour: '#D4AF37' },
+  { id: 'scorpion-series', title: 'FSD SCORPION SERIES', audience: 'MEN', eyebrow: 'TACTICAL APPAREL / SCORPION', brandReference: resolveCollectionBranding('scorpion-series'), colour: '#C8AA72' },
 ]);
 
 // Future approved campaign/banner photographs may be configured here. Product

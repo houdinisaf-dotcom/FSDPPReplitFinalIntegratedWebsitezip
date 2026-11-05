@@ -285,9 +285,11 @@ test('Shop foregrounds collection groups and removes the redundant All Products 
   assert.deepEqual(collections.groups.map(group => group.title), [
     'MEN’S LUXURY PERFORMANCE',
     'WOMEN’S MODEST COMBAT',
+    'WOMEN’S COLLECTIONS',
+    'MEN’S COLLECTIONS',
     'LIMITED COLLECTIONS',
     'NEW & FEATURED',
-    'CLOTHING LINES',
+    'ALL COLLECTIONS',
     'ACCESSORIES & TECHNICAL',
   ]);
 
@@ -308,7 +310,9 @@ test('Shop foregrounds collection groups and removes the redundant All Products 
 test('SHOP Clothing Lines adds seven explicit destinations and a browse-all action without changing source groups', () => {
   const collections = menu.find(section => section.id === 'collections');
   const apparel = collectionDivisions.find(division => division.id === 'apparel');
-  const clothingGroup = collections.groups.find(group => group.id === 'clothing-lines');
+  const womenGroup = collections.groups.find(group => group.id === 'womens-collections');
+  const menGroup = collections.groups.find(group => group.id === 'mens-collections');
+  const allGroup = collections.groups.find(group => group.id === 'clothing-lines');
   const expectedLines = [
     ['aeroforge', 'AEROFORGE'],
     ['combat', 'COMBAT'],
@@ -319,25 +323,44 @@ test('SHOP Clothing Lines adds seven explicit destinations and a browse-all acti
     ['scorpion-series', 'FSD SCORPION SERIES'],
   ];
 
-  assert.ok(clothingGroup);
-  assert.equal(clothingGroup.href, '#clothing-lines');
-  assert.deepEqual(clothingGroup.items.slice(1).map(item => [
+  assert.ok(womenGroup);
+  assert.ok(menGroup);
+  assert.ok(allGroup);
+  assert.equal(womenGroup.href, '#clothing-lines');
+  assert.equal(menGroup.href, '#clothing-lines');
+  assert.deepEqual(womenGroup.items.map(item => [
     item.id.replace('clothing-line-', ''),
     item.title,
     item.kind,
     item.href,
-  ]), expectedLines.map(([id, title]) => [
+  ]), expectedLines.slice(0, 5).map(([id, title]) => [
+    id,
+    title,
+    'clothing-line',
+    `/collections/${id}`,
+  ]));
+  assert.deepEqual(menGroup.items.map(item => [
+    item.id.replace('clothing-line-', ''),
+    item.title,
+    item.kind,
+    item.href,
+  ]), expectedLines.slice(5).map(([id, title]) => [
     id,
     title,
     'clothing-line',
     `/collections/${id}`,
   ]));
   assert.deepEqual(
-    [clothingGroup.items[0].kind, clothingGroup.items[0].href],
-    ['clothing-lines', '#clothing-lines'],
+    [allGroup.title, allGroup.items[0].kind, allGroup.items[0].href],
+    ['ALL COLLECTIONS', 'clothing-lines', '#clothing-lines'],
   );
 
-  const legacyGroups = collections.groups.slice(0, 4);
+  const legacyGroups = [
+    collections.groups[0],
+    collections.groups[1],
+    collections.groups.find(group => group.id === 'limited-collections'),
+    collections.groups.find(group => group.id === 'new-featured-concepts'),
+  ];
   assert.deepEqual(legacyGroups.map(group => group.id), [
     'mens-luxury-performance',
     'womens-modest-combat',

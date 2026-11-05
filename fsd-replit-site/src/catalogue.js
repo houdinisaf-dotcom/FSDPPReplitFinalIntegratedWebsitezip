@@ -355,6 +355,7 @@ function card(product) {
 
 export function catalogueSection() {
   return `<section class="shop" id="products">
+    <div data-fsd-collection-breadcrumb-slot></div>
     <div class="section-heading"><div><p class="section-kicker">THE FSD COLLECTION</p>
       <h2>SHOP / ALL PRODUCTS<span class="period">.</span></h2></div>
       <p>Find FSD products by collection, category and audience.</p></div>
@@ -386,7 +387,7 @@ export function catalogueSection() {
       <label>Find a product<input id="search" type="search" placeholder="Name, colourway or alternate name…" aria-label="Search products"/></label>
       </div>
        <div class="catalogue-control-bottom">
-        <div id="catalogue-active-filters"></div>
+    <div id="catalogue-active-filters"></div>
       </div>
     </div>
     <p id="catalogue-count" class="catalogue-count" role="status" aria-live="polite"></p>

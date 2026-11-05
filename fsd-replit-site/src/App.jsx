@@ -97,6 +97,7 @@ function AppRouter({ hardwareForgeExtension }) {
   const [featuredCarouselPortalTarget, setFeaturedCarouselPortalTarget] = useState(null);
   const [cataloguePortalTarget, setCataloguePortalTarget] = useState(null);
   const [catalogueTabsPortalTarget, setCatalogueTabsPortalTarget] = useState(null);
+  const [collectionBreadcrumbPortalTarget, setCollectionBreadcrumbPortalTarget] = useState(null);
   const [clothingLinesPortalTarget, setClothingLinesPortalTarget] = useState(null);
   const [homeHeroPortalTarget, setHomeHeroPortalTarget] = useState(null);
   const [womensBannerPortalTarget, setWomensBannerPortalTarget] = useState(null);
@@ -135,6 +136,9 @@ function AppRouter({ hardwareForgeExtension }) {
     );
     setCataloguePortalTarget(content?.querySelector('#catalogue-grid') ?? null);
     setCatalogueTabsPortalTarget(content?.querySelector('[data-catalogue-garment-tabs]') ?? null);
+    setCollectionBreadcrumbPortalTarget(
+      content?.querySelector('[data-fsd-collection-breadcrumb-slot]') ?? null,
+    );
     setClothingLinesPortalTarget(content?.querySelector('[data-fsd-clothing-lines-slot]') ?? null);
     setHomeHeroPortalTarget(
       content?.querySelector('[data-home-hero-slot]') ?? null,
@@ -249,6 +253,24 @@ function AppRouter({ hardwareForgeExtension }) {
       {footerLogoPortalTarget && createPortal(<FsdLogo loading="lazy" />, footerLogoPortalTarget)}
       {prelaunchSignupPortalTarget && createPortal(<PrelaunchSignup />, prelaunchSignupPortalTarget)}
       <CataloguePortal target={cataloguePortalTarget} tabsTarget={catalogueTabsPortalTarget} />
+      {collectionBreadcrumbPortalTarget && standaloneCollectionType === 'catalogue' && collectionEntry
+        && createPortal(
+          <nav className="catalogue-breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/#products">SHOP</a></li>
+              <li aria-current="page">
+                {collectionEntry.route?.target === 'men'
+                  ? 'MEN'
+                  : collectionEntry.route?.target === 'women'
+                    ? 'WOMEN'
+                    : collectionEntry.route?.target === 'accessories'
+                      ? 'ACCESSORIES'
+                      : String(collectionEntry.title || '').replace(/\s*\|\s*FSD\s*$/i, '')}
+              </li>
+            </ol>
+          </nav>,
+          collectionBreadcrumbPortalTarget,
+        )}
       {clothingLinesPortalTarget && createPortal(
         <ClothingLinesBrowser
           key={standaloneLineId || 'archive'}
