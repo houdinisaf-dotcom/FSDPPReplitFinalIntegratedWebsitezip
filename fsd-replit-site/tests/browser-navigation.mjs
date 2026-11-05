@@ -997,8 +997,10 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await waitFor('document.querySelector("#catalogue-expanded-1 .fsd-image-placeholder")?.textContent.toLowerCase().includes("vintage indigo")');
   await click('#catalogue-expanded-1 .fsd-catalog-row__collapse');
   await waitFor('document.querySelector("#catalogue-expanded-1") === null && document.querySelector("#catalogue-grid [data-product=\\"1\\"]")?.getAttribute("aria-expanded") === "false"');
+  const firstProductCardAnchorRestored = `Math.abs(document.querySelector(${JSON.stringify(firstProductCardSelector)}).getBoundingClientRect().top - ${firstProductCardTop}) < 2`;
+  await waitFor(firstProductCardAnchorRestored);
   assert.equal(
-    await evaluate(`Math.abs(document.querySelector(${JSON.stringify(firstProductCardSelector)}).getBoundingClientRect().top - ${firstProductCardTop}) < 2`),
+    await evaluate(firstProductCardAnchorRestored),
     true,
     'Collapsing a product card should restore its original viewport position.',
   );
@@ -1371,7 +1373,7 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   assert.equal(await evaluate('document.querySelector("#menu-section-title")?.textContent.trim()'), 'THE HOUSE');
   assert.equal(await evaluate('document.querySelector("#primary-group-list")?.closest(".menu-column")?.querySelector(".menu-column-title")?.textContent.trim()'), 'COLLECTION GROUPS');
   assert.equal(await evaluate('document.querySelector("#sub-category-list")?.closest(".menu-column")?.querySelector(".menu-column-title")?.textContent.trim()'), 'SUBCATEGORIES');
-  assert.equal(await evaluate('document.querySelector("#modal-title")?.textContent.trim()'), 'Founder Story');
+  assert.equal(await evaluate('document.querySelector("#modal-title")?.textContent.trim()'), 'THE FSD STORY & ARCHIVE');
   assert.equal(await evaluate('Boolean(document.querySelector("#modal-kicker, #modal-desc, #modal-action-btn, #close-menu-btn"))'), true);
   assert.equal(await evaluate('document.querySelectorAll("#fsd-mega-menu [data-nav-item]").length'), 1);
   await click('[data-nav-close]');
