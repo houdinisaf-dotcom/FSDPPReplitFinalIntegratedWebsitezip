@@ -191,6 +191,7 @@ summary {
 }
 
 .manifesto h2,
+.section-heading h1,
 .section-heading h2 {
   font-family: var(--fsd-display);
   text-wrap: balance;
@@ -211,7 +212,19 @@ summary {
 }
 
 .section-heading { margin-bottom: clamp(30px, 4vw, 48px); }
+.section-heading h1,
 .section-heading h2 { letter-spacing: -.07em; }
+.shop .section-heading h1 {
+  margin: 20px 0;
+  font: 800 clamp(37px, 5vw, 69px)/1.1 Manrope, sans-serif;
+  font-family: var(--fsd-display);
+  letter-spacing: -.07em;
+}
+.dialog-copy h1 {
+  margin: .83em 0;
+  font: 800 30px Manrope, sans-serif;
+  letter-spacing: -.05em;
+}
 .section-heading > p { max-width: 410px; }
 
 .collection-grid { gap: clamp(10px, 1.35vw, 18px); }
@@ -253,6 +266,7 @@ summary {
   color: #f1eee8;
 }
 
+.shop .section-heading h1,
 .shop .section-heading h2,
 .shop .product-card h3 { color: #f1eee8; }
 
@@ -421,6 +435,7 @@ summary {
     #111315;
 }
 
+.showroom-engineering h1,
 .showroom-engineering h2,
 .showroom-shell-campaign-copy h2,
 .showroom-vip h2 {

@@ -1,7 +1,9 @@
 import { SafeImage } from './SafeImage.jsx';
 import { siteMedia } from '../data/site-media.js';
 
-export function HomeHero() {
+export function HomeHero({ headingTag = 'h1' }) {
+  const Heading = headingTag === 'h2' ? 'h2' : 'h1';
+
   return (
     <section className="fsd-home-hero fsd-phase3-hero" aria-labelledby="fsd-home-title">
       <div className="fsd-home-hero__image" data-fsd-parallax aria-hidden="true" style={{ backgroundImage: 'none' }}>
@@ -22,7 +24,7 @@ export function HomeHero() {
       </div>
       <div className="fsd-home-hero__content">
         <p className="fsd-home-kicker"><span /> 01 / PERFORMANCE / DISCIPLINE / IDENTITY</p>
-        <h1 id="fsd-home-title">Made to Move,<br /><em>Made to Belong.</em></h1>
+        <Heading id="fsd-home-title">Made to Move,<br /><em>Made to Belong.</em></Heading>
         <p className="fsd-home-intro">Fitness &amp; Self-Defence.<br />A house for those who train with purpose.</p>
         <div className="fsd-home-actions">
           <a className="fsd-home-primary" href="#universe">

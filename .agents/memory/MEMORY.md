@@ -14,7 +14,7 @@
 - [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk naming, nested package installs, and exact managed artifact ports for preview verification.
 - [Innovation initiative status](initiative-rollout-status.md) — Keep the five-section House landing; group Investor inside House navigation and retain initiative route and safeguard boundaries.
 - [Tactical Shield proposal boundary](tactical-shield-membership.md) — keep services and sign-up unavailable until providers, safeguarding, legal scope, insurance, and terms are confirmed.
-- [Public SEO routing](public-seo-routing.md) — add crawlable entry paths without replacing shopping flows; withhold canonicals and sitemap until the production origin is verified.
+- [Public SEO routing](public-seo-routing.md) — verify route-specific visible H1s and preserve shopping flows; withhold canonicals and sitemap until the production origin is verified.
 - [Launch priority gate](launch-priority-gate.md) — Priorities 2, scoped 3 and 4 are authorised; review Priority 4 before starting Priority 5.
 - [FSD change scope](fsd-change-scope.md) — keep new work narrow, preserve approved surfaces and catalogue data, and avoid unrequested redesigns.
 - [PDP image pairing](pdp-image-pairing.md) — Pair approved photos by selected colourway and preserve each original image’s proportions.

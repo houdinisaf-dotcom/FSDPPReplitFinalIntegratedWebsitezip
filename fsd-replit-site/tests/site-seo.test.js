@@ -19,6 +19,8 @@ test('SEO routes refer to existing products and seven established lines without 
   assert.ok(seoEntryForPath('/collections/women').filter.audience);
   assert.ok(seoEntryForPath('/collections/men').filter.audience);
   assert.equal(seoForView({ view: 'product', target: '75' }).product.id, 75);
+  assert.equal(seoEntryForPath('/bio-lab').hash, '#innovation-hub');
+  assert.equal(seoForView({ view: 'page', target: 'innovation-hub' }).path, '/bio-lab');
   assert.equal(seoEntryForPath('/products/not-a-real-product'), null);
 });
 
@@ -59,7 +61,7 @@ test('public 404 uses the FSD shield, exact recovery message and gold Home butto
   assert.equal((html.match(/<h1>/g) || []).length, 1);
   assert.match(html, /name="robots" content="noindex,follow"/);
   assert.match(html, /src="\/favicon\.svg"/);
-  assert.match(html, /This destination is currently unavailable\./);
+  assert.match(html, /<p>This destination is currently unavailable<\/p>/);
   assert.match(html, /class="fsd-404-home-button" href="\/">Home<\/a>/);
   assert.match(html, /background:#d4af37/);
   assert.doesNotMatch(html, /href="\/#clothing-lines"/);

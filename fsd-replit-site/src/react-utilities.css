@@ -110,10 +110,14 @@ html[data-theme="light"] .showroom-archives h2,
 html[data-theme="light"] .planned h2,
 html[data-theme="light"] .collections h2,
 html[data-theme="light"] .shop h2,
+html[data-theme="light"] .shop h1,
 html[data-theme="light"] .manifesto h2,
 html[data-theme="light"] .fsd-expanded h2,
 html[data-theme="light"] .fsd-expanded h3,
+html[data-theme="light"] .fsd-hub-heading h1,
+html[data-theme="light"] .fsd-hub-heading h2,
 html[data-theme="light"] .showroom-engineering h2,
+html[data-theme="light"] .showroom-engineering h1,
 html[data-theme="light"] .showroom-shell-campaign h2 {
   color: #171717;
 }

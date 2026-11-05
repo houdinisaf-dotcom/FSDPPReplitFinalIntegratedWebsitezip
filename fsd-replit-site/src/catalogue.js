@@ -153,7 +153,7 @@ function updateControls() {
   document.querySelectorAll?.('[data-catalogue-view]')?.forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.catalogueView === view));
   });
-  const heading = document.querySelector('#products .section-heading h2');
+  const heading = document.querySelector('#products .section-heading h1, #products .section-heading h2');
   if (heading) {
     const title = activeAudience === 'Women’s' ? 'SHOP / WOMEN’S'
       : activeAudience === 'Men’s' ? 'SHOP / MEN’S'

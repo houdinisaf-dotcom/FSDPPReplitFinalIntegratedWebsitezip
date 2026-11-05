@@ -75,7 +75,7 @@ try {
     assert.equal(response.status, 404);
     const html = await response.text();
     assert.match(html, /Page not found/);
-    assert.match(html, /This destination is currently unavailable\./);
+    assert.match(html, /<p>This destination is currently unavailable<\/p>/);
     assert.match(html, /class="fsd-404-home-button" href="\/">Home<\/a>/);
     assert.equal((await fetch(base + path, { method: 'HEAD' })).status, 404);
   }

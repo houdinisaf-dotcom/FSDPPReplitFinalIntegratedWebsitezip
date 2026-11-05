@@ -62,12 +62,14 @@
   background: var(--fsd-gold);
 }
 
+.fsd-showcase-heading h1,
 .fsd-showcase-heading h2 {
   margin: 0;
   font: 800 clamp(44px, 6.2vw, 88px)/.93 Manrope, sans-serif;
   letter-spacing: -.075em;
 }
 
+.fsd-showcase-heading h1 em,
 .fsd-showcase-heading h2 em {
   color: var(--fsd-gold);
   font-style: normal;
@@ -619,6 +621,7 @@ html.fsd-modal-open { overflow: hidden; }
 @media (max-width: 760px) {
   .fsd-showcase { padding: 67px 20px 55px; }
   .fsd-showcase-heading { grid-template-columns: 1fr; gap: 17px; margin-bottom: 27px; }
+  .fsd-showcase-heading h1,
   .fsd-showcase-heading h2 { font-size: clamp(43px, 11vw, 68px); }
   .fsd-showcase-intro { font-size: 12px; }
   .fsd-showcase-grid { grid-template-columns: 1fr; gap: 11px; }

@@ -423,7 +423,7 @@ export function renderProductDetailPage({
         </ol></nav>
         <button class="catalogue-back" type="button" data-catalogue-back>RETURN TO THE HOUSE</button>
         <p class="section-kicker">${safe(breadcrumbCategory)}</p>
-        <h2 id="product-title">${safe(product.name)}</h2>
+        <h1 id="product-title">${safe(product.name)}</h1>
         ${priceMarkup}
         ${summaryMarkup}
         ${renderColourwayOptions(product, colourways, colourwayImageIndexes)}

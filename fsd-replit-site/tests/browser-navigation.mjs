@@ -1389,12 +1389,20 @@ assert.equal(await evaluate('document.querySelector("#catalogue-archive").open')
   await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 8, y: 8, button: 'left', clickCount: 1 });
   await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 8, y: 8, button: 'left', clickCount: 1 });
   await waitFor('!document.querySelector("#product-dialog")?.open');
-  await waitFor(`Math.abs(window.scrollY - ${catalogueReturnScrollY}) < 4`);
+  try {
+    await waitFor(`Math.abs(window.scrollY - ${catalogueReturnScrollY}) < 4`);
+  } catch (error) {
+    const actualScrollY = await evaluate('window.scrollY');
+    throw new Error(`Product dialog close should restore catalogue scroll: expected ${catalogueReturnScrollY}px, got ${actualScrollY}px`, { cause: error });
+  }
   await click('[data-bag-open]');
   await waitFor('document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');
   const populatedBagEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "bag_opened")');
   assert.equal(populatedBagEvent?.data?.item_count, 1);
   assert.equal(populatedBagEvent?.data?.unit_count, 1);
+  assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.disabled'), true);
+  assert.equal(await evaluate('document.querySelector(".fsd-bag-checkout")?.getAttribute("aria-disabled")'), 'true');
+  assert.match(await evaluate('document.querySelector(".fsd-bag-checkout")?.textContent.trim()'), /Checkout disabled/);
   await click('[data-bag-clear]');
   await click('[data-bag-close]');
   await waitFor('!document.querySelector("#fsd-bag-title")?.closest("dialog")?.open');

@@ -20,7 +20,7 @@ export const storefrontSeoRoutes = [
   ...[
     { path: '/hardware', title: 'Training Hardware', description: 'Explore FSD training hardware, strength equipment and accessories from the existing catalogue.', view: 'hardware', target: 'hardware', hash: '#hardware-editorial' },
     { path: '/universe', title: 'The FSD Universe', description: 'Discover FSD’s wider performance ecosystem, community and global vision.', view: 'universe', target: 'global', hash: '#universe' },
-    { path: '/bio-lab', title: 'Bio-Lab™', description: 'Explore FSD Bio-Lab™ and its published material science, apparel and innovation initiatives.', view: 'bio-lab', target: 'bio-lab', hash: '#innovations' },
+    { path: '/bio-lab', title: 'Bio-Lab™', description: 'Explore FSD Bio-Lab™ and its published material science, apparel and innovation initiatives.', view: 'bio-lab', target: 'bio-lab', hash: '#innovation-hub' },
   ].map(({ view, target, ...entry }) => ({ ...entry, title: `${entry.title} | FSD`, route: { view, target } })),
   ...[
     { id: 'men', title: 'Men’s Collections', pattern: /^men/i },
@@ -62,6 +62,7 @@ export function seoEntryForPath(pathname = '/') {
 export function seoForView(view = {}) {
   if (view.view === 'product') return storefrontSeoRoutes.find(entry => entry.product?.id === Number(view.target));
   if (view.view === 'collection') return storefrontSeoRoutes.find(entry => entry.route.view === 'collection' && entry.route.target === view.target);
+  if (view.view === 'page' && view.target === 'innovation-hub') return seoEntryForPath('/bio-lab');
   if (view.view === 'story') return seoEntryForPath('/story');
   if (['hardware', 'universe', 'bio-lab'].includes(view.view)) return storefrontSeoRoutes.find(entry => entry.route.view === view.view);
   return null;

@@ -16,3 +16,9 @@ Withhold production canonical URLs and sitemap output until a real production or
 **How to apply:** Obtain the current production URL from deployment metadata before configuring it. After the first publish, configure that verified origin, rebuild and republish, then check live canonical links, sitemap and external social cards. Local build tests do not verify live production.
 
 The owner explicitly chose to defer canonical and sitemap output until publication when asked how to handle the missing production origin.
+
+For route headings, verify that the one visible H1 names the current page rather than only checking that an H1 exists. Shared storefront content can otherwise leave the homepage message as the heading for collections or products. When closing a product dialog, restore the route state as well as its metadata so the underlying page heading and scroll position return together.
+
+**Why:** The shared homepage shell originally supplied the only H1 across routes; making the page title primary also exposed a scroll-restoration dependency on keeping route state in sync when a product dialog closes.
+
+**How to apply:** Preserve the homepage’s approved H1, promote the existing route-specific title on each page type, and test close-and-return behavior after any heading or route-metadata changes.

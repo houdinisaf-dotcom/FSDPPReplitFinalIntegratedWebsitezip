@@ -37,6 +37,19 @@ import 'lenis/dist/lenis.css';
 const CatalogList = lazy(() => import('./components/CatalogList.jsx')
   .then(module => ({ default: module.CatalogList })));
 
+function replaceHeadingTag(element, tagName) {
+  const normalizedTagName = String(tagName).toUpperCase();
+  if (!element || element.tagName === normalizedTagName) return element;
+
+  const replacement = document.createElement(normalizedTagName.toLowerCase());
+  for (const attribute of element.attributes) {
+    replacement.setAttribute(attribute.name, attribute.value);
+  }
+  while (element.firstChild) replacement.append(element.firstChild);
+  element.replaceWith(replacement);
+  return replacement;
+}
+
 function CataloguePortal({ target, tabsTarget }) {
   const [products, setProducts] = useState([]);
   const [actions, setActions] = useState({});
@@ -112,9 +125,40 @@ function AppRouter({ hardwareForgeExtension }) {
   const standaloneLineId = standaloneCollectionType === 'line'
     ? String(collectionEntry.route.target).slice('line-'.length)
     : null;
+  const hasRouteSpecificHeading = route.view === 'collection'
+    || route.view === 'product'
+    || route.view === 'hardware'
+    || route.view === 'universe'
+    || route.view === 'bio-lab'
+    || (route.view === 'page' && route.target === 'innovation-hub');
   useLayoutEffect(() => {
     updateDocumentSeo(document, seoForView(route) || seoEntryForPath(window.location.pathname) || seoEntryForPath('/'));
   }, [route.view, route.target]);
+  useLayoutEffect(() => {
+    const isStandaloneLine = route.view === 'collection' && standaloneCollectionType === 'line';
+    const catalogueHeading = storefrontContentRef.current?.querySelector(
+      '#products .section-heading h1, #products .section-heading h2',
+    );
+    replaceHeadingTag(
+      catalogueHeading,
+      route.view === 'collection' && !isStandaloneLine ? 'h1' : 'h2',
+    );
+
+    const routeHeadings = [
+      ['#hardware-editorial-title', route.view === 'hardware'],
+      ['#fsd-showcase-title', route.view === 'universe'],
+      [
+        '#fsd-innovation-hub-title',
+        route.view === 'bio-lab' || (route.view === 'page' && route.target === 'innovation-hub'),
+      ],
+    ];
+    for (const [selector, isPrimary] of routeHeadings) {
+      replaceHeadingTag(
+        storefrontContentRef.current?.querySelector(selector),
+        isPrimary ? 'h1' : 'h2',
+      );
+    }
+  }, [route.view, route.target, standaloneCollectionType]);
   const navigationReady = useRef(false);
   const contentReady = useRef(false);
   const markRuntimeReady = useCallback(() => {
@@ -211,7 +255,10 @@ function AppRouter({ hardwareForgeExtension }) {
     const productDialog = document.querySelector('#product-dialog');
     const restorePageSeo = () => {
       if (productDialog?.open) return;
-      updateDocumentSeo(document, seoForView(routeFromLocation(window.location))
+      replaceHeadingTag(productDialog?.querySelector('#product-title'), 'h2');
+      const restoredRoute = routeFromLocation(window.location);
+      setRoute(restoredRoute);
+      updateDocumentSeo(document, seoForView(restoredRoute)
         || seoEntryForPath(window.location.pathname) || seoEntryForPath('/'));
     };
     productDialog?.addEventListener('close', restorePageSeo);
@@ -249,7 +296,10 @@ function AppRouter({ hardwareForgeExtension }) {
         hardwareForgeExtension={hardwareForgeExtension}
       />
       <div ref={storefrontContentRef} data-storefront-content dangerouslySetInnerHTML={{ __html: markup }} />
-      {homeHeroPortalTarget && createPortal(<HomeHero />, homeHeroPortalTarget)}
+      {homeHeroPortalTarget && createPortal(
+        <HomeHero headingTag={hasRouteSpecificHeading ? 'h2' : 'h1'} />,
+        homeHeroPortalTarget,
+      )}
       {womensBannerPortalTarget && createPortal(<WomensBanner />, womensBannerPortalTarget)}
       {footerLogoPortalTarget && createPortal(<FsdLogo loading="lazy" />, footerLogoPortalTarget)}
       {prelaunchSignupPortalTarget && createPortal(<PrelaunchSignup />, prelaunchSignupPortalTarget)}

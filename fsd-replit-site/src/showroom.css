@@ -65,6 +65,7 @@
   background: #eae6dc;
 }
 .fsd-showcase::before { opacity: .055; }
+.fsd-showcase-heading h1,
 .fsd-showcase-heading h2 { color: #211f1a; }
 .fsd-showcase-intro { color: #5d5b54; }
 .fsd-showcase-index { color: #858078; }
@@ -125,11 +126,13 @@
 }
 .showroom-engineering-copy { position: relative; z-index: 1; max-width: 570px; padding-right: 42px; }
 .showroom-engineering .section-kicker { color: #cbb17e; }
+.showroom-engineering h1,
 .showroom-engineering h2 {
   margin: 22px 0;
   font: 600 clamp(42px, 6vw, 82px)/.99 Manrope, sans-serif;
   letter-spacing: -.075em;
 }
+.showroom-engineering h1 span,
 .showroom-engineering h2 span { display: block; color: #cdb17c; }
 .showroom-engineering-copy > p:not(.section-kicker) {
   max-width: 445px;
@@ -334,14 +337,16 @@ html, body { overflow-x: clip; }
 }
 .fsd-home-kicker { display: flex; align-items: center; gap: 11px; margin: 0; }
 .fsd-home-kicker span { display: inline-block; width: 30px; height: 1px; background: #c8aa72; }
-.fsd-home-hero h1 {
+.fsd-home-hero h1,
+.fsd-home-hero h2 {
   max-width: 870px;
   margin: 34px 0 22px;
   font: 500 clamp(54px, 8vw, 108px)/.98 Manrope, sans-serif;
   letter-spacing: -.078em;
   animation: fsd-home-title-arrive 680ms cubic-bezier(.16, 1, .3, 1) 110ms both;
 }
-.fsd-home-hero h1 em { color: #ddc18a; font-style: normal; }
+.fsd-home-hero h1 em,
+.fsd-home-hero h2 em { color: #ddc18a; font-style: normal; }
 @keyframes fsd-home-title-arrive {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -551,7 +556,8 @@ html, body { overflow-x: clip; }
   }
   .fsd-home-hero__content { width: calc(100% - 42px); padding: 0 0 92px; }
   .fsd-home-kicker { font-size: 7px; letter-spacing: .13em; }
-  .fsd-home-hero h1 { margin: 22px 0 17px; font-size: clamp(45px, 11.5vw, 66px); }
+  .fsd-home-hero h1,
+  .fsd-home-hero h2 { margin: 22px 0 17px; font-size: clamp(45px, 11.5vw, 66px); }
   .fsd-home-intro { font-size: 12px; }
   .fsd-home-actions { align-items: flex-start; flex-direction: column; gap: 18px; margin-top: 26px; }
   .fsd-home-signoff { margin-top: 32px; }
@@ -573,5 +579,6 @@ html, body { overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) {
   .fsd-home-primary,
   .fsd-editorial-card { transition: none; }
-  .fsd-home-hero h1 { animation: none; opacity: 1; transform: none; }
+  .fsd-home-hero h1,
+  .fsd-home-hero h2 { animation: none; opacity: 1; transform: none; }
 }

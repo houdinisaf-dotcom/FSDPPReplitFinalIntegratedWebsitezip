@@ -118,6 +118,7 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
   const memberships = deriveClothingLineMembership(products);
   const lines = memberships.lines;
   const isStandaloneLine = Boolean(standaloneLineId);
+  const LineHeading = isStandaloneLine ? 'h1' : 'h2';
   const isOpen = expanded || isStandaloneLine;
   const linesToRender = isStandaloneLine
     ? lines.filter(line => line.id === standaloneLineId)
@@ -447,7 +448,7 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
                     <p className="fsd-clothing-line__eyebrow">
                       {String(index + 1).padStart(2, '0')} / {line.eyebrow}
                     </p>
-                    <h2 id={`line-title-${line.id}`} data-reveal-key={`${line.id}:headline`}>{line.title}</h2>
+                    <LineHeading id={`line-title-${line.id}`} data-reveal-key={`${line.id}:headline`}>{line.title}</LineHeading>
                     <p className="fsd-clothing-line__count">
                       {line.products.length} {line.products.length === 1 ? 'catalogue piece' : 'catalogue pieces'}
                     </p>
