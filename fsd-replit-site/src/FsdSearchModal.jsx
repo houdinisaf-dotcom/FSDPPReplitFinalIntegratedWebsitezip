@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { priceInfo, productsWithUsableImages, shopCollections } from './catalogue-data.js';
 import { navigateCatalogue, showProduct } from './catalogue.js';
 import { trackEvent } from './analytics.js';
+import { productColourwayOptions } from './product-card-media.js';
 import './fsd-search-modal.css';
 
 const publicProducts = productsWithUsableImages.filter(product => Boolean(priceInfo(product).value));
@@ -46,10 +47,15 @@ export function FsdSearchModal() {
   const closeActionRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [quickViewProductId, setQuickViewProductId] = useState(null);
   const term = normalize(query.trim());
   const results = useMemo(() => term
     ? publicProducts.filter(product => publicProductIds.has(product.id) && matchesSearch(product, term))
     : [], [term]);
+  const quickViewProduct = results.find(product => product.id === quickViewProductId) || results[0] || null;
+  const quickViewImage = quickViewProduct?.images?.[0] || null;
+  const quickViewPrice = quickViewProduct ? priceInfo(quickViewProduct) : null;
+  const quickViewColourways = quickViewProduct ? productColourwayOptions(quickViewProduct) : [];
   const collectionMatches = useMemo(() => term
     ? shopCollections.filter(collection => normalize([
       collection.label,
@@ -90,6 +96,7 @@ export function FsdSearchModal() {
       closeActionRef.current = null;
       trigger.setAttribute('aria-expanded', 'true');
       setQuery('');
+      setQuickViewProductId(null);
       setIsOpen(true);
       trackEvent('search_opened', { location: 'header' });
     };
@@ -180,150 +187,221 @@ export function FsdSearchModal() {
       }}
     >
       <div className="fsd-search-panel">
-        <div className="fsd-search-heading">
-          <div>
-            <p className="fsd-search-kicker">FSD / PRODUCT SEARCH</p>
-          <h2 id="fsd-search-title">Search the FSD house.</h2>
-          </div>
-          <button
-            type="button"
-            className="fsd-search-close"
-            onClick={() => closeSearch()}
-            aria-label="Close product search"
-          >
-            <span>CLOSE</span><span aria-hidden="true">×</span>
-          </button>
-        </div>
-
-        <form className="fsd-search-form" onSubmit={handleSubmit} role="search">
-          <label className="sr-only" htmlFor="fsd-search-input">Search products, collections, and pages</label>
-          <input
-            ref={inputRef}
-            id="fsd-search-input"
-            type="search"
-            value={query}
-            onChange={event => setQuery(event.target.value)}
-            placeholder="TYPE A PRODUCT OR CATEGORY..."
-            autoComplete="off"
-            spellCheck="false"
-          />
-          <button type="submit" aria-label="Search catalogue">↗</button>
-        </form>
-
-        <p className="fsd-search-status" role="status" aria-live="polite">
-          {query.trim()
-            ? `${results.length} product matches · ${collectionMatches.length} collection matches · ${pageMatches.length} page matches`
-            : 'Search products, collections, and the FSD story.'}
-        </p>
-
-        {query.trim() ? (
-          results.length || collectionMatches.length || pageMatches.length ? (
-            <>
-              {results.length > 0 && (
-                <ul className="fsd-search-results" aria-label="Matching products">
-                  {results.slice(0, 6).map(product => (
-                    <li key={product.id}>
-                      <button
-                        type="button"
-                        className="fsd-search-result"
-                        data-search-result
-                        data-product-id={product.id}
-                        onClick={() => openProduct(product)}
-                        aria-label={`View ${product.name}`}
-                      >
-                        {product.images[0]?.src && (
-                          <img src={product.images[0].src} alt="" loading="lazy" decoding="async"/>
-                        )}
-                        <span className="fsd-search-result-copy">
-                          <span>{product.category}</span>
-                          <strong>{product.name}</strong>
-                        </span>
-                        <span className="fsd-search-result-arrow" aria-hidden="true">↗</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {pageMatches.length > 0 && (
-                <ul className="fsd-search-results fsd-search-page-results" aria-label="Matching pages">
-                  {pageMatches.map(page => (
-                    <li key={page.id}>
-                      <button
-                        type="button"
-                        className="fsd-search-result fsd-search-result--page"
-                        data-search-page={page.id}
-                        onClick={() => openPage(page)}
-                        aria-label={`Open ${page.title}`}
-                      >
-                        <span className="fsd-search-page-mark" aria-hidden="true">FSD</span>
-                        <span className="fsd-search-result-copy">
-                          <span>{page.category}</span>
-                          <strong>{page.title}</strong>
-                        </span>
-                        <span className="fsd-search-result-arrow" aria-hidden="true">↗</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {collectionMatches.length > 0 && (
-                <div className="fsd-search-suggestions fsd-search-collection-matches">
-                  <p>COLLECTIONS</p>
-                  <div>
-                    {collectionMatches.map(collection => (
-                      <button
-                        type="button"
-                        key={collection.id}
-                        data-search-collection={collection.id}
-                        onClick={() => openCollection(collection, 'result_click')}
-                      >
-                        {collection.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {results.length > 0 && (
-                <button className="fsd-search-all" type="button" onClick={() => browseMatches('view_all_click')}>
-                  VIEW ALL RESULTS IN CATALOGUE <span aria-hidden="true">→</span>
-                </button>
-              )}
-            </>
-          ) : (
-            <div className="fsd-search-empty">
-              <p>No matching products or collections.</p>
-              <button className="fsd-search-all" type="button" onClick={() => browseMatches('no_match_click')}>
-                SEARCH THE FULL CATALOGUE <span aria-hidden="true">→</span>
+        <div className="fsd-search-layout">
+          <section className="fsd-search-main" aria-label="Search the catalogue">
+            <div className="fsd-search-heading">
+              <div>
+                <p className="fsd-search-kicker">FSD / PRODUCT SEARCH</p>
+                <h2 id="fsd-search-title">Search the FSD house.</h2>
+              </div>
+              <button
+                type="button"
+                className="fsd-search-close"
+                onClick={() => closeSearch()}
+                aria-label="Close product search"
+              >
+                <span>CLOSE</span><span aria-hidden="true">×</span>
               </button>
             </div>
-          )
-        ) : (
-          <div className="fsd-search-suggestions">
-            <p>EXPLORE COLLECTIONS &amp; THE HOUSE</p>
-            <div>
-              {quickSearches.map(collection => (
+
+            <form className="fsd-search-form" onSubmit={handleSubmit} role="search">
+              <label className="sr-only" htmlFor="fsd-search-input">Search products, collections, and pages</label>
+              <input
+                ref={inputRef}
+                id="fsd-search-input"
+                type="search"
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                placeholder="TYPE A PRODUCT OR CATEGORY..."
+                autoComplete="off"
+                spellCheck="false"
+              />
+              <button type="submit" aria-label="Search catalogue">↗</button>
+            </form>
+
+            <p className="fsd-search-status" role="status" aria-live="polite">
+              {query.trim()
+                ? `${results.length} product matches · ${collectionMatches.length} collection matches · ${pageMatches.length} page matches`
+                : 'Search products, collections, and the FSD story.'}
+            </p>
+
+            {query.trim() ? (
+              results.length || collectionMatches.length || pageMatches.length ? (
+                <>
+                  {results.length > 0 && (
+                    <ul className="fsd-search-results" aria-label="Matching products">
+                      {results.slice(0, 6).map(product => (
+                        <li key={product.id} className="fsd-search-result-row">
+                          <button
+                            type="button"
+                            className="fsd-search-result"
+                            data-search-result
+                            data-product-id={product.id}
+                            onMouseEnter={() => setQuickViewProductId(product.id)}
+                            onFocus={() => setQuickViewProductId(product.id)}
+                            onClick={() => openProduct(product)}
+                            aria-label={`View ${product.name}`}
+                          >
+                            {product.images[0]?.src && (
+                              <img
+                                src={product.images[0].src}
+                                alt=""
+                                data-fsd-image-fallback="true"
+                                data-fsd-image-title={product.name}
+                                data-fsd-image-kind="product"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            )}
+                            <span className="fsd-search-result-copy">
+                              <span>{product.category}</span>
+                              <strong>{product.name}</strong>
+                            </span>
+                            <span className="fsd-search-result-arrow" aria-hidden="true">↗</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="fsd-search-result-preview"
+                            data-search-quick-view={product.id}
+                            aria-label={`Preview ${product.name}`}
+                            aria-pressed={quickViewProduct?.id === product.id}
+                            onClick={() => setQuickViewProductId(product.id)}
+                          >
+                            <span aria-hidden="true">＋</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {pageMatches.length > 0 && (
+                    <ul className="fsd-search-results fsd-search-page-results" aria-label="Matching pages">
+                      {pageMatches.map(page => (
+                        <li key={page.id}>
+                          <button
+                            type="button"
+                            className="fsd-search-result fsd-search-result--page"
+                            data-search-page={page.id}
+                            onClick={() => openPage(page)}
+                            aria-label={`Open ${page.title}`}
+                          >
+                            <span className="fsd-search-page-mark" aria-hidden="true">FSD</span>
+                            <span className="fsd-search-result-copy">
+                              <span>{page.category}</span>
+                              <strong>{page.title}</strong>
+                            </span>
+                            <span className="fsd-search-result-arrow" aria-hidden="true">↗</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {collectionMatches.length > 0 && (
+                    <div className="fsd-search-suggestions fsd-search-collection-matches">
+                      <p>COLLECTIONS</p>
+                      <div>
+                        {collectionMatches.map(collection => (
+                          <button
+                            type="button"
+                            key={collection.id}
+                            data-search-collection={collection.id}
+                            onClick={() => openCollection(collection, 'result_click')}
+                          >
+                            {collection.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {results.length > 0 && (
+                    <button className="fsd-search-all" type="button" onClick={() => browseMatches('view_all_click')}>
+                      VIEW ALL RESULTS IN CATALOGUE <span aria-hidden="true">→</span>
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="fsd-search-empty">
+                  <p>No matching products or collections.</p>
+                  <button className="fsd-search-all" type="button" onClick={() => browseMatches('no_match_click')}>
+                    SEARCH THE FULL CATALOGUE <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className="fsd-search-suggestions">
+                <p>EXPLORE COLLECTIONS &amp; THE HOUSE</p>
+                <div>
+                  {quickSearches.map(collection => (
+                    <button
+                      type="button"
+                      key={collection.id}
+                      data-search-collection={collection.id}
+                      onClick={() => openCollection(collection, 'suggestion_click')}
+                    >
+                      {collection.label}
+                    </button>
+                  ))}
+                  {searchablePages.map(page => (
+                    <button
+                      type="button"
+                      key={page.id}
+                      data-search-page={page.id}
+                      onClick={() => openPage(page, 'suggestion_click')}
+                    >
+                      {page.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+
+          <aside className="fsd-search-preview" aria-label="Product quick view">
+            {quickViewProduct && quickViewImage ? (
+              <>
+                <p className="fsd-search-preview__kicker">FSD / QUICK VIEW</p>
+                <figure className="fsd-search-preview__media">
+                  <img
+                    src={quickViewImage.src}
+                    alt={`${quickViewProduct.name} — ${quickViewImage.label || 'product view'}`}
+                    data-fsd-image-fallback="true"
+                    data-fsd-image-title={quickViewProduct.name}
+                    data-fsd-image-variant={quickViewImage.colourway || quickViewImage.variant || ''}
+                    data-fsd-image-kind="product"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+                <p className="fsd-search-preview__category">{quickViewProduct.category}</p>
+                <h3>{quickViewProduct.name}</h3>
+                {quickViewPrice?.value && (
+                  <p className="fsd-search-preview__price">
+                    {quickViewPrice.label && <span>{quickViewPrice.label}</span>}
+                    <strong>{quickViewPrice.value}</strong>
+                  </p>
+                )}
+                {quickViewColourways.length > 0 && (
+                  <p className="fsd-search-preview__colourways">
+                    <span>COLOURWAYS</span>
+                    {quickViewColourways.join(' · ')}
+                  </p>
+                )}
                 <button
+                  className="fsd-search-preview__open"
                   type="button"
-                  key={collection.id}
-                  data-search-collection={collection.id}
-                  onClick={() => openCollection(collection, 'suggestion_click')}
+                  data-search-preview-open
+                  onClick={() => openProduct(quickViewProduct, 'quick_view_click')}
                 >
-                  {collection.label}
+                  OPEN PRODUCT DETAILS <span aria-hidden="true">↗</span>
                 </button>
-              ))}
-              {searchablePages.map(page => (
-                <button
-                  type="button"
-                  key={page.id}
-                  data-search-page={page.id}
-                  onClick={() => openPage(page, 'suggestion_click')}
-                >
-                  {page.title}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+              </>
+            ) : (
+              <div className="fsd-search-preview__empty">
+                <span>FSD / QUICK VIEW</span>
+                <p>{query.trim() ? 'No product preview is available for this search.' : 'Type a product or category to preview a matched item.'}</p>
+              </div>
+            )}
+          </aside>
+        </div>
       </div>
     </dialog>
   );

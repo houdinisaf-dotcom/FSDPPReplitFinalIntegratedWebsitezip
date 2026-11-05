@@ -9,6 +9,11 @@ import { imageSwatchBackground, productImagesForDisplay } from '../data/products
 import { productColourwayImageIndex, productColourwayOptions } from '../product-card-media.js';
 import { FSD_MOTION } from '../motion-config.js';
 
+function isActionRevealImage(image) {
+  const label = String(image?.label || '').toLocaleLowerCase('en-GB');
+  return /\b(action|training|in use|worn)\b/.test(label) && !/\b(fabric|detail|product detail)\b/.test(label);
+}
+
 function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onToggle, children }) {
   const images = productImagesForDisplay(product);
   const colourways = productColourwayOptions(product);
@@ -23,6 +28,9 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
     ? images.filter(image => productColourwayImageIndex([image], selectedColourway) === 0)
     : images;
   const activeImage = visibleImages.length ? visibleImages[activeIndex % visibleImages.length] : null;
+  const actionImage = activeImage
+    ? visibleImages.find((image, index) => index !== activeIndex && isActionRevealImage(image))
+    : null;
   const updateImage = nextIndex => {
     if (!visibleImages.length) return;
     setActiveIndex((nextIndex + visibleImages.length) % visibleImages.length);
@@ -64,6 +72,17 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
               kind="product"
               className="catalogue-card__image-empty"
             />
+          )}
+          {actionImage && actionImage.src !== activeImage?.src && (
+            <span className="catalogue-card__hover-action" aria-hidden="true">
+              <SafeImage
+                data-card-action-image
+                src={actionImage.src}
+                alt=""
+                placeholderTitle={product.name}
+                variantLabel={actionImage.colourway || actionImage.variant || ''}
+              />
+            </span>
           )}
           {product.badge && <span className="catalogue-card__badge">{product.badge}</span>}
         </span>
