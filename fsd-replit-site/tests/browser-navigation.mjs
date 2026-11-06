@@ -6,7 +6,13 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { collectionDivisions } from '../src/collection-divisions.js';
-import { products, shopCollections } from '../src/catalogue-data.js';
+import {
+  priceInfo,
+  productImagesForDisplay,
+  products,
+  productsWithUsableImages,
+  shopCollections,
+} from '../src/catalogue-data.js';
 import { createNavigationModel } from '../src/site-navigation.js';
 import { resolveFsdRoute } from '../src/react-router.js';
 
@@ -1428,18 +1434,83 @@ try {
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
+  const breezeSearchTerm = 'Breeze';
+  const allBreezeProducts = products.filter(product =>
+    [
+      product.name,
+      product.category,
+      ...(product.alsoShowIn || []),
+      product.audience,
+      product.collection,
+      /^confirmed\b/i.test(product.aliasStatus) ? product.alias : '',
+    ].join(' ').toLocaleLowerCase('en-GB').includes(breezeSearchTerm.toLocaleLowerCase('en-GB')));
+  const readyBreezeProducts = allBreezeProducts.filter(product =>
+    Boolean(priceInfo(product).value)
+    && productsWithUsableImages.some(readyProduct => readyProduct.id === product.id));
+  const imageBlockedBreezeProducts = allBreezeProducts.filter(product =>
+    Boolean(priceInfo(product).value)
+    && !productsWithUsableImages.some(readyProduct => readyProduct.id === product.id));
+  assert.equal(readyBreezeProducts.length, 1, 'Breeze search should have one product with confirmed public pricing and standalone imagery.');
+  assert.equal(imageBlockedBreezeProducts.length, 1, 'The other Breeze listing has a public price but must stay out of search without standalone imagery.');
+  assert.equal(productImagesForDisplay(imageBlockedBreezeProducts[0]).length, 0);
+  const readyBreeze = readyBreezeProducts[0];
+  const readyBreezeImages = productImagesForDisplay(readyBreeze).map(image => image.src);
+  const readyBreezePrice = priceInfo(readyBreeze).value;
   await click('[data-search-open]');
   await waitFor('document.querySelector("#fsd-search-dialog")?.open');
-  const breezeSearchTerm = 'FSD Breeze Overshirt & Engineered Leggings Set';
   await send('Input.insertText', { text: breezeSearchTerm });
-  await waitFor('document.querySelectorAll("[data-search-result]").length === 1');
+  await waitFor(`document.querySelectorAll("[data-search-result]").length === ${readyBreezeProducts.length}`);
+  assert.deepEqual(
+    await evaluate('Array.from(document.querySelectorAll("[data-search-result]"), result => Number(result.dataset.productId))'),
+    readyBreezeProducts.map(product => product.id),
+    'Search should return only products with a confirmed public price and standalone imagery for this exact term.',
+  );
+  assert.equal(await evaluate(`document.querySelector("#fsd-search-dialog").textContent.includes(${JSON.stringify(readyBreezePrice)})`), true);
+  const resultImagePaths = await evaluate('Array.from(document.querySelectorAll("#fsd-search-dialog [data-search-result] img, #fsd-search-dialog .fsd-search-preview img"), image => image.getAttribute("src"))');
+  assert.ok(resultImagePaths.length > 0, 'The ready product should use its standalone photo in search.');
+  assert.ok(resultImagePaths.every(src => readyBreezeImages.includes(src)), `Search must use only mapped standalone product images: ${JSON.stringify(resultImagePaths)}`);
+  assert.equal(resultImagePaths.some(src => /board|collage|contact.?sheet/i.test(src)), false);
+  await click(`#fsd-search-dialog [data-search-result][data-product-id="${readyBreeze.id}"]`);
+  await waitFor(`!document.querySelector("#fsd-search-dialog").open && document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.trim() === ${JSON.stringify(readyBreeze.name)}`);
+  assert.equal(await evaluate(`document.querySelector("#product-dialog").textContent.includes(${JSON.stringify(readyBreezePrice)})`), true);
+  const detailImagePaths = await evaluate('Array.from(document.querySelectorAll("#product-dialog [data-fsd-image-kind=\\"detail\\"], #product-dialog .catalogue-selector__thumb img"), image => image.getAttribute("src")).filter(Boolean)');
+  assert.ok(detailImagePaths.length > 0, 'The matching product detail should show the mapped photos.');
+  assert.ok(detailImagePaths.every(src => readyBreezeImages.includes(src)), `Product detail must use only mapped standalone product images: ${JSON.stringify(detailImagePaths)}`);
+  assert.equal(detailImagePaths.some(src => /board|collage|contact.?sheet/i.test(src)), false);
+  assert.equal(
+    await evaluate('/landed cost|\\bCOGS\\b|gross profit|\\bmargin\\b|suggested price|internal financial/i.test(document.querySelector("#product-dialog").textContent)'),
+    false,
+    'Product detail must not expose internal financial data.',
+  );
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open && !document.querySelector("#fsd-search-dialog")?.open');
+  await waitFor('document.activeElement.matches("[data-search-open]")');
+
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  await send('Input.insertText', { text: breezeSearchTerm });
+  await waitFor(`document.querySelectorAll("[data-search-result]").length === ${readyBreezeProducts.length}`);
   await click('#fsd-search-dialog button[type="submit"]');
-  await waitFor('!document.querySelector("#fsd-search-dialog").open && document.querySelector("#product-dialog")?.open && document.querySelector("#product-dialog").textContent.includes("FSD Breeze Overshirt & Engineered Leggings Set")');
+  await waitFor(`!document.querySelector("#fsd-search-dialog").open && document.querySelector("#product-dialog")?.open && document.querySelector("#product-dialog").textContent.includes(${JSON.stringify(readyBreeze.name)})`);
   const submittedSearchEvent = await evaluate('window.__fsdAnalyticsEvents.find(event => event.name === "site_search_submitted")');
   assert.equal(submittedSearchEvent?.data?.query_length, breezeSearchTerm.length);
-  assert.equal(submittedSearchEvent?.data?.product_match_count, 1);
+  assert.equal(submittedSearchEvent?.data?.product_match_count, readyBreezeProducts.length);
   assert.equal(submittedSearchEvent?.data?.destination_type, 'product');
   assert.equal(Object.hasOwn(submittedSearchEvent.data, 'query'), false);
+
+  const imageReadyUnpricedProduct = productsWithUsableImages.find(product => !priceInfo(product).value);
+  assert.ok(imageReadyUnpricedProduct, 'The catalogue should retain an image-ready, unpriced record for the exclusion check.');
+  await key('Escape');
+  await waitFor('!document.querySelector("#product-dialog")?.open');
+  await waitFor('document.activeElement.matches("[data-search-open]")');
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  await send('Input.insertText', { text: imageReadyUnpricedProduct.name });
+  await waitFor(`document.querySelector("#fsd-search-input").value === ${JSON.stringify(imageReadyUnpricedProduct.name)} && document.querySelector(".fsd-search-status")?.textContent.includes("0 product matches")`);
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-search-dialog [data-search-result]").length'), 0, 'Standalone imagery without a confirmed public price must not produce a search result.');
+  await click('#fsd-search-dialog .fsd-search-close');
+  await waitFor('!document.querySelector("#fsd-search-dialog")?.open');
+  await waitFor('document.activeElement.matches("[data-search-open]")');
 
   await send('Page.navigate', { url: `https://${domain}/#products` });
   await waitFor('location.pathname === "/" && location.hash === "#products" && document.querySelector("#catalogue-archive")?.open');

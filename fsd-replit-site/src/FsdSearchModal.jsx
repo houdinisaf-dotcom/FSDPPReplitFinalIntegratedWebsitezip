@@ -138,7 +138,8 @@ export function FsdSearchModal() {
   };
   const openProduct = (product, selectionMethod = 'result_click') => {
     trackSearchDestination('product', product.id, selectionMethod);
-    closeSearch(() => showProduct(product.id), false);
+    const returnFocus = openerRef.current;
+    closeSearch(() => showProduct(product.id, { returnFocus }), false);
   };
   const openPage = (page, selectionMethod = 'result_click') => {
     trackSearchDestination('page', page.id, selectionMethod);
