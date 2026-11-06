@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.log
 /generated-artifacts/
+/fsd-replit-site/generated-artifacts/
