@@ -8,3 +8,9 @@ When approved front and rear views exist for the exact selected colourway, use t
 **Why:** Front/rear pairing supports the approved editorial product-page direction, while a curated listing hero can be part of a product’s approved presentation. FSD imagery mixes landscape lifestyle photographs and portrait detail views; arbitrary cropping or mismatched colourways can misrepresent a product. Explicit placeholders preserve the gallery layout without implying that unapproved photos are production assets.
 
 **How to apply:** Match both full-detail views to the exact selected colourway, keep other approved views available in the gallery, retain the curated listing order for Quick View, and preserve each source image’s natural aspect ratio.
+
+When an image is excluded only from product details, keep its catalogue mapping and source file intact; apply the exclusion at the detail-gallery boundary so other approved surfaces are unchanged.
+
+**Why:** A global image filter can unintentionally remove existing imagery from listings, collection cards, and other surfaces when only a detail gallery is unsuitable.
+
+**How to apply:** Use a detail-specific image selector for narrow gallery holds, and retain the original product-image data until replacement assets are approved.

@@ -1,4 +1,4 @@
-import { audiences, categories, customerFacingCategory, getVerifiedProductSpecifications, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, safe, shopCollections } from './catalogue-data.js';
+import { audiences, categories, customerFacingCategory, getVerifiedProductSpecifications, products, filterProducts, isHardwareVisualPreviewProduct, priceInfo, productDetailImagesForDisplay, safe, shopCollections } from './catalogue-data.js';
 import { CLOTHING_LINES } from './clothing-lines.js';
 import { catalogueRelationshipFor } from './data/catalogue-relationships.js';
 import { canAddToBag } from './bag.js';
@@ -716,7 +716,7 @@ export function showProduct(id, {
   const price = displayPrice(p);
   const images = isAegisPrivateProof(p)
     ? [{ label: 'Aegis campaign image', src: `${aegisGiletPreviewPath}media/front-three-quarter` }]
-    : productImagesForDisplay(p);
+    : productDetailImagesForDisplay(p);
   activeDialogImages = images;
   const galleryPlaceholders = Array.isArray(p.galleryPlaceholders)
     ? p.galleryPlaceholders.filter(slot => typeof slot === 'string' && slot.trim())

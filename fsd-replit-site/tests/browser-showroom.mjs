@@ -514,7 +514,15 @@ try {
   assert.deepEqual(await evaluate('Array.from(document.querySelectorAll("#innovations .fsd-featured-card__details"), button => button.dataset.product)'), ['33', '34']);
   await click('#innovations .fsd-featured-card__details');
   await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.includes("MMA Performance Rash Guard")');
+  assert.equal(await evaluate('document.querySelectorAll("#product-dialog .product-detail-gallery img").length'), 0);
+  assert.ok(await evaluate('document.querySelector("#product-dialog .product-detail-gallery").textContent.includes("[ASSET PENDING]")'));
   await waitFor(`document.title === ${JSON.stringify(seoForView({ view: 'product', target: '33' }).title)}`);
+  await click('#close-dialog');
+  await waitFor('!document.querySelector("#product-dialog")?.open');
+  await click('#innovations .fsd-featured-card__details[data-product="34"]');
+  await waitFor('document.querySelector("#product-dialog")?.open && document.querySelector("#product-title")?.textContent.includes("Strike Men\'s Combat Shorts")');
+  assert.equal(await evaluate('document.querySelectorAll("#product-dialog .product-detail-gallery img").length'), 0);
+  assert.ok(await evaluate('document.querySelector("#product-dialog .product-detail-gallery").textContent.includes("[ASSET PENDING]")'));
   await click('#close-dialog');
   await waitFor('!document.querySelector("#product-dialog")?.open');
   const currentSeoLocation = await evaluate('({pathname:location.pathname,hash:location.hash})');
@@ -555,7 +563,8 @@ try {
   assert.ok((await evaluate('document.querySelector("#dialog-body").textContent')).includes("FSD Strike Men's Combat Shorts"));
   assert.equal(await evaluate('Boolean(document.querySelector("#dialog-body [data-product-specifications-root]"))'), true);
   assert.match(await evaluate('document.querySelector("#dialog-body [data-product-specifications-root]").textContent'), /Elasticated comfort waistband/);
-  assert.equal(await evaluate('document.querySelector("#dialog-body [data-catalogue-main-image]").loading'), 'eager');
+  assert.equal(await evaluate('document.querySelectorAll("#dialog-body .product-detail-gallery img").length'), 0);
+  assert.ok(await evaluate('document.querySelector("#dialog-body .product-detail-gallery").textContent.includes("[ASSET PENDING]")'));
   const colourwayCount = await evaluate('document.querySelectorAll("#dialog-body [data-catalogue-colourway-index]").length');
   assert.ok(colourwayCount > 1, 'The selected product should expose its existing colourway controls.');
   for (let index = 0; index < colourwayCount; index++) {

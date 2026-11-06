@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import master from '../src/master-products.json' with { type: 'json' };
 import additional from '../src/additional-catalog.json' with { type: 'json' };
 import { galleryProductIds, galleryProducts } from '../src/gallery.js';
-import { products, heldProducts, retiredProducts, categories, filterProducts, getVerifiedProductSpecifications, imageSwatchBackground, priceInfo, safe } from '../src/catalogue-data.js';
+import { products, heldProducts, retiredProducts, categories, filterProducts, getVerifiedProductSpecifications, imageSwatchBackground, priceInfo, productDetailImagesForDisplay, safe } from '../src/catalogue-data.js';
 import {
   catalogueSection,
   roadmapSection,
@@ -810,21 +810,23 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     click('[data-product]', { dataset: { product: '34' } });
     const strikeProduct = products.find(product => product.id === 34);
     const strikeMarkup = element('#dialog-body').innerHTML;
-    assert.match(strikeMarkup, /src="\/assets\/products\/strike-shorts-hero\.webp"/);
+    assert.ok(strikeProduct.images.length > 0, 'The mapped source assets remain intact.');
+    assert.deepEqual(productDetailImagesForDisplay(strikeProduct), []);
+    assert.match(strikeMarkup, /product-detail-gallery--placeholders/);
+    assert.match(strikeMarkup, /Front view — \[ASSET PENDING\]/);
+    assert.match(strikeMarkup, /Back view — \[ASSET PENDING\]/);
     assert.deepEqual(
       [...strikeMarkup.matchAll(/value="([^"]+)" data-product-size/g)].map(([, size]) => size),
       ['S', 'M', 'L', 'XL', 'XXL'],
     );
     assert.match(strikeMarkup, /£49\.99/);
-    assert.equal((strikeMarkup.match(/data-catalogue-image-index=/g) ?? []).length, 11);
+    assert.equal((strikeMarkup.match(/data-catalogue-image-index=/g) ?? []).length, 0);
     assert.deepEqual(
       [...strikeMarkup.matchAll(/data-catalogue-colourway-index="(\d+)"\s+data-catalogue-colourway-image-index="(-?\d+)"/g)]
         .map(([, colourwayIndex, imageIndex]) => [Number(colourwayIndex), Number(imageIndex)]),
-      [[0, 1], [1, 2], [2, 3], [3, 4]],
+      [[0, -1], [1, -1], [2, -1], [3, -1]],
     );
-    changeColourway(2, 3);
-    assert.equal(mainImage.src, strikeProduct.images[3].src);
-    assert.equal(mainCaption.textContent, strikeProduct.images[3].label);
+    changeColourway(2, -1);
     assert.equal(selectedColourway.textContent, 'Navy & Ice Blue');
 
     click('[data-product]', { dataset: { product: '74' } });
