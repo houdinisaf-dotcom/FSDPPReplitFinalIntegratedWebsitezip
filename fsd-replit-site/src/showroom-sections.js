@@ -2,9 +2,13 @@ import { products, priceInfo } from './catalogue-data.js';
 import { FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
 import { shouldDisableHouseHref } from './data/house-page-readiness.js';
 import { siteMedia } from './data/site-media.js';
+import { homeHeroExperiences } from './data/home-hero-experiences.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
 
 const featuredProductIds = [33, 34];
+const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[character]));
 
 export const featuredProducts = products.filter(product => {
   const price = priceInfo(product);
@@ -12,6 +16,42 @@ export const featuredProducts = products.filter(product => {
     && price.value
     && !price.label;
 });
+
+function experienceMedia(experience) {
+  if (experience.assetKey === 'women') return siteMedia.collectionCards.womens;
+  if (experience.assetKey === 'hardware') return siteMedia.hardwareFeature;
+  return null;
+}
+
+export function homeHeroExperiencesSection() {
+  const cards = homeHeroExperiences.map((experience, index) => {
+    const media = experienceMedia(experience);
+    const image = media?.src
+      ? `<img src="${escapeHTML(media.src)}" alt="${escapeHTML(media.alt || experience.panelTitle)}"
+          data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(experience.panelTitle)}"
+          data-fsd-image-kind="banner" loading="lazy" decoding="async"/>`
+      : imagePlaceholderMarkup({
+        title: experience.label,
+        variantLabel: experience.panelTitle.toUpperCase(),
+        kind: 'banner',
+        className: 'fsd-home-experience__placeholder',
+      });
+    return `<a class="fsd-home-experience" href="${escapeHTML(experience.href)}" data-home-experience="${escapeHTML(experience.id)}">
+      <span class="fsd-home-experience__media">${image}</span>
+      <span class="fsd-home-experience__meta"><span>${String(index + 1).padStart(2, '0')}</span>${escapeHTML(experience.label)}</span>
+      <strong>${escapeHTML(experience.panelTitle)}</strong>
+      <span class="fsd-home-experience__action">${escapeHTML(experience.action)} <b aria-hidden="true">↗</b></span>
+    </a>`;
+  }).join('');
+
+  return `<section class="fsd-home-experiences" id="home-experiences" aria-label="Four FSD performance experiences">
+    <header class="fsd-home-experiences__heading">
+      <p class="section-kicker">FSD / FOUR EXPERIENCES</p>
+      <span>01 — 04</span>
+    </header>
+    <div class="fsd-home-experiences__grid">${cards}</div>
+  </section>`;
+}
 
 export function featuredInnovationsSection() {
   return `<section class="showroom-featured" id="innovations" aria-labelledby="featured-title">

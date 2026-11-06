@@ -39,15 +39,19 @@ try {
     const secondary = dialog.querySelector('.product-detail-gallery__secondary-stage').getBoundingClientRect();
     const media = dialog.querySelector('.product-detail-media').getBoundingClientRect();
     const purchase = dialog.querySelector('.product-detail-purchase').getBoundingClientRect();
+    const gallery = dialog.querySelector('.product-detail-gallery__feature-grid').getBoundingClientRect();
     const mainImage = dialog.querySelector('[data-catalogue-main-image]');
     const secondaryImage = dialog.querySelector('[data-catalogue-secondary-image]');
     return {
       modal: dialog.matches(':modal'),
       headerBottom: shell.getBoundingClientRect().bottom,
       mainTop: main.top,
+      mainHeight: main.height,
       secondaryTop: secondary.top,
+      secondaryHeight: secondary.height,
       mainLeft: main.left,
       secondaryLeft: secondary.left,
+      galleryHeight: gallery.height,
       mediaWidth: media.width,
       purchaseWidth: purchase.width,
       mainSource: new URL(mainImage.src).pathname,
@@ -60,6 +64,9 @@ try {
   assert.equal(desktop.modal, false, 'a product detail route is non-modal beneath the shared header');
   assert.ok(desktop.mainTop >= desktop.headerBottom, 'gallery begins below the shared header');
   assert.ok(desktop.mainTop - desktop.headerBottom <= 4, 'gallery begins immediately below the header');
+  assert.ok(desktop.mainHeight >= 0.85 * (1000 - desktop.headerBottom), 'desktop product images fill nearly the full visible page height');
+  assert.equal(desktop.mainHeight, desktop.secondaryHeight, 'desktop front and back stages share a full-height row');
+  assert.ok(desktop.galleryHeight >= desktop.mainHeight, 'gallery stage fills the available desktop height');
   assert.equal(desktop.secondaryTop, desktop.mainTop, 'front and back images share the same row');
   assert.ok(desktop.secondaryLeft > desktop.mainLeft, 'back image is the second gallery column');
   assert.ok(desktop.mediaWidth / desktop.purchaseWidth > 1.8, 'gallery occupies roughly two thirds of desktop width');
@@ -95,7 +102,10 @@ try {
     const secondary = dialog.querySelector('.product-detail-gallery__secondary-stage').getBoundingClientRect();
     const purchase = dialog.querySelector('.product-detail-purchase').getBoundingClientRect();
     return {
+      mainWidth: main.width,
+      mainHeight: main.height,
       mainBottom: main.bottom,
+      secondaryHeight: secondary.height,
       secondaryTop: secondary.top,
       secondaryBottom: secondary.bottom,
       purchaseTop: purchase.top,
@@ -105,6 +115,9 @@ try {
     };
   })()`);
   assert.ok(mobile.secondaryTop >= mobile.mainBottom - 1, 'mobile stacks the two product photographs');
+  assert.ok(mobile.secondaryTop - mobile.mainBottom <= 4, 'mobile image pair keeps a near-zero gap');
+  assert.ok(mobile.mainHeight >= mobile.mainWidth, 'mobile front image remains large and portrait-proportioned');
+  assert.equal(mobile.mainHeight, mobile.secondaryHeight, 'mobile front and back image slots use matching proportions');
   assert.ok(mobile.purchaseTop >= mobile.secondaryBottom - 1, 'mobile purchase details follow both photographs');
   assert.equal(mobile.secondaryVisible, true);
   assert.equal(mobile.documentWidth, mobile.viewportWidth, 'mobile product page has no horizontal overflow');
@@ -145,6 +158,11 @@ try {
       imageCount: dialog.querySelector('.product-detail-media').querySelectorAll('img').length,
       frontTop: front.top,
       backTop: back.top,
+      frontHeight: front.height,
+      backHeight: back.height,
+      placeholderBackground: getComputedStyle(dialog.querySelector('[data-catalogue-variant-placeholder]')).backgroundColor,
+      notifyButtonDisabled: dialog.querySelector('.product-detail-notify__button')?.disabled,
+      notifyButtonBackground: getComputedStyle(dialog.querySelector('.product-detail-notify__button')).backgroundColor,
       mediaRatio: media.width / purchase.width,
       placeholderText: dialog.querySelector('.product-detail-media')?.textContent,
     };
@@ -154,6 +172,11 @@ try {
   assert.equal(ombre.imageCount, 0, 'missing approved photos do not create broken or concept-board images');
   assert.equal(ombre.frontTop, ombre.backTop);
   assert.ok(ombre.mediaRatio > 1.8, 'placeholder pair uses the same desktop two-thirds layout');
+  assert.ok(ombre.frontHeight >= 0.85 * (1000 - desktop.headerBottom), 'missing photos retain full-height desktop placeholders');
+  assert.equal(ombre.frontHeight, ombre.backHeight, 'front and back placeholders have matching proportions');
+  assert.equal(ombre.placeholderBackground, 'rgb(242, 240, 235)', 'PDP placeholders keep the white editorial gallery surface');
+  assert.equal(ombre.notifyButtonDisabled, true, 'notification remains disabled without a provider');
+  assert.equal(ombre.notifyButtonBackground, 'rgb(17, 19, 24)', 'notification action follows the black CTA design');
   assert.match(ombre.placeholderText, /Front view/);
   assert.match(ombre.placeholderText, /Back view/);
   assert.match(ombre.placeholderText, /\[ASSET PENDING\]/);

@@ -542,9 +542,10 @@ export function renderProductDetailPage({
     ? `<button class="catalogue-bag-add product-detail-add" type="button" data-bag-add="${product.id}"
         data-product-primary-add ${sizes.length ? 'disabled aria-disabled="true"' : ''}>ADD TO BAG</button>
        ${sizes.length ? '<p class="product-detail-size-help" data-size-help role="status">Choose a size to continue.</p>' : ''}`
-    : `<div class="product-detail-notify" role="note">
-        <h3>Notify me when available</h3>
-        <p>Email notifications are not connected. No email is collected.</p>
+     : `<div class="product-detail-notify">
+         <button class="product-detail-notify__button" type="button" data-product-notify-primary disabled aria-disabled="true"
+          aria-describedby="product-notify-note-${product.id}">Notify me when available</button>
+        <p id="product-notify-note-${product.id}">Email notifications are not connected. No email is collected.</p>
       </div>`;
   const quantityMarkup = canPurchase
     ? `<label class="product-detail-quantity" for="product-quantity-${product.id}">
@@ -606,7 +607,14 @@ export function renderProductDetailPage({
     ${canPurchase ? `<div class="product-detail-sticky" data-sticky-add-bar hidden>
       <strong>${safe(product.name)}${price.value ? ` · ${safe(price.value)}` : ''}</strong>
       <button class="catalogue-bag-add" type="button" data-bag-add="${product.id}" data-sticky-add ${sizes.length ? 'disabled aria-disabled="true"' : ''}>ADD TO BAG</button>
-    </div>` : ''}
+    </div>` : `<div class="product-detail-sticky product-detail-sticky--notify" data-sticky-add-bar hidden>
+      <div class="product-detail-sticky__copy">
+        <strong>${safe(product.name)}</strong>
+        <small id="product-sticky-notify-note-${product.id}">Email notifications are not connected. No email is collected.</small>
+      </div>
+      <button class="product-detail-notify__button" type="button" data-sticky-notify disabled aria-disabled="true"
+        aria-describedby="product-sticky-notify-note-${product.id}">Notify me when available</button>
+    </div>`}
     <script type="application/ld+json" data-product-jsonld>${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
   </div>`;
 }

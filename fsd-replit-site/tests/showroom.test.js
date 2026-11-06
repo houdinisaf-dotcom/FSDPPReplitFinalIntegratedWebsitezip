@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { customerFacingCategory, products, productsWithUsableImages, priceInfo } from '../src/catalogue-data.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase, groupProducts, matchesDraftCardScope } from '../src/collection-showcase/index.js';
-import { beyondProductSection, featuredProducts, featuredInnovationsSection, garmentStudiesSection, garmentStudyDefinitions, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
+import { beyondProductSection, featuredProducts, featuredInnovationsSection, homeHeroExperiencesSection, garmentStudiesSection, garmentStudyDefinitions, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
 
 test('the showroom renders four accessible division controls and one reusable dialog', () => {
   const markup = renderCollectionShowcase(collectionDivisions);
@@ -42,6 +42,22 @@ test('the editorial home keeps the three primary destinations concise and opens 
   assert.match(markup, /id="fsd-division-global"[^>]*data-division="global"/);
   assert.equal((markup.match(/<dialog/g) || []).length, 1);
   assert.doesNotMatch(markup, /fsd-showcase-banner|SHOP ALL PRODUCTS|ADD TO BAG/i);
+});
+
+test('the homepage adds four BE HEROES experience panels with approved images or honest placeholders', () => {
+  const markup = homeHeroExperiencesSection();
+  assert.equal((markup.match(/class="fsd-home-experience"/g) || []).length, 4);
+  for (const label of ['BE HEROES™', 'BE STRONGER™', 'BE DISCIPLINED™', 'BE PART OF FSD™']) {
+    assert.ok(markup.includes(label));
+  }
+  for (const title of ['Performance Apparel', 'Training Essentials', 'BIO-LAB™ Innovation', 'THE HOUSE &amp; Community']) {
+    assert.ok(markup.includes(title));
+  }
+  assert.match(markup, /href="#hardware-editorial"/);
+  assert.match(markup, /href="#innovation-hub"/);
+  assert.match(markup, /href="#brand-community"/);
+  assert.equal((markup.match(/data-fsd-image-fallback="true"/g) || []).length, 2);
+  assert.equal((markup.match(/\[ASSET PENDING\]/g) || []).length, 2);
 });
 
 test('group filters constrain category, audience and terms rather than leaking unrelated products', () => {

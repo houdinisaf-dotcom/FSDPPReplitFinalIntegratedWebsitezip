@@ -218,6 +218,10 @@ test('notification state collects no email when no notification provider is conn
     canPurchase: false,
   });
   assert.match(markup, /Email notifications are not connected\. No email is collected/);
+  assert.match(markup, /<button class="product-detail-notify__button" type="button" data-product-notify-primary disabled aria-disabled="true"/);
+  assert.match(markup, /Notify me when available<\/button>/);
+  assert.match(markup, /class="product-detail-sticky product-detail-sticky--notify" data-sticky-add-bar hidden/);
+  assert.match(markup, /data-sticky-notify disabled aria-disabled="true"/);
   assert.doesNotMatch(markup, /type="email"/);
   assert.doesNotMatch(markup, /data-bag-add=/);
   assert.doesNotMatch(markup, /data-product-quantity/);

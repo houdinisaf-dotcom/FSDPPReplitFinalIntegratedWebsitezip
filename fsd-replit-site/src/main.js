@@ -2,7 +2,7 @@ import { catalogueSection, initCatalogue, navigateCatalogue, showProduct } from 
 import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
-import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation, mountGarmentStudies } from './showroom-sections.js';
+import { beyondProductSection, featuredInnovationsSection, homeHeroExperiencesSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation, mountGarmentStudies } from './showroom-sections.js';
 import { renderNavigationHeader } from './site-navigation.js';
 import { mountClientBag } from './bag.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
@@ -60,6 +60,7 @@ export function renderStorefrontMarkup() {
 
   return `<main id="home">
   <div data-home-hero-slot></div>
+  ${homeHeroExperiencesSection()}
   <div id="collections">
     ${renderCollectionShowcase(collectionDivisions, { editorial: true, products })}
     <div class="fsd-clothing-discover">

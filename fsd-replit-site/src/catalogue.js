@@ -582,7 +582,7 @@ function configureProductStickyBar(dialog) {
   productStickyObserver?.disconnect();
   productStickyObserver = null;
   const sticky = dialog?.querySelector('[data-sticky-add-bar]');
-  const primary = dialog?.querySelector('[data-product-primary-add]');
+  const primary = dialog?.querySelector('[data-product-primary-add], [data-product-notify-primary]');
   if (!sticky || !primary) return;
   sticky.hidden = true;
   sticky.setAttribute('aria-hidden', 'true');

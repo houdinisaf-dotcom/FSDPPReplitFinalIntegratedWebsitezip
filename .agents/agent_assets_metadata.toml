@@ -1442,3 +1442,59 @@ mtime_ms = 1793943007748
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/60f87078-e9f2-4191-8bce-865f02474a22/16debf50-a644-4502-92fc-84765bd88209"
 storage_version_token = "1793943218220915"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "B4iKQrxLDKRIms_Bmkjqd"
+uri = "file://generated-artifacts/fsd-product-gallery-placeholder-desktop.jpg"
+type = "image"
+title = "FSD product gallery — desktop"
+description = "Live FSD Ombre Slash Tee product page at 1440×1000, with front/back asset placeholders and the right-side product panel."
+logical_id = "c62fd6e2-c3fb-4cf8-ba8f-215b48b56a12"
+content_hash = "sha256:198dee54d18a4fd8b09ade191c489036baf578f1238aa5f02b42d65acbdf8e25"
+size = 76526
+mtime_ms = 1793945260507
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c62fd6e2-c3fb-4cf8-ba8f-215b48b56a12/07d46a2c-f33c-4254-9035-09fe02350246"
+storage_version_token = "1793945274067488"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "RwEOQGpWMhkUbLq4aJBdS"
+uri = "file://generated-artifacts/fsd-product-gallery-placeholder-mobile.jpg"
+type = "image"
+title = "FSD product gallery — mobile"
+description = "Live FSD Ombre Slash Tee product page at 402px wide, showing the stacked full-width front/back placeholders and product information."
+logical_id = "72de0502-8926-4f78-bfbd-0483fd03160d"
+content_hash = "sha256:7fc132a91ffc639ef1e14ab77b588dc8f5153cb9c449c6de8fe8fa14c32f7f22"
+size = 38910
+mtime_ms = 1793945262163
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/72de0502-8926-4f78-bfbd-0483fd03160d/771294e5-24a1-4f31-b9da-b9ba627c91d4"
+storage_version_token = "1793945274798244"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "fzzsYxkhYc2z0hwfk_hZ0"
+uri = "file://generated-artifacts/fsd-product-gallery-final-desktop.jpg"
+type = "image"
+title = "FSD product gallery — desktop"
+description = "Final running product page at 1440×1000 with full-height paired pending-media slots and a 33% white purchase panel with the disabled black Notify Me button."
+logical_id = "e76eb026-ce5b-4497-9945-7691f2c7c6ea"
+content_hash = "sha256:5a2de1ae735ecb46ecd65777dfc09770acafabcdce86c8ba86b7dfdf6aaf02e6"
+size = 77356
+mtime_ms = 1793945468464
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e76eb026-ce5b-4497-9945-7691f2c7c6ea/d7537945-76bf-4b54-b53f-8110a01783d6"
+storage_version_token = "1793945483151184"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "PwUb1XQxfSlnkMmOxW0L6"
+uri = "file://generated-artifacts/fsd-product-gallery-final-mobile.jpg"
+type = "image"
+title = "FSD product gallery — mobile"
+description = "Final running product page at 402px wide, showing large stacked front/back placeholders and the product panel below."
+logical_id = "4cd13c05-f8fc-4230-8457-463363baca8b"
+content_hash = "sha256:7fc132a91ffc639ef1e14ab77b588dc8f5153cb9c449c6de8fe8fa14c32f7f22"
+size = 38910
+mtime_ms = 1793945470100
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4cd13c05-f8fc-4230-8457-463363baca8b/6fee3179-0cdb-4a20-be1d-87bcffcf4dce"
+storage_version_token = "1793945483861996"
+content_type = "image/jpeg"
