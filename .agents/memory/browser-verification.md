@@ -81,6 +81,12 @@ For navigation rows that rerender on selection, use `event.composedPath()` for d
 
 **How to apply:** When a delegated click can replace its target during bubbling, check the original event path to distinguish internal menu actions from outside clicks.
 
+When checking reduced-motion transitions in Chromium, allow a tiny computed duration instead of requiring the literal value `0s`.
+
+**Why:** Chromium may report `1e-05s` for CSS `transition: none`; treating that serialization as active motion causes a false failure.
+
+**How to apply:** Assert a negligible computed duration (for example, at most 1ms) and separately verify that entrance animation is `none`.
+
 Keep mobile navigation preview frames the same size for loaded images and collection placeholders.
 
 **Why:** Collection placeholders carry intrinsic aspect-ratio and minimum-height rules that can override the navigation frame and make image-free selections taller than image selections.

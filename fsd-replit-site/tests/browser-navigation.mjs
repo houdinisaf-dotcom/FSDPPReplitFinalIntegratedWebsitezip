@@ -167,6 +167,36 @@ try {
   assert.equal(await evaluate('document.querySelector(".fsd-site-footer__newsletter-controls button")?.disabled'), true);
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-site-footer__top")).gridTemplateColumns.trim().split(/\\s+/).length'), 4);
   await waitFor('!document.querySelector("[data-fsd-luxury-entry]")');
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  await waitFor('matchMedia("(prefers-reduced-motion: reduce)").matches');
+  await click('[data-search-open]');
+  await waitFor('document.querySelector("#fsd-search-dialog")?.open');
+  assert.equal(await evaluate('document.activeElement.id'), 'fsd-search-input');
+  const reducedMotionStyles = await evaluate(`(() => {
+    const panel = getComputedStyle(document.querySelector(".fsd-search-panel"));
+    const controls = [
+      document.querySelector(".fsd-search-trigger"),
+      document.querySelector(".fsd-search-close"),
+      document.querySelector(".fsd-search-form button"),
+      document.querySelector(".fsd-search-suggestions button"),
+    ].filter(Boolean).map(element => parseFloat(getComputedStyle(element).transitionDuration));
+    return { animationName: panel.animationName, transitionDurations: controls };
+  })()`);
+  assert.equal(reducedMotionStyles.animationName, 'none');
+  assert.equal(reducedMotionStyles.transitionDurations.length, 4);
+  assert.ok(reducedMotionStyles.transitionDurations.every(duration => duration <= 0.001),
+    `Reduced motion must remove control transitions: ${JSON.stringify(reducedMotionStyles.transitionDurations)}`);
+  await send('Input.insertText', { text: 'Modest' });
+  assert.equal(await evaluate('document.querySelector("#fsd-search-input").value'), 'Modest');
+  await key('Tab');
+  assert.equal(await evaluate('document.querySelector("#fsd-search-dialog").contains(document.activeElement)'), true);
+  await key('Escape');
+  await waitFor('!document.querySelector("#fsd-search-dialog").open');
+  await waitFor('document.activeElement.matches("[data-search-open]")');
+  assert.equal(await evaluate('document.querySelector("[data-search-open]").getAttribute("aria-expanded")'), 'false');
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
+  await waitFor('!matchMedia("(prefers-reduced-motion: reduce)").matches');
+
   await send('Emulation.setDeviceMetricsOverride', {
     width: 768, height: 1024, deviceScaleFactor: 1, mobile: true,
   });
