@@ -87,6 +87,8 @@ test('seven Bio-Lab concepts retain approved holding copy and per-page evidence 
 
 test('new page content does not enable membership sign-up, checkout, or unverified claims', () => {
   const html = renderFlagshipPlaceholderPages();
+  const partnerships = flagshipPageDefinitions.find(page => page.id === 'performance-linked-partnerships-security');
+
   assert.match(html, /REGISTRATION NOT OPEN/);
   assert.match(html, /Practical skills\. Greater confidence\. Stronger communities\./);
   assert.match(html, /Online Learning/);
@@ -96,10 +98,14 @@ test('new page content does not enable membership sign-up, checkout, or unverifi
   assert.match(html, /POTENTIAL STRATEGIC VALUE/);
   assert.match(html, /04 \/ CONDITIONS BEFORE PROGRESSION/);
   assert.match(html, /Terms, benefits, providers, and access details are unconfirmed/);
-  assert.match(html, /PARTNERSHIP ENQUIRIES NOT CONNECTED/);
+  assert.match(html, /NO PARTNER APPLICATION OR SIGN-UP/);
+  assert.match(partnerships.summary, /No named partner, facility, written agreement, live testing programme, participation eligibility, or application process is confirmed/);
+  assert.match(partnerships.modules.join(' '), /potential apparel and recovery-equipment evaluation/i);
+  assert.match(partnerships.modules.join(' '), /written agreements, safety protocols, and participant consent/i);
   assert.match(html, /FSD \/ GLOBAL VISION &amp; OPERATIONS/);
   assert.match(html, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
   assert.match(html, /Related concepts and design prototypes are for exploration, not current products or commitments/);
   assert.doesNotMatch(html, /<form\b|ADD TO BAG|CHECKOUT|£\d/i);
+  assert.doesNotMatch(html, /partner application form|partnership sign-up form|collect(?:s|ing)? (?:partner|participant) (?:data|details)/i);
   assert.match(html, /Specifications, supporting evidence, and availability are pending verification/);
 });

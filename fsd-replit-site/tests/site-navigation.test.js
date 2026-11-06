@@ -819,11 +819,13 @@ test('Performance-Linked Partnerships does not claim unconfirmed partners or tes
   assert.equal(partnerships?.href, '/performance-partnerships.html');
   assert.equal(partnerships?.status, 'Operating or rollout underway');
   assert.notEqual(partnerships?.navigationUnavailable, true);
+  assert.match(partnerships?.description || '', /No named partner, live testing programme, participation criteria, or application flow is confirmed/);
   assert.match(page, /<title>FSD \| Performance-Linked Partnerships<\/title>/);
   assert.match(page, /Status:<\/strong> Operating or rollout underway\./);
   assert.match(page, /developing a partnership framework for training facilities and martial-arts coaches/);
   assert.match(page, /subject to written agreements, agreed safety protocols, and appropriate participant consent/);
   assert.match(page, /No specific partner, facility, or live testing programme is identified on this page/);
+  assert.doesNotMatch(page, /<form\b|apply now|join now|registration is open/i);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|FSD collaborates with dedicated training facilities/i);
 });
 

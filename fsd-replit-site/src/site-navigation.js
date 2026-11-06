@@ -553,7 +553,7 @@ function makeHouseGroups(divisions) {
           href: '/performance-partnerships.html',
           kind: 'initiative',
           status: 'Operating or rollout underway',
-          description: 'Operating partnership initiative. No specific partner or live testing programme is identified here.',
+          description: 'Framework for training-facility and martial-arts-coach collaboration. No named partner, live testing programme, participation criteria, or application flow is confirmed.',
         },
         {
           id: 'circular-trade-in',
