@@ -15,6 +15,7 @@ import { HOUSE_PAGE_REGISTRY } from './data/house-page-readiness.js';
 import { renderHouseDestinationIndex } from './house-pages/house-destination-index.js';
 import { ourStorySection } from './story-section.js';
 import { renderSiteFooter } from './site-footer.js';
+import { renderHomepageFaq } from './homepage-faq.js';
 import './style.css';
 import './catalogue.css';
 import './product-detail.css';
@@ -35,6 +36,7 @@ import './house-pages/house-destination-index.css';
 import './site-cta.css';
 import './site-footer.css';
 import './ui-interactions.css';
+import './flagship-redesign.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 
@@ -77,6 +79,7 @@ export function renderStorefrontMarkup() {
   ${featuredInnovationsSection()}
   ${beyondProductSection()}
   ${houseConnectionSection()}
+  ${renderHomepageFaq()}
   </main>
   <div data-fsd-clothing-lines-slot></div>
   ${ourStorySection()}

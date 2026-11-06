@@ -102,6 +102,16 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
           <span className="catalogue-card__action">{isOpen ? 'COLLAPSE DETAILS' : 'VIEW DETAILS'} <span aria-hidden="true">↗</span></span>
         </span>
       </button>
+      <button
+        className="catalogue-card__quick-view"
+        type="button"
+        data-product-quick-view={product.id}
+        aria-haspopup="dialog"
+        aria-controls="product-dialog"
+        aria-label={`Quick view of ${product.name}`}
+      >
+        QUICK VIEW <span aria-hidden="true">↗</span>
+      </button>
       {hasColourways && (
         <div className="catalogue-card__swatches" role="group" aria-label={`Colour options for ${product.name}`}>
           {colourways.map(colourway => {

@@ -4,6 +4,7 @@ import { products } from '../src/catalogue-data.js';
 import { productImagesForDisplay } from '../src/data/products.js';
 import {
   editorialGalleryPrimaryImageIndex,
+  editorialGallerySecondaryImageIndex,
   productSizeOptions,
   renderProductDetailPage,
   renderSizeGuideDialog,
@@ -54,11 +55,78 @@ test('editorial gallery selection retains the mapped default when a same-variant
   assert.equal(editorialGalleryPrimaryImageIndex(images, 0, 'White / Green', true), 0);
 });
 
+test('detail pages pair exact front and back photos even when labels omit the word product', () => {
+  const product = products.find(item => item.id === 2);
+  const images = productImagesForDisplay(product);
+  const variant = 'Luminous aqua / deep teal navy / white';
+  const frontIndex = editorialGalleryPrimaryImageIndex(images, 0, variant, false, true);
+
+  assert.match(images[frontIndex].label, /Front view/);
+  assert.equal(
+    editorialGallerySecondaryImageIndex(images, frontIndex, variant, false, true),
+    images.findIndex(image => /Back view/.test(image.label)),
+  );
+
+  const markup = renderProductDetailPage({
+    product,
+    images,
+    initialImageIndex: frontIndex,
+    galleryPlaceholders: [],
+    colourways: [variant],
+    colourwayImageIndexes: [frontIndex],
+    sizes: productSizeOptions(product),
+    price: { label: '', value: '' },
+    canPurchase: false,
+  });
+  assert.match(markup, /data-catalogue-main-caption>Luminous aqua[^<]*Front view/);
+  assert.match(markup, /data-catalogue-secondary-caption>Luminous aqua[^<]*Back view/);
+});
+
+test('featured products without approved photos retain named front and back placeholders', () => {
+  for (const product of [products.find(item => item.id === 1), products.find(item => item.id === 10)]) {
+    const markup = renderProductDetailPage({
+      product,
+      images: [],
+      initialImageIndex: -1,
+      galleryPlaceholders: [],
+      colourways: [],
+      colourwayImageIndexes: [],
+      sizes: productSizeOptions(product),
+      price: { label: '', value: '' },
+      canPurchase: false,
+    });
+
+    assert.equal((markup.match(/product-detail-image-stage|product-detail-gallery__secondary-stage/g) || []).length, 2);
+    assert.match(markup, /Front view — \[ASSET PENDING\]/);
+    assert.match(markup, /Back view — \[ASSET PENDING\]/);
+  }
+});
+
+test('Quick View keeps its original single-image fallback', () => {
+  const product = products.find(item => item.id === 2);
+  const images = productImagesForDisplay(product).slice(0, 1);
+  const markup = renderProductDetailPage({
+    product,
+    images,
+    initialImageIndex: 0,
+    galleryPlaceholders: [],
+    colourways: [],
+    colourwayImageIndexes: [],
+    sizes: [],
+    price: { label: '', value: '' },
+    canPurchase: false,
+    quickView: true,
+  });
+
+  assert.match(markup, /product-detail-page--quick-view/);
+  assert.doesNotMatch(markup, /data-catalogue-secondary-panel/);
+});
+
 test('mapped CORE hijab photos can form a same-colourway front/rear detail pair', () => {
   const product = products.find(item => item.id === 42);
   const images = productImagesForDisplay(product);
   const heroIndex = images.findIndex(image => /Hero portrait/.test(image.label));
-  const frontIndex = editorialGalleryPrimaryImageIndex(images, heroIndex, 'Black/Gold', true);
+  const frontIndex = editorialGalleryPrimaryImageIndex(images, heroIndex, 'Black/Gold', true, true);
 
   assert.match(images[frontIndex].label, /Front portrait/);
   const markup = renderProductDetailPage({
@@ -111,6 +179,9 @@ test('product detail markup includes accessible size choices and leaves unconfir
   assert.doesNotMatch(markup, /UK delivery: \[TO CONFIRM\]|Dispatch: \[TO CONFIRM\]|Returns: \[TO CONFIRM\]/);
   assert.doesNotMatch(markup, /\[TO CONFIRM\] Product details|\[TO CONFIRM\] Material composition|\[TO CONFIRM\] Technical specifications/);
   assert.match(markup, /href="\/delivery-returns\.html"/);
+  assert.match(markup, /<summary>Product Details<\/summary>/);
+  assert.match(markup, /<summary>Size &amp; Fit<\/summary>/);
+  assert.match(markup, /<summary>Shipping &amp; Returns<\/summary>/);
 });
 
 test('product JSON-LD omits offers until availability has a verified value', () => {

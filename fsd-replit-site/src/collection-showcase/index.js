@@ -88,22 +88,33 @@ export function renderCollectionShowcase(divisions, { editorial = false, product
           <span class="fsd-editorial-card__eyebrow">${number} <i aria-hidden="true">/</i> ${escapeHTML(eyebrow)}</span>
           <strong>${escapeHTML(title)}</strong>
           <span class="fsd-editorial-card__note">${escapeHTML(note)}</span>
-          <span class="fsd-editorial-card__action">Explore <b aria-hidden="true">↗</b></span>
+          <span class="fsd-editorial-card__action">${title === 'MEN’S COLLECTION' ? 'EXPLORE MEN' : title === 'WOMEN’S COLLECTION' ? 'EXPLORE WOMEN' : 'EXPLORE BIO-LAB™'} <b aria-hidden="true">↗</b></span>
         </button>`
       : '';
 
-    return `<section class="fsd-showcase fsd-showcase--editorial" id="universe" aria-labelledby="fsd-showcase-title">
-      <header class="fsd-editorial-heading">
-        <div>
-          <p class="fsd-showcase-kicker"><span></span> 02 / THE FSD COLLECTION SYSTEM</p>
-          <h2 id="fsd-showcase-title">Choose your<br/><em>direction.</em></h2>
-        </div>
-        <p>Explore apparel and training technology through the existing FSD collection menu.</p>
-      </header>
+    return `<section class="fsd-showcase fsd-showcase--editorial" id="universe" aria-label="FSD performance divisions and collections">
+      <nav class="fsd-division-strip" aria-label="Explore FSD divisions">
+        <button class="fsd-division-link" type="button" data-division="apparel" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 20 6v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-4Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+          <span><strong>PERFORMANCE APPAREL</strong><small>Engineered for movement.</small></span>
+        </button>
+        <button class="fsd-division-link" type="button" data-division="bio-lab" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5.7 9.2A1.8 1.8 0 0 0 5.8 21h12.4a1.8 1.8 0 0 0 1.5-2.8L14 9V3"/><path d="M8 15h8"/></svg>
+          <span><strong>BIO-LAB™</strong><small>Advanced material science.</small></span>
+        </button>
+        <button class="fsd-division-link" type="button" data-division="hardware" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg>
+          <span><strong>HARDWARE</strong><small>Training essentials.</small></span>
+        </button>
+        <a class="fsd-division-link" href="/the-house.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1V10Z"/></svg>
+          <span><strong>THE HOUSE</strong><small>Six divisions. One purpose.</small></span>
+        </a>
+      </nav>
       <div class="fsd-editorial-grid">
-        ${card(apparel, 0, '01', 'APPAREL', 'Men’s Luxury Performance', 'Performance apparel and combat training.', 'fsd-editorial-card--men', mensCover)}
-        ${card(apparel, 1, '02', 'APPAREL', 'Women’s Modest Combat', 'Performance apparel and modest movement.', 'fsd-editorial-card--women', siteMedia.collectionCards.womens?.src || '')}
-        ${card(bioLab, 0, '03', 'BIO-LAB™', 'Intelligence in Motion', 'Training technology and recovery.', 'fsd-editorial-card--biolab', siteMedia.collectionCards.bioLab?.src || '')}
+        ${card(apparel, 0, '01', 'TIGER / SCORPION', 'MEN’S COLLECTION', '', 'fsd-editorial-card--men', mensCover)}
+        ${card(apparel, 1, '02', 'AEROFORGE / COMBAT / FLEX / BREEZE / MODEST FLOW', 'WOMEN’S COLLECTION', '', 'fsd-editorial-card--women', siteMedia.collectionCards.womens?.src || '')}
+        ${card(bioLab, 0, '03', 'INNOVATION IN PERFORMANCE', 'BIO-LAB™', '', 'fsd-editorial-card--biolab', siteMedia.collectionCards.bioLab?.src || '')}
       </div>
       <nav class="fsd-editorial-secondary" aria-label="Other FSD divisions">
         ${hardware ? `<button id="fsd-division-hardware" type="button" data-division="hardware" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog" aria-expanded="false">Explore Hardware <span aria-hidden="true">↗</span></button>` : ''}

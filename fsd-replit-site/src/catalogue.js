@@ -10,6 +10,7 @@ import { trackEvent } from './analytics.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
 import {
   editorialGalleryPrimaryImageIndex,
+  editorialGallerySecondaryImageIndex,
   productSizeOptions,
   renderProductDetailPage,
   renderSizeGuideDialog,
@@ -354,6 +355,10 @@ function card(product) {
       ${priceMarkup}
        <span class="product-row__action">VIEW DETAILS ${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
     </button>
+    <button class="catalogue-card__quick-view" type="button" data-product-quick-view="${product.id}"
+      aria-haspopup="dialog" aria-controls="product-dialog" aria-label="Quick view of ${safe(product.name)}">
+      QUICK VIEW <span aria-hidden="true">↗</span>
+    </button>
     ${productCardColourwaysMarkup(product)}
   </article>`;
 }
@@ -665,10 +670,30 @@ function toggleWishlist(button) {
   animateWishlistHeart(icon);
 }
 
-export function showProduct(id, { fromHistory = false, returnFocus = null, initialVariant = {} } = {}) {
+export function showProduct(id, {
+  fromHistory = false,
+  returnFocus = null,
+  initialVariant = {},
+  quickView = false,
+} = {}) {
   const p = products.find(product => product.id === id);
   if (!p) return;
   const dialog = document.querySelector('#product-dialog');
+  const presentation = quickView ? 'quick-view' : 'detail';
+  const otherOpenDialogs = typeof document.querySelectorAll === 'function'
+    ? [...document.querySelectorAll('dialog[open]')].filter(openDialog => openDialog !== dialog)
+    : [];
+  const shouldBeModal = Boolean(quickView || !dialog?.show || otherOpenDialogs.length);
+  const currentModalState = Boolean(dialog?.open && (
+    typeof dialog.matches === 'function'
+      ? dialog.matches(':modal')
+      : dialog.dataset.presentation === 'quick-view'
+  ));
+  const presentationChanged = Boolean(dialog?.open && (
+    dialog.dataset.presentation !== presentation
+    || currentModalState !== shouldBeModal
+  ));
+  if (dialog) dialog.dataset.presentation = presentation;
   if (!fromHistory && isBrowser()) {
     const currentProductId = Number.parseInt(new URLSearchParams(window.location.search).get('product') || '', 10);
     if (currentProductId !== p.id) {
@@ -718,6 +743,7 @@ export function showProduct(id, { fromHistory = false, returnFocus = null, initi
     fallbackImageIndex,
     requestedColourway,
     colourwayOptions.length > 1,
+    !quickView,
   );
   const dialogBody = document.querySelector('#dialog-body');
   const sizes = productSizeOptions(p);
@@ -733,6 +759,7 @@ export function showProduct(id, { fromHistory = false, returnFocus = null, initi
     price,
     canPurchase: !hardwarePreview && canShowBagAction(p),
     hardwarePreview,
+    quickView,
   });
   const wishlistButton = dialogBody.querySelector('[data-product-wishlist]');
   const wishlistSaved = readWishlist().includes(p.id);
@@ -745,7 +772,11 @@ export function showProduct(id, { fromHistory = false, returnFocus = null, initi
   }
   updateProductJsonLd(dialogBody);
   document.documentElement?.classList?.add('fsd-modal-open');
-  if (dialog && !dialog.open) dialog.showModal();
+  if (dialog && (!dialog.open || presentationChanged)) {
+    if (dialog.open) dialog.close();
+    if (shouldBeModal) dialog.showModal();
+    else dialog.show();
+  }
   updateProductActionState(p);
   configureProductStickyBar(dialog);
   const initialColourIndex = hasRequestedColourway
@@ -887,18 +918,37 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       return;
     }
 
-    const secondaryIndex = activeDialogImages.findIndex((candidate, candidateIndex) => {
-      if (candidateIndex === primaryIndex || candidate.src === primaryImage.src) return false;
-      const candidateColourwayIndex = imageColourwayIndex(activeDialogProduct, candidate);
-      if (colourways.length > 1) {
-        return primaryColourwayIndex >= 0 && candidateColourwayIndex === primaryColourwayIndex;
-      }
-      return candidateColourwayIndex < 0
-        || primaryColourwayIndex < 0
-        || candidateColourwayIndex === primaryColourwayIndex;
-    });
+    const requireFrontBackPair = dialog?.dataset.presentation !== 'quick-view';
+    const secondaryIndex = editorialGallerySecondaryImageIndex(
+      activeDialogImages,
+      primaryIndex,
+      primaryImage.colourway || primaryImage.variant || activeDialogVariant.colourway || '',
+      colourways.length > 1,
+      requireFrontBackPair,
+    );
     if (secondaryIndex < 0) {
-      updateEditorialGalleryLayout(false);
+      updateEditorialGalleryLayout(requireFrontBackPair);
+      if (requireFrontBackPair && placeholder) {
+        secondaryImage.hidden = true;
+        const primaryLabel = String(primaryImage.label || '').toLocaleLowerCase('en-GB');
+        const missingView = /\bfront\b/.test(primaryLabel)
+          ? 'Back view'
+          : /\b(?:back|rear)\b/.test(primaryLabel)
+            ? 'Front view'
+            : 'Back view';
+        const imageColourway = colourways[primaryColourwayIndex]
+          || primaryImage.colourway || primaryImage.variant
+          || activeDialogVariant.colourway || '';
+        const placeholderLabel = [imageColourway, missingView].filter(Boolean).join(' / ');
+        const label = placeholder.querySelector('[data-catalogue-secondary-variant]');
+        if (label) label.textContent = placeholderLabel;
+        placeholder.setAttribute(
+          'aria-label',
+          `${activeDialogProduct.name} — ${placeholderLabel} [ASSET PENDING]`,
+        );
+        placeholder.hidden = false;
+        if (caption) caption.textContent = `${missingView} — [ASSET PENDING]`;
+      }
       return;
     }
 
@@ -1004,7 +1054,25 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
 
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
     if (caption) caption.textContent = `${variantLabel} — [ASSET PENDING]`;
-    updateEditorialGalleryLayout(false);
+    const requireFrontBackPair = dialog?.dataset.presentation !== 'quick-view';
+    updateEditorialGalleryLayout(requireFrontBackPair);
+    if (requireFrontBackPair) {
+      const secondaryImage = dialogBody.querySelector('[data-catalogue-secondary-image]');
+      const secondaryPlaceholder = dialogBody.querySelector('[data-catalogue-secondary-placeholder]');
+      const secondaryCaption = dialogBody.querySelector('[data-catalogue-secondary-caption]');
+      if (secondaryImage) secondaryImage.hidden = true;
+      if (secondaryPlaceholder) {
+        const label = secondaryPlaceholder.querySelector('[data-catalogue-secondary-variant]');
+        const placeholderLabel = [variantLabel, 'Back view'].filter(Boolean).join(' / ');
+        if (label) label.textContent = placeholderLabel;
+        secondaryPlaceholder.setAttribute(
+          'aria-label',
+          `${activeDialogProduct?.name || 'FSD product'} — ${placeholderLabel} [ASSET PENDING]`,
+        );
+        secondaryPlaceholder.hidden = false;
+      }
+      if (secondaryCaption) secondaryCaption.textContent = 'Back view — [ASSET PENDING]';
+    }
   };
 
   mountImmersiveProductGallery({
@@ -1061,11 +1129,13 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       if (selectedColourway) selectedColourway.textContent = colourway;
       const imageIndex = Number(colourwayInput.dataset.catalogueColourwayImageIndex);
       if (imageIndex >= 0) {
+        const requireFrontBackPair = dialog?.dataset.presentation !== 'quick-view';
         const pairedImageIndex = editorialGalleryPrimaryImageIndex(
           activeDialogImages,
           imageIndex,
           colourway,
           productColourwayOptions(activeDialogProduct).length > 1,
+          requireFrontBackPair,
         );
         selectDialogImage(pairedImageIndex);
       }
@@ -1105,6 +1175,14 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   });
 
   document.addEventListener('click', event => {
+    const quickViewButton = event.target.closest?.('[data-product-quick-view]');
+    if (quickViewButton) {
+      const productId = Number(quickViewButton.dataset.productQuickView);
+      if (Number.isSafeInteger(productId)) {
+        showProduct(productId, { returnFocus: quickViewButton, quickView: true });
+      }
+      return;
+    }
     const cardSwatch = event.target.closest?.('[data-catalogue-card-colourway]');
     if (cardSwatch) {
       const swatches = cardSwatch.closest('[data-product-card-swatches]');
@@ -1257,9 +1335,21 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   document.querySelector('#close-dialog').addEventListener('click', closeProductFromUI);
   dialog.addEventListener('cancel', event => {
     event.preventDefault();
-    if (sizeGuideEscapePending || document.querySelector('#fsd-size-guide-dialog')?.open) return;
+    if (document.querySelector('#fsd-size-guide-dialog')?.open) return;
     closeProductFromUI();
   });
+  document.addEventListener('keydown', event => {
+    if (
+      event.key !== 'Escape'
+      || !dialog.open
+      || dialog.dataset.presentation !== 'detail'
+      || document.querySelector('#fsd-size-guide-dialog')?.open
+      || document.querySelector('#fsd-product-viewer')?.open
+      || document.querySelector('.fsd-navigation-shell.is-open')
+    ) return;
+    event.preventDefault();
+    closeProductFromUI();
+  }, true);
   dialog.addEventListener('click', event => {
     if (event.target !== dialog) return;
     const bounds = dialog.getBoundingClientRect();

@@ -1499,9 +1499,14 @@ export function mountNavigation({
     }
 
     if (event.key === 'Escape' && isOpen) {
-      // Native modal dialogs own Escape while they are open. Do not dismiss an
-      // underlying menu as well; the dialog's cancel handler closes its layer.
-      if (root.ownerDocument.querySelector('dialog[open]')) return;
+      // Native modal dialogs own Escape while they are open. A full product
+      // detail view is non-modal, so it must not trap the header menu.
+      const openDialogs = root.ownerDocument.querySelectorAll?.('dialog[open]') || [];
+      const hasOpenModalDialog = [...openDialogs].some(dialog =>
+        typeof dialog.matches === 'function'
+          ? dialog.matches(':modal')
+          : dialog.dataset.presentation !== 'detail');
+      if (hasOpenModalDialog) return;
       event.preventDefault();
       closeMenu({ restoreFocus: true });
       return;

@@ -23,17 +23,16 @@ export function HomeHero({ headingTag = 'h1' }) {
         <span className="fsd-phase3-hero__frame-mark" />
       </div>
       <div className="fsd-home-hero__content">
-        <p className="fsd-home-kicker"><span /> 01 / PERFORMANCE / DISCIPLINE / IDENTITY</p>
-        <Heading id="fsd-home-title">Made to Move,<br /><em>Made to Belong.</em></Heading>
+        <p className="fsd-home-kicker"><span /> FITNESS &amp; SELF-DEFENCE</p>
+        <Heading id="fsd-home-title">MADE TO MOVE,<br />MADE TO <em>BELONG.</em></Heading>
         <p className="fsd-home-intro">Fitness &amp; Self-Defence.<br />A house for those who train with purpose.</p>
         <div className="fsd-home-actions">
           <a className="fsd-home-primary" href="#universe">
-            Explore the collections <span aria-hidden="true">↗</span>
+            EXPLORE THE COLLECTIONS <span aria-hidden="true">↗</span>
           </a>
+          <a className="fsd-home-secondary" href="/the-house.html">THE HOUSE</a>
         </div>
-        <p className="fsd-home-signoff">FSD <span>/</span> FITNESS &amp; SELF-DEFENCE</p>
       </div>
-      <p className="fsd-home-caption">MADE TO MOVE <span>—</span> MADE TO BELONG</p>
     </section>
   );
 }

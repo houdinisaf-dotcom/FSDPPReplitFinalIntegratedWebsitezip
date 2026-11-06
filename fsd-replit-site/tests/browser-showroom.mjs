@@ -153,9 +153,16 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor(`!!document.querySelector('[data-division="apparel"]')`);
-  assert.equal(await evaluate('document.querySelectorAll("[data-division]").length'), 5);
-  assert.equal(await evaluate('document.querySelector("#fsd-home-title").textContent.trim().replace(/\\s+/g, " ")'), 'Made to Move,Made to Belong.');
+  assert.equal(await evaluate('document.querySelectorAll("[data-division]").length'), 8);
+  assert.equal(await evaluate('document.querySelectorAll(".fsd-division-strip .fsd-division-link").length'), 4);
+  assert.equal(await evaluate('document.querySelector("#fsd-home-title").textContent.trim().replace(/\\s+/g, " ")'), 'MADE TO MOVE,MADE TO BELONG.');
+  assert.equal(await evaluate('document.querySelector(".fsd-editorial-card--women .fsd-editorial-card__action").textContent.trim().replace(/\\s+/g, " ")'), 'EXPLORE WOMEN ↗');
   assert.equal(await evaluate('document.querySelectorAll(".fsd-editorial-card").length'), 3);
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-home-faq details").length'), 4);
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-home-faq details[open]").length'), 0);
+  assert.equal(await evaluate('document.querySelector("#fsd-home-faq").textContent.includes("ButterEase")'), false);
+  await click('#fsd-home-faq summary');
+  assert.equal(await evaluate('document.querySelector("#fsd-home-faq details").open'), true);
   assert.equal(await evaluate('document.querySelectorAll(".showroom-archive[open]").length'), 0);
   assert.equal(await evaluate('document.querySelectorAll("#hardware-editorial").length'), 1);
   assert.equal(await evaluate('document.querySelector("#hardware-editorial").closest("#fsd-house-archive") === null'), true);
@@ -176,7 +183,7 @@ try {
   assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
   assert.equal(await evaluate('document.querySelector("#catalogue-archive").getClientRects().length'), 0);
   assert.equal(await evaluate('document.querySelector("#fsd-house-archive").getClientRects().length'), 0);
-  assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollbarColor'), 'rgb(119, 103, 72) rgb(17, 18, 20)');
+  assert.equal(await evaluate('getComputedStyle(document.documentElement).scrollbarColor'), 'rgb(119, 123, 126) rgb(17, 19, 24)');
 
   for (const division of ['apparel', 'bio-lab', 'hardware', 'global']) {
     await click(`[data-division="${division}"]`);
@@ -350,7 +357,8 @@ try {
   }
   await click('[data-product-id="43"]');
   await waitFor('document.querySelector("#product-dialog")?.open');
-  assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("/assets/products/velocity-hijab-main-listing.jpg")'));
+  assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-main-image]")?.src.endsWith("/assets/products/velocity-hijab-front-detail.png")'));
+  assert.ok(await evaluate('document.querySelector("#product-dialog [data-catalogue-secondary-image]")?.src.endsWith("/assets/products/velocity-hijab-rear-view.png")'));
   assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Black / Gold")'));
   assert.equal(
     await evaluate('document.querySelector("#product-dialog [data-bag-add]") === null'),

@@ -8,7 +8,7 @@ import { productSizeGuideForProduct } from './size-guide-data.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
 import { productImagesForDisplay } from './data/products.js';
 import { rotationFramesForProduct } from './product-rotation-assets.js';
-import { productStructuredData } from './product-structured-data.js';
+import { productSeoPath, productStructuredData } from './product-structured-data.js';
 import { MAX_BAG_QUANTITY } from './bag.js';
 import { CLOTHING_LINES, productBelongsToLine } from './clothing-lines.js';
 
@@ -158,12 +158,13 @@ function galleryProductViewRank(image) {
   return 1;
 }
 
-function preferredGallerySideIndex(images, side, variant, hasMultipleColourways) {
+function preferredGallerySideIndex(images, side, variant, hasMultipleColourways, allowNonProductViews = false) {
   const preferredVariant = galleryVariantKey({ variant });
   const candidates = images
     .map((image, index) => ({ image, index }))
     .filter(({ image }) => {
       if (!gallerySide(image, side)) return false;
+      if (!allowNonProductViews && !/\bproduct\b/.test(normalizedGalleryLabel(image))) return false;
       const candidateVariant = galleryVariantKey(image);
       return hasMultipleColourways
         ? Boolean(preferredVariant && candidateVariant === preferredVariant)
@@ -179,28 +180,54 @@ export function editorialGalleryPrimaryImageIndex(
   fallbackIndex,
   preferredVariant = '',
   hasMultipleColourways = false,
+  requireFrontBackPair = false,
 ) {
   const fallback = images[fallbackIndex];
   if (!fallback) return fallbackIndex;
-  // Keep the explicitly approved Velocity listing hero as its first product
-  // detail image; its curated gallery order is distinct from the other pairs.
-  if (/\bmain product listing\b/i.test(fallback.label || '')) return fallbackIndex;
+  // Quick View preserves the approved Velocity listing hero; full details use
+  // the exact selected-colourway front/rear pair instead.
+  if (!requireFrontBackPair && /\bmain product listing\b/i.test(fallback.label || '')) return fallbackIndex;
 
   const variant = preferredVariant || fallback.colourway || fallback.variant || '';
-  const frontIndex = preferredGallerySideIndex(images, 'front', variant, hasMultipleColourways);
-  const rearIndex = preferredGallerySideIndex(images, 'rear', variant, hasMultipleColourways);
+  const frontIndex = preferredGallerySideIndex(images, 'front', variant, hasMultipleColourways, requireFrontBackPair);
+  const rearIndex = preferredGallerySideIndex(images, 'rear', variant, hasMultipleColourways, requireFrontBackPair);
 
-  // Only switch away from the source-selected default when an approved,
-  // variant-matched front/rear pair is present. Otherwise retain the original.
+  // Full-detail pages prioritize an exact variant-matched pair when available;
+  // Quick View retains its curated source-selected order.
   return frontIndex >= 0 && rearIndex >= 0 ? frontIndex : fallbackIndex;
 }
 
-function secondaryGalleryImageIndex(images, primaryIndex, preferredVariant = '', hasMultipleColourways = false) {
+export function editorialGallerySecondaryImageIndex(
+  images,
+  primaryIndex,
+  preferredVariant = '',
+  hasMultipleColourways = false,
+  requireFrontBackPair = false,
+) {
   const primary = images[primaryIndex] || images[0];
   if (!primary) return -1;
   const primaryVariant = galleryVariantKey(primary) || galleryVariantKey({ variant: preferredVariant });
 
-  if (gallerySide(primary, 'front')) {
+  if (requireFrontBackPair) {
+    const oppositeSide = gallerySide(primary, 'front')
+      ? 'rear'
+      : gallerySide(primary, 'rear')
+        ? 'front'
+        : '';
+    if (!oppositeSide) return -1;
+    const oppositeIndex = preferredGallerySideIndex(
+      images,
+      oppositeSide,
+      primaryVariant,
+      hasMultipleColourways,
+      true,
+    );
+    return oppositeIndex >= 0 && oppositeIndex !== primaryIndex && images[oppositeIndex]?.src !== primary.src
+      ? oppositeIndex
+      : -1;
+  }
+
+  if (gallerySide(primary, 'front') && /\bproduct\b/.test(normalizedGalleryLabel(primary))) {
     const rearIndex = preferredGallerySideIndex(
       images,
       'rear',
@@ -221,47 +248,62 @@ function secondaryGalleryImageIndex(images, primaryIndex, preferredVariant = '',
   });
 }
 
-function renderSecondaryGalleryPanel(product, image, variantLabel = '') {
+function renderMainImagePlaceholder(product, variantLabel = '', viewLabel = '', { hidden = false } = {}) {
+  const label = [variantLabel, viewLabel].filter(Boolean).join(' / ');
+  return `<div class="fsd-image-placeholder fsd-image-placeholder--detail catalogue-variant-image-placeholder catalogue-gallery-placeholder"
+      data-catalogue-variant-placeholder${hidden ? ' hidden' : ''} role="img"
+      aria-label="${safe(product.name)} — ${safe(label || 'Product view')} [ASSET PENDING]">
+      <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
+      <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
+      <span class="fsd-image-placeholder__variant" data-catalogue-variant-label>${safe(label)}</span>
+      <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
+    </div>`;
+}
+
+function renderSecondaryGalleryPanel(product, image, variantLabel = '', {
+  showPlaceholder = false,
+  viewLabel = 'Back view',
+  omitImageElement = false,
+} = {}) {
+  const placeholderVariant = [variantLabel, viewLabel].filter(Boolean).join(' / ');
   const imageMarkup = image
     ? `<img data-catalogue-secondary-image data-fsd-image-fallback="true"
         data-fsd-image-title="${safe(product.name)}"
         data-fsd-image-variant="${safe(image.colourway || image.variant || image.size || '')}"
         data-fsd-image-kind="detail" src="${safe(image.src)}"
         alt="${safe(product.name)} — ${safe(image.label)}" loading="lazy" decoding="async" />`
-    : `<img data-catalogue-secondary-image data-fsd-image-fallback="true"
+    : omitImageElement
+      ? ''
+      : `<img data-catalogue-secondary-image data-fsd-image-fallback="true"
         data-fsd-image-title="${safe(product.name)}" data-fsd-image-kind="detail"
         alt="${safe(product.name)} — additional product view" hidden />`;
 
   return `<figure class="product-detail-gallery__secondary" data-catalogue-secondary-panel
-      aria-label="Additional product view"${image ? '' : ' hidden'}>
+      aria-label="${safe(viewLabel)}"${image || showPlaceholder ? '' : ' hidden'}>
       <div class="product-detail-gallery__secondary-stage">
         ${imageMarkup}
-        <div class="fsd-image-placeholder fsd-image-placeholder--detail product-detail-gallery__secondary-placeholder"
-          data-catalogue-secondary-placeholder hidden role="img" aria-label="${safe(product.name)} [ASSET PENDING]">
+        <div class="fsd-image-placeholder fsd-image-placeholder--detail product-detail-gallery__secondary-placeholder catalogue-gallery-placeholder"
+          data-catalogue-secondary-placeholder${image ? ' hidden' : ''} role="img"
+          aria-label="${safe(product.name)} — ${safe(placeholderVariant)} [ASSET PENDING]">
           <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
           <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
-          <span class="fsd-image-placeholder__variant" data-catalogue-secondary-variant>${safe(variantLabel)}</span>
+          <span class="fsd-image-placeholder__variant" data-catalogue-secondary-variant>${safe(placeholderVariant)}</span>
           <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
         </div>
       </div>
-      <figcaption data-catalogue-secondary-caption>${image ? safe(image.label) : ''}</figcaption>
+      <figcaption data-catalogue-secondary-caption>${image ? safe(image.label) : showPlaceholder ? `${safe(viewLabel)} — [ASSET PENDING]` : ''}</figcaption>
     </figure>`;
 }
 
-function renderGallery(product, images, initialImageIndex, galleryPlaceholders, initialVariant = '', hasMultipleColourways = false) {
+function renderGallery(product, images, initialImageIndex, galleryPlaceholders, initialVariant = '', hasMultipleColourways = false, quickView = false) {
+  const requireFrontBackPair = !quickView;
   const selectedImage = images[initialImageIndex];
+  const variantPlaceholder = renderMainImagePlaceholder(product, initialVariant, 'Front view', { hidden: true });
   if (!selectedImage) {
-    const variantPlaceholder = `<div class="fsd-image-placeholder fsd-image-placeholder--detail catalogue-variant-image-placeholder"
-        data-catalogue-variant-placeholder hidden role="img" aria-label="${safe(product.name)} [ASSET PENDING]">
-        <span class="fsd-image-placeholder__mark" aria-hidden="true">FSD / product media</span>
-        <strong class="fsd-image-placeholder__title">${safe(product.name)}</strong>
-        <span class="fsd-image-placeholder__variant" data-catalogue-variant-label>${safe(initialVariant)}</span>
-        <small class="fsd-image-placeholder__note">[ASSET PENDING]</small>
-      </div>`;
     if (images.length) {
       const initialImage = images[0];
       return `<div class="product-detail-gallery">
-        <div class="product-detail-gallery__feature-grid is-single">
+        <div class="product-detail-gallery__feature-grid${requireFrontBackPair ? ' has-secondary' : ' is-single'}">
           <figure class="catalogue-selector__main">
             <div class="product-detail-image-stage">
               <button type="button" class="product-detail-image-zoom" data-catalogue-zoom aria-pressed="false" aria-label="Zoom product image" hidden>
@@ -271,11 +313,13 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
                   src="${safe(initialImage.src)}" alt="${safe(product.name)} — ${safe(initialImage.label)}"
                   loading="eager" fetchpriority="high" decoding="async" />
               </button>
-              ${variantPlaceholder.replace(' hidden ', ' ')}
+              ${renderMainImagePlaceholder(product, initialVariant, 'Front view')}
             </div>
-            <figcaption data-catalogue-main-caption>${safe(initialVariant || '[ASSET PENDING]')}</figcaption>
+            <figcaption data-catalogue-main-caption>${safe(initialVariant ? `${initialVariant} / Front view — [ASSET PENDING]` : 'Front view — [ASSET PENDING]')}</figcaption>
           </figure>
-          ${images.length > 1 ? renderSecondaryGalleryPanel(product, null, initialVariant) : ''}
+          ${requireFrontBackPair
+            ? renderSecondaryGalleryPanel(product, null, initialVariant, { showPlaceholder: true, viewLabel: 'Back view' })
+            : images.length > 1 ? renderSecondaryGalleryPanel(product, null, initialVariant) : ''}
         </div>
         ${images.length > 1 ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Choose a product view">
           ${images.map((image, index) => `<button type="button" class="catalogue-selector__thumb"
@@ -286,6 +330,35 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
               loading="lazy" decoding="async" />
             <span>${safe(image.label)}</span>
           </button>`).join('')}
+        </div>` : ''}
+      </div>`;
+    }
+    if (requireFrontBackPair) {
+      const labels = galleryPlaceholders.length >= 2
+        ? galleryPlaceholders.slice(0, 2)
+        : galleryPlaceholders.length === 1
+          ? [galleryPlaceholders[0], 'Back view']
+          : ['Front view', 'Back view'];
+      const additionalSlots = galleryPlaceholders.slice(2);
+      return `<div class="product-detail-gallery product-detail-gallery--placeholders">
+        <div class="product-detail-gallery__feature-grid has-secondary" role="group" aria-label="${safe(product.name)} image gallery">
+          <figure class="catalogue-selector__main">
+            <div class="product-detail-image-stage">${renderMainImagePlaceholder(product, initialVariant, labels[0])}</div>
+            <figcaption data-catalogue-main-caption>${safe(labels[0])} — [ASSET PENDING]</figcaption>
+          </figure>
+          ${renderSecondaryGalleryPanel(product, null, initialVariant, {
+            showPlaceholder: true,
+            viewLabel: labels[1],
+            omitImageElement: true,
+          })}
+        </div>
+        ${additionalSlots.length ? `<div class="product-detail-gallery__placeholder-views" role="group" aria-label="Additional image placeholders">
+          ${additionalSlots.map(label => imagePlaceholderMarkup({
+            title: product.name,
+            variantLabel: label,
+            kind: 'gallery',
+            className: 'catalogue-gallery-placeholder catalogue-gallery-placeholder--additional',
+          })).join('')}
         </div>` : ''}
       </div>`;
     }
@@ -300,10 +373,16 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
       ${variantPlaceholder}
     </div>`;
   }
-  const secondaryIndex = secondaryGalleryImageIndex(images, initialImageIndex, initialVariant, hasMultipleColourways);
+  const secondaryIndex = editorialGallerySecondaryImageIndex(
+    images,
+    initialImageIndex,
+    initialVariant,
+    hasMultipleColourways,
+    requireFrontBackPair,
+  );
   const secondaryImage = secondaryIndex >= 0 ? images[secondaryIndex] : null;
   return `<div class="product-detail-gallery">
-    <div class="product-detail-gallery__feature-grid${secondaryImage ? ' has-secondary' : ' is-single'}">
+    <div class="product-detail-gallery__feature-grid${secondaryImage || requireFrontBackPair ? ' has-secondary' : ' is-single'}">
       <figure class="catalogue-selector__main">
         <div class="product-detail-image-stage">
           <button type="button" class="product-detail-image-zoom" data-catalogue-zoom aria-pressed="false" aria-label="Zoom product image">
@@ -323,7 +402,12 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
         </div>
         <figcaption data-catalogue-main-caption>${safe(selectedImage.label)}</figcaption>
       </figure>
-      ${images.length > 1 ? renderSecondaryGalleryPanel(product, secondaryImage, initialVariant) : ''}
+      ${requireFrontBackPair
+        ? renderSecondaryGalleryPanel(product, secondaryImage, initialVariant, {
+          showPlaceholder: !secondaryImage,
+          viewLabel: gallerySide(selectedImage, 'front') ? 'Back view' : gallerySide(selectedImage, 'rear') ? 'Front view' : 'Back view',
+        })
+        : images.length > 1 ? renderSecondaryGalleryPanel(product, secondaryImage, initialVariant) : ''}
     </div>
     ${images.length > 1 ? `<div class="catalogue-selector__thumbs" role="group" aria-label="Choose a product view">
       ${images.map((image, index) => `<button type="button" class="catalogue-selector__thumb"
@@ -379,33 +463,29 @@ function renderDetails(product, sizes, hardwarePreview = false) {
     : '';
   const care = technicalSpecs.care ? safe(technicalSpecs.care) : '';
   const deliverySummary = '';
-  const sizeGuideMarkup = sizes.length
-    ? `<details class="product-detail-accordion">
-        <summary>Size guide</summary>
-        <div>
-          <p>View product-specific sizing information.</p>
-          <button class="product-detail-text-link" type="button" data-size-guide>Open size guide</button>
-        </div>
-      </details>`
-    : '';
+  const productDetails = [
+    setContents,
+    sku,
+    alias,
+    features,
+    materials ? `<p><strong>Material:</strong> ${materials}</p>` : '',
+    specifications ? `<p><strong>${specificationLabel}:</strong> ${specifications}</p>` : '',
+    care ? `<p><strong>Care instructions:</strong> ${care}</p>` : '',
+  ].join('');
+  const sizeAndFit = [sizeSummary, fit].join('');
   return `<div class="product-detail-accordions">
+    ${productDetails ? `<details class="product-detail-accordion">
+      <summary>Product Details</summary>
+      <div>${productDetails}</div>
+    </details>` : ''}
+    ${sizeAndFit ? `<details class="product-detail-accordion">
+      <summary>Size &amp; Fit</summary>
+      <div>${sizeAndFit}</div>
+    </details>` : ''}
     <details class="product-detail-accordion">
-      <summary>Details and fit</summary>
-      <div>${setContents}${sizeSummary}${sku}${alias}${fit}${features}</div>
-    </details>
-    <details class="product-detail-accordion">
-      <summary>Fabric and care</summary>
-      <div>
-        ${materials ? `<p><strong>Material:</strong> ${materials}</p>` : ''}
-        ${specifications ? `<p><strong>${specificationLabel}:</strong> ${specifications}</p>` : ''}
-        ${care ? `<p><strong>Care instructions:</strong> ${care}</p>` : ''}
-      </div>
-    </details>
-    <details class="product-detail-accordion">
-      <summary>Delivery and returns</summary>
+      <summary>Shipping &amp; Returns</summary>
       <div>${deliverySummary}<a href="/delivery-returns.html">Full delivery and returns information</a></div>
     </details>
-    ${sizeGuideMarkup}
   </div>`;
 }
 
@@ -428,6 +508,7 @@ export function renderProductDetailPage({
   price,
   canPurchase,
   hardwarePreview = false,
+  quickView = false,
 }) {
   const breadcrumbCategory = product.category || 'FSD Collection';
   const breadcrumbLine = CLOTHING_LINES.find(line => productBelongsToLine(product, line.id));
@@ -438,11 +519,13 @@ export function renderProductDetailPage({
       : '';
   const description = product.description || '';
   const initialImage = images[initialImageIndex];
-  const hasSecondaryImage = Boolean(initialImage && secondaryGalleryImageIndex(
+  const requireFrontBackPair = !quickView;
+  const hasSecondaryImage = requireFrontBackPair || Boolean(initialImage && editorialGallerySecondaryImageIndex(
     images,
     initialImageIndex,
     initialImage.colourway || initialImage.variant || colourways[0] || '',
     colourways.length > 1,
+    requireFrontBackPair,
   ) >= 0);
   const imageMarkup = renderGallery(
     product,
@@ -451,6 +534,7 @@ export function renderProductDetailPage({
     galleryPlaceholders,
     initialImage?.colourway || initialImage?.variant || colourways[0] || '',
     colourways.length > 1,
+    quickView,
   );
   const rotationMarkup = renderRotationViewer(product, images[0]);
   const sizeMarkup = renderSizeOptions(product, sizes);
@@ -481,7 +565,7 @@ export function renderProductDetailPage({
     : '';
   const schema = productStructuredData(product, { images, colourways, sizes });
 
-  return `<div class="product-detail-page">
+  return `<div class="product-detail-page${quickView ? ' product-detail-page--quick-view' : ''}">
     <div class="product-detail-layout" data-catalogue-has-secondary="${hasSecondaryImage}">
       <section class="product-detail-media" aria-label="${safe(product.name)} product images">${imageMarkup}${rotationMarkup}</section>
       <section class="product-detail-purchase" aria-labelledby="product-title">
@@ -501,6 +585,7 @@ export function renderProductDetailPage({
         ${availability ? `<p class="product-detail-availability">${safe(availability)}</p>` : ''}
         ${quantityMarkup}
         ${actionMarkup}
+        ${quickView ? `<a class="product-detail-full-page" href="${safe(productSeoPath(product))}">VIEW FULL PRODUCT PAGE <span aria-hidden="true">↗</span></a>` : ''}
         <p class="product-detail-delivery-summary">
           <a href="/delivery-returns.html">Delivery and returns</a>
         </p>

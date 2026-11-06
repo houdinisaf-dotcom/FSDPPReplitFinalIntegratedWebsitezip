@@ -23,15 +23,18 @@ test('the showroom renders four accessible division controls and one reusable di
 
 test('the editorial home keeps the three primary destinations concise and opens the correct groups', () => {
   const markup = renderCollectionShowcase(collectionDivisions, { editorial: true, products });
-  assert.match(markup, /Men’s Luxury Performance/);
-  assert.match(markup, /Women’s Modest Combat/);
-  assert.match(markup, /Intelligence in Motion/);
+  assert.match(markup, /MEN’S COLLECTION/);
+  assert.match(markup, /WOMEN’S COLLECTION/);
+  assert.match(markup, /INNOVATION IN PERFORMANCE/);
   assert.equal((markup.match(/class="fsd-editorial-card__image"/g) || []).length, 2);
   assert.match(markup, /src="\/assets\/products\/strike-shorts-front\.webp"/);
   assert.match(markup, /src="\/fsd-assets\/womens-modest-combat-preview\.webp"/);
   assert.doesNotMatch(markup, /src="\/fsd-assets\/8ffe2fd45a06\.webp"/);
   assert.doesNotMatch(markup, /£|RRP/);
-  assert.match(markup, /Training technology and recovery\./);
+  assert.match(markup, /Advanced material science\./);
+  assert.match(markup, /EXPLORE MEN/);
+  assert.match(markup, /EXPLORE WOMEN/);
+  assert.match(markup, /EXPLORE BIO-LAB™/);
   assert.match(markup, /data-division="apparel"[\s\S]*?data-group-index="0"/);
   assert.match(markup, /data-division="apparel"[\s\S]*?data-group-index="1"/);
   assert.match(markup, /data-division="bio-lab"[\s\S]*?data-group-index="0"/);

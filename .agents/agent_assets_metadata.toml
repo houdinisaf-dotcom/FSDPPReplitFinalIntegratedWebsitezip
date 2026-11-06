@@ -1150,113 +1150,295 @@ storage_version_token = "1793906441814367"
 content_type = "application/octet-stream"
 
 [[outputs]]
-id = "uQYxv7yM4avwX-GrPqpvP"
-uri = "file://generated-artifacts/fsd-pdp-before-desktop.jpg"
+id = "LvvpMPm-uuHQVC1SwQ1nO"
+uri = "file://generated-artifacts/fsd-homepage-desktop.jpg"
 type = "image"
-title = "PDP before — desktop, 1440×1000"
-description = "Actual product detail page before the front/rear pairing change."
-logical_id = "5842304d-1d12-4f9f-bdf1-7c5799cc91b5"
-content_hash = "sha256:b7c6eb8be51e5d14bbfaf2921cb8d929826f616e524bc9ba37476ad7bfb31f48"
-size = 132291
-mtime_ms = 1793919551407
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5842304d-1d12-4f9f-bdf1-7c5799cc91b5/e24a440c-385b-4b09-8456-48908a300a1a"
-storage_version_token = "1793920032221781"
+title = "FSD homepage — desktop hero"
+description = "Actual running FSD homepage at desktop width, showing the existing boxing hero, lime campaign headline and primary calls to action."
+logical_id = "b77e7c67-13cd-4c70-8d8c-c42f63a895fb"
+content_hash = "sha256:dda83ae0f0537825404134f4c6c1b8cc7472fc7efad10b0696f0416bc145b1b3"
+size = 122746
+mtime_ms = 1793929342071
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/b77e7c67-13cd-4c70-8d8c-c42f63a895fb/09e480cd-b8c4-46e0-8c3e-d07c0877d3ac"
+storage_version_token = "1793929917144707"
 content_type = "image/jpeg"
 
 [[outputs]]
-id = "PcjxMHgX7J5mlz2zoc3p-"
-uri = "file://generated-artifacts/fsd-pdp-after-desktop.jpg"
+id = "6JfWxDr6Ypfb0I-sj-sqX"
+uri = "file://generated-artifacts/fsd-homepage-desktop-collections.jpg"
 type = "image"
-title = "PDP after — desktop, 1440×1000"
-description = "Actual FSD Aeroforge Training Tee page showing approved front and rear product views beside the purchase panel."
-logical_id = "2170d5be-065c-499f-bba3-16eed54165f1"
-content_hash = "sha256:df24db1fd6e491ff2189e0677b3a343a29718827a1e58c036d11d07f77e66a28"
-size = 137937
-mtime_ms = 1793919572015
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/2170d5be-065c-499f-bba3-16eed54165f1/4284438d-c779-473b-adb3-80b34da53a43"
-storage_version_token = "1793920032938340"
+title = "FSD homepage — desktop collections"
+description = "Actual running FSD homepage at desktop width, showing the four-division strip and three editorial collection panels."
+logical_id = "c63dd3d2-acc1-4777-bb37-ae18470217dd"
+content_hash = "sha256:afe60fd5cde743153fb0231293b29252b21bf3831b2595936d809c6bd756a68c"
+size = 148458
+mtime_ms = 1793929841335
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c63dd3d2-acc1-4777-bb37-ae18470217dd/5632fcfd-c70f-4661-b734-c6f01f12ac4a"
+storage_version_token = "1793929917911932"
 content_type = "image/jpeg"
 
 [[outputs]]
-id = "bMHhQEfhfisXY0EFh6g3c"
-uri = "file://generated-artifacts/fsd-pdp-before-mobile.jpg"
+id = "s-eMfSXzlfWPt8Mg7bMrd"
+uri = "file://generated-artifacts/fsd-homepage-mobile.jpg"
 type = "image"
-title = "PDP before — mobile, 390×844"
-description = "Actual product detail page before the gallery change at a mobile viewport."
-logical_id = "9e2521dc-4a10-4341-b726-97bbcd4554fc"
-content_hash = "sha256:8b39714674d5d5c66cf093e5696397d2e3d70a8b37ee517a22da47b535fa939e"
-size = 37364
-mtime_ms = 1793919551422
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/9e2521dc-4a10-4341-b726-97bbcd4554fc/1e422cfe-53ad-4d8e-9136-0e7925346476"
-storage_version_token = "1793920033607506"
+title = "FSD homepage — mobile hero"
+description = "Actual running FSD homepage at mobile width, showing the responsive boxing hero and stacked calls to action."
+logical_id = "aef61698-4066-4111-a901-37dc36d53de9"
+content_hash = "sha256:aa0fadedea4590616e90781750f7c96845821a5417094c81294780530edefad1"
+size = 44686
+mtime_ms = 1793929343683
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/aef61698-4066-4111-a901-37dc36d53de9/d3520b3a-bbb3-4205-b293-5a4f95385fb4"
+storage_version_token = "1793929918633813"
 content_type = "image/jpeg"
 
 [[outputs]]
-id = "ul6-1zrGL_NWEO_dv-6Ld"
-uri = "file://generated-artifacts/fsd-pdp-after-mobile.jpg"
+id = "hFbiluO0sutX5LCg6mXTw"
+uri = "file://generated-artifacts/fsd-homepage-mobile-collections.jpg"
 type = "image"
-title = "PDP after — mobile, 390×844"
-description = "Actual FSD product detail page after the gallery change at a mobile viewport."
-logical_id = "b605df04-ecbd-4f7b-8f85-98bed1a46f40"
-content_hash = "sha256:3ac057d8dd12cdb57eb38019029d2a627727f19f09cb5bdd891cf8d749c3e4b1"
-size = 43726
-mtime_ms = 1793919573683
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/b605df04-ecbd-4f7b-8f85-98bed1a46f40/f20b2bd1-dd48-4e3e-a8f8-0526be7dd4a1"
-storage_version_token = "1793920034304145"
+title = "FSD homepage — mobile collections"
+description = "Actual running FSD homepage at mobile width, showing the responsive two-column division strip and stacked editorial panels."
+logical_id = "1c2fc06d-d339-4810-a172-74fda20e9eb3"
+content_hash = "sha256:fc0061fba4cd2d58270115eba4deb8c5802d1d877a1328542353da5e4a132a4f"
+size = 54397
+mtime_ms = 1793929519599
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/1c2fc06d-d339-4810-a172-74fda20e9eb3/243be10e-48ec-47fc-afac-ead41a04d8a9"
+storage_version_token = "1793929919336953"
 content_type = "image/jpeg"
 
 [[outputs]]
-id = "gR4CwP_sX3kc4lYTC5mre"
-uri = "file://generated-artifacts/fsd-shop-women-desktop.jpg"
+id = "krvMw1reyoWxWCS2CB5GG"
+uri = "file://generated-artifacts/fsd-final-home-desktop.jpg"
 type = "image"
-title = "Women’s collection — desktop, 1440px"
-description = "Full-page screenshot of the live image-led collection grid at desktop width."
-logical_id = "e33d51e0-c350-4ed6-ae35-a205345c54da"
-content_hash = "sha256:018be7ae6999c8d6a1aee761130eea75c8506e80b5aa8cea2c4182ea93b04aac"
-size = 343782
-mtime_ms = 1793919657774
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e33d51e0-c350-4ed6-ae35-a205345c54da/bb13b318-7eb3-426c-8b78-5c71f2839400"
-storage_version_token = "1793920034980378"
+title = "FSD flagship homepage — desktop"
+description = "Actual running app preview at desktop size."
+logical_id = "0f3c5d1d-267c-43fb-8385-169064066d3c"
+content_hash = "sha256:54f2f48517c57e13832ede2a2f14321f9c37bb0064b5c6624495bda85a07fc74"
+size = 131412
+mtime_ms = 1793932362571
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/0f3c5d1d-267c-43fb-8385-169064066d3c/9dfd65d8-d972-4472-8aa1-c09059d0a466"
+storage_version_token = "1793932631554158"
 content_type = "image/jpeg"
 
 [[outputs]]
-id = "OlJ3nvm7TN3bVOEcgexwT"
-uri = "file://generated-artifacts/fsd-shop-women-laptop.jpg"
+id = "qY4OnDDDCRGPCMTRNdrIH"
+uri = "file://generated-artifacts/fsd-final-home-mobile.jpg"
 type = "image"
-title = "Women’s collection — laptop, 1366px"
-description = "Full-page screenshot of the live collection grid at laptop width."
-logical_id = "032a0ff0-5aed-43a4-b54a-dcc54b9c84a9"
-content_hash = "sha256:6b14e9a370f1a84a09172b83f88b65e15294136350bf5c1d2a32d4c4772eb746"
-size = 323817
-mtime_ms = 1793919660666
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/032a0ff0-5aed-43a4-b54a-dcc54b9c84a9/31ffedb3-c633-4eea-b985-791837453514"
-storage_version_token = "1793920035636872"
+title = "FSD flagship homepage — mobile"
+description = "Actual running app preview at mobile size."
+logical_id = "87e2d203-8539-4a35-a49c-2cd1dcb7834e"
+content_hash = "sha256:b93daac54c4d358095e99cc20704d20b7f71f8a1d52d315434ce5565242e3949"
+size = 44583
+mtime_ms = 1793932364143
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/87e2d203-8539-4a35-a49c-2cd1dcb7834e/8b5602e1-e0b6-4f14-9b22-db4c7071ef29"
+storage_version_token = "1793932632232683"
 content_type = "image/jpeg"
 
 [[outputs]]
-id = "kywghQEpVWcz2S5cZt_4Y"
-uri = "file://generated-artifacts/fsd-shop-women-tablet.jpg"
+id = "nQtBJa3-4sfMj84XJubwq"
+uri = "file://generated-artifacts/fsd-final-shop-mega-menu.jpg"
 type = "image"
-title = "Women’s collection — tablet, 768px"
-description = "Full-page screenshot of the live collection grid at tablet width, showing three columns."
-logical_id = "25f429d8-0be6-4f36-a35e-03a4238737d2"
-content_hash = "sha256:98273203e6ab39a8517e847836e45063abab7e7ef6a2af8a338af6c35e3318bb"
-size = 260716
-mtime_ms = 1793919662938
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/25f429d8-0be6-4f36-a35e-03a4238737d2/c9a3b420-d0ce-428c-8829-ba9f3fb951b5"
-storage_version_token = "1793920036266630"
+title = "SHOP mega-menu"
+description = "Opened interactive SHOP menu captured from the running app."
+logical_id = "c77f19e4-c0ce-45cd-a09d-53d8de87b120"
+content_hash = "sha256:4f5ef1554cf5fa3d6f3d1c095779d596a6e9977e8a01d57b98ebc696feeda696"
+size = 156831
+mtime_ms = 1793932404128
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c77f19e4-c0ce-45cd-a09d-53d8de87b120/33af3933-0073-4635-b5f3-1ac28e6a718e"
+storage_version_token = "1793932632970070"
 content_type = "image/jpeg"
 
 [[outputs]]
-id = "pxih4uSVNo03XIBnZF88p"
-uri = "file://generated-artifacts/fsd-shop-women-mobile.jpg"
+id = "gvQbBvqlWAHyGjUOxdNNP"
+uri = "file://generated-artifacts/fsd-final-women-desktop.jpg"
 type = "image"
-title = "Women’s collection — mobile, 402px"
-description = "Full-page screenshot of the live collection grid at mobile width, showing two columns and clean pending-asset fallbacks."
-logical_id = "c671b8aa-cf7c-420a-b13e-acb37af3cb4c"
-content_hash = "sha256:a2e066d3e0a8789b0ed08027f22a87251fead993262753b1f63e5419978ed298"
-size = 213578
-mtime_ms = 1793919664970
-storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c671b8aa-cf7c-420a-b13e-acb37af3cb4c/d17926f7-639c-4697-abbf-482e65f04478"
-storage_version_token = "1793920036901135"
+title = "Women’s collection — desktop"
+description = "Actual collection page captured from the running app."
+logical_id = "af64a14a-62cc-4311-b840-7b073d2643bd"
+content_hash = "sha256:3cb3746ab167c40fa6712b4368193b97be1cf6648603ece52f97269eae53fd69"
+size = 101483
+mtime_ms = 1793932366219
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/af64a14a-62cc-4311-b840-7b073d2643bd/d5f56286-682c-499e-9a9d-0dbe071fed7e"
+storage_version_token = "1793932633718918"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "A31Umss3nvblt5pcy0Hfw"
+uri = "file://generated-artifacts/fsd-final-product-desktop.jpg"
+type = "image"
+title = "Product detail — desktop"
+description = "Actual product page with its mapped front/rear gallery and purchase panel."
+logical_id = "12ae3075-e872-4fc8-a273-7a4201b48da3"
+content_hash = "sha256:8e738ce0ae5d6c78300ba76aa7162a03f5760ceb52db5e9af3318b041f78bcbb"
+size = 134551
+mtime_ms = 1793932368871
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/12ae3075-e872-4fc8-a273-7a4201b48da3/f283934e-15cb-4e1e-ae3e-cf1437b91b2a"
+storage_version_token = "1793932634354730"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "MI4PDH3yExpmZUCXkYqpN"
+uri = "file://generated-artifacts/fsd-final-quick-view.jpg"
+type = "image"
+title = "Product Quick View"
+description = "Interactive Quick View captured from the running app; purchase remains gated by the existing catalogue eligibility rules."
+logical_id = "5b9bdfde-7940-4008-8d58-df2808f58fce"
+content_hash = "sha256:c89f1091a4f31b2989d741a9406a503710102a549192ab24ebd5e6303a45929b"
+size = 202662
+mtime_ms = 1793932406788
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5b9bdfde-7940-4008-8d58-df2808f58fce/1401edbe-1867-46c3-9bad-c7740876e402"
+storage_version_token = "1793932634995005"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "TMLcen1kj7wAVTId1_hHD"
+uri = "file://generated-artifacts/fsd-final-predictive-search.jpg"
+type = "image"
+title = "Predictive search"
+description = "Live search results and product preview captured from the running app."
+logical_id = "997bfdad-ffe0-4c75-85d4-4eee4e3533f1"
+content_hash = "sha256:ac5be91b6a8a6cfe4c46dbd4b7dfe973310820fa62866a0403f8da49d542a5e2"
+size = 89833
+mtime_ms = 1793932405472
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/997bfdad-ffe0-4c75-85d4-4eee4e3533f1/be422fe0-d65e-4124-b6ae-c4ee1b79846b"
+storage_version_token = "1793932635638312"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "ER3KNSr2Phmf5aQRK8FE9"
+uri = "file://generated-artifacts/fsd-final-product-mobile-gallery.jpg"
+type = "image"
+title = "Product detail — mobile gallery"
+description = "Actual mobile product gallery captured from the running app."
+logical_id = "c4899e98-6c7c-4039-b0cb-f74ee66da4ef"
+content_hash = "sha256:c068b831cdc862eebb20476f5929116588292e2c0140a8018f329416e8d29116"
+size = 45457
+mtime_ms = 1793932370723
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c4899e98-6c7c-4039-b0cb-f74ee66da4ef/3602155f-864c-4ff0-836b-137a52676b33"
+storage_version_token = "1793932636258209"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "TpujTaE6-WiWJKgFSrPaJ"
+uri = "file://generated-artifacts/fsd-final-product-mobile-purchase.jpg"
+type = "image"
+title = "Product detail — mobile purchase panel"
+description = "Actual mobile product options and availability state captured from the running app."
+logical_id = "56290ced-6c44-401e-937c-549a9bdbffa6"
+content_hash = "sha256:b6ccf3fc6f026a295d7aa1e479c81066ad8306355cc6bfb97a40baf280dcccfd"
+size = 56935
+mtime_ms = 1793932408276
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/56290ced-6c44-401e-937c-549a9bdbffa6/dc51ed40-bd3f-4275-9075-c19b59deea7f"
+storage_version_token = "1793932636890122"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "K1fsBr9te5PSb7ruq6qis"
+uri = "file://generated-artifacts/fsd-final-house-desktop.jpg"
+type = "image"
+title = "THE HOUSE — desktop"
+description = "Actual House story route; the existing internal-draft publication status remains visible."
+logical_id = "9ea014ed-bfd8-46bb-ab99-8d937dd11b91"
+content_hash = "sha256:fd306998f76219b55d8a737fce64e494ad73252016c59add75709c09f2006e77"
+size = 44300
+mtime_ms = 1793932372223
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/9ea014ed-bfd8-46bb-ab99-8d937dd11b91/36406717-9519-4609-b7e0-ad0c014368e6"
+storage_version_token = "1793932637516864"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "c93hHCT-kJOzxCqVDsQ0t"
+uri = "file://generated-artifacts/fsd-final-faq-desktop.jpg"
+type = "image"
+title = "FSD FAQ — desktop"
+description = "FAQ section captured from the running FSD site at desktop width."
+logical_id = "7d62546f-d26e-479b-bb4e-a12bc18bd2c9"
+content_hash = "sha256:b7649bad18725c8d5c0a2737b5de89f03596339bcd638f2517a2ff6472cb2d2d"
+size = 78378
+mtime_ms = 1793940404305
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/7d62546f-d26e-479b-bb4e-a12bc18bd2c9/353daa02-bde8-457a-a0bf-5cd806c43a23"
+storage_version_token = "1793940425568570"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "AOqfYy4FslDE1plHSY9wh"
+uri = "file://generated-artifacts/fsd-final-faq-mobile.jpg"
+type = "image"
+title = "FSD FAQ — mobile"
+description = "FAQ section captured from the running FSD site at mobile width, with an answer expanded."
+logical_id = "9472aec3-c97b-4c8f-aac1-80d3a25310f5"
+content_hash = "sha256:12a5dac19881523971dc93cd2f516f55a92541d2de72d31efc4a00dbe118b8a9"
+size = 45606
+mtime_ms = 1793940405709
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/9472aec3-c97b-4c8f-aac1-80d3a25310f5/ddceb8c7-5df0-4671-a504-559a9c45d3f0"
+storage_version_token = "1793940426314773"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "YBdYWP0Zur6SFXQTuhYPO"
+uri = "file://fsd-replit-site/generated-artifacts/product-gallery-aeroforge-desktop.jpg"
+type = "image"
+title = "Product gallery — desktop"
+description = "Actual running-app screenshot of the Aeroforge Training Tee, with the approved White / Green front and rear views beside the existing purchase panel."
+logical_id = "2a41cb72-11d3-4fb2-81e8-1ddefd8908b6"
+content_hash = "sha256:385f271ab8c568fad945cdbe932003cf52781d57c4968ea324a7917e14a4a2ed"
+size = 147696
+mtime_ms = 1793943000616
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/2a41cb72-11d3-4fb2-81e8-1ddefd8908b6/bfc9880e-195a-48e0-9f3e-3653825249ad"
+storage_version_token = "1793943215428497"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "Qw2TS6aJIWZTEajaj9ydO"
+uri = "file://fsd-replit-site/generated-artifacts/product-gallery-aeroforge-mobile-detail.jpg"
+type = "image"
+title = "Product gallery — mobile"
+description = "Actual running-app screenshot at a 402px mobile width, showing the same White / Green front and rear views stacked vertically."
+logical_id = "771465ee-430b-47b7-a67f-79483f639456"
+content_hash = "sha256:c6ececfe7a95f2403a3775299dce5a17eadd315466211f12a4ed7c27d113331e"
+size = 50395
+mtime_ms = 1793943002340
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/771465ee-430b-47b7-a67f-79483f639456/0ee24e8d-2c95-480c-92e8-623e26e55360"
+storage_version_token = "1793943216127276"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "GcrwmN3IuKXTFzC8xQHbg"
+uri = "file://fsd-replit-site/generated-artifacts/product-gallery-contrast-tee-desktop.jpg"
+type = "image"
+title = "Second product — desktop"
+description = "Actual running-app screenshot of the Contrast-Panel Training Tee, with the exact Luminous Aqua front and back views."
+logical_id = "9cdff47d-3bb8-4124-bd8b-3bbbd6b5db0d"
+content_hash = "sha256:9b4eb5d9c07ba8a557d515bf3cbd92d21ab0513c52a5ee13ce13b466f115c36e"
+size = 123243
+mtime_ms = 1793943004168
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/9cdff47d-3bb8-4124-bd8b-3bbbd6b5db0d/423eba80-68de-4823-8b24-a4bbeff61a4f"
+storage_version_token = "1793943216817538"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "UfAGlgMpbbrHBeCUukUTN"
+uri = "file://fsd-replit-site/generated-artifacts/product-gallery-ombre-placeholder.jpg"
+type = "image"
+title = "Ombré Slash Tee — pending photos"
+description = "Actual running-app screenshot with two named front/back placeholders; no unapproved concept board is used."
+logical_id = "7d740ddc-55f8-4eaa-8b6b-a3949834725f"
+content_hash = "sha256:039f924e9a1cdbc47eb96528cc46ae7af27fdbe33e9d58affccd59ee49d2c2f2"
+size = 75699
+mtime_ms = 1793943005978
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/7d740ddc-55f8-4eaa-8b6b-a3949834725f/8492f42b-08f1-4c09-b3aa-09c38c92bac4"
+storage_version_token = "1793943217522102"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "kLEUOzY0zj7di1LPfT_VH"
+uri = "file://fsd-replit-site/generated-artifacts/product-gallery-cheetah-placeholder.jpg"
+type = "image"
+title = "Cheetah Windrunner — pending photos"
+description = "Actual running-app screenshot with two named front/back placeholders; no unapproved concept board is used."
+logical_id = "60f87078-e9f2-4191-8bce-865f02474a22"
+content_hash = "sha256:67de78b4cc9f23e6ae078bc51c28ffa6edbf7f912aaa5d392e4caf09fc52da9e"
+size = 74218
+mtime_ms = 1793943007748
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/60f87078-e9f2-4191-8bce-865f02474a22/16debf50-a644-4502-92fc-84765bd88209"
+storage_version_token = "1793943218220915"
 content_type = "image/jpeg"

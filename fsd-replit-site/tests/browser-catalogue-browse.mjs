@@ -175,6 +175,31 @@ try {
   }
 
   await setViewport(402, 874, true);
+  console.log('Checking product Quick View');
+  const quickViewState = JSON.parse(await evaluate(`(() => {
+    const button = document.querySelector("#catalogue-grid [data-product-quick-view]");
+    if (!button) return JSON.stringify({ id: 0, canAddToBag: false });
+    const eligible = button.closest(".product-card")?.querySelector('[data-can-add-to-bag]')?.dataset.canAddToBag === "true";
+    button.click();
+    return JSON.stringify({ id: Number(button.dataset.productQuickView) || 0, canAddToBag: eligible });
+  })()`));
+  assert.ok(quickViewState.id, 'The product grid should expose Quick View.');
+  await waitFor(`Boolean(document.querySelector("#product-dialog")?.open
+    && document.querySelector("#product-dialog").dataset.presentation === "quick-view"
+    && document.querySelector("#dialog-body .product-detail-full-page")?.getAttribute("href")?.startsWith("/products/"))`);
+  assert.equal(
+    await evaluate('document.querySelector("#dialog-body [data-bag-add]") ? "ADD TO BAG" : document.querySelector("#dialog-body .product-detail-notify") ? "NOTIFY" : "MISSING"'),
+    quickViewState.canAddToBag ? 'ADD TO BAG' : 'NOTIFY',
+    'Quick View should respect the selected product’s existing purchase eligibility.',
+  );
+  assert.equal(
+    await evaluate('document.querySelector("#dialog-body .product-detail-page--quick-view .product-detail-related")?.getClientRects().length || 0'),
+    0,
+    'Quick View should keep the overlay focused on the purchase decision.',
+  );
+  await evaluate('document.querySelector("#close-dialog")?.click()');
+  await waitFor('!document.querySelector("#product-dialog")?.open && !new URLSearchParams(location.search).has("product")');
+
   console.log('Checking the existing product detail interaction');
   await evaluate('document.querySelector("#catalogue-grid .product-card--visual > .product-row__trigger")?.click()');
   await waitFor('Boolean(document.querySelector("#catalogue-grid .product-card--visual-open .fsd-catalog-detail"))');

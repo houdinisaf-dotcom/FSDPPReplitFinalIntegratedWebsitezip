@@ -36,6 +36,7 @@ import {
   renderInnovationHubIndex,
 } from '../src/flagship-pages.js';
 import { renderHouseDestinationIndex } from '../src/house-pages/house-destination-index.js';
+import { renderHomepageFaq } from '../src/homepage-faq.js';
 
 test('original source records and approved set tiers are retained; holds and retired entries are excluded', () => {
   assert.equal(master.length, 79);
@@ -1045,6 +1046,7 @@ test('the complete public page excludes held imagery while retaining internal so
       FSD_STORY_PATH: '/story',
       ourStorySection, flagshipPageHashes, renderFlagshipPlaceholderPages,
       renderInnovationHubIndex, renderBioLabPlaceholderPages, renderHouseDestinationIndex,
+      renderHomepageFaq,
       HOUSE_PAGE_REGISTRY, shouldDisableHouseHref,
       renderHardwareForgePreview: () => '',
       mountCollectionShowcase() {}, mountNavigation() {}, initFeaturedCarousel() {},
@@ -1097,7 +1099,7 @@ test('the complete public page excludes held imagery while retaining internal so
     const logoComponent = readFileSync(new URL('../src/brand/Logos.jsx', import.meta.url), 'utf8');
     assert.match(logoComponent, /website-shield-lockup-defence\.png/);
     assert.doesNotMatch(page, /brand-icon|brand-type/);
-    assert.match(page, /Training technology and recovery\./);
+    assert.match(page, /Advanced material science\./);
     assert.match(page, /Capability is not a costume\.<br\/><span>It is a practice\.<\/span>/);
     assert.match(page, /AEROFORGE represents FSD’s direction in technical training apparel/);
     assert.doesNotMatch(page, /IN DEVELOPMENT|PRE-LAUNCH|FSD DEVELOPMENT ROADMAP/i);

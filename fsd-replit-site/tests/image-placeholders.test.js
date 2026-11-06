@@ -32,7 +32,7 @@ test('the Bio-Lab collection keeps its named placeholder and active collection t
   const html = renderCollectionShowcase(collectionDivisions, { editorial: true, products });
   assert.equal((html.match(/class="fsd-editorial-card /g) || []).length, 3);
   assert.match(html, /fsd-editorial-card--biolab/);
-  assert.match(html, /Intelligence in Motion \[ASSET PENDING\]/);
+  assert.match(html, /BIO-LAB™ \[ASSET PENDING\]/);
   assert.match(html, /data-division="bio-lab"/);
 });
 

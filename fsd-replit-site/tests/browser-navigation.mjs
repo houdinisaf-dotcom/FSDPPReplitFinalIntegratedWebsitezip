@@ -194,7 +194,7 @@ try {
   await evaluate('window.scrollTo({ top: 51, left: 0, behavior: "instant" })');
   await waitFor('document.querySelector("[data-navigation-shell]")?.classList.contains("is-scrolled")');
   await delay(350);
-  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-navigation-shell]")).backgroundColor'), 'rgb(10, 10, 10)');
+  assert.equal(await evaluate('getComputedStyle(document.querySelector("[data-navigation-shell]")).backgroundColor'), 'rgb(17, 19, 24)');
   await evaluate('window.scrollTo({ top: 0, left: 0, behavior: "instant" })');
   await waitFor('!document.querySelector("[data-navigation-shell]")?.classList.contains("is-scrolled")');
   const hasFinePointer = await evaluate('matchMedia("(pointer: fine)").matches');
@@ -951,9 +951,10 @@ try {
 
   // Home → Shop → Women’s preview → catalogue, using the current public product record.
   await closeRouteAndReset();
-assert.equal(await evaluate('document.querySelector(".fsd-home-secondary") === null'), true);
-assert.equal(await evaluate('document.querySelector("#products")?.closest("#home") === null'), true);
-assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
+  assert.equal(await evaluate('document.querySelector(".fsd-home-primary")?.getAttribute("href")'), '#universe');
+  assert.equal(await evaluate('document.querySelector(".fsd-home-secondary")?.getAttribute("href")'), '/the-house.html');
+  assert.equal(await evaluate('document.querySelector("#products")?.closest("#home") === null'), true);
+  assert.equal(await evaluate('document.querySelector("#catalogue-archive").open'), false);
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await click('#fsd-mega-menu [data-nav-group="1"]');
   await waitFor('document.querySelector("#fsd-showcase-dialog").open && document.querySelector("#fsd-showcase-dialog [data-group-index=\\"1\\"][aria-pressed=\\"true\\"]")');
