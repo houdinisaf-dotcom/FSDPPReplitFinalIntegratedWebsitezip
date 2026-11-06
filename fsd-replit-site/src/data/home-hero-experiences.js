@@ -2,7 +2,7 @@ export const homeHeroExperiences = Object.freeze([
   Object.freeze({
     id: 'heroes',
     label: 'BE HEROES™',
-    href: '#collections',
+    href: '#universe',
     action: 'EXPLORE THE COLLECTIONS',
     panelTitle: 'Performance Apparel',
     assetKey: 'women',

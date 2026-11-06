@@ -924,7 +924,7 @@ main h2[id] { scroll-margin-block-start: 96px; }
   background: #0a0a0a;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 320ms ease;
+  transition: opacity 250ms ease;
 }
 
 #catalogue-grid.product-grid[data-view="visual"] .catalogue-card__hover-action img,

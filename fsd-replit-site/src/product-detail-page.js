@@ -306,7 +306,9 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
         <div class="product-detail-gallery__feature-grid${requireFrontBackPair ? ' has-secondary' : ' is-single'}">
           <figure class="catalogue-selector__main">
             <div class="product-detail-image-stage">
-              <button type="button" class="product-detail-image-zoom" data-catalogue-zoom aria-pressed="false" aria-label="Zoom product image" hidden>
+              <button type="button" class="product-detail-image-zoom" data-gallery-photo-open
+                aria-haspopup="dialog" aria-controls="fsd-product-viewer"
+                aria-label="Open full-screen product photograph" hidden>
                 <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
                   data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
                   data-fsd-image-variant="${safe(initialImage.colourway || initialImage.variant || initialImage.size || '')}" data-fsd-image-kind="detail"
@@ -385,7 +387,9 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
     <div class="product-detail-gallery__feature-grid${secondaryImage || requireFrontBackPair ? ' has-secondary' : ' is-single'}">
       <figure class="catalogue-selector__main">
         <div class="product-detail-image-stage">
-          <button type="button" class="product-detail-image-zoom" data-catalogue-zoom aria-pressed="false" aria-label="Zoom product image">
+          <button type="button" class="product-detail-image-zoom" data-gallery-photo-open
+            aria-haspopup="dialog" aria-controls="fsd-product-viewer"
+            aria-label="Open full-screen product photograph">
             <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
               data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
               data-fsd-image-variant="${safe(selectedImage.colourway || selectedImage.variant || selectedImage.size || '')}" data-fsd-image-kind="detail"

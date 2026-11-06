@@ -16,7 +16,7 @@ import {
 import { crossfadeMappedImage } from '../src/catalogue-image-gallery.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
-import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
+import { beyondProductSection, featuredInnovationsSection, homeHeroExperiencesSection, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
 import { renderNavigationHeader } from '../src/site-navigation.js';
 import { renderSiteFooter } from '../src/site-footer.js';
 import { siteMedia } from '../src/data/site-media.js';
@@ -1042,7 +1042,7 @@ test('the complete public page excludes held imagery while retaining internal so
     const dependencies = {
       installImageErrorFallbacks,
       catalogueSection, initCatalogue, navigateCatalogue, products,
-      collectionDivisions, renderCollectionShowcase, beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection,
+      collectionDivisions, renderCollectionShowcase, beyondProductSection, featuredInnovationsSection, homeHeroExperiencesSection, houseConnectionSection, vipAccessSection,
       renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       renderSiteFooter,
       FSD_STORY_PATH: '/story',

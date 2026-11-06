@@ -14,9 +14,13 @@ export function HomeHero({ headingTag = 'h1' }) {
     const edge = event.key === 'Home' ? 0 : event.key === 'End' ? homeHeroExperiences.length - 1 : -1;
     if (!direction && edge < 0) return;
     event.preventDefault();
+    const focusedExperience = homeHeroExperiences.findIndex(
+      experience => experience.id === event.target?.dataset?.heroTheme,
+    );
+    const current = focusedExperience >= 0 ? focusedExperience : activeExperience;
     const next = edge >= 0
       ? edge
-      : (activeExperience + direction + homeHeroExperiences.length) % homeHeroExperiences.length;
+      : (current + direction + homeHeroExperiences.length) % homeHeroExperiences.length;
     setActiveExperience(next);
     switcherRef.current?.querySelector(`[data-hero-theme="${homeHeroExperiences[next].id}"]`)?.focus();
   };

@@ -157,13 +157,20 @@
 
 .catalogue-card__swatches {
   display: flex;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
   align-items: center;
   gap: 8px;
   padding: 0 16px 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
   color: #cdb589;
   font-size: 9px;
 }
+.catalogue-card__swatches::-webkit-scrollbar { display: none; }
 .catalogue-card__swatches > button {
   display: grid;
   width: 34px;

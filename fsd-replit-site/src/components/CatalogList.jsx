@@ -15,19 +15,42 @@ function isActionRevealImage(image) {
     && !/\b(fabric|detail|product detail)\b/.test(label);
 }
 
+function isStudioProductImage(image) {
+  const label = String(image?.label || '').toLocaleLowerCase('en-GB');
+  if (/\bstudio\b/.test(label)) return true;
+  return /\bfront\b/.test(label)
+    && !/\b(lifestyle|action|training|sparring|in[-\s]motion|in[-\s]use|fabric|detail|packaging)\b/.test(label);
+}
+
+function imagesForColourway(images, hasColourways, colourway) {
+  return hasColourways
+    ? images.filter(image => productColourwayImageIndex([image], colourway) === 0)
+    : images;
+}
+
+function preferredCardImageIndex(images) {
+  if (!images.some(isActionRevealImage)) return 0;
+  const studioIndex = images.findIndex(isStudioProductImage);
+  return studioIndex >= 0 ? studioIndex : 0;
+}
+
 function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onToggle, children }) {
   const images = productImagesForDisplay(product);
   const colourways = productColourwayOptions(product);
   const hasColourways = colourways.length > 1;
-  const [cardColourway, setSelectedColourway] = useState(colourways[0] || '');
+  const initialColourway = colourways[0] || '';
+  const [cardColourway, setSelectedColourway] = useState(initialColourway);
   const selectedColourway = isOpen ? selectedColor : cardColourway;
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(
+    preferredCardImageIndex(imagesForColourway(images, hasColourways, initialColourway)),
+  );
   useEffect(() => {
-    if (isOpen) setSelectedColourway(selectedColor);
+    if (isOpen) {
+      setSelectedColourway(selectedColor);
+      setActiveIndex(preferredCardImageIndex(imagesForColourway(images, hasColourways, selectedColor)));
+    }
   }, [isOpen, selectedColor]);
-  const visibleImages = hasColourways
-    ? images.filter(image => productColourwayImageIndex([image], selectedColourway) === 0)
-    : images;
+  const visibleImages = imagesForColourway(images, hasColourways, selectedColourway);
   const activeImage = visibleImages.length ? visibleImages[activeIndex % visibleImages.length] : null;
   const actionImage = activeImage
     ? visibleImages.find((image, index) => index !== activeIndex && isActionRevealImage(image))
@@ -125,7 +148,7 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
                 onClick={() => {
                   setSelectedColourway(colourway);
                   if (isOpen) onColourChange(colourway);
-                  setActiveIndex(0);
+                  setActiveIndex(preferredCardImageIndex(imagesForColourway(images, hasColourways, colourway)));
                 }}
               >
                 <span aria-hidden="true" style={swatch ? { '--catalogue-swatch': swatch } : undefined} />

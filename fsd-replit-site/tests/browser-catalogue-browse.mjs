@@ -341,6 +341,28 @@ try {
     const crumbs = await evaluate(`Array.from(document.querySelectorAll("#catalogue-archive .catalogue-breadcrumbs li"), item => item.textContent.trim())`);
     assert.equal(crumbs[0], 'SHOP');
     assert.ok(crumbs[1], `${collection.path} is missing its collection breadcrumb.`);
+    if (collection.path === '/collections/men') {
+      const revealPair = await evaluate(`(() => {
+        const card = [...document.querySelectorAll('#catalogue-grid .product-card--visual')].find(candidate => {
+          const photo = candidate.querySelector('[data-catalogue-card-image]');
+          return candidate.querySelector('[data-card-action-image]') && /\\b(studio|front)\\b/i.test(photo?.alt || '');
+        });
+        const photo = card?.querySelector('[data-catalogue-card-image]');
+        return {
+          productId: card?.querySelector('[data-product]')?.dataset.product || '',
+          defaultAlt: photo?.alt || '',
+          hasActionReveal: Boolean(card?.querySelector('[data-card-action-image]')),
+          transition: card ? getComputedStyle(card.querySelector('.catalogue-card__hover-action')).transitionDuration : '',
+        };
+      })()`);
+      assert.ok(revealPair.productId, 'the Men collection should expose at least one mapped front/action photo pair.');
+      assert.match(revealPair.defaultAlt, /\b(front|studio)\b/i, 'a clean front/studio product view should be the default when the matching action view exists.');
+      assert.equal(revealPair.hasActionReveal, true, 'the matching action photograph should be available as the card reveal.');
+      assert.equal(revealPair.transition, '0.25s', 'the studio-to-action card reveal should use a restrained 200–300ms transition.');
+      await evaluate(`document.querySelector('#catalogue-grid [data-product="${revealPair.productId}"]')?.focus()`);
+      await waitFor(`getComputedStyle(document.querySelector('#catalogue-grid [data-product="${revealPair.productId}"]')
+        ?.closest('.product-card--visual')?.querySelector('.catalogue-card__hover-action')).opacity === '1'`);
+    }
   }
 
   assert.deepEqual(browserErrors, []);

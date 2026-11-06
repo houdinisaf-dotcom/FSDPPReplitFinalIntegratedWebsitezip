@@ -40,11 +40,13 @@ try {
     const media = dialog.querySelector('.product-detail-media').getBoundingClientRect();
     const purchase = dialog.querySelector('.product-detail-purchase').getBoundingClientRect();
     const gallery = dialog.querySelector('.product-detail-gallery__feature-grid').getBoundingClientRect();
+    const title = dialog.querySelector('#product-title').getBoundingClientRect();
     const mainImage = dialog.querySelector('[data-catalogue-main-image]');
     const secondaryImage = dialog.querySelector('[data-catalogue-secondary-image]');
     return {
       modal: dialog.matches(':modal'),
       headerBottom: shell.getBoundingClientRect().bottom,
+      titleTop: title.top,
       mainTop: main.top,
       mainHeight: main.height,
       secondaryTop: secondary.top,
@@ -64,6 +66,7 @@ try {
   assert.equal(desktop.modal, false, 'a product detail route is non-modal beneath the shared header');
   assert.ok(desktop.mainTop >= desktop.headerBottom, 'gallery begins below the shared header');
   assert.ok(desktop.mainTop - desktop.headerBottom <= 4, 'gallery begins immediately below the header');
+  assert.ok(desktop.titleTop - desktop.headerBottom < 190, 'product title sits close to the top of the purchase panel');
   assert.ok(desktop.mainHeight >= 0.85 * (1000 - desktop.headerBottom), 'desktop product images fill nearly the full visible page height');
   assert.equal(desktop.mainHeight, desktop.secondaryHeight, 'desktop front and back stages share a full-height row');
   assert.ok(desktop.galleryHeight >= desktop.mainHeight, 'gallery stage fills the available desktop height');
@@ -145,6 +148,20 @@ try {
   assert.match(second.secondary, /contrast-panel-training-tee\/luminous-aqua-deep-teal-navy-white\/back\.webp$/);
   assert.equal(second.panelCount, 2);
 
+  await evaluate(`(() => {
+    localStorage.removeItem('fsd-product-wishlist-v1');
+    document.querySelector('#product-dialog [data-product-wishlist]')?.click();
+  })()`);
+  await wait(`document.querySelector('#product-dialog [data-product-wishlist]')?.getAttribute('aria-pressed') === 'true' &&
+    JSON.parse(localStorage.getItem('fsd-product-wishlist-v1') || '[]').includes(2)`, 'wishlist saved');
+  assert.equal(
+    await evaluate(`document.querySelector('#product-dialog [data-wishlist-label]')?.textContent`),
+    'Saved to wishlist',
+  );
+  await evaluate(`document.querySelector('#product-dialog [data-product-wishlist]')?.click()`);
+  await wait(`document.querySelector('#product-dialog [data-product-wishlist]')?.getAttribute('aria-pressed') === 'false' &&
+    !JSON.parse(localStorage.getItem('fsd-product-wishlist-v1') || '[]').includes(2)`, 'wishlist removed');
+
   await openProduct(1);
   const ombre = await evaluate(`(() => {
     const dialog = document.querySelector('#product-dialog');
@@ -191,7 +208,7 @@ try {
   assert.equal(cheetah.slots, 2);
   assert.equal(cheetah.imageCount, 0);
 
-  console.log('Product gallery reference checks passed at desktop and mobile widths; front/back mapping, placeholders, header interaction, and Quick View were verified.');
+  console.log('Product gallery reference checks passed at desktop and mobile widths; front/back mapping, placeholders, header interaction, wishlist persistence, and Quick View were verified.');
 } finally {
   await close();
 }

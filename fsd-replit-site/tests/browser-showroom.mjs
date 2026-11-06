@@ -589,9 +589,33 @@ try {
   await waitFor('document.querySelector(".fsd-featured-track").scrollLeft > 0');
   await send('Emulation.clearDeviceMetricsOverride');
   assert.ok(await evaluate('document.querySelector("#contact button").disabled && !document.querySelector("#contact form, #contact input")'));
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await send('Page.navigate', { url: `https://${domain}/universe?mobile-layout-check=1` });
+  await waitFor('document.querySelector(\'[data-fsd-storefront][data-current-view="universe"] .fsd-editorial-grid\')');
+  const mobileCampaignLayout = await evaluate(`(() => {
+    const grid = document.querySelector('.fsd-showcase--editorial .fsd-editorial-grid');
+    const cards = [...(grid?.querySelectorAll('.fsd-editorial-card') || [])];
+    return {
+      columns: getComputedStyle(grid).gridTemplateColumns.trim().split(/\\s+/).length,
+      cardsInside: cards.every(card => {
+        const rect = card.getBoundingClientRect();
+        return rect.left >= 0 && rect.right <= innerWidth + 1;
+      }),
+      horizontalOverflow: document.documentElement.scrollWidth > innerWidth + 1,
+    };
+  })()`);
+  assert.equal(mobileCampaignLayout.columns, 1, 'mobile campaign cards should stack into a single column.');
+  assert.equal(mobileCampaignLayout.cardsInside, true, 'mobile campaign cards should remain fully within the viewport.');
+  assert.equal(mobileCampaignLayout.horizontalOverflow, false, 'mobile campaign panels should not overflow horizontally.');
+  await send('Emulation.clearDeviceMetricsOverride');
 
   assert.deepEqual(browserErrors, []);
-  console.log('Desktop browser checks passed: all divisions, subcategories, focus/closing, product handoff, catalogue navigation, archive removal, carousel, and deferred VIP. Mobile layouts require a separate visual review.');
+  console.log('Showroom browser checks passed: divisions, subcategories, navigation, carousel, deferred VIP and the single-column mobile campaign layout.');
   }
 } finally {
   socket?.close();

@@ -19,6 +19,17 @@ try {
     await wait(`location.search.includes('gallery-check=${width}') && document.querySelector('[data-runtime-ready="true"]') && document.querySelector('[data-clothing-product-id="75"]')`, 'FLEX collection ready');
     await evaluate(`document.querySelector('[data-clothing-product-id="75"] button').click()`);
     await wait(`document.querySelector('#product-dialog')?.open && document.querySelector('[data-gallery-fullscreen]')`, 'enhanced product gallery');
+    const photoOpener = '#dialog-body [data-gallery-photo-open]:not([hidden])';
+    await evaluate(`document.querySelector(${JSON.stringify(photoOpener)}).querySelector('img').click()`);
+    await wait(`document.querySelector('#fsd-product-viewer')?.open &&
+      !document.querySelector('[data-viewer-photo]').hidden &&
+      document.querySelector('[data-viewer-photo]').naturalWidth > 0`, 'photograph opens full-screen viewer');
+    assert.equal(await evaluate(`document.querySelector('#fsd-product-viewer').matches(':modal')`), true);
+    await key('Escape');
+    await wait(`!document.querySelector('#fsd-product-viewer')?.open &&
+      document.querySelector('#product-dialog')?.open &&
+      document.activeElement === document.querySelector(${JSON.stringify(photoOpener)})`,
+    'viewer Escape closes only the viewer and restores focus');
     const first = await evaluate(selectedIndex);
     await evaluate(`document.querySelector('[data-gallery-step="1"]').click()`);
     await wait(`${selectedIndex} !== ${first}`, 'next view');

@@ -1008,8 +1008,8 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     mainImage.hidden = false;
     mainImage.dataset.fsdImageFallback = 'true';
     delete mainImage.dataset.fsdImageFailed;
-    const zoomButton = mainImage.closest('[data-catalogue-zoom]');
-    if (zoomButton) zoomButton.hidden = false;
+    const photoButton = mainImage.closest('[data-gallery-photo-open]');
+    if (photoButton) photoButton.hidden = false;
     const mappedColourway = productColourwayOptions(activeDialogProduct)[matchedColourway]
       || image.colourway || image.variant || '';
     crossfadeMappedImage(
@@ -1047,9 +1047,9 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
 
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
     cancelMappedImageSwap(mainImage);
-    const zoomButton = mainImage?.closest('[data-catalogue-zoom]');
+    const photoButton = mainImage?.closest('[data-gallery-photo-open]');
     if (mainImage) mainImage.hidden = true;
-    if (zoomButton) zoomButton.hidden = true;
+    if (photoButton) photoButton.hidden = true;
     if (!mainImage) placeholder.closest('.product-detail-gallery')?.classList.add('has-variant-placeholder');
 
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
@@ -1215,14 +1215,6 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     const wishlistButton = event.target.closest('[data-product-wishlist]');
     if (wishlistButton && dialogBody.contains(wishlistButton)) {
       toggleWishlist(wishlistButton);
-      return;
-    }
-    const zoomButton = event.target.closest('[data-catalogue-zoom]');
-    if (zoomButton && dialogBody.contains(zoomButton)) {
-      const zoomed = zoomButton.getAttribute('aria-pressed') === 'true';
-      zoomButton.setAttribute('aria-pressed', String(!zoomed));
-      zoomButton.setAttribute('aria-label', zoomed ? 'Zoom product image' : 'Zoomed product image; activate to reset');
-      zoomButton.classList.toggle('is-zoomed', !zoomed);
       return;
     }
     const relatedButton = event.target.closest('[data-related-product]');

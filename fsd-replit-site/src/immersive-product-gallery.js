@@ -196,8 +196,15 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
   const observer = new doc.defaultView.MutationObserver(refresh);
   observer.observe(body, { childList: true, subtree: true });
   const onBodyClick = event => {
-    if (Date.now() < suppressClickUntil && event.target.closest('[data-catalogue-zoom]')) {
+    if (Date.now() < suppressClickUntil && event.target.closest('[data-gallery-photo-open]')) {
       event.preventDefault(); event.stopImmediatePropagation(); return;
+    }
+    const photo = event.target.closest('[data-gallery-photo-open]');
+    if (photo) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      open(photo);
+      return;
     }
     const full = event.target.closest('[data-gallery-fullscreen]');
     const direction = event.target.closest('[data-gallery-step]');

@@ -610,6 +610,12 @@
   margin-top: 3px;
 }
 
+.fsd-showcase--editorial .fsd-editorial-grid {
+  grid-template-columns: minmax(0, .96fr) minmax(0, 1.16fr) minmax(0, .82fr);
+  align-items: stretch;
+  gap: clamp(3px, .5vw, 8px);
+}
+
 .fsd-editorial-card,
 .fsd-editorial-card:nth-child(2),
 .fsd-editorial-card:nth-child(3) {
@@ -743,6 +749,7 @@
   .fsd-division-link small { font-size: 8px; }
 
   .fsd-editorial-grid { grid-template-columns: 1fr; gap: 3px; }
+  .fsd-showcase--editorial .fsd-editorial-grid { grid-template-columns: minmax(0, 1fr); }
   .fsd-editorial-card,
   .fsd-editorial-card:nth-child(2),
   .fsd-editorial-card:nth-child(3) {
@@ -1118,5 +1125,36 @@
     transition: none !important;
     animation: none !important;
     transform: none !important;
+  }
+}
+
+/* A restrained editorial dissolve between the approved hero experiences.
+   The image and copy remain the existing mapped FSD assets and language. */
+.fsd-phase3-hero .fsd-home-hero__shade::after {
+  position: absolute;
+  inset: 0;
+  background-color: var(--fsd-hero-tone, #dfff45);
+  content: "";
+  opacity: .055;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: background-color 620ms ease, opacity 620ms ease;
+}
+
+.fsd-phase3-hero[data-hero-theme="stronger"] { --fsd-hero-tone: #b9c7cf; }
+.fsd-phase3-hero[data-hero-theme="disciplined"] { --fsd-hero-tone: #9da9a4; }
+.fsd-phase3-hero[data-hero-theme="together"] { --fsd-hero-tone: #d5c49e; }
+.fsd-phase3-hero[data-hero-theme="stronger"] .fsd-home-hero__shade::after { opacity: .07; }
+.fsd-phase3-hero[data-hero-theme="together"] .fsd-home-hero__shade::after { opacity: .065; }
+
+.fsd-phase3-hero .fsd-home-hero__asset {
+  transition: filter 620ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-phase3-hero .fsd-home-hero__shade::after,
+  .fsd-phase3-hero .fsd-home-hero__asset {
+    animation: none !important;
+    transition: none !important;
   }
 }

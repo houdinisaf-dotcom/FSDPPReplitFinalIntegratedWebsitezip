@@ -8,7 +8,7 @@ const { send, evaluate, wait, key } = browser;
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running FSD preview.');
 const experiences = [
-  { id: 'heroes', href: '#collections', action: 'EXPLORE THE COLLECTIONS' },
+  { id: 'heroes', href: '#universe', action: 'EXPLORE THE COLLECTIONS' },
   { id: 'stronger', href: '#hardware-editorial', action: 'EXPLORE HARDWARE' },
   { id: 'disciplined', href: '#innovation-hub', action: 'EXPLORE BIO-LAB™' },
   { id: 'together', href: '#brand-community', action: 'DISCOVER COMMUNITY & CULTURE' },
