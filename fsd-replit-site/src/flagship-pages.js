@@ -15,45 +15,52 @@ export const innovationHubPages = Object.freeze([
   {
     id: 'innovation-bio-weave-ecg-hydration-compression-tops',
     title: 'Bio-Weave™ ECG & Hydration Compression Tops',
-    summary: 'FSD Bio-Lab product information.',
+    summary: 'Named Bio-Lab concept only. Technical specifications, supporting evidence, and availability have not been verified; this is not a current product or commitment.',
+    bioLabConcept: true,
     modules: ['Product overview', 'Materials & technology', 'Compatibility & availability'],
   },
   {
     id: 'innovation-fsd-aware-band',
     title: 'FSD Aware Band™',
-    summary: 'FSD Bio-Lab product information.',
+    summary: 'Named Bio-Lab concept only. Technical specifications, supporting evidence, and availability have not been verified; this is not a current product or commitment.',
+    bioLabConcept: true,
     modules: ['Product overview', 'Product & interface', 'Compatibility & availability'],
   },
   {
     id: 'innovation-graphene-infused-thermal-recovery-vests',
     title: 'Graphene-Infused Thermal Recovery Vests',
-    summary: 'FSD Bio-Lab product information.',
+    summary: 'Named Bio-Lab concept only. Technical specifications, supporting evidence, and availability have not been verified; this is not a current product or commitment.',
+    bioLabConcept: true,
     modules: ['Product overview', 'Materials & care', 'Technical details & availability'],
   },
   {
     id: 'innovation-fsd-digital-pass',
     title: 'FSD Digital Pass™',
-    summary: 'FSD Bio-Lab product information.',
+    summary: 'Named Bio-Lab concept only. Technical specifications, supporting evidence, and availability have not been verified; this is not a current product or commitment.',
+    bioLabConcept: true,
     modules: ['Product overview', 'Access & privacy', 'Compatibility & availability'],
   },
   {
     id: 'innovation-fsd-vector-smartwatch',
     title: 'FSD VECTOR — Smartwatch',
-    summary: 'FSD Bio-Lab product information.',
+    summary: 'Named Bio-Lab concept only. Technical specifications, supporting evidence, and availability have not been verified; this is not a current product or commitment.',
+    bioLabConcept: true,
     modules: ['Product overview', 'Product & interface', 'Specifications & compatibility'],
   },
   {
     id: 'innovation-fsd-core-heart-rate-sensor-strap',
     title: 'FSD CORE — Heart Rate Sensor Strap',
-    summary: 'FSD Bio-Lab product information.',
+    summary: 'Named Bio-Lab concept only. Technical specifications, supporting evidence, and availability have not been verified; this is not a current product or commitment.',
+    bioLabConcept: true,
     modules: ['Product overview', 'Product & fit', 'Specifications & compatibility'],
   },
   {
     id: 'smart-apparel-nfc',
     title: 'Smart Apparel & NFC Authentication',
-    summary: 'Active Bio-Lab initiative exploring NFC garment authentication, product information, and digital content.',
+    summary: 'Active Bio-Lab initiative exploring possible NFC garment authentication, product information, and digital content. No NFC capability or data collection is represented as currently available; NFC does not measure biometrics.',
     modules: ['Garment authentication', 'Care, sizing & digital content', 'Privacy, security & manufacturing gates'],
     initiative: true,
+    bioLabConcept: true,
     houseRoute: 'bio-lab/smart-apparel',
     action: 'VIEW SMART APPAREL INITIATIVE',
     actionHref: '#smart-apparel-nfc',
@@ -67,6 +74,33 @@ export const innovationHubPages = Object.freeze([
     houseRoute: 'bio-lab/adaptive-fabrics',
   },
 ]);
+
+const bioLabPendingDetails = Object.freeze([
+  'Technical specifications and material composition, including any graphene claim',
+  'ECG, heart-rate, hydration, thermal, recovery, and other health or biometric claims',
+  'Test methods, results, and performance claims',
+  'Customer-facing product status and availability',
+  'Compatibility, privacy, security, and data-handling statements where relevant',
+]);
+
+// Keep a per-page record so future copy changes require concept-specific evidence.
+// The six wearable concepts have no supporting technical evidence in the supplied
+// project materials. The NFC source confirms initiative scope and its boundaries,
+// not an implemented product or service.
+export const bioLabConceptVerification = Object.freeze(
+  innovationHubPages
+    .filter(page => page.bioLabConcept)
+    .map(page => Object.freeze({
+      id: page.id,
+      title: page.title,
+      customerFacingStatus: page.initiative ? 'active initiative; no live product or service represented' : 'concept for exploration; not a current product or commitment',
+      approvedHoldingCopy: page.summary,
+      evidenceStatus: page.id === 'smart-apparel-nfc'
+        ? 'initiative scope only; technical implementation and data-handling evidence not supplied'
+        : 'no product-specific technical evidence or customer-facing product approval supplied',
+      pending: bioLabPendingDetails,
+    })),
+);
 
 const standalonePages = Object.freeze([
   {
@@ -106,7 +140,7 @@ export const flagshipPageDefinitions = Object.freeze([
     ...page,
     eyebrow: page.initiative
       ? 'FSD BIO-LAB™ / ACTIVE INITIATIVE'
-      : 'FSD BIO-LAB™ / PRODUCT RANGE',
+      : 'FSD BIO-LAB™ / CONCEPT FOR EXPLORATION',
   })),
 ]);
 
@@ -237,7 +271,7 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
     <span class="fsd-innovation-card-index">${String(innovationHubPages.indexOf(page) + 1).padStart(2, '0')}</span>
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHTML(page.title)}</strong>
-      <small>${page.initiative ? 'ACTIVE BIO-LAB INITIATIVE' : 'FSD PRODUCT · DETAILS'}</small>
+      <small>${page.initiative ? 'ACTIVE BIO-LAB INITIATIVE' : 'DETAILS PENDING VERIFICATION'}</small>
     </span>
     <span class="fsd-innovation-card-arrow" aria-hidden="true">↗</span>
   </a>`).join('');
@@ -272,7 +306,7 @@ function renderPageModule(page, moduleTitle, index) {
     <div class="fsd-page-module-copy">
       <span class="fsd-page-module-index">${String(index + 1).padStart(2, '0')}</span>
       <h3>${escapeHTML(moduleTitle)}</h3>
-       <p>${page.initiative ? 'Initiative scope, value pillars, and rollout framework.' : 'Product information and supporting media.'}</p>
+       <p>${page.initiative ? 'Initiative scope, value pillars, and rollout framework.' : 'Specifications, supporting evidence, and availability are pending verification.'}</p>
     </div>
     ${renderAssetSlot(`${page.title} / ${moduleTitle}`, ratio)}
   </article>`;
@@ -298,6 +332,7 @@ function renderPage(page) {
         <h2 id="${escapeHTML(page.id)}-title">${escapeHTML(page.title)}</h2>
         ${page.heroSubtitle ? `<p class="fsd-page-subtitle">${escapeHTML(page.heroSubtitle)}</p>` : ''}
         <p class="fsd-page-intro">${escapeHTML(page.summary)}</p>
+        ${page.bioLabConcept && !page.initiative ? '<span class="fsd-page-status">DETAILS PENDING VERIFICATION</span>' : ''}
         ${page.initiative ? '<span class="fsd-page-status">ACTIVE INITIATIVE · ROLLOUT UNDERWAY</span>' : ''}
         ${page.initiative ? '<p class="fsd-page-intro fsd-page-disclaimer">Related concepts and design prototypes are for exploration, not current products or commitments.</p>' : ''}
       </header>

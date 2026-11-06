@@ -49,7 +49,7 @@ export const collectionDivisions = [
     id: 'bio-lab',
     title: 'FSD BIO-LAB™',
     tagline: 'INTELLIGENCE IN EVERY MOVEMENT.',
-    description: 'Training technology and connected apparel.',
+    description: 'Wearable technology and connected-apparel concepts; technical details and product availability are not confirmed.',
     groups: [{
       id: 'bio-lab-concepts',
       title: 'WEARABLE TECHNOLOGY',

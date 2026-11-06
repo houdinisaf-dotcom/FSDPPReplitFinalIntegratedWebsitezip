@@ -12,7 +12,7 @@ test('the showroom renders four accessible division controls and one reusable di
   assert.match(markup, /id="fsd-showcase-dialog"/);
   assert.equal((markup.match(/aria-controls="fsd-showcase-dialog"/g) || []).length, 4);
   assert.equal((markup.match(/aria-expanded="false"/g) || []).length, 4);
-  assert.match(markup, /Training technology and connected apparel\./);
+  assert.match(markup, /Wearable technology and connected-apparel concepts; technical details and product availability are not confirmed\./);
   for (const label of ['EXPLORE APPAREL', 'EXPLORE BIO-LAB™', 'EXPLORE HARDWARE', 'EXPLORE GLOBAL']) {
     assert.ok(markup.includes(label));
   }

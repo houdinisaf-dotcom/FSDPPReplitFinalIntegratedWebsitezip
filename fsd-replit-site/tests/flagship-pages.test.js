@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  bioLabConceptVerification,
   flagshipPageDefinitions,
   renderFlagshipPlaceholderPages,
   renderInnovationHubIndex,
@@ -62,6 +63,28 @@ test('Innovation Hub links to all concepts and keeps private proofs out of produ
   assert.match(developmentHtml, /\/__catalogue-preview\/fsd-nexus\//);
 });
 
+test('seven Bio-Lab concepts retain approved holding copy and per-page evidence status', () => {
+  assert.equal(bioLabConceptVerification.length, 7);
+  assert.equal(new Set(bioLabConceptVerification.map(record => record.id)).size, 7);
+
+  for (const record of bioLabConceptVerification) {
+    assert.ok(record.approvedHoldingCopy, `${record.title} needs holding copy`);
+    assert.ok(record.evidenceStatus, `${record.title} needs a recorded evidence status`);
+    assert.ok(record.pending.includes('Technical specifications and material composition, including any graphene claim'));
+    assert.ok(record.pending.includes('ECG, heart-rate, hydration, thermal, recovery, and other health or biometric claims'));
+    assert.ok(record.pending.includes('Compatibility, privacy, security, and data-handling statements where relevant'));
+  }
+
+  const html = renderFlagshipPlaceholderPages();
+  assert.equal((html.match(/DETAILS PENDING VERIFICATION/g) || []).length, 6);
+  assert.match(html, /FSD BIO-LAB™ \/ CONCEPT FOR EXPLORATION/);
+  assert.match(html, /Named Bio-Lab concept only/);
+  assert.match(html, /ACTIVE Bio-Lab initiative exploring possible NFC garment authentication/i);
+  assert.match(html, /NFC does not measure biometrics/);
+  assert.doesNotMatch(html, /FSD BIO-LAB™ \/ PRODUCT RANGE|FSD PRODUCT · DETAILS/);
+  assert.doesNotMatch(html, /<form\b|ADD TO BAG|CHECKOUT|BUY NOW|JOIN NOW/i);
+});
+
 test('new page content does not enable membership sign-up, checkout, or unverified claims', () => {
   const html = renderFlagshipPlaceholderPages();
   assert.match(html, /REGISTRATION NOT OPEN/);
@@ -78,5 +101,5 @@ test('new page content does not enable membership sign-up, checkout, or unverifi
   assert.match(html, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
   assert.match(html, /Related concepts and design prototypes are for exploration, not current products or commitments/);
   assert.doesNotMatch(html, /<form\b|ADD TO BAG|CHECKOUT|£\d/i);
-  assert.match(html, /FSD Bio-Lab product information/i);
+  assert.match(html, /Specifications, supporting evidence, and availability are pending verification/);
 });
