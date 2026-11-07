@@ -1004,7 +1004,8 @@ test('hardware prices buy complete approved set tiers without invented weight br
   }
   assert.equal(master.find(p => p.id === 21)['Merged into'], 19);
   assert.deepEqual(master.find(p => p.id === 53)['Replaced by'], tiers.map(p => p.id));
-  assert.equal(products.find(p => p.id === 54).confirmedPrice, 349.99);
+  assert.equal(products.find(p => p.id === 52).confirmedPrice, 189.99);
+  assert.equal(products.find(p => p.id === 54).confirmedPrice, 1299.99);
   assert.match(products.find(p => p.id === 54).specificationStatus, /Not decided/);
   assert.doesNotMatch(products.find(p => p.id === 54).alias, /Tri-Grip/);
 });
