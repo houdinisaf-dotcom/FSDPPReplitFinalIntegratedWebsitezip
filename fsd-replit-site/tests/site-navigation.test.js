@@ -279,6 +279,7 @@ test('House publication policy previews drafts in development and disables their
 
 test('the legacy House URL redirects to the corporate hub and preserves the separate Story route', () => {
   const redirect = renderLegacyHouseRedirect();
+  const publicRedirect = readFileSync(new URL('../public/the-house.html', import.meta.url), 'utf8');
   assert.equal(legacyHouseRedirectDestination(), '/#fsd-house-archive');
   assert.equal(legacyHouseRedirectDestination('#brand/founder'), '/story');
   assert.equal(legacyHouseRedirectDestination('#fsd-house-archive'), '/#fsd-house-archive');
@@ -286,6 +287,7 @@ test('the legacy House URL redirects to the corporate hub and preserves the sepa
   assert.match(redirect, /location\.replace\(destination\)/);
   assert.match(redirect, /\/#fsd-house-archive/);
   assert.match(redirect, /href="\/#fsd-house-archive">Open THE HOUSE/);
+  assert.equal(publicRedirect.trim(), redirect);
 });
 
 test('the homepage House archive links to destinations instead of rendering sibling page bodies', () => {

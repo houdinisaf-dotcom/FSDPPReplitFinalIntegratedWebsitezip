@@ -14,3 +14,9 @@ Managed artifact previews must be captured using the running artifact workflow's
 **Why:** The sandbox can receive a nonstandard managed port. The storefront's catch-all may return its homepage for a sandbox URL, creating a misleadingly successful screenshot.
 
 **How to apply:** Inspect the active workflow configuration, logs, or only the process's `PORT` and `BASE_PATH` entries. Pass that exact port and preview path to the app-preview screenshot tool.
+
+In this Vite storefront, legacy `.html` routes handled only through a `configureServer` middleware can still fall through to the app's 404 page in the development preview when no matching public file exists. Keep a physical `public/<route>.html` source and ensure the production build includes the same route behavior.
+
+**Why:** The custom middleware was present but the Replit preview still returned the branded 404; the public HTML route loaded and its production build output was verifiable.
+
+**How to apply:** For public legacy `.html` routes, test the physical public source in dev and the generated `dist` file after a production build instead of relying on middleware interception alone.
