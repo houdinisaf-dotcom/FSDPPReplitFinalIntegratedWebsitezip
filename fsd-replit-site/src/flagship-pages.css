@@ -619,3 +619,184 @@
   .fsd-hub-heading { gap: 18px; }
   .fsd-innovation-card { min-height: 82px; }
 }
+
+/* Strategic concept directory: a compact editorial index within the FSD system. */
+.fsd-strategic-concept-index {
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(64px, 8.5vw, 116px);
+  padding-bottom: clamp(68px, 9vw, 124px);
+  border-top: 1px solid rgb(255 255 255 / 12%);
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgb(255 255 255 / 3%) 50%, transparent calc(50% + .5px)),
+    #111318;
+}
+
+.fsd-strategic-concept-index .fsd-page-shell {
+  width: min(1180px, 100%);
+}
+
+.fsd-strategic-concept-index .fsd-page-eyebrow {
+  color: #dfff45;
+  font-size: 9px;
+  letter-spacing: .24em;
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading {
+  display: block;
+  max-width: 850px;
+  margin: clamp(20px, 3vw, 38px) 0 clamp(30px, 4vw, 50px);
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading h2 {
+  max-width: 780px;
+  color: #f2f0eb;
+  font-family: var(--fsd-display, "Barlow Condensed", sans-serif);
+  font-size: clamp(40px, 7vw, 82px);
+  font-weight: 600;
+  line-height: .96;
+  letter-spacing: -.018em;
+  text-transform: uppercase;
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading > div > p:not(.fsd-page-eyebrow) {
+  max-width: 590px;
+  margin-top: 20px;
+  color: #c0c1bc;
+  font: 400 14px/1.75 var(--fsd-body, "DM Sans", sans-serif);
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading > div > .fsd-page-disclaimer {
+  max-width: 680px;
+  margin-top: 22px;
+  padding: 12px 16px;
+  border-left: 2px solid #dfff45;
+  background: rgb(223 255 69 / 4%);
+  color: #aeb0a9;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(22px, 4vw, 54px);
+  background: none;
+  border-top: 1px solid rgb(255 255 255 / 18%);
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card {
+  position: relative;
+  min-width: 0;
+  min-height: 172px;
+  grid-template-columns: 32px minmax(0, 1fr) 18px;
+  align-items: start;
+  gap: 14px;
+  padding: 23px 2px 24px;
+  border: 0;
+  border-bottom: 1px solid rgb(255 255 255 / 15%);
+  background: transparent;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card:hover,
+.fsd-strategic-concept-index .fsd-innovation-card:focus-visible {
+  border-color: rgb(255 255 255 / 15%);
+  background: transparent;
+  transform: translateY(-2px);
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card:focus-visible {
+  outline-color: #dfff45;
+  outline-offset: 3px;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-index {
+  padding-top: 4px;
+  color: #dfff45;
+  font: 500 10px/1.2 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .14em;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy {
+  min-width: 0;
+  gap: 9px;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy strong {
+  color: #f2f0eb;
+  font: 600 clamp(15px, 1.35vw, 18px)/1.3 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .005em;
+  text-transform: none;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy small {
+  color: #aeb0a9;
+  font: 500 9px/1.55 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .1em;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy small:first-of-type {
+  color: #dfff45;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy .fsd-innovation-card-crosslink {
+  color: #999c96;
+  font-size: 8px;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy small:last-child {
+  max-width: 52ch;
+  margin-top: 2px;
+  color: #b8bab5;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.65;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-arrow {
+  align-self: start;
+  padding-top: 1px;
+  color: #dfff45;
+  font-size: 14px;
+  opacity: .75;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card:hover .fsd-innovation-card-arrow,
+.fsd-strategic-concept-index .fsd-innovation-card:focus-visible .fsd-innovation-card-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 760px) {
+  .fsd-strategic-concept-index {
+    background: #111318;
+  }
+
+  .fsd-strategic-concept-index .fsd-innovation-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fsd-strategic-concept-index .fsd-innovation-card {
+    min-height: 0;
+    padding: 20px 0 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-strategic-concept-index .fsd-innovation-card,
+  .fsd-strategic-concept-index .fsd-innovation-card-arrow {
+    transition: none;
+  }
+
+  .fsd-strategic-concept-index .fsd-innovation-card:hover,
+  .fsd-strategic-concept-index .fsd-innovation-card:focus-visible,
+  .fsd-strategic-concept-index .fsd-innovation-card:hover .fsd-innovation-card-arrow,
+  .fsd-strategic-concept-index .fsd-innovation-card:focus-visible .fsd-innovation-card-arrow {
+    transform: none;
+  }
+}

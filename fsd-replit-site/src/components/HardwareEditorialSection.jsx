@@ -56,8 +56,8 @@ export function HardwareEditorialSection({ onOpenHardware }) {
       <figure className="showroom-engineering-media">
         <HardwareFeatureMedia />
         <figcaption>
-          <span>FSD COMBAT / TRAINING CAMPAIGN</span>
-          <span>APPAREL &amp; MOVEMENT</span>
+          <span>FSD HARDWARE / PRODUCT PRESENTATION</span>
+          <span>APPROVED IMAGERY PENDING</span>
         </figcaption>
       </figure>
     </>

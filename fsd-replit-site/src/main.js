@@ -38,6 +38,7 @@ import './site-cta.css';
 import './site-footer.css';
 import './ui-interactions.css';
 import './flagship-redesign.css';
+import './premium-visual-refinement.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 

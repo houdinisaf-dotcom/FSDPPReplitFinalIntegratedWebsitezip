@@ -1,0 +1,484 @@
+:root {
+  --fsd-editorial-paper: #f5f4f0;
+  --fsd-editorial-ink: #0a0a0a;
+  --fsd-editorial-rule: rgb(10 10 10 / 13%);
+}
+
+/* Keep the approved campaign art and words; vary only the type treatment. */
+.fsd-phase3-hero {
+  --fsd-campaign-title-track: -.055em;
+  --fsd-campaign-title-weight: 600;
+}
+
+.fsd-phase3-hero[data-hero-theme="heroes"] {
+  --fsd-campaign-title-track: -.045em;
+  --fsd-campaign-title-weight: 500;
+}
+
+.fsd-phase3-hero[data-hero-theme="stronger"] {
+  --fsd-campaign-title-track: -.075em;
+  --fsd-campaign-title-weight: 700;
+}
+
+.fsd-phase3-hero[data-hero-theme="disciplined"] {
+  --fsd-campaign-title-track: -.035em;
+  --fsd-campaign-title-weight: 700;
+}
+
+.fsd-phase3-hero[data-hero-theme="together"] {
+  --fsd-campaign-title-track: -.025em;
+  --fsd-campaign-title-weight: 500;
+}
+
+.fsd-phase3-hero #fsd-home-title {
+  max-width: 12ch;
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-weight: var(--fsd-campaign-title-weight);
+  letter-spacing: var(--fsd-campaign-title-track);
+  line-height: .91;
+  text-wrap: balance;
+}
+
+.fsd-phase3-hero #fsd-home-title em {
+  font-style: italic;
+  text-decoration-thickness: .055em;
+  text-underline-offset: .12em;
+}
+
+/* Make mapped SHOP feature photography the visual anchor of each menu. */
+.fsd-feature-media {
+  min-height: clamp(236px, 27vh, 310px);
+}
+
+.fsd-feature-media--product {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgb(212 175 55 / 6%), transparent 62%),
+    #101113;
+}
+
+.fsd-feature-media--product img {
+  object-position: center;
+  padding: clamp(8px, 1vw, 14px);
+}
+
+.fsd-feature-media-action .fsd-feature-media img {
+  transition: transform 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fsd-feature-media-action:hover .fsd-feature-media img {
+    transform: scale(1.018);
+  }
+}
+
+.fsd-feature-media-action:focus-visible {
+  outline-color: var(--fsd-champagne, #D4AF37);
+}
+
+/* Existing catalogue data and filtering remain intact; tune only card rhythm. */
+#catalogue-grid.product-grid[data-view="visual"] {
+  gap: clamp(16px, 1.8vw, 28px);
+}
+
+#catalogue-grid.product-grid[data-view="visual"] > .product-card {
+  min-width: 0;
+}
+
+@media (min-width: 1320px) {
+  #catalogue-grid.product-grid[data-view="visual"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1319px) {
+  #catalogue-grid.product-grid[data-view="visual"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  #catalogue-grid.product-grid[data-view="visual"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 10px;
+  }
+}
+
+@media (max-width: 340px) {
+  #catalogue-grid.product-grid[data-view="visual"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* PDP: spacious white editorial gallery, uncropped and paired where available. */
+#product-dialog {
+  background: #fff;
+}
+
+#dialog-body {
+  background: #fff;
+  color: var(--fsd-editorial-ink);
+}
+
+#dialog-body .product-detail-layout {
+  background: #fff;
+}
+
+@media (min-width: 961px) {
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] {
+    grid-template-columns: minmax(0, 2.12fr) minmax(300px, .94fr);
+    align-items: start;
+    gap: clamp(20px, 2.3vw, 38px);
+  }
+
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-media {
+    grid-column: 1;
+  }
+
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-purchase {
+    grid-column: 2;
+    padding: clamp(28px, 4vw, 62px) clamp(20px, 2.5vw, 42px);
+    border: 0;
+  }
+}
+
+#dialog-body .product-detail-media {
+  padding: 0;
+  background: #fff;
+}
+
+#dialog-body .product-detail-gallery__feature-grid.has-secondary {
+  gap: 2px;
+}
+
+#dialog-body .product-detail-image-stage,
+#dialog-body .product-detail-gallery__secondary-stage {
+  min-width: 0;
+  min-height: min(76vh, 820px);
+  background: var(--fsd-editorial-paper);
+}
+
+#dialog-body .product-detail-image-zoom,
+#dialog-body .product-detail-image-zoom img,
+#dialog-body .product-detail-gallery__secondary-stage > img {
+  width: 100%;
+  height: 100%;
+}
+
+#dialog-body .product-detail-image-zoom img,
+#dialog-body .product-detail-gallery__secondary-stage > img {
+  object-fit: contain;
+  object-position: center;
+}
+
+#dialog-body .product-detail-gallery figcaption {
+  padding: 8px 10px;
+  color: #69665f;
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+#dialog-body .product-detail-purchase {
+  background: #fff;
+}
+
+#dialog-body .product-detail-purchase h2 {
+  color: #111;
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-size: clamp(25px, 2.4vw, 36px);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: 1.12;
+  text-transform: none;
+}
+
+#dialog-body .product-detail-price,
+#dialog-body .product-detail-price strong {
+  color: #111;
+}
+
+#dialog-body .product-detail-add,
+#dialog-body .product-detail-notify__button {
+  border-color: #0a0a0a;
+  background: #0a0a0a;
+  color: #fff;
+}
+
+#dialog-body .product-detail-add:hover:not(:disabled),
+#dialog-body .product-detail-notify__button:hover:not(:disabled) {
+  border-color: #242424;
+  background: #242424;
+  color: #fff;
+}
+
+#dialog-body .product-detail-add:focus-visible,
+#dialog-body .product-detail-notify__button:focus-visible {
+  outline: 2px solid var(--fsd-champagne, #D4AF37);
+  outline-offset: 3px;
+}
+
+#dialog-body .catalogue-selector__thumbs {
+  gap: 8px;
+  padding: 12px 8px 16px;
+  overflow-x: auto;
+}
+
+#dialog-body .catalogue-selector__thumb {
+  flex: 0 0 76px;
+  border-color: rgb(10 10 10 / 16%);
+  background: #fff;
+  color: #292822;
+}
+
+#dialog-body .catalogue-selector__thumb[aria-pressed="true"] {
+  border-color: var(--fsd-champagne, #D4AF37);
+}
+
+@media (max-width: 960px) {
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-media,
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-purchase {
+    grid-column: 1;
+  }
+
+  #dialog-body .product-detail-image-stage,
+  #dialog-body .product-detail-gallery__secondary-stage {
+    min-height: clamp(350px, 54vw, 610px);
+  }
+}
+
+@media (max-width: 600px) {
+  #dialog-body .product-detail-media {
+    padding: 0;
+  }
+
+  #dialog-body .product-detail-gallery__feature-grid.has-secondary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #dialog-body .product-detail-image-stage,
+  #dialog-body .product-detail-gallery__secondary-stage {
+    min-height: clamp(390px, 122vw, 550px);
+  }
+
+  #dialog-body .product-detail-purchase {
+    padding: 24px 18px calc(86px + env(safe-area-inset-bottom));
+  }
+}
+
+/* The unpublished MODEST FLOW preview presents one coordinated outfit. */
+.mf-selector__layout {
+  grid-template-columns: minmax(0, 1.12fr) minmax(320px, .88fr);
+  gap: 0;
+  background: var(--fsd-editorial-paper);
+}
+
+.mf-selector__visual {
+  min-height: min(78vh, 880px);
+  background: #101113;
+}
+
+.mf-selector__image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.mf-selector__details {
+  padding: clamp(24px, 4vw, 58px);
+  background: #fff;
+  color: #171611;
+}
+
+.mf-selector__title {
+  color: #111;
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  letter-spacing: -.04em;
+}
+
+.mf-selector__subtitle,
+.mf-selector__description {
+  color: #5a5750;
+}
+
+.mf-selector__set {
+  border-color: var(--fsd-editorial-rule);
+  background: var(--fsd-editorial-paper);
+}
+
+.mf-selector__set li {
+  border-color: var(--fsd-editorial-rule);
+}
+
+.mf-selector__set li > span,
+.mf-selector__eyebrow,
+.mf-selector__set-label,
+.mf-selector__colour-heading > span:first-child {
+  color: var(--fsd-champagne, #D4AF37);
+}
+
+.mf-selector__swatch[aria-pressed="true"] {
+  box-shadow: inset 2px 0 0 var(--fsd-champagne, #D4AF37);
+}
+
+/* Match the House hardware feature frame to its approved 1050 × 960 media. */
+.showroom-engineering--campaign {
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 88px);
+}
+
+.showroom-engineering--campaign .showroom-engineering-copy {
+  max-width: 620px;
+}
+
+.showroom-engineering--campaign .showroom-engineering-media {
+  aspect-ratio: 1050 / 960;
+}
+
+.showroom-engineering--campaign .showroom-engineering-image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.showroom-engineering-media .fsd-image-placeholder--banner {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: clamp(20px, 4vw, 48px);
+  background:
+    radial-gradient(ellipse at 50% 48%, rgb(212 175 55 / 7%), transparent 42%),
+    repeating-linear-gradient(135deg, transparent 0 28px, rgb(212 175 55 / 2.5%) 29px 30px),
+    #101214;
+  text-align: center;
+}
+
+.showroom-engineering-media .fsd-image-placeholder__mark,
+.showroom-engineering-media .fsd-image-placeholder__title,
+.showroom-engineering-media .fsd-image-placeholder__note {
+  position: static;
+  width: auto;
+  transform: none;
+}
+
+.showroom-engineering-media .fsd-image-placeholder__mark {
+  color: var(--fsd-champagne, #D4AF37);
+  font: 600 9px/1.5 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .16em;
+}
+
+.showroom-engineering-media .fsd-image-placeholder__title {
+  color: #eeeae2;
+  font: 600 clamp(18px, 2vw, 26px)/1.2 var(--fsd-display, Manrope, sans-serif);
+}
+
+.showroom-engineering-media .fsd-image-placeholder__note {
+  color: #a9a69f;
+  font: 500 9px/1.5 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .14em;
+}
+
+/* Hardware imagery stays fully framed; pending slots remain visibly pending. */
+.hardware-forge .forge-products {
+  align-items: start;
+  column-gap: clamp(20px, 4vw, 58px);
+}
+
+.hardware-forge .forge-product-visual {
+  aspect-ratio: 1 / 1;
+  border: 0;
+  background: #101214;
+}
+
+.hardware-forge .forge-product-visual > img {
+  object-fit: contain;
+}
+
+.hardware-forge .forge-image-slots {
+  background: #101214;
+}
+
+/* The access form remains disclosed and non-submitting. */
+.private-enquiries-page {
+  --private-gold: var(--fsd-champagne, #D4AF37);
+}
+
+body[data-fsd-house-editorial="true"] {
+  --fsd-house-gold: var(--fsd-champagne, #D4AF37);
+}
+
+.private-enquiries__category:focus-visible,
+.private-enquiries__actions .fsd-cta:focus-visible,
+.private-enquiries__field input:focus-visible,
+.private-enquiries__field textarea:focus-visible {
+  outline-color: var(--fsd-champagne, #D4AF37);
+}
+
+@media (max-width: 760px) {
+  .mf-selector__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mf-selector__visual {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .mf-selector__details {
+    padding: 25px 20px calc(30px + env(safe-area-inset-bottom));
+  }
+
+  .showroom-engineering--campaign {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hardware-forge .forge-product-visual {
+    aspect-ratio: 1.12 / 1;
+  }
+}
+
+/* Keep the strategic directory on the corporate Champagne Gold token. */
+.fsd-strategic-concept-index .fsd-page-eyebrow,
+.fsd-strategic-concept-index .fsd-innovation-card-index,
+.fsd-strategic-concept-index .fsd-innovation-card-copy small:first-of-type,
+.fsd-strategic-concept-index .fsd-innovation-card-arrow {
+  color: var(--fsd-champagne, #D4AF37);
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading > div > .fsd-page-disclaimer {
+  border-left-color: var(--fsd-champagne, #D4AF37);
+  background: rgb(212 175 55 / 5%);
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card:focus-visible {
+  outline-color: var(--fsd-champagne, #D4AF37);
+}
+
+/* Shared focus and reduced-motion behavior for editorial division surfaces. */
+.fsd-placeholder-page :where(a, button):focus-visible,
+.fsd-innovation-hub :where(a, button):focus-visible,
+.private-enquiries-page :where(a, button, input, textarea):focus-visible,
+body[data-fsd-house-editorial="true"] :where(a, button):focus-visible {
+  outline-color: var(--fsd-champagne, #D4AF37);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-feature-media-action .fsd-feature-media img,
+  #catalogue-grid.product-grid[data-view="visual"] *,
+  .fsd-phase3-hero *,
+  .mf-selector *,
+  .forge-product *,
+  body[data-fsd-house-editorial="true"] *,
+  .private-enquiries-page * {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
