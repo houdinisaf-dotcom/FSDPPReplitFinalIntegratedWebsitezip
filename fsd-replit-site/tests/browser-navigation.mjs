@@ -357,7 +357,7 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
   await click('#fsd-mega-menu [data-nav-group="2"]');
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"2\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"2\\"] span:nth-child(2)")?.textContent.trim() === "Broadcast & PPV"');
-  await click('#fsd-mega-menu [data-nav-item="2"]');
+  await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"2\\"]")?.focus({ preventScroll: true })');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Broadcast & PPV"');
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
