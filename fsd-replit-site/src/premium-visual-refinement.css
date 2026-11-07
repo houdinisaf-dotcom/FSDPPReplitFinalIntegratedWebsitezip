@@ -37,6 +37,9 @@
   letter-spacing: var(--fsd-campaign-title-track);
   line-height: .91;
   text-wrap: balance;
+  transition:
+    letter-spacing 300ms cubic-bezier(.2, .7, .2, 1),
+    font-weight 300ms cubic-bezier(.2, .7, .2, 1);
 }
 
 .fsd-phase3-hero #fsd-home-title em {
@@ -73,6 +76,43 @@
 
 .fsd-feature-media-action:focus-visible {
   outline-color: var(--fsd-champagne, #D4AF37);
+}
+
+/* Universe, Bio-Lab and Private Access share the corporate division finish.
+   Campaign volt remains isolated to the approved homepage campaign system. */
+.fsd-placeholder-page,
+.fsd-innovation-hub {
+  --fsd-division-accent: var(--fsd-champagne, #D4AF37);
+}
+
+.fsd-placeholder-page .fsd-placeholder-label,
+.fsd-placeholder-page .fsd-page-eyebrow,
+.fsd-placeholder-page .fsd-page-module-index,
+.fsd-placeholder-page .fsd-shield-kicker,
+.fsd-innovation-hub .fsd-page-eyebrow {
+  color: var(--fsd-division-accent);
+}
+
+.fsd-placeholder-page .fsd-page-module,
+.fsd-placeholder-page .fsd-shield-card,
+.fsd-placeholder-page .fsd-shield-badge {
+  border-color: rgb(212 175 55 / 17%);
+  background:
+    linear-gradient(130deg, rgb(255 255 255 / 3%), transparent 62%),
+    #111315;
+}
+
+.fsd-placeholder-page .fsd-asset-slot {
+  border-color: rgb(212 175 55 / 25%);
+  background:
+    radial-gradient(ellipse at 50% 40%, rgb(212 175 55 / 6%), transparent 44%),
+    repeating-linear-gradient(135deg, transparent 0 24px, rgb(212 175 55 / 2%) 25px 26px),
+    #101214;
+}
+
+.fsd-placeholder-page .fsd-page-verification-note,
+.fsd-placeholder-page .fsd-shield-notice {
+  border-left-color: var(--fsd-division-accent);
 }
 
 /* Existing catalogue data and filtering remain intact; tune only card rhythm. */

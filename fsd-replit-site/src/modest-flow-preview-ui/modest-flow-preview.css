@@ -406,7 +406,7 @@
   }
 }
 
-/* Proof selector uses the house metallic system; campaign volt remains reserved elsewhere. */
+/* Product information follows the white editorial PDP; campaign volt stays on campaigns. */
 .mf-selector {
   border-color: rgba(200, 170, 114, .34);
   background: #101113;
@@ -420,33 +420,65 @@
 }
 
 .mf-selector__details {
-  border-left-color: rgba(226, 215, 192, .15);
-  background: linear-gradient(140deg, rgba(255, 255, 255, .018), transparent 54%), #151617;
+  border-left-color: #e6e2dc;
+  background: #fff;
+  color: #171717;
 }
 
-.mf-selector__eyebrow,
-.mf-selector__set-label,
-.fsd-product-set-summary__label,
-.mf-selector__set li > span { color: #c8aa72; }
+.mf-selector .mf-selector__eyebrow,
+.mf-selector .mf-selector__set-label,
+.mf-selector .fsd-product-set-summary__label,
+.mf-selector .mf-selector__set li > span { color: #8c6b21; }
 
 .mf-selector__title {
-  color: #f1eee6;
+  color: #111;
   font-family: var(--fsd-display, Manrope, sans-serif);
   letter-spacing: -.045em;
 }
 
-.mf-selector__swatch:hover,
-.mf-selector__swatch[aria-pressed="true"] {
-  border-color: rgba(200, 170, 114, .83);
-  background: rgba(200, 170, 114, .075);
-  color: #f0e3c4;
+.mf-selector .mf-selector__description,
+.mf-selector .mf-selector__set li {
+  color: #4b4b4b;
 }
 
-.mf-selector__swatch[aria-pressed="true"] { box-shadow: inset 2px 0 0 #c8aa72; }
+.mf-selector .mf-selector__set {
+  padding: 11px 13px 4px;
+  border: 1px solid #e8e5df;
+  background: #f7f6f3;
+}
+
+.mf-selector .mf-selector__set li {
+  border-bottom-color: #e4e1db;
+}
+
+.mf-selector .mf-selector__rule {
+  background: #e6e2dc;
+}
+
+.mf-selector .mf-selector__current-colour {
+  color: #272727;
+}
+
+.mf-selector .mf-selector__swatch {
+  border-color: #dedbd4;
+  background: #fff;
+  color: #222;
+}
+
+.mf-selector .mf-selector__swatch:hover,
+.mf-selector .mf-selector__swatch[aria-pressed="true"] {
+  border-color: rgba(140, 107, 33, .82);
+  background: #f6f2e8;
+  color: #171717;
+}
+
+.mf-selector .mf-selector__swatch[aria-pressed="true"] {
+  box-shadow: inset 2px 0 0 #8c6b21;
+}
 
 @media (max-width: 680px) {
-  .mf-selector__details {
-    border-top-color: rgba(226, 215, 192, .15);
+  .mf-selector .mf-selector__details {
+    border-top-color: #e6e2dc;
     border-left: 0;
   }
 }
