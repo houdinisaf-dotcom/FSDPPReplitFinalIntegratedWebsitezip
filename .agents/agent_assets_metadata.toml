@@ -1848,3 +1848,143 @@ mtime_ms = 1793954212221
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/2730163f-de79-40d7-8d59-50246e78bde4/febcf8f8-d043-430f-a445-92e0df520fab"
 storage_version_token = "1793954882896712"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "rf7n-b5_bvZNrTGzJvfrR"
+uri = "file://generated-artifacts/fsd-home-1440x900.jpg"
+type = "image"
+title = "FSD homepage — desktop"
+description = "Running FSD website at 1440×900."
+logical_id = "644f6a9b-38cb-4eda-beef-3d81e81792a7"
+content_hash = "sha256:5ca797e1b1a2e92dde275ce164ee32dd408dacaeabc7c5ecc31beb0531673f05"
+size = 109602
+mtime_ms = 1794073407294
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/644f6a9b-38cb-4eda-beef-3d81e81792a7/57a3623e-c664-4d57-8ece-2f1c83a29244"
+storage_version_token = "1794073592863193"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "JXNYoLIDj0FLtiQNdFdNz"
+uri = "file://generated-artifacts/fsd-home-393x844.jpg"
+type = "image"
+title = "FSD homepage — mobile"
+description = "Running FSD website at 393×844."
+logical_id = "1b4bf961-471e-4641-898e-bde698c5d12f"
+content_hash = "sha256:7977598a44372a8f9a1866f0db46fa26c4c95c5e606478382a9fa9cb1e453a34"
+size = 44999
+mtime_ms = 1794073409090
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/1b4bf961-471e-4641-898e-bde698c5d12f/a7ad3e3d-2020-4f12-a28c-8b7cd93ae3eb"
+storage_version_token = "1794073593619332"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "h4k5s6vjZ79mwe1N1GZkN"
+uri = "file://generated-artifacts/fsd-shop-menu-1440x900.jpg"
+type = "image"
+title = "Expanded SHOP menu — desktop"
+description = "Actual expanded SHOP mega-menu with FLEX feature at 1440×900."
+logical_id = "c8652a7c-e569-48ee-b1f1-f1379fe5798e"
+content_hash = "sha256:dd36f45acc2408280e9b04cdce5a665a2b81334a553e293f1d1687730a7a57d7"
+size = 94010
+mtime_ms = 1794073507918
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c8652a7c-e569-48ee-b1f1-f1379fe5798e/576497b1-6b52-4026-a377-6e72aaa7909d"
+storage_version_token = "1794073594348236"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "ssP4KnwnNExI6XerstqqV"
+uri = "file://generated-artifacts/fsd-shop-menu-393x844.jpg"
+type = "image"
+title = "Expanded SHOP menu — mobile"
+description = "Actual expanded SHOP menu at 393×844."
+logical_id = "c9b1cd50-1ad9-46c3-ad2a-63ced34efdb8"
+content_hash = "sha256:b96e0e66514d086ff9165623af7c8a0859ccfdd61445ff4e06c17084e90cc18b"
+size = 43478
+mtime_ms = 1794073551010
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/c9b1cd50-1ad9-46c3-ad2a-63ced34efdb8/143d6074-60ad-4db8-b648-d554ab994068"
+storage_version_token = "1794073595095427"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "dm7WIOVifJC73YRxevfHo"
+uri = "file://generated-artifacts/fsd-modest-flow-1440x900.jpg"
+type = "image"
+title = "MODEST FLOW presentation — desktop"
+description = "Actual matching-set selector at 1440×900."
+logical_id = "557b1774-8abb-4da3-9bf8-11429f0ee5e7"
+content_hash = "sha256:7ba83364b60830f77635051cc41b03c0aa7a00c1416604586e680bdbc6c976d0"
+size = 132788
+mtime_ms = 1794073555202
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/557b1774-8abb-4da3-9bf8-11429f0ee5e7/d3041d4a-c17b-4def-8fe2-24a4da44de8b"
+storage_version_token = "1794073595990639"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "YS2G6RWZznYS0KXivxCRq"
+uri = "file://generated-artifacts/fsd-modest-flow-393x844.jpg"
+type = "image"
+title = "MODEST FLOW presentation — mobile"
+description = "Actual matching-set selector at 393×844."
+logical_id = "5dde0169-8529-4772-a8c6-6db8b5606c20"
+content_hash = "sha256:3cac22e7a9cfa353aaf616a6cb9c65eec2987b8aeda7d9e2c5187579ca5e4423"
+size = 55302
+mtime_ms = 1794073558286
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/5dde0169-8529-4772-a8c6-6db8b5606c20/13fba06b-b09e-4b44-b637-cdacdb63c1b9"
+storage_version_token = "1794073596788444"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "5hG8ybaowGRzli8J8bNLP"
+uri = "file://generated-artifacts/fsd-genetics-1440x900.jpg"
+type = "image"
+title = "BIO-LAB Genetics page — desktop"
+description = "Genetic & Microbiome Personalisation at 1440×900; pending image state retained."
+logical_id = "e09c803e-6413-4744-af90-9d312764f517"
+content_hash = "sha256:f4a9aa22a54138bb6ce4cc20352ddf5c6c644860ed6ba97534d895d6eec89b74"
+size = 91915
+mtime_ms = 1794073410686
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e09c803e-6413-4744-af90-9d312764f517/2e2c6573-383a-428b-adb3-2ad2fc870d81"
+storage_version_token = "1794073597490761"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "ZiIR-tZ3-dd4-C_xiQB-3"
+uri = "file://generated-artifacts/fsd-genetics-393x844.jpg"
+type = "image"
+title = "BIO-LAB Genetics page — mobile"
+description = "Genetic & Microbiome Personalisation at 393×844; pending image state retained."
+logical_id = "4f27dc44-1aa9-4a5f-9789-4a806a816727"
+content_hash = "sha256:bf1b9f753be374ce2cfce5114fe3ad36d3c1f81585af49fc547c626514f64101"
+size = 45586
+mtime_ms = 1794073411987
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4f27dc44-1aa9-4a5f-9789-4a806a816727/fee4e537-4fa4-4a0d-80af-c6576b9daf92"
+storage_version_token = "1794073598175724"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "SnRx9ebwOJHCikDYRILCC"
+uri = "file://generated-artifacts/fsd-hardware-1440x900.jpg"
+type = "image"
+title = "HARDWARE section — desktop"
+description = "Running FSD Hardware section at 1440×900."
+logical_id = "f92ccd7d-16fd-4373-8d35-4303cfb08f09"
+content_hash = "sha256:b03b832eaba90133075ac2747851bbb8513db9c145890c30240de2a6a42fcd59"
+size = 49253
+mtime_ms = 1794073414370
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/f92ccd7d-16fd-4373-8d35-4303cfb08f09/dc03c145-8e2a-45c0-be3c-d8db7c60ac93"
+storage_version_token = "1794073598917323"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "uQGLtqSI6ZR1OXAL41VWh"
+uri = "file://generated-artifacts/fsd-hardware-393x844.jpg"
+type = "image"
+title = "HARDWARE section — mobile"
+description = "Running FSD Hardware section at 393×844; named asset-pending views remain visible."
+logical_id = "61ecfcb6-04b7-420f-ab82-be178dd45e67"
+content_hash = "sha256:00d11040842182b527b0ded8952508404bfb9208d23eda04f40dfee601817daf"
+size = 30785
+mtime_ms = 1794073416162
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/61ecfcb6-04b7-420f-ab82-be178dd45e67/c191cbcb-0cdf-4df2-a288-61b9f0b49b5c"
+storage_version_token = "1794073599607834"
+content_type = "image/jpeg"
