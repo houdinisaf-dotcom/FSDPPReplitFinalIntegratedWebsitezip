@@ -335,7 +335,7 @@
     .fsd {
       background: #0a0a0a;
       color: #f1eee6;
-      font-family: "DM Sans", Arial, sans-serif;
+      font-family: "DM Sans", sans-serif;
     }
 
     .fsd section {
@@ -637,6 +637,92 @@
       .research-map__node--three { right: 3%; }
       .research-map__node--two { left: 29%; }
       .research-map__node--four { left: 32%; }
+    }
+
+    /* FSD research file: a calm, instrument-like frame with its status gate
+       kept as prominent as the concept itself. */
+    .fsd {
+      background:
+        linear-gradient(90deg, transparent calc(50% - .5px), rgb(212 175 55 / 2.5%) 50%, transparent calc(50% + .5px)),
+        #0c0e10;
+    }
+    .fsd .hero {
+      position: relative;
+      min-height: min(730px, calc(100svh - 105px));
+      padding-block: clamp(64px, 9vw, 118px);
+    }
+    .fsd .hero::after {
+      position: absolute;
+      top: 13%;
+      right: 2%;
+      width: 1px;
+      height: 68%;
+      background: linear-gradient(transparent, rgb(212 175 55 / 38%), transparent);
+      content: "";
+    }
+    .fsd .hero-copy .tag {
+      color: #d4af37;
+      font: 500 .62rem/1.5 "IBM Plex Mono", ui-monospace, monospace;
+      letter-spacing: .17em;
+    }
+    .fsd .hero-copy h1 {
+      max-width: 10ch;
+      color: #f1eee6;
+      font-family: Georgia, serif;
+      font-size: clamp(3.15rem, 7.6vw, 6.8rem);
+      font-weight: 400;
+      line-height: .92;
+      letter-spacing: -.055em;
+      text-transform: none;
+    }
+    .fsd .hero-intro {
+      max-width: 34ch;
+      color: #e2c982;
+      font-size: clamp(1rem, 1.7vw, 1.28rem);
+      letter-spacing: .02em;
+    }
+    .fsd .hero-asset-slot {
+      min-height: 420px;
+      border-color: rgb(212 175 55 / 27%);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / 2.5%), transparent 54%),
+        #101315;
+    }
+    .fsd .research-map {
+      border-color: rgb(212 175 55 / 19%);
+      background:
+        linear-gradient(90deg, transparent 49.8%, rgb(212 175 55 / 10%) 50%, transparent 50.2%),
+        linear-gradient(0deg, transparent 49.8%, rgb(212 175 55 / 10%) 50%, transparent 50.2%),
+        #0c0e10;
+    }
+    .fsd .status {
+      border-left-color: #d4af37;
+      background: linear-gradient(100deg, rgb(212 175 55 / 6%), transparent 72%), #111416;
+    }
+    .fsd .research-sequence {
+      border-top-color: rgb(212 175 55 / 30%);
+      border-bottom-color: rgb(212 175 55 / 30%);
+    }
+    .fsd .research-sequence__steps { border-color: rgb(212 175 55 / 18%); }
+    .fsd .research-sequence__steps li { background: #111416; }
+    .fsd .research-sequence__steps li:nth-child(2),
+    .fsd .research-sequence__steps li:nth-child(3) { background: #151819; }
+    .fsd .capability-card,
+    .fsd .value-panel,
+    .fsd .progression-panel {
+      border-top-color: rgb(212 175 55 / 30%);
+      background: linear-gradient(135deg, rgb(255 255 255 / 2.5%), transparent 55%), #111416;
+    }
+    .fsd .related-links { border-top-color: rgb(212 175 55 / 21%); }
+
+    @media (max-width: 760px) {
+      .fsd .hero { min-height: 0; padding-block: 58px 42px; }
+      .fsd .hero::after { top: 9%; right: 0; height: 43%; }
+      .fsd .hero-copy h1 { max-width: 9ch; font-size: clamp(3rem, 12vw, 4.6rem); }
+      .fsd .hero-asset-slot { min-height: 360px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .fsd { scroll-behavior: auto; }
     }
   </style>
 </head>

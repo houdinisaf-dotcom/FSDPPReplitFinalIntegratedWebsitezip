@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { SafeImage } from './SafeImage.jsx';
 import { siteMedia } from '../data/site-media.js';
 import { homeHeroExperiences } from '../data/home-hero-experiences.js';
+import approvedFsdShield from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
 
 export function HomeHero({ headingTag = 'h1' }) {
   const Heading = headingTag === 'h2' ? 'h2' : 'h1';
@@ -43,6 +44,12 @@ export function HomeHero({ headingTag = 'h1' }) {
         />
       </div>
       <div className="fsd-home-hero__shade" aria-hidden="true" />
+      <div className="fsd-home-hero__edition" aria-hidden="true">
+        <span className="fsd-home-hero__edition-rule" />
+        <span className="fsd-home-hero__edition-index">{String(activeExperience + 1).padStart(2, '0')} / 04</span>
+        <span className="fsd-home-hero__edition-name">{active.panelTitle}</span>
+        <img src={approvedFsdShield} alt="" />
+      </div>
       <div className="fsd-phase3-hero__frame" aria-hidden="true">
         <span className="fsd-phase3-hero__frame-line" />
         <span className="fsd-phase3-hero__frame-mark" />
@@ -58,7 +65,10 @@ export function HomeHero({ headingTag = 'h1' }) {
           <span>{String(activeExperience + 1).padStart(2, '0')}</span>
           {active.label}
         </p>
-        <Heading id="fsd-home-title">MADE TO MOVE,<br />MADE TO <em>BELONG.</em></Heading>
+        <div className="fsd-home-hero__headline-wrap" key={active.id}>
+          <Heading id="fsd-home-title">MADE TO MOVE,<br />MADE TO <em>BELONG.</em></Heading>
+          <span className="fsd-home-hero__headline-index" aria-hidden="true">{String(activeExperience + 1).padStart(2, '0')}</span>
+        </div>
         <p className="fsd-home-intro">Fitness &amp; Self-Defence.<br />A house for those who train with purpose.</p>
         <div className="fsd-home-actions">
           <a className="fsd-home-primary" href={active.href} data-hero-primary-action>

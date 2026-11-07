@@ -963,10 +963,12 @@ function renderFeature(menu, group, item, canNavigate) {
         <small>Four foundational chapters · Five House Codes</small>
       </div>`
     : image
-    ? `<div class="fsd-feature-media fsd-feature-media--1${mediaTreatment}" data-feature-image="${escapeHTML(image.src)}">
+     ? `<div class="fsd-feature-media fsd-feature-media--1${mediaTreatment}" data-feature-image="${escapeHTML(image.src)}">
+         <span class="fsd-feature-media__division">${escapeHTML(menu.label || 'FSD')}</span>
         <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}"
           data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(featureTitle)}" data-fsd-image-kind="collection"
           loading="eager" fetchpriority="auto" decoding="async">
+          <span class="fsd-feature-media__caption">${escapeHTML(group?.title || 'FSD / IMAGE RECORD')}</span>
       </div>`
     : imagePlaceholderMarkup({ title: featureTitle, kind: 'collection', className: 'fsd-feature-media fsd-feature-media--unmapped' });
   const mediaAction = available
@@ -998,10 +1000,11 @@ function renderFeature(menu, group, item, canNavigate) {
               : menu.id === 'house' ? 'EXPLORE THE HOUSE'
                 : 'EXPLORE COLLECTION';
 
-  return `<article class="fsd-feature-card feature-card">
+  return `<article class="fsd-feature-card feature-card fsd-feature-card--${escapeHTML(menu.id || 'division')}" data-feature-group="${escapeHTML(group?.id || '')}">
     ${mediaAction}
     <div class="fsd-feature-copy">
       <p class="fsd-feature-kicker" id="modal-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / COLLECTION') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
+      <p class="fsd-feature-context">${escapeHTML(group?.title || menu.label || 'FSD / COLLECTIONS')}</p>
       <h3 id="modal-title">${escapeHTML(featureTitle)}</h3>
       <p id="modal-desc">${escapeHTML(description)}</p>
       <dl class="fsd-feature-metadata" aria-label="Selected item details">

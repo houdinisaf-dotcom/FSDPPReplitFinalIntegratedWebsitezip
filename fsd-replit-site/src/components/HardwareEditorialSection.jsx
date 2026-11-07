@@ -58,7 +58,10 @@ export function HardwareEditorialSection({ onOpenHardware }) {
       <p className="showroom-engineering-copy__footnote">Product-specific approved imagery pending. Product details remain subject to the approved catalogue.</p>
       </section>
       <div className="showroom-engineering-media-wrap">
-        <figure className="showroom-engineering-media">
+        <figure className="showroom-engineering-media" data-hardware-media={siteMedia.hardwareFeature?.src ? 'mapped' : 'pending'}>
+          <span className="showroom-engineering-media__registration" aria-hidden="true">
+            <span>FSD / DIVISION 03</span><span>RANGE STUDY</span>
+          </span>
           <HardwareFeatureMedia />
           <figcaption>
             <span>FSD HARDWARE / RANGE OVERVIEW</span>

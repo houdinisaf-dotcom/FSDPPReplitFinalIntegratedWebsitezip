@@ -1427,3 +1427,278 @@
     transition: none;
   }
 }
+
+/* The product sheet reads as a numbered FSD object file: imagery first,
+   sourcing visible, commercial information held to its verified fields. */
+.fsd-catalog-detail {
+  position: relative;
+  grid-template-columns: minmax(0, 1.48fr) minmax(290px, .74fr);
+  border-color: rgba(18,20,19,.16);
+  background: #eeede7;
+  box-shadow: 0 22px 62px rgba(0,0,0,.18);
+}
+
+.fsd-catalog-detail__visual {
+  position: relative;
+  padding: clamp(18px, 2.8vw, 42px);
+  background:
+    linear-gradient(90deg, transparent calc(100% - 1px), rgba(20,22,20,.08) 100%),
+    #e9e8e1;
+}
+
+.fsd-catalog-detail__visual-heading {
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgba(20,22,20,.15);
+  color: #686b64;
+  font: 600 8px/1.5 "Space Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.fsd-catalog-detail__visual-heading > span:last-child {
+  color: #6f633f;
+  text-align: right;
+}
+
+.fsd-catalog-detail__figure { position: relative; }
+
+.fsd-catalog-detail__image-stage {
+  position: relative;
+  aspect-ratio: 1 / 1.04;
+  overflow: hidden;
+  border: 1px solid rgba(20,22,20,.14);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.78), transparent 45%),
+    #ddddd5;
+}
+
+.fsd-catalog-detail__image-stage::before {
+  position: absolute;
+  z-index: 2;
+  inset: 13px;
+  border: 1px solid rgba(20,22,20,.09);
+  content: "";
+  pointer-events: none;
+}
+
+.fsd-catalog-detail__image-stage img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fsd-catalog-detail__image-index {
+  position: absolute;
+  z-index: 3;
+  right: 22px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  border: 1px solid rgba(20,22,20,.17);
+  background: rgba(238,237,231,.88);
+  color: #676960;
+  font: 600 7px/1.2 "Space Mono", monospace;
+  letter-spacing: .1em;
+  pointer-events: none;
+}
+
+.fsd-catalog-detail__image-index strong {
+  color: #292b26;
+  font-size: 11px;
+}
+
+.fsd-catalog-detail__figure figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 2px;
+  color: #5e615a;
+  font: 600 7px/1.5 "Space Mono", monospace;
+  letter-spacing: .09em;
+}
+
+.fsd-catalog-detail__figure figcaption span:last-child {
+  color: #8a8062;
+  text-align: right;
+}
+
+.fsd-catalog-detail__views {
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.fsd-catalog-detail__views button {
+  min-height: 38px;
+  padding-inline: 12px;
+  border-color: rgba(20,22,20,.2);
+  color: #44473f;
+  font: 600 8px/1.3 "Space Mono", monospace;
+  letter-spacing: .06em;
+}
+
+.fsd-catalog-detail__views button[aria-pressed="true"] {
+  border-color: #252721;
+  background: #252721;
+  color: #f1eee6;
+}
+
+.fsd-catalog-detail__copy {
+  position: relative;
+  justify-content: flex-start;
+  padding: clamp(24px, 3.4vw, 48px);
+  border-left-color: rgba(20,22,20,.14);
+  background:
+    linear-gradient(150deg, rgba(255,255,255,.56), transparent 54%),
+    #f4f3ed;
+}
+
+.fsd-catalog-detail__eyebrow {
+  margin: 0;
+  color: #85764b;
+  font: 600 8px/1.5 "Space Mono", monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.fsd-catalog-detail .catalogue-breadcrumbs {
+  margin-top: 13px;
+  color: #74766f;
+}
+
+.fsd-catalog-detail .catalogue-breadcrumbs a {
+  color: #706341;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.fsd-catalog-detail__copy h3 {
+  max-width: 13ch;
+  margin: 19px 0 24px;
+  font: 600 clamp(30px, 3.2vw, 48px)/.98 "Barlow Condensed", sans-serif;
+  letter-spacing: -.025em;
+  text-transform: uppercase;
+}
+
+.fsd-catalog-detail__facts {
+  border-top-color: rgba(20,22,20,.18);
+}
+
+.fsd-catalog-detail__facts > div {
+  grid-template-columns: minmax(74px, .62fr) 1fr;
+  padding: 13px 0;
+  border-bottom-color: rgba(20,22,20,.12);
+}
+
+.fsd-catalog-detail__facts dt {
+  color: #7a7a70;
+  font: 600 7px/1.5 "Space Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.fsd-catalog-detail__facts dd {
+  color: #292b26;
+  font-size: 11px;
+}
+
+.fsd-catalog-detail__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid rgba(20,22,20,.14);
+  color: #77766d;
+  font: 600 8px/1.5 "Space Mono", monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.fsd-catalog-detail__price strong {
+  color: #1d201c;
+  font: 600 19px/1.2 "DM Sans", sans-serif;
+  letter-spacing: -.035em;
+}
+
+.fsd-catalog-detail__purchase-foot {
+  margin-top: clamp(24px, 4vw, 56px);
+  padding-top: 18px;
+  border-top-color: rgba(20,22,20,.16);
+}
+
+.fsd-catalog-detail__purchase-note {
+  color: #75766f;
+  font: 600 7px/1.5 "Space Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.fsd-catalog-detail__actions a,
+.fsd-catalog-detail__actions button {
+  min-height: 48px;
+  border-color: #242620;
+  background: #242620;
+  color: #f3f1ea;
+  font: 600 8px/1.3 "Space Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.fsd-catalog-detail__actions a:hover,
+.fsd-catalog-detail__actions button:not(.fsd-catalog-row__collapse):hover {
+  border-color: #dfff45;
+  background: #dfff45;
+  color: #171918;
+}
+
+.fsd-catalog-detail__actions .fsd-catalog-row__collapse {
+  border-color: rgba(20,22,20,.17);
+  background: transparent;
+  color: #55574f;
+}
+
+.fsd-catalog-detail__size-note {
+  margin: 14px 0;
+  padding: 12px;
+  border-left: 2px solid #9a8451;
+  background: rgba(154,132,81,.08);
+  color: #555348;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .fsd-catalog-detail { grid-template-columns: minmax(0, 1fr); }
+  .fsd-catalog-detail__copy {
+    border-top: 1px solid rgba(20,22,20,.14);
+    border-left: 0;
+  }
+  .fsd-catalog-detail__image-stage { aspect-ratio: 1 / .88; }
+  .fsd-catalog-detail__purchase-foot { margin-top: 28px; }
+}
+
+@media (max-width: 560px) {
+  .fsd-catalog-detail__visual { padding: 15px; }
+  .fsd-catalog-detail__visual-heading { font-size: 7px; letter-spacing: .07em; }
+  .fsd-catalog-detail__image-stage { aspect-ratio: 1 / 1.08; }
+  .fsd-catalog-detail__image-index {
+    right: 17px;
+    bottom: 17px;
+    gap: 6px;
+    padding: 6px 7px;
+    font-size: 6px;
+  }
+  .fsd-catalog-detail__copy { padding: 25px 19px; }
+  .fsd-catalog-detail__copy h3 { font-size: clamp(32px, 10vw, 43px); }
+  .fsd-catalog-detail__figure figcaption { font-size: 6px; letter-spacing: .035em; }
+  .fsd-catalog-detail__views { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .fsd-catalog-detail__views button { padding-inline: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-catalog-detail__image-stage img { transition: none; }
+}

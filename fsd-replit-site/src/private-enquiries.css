@@ -773,3 +773,159 @@
 @media (prefers-reduced-motion: reduce) {
   .private-enquiries__hero::after { writing-mode: initial; }
 }
+
+/* Private Access is the quiet perimeter of the House: a framed doorway,
+   explicit gates, and no false invitation to submit. */
+.showroom-vip {
+  min-height: clamp(430px, 53vw, 650px);
+  padding: clamp(64px,9vw,126px) clamp(22px,8vw,124px);
+  border-top-color: rgba(200,170,114,.27);
+  background:
+    linear-gradient(90deg, #0c0e10 0%, rgba(12,14,16,.96) 54%, rgba(12,14,16,.78)),
+    repeating-linear-gradient(90deg, transparent 0 118px, rgba(200,170,114,.035) 119px),
+    #0c0e10;
+}
+
+.showroom-vip::before {
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(200,170,114,.12);
+  content: "";
+  pointer-events: none;
+}
+
+.showroom-vip::after {
+  top: 17%;
+  right: 13%;
+  width: clamp(145px,20vw,280px);
+  border-color: rgba(200,170,114,.18);
+  transform: rotate(45deg) scale(.74);
+}
+
+.showroom-vip h2 {
+  max-width: 9ch;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(52px,8vw,112px);
+  font-weight: 700;
+  letter-spacing: -.015em;
+  line-height: .84;
+  text-transform: uppercase;
+}
+
+.showroom-vip > p:not(.section-kicker) {
+  max-width: 39ch;
+  color: #c0bdb5;
+  font-size: 14px;
+}
+
+.showroom-vip .primary-btn {
+  position: relative;
+  z-index: 2;
+  min-height: 48px;
+  border-color: rgba(200,170,114,.48);
+  color: #ded9ce;
+  font: 600 8px/1.4 "Space Mono", monospace;
+  letter-spacing: .11em;
+}
+
+.showroom-vip-status {
+  color: #aaa69d !important;
+  font-size: 9px !important;
+  letter-spacing: .025em;
+}
+
+.private-enquiries-page {
+  --private-bg: #0c0e10;
+  --private-panel: #121517;
+  --private-line: rgba(229,219,199,.13);
+  --private-gold: #d0b77e;
+}
+
+.private-enquiries__hero {
+  min-height: min(780px, calc(100svh - 105px));
+  background:
+    linear-gradient(90deg, #0c0e10 0%, rgba(12,14,16,.95) 43%, rgba(12,14,16,.59) 100%),
+    repeating-linear-gradient(90deg, transparent 0 136px, rgba(200,170,114,.035) 137px),
+    radial-gradient(ellipse at 80% 24%, rgba(200,170,114,.1), transparent 32%),
+    #0c0e10;
+}
+
+.private-enquiries__hero-inner { position: relative; z-index: 1; }
+.private-enquiries__hero h1 {
+  max-width: 9ch;
+  font: 400 clamp(50px,8vw,116px)/.86 "Newsreader", Georgia, serif;
+  letter-spacing: -.055em;
+  text-transform: none;
+}
+.private-enquiries__hero h1 span:last-child {
+  color: #d0b77e;
+  font-size: .72em;
+  font-style: italic;
+}
+
+.private-enquiries__experience { max-width: 1260px; }
+.private-enquiries__section-head h2 {
+  max-width: 12ch;
+  font: 400 clamp(36px,5.8vw,74px)/.96 "Newsreader", Georgia, serif;
+  letter-spacing: -.045em;
+}
+
+.private-enquiries__progress {
+  gap: 1px;
+  border: 0;
+  background: rgba(200,170,114,.16);
+}
+.private-enquiries__progress li {
+  padding-inline: 16px;
+  border: 0;
+  background: #111416;
+  font: 500 8px/1.45 "Space Mono", monospace;
+  letter-spacing: .04em;
+}
+.private-enquiries__progress li + li { padding-left: 16px; }
+.private-enquiries__progress li.is-current {
+  box-shadow: inset 0 2px #d0b77e;
+  background: #191a18;
+}
+
+.private-enquiries__workspace {
+  border: 0;
+  border-top: 1px solid rgba(200,170,114,.34);
+  background:
+    linear-gradient(110deg, rgba(200,170,114,.045), transparent 48%),
+    #121517;
+}
+
+.private-enquiries__category-grid { gap: 1px; background: rgba(229,219,199,.13); }
+.private-enquiries__category {
+  border: 0;
+  background: #101315;
+}
+.private-enquiries__category.is-selected {
+  box-shadow: inset 2px 0 #d0b77e;
+  background: #191a18;
+}
+.private-enquiries__category-title {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 20px;
+}
+.private-enquiries__field input,
+.private-enquiries__field textarea {
+  border-color: rgba(229,219,199,.17);
+  background: #0d0f11;
+}
+.private-enquiries__privacy-note {
+  border-left-color: #d0b77e;
+  background: rgba(200,170,114,.045);
+}
+
+@media (max-width: 760px) {
+  .showroom-vip { min-height: 440px; padding: 65px 22px; }
+  .showroom-vip::before { inset: 10px; }
+  .showroom-vip::after { top: 9%; right: -9%; }
+  .showroom-vip h2 { max-width: 8ch; font-size: clamp(52px,14vw,78px); }
+  .private-enquiries__hero { min-height: 620px; }
+  .private-enquiries__hero h1 { max-width: 10ch; }
+  .private-enquiries__progress li,
+  .private-enquiries__progress li + li { padding-inline: 8px; }
+}

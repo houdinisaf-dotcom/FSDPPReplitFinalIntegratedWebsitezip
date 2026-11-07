@@ -70,10 +70,10 @@ export function ProductDetail({
       <div className="fsd-catalog-detail__visual">
         <div className="fsd-catalog-detail__visual-heading">
           <span>FSD / CATALOGUE PHOTOGRAPHY</span>
-          <span>{images.length ? `${String(images.length).padStart(2, '0')} VIEWS` : 'IMAGE TO BE ADDED'}</span>
+          <span>RECORD {String(product.id).padStart(2, '0')} <i aria-hidden="true">/</i> {images.length ? `${String(images.length).padStart(2, '0')} MAPPED VIEWS` : 'IMAGE TO BE ADDED'}</span>
         </div>
         {selectedImage ? (
-          <figure className="fsd-catalog-detail__figure" aria-live="polite">
+          <figure className="fsd-catalog-detail__figure" aria-live="polite" data-selected-view={selectedImage.label}>
             <motion.div
               layoutId={`catalogue-product-image-${product.id}`}
               className="fsd-catalog-detail__image-stage fsd-catalog-detail__shared-image"
@@ -96,8 +96,12 @@ export function ProductDetail({
                   />
                 </motion.div>
               </AnimatePresence>
+              <span className="fsd-catalog-detail__image-index" aria-hidden="true">
+                <span>FSD / PRODUCT RECORD</span>
+                <strong>{String(product.id).padStart(2, '0')}</strong>
+              </span>
             </motion.div>
-            <figcaption>{selectedImage.label}</figcaption>
+            <figcaption><span>{selectedImage.label}</span><span>SOURCE-MAPPED VIEW</span></figcaption>
           </figure>
         ) : (
           <ImagePlaceholder

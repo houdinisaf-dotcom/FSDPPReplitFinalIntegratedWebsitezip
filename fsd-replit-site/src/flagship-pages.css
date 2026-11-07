@@ -949,3 +949,184 @@
     transform: none;
   }
 }
+
+/* Division pages use the same archival visual grammar as the homepage:
+   numbered records, open margins and a single metallic signal. */
+.fsd-innovation-hub {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(200,170,114,.035) 50%, transparent calc(50% + .5px)),
+    radial-gradient(ellipse at 7% 0%, rgba(200,170,114,.08), transparent 32%),
+    #0c0e10;
+}
+
+.fsd-innovation-hub::after {
+  position: absolute;
+  z-index: -1;
+  top: 7%;
+  right: -8vw;
+  width: clamp(250px, 39vw, 560px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(200,170,114,.13);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 28px rgba(200,170,114,.018), inset 0 0 0 68px rgba(200,170,114,.018);
+  content: "";
+  pointer-events: none;
+}
+
+.fsd-innovation-hub .fsd-page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 600 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+  letter-spacing: .18em;
+}
+
+.fsd-innovation-hub .fsd-page-eyebrow::before {
+  width: 27px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research {
+  position: relative;
+  align-items: end;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research h2 {
+  max-width: 7ch;
+  color: #f0eee8;
+  font: 500 clamp(54px, 8vw, 104px)/.83 var(--fsd-display, "Newsreader", Georgia, serif);
+  letter-spacing: -.065em;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research > div > p:not(.fsd-page-eyebrow) {
+  max-width: 37ch;
+  color: #c2c1bb;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research .fsd-page-disclaimer {
+  padding: 12px 14px;
+  border-left: 1px solid #c8aa72;
+  background: rgba(200,170,114,.05);
+  color: #9e9b93;
+  font-size: 11px;
+}
+
+.fsd-innovation-hub .fsd-biolab-register-heading {
+  align-items: center;
+  margin-top: clamp(44px, 6vw, 80px);
+  padding: 13px 0;
+  border-top: 1px solid rgba(200,170,114,.27);
+  border-bottom: 1px solid rgba(200,170,114,.2);
+}
+
+.fsd-innovation-hub .fsd-biolab-register-heading > span {
+  color: #d0b77e;
+  font: 500 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+}
+
+.fsd-innovation-hub .fsd-biolab-register-heading p {
+  color: #96968e;
+  font-size: 9px;
+}
+
+.fsd-biolab-register .fsd-innovation-card {
+  position: relative;
+  min-height: 112px;
+  grid-template-columns: 52px minmax(0,1fr) 26px;
+  padding-inline: 0;
+  border-bottom-color: rgba(229,219,199,.12);
+  background: transparent;
+}
+
+.fsd-biolab-register .fsd-innovation-card-index {
+  color: #c8aa72;
+  font: 400 22px/1 var(--fsd-display, "Newsreader", Georgia, serif);
+}
+
+.fsd-biolab-register .fsd-innovation-card-copy strong {
+  color: #f0eee8;
+  font-size: clamp(14px,1.4vw,18px);
+  letter-spacing: .01em;
+}
+
+.fsd-biolab-register .fsd-innovation-card-copy small {
+  color: #a19988;
+  font: 500 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+  letter-spacing: .08em;
+}
+
+.fsd-biolab-register .fsd-innovation-card-summary { color: #aaa9a2; }
+.fsd-biolab-register .fsd-innovation-card-arrow { color: #d3bb89; }
+
+.fsd-placeholder-page {
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(200,170,114,.025) 50%, transparent calc(50% + .5px)),
+    #0c0e10;
+}
+
+.fsd-research-page-header {
+  padding-bottom: clamp(20px, 3vw, 38px);
+  border-bottom: 1px solid rgba(200,170,114,.2);
+}
+
+.fsd-research-page-header__index {
+  color: #c8aa72;
+  font: 500 8px/1.6 var(--fsd-mono, "Space Mono", monospace);
+  letter-spacing: .16em;
+}
+
+.fsd-research-page-header h2 {
+  max-width: 11ch;
+  font-family: var(--fsd-display, "Newsreader", Georgia, serif);
+  font-size: clamp(46px,7vw,92px);
+  font-weight: 500;
+  letter-spacing: -.07em;
+  line-height: .9;
+  text-transform: none;
+}
+
+.fsd-research-feature .fsd-asset-slot--hero {
+  min-height: clamp(250px, 34vw, 430px);
+  aspect-ratio: 2.05 / 1;
+}
+
+.fsd-page-module-grid {
+  background: rgba(200,170,114,.15);
+}
+
+.fsd-page-module {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.025), transparent 55%),
+    #111416;
+}
+
+.fsd-page-module--lead { background: #151719; }
+.fsd-page-module-copy { min-height: 148px; }
+
+.fsd-page-module-index {
+  color: #d0b77e;
+  font: 500 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+}
+
+.fsd-page-module h3 {
+  font-family: var(--fsd-display, "Newsreader", Georgia, serif);
+  font-size: clamp(17px,2vw,24px);
+  font-weight: 400;
+  letter-spacing: -.02em;
+  text-transform: none;
+}
+
+.fsd-page-module p { color: #aaa9a2; }
+
+@media (max-width: 760px) {
+  .fsd-innovation-hub .fsd-hub-heading--research h2 { max-width: 8ch; }
+  .fsd-innovation-hub .fsd-hub-heading--research .fsd-asset-slot { min-height: 230px; }
+  .fsd-biolab-register .fsd-innovation-card { grid-template-columns: 38px minmax(0,1fr) 18px; }
+  .fsd-research-page-header h2 { max-width: 12ch; }
+  .fsd-page-module-copy { min-height: 0; }
+}

@@ -794,6 +794,191 @@ summary {
   .showroom-shell-campaign-link:hover { transform: none; }
 }
 
+/* SHOP cataloguing: a graphite equipment register with volt as its single
+   navigation signal. Product imagery remains the existing mapped catalogue. */
+.shop {
+  position: relative;
+  isolation: isolate;
+  padding-inline: clamp(18px,5.7vw,88px);
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(200,170,114,.035) 50%, transparent calc(50% + .5px)),
+    radial-gradient(ellipse at 4% 0%, rgba(223,255,69,.045), transparent 28%),
+    #0c0e10;
+}
+
+.shop .section-heading {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(180px,.43fr);
+  align-items: end;
+  gap: 26px;
+  padding-bottom: clamp(24px,3.5vw,46px);
+  border-bottom: 1px solid rgba(200,170,114,.22);
+}
+
+.shop .section-heading h1,
+.shop .section-heading h2 {
+  max-width: 8ch;
+  margin: 16px 0 0;
+  color: #f1eee6;
+  font: 700 clamp(54px,8.2vw,112px)/.82 "Barlow Condensed", sans-serif;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+}
+
+.shop .section-kicker {
+  color: #dfff45;
+  font: 600 8px/1.5 "Space Mono", monospace;
+  letter-spacing: .18em;
+}
+
+.shop .section-heading > p {
+  color: #bbb9b1;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.shop .catalogue-count {
+  color: #d0b77e;
+  font: 500 8px/1.5 "Space Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.shop .catalogue-control-panel {
+  margin-top: clamp(24px,3vw,38px);
+  border: 1px solid rgba(200,170,114,.17);
+  background: rgba(18,20,22,.9);
+}
+
+.shop .catalogue-toolbar {
+  align-items: end;
+  gap: 12px;
+  padding: clamp(14px,2vw,22px);
+  border-bottom: 1px solid rgba(200,170,114,.14);
+}
+
+.shop .catalogue-toolbar label {
+  color: #aaa69c;
+  font: 600 7px/1.5 "Space Mono", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.shop .catalogue-toolbar select,
+.shop .catalogue-toolbar input {
+  border-radius: 0;
+  border-color: rgba(229,219,199,.19);
+  background-color: #111416;
+  color: #f0eee8;
+}
+
+.shop .catalogue-active-filters,
+.shop #catalogue-active-filters {
+  color: #b9b6ac;
+}
+
+.shop .catalogue-chip,
+.shop .catalogue-clear-all,
+.shop .filter {
+  border-radius: 0;
+  border-color: rgba(200,170,114,.27);
+  background: #17191b;
+  color: #d4d0c7;
+  font: 500 8px/1.4 "Space Mono", monospace;
+  letter-spacing: .06em;
+}
+
+.shop .catalogue-chip.is-active,
+.shop .filter.selected {
+  border-color: #dfff45;
+  background: rgba(223,255,69,.1);
+  color: #e8f2c1;
+}
+
+.shop .product-grid {
+  gap: 1px;
+  padding: 1px;
+  background: rgba(200,170,114,.17);
+}
+
+.shop .product-card {
+  min-width: 0;
+  padding: clamp(10px,1.4vw,18px);
+  border: 0;
+  border-radius: 0;
+  background: #111416;
+  box-shadow: none;
+}
+
+.shop .product-image {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid rgba(229,219,199,.09);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.07), transparent 45%),
+    #1b1e20;
+}
+
+.shop .product-image::after { border-color: rgba(200,170,114,.16); }
+.shop .product-image img { object-fit: contain; }
+.shop .product-meta {
+  color: #b0a27f;
+  font: 600 7px/1.5 "Space Mono", monospace;
+  letter-spacing: .1em;
+}
+
+.shop .product-card h3 {
+  max-width: 15ch;
+  color: #f1eee6;
+  font: 600 clamp(14px,1.45vw,18px)/1.2 "DM Sans", sans-serif;
+  letter-spacing: -.035em;
+}
+
+.shop .product-card .catalogue-colourways,
+.shop .product-card .catalogue-price span {
+  color: #a5a49d;
+  font-size: 9px;
+}
+
+.shop .product-card .catalogue-price strong {
+  color: #e5d2a7;
+  font: 600 14px/1.3 "DM Sans", sans-serif;
+}
+
+.shop .product-card .text-link {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 14px;
+  color: #dfff45;
+  font: 600 8px/1.3 "Space Mono", monospace;
+  letter-spacing: .08em;
+}
+
+.shop .product-card:hover {
+  background: #15181a;
+  box-shadow: none;
+  transform: none;
+}
+
+.shop .product-card:hover .product-image img { transform: scale(1.025); }
+
+@media (max-width: 760px) {
+  .shop { padding-inline: 16px; }
+  .shop .section-heading { grid-template-columns: minmax(0,1fr); gap: 12px; }
+  .shop .section-heading h1,
+  .shop .section-heading h2 { font-size: clamp(48px,13vw,76px); }
+  .shop .section-heading > p { max-width: 42ch; }
+  .shop .catalogue-toolbar { align-items: stretch; }
+  .shop .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .shop .product-card { padding: 8px; }
+  .shop .product-card h3 { font-size: 13px; }
+}
+
+@media (max-width: 360px) {
+  .shop .product-grid { grid-template-columns: minmax(0,1fr); }
+}
+
 /* Homepage premium-cleanup: cinematic campaign framing with a quieter, sharper house system. */
 .hero {
   min-height: min(840px, calc(100svh - 104px));

@@ -1358,3 +1358,224 @@ body.fsd-mobile-nav-open {
   }
   .fsd-mega-menu[data-primary="collections"] .fsd-feature-copy { padding: 19px; }
 }
+
+/* SHOP / feature plate: image-led, carefully indexed, with catalogue hierarchy
+   retained in the existing three-step navigation model. */
+.fsd-mega-menu[data-primary="collections"] {
+  border-top-color: rgba(223,255,69,.24);
+  background:
+    linear-gradient(120deg, rgba(223,255,69,.025), transparent 44%),
+    rgba(13,14,16,.99);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-eyebrow {
+  color: #dfff45;
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-heading h2 {
+  color: #f2f0eb;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: .015em;
+  text-transform: uppercase;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-column--groups > h3,
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-column--items > h3 {
+  color: rgba(223,255,69,.68);
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: .15em;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-option {
+  min-height: 45px;
+  padding-block: 10px;
+  border-bottom-color: rgba(255,255,255,.08);
+  color: rgba(242,240,235,.72);
+  font-size: 10px;
+  letter-spacing: .055em;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-group.is-active {
+  border-left-color: #dfff45;
+  background: linear-gradient(90deg, rgba(223,255,69,.12), transparent);
+  color: #f4f4ee;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-group.is-active .fsd-nav-index,
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-item.is-active .fsd-nav-index,
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-arrow { color: #dfff45; }
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-card {
+  position: relative;
+  min-height: 325px;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, .78fr);
+  overflow: hidden;
+  border-color: rgba(223,255,69,.25);
+  background: #15171a;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media-action {
+  position: relative;
+  min-height: 325px;
+  overflow: hidden;
+  background: #202226;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  min-height: 0;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11,12,14,.22), transparent 31%, rgba(11,12,14,.08) 64%, rgba(11,12,14,.82)),
+    linear-gradient(90deg, rgba(11,12,14,.13), transparent 55%);
+  content: "";
+  pointer-events: none;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media img {
+  min-height: 0;
+  padding: 0;
+  object-position: center 36%;
+  transition: transform 520ms cubic-bezier(.2,.7,.2,1);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media--product img {
+  padding: clamp(16px, 2vw, 25px);
+  object-fit: contain;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media-action:hover img,
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media-action:focus-visible img {
+  transform: scale(1.035);
+}
+
+.fsd-feature-media__division,
+.fsd-feature-media__caption {
+  position: absolute;
+  z-index: 2;
+  right: 15px;
+  left: 15px;
+  color: rgba(246,244,237,.78);
+  font: 600 7px/1.5 "Space Mono", monospace;
+  letter-spacing: .15em;
+  pointer-events: none;
+  text-align: left;
+}
+
+.fsd-feature-media__division { top: 14px; color: #dfff45; }
+.fsd-feature-media__caption { bottom: 13px; }
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy {
+  position: relative;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: clamp(19px, 2vw, 29px);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.035), transparent 42%),
+    #15171a;
+}
+
+.fsd-feature-context {
+  margin: 4px 0 0;
+  color: rgba(242,240,235,.47);
+  font: 500 7px/1.5 "Space Mono", monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy h3 {
+  margin: 9px 0 9px;
+  color: #f3f1eb;
+  font: 600 clamp(19px, 1.7vw, 25px)/1.08 "DM Sans", sans-serif;
+  letter-spacing: -.045em;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy > p:not(.fsd-feature-kicker):not(.fsd-feature-context) {
+  color: rgba(238,236,229,.65);
+  font-size: 9px;
+  line-height: 1.65;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-metadata {
+  width: 100%;
+  gap: 5px;
+  margin: 10px 0 4px;
+  padding-top: 9px;
+  border-color: rgba(255,255,255,.12);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta {
+  min-height: 38px;
+  margin-top: auto;
+  padding-inline: 12px;
+  border-color: rgba(223,255,69,.64);
+  color: #e8edda;
+  font-size: 7px;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:hover,
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:focus-visible {
+  border-color: #dfff45;
+  background: #dfff45;
+  color: #15171a;
+}
+
+.fsd-mega-menu[data-primary="universe"] .fsd-feature-card,
+.fsd-mega-menu[data-primary="bio-lab"] .fsd-feature-card {
+  border-color: rgba(200,170,114,.25);
+  background: #141719;
+}
+
+.fsd-mega-menu[data-primary="bio-lab"] .fsd-feature-kicker,
+.fsd-mega-menu[data-primary="bio-lab"] .fsd-feature-cta { color: #c8d0ca; }
+.fsd-mega-menu[data-primary="bio-lab"] .fsd-feature-media--unmapped {
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(200,170,114,.14) 50%, transparent calc(50% + .5px)),
+    linear-gradient(0deg, transparent calc(50% - .5px), rgba(200,170,114,.14) 50%, transparent calc(50% + .5px)),
+    #111719;
+}
+
+.fsd-mega-menu[data-primary="house"] .fsd-feature-copy h3 {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(23px, 2.1vw, 32px);
+  font-weight: 400;
+}
+
+@media (max-width: 1120px) and (min-width: 901px) {
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-card {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media-action { min-height: 170px; }
+}
+
+@media (max-width: 900px) {
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-card {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media-action {
+    min-height: clamp(200px, 31vh, 275px);
+  }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media img {
+    height: 100%;
+    object-position: center 34%;
+  }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-copy { padding: 19px; }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-copy h3 { font-size: 21px; }
+  .fsd-feature-context { font-size: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media img {
+    transition: none;
+  }
+}
