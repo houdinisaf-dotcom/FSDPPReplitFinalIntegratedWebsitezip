@@ -22,3 +22,21 @@ export function trackCompletedPurchase({ paymentStatus, orderValueMinor, currenc
     currency,
   });
 }
+
+/**
+ * Call only after the Members Portal confirms authentication succeeded.
+ * The outcome is recorded without account, session, or authentication data.
+ */
+export function trackCompletedMemberSignIn({ signInStatus } = {}) {
+  if (signInStatus !== 'succeeded') return;
+  trackEvent('member_sign_in_completed');
+}
+
+/**
+ * Call only after the Members Portal confirms account creation succeeded.
+ * The outcome is recorded without account, session, or authentication data.
+ */
+export function trackCompletedMemberRegistration({ registrationStatus } = {}) {
+  if (registrationStatus !== 'succeeded') return;
+  trackEvent('member_registration_completed');
+}

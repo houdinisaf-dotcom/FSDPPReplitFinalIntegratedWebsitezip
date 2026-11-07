@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { trackCompletedPurchase, trackEvent } from '../src/analytics.js';
+import {
+  trackCompletedMemberRegistration,
+  trackCompletedMemberSignIn,
+  trackCompletedPurchase,
+  trackEvent,
+} from '../src/analytics.js';
 
 test('trackEvent safely forwards data and ignores absent or failing analytics', () => {
   const previousWindow = globalThis.window;
@@ -63,6 +68,45 @@ test('completed purchases include only the approved GBP value after payment succ
 
     assert.deepEqual(events, [
       ['purchase_completed', { order_value: 12.5, currency: 'GBP' }],
+    ]);
+  } finally {
+    if (previousWindow === undefined) delete globalThis.window;
+    else globalThis.window = previousWindow;
+  }
+});
+
+test('member analytics records only confirmed outcomes without account or auth details', () => {
+  const previousWindow = globalThis.window;
+  const events = [];
+
+  try {
+    globalThis.window = {
+      umami: {
+        track: (name, data) => events.push([name, data]),
+      },
+    };
+
+    trackCompletedMemberSignIn({ signInStatus: 'pending' });
+    trackCompletedMemberSignIn({ signInStatus: 'failed' });
+    trackCompletedMemberRegistration({ registrationStatus: 'pending' });
+    trackCompletedMemberRegistration({ registrationStatus: 'failed' });
+
+    trackCompletedMemberSignIn({
+      signInStatus: 'succeeded',
+      email: 'member@example.test',
+      name: 'Private Member',
+      accessToken: 'private-token',
+    });
+    trackCompletedMemberRegistration({
+      registrationStatus: 'succeeded',
+      email: 'member@example.test',
+      password: 'private-password',
+      sessionId: 'private-session',
+    });
+
+    assert.deepEqual(events, [
+      ['member_sign_in_completed', undefined],
+      ['member_registration_completed', undefined],
     ]);
   } finally {
     if (previousWindow === undefined) delete globalThis.window;
