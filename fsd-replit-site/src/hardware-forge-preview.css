@@ -64,3 +64,52 @@
  .forge-colophon { grid-template-columns: 1fr; gap: 14px; }
 }
 @media(prefers-reduced-motion:reduce) { .forge-product-visual > img { transition: none; } }
+
+/* Hardware's technical editorial grid, aligned with the FSD house frame. */
+.hardware-forge {
+  border-top-color: rgba(200, 170, 114, .2);
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(200, 170, 114, .04), transparent 38%),
+    #090a0c;
+}
+
+.forge-title-row {
+  grid-template-columns: minmax(0, 1.1fr) minmax(240px, .7fr);
+  gap: clamp(32px, 7vw, 96px);
+  padding: clamp(28px, 4vw, 48px) 0 clamp(36px, 5vw, 58px);
+}
+
+.forge-title-row h2 {
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-weight: 600;
+  letter-spacing: -.095em;
+}
+
+.forge-deck { color: #b3b0a8; }
+
+.forge-rule {
+  border-top-color: rgba(200, 170, 114, .25);
+  color: #c8aa72;
+}
+
+.forge-product-visual {
+  border-color: rgba(200, 170, 114, .22);
+  background: #111315;
+}
+
+.forge-product-copy h3 {
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-weight: 600;
+  letter-spacing: -.04em;
+}
+
+.forge-verify { color: #aaa69d; }
+.forge-pending { border-top-color: rgba(229, 219, 199, .12); }
+.forge-colophon { border-top-color: rgba(200, 170, 114, .22); }
+
+@media (max-width: 700px) {
+  .hardware-forge { padding-top: 56px; }
+  .forge-title-row { gap: 22px; }
+  .forge-title-row h2 { font-size: clamp(68px, 20vw, 116px); }
+  .forge-products { gap: 30px; }
+}

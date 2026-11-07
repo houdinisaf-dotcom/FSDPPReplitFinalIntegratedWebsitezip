@@ -1105,3 +1105,134 @@ body.fsd-mobile-nav-open {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Route-spanning navigation refinement: quiet metal, deliberate spacing, no campaign accent bleed. */
+.fsd-navigation-shell {
+  isolation: isolate;
+}
+
+.header.fsd-header {
+  gap: clamp(18px, 3vw, 42px);
+  border-bottom-color: rgba(229, 219, 199, .11);
+}
+
+.header.fsd-header .fsd-brand-logo {
+  filter: saturate(.72);
+}
+
+.fsd-primary-trigger,
+.fsd-primary-link {
+  font-size: 9px;
+  letter-spacing: .19em;
+}
+
+.fsd-primary-trigger::after,
+.fsd-primary-link::after {
+  height: 1px;
+  background: var(--fsd-champagne, #D4AF37);
+}
+
+.fsd-primary-trigger:hover,
+.fsd-primary-trigger:focus-visible,
+.fsd-primary-trigger.is-active,
+.fsd-primary-trigger.is-current,
+.fsd-primary-link:hover,
+.fsd-primary-link:focus-visible {
+  color: var(--fsd-champagne-light, #e4cf9f);
+}
+
+.fsd-primary-trigger[data-nav-primary="collections"] {
+  color: #d4d0c7;
+}
+
+.fsd-mega-menu {
+  border-top-color: rgba(212, 175, 55, .24);
+  border-bottom-color: rgba(212, 175, 55, .2);
+  background: rgba(13, 14, 16, .985);
+  box-shadow: 0 28px 72px rgba(0, 0, 0, .42);
+}
+
+.fsd-mega-inner {
+  width: min(100%, 1440px);
+  padding-top: clamp(20px, 2.2vw, 30px);
+  padding-bottom: clamp(22px, 2.4vw, 34px);
+}
+
+.fsd-mega-heading h2 {
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-size: clamp(19px, 1.8vw, 25px);
+  font-weight: 500;
+  letter-spacing: .105em;
+}
+
+.fsd-mega-eyebrow,
+.fsd-nav-column > h3,
+.fsd-feature-kicker {
+  color: #c8aa72;
+}
+
+.fsd-nav-columns {
+  gap: clamp(20px, 2.6vw, 38px);
+}
+
+.fsd-nav-column--groups,
+.fsd-nav-column--items {
+  border-color: rgba(229, 219, 199, .12);
+}
+
+.fsd-nav-option {
+  min-height: 39px;
+  border-bottom-color: rgba(229, 219, 199, .07);
+}
+
+.fsd-feature-media--story {
+  background:
+    radial-gradient(ellipse at 92% 8%, rgba(200, 170, 114, .1), transparent 43%),
+    linear-gradient(145deg, #25282c, #0b0c0e 72%);
+}
+
+.fsd-feature-media--story > span { color: #c8aa72; }
+.fsd-feature-media--story em { color: #c6a36a; }
+
+.fsd-feature-cta,
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta {
+  border-color: #c8aa72;
+  background: transparent;
+  color: #e3d8c1;
+}
+
+.fsd-feature-cta:hover,
+.fsd-feature-cta:focus-visible,
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:hover,
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:focus-visible {
+  border-color: #e4cf9f;
+  background: #c8aa72;
+  color: #111315;
+}
+
+.fsd-nav-catalogue button:hover {
+  background: #c8aa72;
+  color: #111315;
+}
+
+@media (max-width: 900px) {
+  .fsd-primary-trigger,
+  .fsd-primary-link { letter-spacing: .14em; }
+  .fsd-mega-menu {
+    background: rgba(13, 14, 16, .99);
+  }
+  .fsd-mobile-primary.is-active,
+  .fsd-mobile-primary:hover,
+  .fsd-mobile-primary:focus-visible {
+    border-color: rgba(200, 170, 114, .62);
+    background: rgba(200, 170, 114, .055);
+    color: #e7cb98;
+  }
+}
+
+@media (max-width: 420px) {
+  .fsd-mobile-public-links { gap: clamp(12px, 5vw, 24px); }
+  .fsd-mobile-public-links button { font-size: 7px; letter-spacing: .09em; }
+  .fsd-mega-heading { gap: 10px; }
+  .fsd-mega-close { gap: 7px; font-size: 7px; }
+}

@@ -743,6 +743,95 @@
   #dialog-body .product-detail-image-zoom img { transition: none; }
 }
 
+/* Warm-white product presentation, grounded by the same graphite and champagne frame. */
+#product-dialog {
+  border-color: rgba(212, 175, 55, .32);
+  background: #f1eee6;
+}
+
+#dialog-body .product-detail-page { background: #f1eee6; }
+#dialog-body .product-detail-media { background: #f1eee6; }
+
+#dialog-body .product-detail-image-stage,
+#dialog-body .product-detail-gallery__secondary-stage,
+#dialog-body .product-detail-gallery__secondary-stage > img {
+  background-color: #101113;
+}
+
+#dialog-body .product-detail-purchase {
+  border-left-color: rgba(10, 10, 10, .13);
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, .42), transparent 58%),
+    #f5f3ed;
+}
+
+#dialog-body .product-detail-purchase h1,
+#dialog-body .product-detail-purchase h2 {
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-weight: 500;
+  letter-spacing: -.045em;
+}
+
+#dialog-body .product-detail-option,
+#dialog-body .product-detail-quantity input {
+  border-radius: 2px;
+}
+
+#dialog-body .product-detail-option:hover {
+  border-color: rgba(169, 133, 50, .62);
+}
+
+#dialog-body .product-detail-add,
+#dialog-body .product-detail-sticky button {
+  min-height: 52px;
+  border-radius: 2px;
+  letter-spacing: .14em;
+}
+
+#dialog-body .product-detail-notify {
+  border-left: 2px solid #b08b3c;
+}
+
+#dialog-body .product-detail-accordion summary {
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-weight: 600;
+}
+
+#dialog-body .product-detail-related__item {
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+#dialog-body .product-detail-related__item:hover {
+  border-color: rgba(169, 133, 50, .55);
+  transform: translateY(-2px);
+}
+
+.size-guide-dialog {
+  border-radius: 2px;
+  background: #f1eee6;
+  color: #171611;
+}
+
+.size-guide-dialog__shell h2 { color: #171611; font-family: var(--fsd-display, Manrope, sans-serif); }
+.size-guide-dialog__shell > p { color: #625f57; }
+.size-guide-table-wrap caption { color: #806322; }
+.size-guide-table-wrap th { color: #292822; }
+.size-guide-table-wrap th,
+.size-guide-table-wrap td { border-color: rgba(10, 10, 10, .14); }
+
+@media (max-width: 760px) {
+  #product-dialog {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 20px);
+  }
+  #dialog-body .product-detail-media { padding: 12px; }
+  #dialog-body .product-detail-purchase { padding: 25px 20px; }
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-purchase {
+    border-left: 0;
+    border-top: 1px solid rgba(10, 10, 10, .13);
+  }
+}
+
 /* Approved editorial product presentation. The existing gallery, variants,
    purchase rules and dialog behavior remain the source of truth. */
 #product-dialog {

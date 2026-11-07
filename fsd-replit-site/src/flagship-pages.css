@@ -511,3 +511,111 @@
     transition: none;
   }
 }
+
+/* Supporting flagship routes: one editorial hierarchy for Universe, Bio-Lab and access surfaces. */
+.fsd-innovation-hub,
+.fsd-placeholder-page {
+  color: var(--fsd-porcelain, #f1eee6);
+  background:
+    radial-gradient(ellipse at 78% 0%, rgba(200, 170, 114, .045), transparent 38%),
+    #090a0c;
+}
+
+.fsd-innovation-hub { border-top-color: rgba(200, 170, 114, .2); }
+
+.fsd-page-eyebrow,
+.fsd-placeholder-label { color: #c8aa72; }
+
+.fsd-hub-heading {
+  gap: clamp(30px, 6vw, 88px);
+  margin-bottom: clamp(34px, 4.2vw, 54px);
+}
+
+.fsd-hub-heading h1,
+.fsd-hub-heading h2,
+.fsd-placeholder-page-header h2 {
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-weight: 500;
+  letter-spacing: -.065em;
+}
+
+.fsd-hub-heading > div > p:not(.fsd-page-eyebrow),
+.fsd-page-intro {
+  color: #b3b0a8;
+  line-height: 1.8;
+}
+
+.fsd-innovation-grid { gap: 1px; background: rgba(200, 170, 114, .16); }
+
+.fsd-innovation-card {
+  min-height: 98px;
+  border-color: rgba(200, 170, 114, .13);
+  background: linear-gradient(125deg, rgba(255, 255, 255, .025), transparent 58%), #111315;
+}
+
+.fsd-innovation-card:hover,
+.fsd-innovation-card:focus-visible {
+  border-color: rgba(200, 170, 114, .64);
+  background: linear-gradient(125deg, rgba(200, 170, 114, .07), transparent 58%), #151719;
+}
+
+.fsd-innovation-card-index,
+.fsd-innovation-card-arrow { color: #c8aa72; }
+.fsd-innovation-card-copy strong { font-weight: 600; letter-spacing: .025em; }
+.fsd-innovation-card-copy small { color: #a19c90; }
+
+.fsd-private-preview-links { border-top-color: rgba(200, 170, 114, .17); }
+.fsd-private-preview-links a {
+  border-color: rgba(200, 170, 114, .18);
+  background: rgba(255, 255, 255, .015);
+}
+.fsd-private-preview-links a:hover { border-color: rgba(200, 170, 114, .58); }
+
+.fsd-placeholder-page { border-top-color: rgba(200, 170, 114, .16); }
+.fsd-page-subtitle { color: #d8d2c5; }
+
+.fsd-asset-slot {
+  border-color: rgba(200, 170, 114, .23);
+  background:
+    linear-gradient(135deg, rgba(200, 170, 114, .045), transparent 42%),
+    repeating-linear-gradient(135deg, rgba(200, 170, 114, .022) 0 1px, transparent 1px 16px),
+    #111315;
+}
+
+.fsd-asset-slot::before { border-color: rgba(200, 170, 114, .2); }
+.fsd-asset-slot-kicker { color: #c8aa72; }
+.fsd-asset-slot-content small { color: #a19c90; }
+.fsd-asset-slot--hub { border-color: rgba(200, 170, 114, .36); }
+
+.fsd-page-module,
+.fsd-shield-card,
+.fsd-shield-badge {
+  border-color: rgba(200, 170, 114, .16);
+  background: #111315;
+}
+
+.fsd-page-module h3,
+.fsd-shield-section > h3 { font-family: var(--fsd-display, Manrope, sans-serif); }
+.fsd-page-module p,
+.fsd-shield-section > p:not(.fsd-shield-kicker),
+.fsd-shield-card p { color: #aaa69d; }
+.fsd-page-module-index,
+.fsd-shield-kicker,
+.fsd-shield-card h4 { color: #c8aa72; }
+
+.fsd-page-verification-note,
+.fsd-shield-notice {
+  border-left-color: #c8aa72;
+  background: rgba(200, 170, 114, .055);
+  color: #c2bdb2;
+}
+
+.fsd-page-return { border-color: rgba(200, 170, 114, .42); }
+.fsd-page-return:hover { border-color: #c8aa72; background: rgba(200, 170, 114, .09); }
+
+@media (max-width: 640px) {
+  .fsd-innovation-hub,
+  .fsd-placeholder-page { padding-top: 54px; padding-bottom: 58px; }
+  .fsd-hub-heading { gap: 18px; }
+  .fsd-innovation-card { min-height: 82px; }
+}

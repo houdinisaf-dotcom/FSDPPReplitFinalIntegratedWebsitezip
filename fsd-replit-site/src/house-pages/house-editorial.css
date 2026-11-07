@@ -451,3 +451,35 @@ body[data-fsd-house-editorial="true"] .fsd-house-review-slot strong {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* The House editorial layer aligns its bespoke surfaces with the flagship palette. */
+body[data-fsd-house-editorial="true"] {
+  background-color: #090a0c;
+  color: #d8d6cf;
+}
+
+body[data-fsd-house-editorial="true"] :where(.house-sections, .sub-nav) {
+  background: rgba(15, 17, 19, .98);
+}
+
+body[data-fsd-house-editorial="true"] :where(.hero, .fsd .hero) {
+  background:
+    linear-gradient(112deg, rgba(9, 10, 12, .98) 0%, rgba(9, 10, 12, .89) 55%, rgba(9, 10, 12, .56) 100%),
+    repeating-linear-gradient(90deg, transparent 0 79px, rgba(200, 170, 114, .035) 80px),
+    #101214;
+}
+
+body[data-fsd-house-editorial="true"] :where(.hero h1, .fsd .hero h1) {
+  font-family: var(--fsd-house-serif);
+  letter-spacing: -.04em;
+}
+
+body[data-fsd-house-editorial="true"] :where(.card, .investor-card, .content-section) {
+  border-top-color: rgba(200, 170, 114, .42);
+  background: #111315;
+}
+
+body[data-fsd-house-editorial="true"] :where(.card:hover, .investor-card:hover, .investor-card:focus-within) {
+  border-color: rgba(200, 170, 114, .72);
+  background: #17191b;
+}

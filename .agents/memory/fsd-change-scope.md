@@ -44,3 +44,11 @@ For incremental React migrations, keep the existing host section element, ID, cl
 **Why:** Existing CSS, adjacent-section layout checks, route-specific heading updates, and anchor links can depend on the original section remaining the direct sibling in the page structure.
 
 **How to apply:** Migrate section contents and interactions in React while preserving the host element; verify its adjacent sections, route heading, image fallback, and interaction before moving the next section.
+
+## Website-first visual updates
+
+Prioritize refining the existing website’s navigation, page composition, typography, responsive layouts, and interactions. Do not create new apparel collections, garment designs, models, renders, or campaign photography as a substitute for website work. Use only existing approved image mappings; keep unavailable views in polished, explicitly named pending states.
+
+**Why:** The owner clarified that website design is the priority and explicitly ruled out new clothing designs, models, renders, and campaign photos for visual updates.
+
+**How to apply:** Continue from existing routes and components, inspect current mappings before using any asset, and leave all product data, publication gates, and non-transactional controls unchanged unless separately authorized.

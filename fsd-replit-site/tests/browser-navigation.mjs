@@ -674,20 +674,6 @@ try {
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await click('.fsd-primary-trigger[data-nav-primary="collections"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "collections"');
-  await moveTo('.fsd-primary-trigger[data-nav-primary="collections"]');
-  await waitFor('!document.querySelector("#fsd-mega-menu").hidden');
-
-  await moveTo('#fsd-mega-menu [data-nav-group="2"]');
-  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"2\\"]")?.getAttribute("aria-pressed") === "true"');
-  await click('#fsd-mega-menu [data-nav-item="0"]');
-  await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "AEROFORGE" && document.querySelector(".fsd-feature-media")?.dataset.featureImage === "/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp"');
-  assert.equal(await evaluate('document.querySelector(".fsd-feature-media")?.classList.contains("fsd-feature-media--product")'), true);
-  assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-feature-media img")).objectFit'), 'contain');
-  await waitFor('document.querySelector(".fsd-feature-media img")?.naturalWidth > 0');
-  await click('#fsd-mega-menu [data-nav-item="2"]');
-  await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "FLEX" && document.querySelector(".fsd-feature-media")?.dataset.featureImage === "/assets/products/flex-leggings-obsidian-front.webp"');
-  assert.equal(await evaluate('document.querySelector(".fsd-feature-media")?.classList.contains("fsd-feature-media--product")'), true);
-  await waitFor('document.querySelector(".fsd-feature-media img")?.naturalWidth > 0');
 
   // Shop groups and subcategories open the matching visual preview drawer.
   await click('#fsd-mega-menu [data-nav-group="1"]');

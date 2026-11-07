@@ -405,3 +405,48 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Proof selector uses the house metallic system; campaign volt remains reserved elsewhere. */
+.mf-selector {
+  border-color: rgba(200, 170, 114, .34);
+  background: #101113;
+  color: #f1eee6;
+}
+
+.mf-selector__visual {
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(200, 170, 114, .075), transparent 57%),
+    linear-gradient(145deg, #1a1b1c, #111213 72%);
+}
+
+.mf-selector__details {
+  border-left-color: rgba(226, 215, 192, .15);
+  background: linear-gradient(140deg, rgba(255, 255, 255, .018), transparent 54%), #151617;
+}
+
+.mf-selector__eyebrow,
+.mf-selector__set-label,
+.fsd-product-set-summary__label,
+.mf-selector__set li > span { color: #c8aa72; }
+
+.mf-selector__title {
+  color: #f1eee6;
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  letter-spacing: -.045em;
+}
+
+.mf-selector__swatch:hover,
+.mf-selector__swatch[aria-pressed="true"] {
+  border-color: rgba(200, 170, 114, .83);
+  background: rgba(200, 170, 114, .075);
+  color: #f0e3c4;
+}
+
+.mf-selector__swatch[aria-pressed="true"] { box-shadow: inset 2px 0 0 #c8aa72; }
+
+@media (max-width: 680px) {
+  .mf-selector__details {
+    border-top-color: rgba(226, 215, 192, .15);
+    border-left: 0;
+  }
+}

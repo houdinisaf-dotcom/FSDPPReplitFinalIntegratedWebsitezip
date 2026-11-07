@@ -809,6 +809,102 @@ main h2[id] { scroll-margin-block-start: 96px; }
   .catalogue-colourway-selector__options button { transition: none; }
 }
 
+/* Catalogue controls and cards share the flagship's graphite / warm-metal language. */
+#products .catalogue-control-panel {
+  border-color: rgba(200, 170, 114, .18);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .025), transparent 55%), #111315;
+  box-shadow: inset 0 1px rgba(255, 255, 255, .025);
+}
+
+#products .catalogue-toolbar label { color: #c9c3b6; }
+
+#products .catalogue-toolbar select,
+#products .catalogue-toolbar input {
+  border-color: rgba(229, 219, 199, .2);
+  background-color: #17191b;
+  color: #f1eee8;
+}
+
+#products .catalogue-toolbar select:focus-visible,
+#products .catalogue-toolbar input:focus-visible {
+  border-color: rgba(200, 170, 114, .8);
+  outline-color: #c8aa72;
+  box-shadow: 0 0 0 3px rgba(200, 170, 114, .13);
+}
+
+#products .catalogue-view-controls { color: #9b978d; }
+
+#products .catalogue-view-controls button,
+#products .catalogue-chip,
+#products .catalogue-clear-all {
+  border-color: rgba(200, 170, 114, .28);
+  color: #d6d1c6;
+}
+
+#products .catalogue-view-controls button[aria-pressed="true"] {
+  border-color: rgba(200, 170, 114, .65);
+  background: rgba(200, 170, 114, .12);
+  color: #f0e4c8;
+}
+
+#products .catalogue-chip {
+  background: rgba(200, 170, 114, .07);
+  color: #e1d5bc;
+}
+
+#products .catalogue-chip .catalogue-chip__remove-icon { color: #d4af37; }
+#products .catalogue-view-state,
+#products .catalogue-count { color: #aaa69d; }
+#products .catalogue-clear-all { color: #d2bd92; }
+
+#products .product-grid[data-view="visual"] > .product-card:not(.product-card--visual) {
+  border-color: rgba(200, 170, 114, .18);
+  background: #111315;
+}
+
+#products .product-grid[data-view="visual"] > .product-card:not(.product-card--visual):hover,
+#products .product-grid[data-view="visual"] > .product-card:not(.product-card--visual):focus-within {
+  border-color: rgba(200, 170, 114, .55);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .25);
+}
+
+#products .product-grid[data-view="visual"] > .product-card:not(.product-card--visual) .product-row__media {
+  background: radial-gradient(ellipse at 50% 35%, #252522, #0c0d0e 78%);
+}
+
+#products .catalogue-placeholder {
+  background:
+    linear-gradient(145deg, rgba(200, 170, 114, .04), transparent 52%),
+    #101214;
+  color: #d4bd88;
+}
+
+#products .catalogue-placeholder strong { color: #e9e4d8; }
+#products .catalogue-placeholder small,
+#products .catalogue-placeholder .catalogue-placeholder-disclaimer { color: #9b998f; }
+
+#products .catalogue-colourway-selector legend,
+#products .catalogue-details dt { color: #c8aa72; }
+
+#products .catalogue-pagination .filter {
+  border-color: rgba(200, 170, 114, .32);
+  color: #ddd5c5;
+}
+
+#products .catalogue-pagination .filter.selected {
+  border-color: #c8aa72;
+  background: #c8aa72;
+  color: #111315;
+}
+
+@media (max-width: 620px) {
+  #products .catalogue-control-panel { padding: 12px; }
+  #products .catalogue-view-controls { flex-wrap: wrap; }
+  #products .catalogue-view-controls > span { flex-basis: 100%; }
+  #products .catalogue-chip-list { gap: 6px; }
+  #products .catalogue-chip { font-size: 9px; }
+}
+
 /* Keep the non-React catalogue renderer image-led if it is used as a fallback. */
 #catalogue-grid.product-grid[data-view="visual"] > .product-card:not(.product-card--visual) {
   display: flex;
