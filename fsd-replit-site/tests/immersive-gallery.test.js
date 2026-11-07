@@ -88,6 +88,31 @@ test('out-of-order image loads cannot overwrite the latest selected colourway', 
   assert.equal(stage.attributes['aria-busy'], undefined);
 });
 
+test('a selected thumbnail updates the main image source before its load completes', () => {
+  const { stage, current } = imageFixture();
+  current.src = '/front';
+  current.alt = 'Front view';
+  let failures = 0;
+
+  crossfadeMappedImage(current, '/rear', 'Rear view', () => failures++, {
+    variant: 'Black',
+    immediate: true,
+  });
+  assert.equal(current.src, '/rear');
+  assert.equal(current.alt, 'Rear view');
+  assert.equal(current.dataset.fsdImageVariant, 'Black');
+  assert.equal(stage.attributes['aria-busy'], 'true');
+
+  crossfadeMappedImage(current, '/detail', 'Fabric detail', () => failures++, {
+    variant: 'Black',
+    immediate: true,
+  });
+  assert.equal(current.src, '/detail', 'a later click immediately supersedes a pending image');
+  current.dispatchEvent(new Event('load'));
+  assert.equal(stage.attributes['aria-busy'], undefined);
+  assert.equal(failures, 0);
+});
+
 test('cancelling a swap for a missing variant blocks late images and late errors', () => {
   const { stage, current, created } = imageFixture();
   let failures = 0;

@@ -39,7 +39,20 @@ try {
     await key('ArrowRight');
     await wait(`${selectedIndex} !== ${beforeKey}`, 'keyboard image navigation');
     // Choosing a non-primary photograph must still synchronise the exact colour.
-    await evaluate(`document.querySelector('[data-catalogue-image-index="${roseRear}"]').click()`);
+    const thumbnailSelection = await evaluate(`(() => {
+      const button = document.querySelector('[data-catalogue-image-index="${roseRear}"]');
+      const targetSrc = button.querySelector('img').currentSrc;
+      button.click();
+      return {
+        targetSrc,
+        mainSrc: document.querySelector('[data-catalogue-main-image]').src,
+        selected: button.getAttribute('aria-pressed'),
+      };
+    })()`);
+    assert.equal(thumbnailSelection.mainSrc, thumbnailSelection.targetSrc,
+      'one thumbnail click immediately updates the main image source');
+    assert.equal(thumbnailSelection.selected, 'true');
+    await wait(`document.querySelector('[data-catalogue-main-image]')?.naturalWidth > 0`, 'selected thumbnail photo is visible');
     await wait(`document.querySelector('[data-catalogue-selected-colourway]').textContent === 'Dusty Rose'`, 'rear photo updates colour');
     await evaluate(`document.querySelector('[data-catalogue-colourway-index="1"]').click()`);
     await wait(`document.querySelector('[data-catalogue-main-image]:not(.mapped-gallery-image--hidden)')?.dataset.fsdImageVariant === 'Sage Green'`, 'correct mapped photo');

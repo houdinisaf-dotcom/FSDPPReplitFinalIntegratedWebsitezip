@@ -987,7 +987,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     );
   };
 
-  const selectDialogImage = index => {
+  const selectDialogImage = (index, { immediate = false } = {}) => {
     const image = activeDialogImages[index];
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
@@ -1020,6 +1020,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       {
         variant: mappedColourway,
         retainPrevious: normaliseGalleryColourway(mainImage.dataset.fsdImageVariant) === normaliseGalleryColourway(mappedColourway),
+        immediate,
       },
     );
     caption.textContent = image.label;
@@ -1225,7 +1226,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     const imageButton = event.target.closest('[data-catalogue-image-index]');
     if (imageButton && dialogBody.contains(imageButton) && activeDialogProduct) {
       const index = Number(imageButton.dataset.catalogueImageIndex);
-      selectDialogImage(index);
+      selectDialogImage(index, { immediate: true });
       return;
     }
     if (event.target.closest('[data-catalogue-back]')) {

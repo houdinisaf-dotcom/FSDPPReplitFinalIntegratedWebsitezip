@@ -5,7 +5,8 @@ export function cancelMappedImageSwap(image) {
   const previous = stage && swapsByStage.get(stage);
   if (!previous) return;
   clearTimeout(previous.timer);
-  previous.incoming.remove();
+  previous.cleanup?.();
+  previous.incoming?.remove();
   previous.current.classList.remove('mapped-gallery-image--hidden');
   stage.removeAttribute('aria-busy');
   swapsByStage.delete(stage);
@@ -28,8 +29,43 @@ export function crossfadeMappedImage(currentImage, src, alt, onError, options = 
   const previousSwap = swapsByStage.get(stage);
   if (previousSwap) {
     clearTimeout(previousSwap.timer);
-    previousSwap.incoming.remove();
+    previousSwap.cleanup?.();
+    previousSwap.incoming?.remove();
     previousSwap.current.classList.remove('mapped-gallery-image--hidden');
+  }
+
+  if (options.immediate) {
+    const swap = { current: currentImage, incoming: null, timer: null, cleanup: null };
+    swapsByStage.set(stage, swap);
+    stage.setAttribute('aria-busy', 'true');
+    const isCurrent = () => swapsByStage.get(stage) === swap && stage.isConnected;
+    const finish = () => {
+      if (!isCurrent()) return;
+      swap.cleanup?.();
+      stage.removeAttribute('aria-busy');
+      swapsByStage.delete(stage);
+    };
+    const fail = () => {
+      if (!isCurrent()) return;
+      swap.cleanup?.();
+      stage.removeAttribute('aria-busy');
+      swapsByStage.delete(stage);
+      onError?.();
+    };
+    swap.cleanup = () => {
+      currentImage.removeEventListener('load', finish);
+      currentImage.removeEventListener('error', fail);
+    };
+
+    currentImage.alt = alt;
+    currentImage.dataset.mappedGalleryActive = 'true';
+    if (options.variant !== undefined) currentImage.dataset.fsdImageVariant = options.variant;
+    currentImage.classList.remove('mapped-gallery-image--hidden', 'mapped-gallery-image--incoming', 'mapped-gallery-image--visible');
+    currentImage.addEventListener('load', finish, { once: true });
+    currentImage.addEventListener('error', fail, { once: true });
+    currentImage.src = src;
+    if (currentImage.complete && currentImage.naturalWidth > 0) finish();
+    return true;
   }
 
   const incoming = new ImageConstructor();
