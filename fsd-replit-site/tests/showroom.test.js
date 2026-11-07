@@ -152,7 +152,7 @@ test('deferred VIP access cannot collect or pretend to submit personal data', ()
 
 test('concept discovery groups retain proposed status and explicit availability boundaries', () => {
   const markup = beyondProductSection();
-  for (const group of ['TRAIN & BELONG', 'WEAR', 'BUILT CLOSER', 'TOGETHER & TOMORROW']) {
+  for (const group of ['TRAIN & BELONG', 'WEAR', 'BUILT CLOSER', 'TOGETHER & TOMORROW', 'PERSONALISATION RESEARCH']) {
     assert.match(markup, new RegExp(group));
   }
   for (const concept of [
@@ -168,8 +168,9 @@ test('concept discovery groups retain proposed status and explicit availability 
   assert.match(markup, /<button class="showroom-concepts__unavailable" type="button" disabled>[\s\S]*?Tactical Shield Membership[\s\S]*?<\/button>/);
   assert.doesNotMatch(markup, /href="#tactical-shield-membership"/);
   assert.match(markup, /no specific partner, live testing programme, or connected enquiry channel/i);
+  assert.match(markup, /PERSONALISATION RESEARCH[\s\S]*Genetic & Microbiome Personalisation/);
   assert.doesNotMatch(markup, /Coming soon|Open to enquiries|Join the waiting list/i);
-  assert.equal((markup.match(/<details class="showroom-concepts__group"/g) || []).length, 4);
+  assert.equal((markup.match(/<details class="showroom-concepts__group"/g) || []).length, 5);
 });
 
 test('garment studies are accessible non-purchasable concepts with real research destinations', () => {

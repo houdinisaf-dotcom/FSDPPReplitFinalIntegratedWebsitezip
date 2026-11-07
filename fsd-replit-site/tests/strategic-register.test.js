@@ -70,6 +70,14 @@ test('the approved twelve concepts map to their specified primary divisions and 
   ]);
   assert.ok(STRATEGIC_CONCEPTS.every(concept => concept.primaryDivision && concept.primarySection && concept.href));
   assert.ok(STRATEGIC_CONCEPTS.every(concept => concept.summary));
+  const geneticResearch = STRATEGIC_CONCEPTS.find(concept => concept.id === 'genetic-microbiome-personalisation');
+  assert.equal(geneticResearch.primaryDivision, 'BIO-LAB™');
+  assert.equal(geneticResearch.primarySection, 'Personalisation Research');
+  assert.deepEqual(geneticResearch.crossLinks, [{
+    division: 'BIO-LAB™',
+    section: 'INNOVATION HUB',
+    href: '/#innovation-hub',
+  }]);
   assert.match(strategicConceptData.statusPolicy, /represented as live unless separately verified/i);
   assert.deepEqual(primaryNavigation.map(item => item.label), [
     'SHOP', 'UNIVERSE', 'BIO-LAB™', 'HARDWARE', 'THE HOUSE', 'PRIVATE ACCESS',
@@ -83,6 +91,7 @@ test('the directory and pages keep every mapped concept discoverable without ope
     assert.match(index, new RegExp(`data-strategic-concept="${concept.id}"`));
     assert.match(index, new RegExp(`href="${concept.href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
   }
+  assert.match(index, /Also in: BIO-LAB™ \/ INNOVATION HUB/);
   const civicPage = renderStrategicConceptDetail('civic-response-auxiliary');
   assert.match(civicPage, /Civic Response Auxiliary/);
   assert.match(civicPage, /No programme, emergency-response service, training schedule, or partnership is represented as available/);
@@ -130,6 +139,7 @@ test('the specified strategic cross-links land in the existing division sections
   ]);
   assert.deepEqual(conceptsForPlacement('BIO-LAB™', 'INNOVATION HUB').map(concept => concept.id), [
     'community-co-creation',
+    'genetic-microbiome-personalisation',
   ]);
   assert.deepEqual(conceptsForPlacement('UNIVERSE', 'Community Development').map(concept => concept.id), [
     'community-co-creation',

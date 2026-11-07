@@ -13,6 +13,7 @@ const hashRoutes = new Map([
   ['#hardware-editorial', { view: 'hardware', target: 'hardware' }],
   ['#innovations', { view: 'bio-lab', target: 'bio-lab' }],
   ['#innovation-hub', { view: 'page', target: 'innovation-hub' }],
+  ['#fsd-house-archive', { view: 'house', target: 'house-hub' }],
   ['#philosophy', { view: 'story', target: 'our-story' }],
   ['#contact', { view: 'private-access', target: 'contact' }],
   ['#clothing-lines', { view: 'collection', target: 'clothing-lines' }],
@@ -36,6 +37,9 @@ export function routeFromHash(hash = '') {
 }
 
 function routeFromDestination(destination) {
+  if (destination?.split(/[?#]/, 1)[0] === FSD_HOUSE_PAGE_PATH) {
+    return { view: 'house', target: 'house-hub' };
+  }
   if (destination?.startsWith('/__catalogue-preview/')) {
     return { view: 'preview', target: destination };
   }
@@ -55,6 +59,7 @@ export function routeFromLocation(location = {}) {
 
   const pathname = String(location.pathname || '/').replace(/\/+$/, '') || '/';
   if (pathname === FSD_STORY_PATH) return { view: 'story', target: 'our-story' };
+  if (pathname === FSD_HOUSE_PAGE_PATH) return { view: 'house', target: 'house-hub' };
   const entry = seoEntryForPath(pathname);
   if (entry) return entry.route;
   return routeFromHash('');

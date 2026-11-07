@@ -28,7 +28,7 @@ window.configureFSDInnovationRoutes = (P, M) => {
     ].filter(Boolean);
 
     return {
-      kicker,
+      kicker: item.kicker || kicker,
       title: item.title,
       tag: item.heroSubtitle
         ? `${escape(item.heroSubtitle)}<br><span style="font-size:14px;color:#ddd">${escape(item.summary)}</span>`
@@ -79,13 +79,13 @@ window.configureFSDInnovationRoutes = (P, M) => {
   if (P.partnerships) P.partnerships.title = 'Partnerships & Security';
   if (existingInnovation) {
     existingInnovation[1] = 'Innovation & Operations';
-    existingInnovation[2] = 'Proposed infrastructure and long-horizon research concepts.';
+    existingInnovation[2] = 'Proposed infrastructure concepts.';
   }
 
   const globalInitiatives = groups.global || [];
   if (P.global) {
     P.global.title = 'Global Vision & Operations';
-    P.global.tag = 'Proposed infrastructure and long-horizon research concepts.';
+    P.global.tag = 'Proposed infrastructure concepts.';
     P.global.status = 'STRATEGIC CONCEPTS · NOT OPERATIONAL';
     P.global.body = ['Proposed concepts covering modular retail, demand-informed stock planning, mobile testing, local production, and long-horizon research.'];
     P.global.bul = globalInitiatives.map(item => `<strong>${escape(item.title)}</strong> — ${escape(item.summary)}`);
@@ -104,10 +104,10 @@ window.configureFSDInnovationRoutes = (P, M) => {
   if (globalOverview) {
     globalOverview.kicker = 'FSD / GLOBAL VISION & OPERATIONS';
     globalOverview.title = 'Innovation & Operations';
-    globalOverview.tag = 'Proposed infrastructure and long-horizon research concepts.';
+    globalOverview.tag = 'Proposed infrastructure concepts.';
     globalOverview.status = 'STRATEGIC CONCEPTS · NOT OPERATIONAL';
     globalOverview.body = [
-      'FSD Global Vision maps proposed concepts for modular retail, demand-informed stock planning, mobile testing, local production, and responsible long-horizon research.',
+      'FSD Global Vision maps proposed concepts for modular retail, demand-informed stock planning, mobile testing, and local production.',
       `<strong>Rollout framework:</strong> ${globalInitiatives.map(item => `${escape(item.title)} — ${item.rollout.map(escape).join(' → ')}`).join(' | ')}`,
     ];
     globalOverview.bul = globalInitiatives.map(item =>
@@ -124,7 +124,7 @@ window.configureFSDInnovationRoutes = (P, M) => {
     'Bio-Lab™ Initiatives',
     'FSD BIO-LAB™ / MATERIAL SCIENCE & CONNECTED APPAREL',
     bioLab,
-    'Material science, moisture management, durability testing and garment authentication technology.',
+    'Material science, connected apparel, and responsible personalisation research frameworks.',
   );
   addGroup(
     'community',

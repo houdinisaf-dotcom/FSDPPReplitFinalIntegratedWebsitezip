@@ -5,8 +5,10 @@
   --fsd-panel: #151617;
   --fsd-panel-soft: #1b1b1a;
   --fsd-porcelain: #f1eee6;
-  --fsd-champagne: #C8AA72;
+  --fsd-champagne: #D4AF37;
   --fsd-champagne-light: #e4cf9f;
+  --fsd-campaign-volt: #DFFF45;
+  --fsd-campaign-volt-light: #EAFF8C;
   --fsd-muted: #a9a69e;
   --fsd-rule: rgba(229, 219, 199, .14);
   --fsd-shadow-deep: 0 24px 70px rgba(0, 0, 0, .34);
@@ -62,7 +64,7 @@ summary {
 }
 
 :where(a, button, input, select, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--fsd-champagne-light);
+  outline: 2px solid var(--fsd-campaign-volt-light);
   outline-offset: 4px;
 }
 
@@ -147,14 +149,14 @@ summary {
 .hero .primary-btn,
 .showroom-vip .primary-btn {
   padding: 17px 23px;
-  background: var(--fsd-champagne);
+  background: var(--fsd-campaign-volt);
   color: #111214;
   box-shadow: inset 0 1px rgba(255, 255, 255, .28);
 }
 
 .primary-btn:not(:disabled):hover,
 .primary-btn:not(:disabled):focus-visible {
-  background: var(--fsd-champagne-light);
+  background: var(--fsd-campaign-volt-light);
   transform: translateY(-2px);
 }
 
@@ -167,7 +169,7 @@ summary {
 .ghost-btn:hover,
 .ghost-btn:focus-visible,
 .text-link:hover,
-.text-link:focus-visible { color: var(--fsd-champagne-light); }
+.text-link:focus-visible { color: var(--fsd-campaign-volt-light); }
 
 .hero-foot {
   position: relative;
@@ -197,7 +199,7 @@ summary {
   text-wrap: balance;
 }
 
-.manifesto h2 span { color: var(--fsd-champagne); }
+.manifesto h2 span { color: var(--fsd-campaign-volt); }
 
 .collections,
 .planned,
@@ -474,8 +476,8 @@ summary {
 .showroom-shell-campaign-link:focus-visible,
 .showroom-engineering-link:hover,
 .showroom-engineering-link:focus-visible {
-  border-color: var(--fsd-champagne-light);
-  background: var(--fsd-champagne);
+  border-color: var(--fsd-campaign-volt-light);
+  background: var(--fsd-campaign-volt);
   color: #111315;
   transform: translateY(-2px);
 }
@@ -514,9 +516,9 @@ summary {
 }
 
 .showroom-carousel-controls button:not(:disabled):hover {
-  border-color: var(--fsd-champagne-light);
+  border-color: var(--fsd-campaign-volt-light);
   background: rgba(201, 173, 120, .12);
-  color: var(--fsd-champagne-light);
+  color: var(--fsd-campaign-volt-light);
   transform: translateY(-2px);
 }
 
@@ -892,9 +894,9 @@ summary {
 
 .hero .ghost-btn:hover,
 .hero .ghost-btn:focus-visible {
-  border-color: var(--fsd-champagne-light);
+  border-color: var(--fsd-campaign-volt-light);
   background: rgba(201, 173, 120, .12);
-  color: var(--fsd-champagne-light);
+  color: var(--fsd-campaign-volt-light);
   transform: translateY(-2px);
 }
 
@@ -1002,7 +1004,7 @@ summary {
 }
 
 .fsd-showcase-banner:focus-visible {
-  outline: 2px solid var(--fsd-champagne-light);
+  outline: 2px solid var(--fsd-campaign-volt-light);
   outline-offset: 4px;
 }
 

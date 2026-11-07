@@ -46,6 +46,45 @@ window.FSDInnovationInitiatives = Object.freeze({
       ],
       note: 'Value areas are aims, not verified outcomes. Product compatibility, technical performance, partners, and launch dates are not confirmed.',
     },
+    {
+      id: 'genetic-microbiome',
+      title: 'Genetic & Microbiome Personalisation',
+      kicker: 'FSD BIO-LAB™ / PERSONALISATION RESEARCH',
+      heroSubtitle: 'Long-horizon research. Responsible science. Clear safeguards.',
+      summary: 'Proposed long-horizon research concept; no testing, sample collection, data analysis, or personalised health guidance is available.',
+      statusLabel: 'STRATEGIC CONCEPT · RESEARCH ONLY',
+      scope: 'Assess whether independently validated genetic or microbiome research could ever support general, non-personalised training or nutrition education. No individual interpretation, diagnosis, treatment, or health recommendation is in confirmed scope.',
+      capabilities: [
+        {
+          title: 'Evidence & Validation',
+          description: 'Review whether reliable scientific evidence exists for any proposed application; no findings or validated method are available.',
+        },
+        {
+          title: 'Clinical & Research Governance',
+          description: 'Any future study would require appropriately qualified independent partners, ethics review, and relevant regulatory approvals; no partner is confirmed.',
+        },
+        {
+          title: 'Data Privacy & Stewardship',
+          description: 'Any future research would require informed consent, data minimisation, security, and safeguarding controls. No genetic or microbiome data is collected or analysed.',
+        },
+        {
+          title: 'Appropriate Scope',
+          description: 'This is not a testing, diagnostic, treatment, or personalised health service. No individual training or nutrition guidance is offered.',
+        },
+      ],
+      valueLabel: 'Potential research value',
+      valuePillars: ['Responsible scientific learning', 'Potential for general education', 'Carefully governed research opportunities', 'Long-horizon innovation'],
+      rolloutLabel: 'Conditions before any application',
+      rollout: ['Review independent evidence and clinical validity', 'Identify qualified clinical and research partners', 'Complete ethics, legal, and regulatory review', 'Define consent, privacy, security, and safeguarding controls', 'Confirm scientific validation and an appropriate non-clinical scope'],
+      safeguards: [
+        'No tests, kits, sample collection, or data analysis are operating. No genetic or microbiome data is collected.',
+        'No claim is made that DNA predicts injury or optimises training.',
+        'No diagnosis, treatment, or individual health recommendation is provided.',
+        'No clinical or research partnership is represented as agreed.',
+        'Uploaded laboratory and consultation visuals are illustrative placeholders, not actual tests, results, or consultations.',
+      ],
+      note: 'Potential research directions and value areas are unvalidated. No genetic or microbiome insights are available to customers.',
+    },
   ],
   community: [
     {
@@ -295,44 +334,6 @@ window.FSDInnovationInitiatives = Object.freeze({
         'The uploaded workshop, equipment, and packaging visuals are illustrative placeholders, not operating sites or processes.',
       ],
       note: 'Shorter lead times, reduced waste, and lower transport emissions are potential outcomes to measure, not verified results or promises.',
-    },
-    {
-      id: 'genetic-microbiome',
-      title: 'Genetic & Microbiome Personalisation',
-      heroSubtitle: 'Long-horizon research. Responsible science. Clear safeguards.',
-      summary: 'Proposed long-horizon research concept; no testing, sample collection, data analysis, or personalised health guidance is available.',
-      statusLabel: 'STRATEGIC CONCEPT · RESEARCH ONLY',
-      scope: 'Assess whether independently validated genetic or microbiome research could ever support general, non-personalised training or nutrition education. No individual interpretation, diagnosis, treatment, or health recommendation is in confirmed scope.',
-      capabilities: [
-        {
-          title: 'Evidence & Validation',
-          description: 'Review whether reliable scientific evidence exists for any proposed application; no findings or validated method are available.',
-        },
-        {
-          title: 'Clinical & Research Governance',
-          description: 'Any future study would require appropriately qualified independent partners, ethics review, and relevant regulatory approvals; no partner is confirmed.',
-        },
-        {
-          title: 'Data Privacy & Stewardship',
-          description: 'Any future research would require informed consent, data minimisation, security, and safeguarding controls. No genetic or microbiome data is collected or analysed.',
-        },
-        {
-          title: 'Appropriate Scope',
-          description: 'This is not a testing, diagnostic, treatment, or personalised health service. No individual training or nutrition guidance is offered.',
-        },
-      ],
-      valueLabel: 'Potential research value',
-      valuePillars: ['Responsible scientific learning', 'Potential for general education', 'Carefully governed research opportunities', 'Long-horizon innovation'],
-      rolloutLabel: 'Conditions before any application',
-      rollout: ['Review independent evidence and clinical validity', 'Identify qualified clinical and research partners', 'Complete ethics, legal, and regulatory review', 'Define consent, privacy, security, and safeguarding controls', 'Confirm scientific validation and an appropriate non-clinical scope'],
-      safeguards: [
-        'No tests, kits, sample collection, or data analysis are operating. No genetic or microbiome data is collected.',
-        'No claim is made that DNA predicts injury or optimises training.',
-        'No diagnosis, treatment, or individual health recommendation is provided.',
-        'No clinical or research partnership is represented as agreed.',
-        'Uploaded laboratory and consultation visuals are illustrative placeholders, not actual tests, results, or consultations.',
-      ],
-      note: 'Potential research directions and value areas are unvalidated. No genetic or microbiome insights are available to customers.',
     },
   ],
 });

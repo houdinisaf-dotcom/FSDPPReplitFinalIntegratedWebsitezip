@@ -549,15 +549,6 @@ function makeHouseGroups(divisions) {
           description: 'Proposed local small-batch production model. No partner, hub, site, or custom-order service is live; environmental benefits are not verified.',
         },
         {
-          id: 'genetic-microbiome',
-          title: 'Genetic & Microbiome Personalisation',
-          hash: 'global/genetic-microbiome',
-          href: '/genetic-microbiome.html',
-          kind: 'initiative',
-          status: 'Strategic concept',
-          description: 'Long-horizon personalisation research with scientific, privacy, consent, ethical, and regulatory gates. No testing, sample collection, data analysis, or personalised health guidance is available; no clinical partner is confirmed.',
-        },
-        {
           ...conceptItem(STRATEGIC_CONCEPTS.find(concept => concept.id === 'performance-linked-partnerships')),
           id: 'global-vision-operations-performance-linked-partnerships',
         },
@@ -1194,6 +1185,7 @@ export function mountNavigation({
     ['#innovations', 'bio-lab'],
     ['#philosophy', 'house'],
     ['#house-menu', 'house'],
+    ['#fsd-house-archive', 'house'],
     ['#contact', 'private-access'],
     ['#technical-collections-archive', 'collections'],
     ...CATALOGUE_COLLECTIONS.map(collection => [

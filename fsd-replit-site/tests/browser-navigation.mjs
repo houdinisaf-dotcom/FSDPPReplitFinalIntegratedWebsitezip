@@ -446,16 +446,20 @@ try {
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No local manufacturing hub, production site, or service is currently represented as operational/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
-  await click('.fsd-primary-nav [data-nav-primary="house"]');
-  await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
-  await click('#fsd-mega-menu [data-nav-group="3"]');
-  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"4\\"] span:nth-child(2)")?.textContent.trim() === "Genetic & Microbiome Personalisation"');
-  await click('#fsd-mega-menu [data-nav-item="4"]');
+  await click('.fsd-primary-nav [data-nav-primary="bio-lab"]');
+  await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "bio-lab" && !document.querySelector("#fsd-mega-menu").hidden');
+  await click('#fsd-mega-menu [data-nav-group="2"]');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"2\\"]")?.getAttribute("aria-pressed") === "true" && [...document.querySelectorAll("#fsd-mega-menu [data-nav-item]")].some(item => item.textContent.includes("Genetic & Microbiome Personalisation"))');
+  const geneticItemIndex = await evaluate('[...document.querySelectorAll("#fsd-mega-menu [data-nav-item]")].find(item => item.textContent.includes("Genetic & Microbiome Personalisation"))?.getAttribute("data-nav-item")');
+  assert.notEqual(geneticItemIndex, null, 'Genetic & Microbiome Personalisation appears under BIO-LAB');
+  await click(`#fsd-mega-menu [data-nav-item="${geneticItemIndex}"]`);
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Genetic & Microbiome Personalisation"');
   assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/genetic-microbiome.html" && document.querySelector("#genetic-microbiome-title")?.textContent.trim() === "Genetic & Microbiome Personalisation"');
+  assert.equal(await evaluate('document.querySelector("main.fsd")?.dataset.fsdDivision'), 'BIO-LAB™');
+  assert.equal(await evaluate('document.querySelector("main.fsd")?.dataset.fsdSection'), 'Personalisation Research');
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Strategic research concept; no service is available/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No genetic or microbiome testing, data analysis, or personalised health guidance is represented as currently available/);
   await send('Page.navigate', { url: `https://${domain}/` });
@@ -463,8 +467,8 @@ try {
   await click('.fsd-primary-nav [data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
   await click('#fsd-mega-menu [data-nav-group="3"]');
-  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"6\\"] span:nth-child(2)")?.textContent.trim() === "Security Provisions"');
-  await click('#fsd-mega-menu [data-nav-item="6"]');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"5\\"] span:nth-child(2)")?.textContent.trim() === "Security Provisions"');
+  await click('#fsd-mega-menu [data-nav-item="5"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Security Provisions"');
   assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic expansion; not operational/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
@@ -774,7 +778,7 @@ try {
   };
 
   const closeRouteAndReset = async () => {
-    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/enquiries.html" || location.pathname === "/story" || location.pathname.startsWith("/flagships/") || location.pathname === "/the-house.html" || location.pathname.startsWith("/__catalogue-preview/") || ["/circular-trade-in.html", "/community-co-creation.html", "/performance-partnerships.html", "/fsd-pods.html", "/autonomous-popups.html", "/mobile-testing-labs.html", "/local-micro-manufacturing.html", "/genetic-microbiome.html"].includes(location.pathname)')) {
+    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/enquiries.html" || location.pathname === "/story" || location.pathname.startsWith("/flagships/") || location.hash === "#fsd-house-archive" || location.pathname.startsWith("/__catalogue-preview/") || ["/circular-trade-in.html", "/community-co-creation.html", "/performance-partnerships.html", "/fsd-pods.html", "/autonomous-popups.html", "/mobile-testing-labs.html", "/local-micro-manufacturing.html", "/genetic-microbiome.html"].includes(location.pathname)')) {
       await send('Page.navigate', { url: `https://${domain}/` });
       await waitFor('!!document.querySelector(".fsd-primary-nav")');
     }

@@ -198,7 +198,7 @@
 
 .showroom-beyond__intro h2 em,
 .showroom-house-connection h2 em {
-  color: var(--fsd-champagne);
+  color: var(--fsd-campaign-volt);
   font-style: normal;
 }
 
@@ -229,9 +229,9 @@
 .showroom-beyond__hub:focus-visible,
 .showroom-house-connection__copy a:hover,
 .showroom-house-connection__copy a:focus-visible {
-  border-color: var(--fsd-champagne-light);
+  border-color: var(--fsd-campaign-volt-light);
   background: rgba(200, 170, 114, .08);
-  color: var(--fsd-champagne-light);
+  color: var(--fsd-campaign-volt-light);
 }
 
 .showroom-beyond__paths {
@@ -265,7 +265,7 @@
 }
 
 .showroom-beyond__path > span {
-  color: var(--fsd-champagne);
+  color: var(--fsd-campaign-volt);
   font-size: 8px;
   letter-spacing: .17em;
 }
@@ -277,7 +277,7 @@
 }
 
 .showroom-beyond__path small { color: var(--fsd-muted); font-size: 12px; }
-.showroom-beyond__path b { grid-column: 2; grid-row: 1 / span 3; color: var(--fsd-champagne); font-size: 18px; font-weight: 400; }
+.showroom-beyond__path b { grid-column: 2; grid-row: 1 / span 3; color: var(--fsd-campaign-volt); font-size: 18px; font-weight: 400; }
 
 .showroom-house-connection {
   position: relative;
@@ -298,7 +298,7 @@
 .showroom-house-connection__copy { position: relative; z-index: 1; max-width: 390px; }
 .showroom-house-connection__copy > p { color: var(--fsd-muted); line-height: 1.8; }
 .showroom-house-connection__mark { position: absolute; right: var(--fsd-gutter); bottom: 24px; color: #b7aa8c; font-size: 8px; letter-spacing: .2em; }
-.showroom-house-connection__mark i { color: var(--fsd-champagne); font-style: normal; }
+.showroom-house-connection__mark i { color: var(--fsd-campaign-volt); font-style: normal; }
 
 @media (max-width: 760px) {
   .fsd-phase3-hero {

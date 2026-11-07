@@ -1,4 +1,6 @@
 export const GOLD = '#D4AF37';
+export const CAMPAIGN_VOLT = '#DFFF45';
+export const CAMPAIGN_VOLT_LIGHT = '#EAFF8C';
 export const OBSIDIAN = '#0a0a0a';
 
 // Base is the fabric colour; glow is the lighter accent used on dark surfaces.
@@ -37,7 +39,10 @@ export const ENABLE_GOLD_CURSOR = true;
 export const brandTokens = Object.freeze({
   colors: Object.freeze({
     gold: GOLD,
-    champagne: '#C8AA72',
+    champagne: GOLD,
+    campaignVolt: CAMPAIGN_VOLT,
+    campaignVoltLight: CAMPAIGN_VOLT_LIGHT,
+    warmGold: '#C8AA72',
     ink: OBSIDIAN,
     porcelain: '#F1EEE6',
   }),

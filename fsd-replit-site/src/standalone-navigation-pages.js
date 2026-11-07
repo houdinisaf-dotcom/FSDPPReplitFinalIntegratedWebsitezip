@@ -18,6 +18,7 @@ const LEGACY_HOUSE_REDIRECTS = Object.freeze({
   'bio-lab/adaptive-fabrics': '/#adaptive-technical-fabrics',
   'community/co-creation': '/community-co-creation.html',
   'global/pods': '/fsd-pods.html',
+  'fsd-house-archive': '/#fsd-house-archive',
 });
 
 function escapeHtml(value) {
@@ -172,9 +173,21 @@ export function renderHouseDraftPage(page) {
 </html>`;
 }
 
-function renderLegacyHouseRedirect() {
+export function legacyHouseRedirectDestination(hash = '') {
+  let key = '';
+  try {
+    key = decodeURIComponent(String(hash).replace(/^#/, ''));
+  } catch {
+    return '/story';
+  }
+  if (!key) return '/#fsd-house-archive';
+  return LEGACY_HOUSE_REDIRECTS[key] || LEGACY_HOUSE_REDIRECTS['brand/founder'];
+}
+
+export function renderLegacyHouseRedirect() {
   const redirectMap = JSON.stringify(LEGACY_HOUSE_REDIRECTS);
-  return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FSD | The House</title></head><body><p>Opening the selected House page…</p><script>const routes=${redirectMap};const key=decodeURIComponent(location.hash.slice(1));location.replace(routes[key]||routes["brand/founder"]);</script><noscript><a href="/story">Open the Founder Story draft</a></noscript></body></html>`;
+  const defaultDestination = JSON.stringify(legacyHouseRedirectDestination());
+  return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FSD | The House</title></head><body><p>Opening THE HOUSE…</p><script>const routes=${redirectMap};let key="";try{key=decodeURIComponent(location.hash.slice(1))}catch{}const destination=key?(routes[key]||routes["brand/founder"]):${defaultDestination};location.replace(destination);</script><noscript><a href="/#fsd-house-archive">Open THE HOUSE</a></noscript></body></html>`;
 }
 
 export function standaloneNavigationPagesPlugin(projectRoot) {
@@ -217,7 +230,7 @@ export function standaloneNavigationPagesPlugin(projectRoot) {
         .join('\n    ');
       const scriptTag = `<script type="module" src="/${entry.file}"></script>`;
 
-      for (const fileName of ['investor.html', 'the-house.html', 'cryo-zero.html', 'red-light-recovery.html', 'fight-promotions.html', 'live-events.html', 'broadcast-ppv.html', 'athlete-development.html', 'academy-grassroots.html', 'fsd-pods.html', 'autonomous-popups.html', 'mobile-testing-labs.html', 'local-micro-manufacturing.html', 'genetic-microbiome.html', 'community-co-creation.html', 'performance-partnerships.html', 'circular-trade-in.html', 'community-first-aid.html', 'security-vision.html']) {
+      for (const fileName of ['investor.html', 'cryo-zero.html', 'red-light-recovery.html', 'fight-promotions.html', 'live-events.html', 'broadcast-ppv.html', 'athlete-development.html', 'academy-grassroots.html', 'fsd-pods.html', 'autonomous-popups.html', 'mobile-testing-labs.html', 'local-micro-manufacturing.html', 'genetic-microbiome.html', 'community-co-creation.html', 'performance-partnerships.html', 'circular-trade-in.html', 'community-first-aid.html', 'security-vision.html']) {
         const path = resolve(outputRoot, fileName);
         if (isHouseDraftBuildFile(fileName)) {
           await unlink(path).catch(error => {
@@ -236,6 +249,8 @@ export function standaloneNavigationPagesPlugin(projectRoot) {
         if (stylesheetLinks) html = html.replace('</head>', `    ${stylesheetLinks}\n  </head>`);
         await writeFile(path, html);
       }
+
+      await writeFile(resolve(outputRoot, 'the-house.html'), renderLegacyHouseRedirect());
 
       for (const fileName of HOUSE_DRAFT_BUILD_FILES) {
         const path = resolve(outputRoot, fileName);

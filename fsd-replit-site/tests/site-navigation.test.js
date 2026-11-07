@@ -10,12 +10,17 @@ import {
   primaryNavigation,
   renderNavigationHeader,
 } from '../src/site-navigation.js';
-import { renderHouseDraftPage } from '../src/standalone-navigation-pages.js';
+import {
+  legacyHouseRedirectDestination,
+  renderHouseDraftPage,
+  renderLegacyHouseRedirect,
+} from '../src/standalone-navigation-pages.js';
 import { renderHouseDestinationIndex } from '../src/house-pages/house-destination-index.js';
 import {
   HOUSE_FLAGSHIP_DRAFTS,
   HOUSE_PAGE_REGISTRY,
   isHouseDraftBuildFile,
+  isHouseDraftRoute,
   shouldDisableHouseHref,
 } from '../src/data/house-page-readiness.js';
 
@@ -262,11 +267,25 @@ test('House publication policy previews drafts in development and disables their
   assert.equal(shouldDisableHouseHref('/investor.html', true), true);
   assert.equal(shouldDisableHouseHref('/security-vision.html', true), false);
   assert.equal(shouldDisableHouseHref('/story'), false);
-  assert.equal(isHouseDraftBuildFile('the-house.html'), true);
+  assert.equal(isHouseDraftBuildFile('the-house.html'), false);
+  assert.equal(isHouseDraftRoute('/the-house.html'), false);
+  assert.equal(HOUSE_PAGE_REGISTRY.find(page => page.id === 'genetic-microbiome')?.division,
+    'BIO-LAB™ / Personalisation Research');
   assert.equal(isHouseDraftBuildFile('investor.html'), true);
   assert.equal(isHouseDraftBuildFile('story/index.html'), true);
   assert.equal(isHouseDraftBuildFile('flagships/dublin.html'), true);
   assert.equal(isHouseDraftBuildFile('security-vision.html'), false);
+});
+
+test('the legacy House URL redirects to the corporate hub and preserves the separate Story route', () => {
+  const redirect = renderLegacyHouseRedirect();
+  assert.equal(legacyHouseRedirectDestination(), '/#fsd-house-archive');
+  assert.equal(legacyHouseRedirectDestination('#brand/founder'), '/story');
+  assert.equal(legacyHouseRedirectDestination('#fsd-house-archive'), '/#fsd-house-archive');
+  assert.equal(legacyHouseRedirectDestination('#bad%ZZ'), '/story');
+  assert.match(redirect, /location\.replace\(destination\)/);
+  assert.match(redirect, /\/#fsd-house-archive/);
+  assert.match(redirect, /href="\/#fsd-house-archive">Open THE HOUSE/);
 });
 
 test('the homepage House archive links to destinations instead of rendering sibling page bodies', () => {
@@ -274,10 +293,11 @@ test('the homepage House archive links to destinations instead of rendering sibl
   const productionIndex = renderHouseDestinationIndex({ production: true });
   const developmentHrefs = [...developmentIndex.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
   const productionHrefs = [...productionIndex.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
-  const notReadyPages = HOUSE_PAGE_REGISTRY.filter(page => page.readiness === 'NOT_READY');
-  const publicPages = HOUSE_PAGE_REGISTRY.filter(page => page.readiness === 'PUBLIC');
+  const housePages = HOUSE_PAGE_REGISTRY.filter(page => page.division !== 'BIO-LAB™ / Personalisation Research');
+  const notReadyPages = housePages.filter(page => page.readiness === 'NOT_READY');
+  const publicPages = housePages.filter(page => page.readiness === 'PUBLIC');
 
-  assert.deepEqual(developmentHrefs, HOUSE_PAGE_REGISTRY.map(page => page.path));
+  assert.deepEqual(developmentHrefs, housePages.map(page => page.path));
   assert.deepEqual(productionHrefs, publicPages.map(page => page.path));
   assert.equal((productionIndex.match(/class="house-destination-index__link is-disabled"/g) || []).length, notReadyPages.length);
   assert.doesNotMatch(developmentIndex, /\/the-house\.html#/);
@@ -647,7 +667,6 @@ test('House navigation maps the public initiative homes and rollout details', ()
     'Autonomous Pop-Ups & Predictive Stock',
     'Mobile Testing Labs',
     'Local Micro-Manufacturing Workshop',
-    'Genetic & Microbiome Personalisation',
     'Performance-Linked Partnerships',
     'Security Provisions',
   ]);
@@ -663,14 +682,11 @@ test('House navigation maps the public initiative homes and rollout details', ()
   assert.equal(globalOperations.items[3].href, '/local-micro-manufacturing.html');
   assert.equal(globalOperations.items[3].kind, 'initiative');
   assert.equal(globalOperations.items[3].status, 'Strategic concept');
-  assert.equal(globalOperations.items[4].href, '/genetic-microbiome.html');
-  assert.equal(globalOperations.items[4].kind, 'initiative');
+  assert.equal(globalOperations.items[4].href, '/performance-partnerships.html');
   assert.equal(globalOperations.items[4].status, 'Strategic concept');
-  assert.equal(globalOperations.items[5].href, '/performance-partnerships.html');
-  assert.equal(globalOperations.items[5].status, 'Strategic concept');
-  assert.equal(globalOperations.items[6].href, '/security-vision.html');
-  assert.equal(globalOperations.items[6].kind, 'initiative');
-  assert.equal(globalOperations.items[6].status, 'Strategic expansion; not operational');
+  assert.equal(globalOperations.items[5].href, '/security-vision.html');
+  assert.equal(globalOperations.items[5].kind, 'initiative');
+  assert.equal(globalOperations.items[5].status, 'Strategic expansion; not operational');
   assert.ok(globalOperations.items.every(item => item.href.endsWith('.html')));
   assert.equal(investor.href, '/investor.html');
   assert.equal(investor.navigationUnavailable, false);
@@ -763,25 +779,37 @@ test('Local Micro-Manufacturing is an initiative without claiming live productio
 });
 
 test('Genetic & Microbiome Personalisation is a research initiative, not a health service', () => {
-  const house = menu.find(item => item.id === 'house');
-  const globalOperations = house?.groups.find(group => group.id === 'global-vision-operations');
-  const research = globalOperations?.items.find(item => item.title === 'Genetic & Microbiome Personalisation');
+  const bioLab = menu.find(item => item.id === 'bio-lab');
+  const research = bioLab?.groups.flatMap(group => group.items)
+    .find(item => item.title === 'Genetic & Microbiome Personalisation');
+  const globalOperations = menu.find(item => item.id === 'house')
+    ?.groups.find(group => group.id === 'global-vision-operations');
+  const conceptRecord = HOUSE_PAGE_REGISTRY.find(page => page.id === 'genetic-microbiome');
   const pagePath = new URL('../public/genetic-microbiome.html', import.meta.url);
   const page = readFileSync(pagePath, 'utf8');
 
   assert.ok(existsSync(pagePath));
+  assert.ok(research);
   assert.equal(research?.kind, 'initiative');
   assert.equal(research?.href, '/genetic-microbiome.html');
   assert.equal(research?.status, 'Strategic concept');
   assert.notEqual(research?.navigationUnavailable, true);
+  assert.equal(globalOperations?.items.some(item => item.title === 'Genetic & Microbiome Personalisation'), false);
+  assert.equal(conceptRecord?.division, 'BIO-LAB™ / Personalisation Research');
+  assert.equal(conceptRecord?.readiness, 'PUBLIC');
   assert.match(page, /<title>FSD \| Genetic &amp; Microbiome Personalisation<\/title>/);
+  assert.match(page, /data-fsd-division="BIO-LAB™" data-fsd-section="Personalisation Research"/);
+  assert.match(page, /aria-label="Breadcrumb"/);
+  assert.match(page, /BIO-LAB™ Innovation Hub/);
+  assert.match(page, /Twelve strategic concepts/);
+  assert.match(page, /FSD \/ BIO-LAB™ \/ Personalisation Research/);
   assert.match(page, /Status:<\/strong> Strategic research concept; no service is available\./);
   assert.match(page, /strict privacy protections and appropriate clinical oversight/);
   assert.match(page, /No genetic or microbiome testing, data analysis, or personalised health guidance is represented as currently available/);
   assert.match(page, /No sample collection is operating/);
   assert.match(page, /No clinical partnership is identified on this page/);
   assert.match(page, /No claim is made that DNA predicts injury or optimises training/);
-  assert.match(research?.description || '', /No testing, sample collection, data analysis, or personalised health guidance is available/);
+  assert.match(research?.description || '', /No testing, sample collection, data analysis or personalised health guidance is available/);
   assert.doesNotMatch(page, /\[cite:\s*\d+\]|Concept for exploration|Design Prototype|clinical advice is available/i);
 });
 

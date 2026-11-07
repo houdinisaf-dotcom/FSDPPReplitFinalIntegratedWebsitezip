@@ -3,9 +3,10 @@
   --fsd-campaign-ink: #111318;
   --fsd-campaign-black: #0a0a0a;
   --fsd-campaign-volt: #dfff45;
+  --fsd-campaign-volt-light: #eaff8c;
   --fsd-campaign-paper: #f2f0eb;
   --fsd-campaign-white: #fff;
-  --fsd-placeholder-gold: #dfff45;
+  --fsd-placeholder-accent: var(--fsd-campaign-volt);
   --fsd-campaign-muted: #777a79;
   --fsd-ink: #111318;
   --fsd-ink-raised: #191b20;
@@ -14,8 +15,8 @@
   --fsd-porcelain: #f2f0eb;
   --fsd-muted: #a8a8a3;
   --fsd-rule: rgb(17 19 24 / 14%);
-  --fsd-champagne: #dfff45;
-  --fsd-champagne-light: #eaff8c;
+  --fsd-champagne: #d4af37;
+  --fsd-champagne-light: #e4cf9f;
   --fsd-display: "Barlow Condensed", "DM Sans", sans-serif;
   --fsd-body: "DM Sans", sans-serif;
   --fsd-glass-solid: #111318;
@@ -683,7 +684,7 @@ html { scrollbar-color: #777b7e #111318; }
 
 /* Honest image placeholders use the new signal colour without changing their copy. */
 .fsd-image-placeholder {
-  --fsd-placeholder-gold: #dfff45;
+  --fsd-placeholder-accent: var(--fsd-campaign-volt);
   border-color: rgb(223 255 69 / 34%);
   background: #111318;
 }

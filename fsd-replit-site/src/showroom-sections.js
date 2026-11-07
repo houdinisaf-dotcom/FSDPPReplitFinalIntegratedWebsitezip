@@ -91,6 +91,11 @@ export function beyondProductSection() {
       group: 'TOGETHER & TOMORROW',
       concepts: [
         ['Performance-Linked Partnerships', 'STRATEGIC CONCEPT', 'No specific partner, live testing programme, or connected enquiry channel is represented.', '/performance-partnerships.html'],
+      ],
+    },
+    {
+      group: 'PERSONALISATION RESEARCH',
+      concepts: [
         ['Genetic & Microbiome Personalisation', 'STRATEGIC CONCEPT · RESEARCH FRAMEWORK', 'No testing, sample collection, analysis, or personalised health guidance is available.', '/genetic-microbiome.html'],
       ],
     },
@@ -251,6 +256,7 @@ export function initCatalogueNavigation() {
     if (!hash?.startsWith('#')) return null;
     const target = document.getElementById(decodeURIComponent(hash.slice(1)));
     if (!target) return null;
+    if (target instanceof HTMLDetailsElement) target.open = true;
     for (let parent = target.parentElement; parent; parent = parent.parentElement) {
       if (parent instanceof HTMLDetailsElement) parent.open = true;
     }

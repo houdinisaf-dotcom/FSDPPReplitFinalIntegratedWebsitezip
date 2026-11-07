@@ -8,7 +8,7 @@ const publicPages = [
   ['autonomous-popups', '/autonomous-popups.html', 'Autonomous Pop-Ups & Predictive Stock', 'Global Vision & Operations'],
   ['mobile-testing-labs', '/mobile-testing-labs.html', 'Mobile Testing Labs', 'Global Vision & Operations'],
   ['local-micro-manufacturing', '/local-micro-manufacturing.html', 'Local Micro-Manufacturing', 'Global Vision & Operations'],
-  ['genetic-microbiome', '/genetic-microbiome.html', 'Genetic & Microbiome Personalisation', 'Global Vision & Operations'],
+  ['genetic-microbiome', '/genetic-microbiome.html', 'Genetic & Microbiome Personalisation', 'BIO-LAB™ / Personalisation Research'],
   ['security-vision', '/security-vision.html', 'Security Provisions', 'Global Vision & Operations'],
   ['investor-relations', '/investor.html', 'Investor Relations', 'Investor Relations', 'NOT_READY'],
   ['community-co-creation', '/community-co-creation.html', 'Community Co-Creation', 'Community & Culture'],
@@ -74,14 +74,12 @@ const byPath = new Map(HOUSE_PAGE_REGISTRY.map(page => [page.path, page]));
 const byDirectPath = byPath;
 
 export const HOUSE_DRAFT_BUILD_FILES = Object.freeze([
-  'the-house.html',
   'investor.html',
   'story/index.html',
   ...HOUSE_FLAGSHIP_DRAFTS.map(({ id }) => `flagships/${id}.html`),
 ]);
 
 const houseDraftPaths = new Set([
-  '/the-house.html',
   ...HOUSE_PAGE_REGISTRY
     .filter(page => page.readiness === 'NOT_READY')
     .map(page => page.path),

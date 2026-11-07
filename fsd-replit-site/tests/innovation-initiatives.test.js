@@ -15,6 +15,7 @@ test('all named initiatives are public and mapped to their approved platform hom
   assert.deepEqual(groups.bioLab.map(item => item.title), [
     'Adaptive Technical Fabrics',
     'Smart Apparel & NFC Authentication',
+    'Genetic & Microbiome Personalisation',
   ]);
   assert.deepEqual(groups.community.map(item => item.title), [
     'Community Co-Creation',
@@ -27,7 +28,6 @@ test('all named initiatives are public and mapped to their approved platform hom
     'Autonomous Pop-Ups & Predictive Stock',
     'Mobile Testing Labs',
     'Local Micro-Manufacturing',
-    'Genetic & Microbiome Personalisation',
   ]);
   for (const initiative of [...groups.bioLab, ...groups.community, ...groups.global]) {
     assert.ok(initiative.scope);
@@ -53,7 +53,7 @@ test('public initiative copy removes exploratory labels and retains safety and p
     .find(item => item.id === 'mobile-testing-labs');
   const manufacturing = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
     .find(item => item.id === 'local-micro-manufacturing');
-  const genetics = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).global
+  const genetics = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).bioLab
     .find(item => item.id === 'genetic-microbiome');
   const circular = JSON.parse(JSON.stringify(context.window.FSDInnovationInitiatives)).community
     .find(item => item.id === 'circular-trade-in');

@@ -61,7 +61,7 @@ test('featured records no longer depend on having a photo and placeholder styles
   const featuredSource = readFileSync(new URL('../src/showroom-sections.js', import.meta.url), 'utf8');
   assert.doesNotMatch(featuredSource, /productsWithUsableImages\.includes/);
   const css = readFileSync(new URL('../src/image-placeholders.css', import.meta.url), 'utf8');
-  assert.match(css, /--fsd-placeholder-gold:\s*#D4AF37/i);
+  assert.match(css, /--fsd-placeholder-accent:\s*#D4AF37/i);
   assert.match(css, /background:\s*#0A0A0A/i);
   assert.match(css, /shield-refined\.png/);
   assert.match(css, /Space Mono.*ui-monospace/);

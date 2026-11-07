@@ -1,5 +1,5 @@
 .fsd-image-placeholder {
-  --fsd-placeholder-gold: #D4AF37;
+  --fsd-placeholder-accent: #D4AF37;
   position: relative;
   isolation: isolate;
   display: grid;
@@ -46,7 +46,7 @@
 }
 
 .fsd-image-placeholder__mark {
-  color: var(--fsd-placeholder-gold);
+  color: var(--fsd-placeholder-accent);
   font: 700 8px/1.4 Manrope, sans-serif;
   letter-spacing: .2em;
   text-transform: uppercase;
@@ -67,7 +67,7 @@
 }
 
 .fsd-image-placeholder__note {
-  color: var(--fsd-placeholder-gold);
+  color: var(--fsd-placeholder-accent);
   font: 600 8px/1.4 "Space Mono", ui-monospace, monospace;
   letter-spacing: .12em;
 }
@@ -358,13 +358,13 @@
     linear-gradient(145deg, #202321, #111413 62%, #090b0b);
 }
 #dialog-body .fsd-image-placeholder .fsd-image-placeholder__mark,
-#dialog-body .fsd-image-placeholder .fsd-image-placeholder__variant { color: var(--fsd-placeholder-gold); }
+#dialog-body .fsd-image-placeholder .fsd-image-placeholder__variant { color: var(--fsd-placeholder-accent); }
 #dialog-body .fsd-image-placeholder .fsd-image-placeholder__title { color: #eff1e9; }
 
 .catalogue-selector__thumb { position: relative; }
 .catalogue-variant-image-placeholder { z-index: 2; }
 .fsd-asset-slot > img { width: 100%; height: 100%; object-fit: cover; }
-.fsd-asset-slot.fsd-image-placeholder .fsd-asset-slot-kicker { color: var(--fsd-placeholder-gold); }
+.fsd-asset-slot.fsd-image-placeholder .fsd-asset-slot-kicker { color: var(--fsd-placeholder-accent); }
 .fsd-asset-slot.fsd-image-placeholder .fsd-asset-slot-content strong { color: #f2f3ed; }
 .fsd-product-row__placeholder .fsd-image-placeholder__title {
   display: -webkit-box;

@@ -60,9 +60,15 @@
       "title": "Genetic & Microbiome Personalisation",
       "primaryDivision": "BIO-LAB™",
       "primarySection": "Personalisation Research",
-      "crossLinks": [],
+      "crossLinks": [
+        {
+          "division": "BIO-LAB™",
+          "section": "INNOVATION HUB",
+          "href": "/#innovation-hub"
+        }
+      ],
       "href": "/genetic-microbiome.html",
-      "summary": "A research concept covering scientific validity, possible training and wellbeing applications, ethics, consent, privacy, regulation and a development pathway. No testing or clinical service is available."
+      "summary": "A research concept covering scientific validity, possible training and wellbeing applications, ethics, consent, privacy, regulation and a development pathway. No testing, sample collection, data analysis or personalised health guidance is available."
     },
     {
       "id": "local-micro-manufacturing",

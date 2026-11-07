@@ -108,10 +108,17 @@ test('the brand story has a direct path route while retaining hash-route compati
   });
 });
 
-test('legacy House hashes no longer resolve to a shared House-page view', () => {
+test('the legacy House URL resolves to the corporate hub, not the Founder Story', () => {
   assert.deepEqual(routeFromLocation({ pathname: FSD_HOUSE_PAGE_PATH, hash: '' }), {
-    view: 'home',
-    target: null,
+    view: 'house',
+    target: 'house-hub',
+  });
+  assert.deepEqual(resolveFsdRoute({
+    menu: { id: 'house' },
+    group: { id: 'house-hub', href: FSD_HOUSE_PAGE_PATH },
+  }), {
+    view: 'house',
+    target: 'house-hub',
   });
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'house' },
@@ -128,6 +135,17 @@ test('legacy House hashes no longer resolve to a shared House-page view', () => 
   }), {
     view: 'home',
     target: null,
+  });
+});
+
+test('the House archive hash is a direct corporate-hub destination, separate from Our Story', () => {
+  assert.deepEqual(routeFromLocation({ pathname: '/', hash: '#fsd-house-archive' }), {
+    view: 'house',
+    target: 'house-hub',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/story', hash: '' }), {
+    view: 'story',
+    target: 'our-story',
   });
 });
 

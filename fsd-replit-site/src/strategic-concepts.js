@@ -36,6 +36,7 @@ export function renderStrategicConceptIndex() {
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHtml(concept.title)}</strong>
       <small>${escapeHtml(concept.primaryDivision)} / ${escapeHtml(concept.primarySection)}</small>
+      ${concept.crossLinks.map(link => `<small class="fsd-innovation-card-crosslink">Also in: ${escapeHtml(link.division)} / ${escapeHtml(link.section)}</small>`).join('')}
       <small>${escapeHtml(concept.summary)}</small>
     </span>
     <span class="fsd-innovation-card-arrow" aria-hidden="true">↗</span>

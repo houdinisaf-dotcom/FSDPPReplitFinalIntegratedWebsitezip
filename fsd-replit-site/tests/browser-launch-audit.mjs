@@ -48,7 +48,8 @@ try {
   })()`);
   await wait(`!document.querySelector('#product-dialog').open && document.activeElement.matches('[data-bag-open]')`, 'queued old close cannot clear a newly opened product or its focus target');
   await send('Page.navigate', { url: base + '/the-house.html' });
-  await wait(`location.pathname === '/the-house.html' && document.querySelector('meta[property="og:title"]')`);
+  await wait(`location.pathname === '/' && location.hash === '#fsd-house-archive' && document.querySelector('#fsd-house-archive')?.open`, 'legacy THE HOUSE route opens the corporate hub');
+  assert.match(await evaluate(`document.querySelector('#fsd-house-archive').textContent`), /THE HOUSE/);
   assert.ok(await evaluate(`document.querySelector('meta[name="description"]').content.length > 15`));
   await send('Page.navigate', { url: base + '/investor.html' });
   await wait(`location.pathname === '/investor.html' && document.querySelector('meta[property="og:title"]')`);

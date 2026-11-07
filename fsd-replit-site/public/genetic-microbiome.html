@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Genetic & Microbiome Personalisation is a long-horizon research initiative. No testing, sample collection, data analysis, or personalised health guidance is available.">
+  <meta property="article:section" content="BIO-LAB™ / Personalisation Research">
   <title>FSD | Genetic &amp; Microbiome Personalisation</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
@@ -64,6 +65,28 @@
       letter-spacing: .24em;
       text-transform: uppercase;
     }
+
+    .fsd .breadcrumbs,
+    .fsd .related-links {
+      width: min(calc(100% - 48px), 1000px);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: #aaa08e;
+      font: 500 .7rem/1.7 "IBM Plex Mono", ui-monospace, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .fsd .breadcrumbs { padding: 18px 0 0; }
+    .fsd .related-links { padding: 28px 0; border-top: 1px solid rgb(205 181 137 / 24%); }
+    .fsd .breadcrumbs a,
+    .fsd .related-links a { color: #cdb589; text-decoration: none; }
+    .fsd .breadcrumbs a:hover,
+    .fsd .related-links a:hover { color: #f0d9a2; text-decoration: underline; }
+    .fsd .breadcrumbs [aria-current="page"] { color: #e9e1d0; }
 
     .fsd .hero {
       padding: 90px 24px 56px;
@@ -207,9 +230,14 @@
 </head>
 <body>
   <div data-fsd-standalone-navigation></div>
-  <main class="fsd">
+  <main class="fsd" data-fsd-division="BIO-LAB™" data-fsd-section="Personalisation Research" data-fsd-concept-id="genetic-microbiome-personalisation">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">FSD</a><span aria-hidden="true">/</span>
+      <a href="/#innovation-hub">BIO-LAB™</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Personalisation Research</span>
+    </nav>
     <header class="hero" aria-labelledby="genetic-microbiome-title">
-      <div class="tag">FSD / Global Vision · Science &amp; Data</div>
+      <div class="tag">FSD / BIO-LAB™ / Personalisation Research</div>
       <h1 id="genetic-microbiome-title">Genetic &amp; Microbiome Personalisation</h1>
       <p class="hero-intro">Long-horizon research. Responsible science. Clear safeguards.</p>
       <p>This initiative assesses research questions only. No genetic or microbiome testing, sample collection, data analysis, or personalised health guidance is available.</p>
@@ -268,9 +296,14 @@
       </div>
     </section>
     <hr>
+    <nav class="related-links" aria-label="Related FSD destinations">
+      <a href="/#innovation-hub">BIO-LAB™ Innovation Hub</a>
+      <span aria-hidden="true">/</span>
+      <a href="/#fsd-strategic-concepts">Twelve strategic concepts</a>
+    </nav>
     <footer class="page-footer">
-      <div class="tag">FSD · Fitness &amp; Self-Defense</div>
-      <p class="small">© FSD Global Operations. All rights reserved.</p>
+      <div class="tag">FSD · BIO-LAB™</div>
+      <p class="small">© FSD Fitness &amp; Self-Defence. All rights reserved.</p>
     </footer>
   </main>
   <script type="module" src="/src/standalone-navigation.js"></script>

@@ -1,6 +1,6 @@
 # THE HOUSE — route-by-route content and media readiness
 
-**Scope:** Existing House destinations only. The approved homepage, SHOP/catalogue, brand marks, navigation architecture, and mega-menu are unchanged.
+**Scope:** 21 THE HOUSE destinations plus the adjacent BIO-LAB™ / Personalisation Research route in the shared readiness registry. The approved homepage, SHOP/catalogue, brand marks, navigation architecture, and mega-menu are unchanged.
 
 **Status key:** `PUBLIC` means the existing approved initiative disclosure may render in production. `NOT READY` means a designed, noindex internal draft is available in development and its production route is explicitly replaced by the site's 404 document. A text-led abstract hero is the public fallback; no unapproved image is shown.
 
@@ -23,7 +23,7 @@
 | Global Vision & Operations | Autonomous Pop-Ups & Predictive Stock | `/autonomous-popups.html` | Existing text-led abstract hero; no approved House image recorded | Existing structured retail/inventory framework and safeguards preserved | No venues/partners, event schedule, forecasting system, online stock integration, click-and-collect, or location service confirmed | Passed 12 viewport browser matrix | **PUBLIC** — operating/rollout initiative; “autonomous” remains data-informed planning, not unattended retail |
 | Global Vision & Operations | Mobile Testing Labs | `/mobile-testing-labs.html` | Existing text-led abstract hero; no approved House image recorded | Existing testing framework, consent safeguards, and non-biometric scope preserved | No unit, venue, test, provider, trial, result, or data collection is live; no biometric tracking/data claim | Passed 12 viewport browser matrix | **PUBLIC** — operating/rollout initiative; no live testing service represented |
 | Global Vision & Operations | Local Micro-Manufacturing | `/local-micro-manufacturing.html` | Existing text-led abstract hero; no approved House image recorded | Existing small-batch production framework and conditional capability layout preserved | No partner, hub, site, service, custom order, verified environmental impact, or measured outcome | Passed 12 viewport browser matrix | **PUBLIC** — operating/rollout initiative; production location/service not live |
-| Global Vision & Operations | Genetic & Microbiome Personalisation | `/genetic-microbiome.html` | Existing text-led abstract hero; no approved House image recorded | Existing research framework and clinical/privacy boundaries preserved | No testing, sample collection, data analysis, personalised health guidance, clinical partner, or individual health claim | Passed 12 viewport browser matrix | **PUBLIC** — research initiative; no service available |
+| BIO-LAB™ / Personalisation Research | Genetic & Microbiome Personalisation | `/genetic-microbiome.html` | Existing text-led abstract hero; no approved image recorded | Existing research framework and clinical/privacy boundaries preserved | No testing, sample collection, data analysis, personalised health guidance, clinical partner, or individual health claim | Passed 12 viewport browser matrix | **PUBLIC** — research initiative; no service available |
 | Global Vision & Operations | Security Provisions | `/security-vision.html` | Existing text-led abstract hero; no approved House image recorded | Existing strategic expansion disclosure and conditional capability areas retained; publication language remains proposed | No active tender, contract, deployed staff, current service, or confirmed SIA Approved Contractor status; corporate structuring, applicable SIA status, insurance, and legal compliance remain gates | Passed 12 viewport browser matrix | **PUBLIC** — proposed expansion, not an operating service |
 | Investor Relations | Investor Relations | `/investor.html` | Existing text-led editorial hero; no approved House image recorded | Existing dossier remains a noindex development draft; proposed figures are not included in the production build | UK legal review and approval of proposed investor figures/disclosures; genuine approved documents, announcements, and enquiry route if intended | Passed 12 viewport browser matrix | **NOT READY** — development draft only; production blocked |
 | Community & Culture | Community Co-Creation | `/community-co-creation.html` | Existing text-led abstract hero; no approved House image recorded | Existing structured framework and participation, privacy, consent, and ownership safeguards preserved | No workshops, trials, forums, portal, submission, or participant-data collection open; no events or testimonials | Passed 12 viewport browser matrix | **PUBLIC** — operating/rollout initiative; no participation channel open |
@@ -33,10 +33,10 @@
 
 ## Summary
 
-- Existing routes discovered: **22**.
+- Existing routes discovered: **22** (21 THE HOUSE destinations and one adjacent BIO-LAB™ research page).
 - Structurally completed: **22** (development-only layout for all not-ready destinations; page-specific editorial extensions for sparse approved initiatives).
 - Ready for production publication: **15** (approved initiative disclosures/concept framing only).
 - Awaiting content approval / blocked in production: **7** (Founder Story, five Flagship pages, Investor Relations).
-- Approved House photography recorded: **0/22**; all pages use text-led abstract hero treatments until approved assets are supplied.
+- Approved House photography recorded: **0/21**; the adjacent BIO-LAB™ route also uses a text-led abstract hero until approved assets are supplied.
 - Responsive implementation: present; full 12-width browser matrix passed.
 - No new destinations, partners, locations, events, documents, finances, health claims, or imagery have been added.
