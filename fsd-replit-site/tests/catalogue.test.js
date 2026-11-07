@@ -34,7 +34,9 @@ import {
   renderBioLabPlaceholderPages,
   renderFlagshipPlaceholderPages,
   renderInnovationHubIndex,
+  renderStrategicConceptDetail,
 } from '../src/flagship-pages.js';
+import { renderStrategicConceptIndex } from '../src/strategic-concepts.js';
 import { renderHouseDestinationIndex } from '../src/house-pages/house-destination-index.js';
 import { renderHomepageFaq } from '../src/homepage-faq.js';
 
@@ -1048,7 +1050,8 @@ test('the complete public page excludes held imagery while retaining internal so
       renderSiteFooter,
       FSD_STORY_PATH: '/story',
       ourStorySection, flagshipPageHashes, renderFlagshipPlaceholderPages,
-      renderInnovationHubIndex, renderBioLabPlaceholderPages, renderHouseDestinationIndex,
+      renderInnovationHubIndex, renderStrategicConceptIndex, renderStrategicConceptDetail,
+      renderBioLabPlaceholderPages, renderHouseDestinationIndex,
       renderHomepageFaq,
       HOUSE_PAGE_REGISTRY, shouldDisableHouseHref,
       renderHardwareForgePreview: () => '',

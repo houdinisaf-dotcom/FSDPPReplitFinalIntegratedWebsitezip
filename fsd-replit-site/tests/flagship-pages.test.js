@@ -45,7 +45,7 @@ test('pending media uses labeled responsive placeholders rather than unapproved 
   assert.match(html, /VIEW SMART APPAREL INITIATIVE/);
   assert.match(html, /href="#smart-apparel-nfc"/);
   assert.match(html, /FSD BIO-LAB™ \/ PROPOSED CONCEPT/);
-  assert.match(html, /Low-footprint modular training, retail, and community infrastructure/);
+  assert.match(html, /Modular fitness\. Retail\. Education\. Community\./);
   assert.match(html, /href="\/fsd-pods\.html"/);
   assert.doesNotMatch(html, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.doesNotMatch(html, /<img\b|data:image\//i);

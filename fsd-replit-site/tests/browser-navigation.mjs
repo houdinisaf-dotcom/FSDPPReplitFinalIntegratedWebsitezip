@@ -269,9 +269,9 @@ try {
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundPosition'), '50% 35%');
   assert.equal(await evaluate('getComputedStyle(document.querySelector(".fsd-home-hero__image")).backgroundSize'), 'cover');
   assert.doesNotMatch(
-    // Phase 8 explicitly labels its non-purchasable garment studies as concepts.
-    // That exception must not permit draft/status labels on real merchandise.
-    await evaluate('document.body.innerText.replace(document.querySelector("[data-garment-studies]")?.innerText || "", "")'),
+    // Garment studies and the twelve-concept directory carry explicit concept labels.
+    // Keep the remaining public product surfaces free of draft/status labels.
+    await evaluate('document.body.innerText.replace(document.querySelector("[data-garment-studies]")?.innerText || "", "").replace(document.querySelector("#fsd-strategic-concepts")?.innerText || "", "")'),
     /CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING|PLACEHOLDER/i,
   );
   await evaluate('window.__fsdAnalyticsEvents = []; window.umami = { track: (name, data) => window.__fsdAnalyticsEvents.push({ name, data }) };');
@@ -396,11 +396,11 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
   await click('#fsd-mega-menu [data-nav-group="3"]');
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "FSD Pods"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/fsd-pods.html" && document.querySelector("#fsd-pods-title")?.textContent.trim() === "FSD Pods"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Proposed strategic concept/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No FSD Pod, location, or service is currently represented as operational/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
@@ -410,11 +410,11 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"1\\"] span:nth-child(2)")?.textContent.trim() === "Autonomous Pop-Ups & Predictive Stock"');
   await click('#fsd-mega-menu [data-nav-item="1"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Autonomous Pop-Ups & Predictive Stock"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/autonomous-popups.html" && document.querySelector("#autonomous-popups-title")?.textContent.trim() === "Autonomous Pop-Ups & Predictive Stock"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Strategic concept; no retail location or service is live/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No pop-up locations, venue partnerships, event schedules, predictive-stock service, online stock integration, click-and-collect, or location-based availability are represented as operational or available/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
@@ -424,25 +424,25 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"2\\"] span:nth-child(2)")?.textContent.trim() === "Mobile Testing Labs"');
   await click('#fsd-mega-menu [data-nav-item="2"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Mobile Testing Labs"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/mobile-testing-labs.html" && document.querySelector("#mobile-testing-labs-title")?.textContent.trim() === "Mobile Testing Labs"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Strategic concept; no testing unit or service is live/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No mobile testing unit, venue, test, or data-collection activity is currently represented as operational/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
   await click('.fsd-primary-nav [data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
   await click('#fsd-mega-menu [data-nav-group="3"]');
-  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"3\\"] span:nth-child(2)")?.textContent.trim() === "Local Micro-Manufacturing"');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"3\\"] span:nth-child(2)")?.textContent.trim() === "Local Micro-Manufacturing Workshop"');
   await click('#fsd-mega-menu [data-nav-item="3"]');
-  await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Local Micro-Manufacturing"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Local Micro-Manufacturing Workshop"');
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/local-micro-manufacturing.html" && document.querySelector("#local-micro-manufacturing-title")?.textContent.trim() === "Local Micro-Manufacturing"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Strategic concept; no production site or service is live/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No local manufacturing hub, production site, or service is currently represented as operational/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
@@ -452,19 +452,19 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"4\\"] span:nth-child(2)")?.textContent.trim() === "Genetic & Microbiome Personalisation"');
   await click('#fsd-mega-menu [data-nav-item="4"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Genetic & Microbiome Personalisation"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/genetic-microbiome.html" && document.querySelector("#genetic-microbiome-title")?.textContent.trim() === "Genetic & Microbiome Personalisation"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Strategic research concept; no service is available/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No genetic or microbiome testing, data analysis, or personalised health guidance is represented as currently available/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
   await click('.fsd-primary-nav [data-nav-primary="house"]');
   await waitFor('document.querySelector("#fsd-mega-menu").dataset.primary === "house" && !document.querySelector("#fsd-mega-menu").hidden');
   await click('#fsd-mega-menu [data-nav-group="3"]');
-  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"5\\"] span:nth-child(2)")?.textContent.trim() === "Security Provisions"');
-  await click('#fsd-mega-menu [data-nav-item="5"]');
+  await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"3\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"6\\"] span:nth-child(2)")?.textContent.trim() === "Security Provisions"');
+  await click('#fsd-mega-menu [data-nav-item="6"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Security Provisions"');
   assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic expansion; not operational/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
@@ -480,11 +480,11 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"5\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"] span:nth-child(2)")?.textContent.trim() === "Community Co-Creation"');
   await click('#fsd-mega-menu [data-nav-item="0"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Community Co-Creation"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/community-co-creation.html" && document.querySelector("#community-co-creation-title")?.textContent.trim() === "Community Co-Creation"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Strategic concept; no participation is open/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /does not offer workshop registration, product trials, or feedback submissions/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
@@ -494,11 +494,11 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"5\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"1\\"] span:nth-child(2)")?.textContent.trim() === "Performance-Linked Partnerships"');
   await click('#fsd-mega-menu [data-nav-item="1"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Performance-Linked Partnerships"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/performance-partnerships.html" && document.querySelector("#performance-partnerships-title")?.textContent.trim() === "Performance-Linked Partnerships"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Proposed strategic concept/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /No specific partner, facility, or live testing programme is identified on this page/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
@@ -508,11 +508,11 @@ try {
   await waitFor('document.querySelector("#fsd-mega-menu [data-nav-group=\\"5\\"]")?.getAttribute("aria-pressed") === "true" && document.querySelector("#fsd-mega-menu [data-nav-item=\\"2\\"] span:nth-child(2)")?.textContent.trim() === "Circular Trade-In Programme"');
   await click('#fsd-mega-menu [data-nav-item="2"]');
   await waitFor('document.querySelector(".fsd-feature-copy h3")?.textContent.trim() === "Circular Trade-In Programme"');
-  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd-feature-metadata")?.textContent'), /Status\s*Strategic concept/);
   assert.match(await evaluate('document.querySelector("#fsd-mega-menu .fsd-feature-cta")?.textContent.trim()'), /^VIEW INITIATIVE/);
   await click('#fsd-mega-menu .fsd-feature-cta');
   await waitFor('location.pathname === "/circular-trade-in.html" && document.querySelector("#circular-trade-in-title")?.textContent.trim() === "Circular Trade-In Programme"');
-  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Operating or rollout underway/);
+  assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /Strategic concept; no trade-in service is available/);
   assert.match(await evaluate('document.querySelector(".fsd .status")?.textContent'), /does not currently accept trade-in requests/);
   await send('Page.navigate', { url: `https://${domain}/` });
   await waitFor('!!document.querySelector(".fsd-primary-nav")');
@@ -769,11 +769,12 @@ try {
     if (item?.kind === 'category') return 'category';
     if (item?.href || group.href) return 'anchor';
     if (item?.sourceDivisionId || group.sourceDivisionId) return 'showcase';
+    if (!item && group.items?.length) return 'section';
     return 'preview';
   };
 
   const closeRouteAndReset = async () => {
-    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/enquiries.html" || location.pathname === "/story" || location.pathname.startsWith("/flagships/") || location.pathname === "/the-house.html" || location.pathname.startsWith("/__catalogue-preview/")')) {
+    if (await evaluate('location.pathname === "/investor.html" || location.pathname === "/enquiries.html" || location.pathname === "/story" || location.pathname.startsWith("/flagships/") || location.pathname === "/the-house.html" || location.pathname.startsWith("/__catalogue-preview/") || ["/circular-trade-in.html", "/community-co-creation.html", "/performance-partnerships.html", "/fsd-pods.html", "/autonomous-popups.html", "/mobile-testing-labs.html", "/local-micro-manufacturing.html", "/genetic-microbiome.html"].includes(location.pathname)')) {
       await send('Page.navigate', { url: `https://${domain}/` });
       await waitFor('!!document.querySelector(".fsd-primary-nav")');
     }
@@ -813,6 +814,21 @@ try {
       return;
     }
 
+    if ([
+      '/circular-trade-in.html',
+      '/community-co-creation.html',
+      '/performance-partnerships.html',
+      '/fsd-pods.html',
+      '/autonomous-popups.html',
+      '/mobile-testing-labs.html',
+      '/local-micro-manufacturing.html',
+      '/genetic-microbiome.html',
+    ].includes(destination)) {
+      await click(selector);
+      await waitFor(`location.pathname === ${JSON.stringify(destination)} && document.querySelector("main.fsd")`);
+      return;
+    }
+
     if (destination === '/story' || destination?.startsWith('/flagships/')) {
       await click(selector);
       await waitFor(`location.pathname === ${JSON.stringify(destination)}
@@ -842,6 +858,17 @@ try {
       assert.equal(await evaluate('document.querySelector(".draft-badge").textContent.includes("NOT FOR SALE")'), false);
       assert.equal(await evaluate('document.querySelectorAll("#edition-options [data-edition]").length'), 8);
       assert.equal(await evaluate('document.querySelectorAll("form, input, [data-add-to-cart], [data-purchase]").length'), 0);
+      return;
+    }
+
+    if (kind === 'section') {
+      const y = await evaluate('window.scrollY');
+      if (await evaluate(`document.querySelector(${JSON.stringify(selector)})?.getAttribute("aria-pressed") !== "true"`)) {
+        await click(selector);
+      }
+      await waitFor(`!document.querySelector("#fsd-mega-menu").hidden
+        && document.querySelector(${JSON.stringify(selector)})?.getAttribute("aria-pressed") === "true"`);
+      assert.equal(await evaluate('window.scrollY'), y);
       return;
     }
 
@@ -1195,7 +1222,15 @@ try {
   assert.equal(await evaluate('document.querySelector("#contact button").disabled'), true);
   assert.equal(await evaluate('document.querySelector(".showroom-concepts__unavailable")?.disabled'), true);
   assert.equal(await evaluate('document.querySelector(".showroom-concepts__unavailable")?.textContent.includes("Tactical Shield Membership")'), true);
-  assert.equal(await evaluate('document.querySelector(\'a[href="#tactical-shield-membership"]\')'), null);
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]")?.textContent.includes("TACTICAL SHIELD MEMBERSHIP")'), true);
+  assert.equal(await evaluate('document.querySelector("#fsd-mega-menu [data-nav-item=\\"0\\"]")?.dataset.navAvailable'), 'true');
+
+  await click('.fsd-primary-trigger[data-nav-primary="private-access"]');
+  await waitFor('!document.querySelector("#fsd-mega-menu").hidden');
+  await click('#fsd-mega-menu [data-nav-item="0"]');
+  await waitFor('location.hash === "#tactical-shield-membership" && document.querySelector("#fsd-strategic-concepts").open');
+  assert.equal(await evaluate('document.querySelector("#tactical-shield-membership") !== null'), true);
+  assert.equal(await evaluate('document.querySelector("#tactical-shield-membership form") === null && !Array.from(document.querySelectorAll("#tactical-shield-membership a")).some(anchor => /signup|register/i.test(anchor.href))'), true);
 
   // Escape closes only the top modal layer, then the underlying mega-menu.
   await click('.fsd-primary-trigger[data-nav-primary="hardware"]');

@@ -352,6 +352,7 @@ function makeUniverseGroups(divisions, products) {
       id: 'universe-community-development',
       title: 'COMMUNITY DEVELOPMENT',
       description: 'Community-led product and partnership concepts. Participation channels are not open.',
+      href: '#fsd-strategic-concepts',
       items: communityDevelopment,
     });
   }
@@ -772,6 +773,7 @@ export function createNavigationModel({
       description: 'Mapped Bio-Lab concepts and cross-linked community research.',
       sourceDivisionId: 'bio-lab',
       sourceGroupIndex: bioLabMenu.groups.length,
+      href: '#innovation-hub',
       items: bioLabConcepts.map(conceptItem),
     });
   }

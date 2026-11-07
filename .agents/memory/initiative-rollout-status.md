@@ -3,11 +3,11 @@ name: Innovation initiative rollout status
 description: Approved status and factual limits for public innovation initiatives.
 ---
 
-Rule: The user approved the public status “Operating or rollout underway” for the 11 named initiatives across Bio-Lab, The House & Universe, and Global Vision & Operations. Keep each initiative in its assigned home and use the source brief’s scopes, value pillars, rollout gates, and safeguards. Do not invent completed milestones, dates, owners, sites, or partners.
+The user's 2026-11-07 twelve-concept division map supersedes earlier “Operating or rollout underway” labels for every concept in that map. Present those twelve as proposed/strategic concepts, not live products, services, partners, sites, or operating capabilities. Preserve the specified primary division and cross-links; keep Fight Promotions standalone and all existing safeguards.
 
-**Why:** The uploaded brief names 11 initiatives and preserves important privacy, safety, commercial, and evidence limits. The status selection included no additional rollout details.
+**Why:** The user explicitly supplied a new twelve-concept map and required development-stage initiatives to be described accurately as concepts or proposed services, not as active operations.
 
-**How to apply:** Use active/rollout status for the 11 items while retaining their individual safeguards. Ask for verified details before adding dates, operating locations, partnerships, or additional initiatives. Keep unrelated product concepts separate.
+**How to apply:** Apply this status only to the mapped twelve, retaining their specific evidence, privacy, safety, consent, legal, and commercial gates. Earlier status approvals for unrelated Fight Promotions pages and other unmatched content remain unchanged.
 
 Smart Apparel & NFC Authentication is an active initiative, not a live NFC product or service. Authentication, a content portal, rewards, event access, and data collection are not represented as operating or available; NFC does not measure biometrics.
 

@@ -8,12 +8,7 @@ import { mountClientBag } from './bag.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { CATALOGUE_COLLECTIONS } from './catalogue-collections.js';
 import { seoEntryForPath } from './site-seo.js';
-import {
-  flagshipPageHashes,
-  renderBioLabPlaceholderPages,
-  renderInnovationHubIndex,
-  renderStrategicConceptDetail,
-} from './flagship-pages.js';
+import { flagshipPageHashes, renderBioLabPlaceholderPages, renderInnovationHubIndex, renderStrategicConceptDetail } from './flagship-pages.js';
 import { renderStrategicConceptIndex } from './strategic-concepts.js';
 import { mountStorefrontMotion } from './motion-runtime.js';
 import { installImageErrorFallbacks } from './image-placeholder.js';

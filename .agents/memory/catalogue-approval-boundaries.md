@@ -172,3 +172,9 @@ FSD Apex High-Waisted Compression Leggings is a separate active product, not a r
 **Why:** The product was supplied with its own external ID and £65 details; after being told its three named image files were absent, the user chose to add the listing now with placeholders.
 
 **How to apply:** Preserve both leggings records. While photos are absent, show three separate labeled placeholders for front, rear contour, and gold crest/waistband detail. Keep image URLs unmapped until actual files are present.
+
+The uploaded 86-entry FSD Master Product Catalogue is a separate concept portfolio, not a sale catalogue. Preserve its FSD-001–FSD-086 identifiers and source values, and keep it out of the existing storefront product records. It contains no structured variants or SKU fields; do not infer child SKUs from free-text colour descriptions.
+
+**Why:** Every source record is marked `on_sale_verified: false`, and the file does not define variant rows or SKU values.
+
+**How to apply:** Keep the register separate and non-transactional. Assign variant SKUs only after an authoritative structured variant matrix is supplied; do not alter checkout or existing storefront eligibility as part of this register.

@@ -30,6 +30,11 @@ The four dumbbell tier prices apply to complete 10kg–50kg set packages, not pa
 
 Colourways are grouped into one product record. Cross-listed categories and alternate names are preserved; only user-approved duplicates are merged. Publication decisions are explicit metadata, so renaming a held item cannot accidentally expose it. Only the two products already linked to the five starter images use those images. Other records display honest image-status placeholders until their concept imagery is approved and mapped. The separate design library is reference material, not a second product register.
 
+## Separate concept-product register and strategic concepts
+`src/data/master-product-register.json` is an unchanged copy of the uploaded 86-entry FSD Master Product Catalogue with the documented FSD-001–FSD-086 identifiers. All 86 source entries have `on_sale_verified: false`; the register is kept separate from the existing storefront catalogue and must not be treated as purchasable products. The source contains no structured variants or SKU values. Variant SKU generation therefore requires an explicit product ID and variant key; no option-level SKUs have been invented or assigned.
+
+`src/data/strategic-concepts.json` is the central map for the twelve approved development concepts. It defines each primary division, subsection, cross-link, truthful concept summary, and destination. Concepts remain proposed, not live services or sale products, unless independently verified.
+
 The design-reference archive is not rendered in the website. Its source image records and files remain in the project for internal review. STRIDE and supplement references remain withheld from public pages, and the publication-hold associations do not constitute approved product-to-image mappings.
 
 Run `npm test` for catalogue data and event-handler checks, and `npm run build` to validate the production bundle.

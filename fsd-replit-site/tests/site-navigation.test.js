@@ -408,7 +408,7 @@ test('Universe links to all four existing divisions without adding product recor
   assert.deepEqual(universe.groups.slice(0, 4).map(group => group.sourceDivisionId), ['apparel', 'bio-lab', 'hardware', 'global']);
   assert.deepEqual(universe.groups.slice(0, 4).map(group => group.items[0].kind), Array(4).fill('universe-division'));
   assert.ok(universe.groups.slice(0, 4).every(group => group.navigationUnavailable === true));
-  assert.ok(universe.groups.some(group => group.id === 'universe-community-development'));
+  assert.ok(universe.groups.some(group => group.id === 'universe-community-development' && group.href === '#fsd-strategic-concepts'));
   assert.ok(universe.groups.some(group => group.id === 'universe-strategic-concepts' && group.href === '#fsd-strategic-concepts'));
 });
 
@@ -514,6 +514,7 @@ test('Bio-Lab and Hardware reuse current division groups and product records', (
     'INNOVATION HUB',
     'MATERIALS, RESEARCH & CONNECTED PERFORMANCE',
   ]);
+  assert.equal(bioLab.groups[2].href, '#innovation-hub');
   assert.ok(bioLab.groups[0].items.length > 0);
   assert.equal(bioLab.groups[1].items[0].title, 'Browse Innovation Hub');
   assert.equal(bioLab.groups[1].href, '#innovation-hub');
@@ -690,7 +691,7 @@ test('FSD Pods is a public initiative page without claiming a live pod or locati
   assert.match(page, /<title>FSD \| FSD Pods<\/title>/);
   assert.match(page, /Status:<\/strong> Proposed strategic concept\./);
   assert.match(page, /No FSD Pod, location, or service is currently represented as operational\./);
-  assert.match(page, /modular, transportable architectural units/);
+  assert.match(page, /proposed modular concept for fitness, retail, education, and community spaces/);
   assert.doesNotMatch(page, /Concept for exploration|not a current product|exploratory concept/i);
 });
 

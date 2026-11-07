@@ -10,7 +10,11 @@ import {
   assertUniqueVariantSkus,
 } from '../src/data/product-register.js';
 import strategicConceptData from '../src/data/strategic-concepts.json' with { type: 'json' };
-import { STRATEGIC_CONCEPTS, renderStrategicConceptIndex } from '../src/strategic-concepts.js';
+import {
+  STRATEGIC_CONCEPTS,
+  conceptsForPlacement,
+  renderStrategicConceptIndex,
+} from '../src/strategic-concepts.js';
 import { primaryNavigation, createNavigationModel } from '../src/site-navigation.js';
 import { renderStrategicConceptDetail } from '../src/flagship-pages.js';
 import { products as registeredPublicProducts } from '../src/data/products.js';
@@ -108,4 +112,27 @@ test('each strategic concept has a navigation destination in its mapped primary 
       .find(candidate => candidate.title.toLocaleLowerCase() === concept.title.toLocaleLowerCase());
     assert.ok(item, `${concept.title} is discoverable in ${concept.primaryDivision}`);
   }
+});
+
+test('the specified strategic cross-links land in the existing division sections', () => {
+  assert.deepEqual(conceptsForPlacement('THE HOUSE', 'Flagships').map(concept => concept.id), [
+    'autonomous-popups-predictive-stock',
+    'fsd-pods',
+  ]);
+  assert.deepEqual(conceptsForPlacement('SHOP', 'Technical Innovation').map(concept => concept.id), [
+    'adaptive-technical-fabrics',
+    'smart-apparel',
+  ]);
+  assert.deepEqual(conceptsForPlacement('THE HOUSE', 'Community & Culture').map(concept => concept.id), [
+    'civic-response-auxiliary',
+    'fsd-circular-trade-in',
+    'tactical-shield-membership',
+  ]);
+  assert.deepEqual(conceptsForPlacement('BIO-LAB™', 'INNOVATION HUB').map(concept => concept.id), [
+    'community-co-creation',
+  ]);
+  assert.deepEqual(conceptsForPlacement('UNIVERSE', 'Community Development').map(concept => concept.id), [
+    'community-co-creation',
+    'performance-linked-partnerships',
+  ]);
 });
