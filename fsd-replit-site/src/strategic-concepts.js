@@ -31,7 +31,7 @@ export function conceptsForPlacement(division, section) {
 }
 
 export function renderStrategicConceptIndex() {
-  const cards = STRATEGIC_CONCEPTS.map((concept, index) => `<a class="fsd-innovation-card" href="${escapeHtml(concept.href)}" data-strategic-concept="${escapeHtml(concept.id)}">
+  const cards = STRATEGIC_CONCEPTS.map((concept, index) => `<a class="fsd-innovation-card fsd-innovation-card--${escapeHtml(concept.id)}" href="${escapeHtml(concept.href)}" data-strategic-concept="${escapeHtml(concept.id)}" data-primary-division="${escapeHtml(concept.primaryDivision)}">
     <span class="fsd-innovation-card-index">${String(index + 1).padStart(2, '0')}</span>
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHtml(concept.title)}</strong>

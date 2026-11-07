@@ -1236,3 +1236,76 @@ body.fsd-mobile-nav-open {
   .fsd-mega-heading { gap: 10px; }
   .fsd-mega-close { gap: 7px; font-size: 7px; }
 }
+
+/* SHOP opens as a considered visual index, not a dense link dump. */
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-heading {
+  align-items: end;
+  min-height: 78px;
+  margin-bottom: 25px;
+  padding-bottom: 17px;
+  border-bottom: 1px solid rgba(229,219,199,.13);
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-heading h2 {
+  font-size: clamp(27px, 3.5vw, 44px);
+  font-weight: 500;
+  letter-spacing: -.045em;
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-columns {
+  grid-template-columns: minmax(175px,.72fr) minmax(230px,1fr) minmax(380px,1.55fr);
+  gap: clamp(22px,3vw,48px);
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-column--groups,
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-column--items {
+  border-right-color: rgba(212,175,55,.16);
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-option {
+  min-height: 43px;
+  font-size: 11px;
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-card {
+  min-height: 310px;
+  grid-template-columns: minmax(0,1.15fr) minmax(170px,.85fr);
+  border-color: rgba(212,175,55,.22);
+  background: #17191b;
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media {
+  min-height: 310px;
+  background: #111315;
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media img {
+  object-fit: cover;
+  object-position: center 34%;
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media--product img { object-fit: contain; }
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy { padding: 24px; }
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy h3 {
+  font-size: clamp(18px, 1.5vw, 24px);
+  letter-spacing: -.035em;
+}
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy > p:not(.fsd-feature-kicker) { font-size: 11px; }
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-cta { margin-top: auto; }
+
+@media (max-width: 1120px) and (min-width: 901px) {
+  .fsd-mega-menu[data-primary="collections"] .fsd-nav-columns {
+    grid-template-columns: minmax(145px,.72fr) minmax(200px,1fr) minmax(300px,1.4fr);
+    gap: 20px;
+  }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-card { grid-template-columns: 1fr; }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media { min-height: 175px; }
+}
+
+@media (max-width: 900px) {
+  .fsd-mega-menu[data-primary="collections"] .fsd-mega-heading {
+    min-height: 58px;
+    margin-bottom: 12px;
+    padding-bottom: 11px;
+  }
+  .fsd-mega-menu[data-primary="collections"] .fsd-mega-heading h2 { font-size: 25px; }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-card { min-height: 0; }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media,
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media--unmapped {
+    height: clamp(205px, 34vh, 300px);
+    min-height: 205px;
+  }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-copy { padding: 19px; }
+}

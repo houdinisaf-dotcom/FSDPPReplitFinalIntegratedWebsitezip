@@ -38,11 +38,11 @@ export function HardwareEditorialSection({ onOpenHardware }) {
         <h2 id="hardware-editorial-title">
           ENGINEERED FOR<br />THE DEMANDS OF<br /><span>PERFORMANCE.</span>
         </h2>
-        <p>Equipment that earns its place in your training.</p>
+        <p className="showroom-engineering-lede">A considered equipment range for strength work, combat practice and recovery. Product details remain subject to the approved catalogue.</p>
         <ol className="showroom-engineering-list">
-          <li><span>01</span> Strength equipment · dumbbell collections</li>
-          <li><span>02</span> Boxing and combat equipment</li>
-          <li><span>03</span> Recovery equipment</li>
+          <li><span>01 / LOAD</span> Strength equipment · dumbbell collections</li>
+          <li><span>02 / PRACTICE</span> Boxing and combat equipment</li>
+          <li><span>03 / RESET</span> Recovery equipment</li>
         </ol>
         <button
           className="showroom-engineering-link"
@@ -56,8 +56,8 @@ export function HardwareEditorialSection({ onOpenHardware }) {
       <figure className="showroom-engineering-media">
         <HardwareFeatureMedia />
         <figcaption>
-          <span>FSD HARDWARE / PRODUCT PRESENTATION</span>
-          <span>APPROVED IMAGERY PENDING</span>
+          <span>FSD HARDWARE / RANGE OVERVIEW</span>
+          <span>PRODUCT-SPECIFIC APPROVED IMAGERY PENDING</span>
         </figcaption>
       </figure>
     </>

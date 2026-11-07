@@ -475,6 +475,165 @@ html { scrollbar-color: #777b7e #111318; }
   *, *::before, *::after { scroll-behavior: auto !important; }
 }
 
+/* Existing product photography stays whole-frame; this is a gallery, not a crop system. */
+[data-fsd-standalone-collection] #catalogue-grid .catalogue-card__shared-image img,
+[data-fsd-standalone-collection] #catalogue-grid .product-row__media img {
+  object-fit: contain;
+}
+#dialog-body .product-detail-image-zoom img,
+#dialog-body .product-detail-gallery__secondary-stage > img,
+#dialog-body .catalogue-selector__thumb img {
+  object-fit: contain;
+}
+#dialog-body .product-detail-gallery__feature-grid {
+  align-items: start;
+}
+#dialog-body .product-detail-image-stage,
+#dialog-body .product-detail-gallery__secondary-stage {
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.22), transparent 38%),
+    #e9e7e0;
+}
+#dialog-body .product-detail-gallery__secondary-stage > img {
+  width: 100%;
+  height: 100%;
+}
+#dialog-body .catalogue-selector__thumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 1px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #9b8c67 transparent;
+}
+#dialog-body .catalogue-selector__thumb {
+  flex: 0 0 clamp(76px,9vw,112px);
+  padding: 4px;
+  background: #eeece6;
+}
+#dialog-body .catalogue-selector__thumb img {
+  aspect-ratio: 4 / 5;
+  background: #e4e2db;
+}
+#dialog-body .fsd-gallery-tools {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  background: rgba(245,243,238,.96);
+  backdrop-filter: blur(10px);
+}
+@media (max-width:760px) {
+  #dialog-body .product-detail-gallery__feature-grid { grid-template-columns: minmax(0,1fr); }
+  #dialog-body .product-detail-gallery__secondary { display: grid !important; }
+  #dialog-body .product-detail-gallery__secondary-stage { aspect-ratio: 4 / 5; }
+}
+
+/* Twelve concepts remain mapped, but the directory has the cadence of an index. */
+.fsd-strategic-concept-index .fsd-innovation-card {
+  min-height: 190px;
+  padding: clamp(20px,2.7vw,34px) 6px;
+  background:
+    linear-gradient(135deg, rgba(223,255,69,.035), transparent 44%),
+    transparent;
+}
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n+2) {
+  padding-left: clamp(14px,2vw,28px);
+  border-left: 1px solid rgba(255,255,255,.1);
+  background: linear-gradient(135deg, rgba(200,170,114,.045), transparent 52%);
+}
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n+3) {
+  background: linear-gradient(135deg, rgba(174,187,177,.045), transparent 55%);
+}
+.fsd-strategic-concept-index .fsd-innovation-card[data-primary-division="BIO-LAB™"] .fsd-innovation-card-index {
+  color: #bdc9c0;
+}
+.fsd-strategic-concept-index .fsd-innovation-card[data-primary-division="THE HOUSE"] .fsd-innovation-card-index {
+  color: #d4af37;
+}
+.fsd-strategic-concept-index .fsd-innovation-card[data-primary-division="SHOP"] .fsd-innovation-card-index {
+  color: #dfff45;
+}
+.fsd-strategic-concept-index .fsd-innovation-card[data-primary-division="UNIVERSE"] .fsd-innovation-card-index {
+  color: #e4cf9f;
+}
+.fsd-strategic-concept-index .fsd-innovation-card[data-primary-division="PRIVATE ACCESS"] .fsd-innovation-card-index {
+  color: #f2f0eb;
+}
+@media (max-width:760px) {
+  .fsd-strategic-concept-index .fsd-innovation-card,
+  .fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n+2) {
+    min-height: 0;
+    padding: 21px 0;
+    border-left: 0;
+  }
+}
+
+/* Named BIO-LAB pages inherit a shared editorial system, each with its own emphasis. */
+.fsd-placeholder-page {
+  position: relative;
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(255,255,255,.025) 50%, transparent calc(50% + .5px)),
+    #111318;
+}
+.fsd-placeholder-page-header {
+  max-width: 1040px;
+  margin-bottom: clamp(28px,4vw,54px);
+  text-align: left;
+}
+.fsd-placeholder-page-header h2 {
+  max-width: 13ch;
+  font-size: clamp(42px,7.2vw,88px);
+  line-height: .91;
+}
+.fsd-placeholder-page-header .fsd-page-intro {
+  max-width: 64ch;
+  margin-left: 0;
+}
+.fsd-placeholder-page > .fsd-page-shell > .fsd-asset-slot--hero {
+  min-height: clamp(260px,38vw,510px);
+  aspect-ratio: 2.05 / 1;
+}
+.fsd-page-module-grid { gap: 1px; background: rgba(200,170,114,.17); }
+.fsd-page-module {
+  min-height: 250px;
+  padding: clamp(20px,2.8vw,36px);
+  border: 0;
+  background: #151719;
+}
+.fsd-page-module:nth-child(2n) { background: #101315; }
+.fsd-page-module-copy { min-height: 125px; }
+.fsd-page-module h3 { font-size: clamp(16px,1.6vw,21px); }
+.fsd-page-module .fsd-asset-slot {
+  aspect-ratio: 16 / 9;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 35px, rgba(200,170,114,.045) 36px 37px),
+    #111417;
+}
+.fsd-placeholder-page--adaptive-technical-fabrics .fsd-page-module-grid,
+.fsd-placeholder-page--smart-apparel-nfc .fsd-page-module-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.fsd-placeholder-page--innovation-fsd-vector-smartwatch .fsd-page-module-grid,
+.fsd-placeholder-page--innovation-fsd-aware-band .fsd-page-module-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.fsd-placeholder-page--innovation-graphene-infused-thermal-recovery-vests .fsd-page-module-grid .fsd-page-module:first-child {
+  grid-row: span 2;
+}
+.fsd-page-actions { justify-content: flex-start; gap: 10px; }
+.fsd-page-return { min-height: 48px; padding-inline: 18px; }
+.fsd-page-status { min-height: 48px; }
+@media (max-width:760px) {
+  .fsd-placeholder-page-header h2 { font-size: clamp(40px,12vw,62px); }
+  .fsd-placeholder-page > .fsd-page-shell > .fsd-asset-slot--hero { aspect-ratio: 1.2 / 1; }
+  .fsd-placeholder-page--adaptive-technical-fabrics .fsd-page-module-grid,
+  .fsd-placeholder-page--smart-apparel-nfc .fsd-page-module-grid,
+  .fsd-placeholder-page--innovation-fsd-vector-smartwatch .fsd-page-module-grid,
+  .fsd-placeholder-page--innovation-fsd-aware-band .fsd-page-module-grid,
+  .fsd-placeholder-page--innovation-graphene-infused-thermal-recovery-vests .fsd-page-module-grid {
+    grid-template-columns: minmax(0,1fr);
+  }
+  .fsd-placeholder-page--innovation-graphene-infused-thermal-recovery-vests .fsd-page-module-grid .fsd-page-module:first-child { grid-row: auto; }
+}
+
 /* Quick View uses the existing product dialog, not a second modal system. */
 .product-card { position: relative; }
 .catalogue-card__quick-view {

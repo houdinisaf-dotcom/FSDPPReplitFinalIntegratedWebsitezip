@@ -471,6 +471,86 @@
         width: min(calc(100% - 32px), 1000px);
       }
     }
+
+    .fsd .hero-asset-slot {
+      min-height: 420px;
+      justify-content: flex-start;
+      gap: 18px;
+      border-color: rgb(212 175 55 / 32%);
+      background:
+        linear-gradient(150deg, rgb(200 170 114 / 5%), transparent 52%),
+        #111315;
+    }
+    .fsd .hero-asset-slot::before,
+    .fsd .hero-asset-slot::after { display: none; }
+    .research-map {
+      position: relative;
+      display: grid;
+      width: 100%;
+      min-height: 270px;
+      place-items: center;
+      border: 1px solid rgb(212 175 55 / 14%);
+      background:
+        linear-gradient(90deg, transparent 49.8%, rgb(212 175 55 / 8%) 50%, transparent 50.2%),
+        linear-gradient(0deg, transparent 49.8%, rgb(212 175 55 / 8%) 50%, transparent 50.2%),
+        #0c0e0f;
+    }
+    .research-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .research-map svg path {
+      fill: none;
+      stroke: rgb(212 175 55 / 44%);
+      stroke-width: 1;
+      stroke-dasharray: 3 5;
+    }
+    .research-map svg circle {
+      fill: #131617;
+      stroke: rgb(212 175 55 / 58%);
+      stroke-width: 1;
+    }
+    .research-map__node {
+      position: absolute;
+      display: grid;
+      gap: 4px;
+      color: #d4af37;
+      font: 500 .56rem/1.2 "IBM Plex Mono", ui-monospace, monospace;
+      letter-spacing: .12em;
+    }
+    .research-map__node b {
+      color: #f0e5c6;
+      font-size: .58rem;
+      font-weight: 500;
+    }
+    .research-map__node--one { left: 6%; top: 45%; }
+    .research-map__node--two { left: 31%; top: 12%; }
+    .research-map__node--three { right: 9%; top: 45%; text-align: right; }
+    .research-map__node--four { left: 34%; bottom: 10%; }
+    .research-map__centre {
+      position: relative;
+      z-index: 1;
+      padding: 10px;
+      background: #0c0e0f;
+      color: #aaa08e;
+      font: 500 .55rem/1.55 "IBM Plex Mono", ui-monospace, monospace;
+      letter-spacing: .12em;
+      text-align: center;
+    }
+    .fsd .hero-asset-slot-copy {
+      max-width: 100%;
+      align-self: flex-start;
+      text-align: left;
+    }
+    .fsd .hero-asset-slot-copy strong { color: #d4af37; }
+    .fsd .hero-asset-slot-index { color: #c5b895; }
+    @media (max-width: 600px) {
+      .fsd .hero-asset-slot { min-height: 360px; padding: 17px; }
+      .research-map { min-height: 220px; }
+      .research-map__node { font-size: .48rem; }
+      .research-map__node b { font-size: .49rem; }
+      .research-map__node--one { left: 3%; }
+      .research-map__node--three { right: 3%; }
+      .research-map__node--two { left: 29%; }
+      .research-map__node--four { left: 32%; }
+    }
   </style>
 </head>
 <body>
@@ -490,10 +570,22 @@
       </div>
       <div class="hero-asset-slot" role="img" aria-label="Asset pending: approved FSD BIO-LAB research image for Genetic and Microbiome Personalisation">
         <span class="hero-asset-slot-index">BIO-LAB™ / RESEARCH 01</span>
-        <span class="hero-asset-slot-mark" aria-hidden="true">PERSONALISATION</span>
+          <div class="research-map" role="img" aria-label="Proposed research pathway: scope, evidence, governance, safeguards. No active study or testing service.">
+            <svg viewBox="0 0 420 260" aria-hidden="true">
+              <path d="M54 130H366M116 130l36-52m116 0 36 52m-188 0 36 52m116 0 36-52" />
+              <circle cx="54" cy="130" r="28"/><circle cx="174" cy="68" r="28"/>
+              <circle cx="294" cy="68" r="28"/><circle cx="366" cy="130" r="28"/>
+              <circle cx="174" cy="192" r="28"/><circle cx="294" cy="192" r="28"/>
+            </svg>
+            <span class="research-map__node research-map__node--one">01 <b>SCOPE</b></span>
+            <span class="research-map__node research-map__node--two">02 <b>EVIDENCE</b></span>
+            <span class="research-map__node research-map__node--three">03 <b>GOVERNANCE</b></span>
+            <span class="research-map__node research-map__node--four">04 <b>SAFEGUARDS</b></span>
+            <span class="research-map__centre">PROPOSED<br/>FRAMEWORK</span>
+          </div>
         <div class="hero-asset-slot-copy">
-          <strong>[ASSET PENDING]</strong>
-          <span>Approved FSD research imagery is not yet mapped to this page.</span>
+            <strong>RESEARCH CONCEPT / NOT ACTIVE</strong>
+            <span>Conceptual pathway only. No study, sample collection, testing, or analysis is operating.</span>
         </div>
       </div>
     </header>

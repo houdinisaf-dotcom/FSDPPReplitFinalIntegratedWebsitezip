@@ -27,7 +27,7 @@ export function HomeHero({ headingTag = 'h1' }) {
 
   return (
     <section
-      className="fsd-home-hero fsd-phase3-hero"
+      className={`fsd-home-hero fsd-phase3-hero fsd-phase3-hero--${active.id}`}
       aria-labelledby="fsd-home-title"
       data-hero-theme={active.id}
     >

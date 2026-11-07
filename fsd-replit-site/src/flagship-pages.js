@@ -360,7 +360,7 @@ function renderPage(page) {
       ? `<span class="fsd-page-status" aria-disabled="true">${escapeHTML(page.action)}</span>`
       : '';
 
-  return `<section class="fsd-placeholder-page" id="${escapeHTML(page.id)}" aria-labelledby="${escapeHTML(page.id)}-title">
+  return `<section class="fsd-placeholder-page fsd-placeholder-page--${escapeHTML(page.id)}" id="${escapeHTML(page.id)}" data-page-id="${escapeHTML(page.id)}" aria-labelledby="${escapeHTML(page.id)}-title">
     <div class="fsd-page-shell">
       <header class="fsd-placeholder-page-header">
         <p class="fsd-page-eyebrow">${escapeHTML(page.eyebrow)}</p>

@@ -939,6 +939,156 @@
   }
 }
 
+/* Campaign editions: one approved frame, four distinct editorial disciplines. */
+.fsd-phase3-hero {
+  --hero-signal: var(--fsd-campaign-volt, #dfff45);
+  --hero-copy-width: 58%;
+  --hero-image-focus: 63% 40%;
+}
+
+.fsd-phase3-hero .fsd-home-hero__asset {
+  object-position: var(--hero-image-focus);
+  transition: object-position 500ms ease, filter 380ms ease, opacity 380ms ease;
+}
+
+.fsd-phase3-hero .fsd-home-theme-label { color: var(--hero-signal); }
+.fsd-phase3-hero .fsd-home-kicker { color: rgba(255,255,255,.72); }
+.fsd-phase3-hero .fsd-home-kicker span { background: var(--hero-signal); }
+.fsd-phase3-hero .fsd-home-primary { background: var(--hero-signal); }
+.fsd-phase3-hero .fsd-home-switcher button[aria-pressed="true"] { border-bottom-color: var(--hero-signal); }
+.fsd-phase3-hero .fsd-home-switcher button[aria-pressed="true"] > span { color: var(--hero-signal); }
+
+.fsd-phase3-hero--heroes {
+  --hero-signal: var(--fsd-campaign-volt, #dfff45);
+  --hero-copy-width: 59%;
+  --hero-image-focus: 65% 38%;
+}
+.fsd-phase3-hero--heroes h1,
+.fsd-phase3-hero--heroes h2 { max-width: 790px; }
+
+.fsd-phase3-hero--stronger {
+  --hero-signal: var(--fsd-champagne-light, #e4cf9f);
+  --hero-copy-width: 54%;
+  --hero-image-focus: 73% 44%;
+}
+.fsd-phase3-hero--stronger .fsd-home-hero__asset { filter: saturate(.78) contrast(1.08); }
+.fsd-phase3-hero--stronger .fsd-home-hero__shade {
+  background:
+    linear-gradient(90deg, rgba(17,19,24,.98) 0%, rgba(17,19,24,.9) 35%, rgba(17,19,24,.48) 59%, rgba(17,19,24,.04) 84%),
+    linear-gradient(0deg, rgba(17,19,24,.9), transparent 55%);
+}
+.fsd-phase3-hero--stronger h1,
+.fsd-phase3-hero--stronger h2 { font-style: normal; font-weight: 700; letter-spacing: -.01em; }
+.fsd-phase3-hero--stronger h1 em,
+.fsd-phase3-hero--stronger h2 em { color: var(--fsd-champagne-light, #e4cf9f); }
+.fsd-phase3-hero--stronger .fsd-home-primary { color: #111318; }
+
+.fsd-phase3-hero--disciplined {
+  --hero-signal: #c6cbc8;
+  --hero-copy-width: 50%;
+  --hero-image-focus: 59% 35%;
+}
+.fsd-phase3-hero--disciplined .fsd-home-hero__asset { filter: grayscale(.68) contrast(1.1); }
+.fsd-phase3-hero--disciplined .fsd-home-hero__shade {
+  background:
+    linear-gradient(90deg, rgba(10,12,13,.99) 0%, rgba(10,12,13,.94) 38%, rgba(10,12,13,.58) 62%, rgba(10,12,13,.08) 86%),
+    linear-gradient(0deg, rgba(10,12,13,.86), transparent 48%);
+}
+.fsd-phase3-hero--disciplined h1,
+.fsd-phase3-hero--disciplined h2 { font-style: normal; font-weight: 600; letter-spacing: .005em; }
+.fsd-phase3-hero--disciplined h1 em,
+.fsd-phase3-hero--disciplined h2 em { color: #d2d7d4; }
+.fsd-phase3-hero--disciplined .fsd-home-primary { background: #d2d7d4; }
+
+.fsd-phase3-hero--together {
+  --hero-signal: var(--fsd-champagne, #d4af37);
+  --hero-copy-width: 64%;
+  --hero-image-focus: 69% 40%;
+}
+.fsd-phase3-hero--together .fsd-home-hero__asset { filter: saturate(.86) brightness(.91); }
+.fsd-phase3-hero--together .fsd-home-hero__shade {
+  background:
+    linear-gradient(90deg, rgba(17,19,24,.97) 0%, rgba(17,19,24,.83) 34%, rgba(17,19,24,.4) 59%, rgba(17,19,24,.04) 87%),
+    linear-gradient(0deg, rgba(17,19,24,.88), transparent 57%);
+}
+.fsd-phase3-hero--together h1,
+.fsd-phase3-hero--together h2 { font-style: normal; font-weight: 600; }
+.fsd-phase3-hero--together h1 em,
+.fsd-phase3-hero--together h2 em { color: var(--fsd-champagne-light, #e4cf9f); }
+.fsd-phase3-hero--together .fsd-home-primary { color: #111318; }
+
+.showroom-engineering--campaign .showroom-engineering-copy h2 span { color: var(--fsd-champagne-light,#e4cf9f); }
+.showroom-engineering--campaign .showroom-engineering-lede {
+  max-width: 48ch;
+  margin: 20px 0 27px;
+  color: #d0d0ca;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.showroom-engineering--campaign .showroom-engineering-list {
+  gap: 0;
+  border-top: 1px solid rgba(200,170,114,.22);
+}
+.showroom-engineering--campaign .showroom-engineering-list li {
+  min-height: 53px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom-color: rgba(200,170,114,.17);
+  color: #d8d6d0;
+  font-size: 11px;
+}
+.showroom-engineering--campaign .showroom-engineering-list li span {
+  min-width: 96px;
+  color: var(--fsd-champagne-light,#e4cf9f);
+  font-size: 8px;
+  letter-spacing: .13em;
+}
+.showroom-engineering--campaign .showroom-engineering-media {
+  min-height: clamp(430px,46vw,650px);
+  border-color: rgba(200,170,114,.25);
+  background:
+    repeating-linear-gradient(135deg, transparent 0 24px, rgba(200,170,114,.035) 25px 26px),
+    #141619;
+}
+.showroom-engineering--campaign .showroom-engineering-media > .fsd-image-placeholder {
+  display: grid;
+  place-content: center;
+  padding: clamp(28px,5vw,70px);
+  border: 0;
+  background: transparent;
+}
+.showroom-engineering--campaign .showroom-engineering-media > .fsd-image-placeholder::before { display: none; }
+.showroom-engineering--campaign .showroom-engineering-media figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: #c6b994;
+  font-size: 8px;
+  letter-spacing: .12em;
+}
+@media (max-width:760px) {
+  .showroom-engineering--campaign .showroom-engineering-media { min-height: 340px; }
+  .showroom-engineering--campaign .showroom-engineering-media figcaption { flex-direction: column; gap: 5px; }
+  .showroom-engineering--campaign .showroom-engineering-list li { align-items: flex-start; gap: 8px; }
+}
+
+@media (max-width: 760px) {
+  .fsd-phase3-hero--heroes { --hero-image-focus: 68% 36%; }
+  .fsd-phase3-hero--stronger { --hero-image-focus: 76% 40%; }
+  .fsd-phase3-hero--disciplined { --hero-image-focus: 61% 34%; }
+  .fsd-phase3-hero--together { --hero-image-focus: 70% 39%; }
+  .fsd-phase3-hero[data-hero-theme="stronger"] .fsd-home-hero__shade,
+  .fsd-phase3-hero[data-hero-theme="disciplined"] .fsd-home-hero__shade,
+  .fsd-phase3-hero[data-hero-theme="together"] .fsd-home-hero__shade {
+    background: linear-gradient(0deg, rgba(12,13,15,.99) 0%, rgba(12,13,15,.86) 39%, rgba(12,13,15,.22) 77%, rgba(12,13,15,.08) 100%);
+  }
+  .fsd-phase3-hero .fsd-home-switcher button[aria-pressed="true"] { background: rgba(255,255,255,.045); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-phase3-hero .fsd-home-hero__asset { transition: none; }
+}
+
 .fsd-home-experiences {
   padding: clamp(28px, 4vw, 58px) clamp(18px, 3.5vw, 52px) clamp(42px, 6vw, 82px);
   background: var(--fsd-campaign-ink, #111318);

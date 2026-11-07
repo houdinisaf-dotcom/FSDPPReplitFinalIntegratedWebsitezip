@@ -638,3 +638,74 @@
   }
   .private-enquiries__workspace { padding: 23px 17px; }
 }
+
+/* Access is a deliberate invitation, while its gates remain explicit. */
+.showroom-vip {
+  position: relative;
+  display: grid;
+  min-height: 380px;
+  align-content: center;
+  justify-items: start;
+  overflow: hidden;
+  padding: clamp(56px,8vw,112px) clamp(22px,8vw,124px);
+  border-top: 1px solid rgba(200,170,114,.2);
+  background:
+    linear-gradient(90deg, #111318 0 58%, rgba(17,19,24,.84) 100%),
+    repeating-linear-gradient(135deg, transparent 0 30px, rgba(200,170,114,.035) 31px 32px),
+    #111318;
+  color: var(--fsd-porcelain,#f1eee6);
+}
+.showroom-vip::after {
+  position: absolute;
+  top: 12%;
+  right: 10%;
+  width: clamp(130px,22vw,300px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(200,170,114,.25);
+  content: "";
+  pointer-events: none;
+  transform: rotate(45deg) scale(.82);
+}
+.showroom-vip > * { position: relative; z-index: 1; }
+.showroom-vip .section-kicker {
+  margin: 0 0 18px;
+  color: var(--fsd-champagne-light,#e4cf9f);
+  font-size: 9px;
+  letter-spacing: .2em;
+}
+.showroom-vip h2 {
+  margin: 0;
+  color: #f2f0eb;
+  font: 600 clamp(42px,7vw,90px)/.9 var(--fsd-display,"Barlow Condensed",sans-serif);
+  letter-spacing: -.015em;
+}
+.showroom-vip h2 em { color: var(--fsd-champagne-light,#e4cf9f); font-style: normal; }
+.showroom-vip > p:not(.section-kicker) {
+  max-width: 45ch;
+  margin: 21px 0;
+  color: #b9bab5;
+  font-size: 13px;
+  line-height: 1.75;
+}
+.showroom-vip .primary-btn {
+  min-height: 49px;
+  padding-inline: 18px;
+  border: 1px solid rgba(200,170,114,.5);
+  background: transparent;
+  color: #d8d6cf;
+  font-size: 9px;
+  letter-spacing: .14em;
+}
+.showroom-vip .primary-btn:disabled { opacity: .72; cursor: not-allowed; }
+.showroom-vip-status {
+  max-width: 58ch;
+  padding-left: 13px;
+  border-left: 1px solid var(--fsd-champagne,#d4af37);
+  color: #aaa99f !important;
+  font-size: 10px !important;
+}
+@media (max-width:760px) {
+  .showroom-vip { min-height: 410px; padding: 62px 22px; }
+  .showroom-vip::after { top: 12%; right: -5%; opacity: .6; }
+  .showroom-vip h2 { font-size: clamp(43px,12vw,68px); }
+}

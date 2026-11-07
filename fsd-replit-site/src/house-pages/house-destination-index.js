@@ -42,7 +42,8 @@ export function renderHouseDestinationIndex({ production = import.meta.env?.PROD
     const pages = HOUSE_PAGE_REGISTRY.filter(page => page.division === division);
     if (!pages.length) return '';
     const sectionId = `house-division-${index + 1}`;
-    return `<section class="house-destination-index__division" id="${sectionId}" aria-labelledby="${sectionId}-title">
+    return `<section class="house-destination-index__division" id="${sectionId}" data-house-division="${index + 1}" aria-labelledby="${sectionId}-title">
+      <p class="house-destination-index__index">FSD / THE HOUSE · ${String(index + 1).padStart(2, '0')}</p>
       <h3 id="${sectionId}-title">${escapeHtml(division)}</h3>
       <ul>${pages.map(page => `<li>${destinationMarkup(page, production)}</li>`).join('')}</ul>
     </section>`;
