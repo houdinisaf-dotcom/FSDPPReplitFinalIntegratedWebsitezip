@@ -334,6 +334,7 @@ export function mountStorefrontRuntime({ onRouteChange = () => {} } = {}) {
       mountModestFlowSelector({
         root: document.body,
         product: modestFlow.productData,
+        setComponents: modestFlow.productData.setComponents,
         variants: modestFlow.variants,
       });
     })

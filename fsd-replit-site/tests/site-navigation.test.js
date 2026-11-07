@@ -503,9 +503,16 @@ test('mega-menu image previews use only explicit single-image bindings', () => {
   assert.deepEqual(nexusFeature.imageSources, ['/fsd-assets/3daa9883cec9.webp']);
   assert.equal(existsSync(new URL('../public/fsd-assets/3daa9883cec9.webp', import.meta.url)), true);
 
+  const catalogueImagePath = /^\/(?:assets\/products|products)\/[a-z0-9/_-]+\.(?:webp|png|jpe?g)$/i;
   for (const [item, binding] of Object.entries(navigationAssetBindings)) {
-    assert.match(binding.src, /^\/fsd-assets\/[^/]+\.webp$/i, `${item} uses one standalone WebP`);
+    const assetLibraryImage = /^\/fsd-assets\/[^/]+\.webp$/i.test(binding.src);
+    assert.ok(assetLibraryImage || catalogueImagePath.test(binding.src), `${item} uses an approved public image path`);
     assert.equal(existsSync(new URL(`../public${binding.src}`, import.meta.url)), true, `${item} source exists`);
+    if (!assetLibraryImage) {
+      const record = products.find(product => product.name === (binding.sourceProductName || item));
+      assert.ok(record?.images?.some(image => image.src === binding.src), `${item} image is mapped in its exact product record`);
+      assert.equal(binding.presentation, 'product', `${item} is rendered in the product-image stage`);
+    }
   }
 
   for (const section of menu) {
@@ -514,8 +521,15 @@ test('mega-menu image previews use only explicit single-image bindings', () => {
         const feature = getNavigationFeature(section, groupIndex, itemIndex);
         assert.ok(feature.imageSources.length <= 1, `${section.label} / ${group.title} / ${feature.item} must not show a multi-image fallback`);
         for (const imagePath of feature.imageSources) {
-          assert.match(imagePath, /^\/fsd-assets\/[^/]+\.webp$/i);
+          assert.ok(
+            /^\/fsd-assets\/[^/]+\.webp$/i.test(imagePath) || catalogueImagePath.test(imagePath),
+            `${section.label} / ${group.title} / ${feature.item} must use a mapped public image`,
+          );
           assert.equal(existsSync(new URL(`../public${imagePath}`, import.meta.url)), true);
+          if (catalogueImagePath.test(imagePath)) {
+            assert.ok(products.some(product => product.images?.some(image => image.src === imagePath)),
+              `${imagePath} must remain an explicit catalogue image mapping`);
+          }
         }
       }
     }
@@ -802,6 +816,12 @@ test('Genetic & Microbiome Personalisation is a research initiative, not a healt
   assert.match(page, /<title>FSD \| Genetic &amp; Microbiome Personalisation<\/title>/);
   assert.match(page, /data-fsd-division="BIO-LAB™" data-fsd-section="Personalisation Research"/);
   assert.match(page, /aria-label="Breadcrumb"/);
+  assert.match(page, /class="hero-asset-slot" role="img"/);
+  assert.match(page, /\[ASSET PENDING\]/);
+  assert.match(page, /Approved FSD research imagery is not yet mapped to this page\./);
+  const visualSlot = page.match(/<div class="hero-asset-slot"[\s\S]*?<\/div>\s*<\/header>/)?.[0];
+  assert.ok(visualSlot);
+  assert.doesNotMatch(visualSlot, /<img\b/);
   assert.match(page, /BIO-LAB™ Innovation Hub/);
   assert.match(page, /Twelve strategic concepts/);
   assert.match(page, /FSD \/ BIO-LAB™ \/ Personalisation Research/);

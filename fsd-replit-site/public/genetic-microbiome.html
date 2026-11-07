@@ -89,15 +89,101 @@
     .fsd .breadcrumbs [aria-current="page"] { color: #e9e1d0; }
 
     .fsd .hero {
-      padding: 90px 24px 56px;
-      text-align: center;
+      width: min(calc(100% - 48px), 1160px);
+      margin: 0 auto;
+      padding: clamp(48px, 7vw, 96px) 0 64px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(280px, .82fr);
+      gap: clamp(28px, 6vw, 84px);
+      align-items: center;
+      text-align: left;
+    }
+
+    .fsd .hero-copy {
+      max-width: 760px;
     }
 
     .fsd .hero-intro {
       max-width: 760px;
-      margin: 0 auto;
+      margin: 0 0 16px;
       font-size: 1.2rem;
       letter-spacing: .06em;
+    }
+
+    .fsd .hero-asset-slot {
+      position: relative;
+      min-width: 0;
+      min-height: 360px;
+      aspect-ratio: 4 / 5;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: clamp(22px, 3vw, 38px);
+      border: 1px solid rgb(212 175 55 / 34%);
+      background:
+        radial-gradient(ellipse at 58% 46%, rgb(212 175 55 / 13%), transparent 38%),
+        repeating-linear-gradient(135deg, transparent 0 34px, rgb(212 175 55 / 3%) 35px 36px),
+        linear-gradient(150deg, #171614, #0b0b0b 70%);
+      color: #d4af37;
+      font: 600 .65rem/1.5 "IBM Plex Mono", ui-monospace, monospace;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .fsd .hero-asset-slot::before,
+    .fsd .hero-asset-slot::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 58%;
+      aspect-ratio: 1;
+      border: 1px solid rgb(212 175 55 / 20%);
+      border-radius: 50%;
+      content: "";
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .fsd .hero-asset-slot::after {
+      width: 38%;
+      border-color: rgb(212 175 55 / 12%);
+    }
+
+    .fsd .hero-asset-slot-index,
+    .fsd .hero-asset-slot-copy {
+      position: relative;
+      z-index: 1;
+    }
+
+    .fsd .hero-asset-slot-mark {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      color: rgb(212 175 55 / 12%);
+      font: 500 clamp(2.2rem, 4vw, 4.5rem)/1 Georgia, "Times New Roman", serif;
+      letter-spacing: -.06em;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    .fsd .hero-asset-slot-copy {
+      display: grid;
+      gap: 8px;
+      max-width: 240px;
+    }
+
+    .fsd .hero-asset-slot-copy strong {
+      color: #f0e5c6;
+      font-size: .8rem;
+      letter-spacing: .12em;
+    }
+
+    .fsd .hero-asset-slot-copy span {
+      color: #aaa08e;
+      font: 400 .7rem/1.7 "DM Sans", sans-serif;
+      letter-spacing: .03em;
+      text-transform: none;
     }
 
     .fsd hr {
@@ -211,7 +297,16 @@
       }
 
       .fsd .hero {
-        padding: 64px 16px 40px;
+        width: min(calc(100% - 32px), 1000px);
+        padding: 48px 0 40px;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 26px;
+      }
+
+      .fsd .hero-asset-slot {
+        min-height: 260px;
+        max-height: 360px;
+        aspect-ratio: 1.18 / 1;
       }
 
       .fsd hr {
@@ -237,10 +332,20 @@
       <span aria-current="page">Personalisation Research</span>
     </nav>
     <header class="hero" aria-labelledby="genetic-microbiome-title">
-      <div class="tag">FSD / BIO-LAB™ / Personalisation Research</div>
-      <h1 id="genetic-microbiome-title">Genetic &amp; Microbiome Personalisation</h1>
-      <p class="hero-intro">Long-horizon research. Responsible science. Clear safeguards.</p>
-      <p>This initiative assesses research questions only. No genetic or microbiome testing, sample collection, data analysis, or personalised health guidance is available.</p>
+      <div class="hero-copy">
+        <div class="tag">FSD / BIO-LAB™ / Personalisation Research</div>
+        <h1 id="genetic-microbiome-title">Genetic &amp; Microbiome Personalisation</h1>
+        <p class="hero-intro">Long-horizon research. Responsible science. Clear safeguards.</p>
+        <p>This initiative assesses research questions only. No genetic or microbiome testing, sample collection, data analysis, or personalised health guidance is available.</p>
+      </div>
+      <div class="hero-asset-slot" role="img" aria-label="Asset pending: approved FSD BIO-LAB research image for Genetic and Microbiome Personalisation">
+        <span class="hero-asset-slot-index">BIO-LAB™ / RESEARCH 01</span>
+        <span class="hero-asset-slot-mark" aria-hidden="true">PERSONALISATION</span>
+        <div class="hero-asset-slot-copy">
+          <strong>[ASSET PENDING]</strong>
+          <span>Approved FSD research imagery is not yet mapped to this page.</span>
+        </div>
+      </div>
     </header>
     <hr>
     <section aria-labelledby="genetic-microbiome-framework-title">

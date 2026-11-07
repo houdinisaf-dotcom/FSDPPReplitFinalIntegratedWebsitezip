@@ -28,12 +28,16 @@ function renderSwatches(variants, selectedId) {
     </button>`).join('');
 }
 
-export function mountModestFlowSelector({ root, product, variants }) {
+export function mountModestFlowSelector({ root, product, variants, setComponents = product?.setComponents }) {
   if (!root || typeof root.append !== 'function' || !root.ownerDocument) {
     throw new TypeError('mountModestFlowSelector requires a DOM root element.');
   }
   if (!product || !Array.isArray(variants) || variants.length !== 6) {
     throw new TypeError('Modest Flow requires product data and six colour variants.');
+  }
+  if (!Array.isArray(setComponents) || setComponents.length !== 3
+    || setComponents.some(component => typeof component !== 'string' || !component.trim())) {
+    throw new TypeError('Modest Flow requires the three approved coordinated-set components.');
   }
 
   const document = root.ownerDocument;
@@ -63,6 +67,12 @@ export function mountModestFlowSelector({ root, product, variants }) {
         <h2 class="mf-selector__title" id="${instanceId}-title">${escapeHTML(product.name)}</h2>
         <p class="mf-selector__subtitle">${escapeHTML(product.subtitle)}</p>
         <p class="mf-selector__description" id="${instanceId}-description">${escapeHTML(product.description)}</p>
+        <div class="mf-selector__set" aria-label="Coordinated set components">
+          <p class="mf-selector__set-label">THE MATCHING SET</p>
+          <ul>${setComponents.map((component, index) => `
+            <li><span aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>${escapeHTML(component)}</li>
+          `).join('')}</ul>
+        </div>
         <hr class="mf-selector__rule" />
         <div class="mf-selector__colour-heading">
           <span>Colour</span>

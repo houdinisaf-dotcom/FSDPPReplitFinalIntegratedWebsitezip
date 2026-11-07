@@ -14,6 +14,12 @@ const expectedVariants = [
   ['deep-burgundy-combat', 'Deep Burgundy (Combat)', '#4A1521'],
 ];
 
+const expectedSetComponents = [
+  'Extended-length long-sleeve tunic',
+  'Relaxed wide-leg trousers',
+  'Matching hijab',
+];
+
 function validate(record, manifest) {
   const variants = record?.product?.variants;
   const assets = manifest?.assets;
@@ -27,6 +33,8 @@ function validate(record, manifest) {
     || record.product?.priceGbp !== null
     || record.product?.inventory !== null
     || record.product?.sku !== null
+    || !Array.isArray(record.product?.setComponents)
+    || JSON.stringify(record.product.setComponents) !== JSON.stringify(expectedSetComponents)
     || !Array.isArray(variants)
     || variants.length !== expectedVariants.length
     || !Array.isArray(assets)
@@ -86,6 +94,7 @@ export function createModestFlowDraftData(record = draft, manifest = imageManife
     }),
     product: Object.freeze({
       ...record.product,
+      setComponents: Object.freeze([...record.product.setComponents]),
       variants: Object.freeze(variants),
     }),
   });

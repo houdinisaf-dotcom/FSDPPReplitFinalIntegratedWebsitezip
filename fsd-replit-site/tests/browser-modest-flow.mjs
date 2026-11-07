@@ -108,6 +108,10 @@ try {
   await waitFor('!!document.querySelector("#fsd-showcase-dialog [data-modest-flow-draft-card]")');
   const heroSrc = await evaluate('document.querySelector("[data-modest-flow-draft-card] img").src');
   assert.ok(heroSrc.endsWith('/modest-flow/media/modest-flow-campaign-hero'));
+  assert.deepEqual(
+    await evaluate('Array.from(document.querySelectorAll("[data-modest-flow-draft-card] .fsd-product-set-summary > div span")).map(node => node.textContent.trim())'),
+    ['Extended-length long-sleeve tunic', 'Relaxed wide-leg trousers', 'Matching hijab'],
+  );
   const initialScroll = await evaluate('window.scrollY');
 
   const opener = '#fsd-showcase-dialog [data-modest-flow-open]';
@@ -115,6 +119,10 @@ try {
   await waitFor('document.querySelector(".mf-selector").open');
   assert.equal(await evaluate('document.querySelector(".mf-selector__title").textContent'), 'FSD Modest Flow');
   assert.equal(await evaluate('document.querySelector(".mf-selector__subtitle").textContent'), "Women's Modest Performance Activewear Set");
+  assert.deepEqual(
+    await evaluate('Array.from(document.querySelectorAll(".mf-selector__set li")).map(node => node.textContent.replace(/^\\s*\\d+\\s*/, "").trim())'),
+    ['Extended-length long-sleeve tunic', 'Relaxed wide-leg trousers', 'Matching hijab'],
+  );
   assert.equal(await evaluate('document.querySelectorAll(".mf-selector__swatch").length'), 6);
   assert.equal(await evaluate('document.querySelectorAll(".mf-selector__image").length'), 1);
   assert.equal(await evaluate('document.querySelector(".mf-selector__image").src.endsWith("/modest-flow/media/modest-flow-onyx-black")'), true);

@@ -39,6 +39,11 @@ test('Modest Flow is a six-colour, no-price private draft with a separate fixed 
   assert.equal(data.product.priceGbp, null);
   assert.equal(data.product.inventory, null);
   assert.equal(data.product.sku, null);
+  assert.deepEqual(data.product.setComponents, [
+    'Extended-length long-sleeve tunic',
+    'Relaxed wide-leg trousers',
+    'Matching hijab',
+  ]);
   assert.equal(data.collection.hero.id, 'modest-flow-campaign-hero');
   assert.equal(data.product.variants.length, 6);
   assert.notEqual(data.collection.hero.id, data.product.variants[0].assetId);
@@ -82,6 +87,10 @@ test('draft validation rejects checkout, price, variant and image-role changes',
   const withHeroReusedAsVariant = structuredClone(modestFlowDraftRecord);
   withHeroReusedAsVariant.product.variants[0].assetId = 'modest-flow-campaign-hero';
   assert.throws(() => createModestFlowDraftData(withHeroReusedAsVariant), /fixed campaign hero/);
+
+  const withChangedSet = structuredClone(modestFlowDraftRecord);
+  withChangedSet.product.setComponents[0] = 'Training top';
+  assert.throws(() => createModestFlowDraftData(withChangedSet), /unpublished draft/);
 });
 
 test('development integration places the fixed hero in the existing women’s modest apparel collection', () => {
@@ -92,6 +101,10 @@ test('development integration places the fixed hero in the existing women’s mo
   assert.equal(integration.variants.length, 6);
   assert.match(integration.collectionCard, /data-modest-flow-open/);
   assert.match(integration.collectionCard, /modest-flow-campaign-hero/);
+  assert.match(integration.collectionCard, /COORDINATED SET/);
+  for (const component of integration.productData.setComponents) {
+    assert.ok(integration.collectionCard.includes(component));
+  }
   assert.doesNotMatch(integration.collectionCard, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
   assert.doesNotMatch(integration.collectionCard, /PRIVATE PREVIEW|NO CHECKOUT|NOT PUBLISHED/i);
   assert.doesNotMatch(integration.collectionCard, /<(?:form|input)\b|data-(?:purchase|add-to-cart)=/i);

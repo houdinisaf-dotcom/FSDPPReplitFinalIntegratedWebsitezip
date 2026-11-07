@@ -10,6 +10,7 @@ import { configureHardwareForgeMenu, registerHardwareForgeRoute } from '../src/h
 test('hardware review presents only the four approved master record IDs', () => {
   assert.deepEqual(hardwareForgeItems.map(item => item.id), [69, 70, 52, 54]);
   assert.equal(new Set(hardwareForgeItems.map(item => item.id)).size, 4);
+  assert.deepEqual(hardwareForgeItems[0].imageSlots, ['Set overview', 'Alternate set view', 'Product detail']);
 });
 
 test('review remains absent outside development and includes no commercial claims', async () => {
@@ -19,6 +20,12 @@ test('review remains absent outside development and includes no commercial claim
   assert.equal((markup.match(/data-master-id="/g) || []).length, 4);
   assert.match(markup, /id="hardware-forge-preview"/);
   assert.match(markup, /FSD Olympic Bar &amp; 5-Cutout Bumper Plate Set/);
+  const aureusCard = markup.match(/<article class="forge-product" data-master-id="69">([\s\S]*?)<\/article>/)?.[1];
+  assert.ok(aureusCard);
+  assert.equal((aureusCard.match(/data-aureus-image-slot=/g) || []).length, 3);
+  assert.match(aureusCard, /\[ASSET PENDING\]/);
+  assert.match(aureusCard, /Set overview/);
+  assert.doesNotMatch(aureusCard, /<img\b/);
   assert.doesNotMatch(markup, /£\s?\d|add.to.bag|purchase|checkout|shipping|COGS|margin/i);
   const source = await readFile(new URL('../src/hardware-forge-preview.js', import.meta.url), 'utf8');
   assert.match(source, /development = import\.meta\.env\?\.DEV/);

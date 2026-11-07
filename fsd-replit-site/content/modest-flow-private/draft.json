@@ -26,6 +26,11 @@
     "category": "Modest Activewear",
     "audience": "Women’s",
     "description": "A coordinated modest activewear outfit featuring an extended-length long-sleeve tunic, relaxed wide-leg trousers and matching hijab.",
+    "setComponents": [
+      "Extended-length long-sleeve tunic",
+      "Relaxed wide-leg trousers",
+      "Matching hijab"
+    ],
     "editorialStatus": "Draft",
     "approvalStatus": "Approved as visual/layout proof only; private and unpublished",
     "purchaseEnabled": false,

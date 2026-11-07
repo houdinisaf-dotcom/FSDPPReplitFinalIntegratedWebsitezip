@@ -56,6 +56,9 @@ try {
       `${width}px Genetic & Microbiome page is reachable under BIO-LAB™`,
     );
     assert.equal(await evaluate(`document.querySelectorAll('main.fsd .breadcrumbs').length`), 1);
+    assert.match(await evaluate(`document.querySelector('main.fsd .hero-asset-slot')?.textContent`), /\[ASSET PENDING\]/);
+    assert.equal(await evaluate(`document.querySelector('main.fsd .hero-asset-slot')?.querySelector('img') === null`), true);
+    assert.ok(await evaluate(`document.querySelector('main.fsd .hero-asset-slot')?.getBoundingClientRect().height > 240`));
     assert.ok(await evaluate(`document.querySelectorAll('main.fsd section h2').length >= 4`));
     assert.match(await evaluate(`document.querySelector('main.fsd .related-links')?.textContent`), /BIO-LAB™ Innovation Hub/);
     assert.equal(await evaluate(`document.documentElement.scrollWidth <= innerWidth + 1`), true, `${width}px page has no horizontal overflow`);

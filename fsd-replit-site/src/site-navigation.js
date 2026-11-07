@@ -52,6 +52,18 @@ export const navigationAssetBindings = Object.freeze({
     src: '/fsd-assets/breeze-set-onyx-black-full-length.webp',
     alt: 'FSD Breeze Onyx Black set, full-length product photo.',
   }),
+  AEROFORGE: Object.freeze({
+    src: '/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp',
+    alt: 'FSD Aeroforge Training Tee in White / Green, wide lifestyle view.',
+    sourceProductName: 'FSD Aeroforge Training Tee',
+    presentation: 'product',
+  }),
+  FLEX: Object.freeze({
+    src: '/assets/products/flex-leggings-obsidian-front.webp',
+    alt: 'FSD FLEX leggings in Obsidian Black, front lifestyle hero.',
+    sourceProductName: 'FLEX — High-Waisted Sculpt Leggings',
+    presentation: 'product',
+  }),
   COMBAT: Object.freeze({
     src: '/fsd-assets/8ffe2fd45a06.webp',
     alt: 'FSD women’s combat collection, athlete training in boxing gloves.',
@@ -64,10 +76,14 @@ export const navigationAssetBindings = Object.freeze({
 
 function featureImageForItem(item) {
   const explicitSource = item?.featureImageSrc;
-  if (typeof explicitSource === 'string' && /^\/fsd-assets\/[^/]+\.webp$/i.test(explicitSource)) {
+  const isProductImage = typeof explicitSource === 'string'
+    && /^\/(?:assets\/products|products)\/[a-z0-9/_-]+\.(?:webp|png|jpe?g)$/i.test(explicitSource);
+  if (typeof explicitSource === 'string'
+    && (/^\/fsd-assets\/[^/]+\.webp$/i.test(explicitSource) || isProductImage)) {
     return {
       src: explicitSource,
       alt: item.featureImageAlt || item.title || item.record?.name || 'FSD product image',
+      presentation: item.featureImagePresentation || (isProductImage ? 'product' : 'editorial'),
     };
   }
   const productName = item?.record?.name || item?.title;
@@ -182,7 +198,11 @@ function makeDivisionGroup(division, sourceGroup, sourceGroupIndex, products, op
         sourceDivisionId: division.id,
         sourceGroupIndex,
         sourceSubcategoryIndex: -1,
-        ...(binding ? { featureImageSrc: binding.src, featureImageAlt: binding.alt } : {}),
+        ...(binding ? {
+          featureImageSrc: binding.src,
+          featureImageAlt: binding.alt,
+          featureImagePresentation: binding.presentation,
+        } : {}),
       };
     });
     items = records.length
@@ -231,6 +251,7 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
       ? {
           featureImageSrc: navigationAssetBindings[line.title].src,
           featureImageAlt: navigationAssetBindings[line.title].alt,
+          featureImagePresentation: navigationAssetBindings[line.title].presentation,
         }
       : {}),
   }));
@@ -934,6 +955,7 @@ function renderFeature(menu, group, item, canNavigate) {
       ['Audience', audience],
     ];
 
+  const mediaTreatment = image?.presentation === 'product' ? ' fsd-feature-media--product' : '';
   const media = isStoryFeature
     ? `<div class="fsd-feature-media fsd-feature-media--story">
         <span>FSD / THE HOUSE</span>
@@ -941,7 +963,7 @@ function renderFeature(menu, group, item, canNavigate) {
         <small>Four foundational chapters · Five House Codes</small>
       </div>`
     : image
-    ? `<div class="fsd-feature-media fsd-feature-media--1" data-feature-image="${escapeHTML(image.src)}">
+    ? `<div class="fsd-feature-media fsd-feature-media--1${mediaTreatment}" data-feature-image="${escapeHTML(image.src)}">
         <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}"
           data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(featureTitle)}" data-fsd-image-kind="collection"
           loading="eager" fetchpriority="auto" decoding="async">

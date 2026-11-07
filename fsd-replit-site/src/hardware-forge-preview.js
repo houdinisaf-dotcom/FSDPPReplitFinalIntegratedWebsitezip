@@ -4,6 +4,7 @@ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character =>
 
 export const hardwareForgeItems = Object.freeze([
   { id: 69, name: 'FSD AUREUS FORGED CARBON™ SET', category: 'DUMBBELL SET', image: null,
+    imageSlots: Object.freeze(['Set overview', 'Alternate set view', 'Product detail']),
     note: 'FSD strength-training equipment.' },
   { id: 70, name: 'FSD OBSIDIAN GOLD™ ELITE SET', category: 'DUMBBELL SET',
     image: '/__hardware-forge-preview/media/obsidian-gold', alt: 'FSD Obsidian Gold dumbbell set.',
@@ -17,6 +18,18 @@ export const hardwareForgeItems = Object.freeze([
 
 function renderImage(item) {
   if (item.image) return `<img src="${item.image}" alt="${escapeHTML(item.alt)}" loading="lazy" decoding="async">`;
+  if (Array.isArray(item.imageSlots) && item.imageSlots.length) {
+    return `<div class="forge-image-slots" aria-label="FSD AUREUS approved product image slots">
+      ${item.imageSlots.map((slot, index) => `<div class="forge-image-slot" data-aureus-image-slot="${index + 1}">
+        <div class="forge-art-placeholder" role="img"
+          aria-label="Image asset pending for ${escapeHTML(item.name)} — ${escapeHTML(slot)}">
+          <span class="forge-placeholder-mark" aria-hidden="true"></span>
+          <span>[ASSET PENDING]</span>
+          <small>${escapeHTML(slot)}</small>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }
   return `<div class="forge-art-placeholder" role="img" aria-label="Product image unavailable for ${escapeHTML(item.name)}">
     <span class="forge-placeholder-mark" aria-hidden="true"></span>
     <span>PRODUCT IMAGE UNAVAILABLE</span>

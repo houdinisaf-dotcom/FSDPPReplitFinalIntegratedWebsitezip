@@ -570,6 +570,17 @@
   object-position: center;
 }
 
+.fsd-feature-media--product {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgb(223 255 69 / 4%), transparent 58%),
+    #0b0c0e;
+}
+
+.fsd-feature-media--product img {
+  padding: clamp(8px, 1.2vw, 16px);
+  object-fit: contain;
+}
+
 .fsd-feature-media--transitioning {
   display: block;
   overflow: hidden;
