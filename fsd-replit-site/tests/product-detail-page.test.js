@@ -42,8 +42,8 @@ test('editorial product galleries pair approved front and rear photos for the se
   });
 
   assert.match(images[frontIndex].label, /Front product view/);
-  assert.match(markup, /data-catalogue-main-caption>White \/ Green \/ Front product view/);
-  assert.match(markup, /data-catalogue-secondary-caption>White \/ Green \/ Rear product view/);
+  assert.match(markup, /data-catalogue-main-caption[^>]*>White \/ Green \/ Front product view/);
+  assert.match(markup, /data-catalogue-secondary-caption[^>]*>White \/ Green \/ Rear product view/);
 });
 
 test('editorial gallery selection retains the mapped default when a same-variant front/rear pair is absent', () => {
@@ -78,8 +78,8 @@ test('detail pages pair exact front and back photos even when labels omit the wo
     price: { label: '', value: '' },
     canPurchase: false,
   });
-  assert.match(markup, /data-catalogue-main-caption>Luminous aqua[^<]*Front view/);
-  assert.match(markup, /data-catalogue-secondary-caption>Luminous aqua[^<]*Back view/);
+  assert.match(markup, /data-catalogue-main-caption[^>]*>Luminous aqua[^<]*Front view/);
+  assert.match(markup, /data-catalogue-secondary-caption[^>]*>Luminous aqua[^<]*Back view/);
 });
 
 test('featured products without approved photos retain named front and back placeholders', () => {
@@ -97,8 +97,8 @@ test('featured products without approved photos retain named front and back plac
     });
 
     assert.equal((markup.match(/product-detail-image-stage|product-detail-gallery__secondary-stage/g) || []).length, 2);
-    assert.match(markup, /Front view — \[ASSET PENDING\]/);
-    assert.match(markup, /Back view — \[ASSET PENDING\]/);
+    assert.match(markup, /FRONT VIEW — IMAGE PENDING/);
+    assert.match(markup, /BACK VIEW — IMAGE PENDING/);
   }
 });
 
@@ -140,7 +140,7 @@ test('mapped CORE hijab photos can form a same-colourway front/rear detail pair'
     price: { label: '', value: '' },
     canPurchase: false,
   });
-  assert.match(markup, /data-catalogue-secondary-caption>Black\/Gold \/ Rear view/);
+  assert.match(markup, /data-catalogue-secondary-caption[^>]*>Black\/Gold \/ Rear view/);
 });
 
 test('curated Velocity lifestyle hero remains first rather than being replaced by portrait views', () => {

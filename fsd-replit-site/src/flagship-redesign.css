@@ -526,8 +526,7 @@ html { scrollbar-color: #777b7e #111318; }
 }
 @media (max-width:760px) {
   #dialog-body .product-detail-gallery__feature-grid { grid-template-columns: minmax(0,1fr); }
-  #dialog-body .product-detail-gallery__secondary { display: grid !important; }
-  #dialog-body .product-detail-gallery__secondary-stage { aspect-ratio: 4 / 5; }
+  #dialog-body .product-detail-gallery__secondary { display: none !important; }
 }
 
 /* Twelve concepts remain mapped, but the directory has the cadence of an index. */
@@ -1030,11 +1029,22 @@ html { scrollbar-color: #777b7e #111318; }
 
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-media,
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-media {
+  position: relative;
   grid-column: auto;
   min-width: 0;
   min-height: 0;
   padding: 0;
   background: #fff;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-media__masthead {
+  position: absolute;
+  z-index: 3;
+  inset: 0 0 auto;
+  min-height: 16px;
+  padding: 2px 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .56));
+  pointer-events: none;
 }
 
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery {
@@ -1324,21 +1334,16 @@ html { scrollbar-color: #777b7e #111318; }
   #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__feature-grid,
   #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__feature-grid.is-single {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
     min-height: 0;
-    gap: 3px;
+    gap: 0;
   }
 
-  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery .catalogue-selector__main,
-  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__secondary {
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery .catalogue-selector__main {
     height: auto;
   }
 
-  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__secondary {
-    display: grid !important;
-  }
-
-  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-image-stage,
-  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__secondary-stage {
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-image-stage {
     min-height: 0;
     aspect-ratio: 4 / 5;
     height: auto;
@@ -1568,12 +1573,338 @@ html { scrollbar-color: #777b7e #111318; }
   }
 
   #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__secondary {
-    display: block !important;
-    margin: 0;
+    display: none !important;
   }
 
   #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery figcaption {
     display: none;
+  }
+}
+
+/* Campaign identity is a typographic layer over the existing approved frame;
+   the source boxer photograph and official shield remain untouched. */
+.fsd-phase3-hero .fsd-home-hero__campaign-word {
+  position: absolute;
+  z-index: 2;
+  top: 25%;
+  right: clamp(24px, 4.8vw, 78px);
+  display: grid;
+  width: min(42vw, 620px);
+  justify-items: end;
+  color: rgba(255,255,255,.13);
+  pointer-events: none;
+  user-select: none;
+  animation: fsd-campaign-word-enter 620ms cubic-bezier(.2,.75,.2,1) both;
+}
+
+.fsd-home-hero__campaign-word span {
+  max-width: 6ch;
+  color: transparent;
+  font: 800 clamp(74px, 11.8vw, 172px)/.72 "Barlow Condensed", sans-serif;
+  letter-spacing: -.055em;
+  text-align: right;
+  text-transform: uppercase;
+  text-wrap: balance;
+  -webkit-text-stroke: 1px rgba(255,255,255,.34);
+}
+
+.fsd-home-hero__campaign-word--heroes span {
+  color: rgba(255,255,255,.12);
+  font-style: italic;
+  -webkit-text-stroke: 0;
+  transform: rotate(-4deg);
+}
+
+.fsd-home-hero__campaign-word--stronger span {
+  max-width: 5ch;
+  color: rgba(212,175,55,.17);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -.085em;
+  -webkit-text-stroke: 0;
+}
+
+.fsd-home-hero__campaign-word--disciplined span {
+  max-width: 5ch;
+  font-size: clamp(64px, 9.8vw, 144px);
+  letter-spacing: .015em;
+  -webkit-text-stroke: 1px rgba(224,232,226,.42);
+}
+
+.fsd-home-hero__campaign-word--together span {
+  max-width: 6ch;
+  color: rgba(212,175,55,.18);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(62px, 8.2vw, 124px);
+  font-weight: 500;
+  letter-spacing: -.075em;
+  line-height: .82;
+  -webkit-text-stroke: 0;
+}
+
+/* The narrow white rail reads from product identity to verified choices,
+   availability and the existing pre-launch-safe action. */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase {
+  align-content: start;
+  gap: clamp(15px, 1.7vw, 22px);
+  padding: clamp(26px, 3.2vw, 50px);
+  border-left: 1px solid #ecebe6;
+  background: #fff;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .catalogue-breadcrumbs {
+  margin: 0;
+  color: #74746e;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .catalogue-breadcrumbs ol {
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase > .catalogue-back {
+  justify-self: start;
+  color: #66675f;
+  font-size: 8px;
+  letter-spacing: .12em;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase > .section-kicker {
+  padding-top: 5px;
+  color: #766c50;
+  font: 600 8px/1.5 "Space Mono", monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase h1,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase h2 {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(27px, 2.55vw, 39px);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 13px 0;
+  border-top: 1px solid #e7e6e0;
+  border-bottom: 1px solid #e7e6e0;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-price > span {
+  color: #72736d;
+  font: 600 8px/1.4 "Space Mono", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-price strong {
+  font-size: clamp(17px, 1.55vw, 21px);
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-summary {
+  max-width: 43ch;
+  margin: 0;
+  color: #4e504b;
+  font-size: 12px;
+  line-height: 1.72;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-colourways,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-sizes {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-colourways legend,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-sizes legend {
+  margin-bottom: 1px;
+  color: #373832;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-option {
+  min-height: 42px;
+  font-size: 10px;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-size-help,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-availability {
+  margin: 0;
+  color: #62635e;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase .product-detail-notify__button,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase .product-detail-add {
+  min-height: 50px;
+  font-size: 9px;
+  letter-spacing: .14em;
+}
+
+@keyframes fsd-campaign-word-enter {
+  from { opacity: 0; transform: translate3d(18px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* SHOP keeps its existing three-step destinations, with a clearer editorial
+   sequence from collection group, to category, to the verified feature record. */
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-inner {
+  width: min(100%, 1560px);
+  padding: clamp(25px, 3.2vw, 46px) clamp(22px, 4.2vw, 68px) 32px;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-heading {
+  align-items: end;
+  min-height: 70px;
+  margin-bottom: clamp(19px, 2.2vw, 30px);
+  padding-bottom: 16px;
+  border-bottom-color: rgb(255 255 255 / 15%);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-mega-heading h2 {
+  font-size: clamp(31px, 4.2vw, 54px);
+  font-weight: 700;
+  letter-spacing: -.045em;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-columns {
+  grid-template-columns: minmax(160px, .7fr) minmax(215px, .92fr) minmax(390px, 1.5fr);
+  gap: clamp(20px, 2.7vw, 42px);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-column--groups,
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-column--items {
+  padding-right: clamp(10px, 1.4vw, 22px);
+  border-right-color: rgb(223 255 69 / 17%);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-option {
+  min-height: 48px;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-group.is-active {
+  box-shadow: inset 2px 0 0 #dfff45;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-card {
+  min-height: 330px;
+  grid-template-columns: minmax(0, 1.12fr) minmax(190px, .88fr);
+  border-color: rgb(255 255 255 / 17%);
+  background: #15171a;
+  box-shadow: 0 22px 50px rgb(0 0 0 / 24%);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media-action {
+  min-height: 330px;
+  background: #1c1e20;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media img {
+  object-position: center 34%;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy {
+  padding: clamp(20px, 2.3vw, 32px);
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy h3 {
+  font-size: clamp(21px, 1.8vw, 29px);
+  line-height: 1.02;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy > p:not(.fsd-feature-kicker):not(.fsd-feature-context) {
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+@media (max-width: 1120px) and (min-width: 901px) {
+  .fsd-mega-menu[data-primary="collections"] .fsd-nav-columns {
+    grid-template-columns: minmax(140px, .7fr) minmax(190px, .95fr) minmax(280px, 1.3fr);
+    gap: 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  .fsd-mega-menu[data-primary="collections"] .fsd-mega-inner {
+    padding: 20px 18px 24px;
+  }
+
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-card {
+    min-height: 0;
+  }
+
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media-action {
+    min-height: clamp(190px, 29vh, 270px);
+  }
+}
+
+@media (max-width: 600px) {
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__feature-grid.has-secondary {
+    grid-template-rows: auto;
+    gap: 0;
+  }
+
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-gallery__secondary {
+    display: none !important;
+  }
+
+  #product-dialog[data-presentation="detail"] #dialog-body .catalogue-selector__thumb {
+    min-width: 76px;
+    min-height: 88px;
+  }
+
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase {
+    gap: 16px;
+    padding: 24px 20px calc(28px + env(safe-area-inset-bottom));
+    border-left: 0;
+    border-top: 1px solid #ecebe6;
+  }
+
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase h1,
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-purchase h2 {
+    max-width: 22ch;
+    font-size: clamp(27px, 8vw, 35px);
+  }
+
+  .fsd-phase3-hero .fsd-home-hero__campaign-word {
+    top: 16%;
+    right: 15px;
+    width: min(58vw, 240px);
+    opacity: .5;
+  }
+
+  .fsd-home-hero__campaign-word span {
+    font-size: clamp(36px, 9.5vw, 60px);
+  }
+
+  .fsd-home-hero__campaign-word--disciplined span {
+    font-size: clamp(33px, 8.2vw, 54px);
+  }
+
+  .fsd-home-hero__campaign-word--together span {
+    font-size: clamp(34px, 8.5vw, 56px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-phase3-hero .fsd-home-hero__campaign-word {
+    animation: none;
   }
 }
 

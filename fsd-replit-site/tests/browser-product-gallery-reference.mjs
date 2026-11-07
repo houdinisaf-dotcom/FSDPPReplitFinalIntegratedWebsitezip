@@ -104,6 +104,7 @@ try {
     const main = dialog.querySelector('.product-detail-image-stage').getBoundingClientRect();
     const secondary = dialog.querySelector('.product-detail-gallery__secondary-stage').getBoundingClientRect();
     const purchase = dialog.querySelector('.product-detail-purchase').getBoundingClientRect();
+    const gallery = dialog.querySelector('.product-detail-gallery').getBoundingClientRect();
     return {
       mainWidth: main.width,
       mainHeight: main.height,
@@ -111,19 +112,46 @@ try {
       secondaryHeight: secondary.height,
       secondaryTop: secondary.top,
       secondaryBottom: secondary.bottom,
+      secondaryDisplay: getComputedStyle(dialog.querySelector('.product-detail-gallery__secondary')).display,
+      galleryBottom: gallery.bottom,
       purchaseTop: purchase.top,
       viewportWidth: innerWidth,
       documentWidth: document.documentElement.scrollWidth,
-      secondaryVisible: getComputedStyle(dialog.querySelector('.product-detail-gallery__secondary')).display !== 'none',
+      thumbnailCount: dialog.querySelectorAll('[data-catalogue-gallery-view]').length,
     };
   })()`);
-  assert.ok(mobile.secondaryTop >= mobile.mainBottom - 1, 'mobile stacks the two product photographs');
-  assert.ok(mobile.secondaryTop - mobile.mainBottom <= 4, 'mobile image pair keeps a near-zero gap');
   assert.ok(mobile.mainHeight >= mobile.mainWidth, 'mobile front image remains large and portrait-proportioned');
-  assert.equal(mobile.mainHeight, mobile.secondaryHeight, 'mobile front and back image slots use matching proportions');
-  assert.ok(mobile.purchaseTop >= mobile.secondaryBottom - 1, 'mobile purchase details follow both photographs');
-  assert.equal(mobile.secondaryVisible, true);
+  assert.equal(mobile.secondaryDisplay, 'none', 'mobile shows one main image, not a duplicate secondary panel');
+  assert.equal(mobile.secondaryHeight, 0, 'the hidden secondary panel occupies no mobile layout space');
+  assert.ok(mobile.purchaseTop >= mobile.galleryBottom - 1, 'mobile purchase details follow the gallery and thumbnail rail');
+  assert.ok(mobile.thumbnailCount >= 3, 'front, back and other mapped views remain selectable below the main image');
   assert.equal(mobile.documentWidth, mobile.viewportWidth, 'mobile product page has no horizontal overflow');
+
+  const mobileBackSelection = await evaluate(`(() => {
+    const buttons = [...document.querySelectorAll('#product-dialog [data-catalogue-gallery-view]')];
+    const back = buttons.find(button => /back|rear/i.test(
+      [button.getAttribute('aria-label'), button.dataset.catalogueViewLabel].filter(Boolean).join(' '),
+    ));
+    if (!back) return null;
+    back.click();
+    return {
+      label: back.getAttribute('aria-label'),
+      pressed: back.getAttribute('aria-pressed'),
+      selected: back.classList.contains('is-selected'),
+      thumbnailSource: back.querySelector('img')?.src,
+      mainSource: document.querySelector('#product-dialog [data-catalogue-main-image]')?.src,
+      secondaryDisplay: getComputedStyle(document.querySelector('#product-dialog .product-detail-gallery__secondary')).display,
+    };
+  })()`);
+  assert.ok(mobileBackSelection, 'a mapped back or rear thumbnail is present on mobile');
+  await wait(
+    `document.querySelector('#product-dialog [data-catalogue-main-image]')?.src === ${JSON.stringify(mobileBackSelection.thumbnailSource)}`,
+    'mobile gallery selection is applied to the main image',
+  );
+  assert.equal(mobileBackSelection.mainSource, mobileBackSelection.thumbnailSource, 'thumbnail selection immediately changes the main image source');
+  assert.equal(mobileBackSelection.pressed, 'true', 'the selected back view has an accessible pressed state');
+  assert.equal(mobileBackSelection.selected, true, 'the selected back view has a visible selected state');
+  assert.equal(mobileBackSelection.secondaryDisplay, 'none', 'selecting a back view does not restore the duplicate panel');
 
   await evaluate(`(async () => {
     const { showProduct } = await import('/src/catalogue.js');
@@ -194,9 +222,9 @@ try {
   assert.equal(ombre.placeholderBackground, 'rgb(242, 240, 235)', 'PDP placeholders keep the white editorial gallery surface');
   assert.equal(ombre.notifyButtonDisabled, true, 'notification remains disabled without a provider');
   assert.equal(ombre.notifyButtonBackground, 'rgb(17, 19, 24)', 'notification action follows the black CTA design');
-  assert.match(ombre.placeholderText, /Front view/);
-  assert.match(ombre.placeholderText, /Back view/);
-  assert.match(ombre.placeholderText, /\[ASSET PENDING\]/);
+  assert.match(ombre.placeholderText, /FRONT VIEW/);
+  assert.match(ombre.placeholderText, /BACK VIEW/);
+  assert.match(ombre.placeholderText, /IMAGE PENDING/);
 
   await openProduct(10);
   const cheetah = await evaluate(`(() => ({

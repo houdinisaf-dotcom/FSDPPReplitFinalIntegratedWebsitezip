@@ -44,6 +44,13 @@ export function HomeHero({ headingTag = 'h1' }) {
         />
       </div>
       <div className="fsd-home-hero__shade" aria-hidden="true" />
+      <div
+        className={`fsd-home-hero__campaign-word fsd-home-hero__campaign-word--${active.id}`}
+        key={`campaign-word-${active.id}`}
+        aria-hidden="true"
+      >
+        <span>{active.label.replace(/^BE\s+/, '')}</span>
+      </div>
       <div className="fsd-home-hero__edition" aria-hidden="true">
         <span className="fsd-home-hero__edition-rule" />
         <span className="fsd-home-hero__edition-index">{String(activeExperience + 1).padStart(2, '0')} / 04</span>
