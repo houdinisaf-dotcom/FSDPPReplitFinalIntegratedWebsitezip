@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { trackEvent } from '../src/analytics.js';
+import { trackCompletedPurchase, trackEvent } from '../src/analytics.js';
 
 test('trackEvent safely forwards data and ignores absent or failing analytics', () => {
   const previousWindow = globalThis.window;
@@ -31,6 +31,39 @@ test('trackEvent safely forwards data and ignores absent or failing analytics', 
 
     globalThis.window = undefined;
     assert.doesNotThrow(() => trackEvent('search_opened', { location: 'header' }));
+  } finally {
+    if (previousWindow === undefined) delete globalThis.window;
+    else globalThis.window = previousWindow;
+  }
+});
+
+test('completed purchases include only the approved GBP value after payment succeeds', () => {
+  const previousWindow = globalThis.window;
+  const events = [];
+
+  try {
+    globalThis.window = {
+      umami: {
+        track: (name, data) => events.push([name, data]),
+      },
+    };
+
+    for (const paymentStatus of ['pending', 'failed', 'canceled', 'abandoned']) {
+      trackCompletedPurchase({ paymentStatus, orderValueMinor: 1250, currency: 'GBP' });
+    }
+    trackCompletedPurchase({ paymentStatus: 'succeeded', orderValueMinor: 0, currency: 'GBP' });
+    trackCompletedPurchase({ paymentStatus: 'succeeded', orderValueMinor: 1250, currency: 'USD' });
+    trackCompletedPurchase({
+      paymentStatus: 'succeeded',
+      orderValueMinor: 1250,
+      currency: 'GBP',
+      customerEmail: 'not-for-analytics@example.com',
+      paymentMethod: 'not-for-analytics',
+    });
+
+    assert.deepEqual(events, [
+      ['purchase_completed', { order_value: 12.5, currency: 'GBP' }],
+    ]);
   } finally {
     if (previousWindow === undefined) delete globalThis.window;
     else globalThis.window = previousWindow;
