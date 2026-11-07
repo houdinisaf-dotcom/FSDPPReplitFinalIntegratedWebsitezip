@@ -108,6 +108,7 @@ export function ProductDetail({
             title={product.name}
             variantLabel={selectedColor || product.galleryPlaceholders?.[0] || ''}
             kind="detail"
+            viewLabel="Front view"
             className="fsd-catalog-detail__image-empty"
           />
         )}

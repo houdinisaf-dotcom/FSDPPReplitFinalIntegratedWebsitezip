@@ -7,7 +7,15 @@ export function maxZoomForSource(sourceWidth, sourceHeight, viewportWidth, viewp
   return Math.max(1, Math.min(Number(ceiling) || 3, 1 / fitScale));
 }
 
-export function mountImmersiveProductGallery({ dialog, body, getProduct, getImages, getVariant, selectImage }) {
+export function mountImmersiveProductGallery({
+  dialog,
+  body,
+  getProduct,
+  getImages,
+  getVariant,
+  selectImage,
+  selectPlaceholder = () => {},
+}) {
   const doc = dialog?.ownerDocument;
   if (!doc?.defaultView?.MutationObserver || !doc.body) return () => {};
   const viewer = doc.createElement('dialog');
@@ -62,7 +70,19 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
     const indexes = product ? galleryIndexesForVariant(product, images, variant) : [];
     const pressed = body.querySelector('[data-catalogue-image-index][aria-pressed="true"]');
     const selected = pressed ? Number(pressed.dataset.catalogueImageIndex) : -1;
-    return { product, images, variant, indexes, selected: indexes.includes(selected) ? selected : indexes[0] ?? -1 };
+    const galleryViews = [...body.querySelectorAll('.product-detail-gallery [data-catalogue-gallery-view]')]
+      .filter(button => button.hasAttribute('data-catalogue-placeholder-view')
+        || indexes.includes(Number(button.dataset.catalogueImageIndex)));
+    const selectedView = galleryViews.find(button => button.getAttribute('aria-pressed') === 'true') || null;
+    return {
+      product,
+      images,
+      variant,
+      indexes,
+      selected: indexes.includes(selected) ? selected : indexes[0] ?? -1,
+      galleryViews,
+      selectedView,
+    };
   };
   const setZoom = value => {
     zoom = Math.max(1, Math.min(maxZoom, Number(value) || 1));
@@ -85,6 +105,7 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
     if (!state.indexes.includes(index)) return;
     currentIndex = index;
     selectImage(index);
+    queueMicrotask(refresh);
     maxZoom = 1;
     setZoom(1);
     const image = state.images[index];
@@ -130,11 +151,29 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
   };
   const step = direction => {
     const state = model();
-    if (state.indexes.length < 2) return;
-    const index = viewer.open ? currentIndex : state.selected;
-    const position = Math.max(0, state.indexes.indexOf(index));
-    const next = state.indexes[(position + direction + state.indexes.length) % state.indexes.length];
-    viewer.open ? paint(next) : selectImage(next);
+    if (viewer.open) {
+      if (state.indexes.length < 2) return;
+      const position = Math.max(0, state.indexes.indexOf(currentIndex));
+      const next = state.indexes[(position + direction + state.indexes.length) % state.indexes.length];
+      paint(next);
+      return;
+    }
+    if (state.galleryViews.length < 2) return;
+    const currentViewIndex = state.galleryViews.indexOf(state.selectedView);
+    const position = currentViewIndex < 0 ? 0 : currentViewIndex;
+    const nextView = state.galleryViews[
+      (position + direction + state.galleryViews.length) % state.galleryViews.length
+    ];
+    if (nextView.hasAttribute('data-catalogue-placeholder-view')) {
+      selectPlaceholder(nextView);
+      queueMicrotask(refresh);
+      return;
+    }
+    const nextImageIndex = Number(nextView.dataset.catalogueImageIndex);
+    if (Number.isInteger(nextImageIndex)) {
+      selectImage(nextImageIndex, { immediate: true });
+      queueMicrotask(refresh);
+    }
   };
   const open = opener => {
     const state = model();
@@ -166,7 +205,7 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
     if (viewer.open && (viewerProduct !== state.product?.id || !state.indexes.includes(currentIndex))) viewer.close();
     const gallery = body.querySelector('.product-detail-gallery');
     const main = gallery?.querySelector('[data-catalogue-main-image]');
-    if (!gallery || !main) return;
+    if (!gallery) return;
     let tools = gallery.querySelector('[data-immersive-gallery-tools]');
     if (!tools) {
       tools = doc.createElement('div');
@@ -186,12 +225,14 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
       }
     }
     const count = tools.querySelector('[data-gallery-count]');
-    const text = state.indexes.length
-      ? `${Math.max(0, state.indexes.indexOf(state.selected)) + 1} / ${state.indexes.length} VIEWS`
-      : 'IMAGE TO BE ADDED';
+    const selectedViewIndex = state.galleryViews.indexOf(state.selectedView);
+    const text = state.galleryViews.length
+      ? `${Math.max(0, selectedViewIndex) + 1} / ${state.galleryViews.length} VIEWS`
+      : 'IMAGE PENDING';
     if (count.textContent !== text) count.textContent = text;
-    tools.querySelectorAll('[data-gallery-step]').forEach(button => { button.disabled = state.indexes.length < 2; });
-    tools.querySelector('[data-gallery-fullscreen]').disabled = !state.indexes.length || main.hidden;
+    tools.querySelectorAll('[data-gallery-step]').forEach(button => { button.disabled = state.galleryViews.length < 2; });
+    tools.querySelector('[data-gallery-fullscreen]').disabled =
+      !state.indexes.length || !main || main.hidden || state.selectedView?.hasAttribute('data-catalogue-placeholder-view');
   };
   const observer = new doc.defaultView.MutationObserver(refresh);
   observer.observe(body, { childList: true, subtree: true });
@@ -219,6 +260,7 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault(); event.stopPropagation();
       step(event.key === 'ArrowLeft' ? -1 : 1);
+      queueMicrotask(refresh);
     } else if (viewer.open && ['+', '=', '-', '0'].includes(event.key)) {
       event.preventDefault(); setZoom(event.key === '0' ? 1 : zoom + (event.key === '-' ? -.25 : .25));
     }
@@ -244,6 +286,7 @@ export function mountImmersiveProductGallery({ dialog, body, getProduct, getImag
     if (event.type !== 'pointercancel' && !gesture.pan && zoom === 1 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) {
       suppressClickUntil = Date.now() + 350;
       step(dx < 0 ? 1 : -1);
+      queueMicrotask(refresh);
     }
     gesture = null;
   };

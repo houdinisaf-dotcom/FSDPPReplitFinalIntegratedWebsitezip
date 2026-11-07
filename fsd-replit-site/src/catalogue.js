@@ -939,15 +939,17 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
         const imageColourway = colourways[primaryColourwayIndex]
           || primaryImage.colourway || primaryImage.variant
           || activeDialogVariant.colourway || '';
-        const placeholderLabel = [imageColourway, missingView].filter(Boolean).join(' / ');
+        const placeholderLabel = imageColourway;
         const label = placeholder.querySelector('[data-catalogue-secondary-variant]');
         if (label) label.textContent = placeholderLabel;
+        const viewTitle = placeholder.querySelector('[data-catalogue-view-title]');
+        if (viewTitle) viewTitle.textContent = missingView.toLocaleUpperCase('en-GB');
         placeholder.setAttribute(
           'aria-label',
-          `${activeDialogProduct.name} — ${placeholderLabel} [ASSET PENDING]`,
+          `${activeDialogProduct.name} — ${missingView.toLocaleUpperCase('en-GB')} — IMAGE PENDING`,
         );
         placeholder.hidden = false;
-        if (caption) caption.textContent = `${missingView} — [ASSET PENDING]`;
+        if (caption) caption.textContent = `${missingView.toLocaleUpperCase('en-GB')} — IMAGE PENDING`;
       }
       return;
     }
@@ -987,6 +989,46 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     );
   };
 
+  const selectDialogPlaceholder = button => {
+    if (!activeDialogProduct || !button) return;
+    const viewId = button.dataset.cataloguePlaceholderView || 'detail';
+    const viewLabel = button.dataset.catalogueViewLabel || 'Product view';
+    const placeholder = dialogBody.querySelector('[data-catalogue-variant-placeholder]');
+    const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
+    const photoButton = mainImage?.closest('[data-gallery-photo-open]');
+    const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
+    const gallery = placeholder?.closest('.product-detail-gallery');
+
+    if (mainImage) {
+      cancelMappedImageSwap(mainImage);
+      mainImage.hidden = true;
+    }
+    if (photoButton) photoButton.hidden = true;
+    if (placeholder) {
+      const viewTitle = placeholder.querySelector('[data-catalogue-view-title]');
+      const variant = placeholder.querySelector('[data-catalogue-variant-label]');
+      if (viewTitle) viewTitle.textContent = viewLabel.toLocaleUpperCase('en-GB');
+      if (variant) variant.textContent = activeDialogVariant.colourway || '';
+      placeholder.dataset.catalogueViewPlaceholder = viewId;
+      placeholder.setAttribute(
+        'aria-label',
+        `${activeDialogProduct.name} — ${viewLabel.toLocaleUpperCase('en-GB')} — IMAGE PENDING`,
+      );
+      placeholder.hidden = false;
+    }
+    if (gallery) {
+      gallery.classList.remove('has-variant-placeholder');
+      gallery.dataset.selectedView = viewId;
+    }
+    if (caption) caption.textContent = `${viewLabel.toLocaleUpperCase('en-GB')} — IMAGE PENDING`;
+    updateEditorialGalleryLayout(false);
+    dialogBody.querySelectorAll('[data-catalogue-gallery-view]').forEach(candidate => {
+      const selected = candidate === button;
+      candidate.setAttribute('aria-pressed', String(selected));
+      candidate.classList.toggle('is-selected', selected);
+    });
+  };
+
   const selectDialogImage = (index, { immediate = false } = {}) => {
     const image = activeDialogImages[index];
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
@@ -1024,8 +1066,11 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       },
     );
     caption.textContent = image.label;
-    dialogBody.querySelectorAll('[data-catalogue-image-index]').forEach(button => {
-      button.setAttribute('aria-pressed', String(Number(button.dataset?.catalogueImageIndex) === index));
+    dialogBody.querySelectorAll('[data-catalogue-gallery-view]').forEach(button => {
+      const selected = Number(button.dataset?.catalogueImageIndex) === index
+        && button.dataset?.cataloguePlaceholderView === undefined;
+      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle('is-selected', selected);
     });
     if (matchedColourway >= 0) {
       dialogBody.querySelectorAll('[data-catalogue-colourway-index]').forEach(input => {
@@ -1043,37 +1088,29 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     if (!placeholder) return;
     const label = placeholder.querySelector('[data-catalogue-variant-label]');
     if (label) label.textContent = variantLabel;
-    placeholder.setAttribute('aria-label', `${activeDialogProduct?.name || 'FSD product'} — ${variantLabel} [ASSET PENDING]`);
+    const viewTitle = placeholder.querySelector('[data-catalogue-view-title]');
+    const sourceLabel = String(variantLabel || '').toLocaleLowerCase('en-GB');
+    const inferredView = /\bfront\b/.test(sourceLabel)
+      ? 'FRONT VIEW'
+      : /\b(back|rear|reverse)\b/.test(sourceLabel)
+        ? 'BACK VIEW'
+        : /\b(detail|close.?up|fabric|texture|branding|logo|crest|panel|seam|pocket|hardware)\b/.test(sourceLabel)
+          ? 'DETAIL VIEW'
+          : viewTitle?.textContent || 'PRODUCT VIEW';
+    if (viewTitle) viewTitle.textContent = inferredView;
+    placeholder.setAttribute('aria-label', `${activeDialogProduct?.name || 'FSD product'} — ${inferredView} — IMAGE PENDING`);
     placeholder.hidden = false;
 
     const mainImage = dialogBody.querySelector('[data-catalogue-main-image]');
-    cancelMappedImageSwap(mainImage);
+    if (mainImage) cancelMappedImageSwap(mainImage);
     const photoButton = mainImage?.closest('[data-gallery-photo-open]');
     if (mainImage) mainImage.hidden = true;
     if (photoButton) photoButton.hidden = true;
-    if (!mainImage) placeholder.closest('.product-detail-gallery')?.classList.add('has-variant-placeholder');
+    placeholder.closest('.product-detail-gallery')?.classList.remove('has-variant-placeholder');
 
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
-    if (caption) caption.textContent = `${variantLabel} — [ASSET PENDING]`;
-    const requireFrontBackPair = dialog?.dataset.presentation !== 'quick-view';
-    updateEditorialGalleryLayout(requireFrontBackPair);
-    if (requireFrontBackPair) {
-      const secondaryImage = dialogBody.querySelector('[data-catalogue-secondary-image]');
-      const secondaryPlaceholder = dialogBody.querySelector('[data-catalogue-secondary-placeholder]');
-      const secondaryCaption = dialogBody.querySelector('[data-catalogue-secondary-caption]');
-      if (secondaryImage) secondaryImage.hidden = true;
-      if (secondaryPlaceholder) {
-        const label = secondaryPlaceholder.querySelector('[data-catalogue-secondary-variant]');
-        const placeholderLabel = [variantLabel, 'Back view'].filter(Boolean).join(' / ');
-        if (label) label.textContent = placeholderLabel;
-        secondaryPlaceholder.setAttribute(
-          'aria-label',
-          `${activeDialogProduct?.name || 'FSD product'} — ${placeholderLabel} [ASSET PENDING]`,
-        );
-        secondaryPlaceholder.hidden = false;
-      }
-      if (secondaryCaption) secondaryCaption.textContent = 'Back view — [ASSET PENDING]';
-    }
+    if (caption) caption.textContent = `${inferredView} — IMAGE PENDING`;
+    updateEditorialGalleryLayout(false);
   };
 
   mountImmersiveProductGallery({
@@ -1083,6 +1120,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     getImages: () => activeDialogImages,
     getVariant: () => activeDialogVariant,
     selectImage: selectDialogImage,
+    selectPlaceholder: selectDialogPlaceholder,
   });
 
   category.addEventListener('change', () => {
@@ -1221,6 +1259,11 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     const relatedButton = event.target.closest('[data-related-product]');
     if (relatedButton && dialogBody.contains(relatedButton)) {
       onProductSelect(Number(relatedButton.dataset.relatedProduct), relatedButton);
+      return;
+    }
+    const placeholderButton = event.target.closest('[data-catalogue-placeholder-view]');
+    if (placeholderButton && dialogBody.contains(placeholderButton) && activeDialogProduct) {
+      selectDialogPlaceholder(placeholderButton);
       return;
     }
     const imageButton = event.target.closest('[data-catalogue-image-index]');

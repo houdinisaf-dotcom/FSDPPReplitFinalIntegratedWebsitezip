@@ -1428,6 +1428,307 @@
   }
 }
 
+/* A white image canvas with selectable, explicit source-view states. */
+#dialog-body .product-detail-layout {
+  grid-template-columns: minmax(0, 2.1fr) minmax(290px, .9fr);
+  background: #fff;
+}
+
+#dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(290px, .84fr);
+}
+
+#dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-media {
+  grid-column: 1 / span 2;
+}
+
+#dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-purchase {
+  grid-column: 3;
+}
+
+#dialog-body .product-detail-media,
+#dialog-body .product-detail-gallery,
+#dialog-body .product-detail-gallery__feature-grid,
+#dialog-body .product-detail-gallery__secondary-stage,
+#dialog-body .product-detail-image-stage {
+  background: #fff;
+}
+
+#dialog-body .product-detail-gallery__feature-grid.has-secondary {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+  gap: clamp(5px, .7vw, 12px);
+}
+
+#dialog-body .product-detail-image-stage,
+#dialog-body .product-detail-gallery__secondary-stage {
+  min-height: clamp(420px, 48vw, 720px);
+  aspect-ratio: 4 / 5;
+}
+
+#dialog-body .product-detail-image-stage > img,
+#dialog-body .product-detail-gallery__secondary-stage > img,
+#dialog-body .product-detail-image-stage [data-catalogue-main-image] {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+#dialog-body .product-detail-gallery__secondary,
+#dialog-body .product-detail-gallery__secondary-stage {
+  border: 0;
+}
+
+#dialog-body .catalogue-selector__thumbs {
+  display: flex;
+  gap: clamp(7px, 1vw, 13px);
+  max-width: 100%;
+  margin: 14px 0 0;
+  padding: 5px 2px 12px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: #c6b77c transparent;
+  scrollbar-width: thin;
+}
+
+#dialog-body .catalogue-selector__thumb {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  flex: 0 0 clamp(74px, 7.6vw, 100px);
+  min-width: 74px;
+  min-height: 94px;
+  gap: 5px;
+  padding: 5px;
+  overflow: hidden;
+  border: 1px solid rgb(10 10 10 / 12%);
+  border-radius: 0;
+  background: #fff;
+  color: #0a0a0a;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: border-color .18s ease, transform .18s ease, background-color .18s ease;
+}
+
+#dialog-body .catalogue-selector__thumb:hover {
+  border-color: rgb(212 175 55 / 72%);
+  background: #fcfbf8;
+  transform: translateY(-2px);
+}
+
+#dialog-body .catalogue-selector__thumb.is-selected,
+#dialog-body .catalogue-selector__thumb[aria-pressed="true"] {
+  border-color: #b49328;
+  box-shadow: inset 0 0 0 1px rgb(212 175 55 / 32%);
+}
+
+#dialog-body .catalogue-selector__thumb:focus-visible {
+  z-index: 1;
+  outline: 2px solid #0a0a0a;
+  outline-offset: 3px;
+}
+
+#dialog-body .catalogue-selector__thumb-photo {
+  display: grid;
+  min-height: 0;
+  overflow: hidden;
+  background: #f8f7f4;
+}
+
+#dialog-body .catalogue-selector__thumb-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 60px;
+  object-fit: contain;
+}
+
+#dialog-body .catalogue-selector__thumb-label {
+  display: block;
+  overflow: hidden;
+  color: #46433b;
+  font: 8px/1.25 "Space Mono", monospace;
+  letter-spacing: .035em;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#dialog-body .fsd-product-view-placeholder {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(7px, 1.2vw, 14px);
+  padding: clamp(18px, 3vw, 38px);
+  overflow: hidden;
+  border: 1px solid rgb(10 10 10 / 8%);
+  background:
+    linear-gradient(135deg, transparent 49.7%, rgb(10 10 10 / 4%) 50%, transparent 50.3%),
+    linear-gradient(45deg, transparent 49.7%, rgb(10 10 10 / 3%) 50%, transparent 50.3%),
+    #fbfaf7;
+  color: #171713;
+  text-align: center;
+}
+
+#dialog-body .fsd-product-view-placeholder__graphic,
+.fsd-catalog-detail .fsd-product-view-placeholder__graphic {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: min(72%, 420px);
+  height: auto;
+  color: #b99a38;
+  opacity: .16;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#dialog-body .fsd-product-view-placeholder__brand,
+.fsd-catalog-detail .fsd-product-view-placeholder__brand {
+  position: relative;
+  color: #625738;
+  font: 9px/1.4 "Space Mono", monospace;
+  letter-spacing: .16em;
+}
+
+#dialog-body .fsd-product-view-placeholder__view,
+.fsd-catalog-detail .fsd-product-view-placeholder__view {
+  position: relative;
+  color: #141411;
+  font: 500 clamp(16px, 1.8vw, 24px)/1.15 "DM Sans", sans-serif;
+  letter-spacing: .045em;
+}
+
+#dialog-body .fsd-product-view-placeholder__status,
+.fsd-catalog-detail .fsd-product-view-placeholder__status {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 6px 10px;
+  background: #0a0a0a;
+  color: #e5d295;
+  font: 8px/1.2 "Space Mono", monospace;
+  letter-spacing: .13em;
+}
+
+#dialog-body .fsd-product-view-placeholder__variant,
+.fsd-catalog-detail .fsd-product-view-placeholder__variant {
+  position: relative;
+  max-width: 100%;
+  color: #6e6a61;
+  font: 9px/1.45 "DM Sans", sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.fsd-catalog-detail .fsd-product-view-placeholder {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: clamp(280px, 42vw, 620px);
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: clamp(18px, 3vw, 38px);
+  overflow: hidden;
+  border: 1px solid rgb(10 10 10 / 8%);
+  background:
+    linear-gradient(135deg, transparent 49.7%, rgb(10 10 10 / 4%) 50%, transparent 50.3%),
+    linear-gradient(45deg, transparent 49.7%, rgb(10 10 10 / 3%) 50%, transparent 50.3%),
+    #fbfaf7;
+  color: #171713;
+  text-align: center;
+}
+
+#dialog-body .fsd-product-view-placeholder--thumbnail {
+  min-height: 0;
+  padding: 5px 3px;
+  gap: 3px;
+  border: 0;
+  background: #f8f7f4;
+}
+
+#dialog-body .fsd-product-view-placeholder--thumbnail .fsd-product-view-placeholder__graphic {
+  width: 86%;
+  opacity: .2;
+}
+
+#dialog-body .fsd-product-view-placeholder--thumbnail .fsd-product-view-placeholder__brand {
+  font-size: 6px;
+  letter-spacing: .06em;
+}
+
+#dialog-body .fsd-product-view-placeholder--thumbnail .fsd-product-view-placeholder__view {
+  font-size: 9px;
+  letter-spacing: 0;
+}
+
+#dialog-body .fsd-product-view-placeholder--thumbnail .fsd-product-view-placeholder__status {
+  min-height: 16px;
+  padding: 3px 4px;
+  font-size: 5px;
+  letter-spacing: .06em;
+}
+
+#dialog-body .fsd-product-view-placeholder--thumbnail .fsd-product-view-placeholder__variant {
+  display: none;
+}
+
+#dialog-body .product-detail-gallery [hidden],
+#dialog-body .catalogue-selector__thumb [hidden] {
+  display: none !important;
+}
+
+@media (max-width: 960px) {
+  #dialog-body .product-detail-layout,
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-media,
+  #dialog-body .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-purchase {
+    grid-column: auto;
+  }
+
+  #dialog-body .product-detail-image-stage,
+  #dialog-body .product-detail-gallery__secondary-stage {
+    min-height: clamp(380px, 64vw, 640px);
+  }
+}
+
+@media (max-width: 600px) {
+  #dialog-body .product-detail-gallery__feature-grid,
+  #dialog-body .product-detail-gallery__feature-grid.has-secondary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #dialog-body .product-detail-gallery__secondary {
+    display: none !important;
+  }
+
+  #dialog-body .product-detail-image-stage {
+    min-height: min(116vw, 560px);
+    aspect-ratio: 4 / 5;
+  }
+
+  #dialog-body .catalogue-selector__thumb {
+    flex-basis: 78px;
+    min-width: 78px;
+    min-height: 96px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dialog-body .catalogue-selector__thumb {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}
+
 /* The product sheet reads as a numbered FSD object file: imagery first,
    sourcing visible, commercial information held to its verified fields. */
 .fsd-catalog-detail {
