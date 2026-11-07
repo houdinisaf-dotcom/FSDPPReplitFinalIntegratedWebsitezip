@@ -22,7 +22,9 @@ window.configureFSDInnovationRoutes = (P, M) => {
     const noteParts = [
       ...(item.safeguards || []),
       item.note,
-      'Initiative status is active. Specific owners, partners, locations and milestone dates are not listed where they have not been supplied.',
+      item.statusLabel
+        ? 'This is a proposed concept; no unverified owners, partners, locations, operations, or milestone dates are represented.'
+        : 'Specific owners, partners, locations and milestone dates are not listed where they have not been supplied.',
     ].filter(Boolean);
 
     return {
@@ -31,7 +33,7 @@ window.configureFSDInnovationRoutes = (P, M) => {
       tag: item.heroSubtitle
         ? `${escape(item.heroSubtitle)}<br><span style="font-size:14px;color:#ddd">${escape(item.summary)}</span>`
         : escape(item.summary),
-      status: activeStatus,
+      status: item.statusLabel || activeStatus,
       body,
       bul: capabilities.length
         ? capabilities.map(capability => `<strong>${escape(capability.title)}:</strong> ${escape(capability.description)}`)
@@ -45,11 +47,11 @@ window.configureFSDInnovationRoutes = (P, M) => {
   const toGroupPage = (groupId, title, kicker, items, summary) => ({
     kicker,
     title,
-    tag: 'Active initiatives · rollout underway',
-    status: 'ACTIVE / ROLLOUT UNDERWAY',
+    tag: 'Initiatives and proposed concepts',
+    status: 'INDIVIDUAL STATUS SHOWN ON EACH PAGE',
     body: [escape(summary)],
     bul: items.map(item => `<strong>${escape(item.title)}</strong> — ${escape(item.summary)}`),
-    note: 'The pages show rollout frameworks, not unreported sites, contracts, partners or dates.',
+    note: 'Each page states its own status and availability; no unverified operations or partnerships are implied.',
     gid: groupId,
     group: true,
     subs: items.map(item => [item.id, item.title, item.summary]),
@@ -77,17 +79,17 @@ window.configureFSDInnovationRoutes = (P, M) => {
   if (P.partnerships) P.partnerships.title = 'Partnerships & Security';
   if (existingInnovation) {
     existingInnovation[1] = 'Innovation & Operations';
-    existingInnovation[2] = 'Active infrastructure and long-horizon R&D initiatives.';
+    existingInnovation[2] = 'Proposed infrastructure and long-horizon research concepts.';
   }
 
   const globalInitiatives = groups.global || [];
   if (P.global) {
     P.global.title = 'Global Vision & Operations';
-    P.global.tag = 'Active infrastructure and long-horizon R&D initiatives.';
-    P.global.status = activeStatus;
-    P.global.body = ['Modular retail, predictive inventory, mobile testing, local production and responsible long-horizon research.'];
+    P.global.tag = 'Proposed infrastructure and long-horizon research concepts.';
+    P.global.status = 'STRATEGIC CONCEPTS · NOT OPERATIONAL';
+    P.global.body = ['Proposed concepts covering modular retail, demand-informed stock planning, mobile testing, local production, and long-horizon research.'];
     P.global.bul = globalInitiatives.map(item => `<strong>${escape(item.title)}</strong> — ${escape(item.summary)}`);
-    P.global.note = 'Initiative status is active. Specific operating locations, partners and milestone dates are not listed where they have not been supplied.';
+    P.global.note = 'No operating locations, partners, or milestone dates are represented as confirmed.';
   }
   if (globalMenu && Array.isArray(globalMenu[3])) {
     for (const item of globalInitiatives) {
@@ -102,15 +104,15 @@ window.configureFSDInnovationRoutes = (P, M) => {
   if (globalOverview) {
     globalOverview.kicker = 'FSD / GLOBAL VISION & OPERATIONS';
     globalOverview.title = 'Innovation & Operations';
-    globalOverview.tag = 'Active infrastructure and long-horizon R&D initiatives.';
-    globalOverview.status = activeStatus;
+    globalOverview.tag = 'Proposed infrastructure and long-horizon research concepts.';
+    globalOverview.status = 'STRATEGIC CONCEPTS · NOT OPERATIONAL';
     globalOverview.body = [
-      'FSD Global Vision groups modular retail, predictive inventory, mobile testing, local production and responsible long-horizon research.',
+      'FSD Global Vision maps proposed concepts for modular retail, demand-informed stock planning, mobile testing, local production, and responsible long-horizon research.',
       `<strong>Rollout framework:</strong> ${globalInitiatives.map(item => `${escape(item.title)} — ${item.rollout.map(escape).join(' → ')}`).join(' | ')}`,
     ];
     globalOverview.bul = globalInitiatives.map(item =>
       `<strong>${escape(item.title)}</strong> — ${escape(item.summary)} Value pillars: ${item.valuePillars.map(escape).join(' · ')}`);
-    globalOverview.note = 'Specific owners, partners, operating locations and milestone dates are not listed where they have not been supplied.';
+    globalOverview.note = 'No owners, partners, operating locations, or milestone dates are represented as confirmed.';
   }
 
   const bioLab = groups.bioLab || [];

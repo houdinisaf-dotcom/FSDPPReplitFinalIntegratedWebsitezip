@@ -3,7 +3,8 @@ window.FSDInnovationInitiatives = Object.freeze({
     {
       id: 'adaptive-fabrics',
       title: 'Adaptive Technical Fabrics',
-      summary: 'Material science, moisture management and garment durability.',
+      summary: 'Proposed material-science concept covering moisture management and garment durability.',
+      statusLabel: 'STRATEGIC CONCEPT · NO VERIFIED MATERIAL PERFORMANCE',
       scope: 'Develop technical materials and garment construction for comfort, breathability, moisture management, stretch, wash resistance and durable real-world use, with specialist textile partners.',
       valuePillars: ['Differentiated performance range', 'Stronger technical brand position', 'Long-term intellectual-property potential'],
       rollout: ['Engage specialist textile partners', 'Test stretch, wash resistance and real-world wear', 'Assess fit, movement and construction', 'Complete IP, legal and commercial review before product decisions'],
@@ -12,7 +13,8 @@ window.FSDInnovationInitiatives = Object.freeze({
     {
       id: 'smart-apparel',
       title: 'Smart Apparel & NFC Authentication',
-      summary: 'Active initiative exploring NFC-enabled garment authentication, product information and digital content.',
+      summary: 'Proposed concept exploring NFC-enabled garment authentication, product information and digital content.',
+      statusLabel: 'STRATEGIC CONCEPT · NO NFC SERVICE IS AVAILABLE',
       scope: 'Assess low-profile NFC integration in woven labels or garment construction as a possible route to product-authentication checks, care and sizing information, and digital content. No NFC-enabled garment, portal, or rewards programme is represented as available.',
       capabilities: [
         {
@@ -50,7 +52,8 @@ window.FSDInnovationInitiatives = Object.freeze({
       id: 'co-creation',
       title: 'Community Co-Creation',
       heroSubtitle: 'Real people. Real ideas. A stronger FSD.',
-      summary: 'Operating initiative developing consent-based feedback and co-creation frameworks; no sessions, trials, or submissions are open.',
+      summary: 'Proposed concept for consent-based feedback and co-creation; no sessions, trials, or submissions are open.',
+      statusLabel: 'STRATEGIC CONCEPT · PARTICIPATION IS NOT OPEN',
       scope: 'Develop structured ways for customers, athletes, instructors, and practitioners to inform future FSD products, training experiences, and initiatives. Workshops, prototype reviews, moderated forums, and digital feedback channels are potential formats only; no sessions, trials, forums, or submission portal are live.',
       capabilities: [
         {
@@ -96,7 +99,8 @@ window.FSDInnovationInitiatives = Object.freeze({
       id: 'circular-trade-in',
       title: 'Circular Trade-In Programme',
       heroSubtitle: 'Wear. Return. Reuse. A more circular approach.',
-      summary: 'Active circularity initiative assessing repair, reuse, resale, and recycling pathways; no trade-in service or partner is live.',
+      summary: 'Proposed circularity concept assessing repair, reuse, resale, and recycling pathways; no trade-in service or partner is live.',
+      statusLabel: 'STRATEGIC CONCEPT · NO TRADE-IN SERVICE IS AVAILABLE',
       scope: 'Develop a managed framework for potential inspection, grading, repair, resale, and recycling of suitable FSD apparel or equipment. No product eligibility, trade-in credit, collection, processing, or resale terms are confirmed or available.',
       capabilities: [
         {
@@ -185,7 +189,8 @@ window.FSDInnovationInitiatives = Object.freeze({
       id: 'predictive-popups',
       title: 'Autonomous Pop-Ups & Predictive Stock',
       heroSubtitle: 'Flexible retail. Smarter inventory. Closer to our communities.',
-      summary: 'Active initiative exploring staffed pop-up retail and demand-informed stock planning; no locations or systems are live.',
+      summary: 'Proposed concept exploring staffed pop-up retail and demand-informed stock planning; no locations or systems are live.',
+      statusLabel: 'STRATEGIC CONCEPT · NO RETAIL LOCATION OR SERVICE IS LIVE',
       scope: 'Assess temporary, staffed retail at suitable gyms, events, universities, business hubs, and community locations alongside data-informed inventory planning. Online stock views, click-and-collect, and location-based availability remain future possibilities only; no site, schedule, or integrated service is confirmed.',
       capabilities: [
         {
@@ -221,7 +226,8 @@ window.FSDInnovationInitiatives = Object.freeze({
       id: 'mobile-testing-labs',
       title: 'Mobile Testing Labs',
       heroSubtitle: 'Real-world testing. Real people. Real insights.',
-      summary: 'Active initiative for mobile product trials and consent-based feedback; no unit, venue, trial, or data collection is live.',
+      summary: 'Proposed concept for mobile product trials and consent-based feedback; no unit, venue, trial, or data collection is live.',
+      statusLabel: 'STRATEGIC CONCEPT · NO TESTING UNIT OR SERVICE IS LIVE',
       scope: 'Develop a mobile framework for apparel and equipment trials and training demonstrations at suitable events, gyms, and universities. Future feedback may cover fit, comfort, durability, and anonymised performance insights with informed consent and privacy controls. Biometric sensor tracking is not in confirmed scope.',
       capabilities: [
         {
@@ -257,7 +263,8 @@ window.FSDInnovationInitiatives = Object.freeze({
       id: 'local-micro-manufacturing',
       title: 'Local Micro-Manufacturing',
       heroSubtitle: 'On-demand production. Closer to our communities.',
-      summary: 'Active initiative to assess local, small-batch production; no partner, hub, production site, or service is live.',
+      summary: 'Proposed local small-batch production concept; no partner, hub, production site, or service is live.',
+      statusLabel: 'STRATEGIC CONCEPT · NO PRODUCTION SITE IS LIVE',
       scope: 'Develop a local small-batch production framework for FSD apparel and selected equipment, subject to quality, safety, cost, and commercial feasibility. Selected fit or design variations may be assessed, but no partner, manufacturing hub, production site, or custom-order service is confirmed.',
       capabilities: [
         {
@@ -293,7 +300,8 @@ window.FSDInnovationInitiatives = Object.freeze({
       id: 'genetic-microbiome',
       title: 'Genetic & Microbiome Personalisation',
       heroSubtitle: 'Long-horizon research. Responsible science. Clear safeguards.',
-      summary: 'Long-horizon research initiative; no testing, sample collection, data analysis, or personalised health guidance is available.',
+      summary: 'Proposed long-horizon research concept; no testing, sample collection, data analysis, or personalised health guidance is available.',
+      statusLabel: 'STRATEGIC CONCEPT · RESEARCH ONLY',
       scope: 'Assess whether independently validated genetic or microbiome research could ever support general, non-personalised training or nutrition education. No individual interpretation, diagnosis, treatment, or health recommendation is in confirmed scope.',
       capabilities: [
         {

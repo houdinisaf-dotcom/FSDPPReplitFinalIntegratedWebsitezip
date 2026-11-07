@@ -5,6 +5,7 @@ import {
   flagshipPageDefinitions,
   renderFlagshipPlaceholderPages,
   renderInnovationHubIndex,
+  renderStrategicConceptDetail,
 } from '../src/flagship-pages.js';
 import { routeFromHash } from '../src/react-router.js';
 
@@ -12,6 +13,7 @@ test('every requested page and Bio-Lab concept has a direct route and visible pa
   const html = renderFlagshipPlaceholderPages();
   const expectedTitles = [
     'Tactical Shield Membership',
+    'Civic Response Auxiliary',
     'FSD Pods',
     'Smart Apparel &amp; NFC Authentication',
     'Adaptive Technical Fabrics',
@@ -30,19 +32,19 @@ test('every requested page and Bio-Lab concept has a direct route and visible pa
     assert.equal(routeFromHash(`#${page.id}`).target, page.id);
   }
   for (const title of expectedTitles) assert.ok(html.includes(title), `${title} should be visible`);
-  assert.equal(flagshipPageDefinitions.length, 11);
+  assert.equal(flagshipPageDefinitions.length, 12);
 });
 
 test('pending media uses labeled responsive placeholders rather than unapproved imagery', () => {
   const html = renderFlagshipPlaceholderPages();
-  assert.equal((html.match(/class="fsd-asset-slot fsd-asset-slot--/g) || []).length, 44);
+  assert.equal((html.match(/class="fsd-asset-slot fsd-asset-slot--/g) || []).length, 49);
   assert.match(html, /FSD \/ PERFORMANCE/);
   assert.match(html, /FSD product and editorial imagery/);
   assert.match(html, /Illustrative portal mock-up only; no live member area is available/);
   assert.match(html, /Illustrative training imagery only; no class or provider is confirmed/);
   assert.match(html, /VIEW SMART APPAREL INITIATIVE/);
   assert.match(html, /href="#smart-apparel-nfc"/);
-  assert.match(html, /FSD BIO-LAB™ \/ ACTIVE INITIATIVE/);
+  assert.match(html, /FSD BIO-LAB™ \/ PROPOSED CONCEPT/);
   assert.match(html, /Low-footprint modular training, retail, and community infrastructure/);
   assert.match(html, /href="\/fsd-pods\.html"/);
   assert.doesNotMatch(html, />\s*(?:CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING)\b/i);
@@ -52,7 +54,7 @@ test('pending media uses labeled responsive placeholders rather than unapproved 
 test('Innovation Hub links to all concepts and keeps private proofs out of production markup', () => {
   const publicHtml = renderInnovationHubIndex();
   assert.equal((publicHtml.match(/class="fsd-innovation-card"/g) || []).length, 8);
-  assert.match(publicHtml, /ACTIVE BIO-LAB INITIATIVE/);
+  assert.match(publicHtml, /PROPOSED BIO-LAB CONCEPT/);
   assert.match(publicHtml, /related concepts and design prototypes are for exploration, not current products or commitments/);
   assert.match(publicHtml, /href="#adaptive-technical-fabrics"/);
   assert.doesNotMatch(publicHtml, /__catalogue-preview/);
@@ -79,7 +81,7 @@ test('seven Bio-Lab concepts retain approved holding copy and per-page evidence 
   assert.equal((html.match(/DETAILS PENDING VERIFICATION/g) || []).length, 6);
   assert.match(html, /FSD BIO-LAB™ \/ CONCEPT FOR EXPLORATION/);
   assert.match(html, /Named Bio-Lab concept only/);
-  assert.match(html, /ACTIVE Bio-Lab initiative exploring possible NFC garment authentication/i);
+  assert.match(html, /proposed Bio-Lab concept exploring possible NFC garment authentication/i);
   assert.match(html, /NFC does not measure biometrics/);
   assert.doesNotMatch(html, /FSD BIO-LAB™ \/ PRODUCT RANGE|FSD PRODUCT · DETAILS/);
   assert.doesNotMatch(html, /<form\b|ADD TO BAG|CHECKOUT|BUY NOW|JOIN NOW/i);
@@ -103,9 +105,17 @@ test('new page content does not enable membership sign-up, checkout, or unverifi
   assert.match(partnerships.modules.join(' '), /potential apparel and recovery-equipment evaluation/i);
   assert.match(partnerships.modules.join(' '), /written agreements, safety protocols, and participant consent/i);
   assert.match(html, /FSD \/ GLOBAL VISION &amp; OPERATIONS/);
-  assert.match(html, /ACTIVE INITIATIVE · ROLLOUT UNDERWAY/);
+  assert.match(html, /PROPOSED CONCEPT/);
   assert.match(html, /Related concepts and design prototypes are for exploration, not current products or commitments/);
   assert.doesNotMatch(html, /<form\b|ADD TO BAG|CHECKOUT|£\d/i);
   assert.doesNotMatch(html, /partner application form|partnership sign-up form|collect(?:s|ing)? (?:partner|participant) (?:data|details)/i);
   assert.match(html, /Specifications, supporting evidence, and availability are pending verification/);
+});
+
+test('Civic Response is a complete proposed page with honest pending imagery', () => {
+  const civic = renderStrategicConceptDetail('civic-response-auxiliary');
+  assert.match(civic, /Civic Response Auxiliary/);
+  assert.match(civic, /No programme, emergency-response service, training schedule, or partnership is represented as available/);
+  assert.match(civic, /approved community-preparedness editorial photography is required/i);
+  assert.match(civic, /\[ASSET PENDING\]/);
 });

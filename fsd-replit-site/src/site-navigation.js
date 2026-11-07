@@ -9,6 +9,7 @@ import { HOUSE_FLAGSHIP_DRAFTS, shouldDisableHouseHref } from './data/house-page
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_HASH, FSD_STORY_PATH } from './react-router.js';
 import { outlineIcon } from './brand/outline-icons.js';
 import { imagePlaceholderMarkup, installImageErrorFallbacks } from './image-placeholder.js';
+import { STRATEGIC_CONCEPTS, conceptItem, conceptsForPlacement } from './strategic-concepts.js';
 
 export const primaryNavigation = [
   { id: 'collections', label: 'SHOP' },
@@ -310,11 +311,21 @@ function makeCollectionsGroups(divisions, products, includeDraftPreviews = false
         featureImageAlt: `${collection.title} — catalogue product photography` } : {}),
     })),
   });
+  for (const section of ['Circularity', 'Technical Innovation']) {
+    const items = conceptsForPlacement('SHOP', section).map(conceptItem);
+    if (!items.length) continue;
+    groups.push({
+      id: `shop-${slug(section)}`,
+      title: section.toUpperCase(),
+      description: 'FSD product-development concepts connected to the existing SHOP catalogue.',
+      items,
+    });
+  }
   return groups;
 }
 
 function makeUniverseGroups(divisions, products) {
-  return divisions.map(division => {
+  const groups = divisions.map(division => {
     const sourceGroup = division.groups?.[0];
     const item = {
       id: `universe-explore-${division.id}`,
@@ -335,6 +346,29 @@ function makeUniverseGroups(divisions, products) {
       items: sourceGroup ? [item] : [],
     });
   });
+  const communityDevelopment = conceptsForPlacement('UNIVERSE', 'Community Development').map(conceptItem);
+  if (communityDevelopment.length) {
+    groups.push({
+      id: 'universe-community-development',
+      title: 'COMMUNITY DEVELOPMENT',
+      description: 'Community-led product and partnership concepts. Participation channels are not open.',
+      items: communityDevelopment,
+    });
+  }
+  groups.push({
+    id: 'universe-strategic-concepts',
+    title: 'TWELVE STRATEGIC CONCEPTS',
+    description: 'Open the complete, mapped FSD concept directory.',
+    href: '#fsd-strategic-concepts',
+    items: [{
+      id: 'universe-strategic-concepts-index',
+      title: 'Browse all twelve concepts',
+      kind: 'destination',
+      href: '#fsd-strategic-concepts',
+      description: 'View the complete directory and its approved division placements.',
+    }],
+  });
+  return groups;
 }
 
 function makeHouseGroups(divisions) {
@@ -364,6 +398,7 @@ function makeHouseGroups(divisions) {
       description: 'Location details are being prepared. No operating site or service is represented.',
     };
   });
+  flagshipItems.push(...conceptsForPlacement('THE HOUSE', 'Flagships').map(conceptItem));
   const fightPromotionRoutes = new Map([
     ['Professional Fight Promotions', '/fight-promotions.html'],
     ['Live Events', '/live-events.html'],
@@ -482,8 +517,8 @@ function makeHouseGroups(divisions) {
           hash: 'global/pods',
           href: '/fsd-pods.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Operating initiative developing modular, transportable training, retail, and community-learning infrastructure. No pod or location is currently operational.',
+          status: 'Strategic concept',
+          description: 'Proposed modular training, retail, education, and community-space concept. No Pod, location, or service is operational.',
         },
         {
           id: 'predictive-popups',
@@ -491,8 +526,8 @@ function makeHouseGroups(divisions) {
           hash: 'global/predictive-popups',
           href: '/autonomous-popups.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Staffed flexible retail and demand-informed stock planning. No venue or stock service is live; “autonomous” refers to planning, not unstaffed or cashier-less retail.',
+          status: 'Strategic concept',
+          description: 'Proposed staffed flexible retail and demand-informed stock planning. No venue or stock service is live; “autonomous” refers to planning, not unstaffed or cashier-less retail.',
         },
         {
           id: 'mobile-testing-labs',
@@ -500,17 +535,17 @@ function makeHouseGroups(divisions) {
           hash: 'global/mobile-testing-labs',
           href: '/mobile-testing-labs.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Active initiative for mobile trials and consent-based feedback. No unit, venue, test, or data collection is live; biometric sensor tracking is not in confirmed scope.',
+          status: 'Strategic concept',
+          description: 'Proposed mobile product-testing and consent-based feedback framework. No unit, venue, test, or data collection is live; biometric sensor tracking is not in confirmed scope.',
         },
         {
           id: 'local-micro-manufacturing',
-          title: 'Local Micro-Manufacturing',
+          title: 'Local Micro-Manufacturing Workshop',
           hash: 'global/local-micro-manufacturing',
           href: '/local-micro-manufacturing.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Active initiative assessing small-batch production. No partner, hub, site, or custom-order service is live; environmental benefits are not verified.',
+          status: 'Strategic concept',
+          description: 'Proposed local small-batch production model. No partner, hub, site, or custom-order service is live; environmental benefits are not verified.',
         },
         {
           id: 'genetic-microbiome',
@@ -518,8 +553,12 @@ function makeHouseGroups(divisions) {
           hash: 'global/genetic-microbiome',
           href: '/genetic-microbiome.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Long-horizon research with strict scientific and privacy gates. No testing, sample collection, data analysis, or personalised health guidance is available; no clinical partner is confirmed.',
+          status: 'Strategic concept',
+          description: 'Long-horizon personalisation research with scientific, privacy, consent, ethical, and regulatory gates. No testing, sample collection, data analysis, or personalised health guidance is available; no clinical partner is confirmed.',
+        },
+        {
+          ...conceptItem(STRATEGIC_CONCEPTS.find(concept => concept.id === 'performance-linked-partnerships')),
+          id: 'global-vision-operations-performance-linked-partnerships',
         },
         {
           id: 'security-provisions',
@@ -543,8 +582,8 @@ function makeHouseGroups(divisions) {
           hash: 'community/co-creation',
           href: '/community-co-creation.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Operating initiative for structured feedback and co-creation. No workshops, trials, forums, portal, or submissions are open.',
+          status: 'Strategic concept',
+          description: 'Proposed framework for feedback and co-creation. No workshops, trials, forums, portal, or submissions are open.',
         },
         {
           id: 'performance-partnerships',
@@ -552,8 +591,8 @@ function makeHouseGroups(divisions) {
           hash: 'community/performance-partnerships',
           href: '/performance-partnerships.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Framework for training-facility and martial-arts-coach collaboration. No named partner, live testing programme, participation criteria, or application flow is confirmed.',
+          status: 'Strategic concept',
+          description: 'Proposed framework for athlete, corporate, workplace-wellbeing, and brand partnerships. No named partner, live testing programme, participation criteria, or application flow is confirmed.',
         },
         {
           id: 'circular-trade-in',
@@ -561,8 +600,8 @@ function makeHouseGroups(divisions) {
           hash: 'community/circular-trade-in',
           href: '/circular-trade-in.html',
           kind: 'initiative',
-          status: 'Operating or rollout underway',
-          description: 'Operating circularity initiative assessing inspection, repair, reuse, resale, and recycling pathways. No trade-ins, eligibility, or credit terms are available.',
+          status: 'Strategic concept',
+          description: 'Proposed circularity framework for trade-in, reuse, repair, refurbishment, and resale. No trade-ins, eligibility, or credit terms are available.',
         },
         {
           id: 'first-aid-safety',
@@ -573,6 +612,9 @@ function makeHouseGroups(divisions) {
           status: 'Operating or rollout underway',
           description: 'Civic-resilience initiative covering first aid and personal-safety awareness. No provider or training programme is confirmed here.',
         },
+        ...conceptsForPlacement('THE HOUSE', 'Community & Culture')
+          .filter(concept => ['civic-response-auxiliary', 'tactical-shield-membership'].includes(concept.id))
+          .map(conceptItem),
       ]),
   ];
 }
@@ -580,7 +622,7 @@ function makeHouseGroups(divisions) {
 function makePrivateGroups() {
   const details = [
     ['tactical-shield-membership', 'TACTICAL SHIELD MEMBERSHIP',
-      'Membership information only. Terms and benefits are not confirmed; registration is not open and no sign-up data is collected.', false],
+      'Proposed membership concept only. Terms and benefits are not confirmed; registration is not open and no sign-up data is collected.', true, '#tactical-shield-membership'],
     ['vip-registration', 'VIP ACCESS REGISTRATION',
       'Registration is not collecting sign-ups yet. The destination and approved privacy and consent details are still required.', false],
     ['collection-announcements', 'COLLECTION ANNOUNCEMENTS',
@@ -670,7 +712,7 @@ export function createNavigationModel({
       id: 'house',
       label: 'THE HOUSE',
       title: 'THE HOUSE',
-      description: 'The story, community initiatives, Bio-Lab, and active FSD Global programmes.',
+      description: 'The story, community initiatives, Bio-Lab, and mapped FSD strategic concepts.',
       divisionId: 'global',
       groups: makeHouseGroups(divisions),
     },
@@ -689,7 +731,7 @@ export function createNavigationModel({
     bioLabMenu.groups.push({
       id: 'innovation-hub',
       title: 'INNOVATION HUB',
-      description: 'Browse Bio-Lab products and active material-science and connected-apparel initiatives.',
+      description: 'Browse Bio-Lab products and proposed material-science and connected-apparel concepts.',
       sourceDivisionId: 'bio-lab',
       sourceGroupIndex: bioLabMenu.groups.length,
       href: '#innovation-hub',
@@ -714,6 +756,23 @@ export function createNavigationModel({
         sourceGroupIndex: bioLabMenu.groups.length,
         description: 'Garment authentication, useful product information, and digital content.',
       }],
+    });
+    bioLabMenu.groups[bioLabMenu.groups.length - 1].items.push(
+      ...conceptsForPlacement('BIO-LAB™', 'INNOVATION HUB').map(conceptItem),
+    );
+    const bioLabConcepts = [
+      ...conceptsForPlacement('BIO-LAB™', 'Materials & Engineering'),
+      ...conceptsForPlacement('BIO-LAB™', 'Personalisation Research'),
+      ...conceptsForPlacement('BIO-LAB™', 'Field Research'),
+      ...conceptsForPlacement('BIO-LAB™', 'Connected Performance'),
+    ];
+    bioLabMenu.groups.push({
+      id: 'bio-lab-strategic-concepts',
+      title: 'MATERIALS, RESEARCH & CONNECTED PERFORMANCE',
+      description: 'Mapped Bio-Lab concepts and cross-linked community research.',
+      sourceDivisionId: 'bio-lab',
+      sourceGroupIndex: bioLabMenu.groups.length,
+      items: bioLabConcepts.map(conceptItem),
     });
   }
 

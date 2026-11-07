@@ -57,7 +57,7 @@ export const innovationHubPages = Object.freeze([
   {
     id: 'smart-apparel-nfc',
     title: 'Smart Apparel & NFC Authentication',
-    summary: 'Active Bio-Lab initiative exploring possible NFC garment authentication, product information, and digital content. No NFC capability or data collection is represented as currently available; NFC does not measure biometrics.',
+    summary: 'Proposed Bio-Lab concept exploring possible NFC garment authentication, product information, and digital content. No NFC capability or data collection is represented as currently available; NFC does not measure biometrics.',
     modules: ['Garment authentication', 'Care, sizing & digital content', 'Privacy, security & manufacturing gates'],
     initiative: true,
     bioLabConcept: true,
@@ -68,7 +68,7 @@ export const innovationHubPages = Object.freeze([
   {
     id: 'adaptive-technical-fabrics',
     title: 'Adaptive Technical Fabrics',
-    summary: 'Active Bio-Lab initiative focused on material science, moisture management, and garment durability.',
+    summary: 'Proposed Bio-Lab concept focused on material science, moisture management, and garment durability. No fabric product or performance claim is represented as verified.',
     modules: ['Material science & moisture management', 'Durability testing', 'Partner, IP & rollout gates'],
     initiative: true,
     houseRoute: 'bio-lab/adaptive-fabrics',
@@ -93,7 +93,7 @@ export const bioLabConceptVerification = Object.freeze(
     .map(page => Object.freeze({
       id: page.id,
       title: page.title,
-      customerFacingStatus: page.initiative ? 'active initiative; no live product or service represented' : 'concept for exploration; not a current product or commitment',
+      customerFacingStatus: 'proposed concept; no live product or service represented',
       approvedHoldingCopy: page.summary,
       evidenceStatus: page.id === 'smart-apparel-nfc'
         ? 'initiative scope only; technical implementation and data-handling evidence not supplied'
@@ -103,6 +103,28 @@ export const bioLabConceptVerification = Object.freeze(
 );
 
 const standalonePages = Object.freeze([
+  {
+    id: 'civic-response-auxiliary',
+    title: 'Civic Response Auxiliary',
+    eyebrow: 'FSD / THE HOUSE · COMMUNITY & CULTURE',
+    heroSubtitle: 'Prepared communities. Practical awareness. Responsible partnerships.',
+    summary: 'A proposed framework for community preparedness, volunteer learning, personal-safety awareness, and potential partnerships with professional organisations. No programme, emergency-response service, training schedule, or partnership is represented as available.',
+    proposal: true,
+    statusLabel: 'PROPOSED CONCEPT · NO PROGRAMME OR PARTNERSHIP IS AVAILABLE',
+    modules: [
+      'Community Preparedness',
+      'Volunteer Learning & Personal Safety',
+      'Professional Partnerships',
+      'Safeguarding & Delivery Readiness',
+    ],
+    moduleDescriptions: [
+      'Explore community preparedness principles and personal-safety awareness. No local programme or emergency response service is active.',
+      'Volunteer learning would require a defined scope, qualified providers, safeguarding, insurance, and appropriate training materials.',
+      'Potential partnerships with professional organisations are unconfirmed. No partner is represented as agreed.',
+      'Any future programme would require approved governance, safeguarding, legal scope, insurance, and delivery arrangements.',
+    ],
+    heroAssetDescription: 'Approved community-preparedness editorial photography is required; no operating programme or partner is represented.',
+  },
   {
     id: 'tactical-shield-membership',
     title: 'Tactical Shield Membership',
@@ -116,7 +138,9 @@ const standalonePages = Object.freeze([
     title: 'FSD Pods',
     eyebrow: 'FSD / GLOBAL VISION & OPERATIONS',
     heroSubtitle: 'Low-footprint modular training, retail, and community infrastructure.',
-    summary: 'Active infrastructure initiative exploring transportable spaces for training, limited apparel display, product testing, and community education. No Pod or site is live.',
+    summary: 'Proposed infrastructure concept exploring transportable spaces for training, limited apparel display, product testing, and community education. No Pod, location, or service is live.',
+    proposal: true,
+    statusLabel: 'PROPOSED CONCEPT · NO POD OR SERVICE IS OPERATIONAL',
     modules: ['Training & Product Testing', 'Limited Apparel Display', 'Community Education', 'Site, Safety & Operating Model'],
     action: 'VIEW GLOBAL VISION & OPERATIONS',
     actionHref: '/fsd-pods.html',
@@ -126,14 +150,15 @@ const standalonePages = Object.freeze([
     id: 'performance-linked-partnerships-security',
     title: 'Performance-Linked Partnerships',
     eyebrow: 'FSD / THE HOUSE',
-    summary: 'Operating or rollout-underway initiative developing a framework for training-facility and martial-arts-coach collaboration. No named partner, facility, written agreement, live testing programme, participation eligibility, or application process is confirmed.',
+    summary: 'Proposed framework for athlete, corporate, workplace-wellbeing, and brand partnerships. No named partner, facility, written agreement, live testing programme, participation eligibility, or application process is confirmed.',
     modules: [
       'Training-facility and martial-arts-coach framework',
       'Potential apparel and recovery-equipment evaluation',
       'Written agreements, safety protocols, and participant consent',
     ],
     action: 'NO PARTNER APPLICATION OR SIGN-UP',
-    initiative: true,
+    proposal: true,
+    statusLabel: 'PROPOSED PARTNERSHIP FRAMEWORK · NO PARTNER IS CONFIRMED',
     houseRoute: 'community/performance-partnerships',
   },
 ]);
@@ -143,7 +168,7 @@ export const flagshipPageDefinitions = Object.freeze([
   ...innovationHubPages.map(page => ({
     ...page,
     eyebrow: page.initiative
-      ? 'FSD BIO-LAB™ / ACTIVE INITIATIVE'
+      ? 'FSD BIO-LAB™ / PROPOSED CONCEPT'
       : 'FSD BIO-LAB™ / CONCEPT FOR EXPLORATION',
   })),
 ]);
@@ -275,7 +300,7 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
     <span class="fsd-innovation-card-index">${String(innovationHubPages.indexOf(page) + 1).padStart(2, '0')}</span>
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHTML(page.title)}</strong>
-      <small>${page.initiative ? 'ACTIVE BIO-LAB INITIATIVE' : 'DETAILS PENDING VERIFICATION'}</small>
+      <small>${page.initiative ? 'PROPOSED BIO-LAB CONCEPT' : 'DETAILS PENDING VERIFICATION'}</small>
     </span>
     <span class="fsd-innovation-card-arrow" aria-hidden="true">↗</span>
   </a>`).join('');
@@ -293,7 +318,7 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
       <div class="fsd-hub-heading">
         <div>
           <h2 id="fsd-innovation-hub-title">Innovation Hub</h2>
-          <p>Explore FSD Bio-Lab products and active material-science and connected-apparel initiatives.</p>
+          <p>Explore FSD Bio-Lab concepts in material science and connected apparel.</p>
           <p class="fsd-page-intro fsd-page-disclaimer">Initiative workstreams may be underway; related concepts and design prototypes are for exploration, not current products or commitments.</p>
         </div>
         ${renderAssetSlot('Innovation Hub editorial image', 'hub')}
@@ -310,7 +335,10 @@ function renderPageModule(page, moduleTitle, index) {
     <div class="fsd-page-module-copy">
       <span class="fsd-page-module-index">${String(index + 1).padStart(2, '0')}</span>
       <h3>${escapeHTML(moduleTitle)}</h3>
-       <p>${page.initiative ? 'Initiative scope, value pillars, and rollout framework.' : 'Specifications, supporting evidence, and availability are pending verification.'}</p>
+       <p>${escapeHTML(page.moduleDescriptions?.[index]
+    || (page.proposal || page.initiative
+      ? 'Proposed scope and progression requirements; no service is represented as available.'
+      : 'Specifications, supporting evidence, and availability are pending verification.'))}</p>
     </div>
     ${renderAssetSlot(`${page.title} / ${moduleTitle}`, ratio)}
   </article>`;
@@ -319,8 +347,11 @@ function renderPageModule(page, moduleTitle, index) {
 function renderPage(page) {
   const isInnovationPage = innovationHubPages.some(entry => entry.id === page.id);
   const isTacticalShieldPage = page.id === 'tactical-shield-membership';
-  const returnHref = isInnovationPage ? '#innovation-hub' : '#universe';
-  const returnLabel = isInnovationPage ? 'RETURN TO INNOVATION HUB' : 'RETURN TO FSD UNIVERSE';
+  const isStrategicConcept = ['civic-response-auxiliary', 'tactical-shield-membership'].includes(page.id);
+  const returnHref = isInnovationPage ? '#innovation-hub' : isStrategicConcept ? '#fsd-strategic-concepts' : '#universe';
+  const returnLabel = isInnovationPage
+    ? 'RETURN TO INNOVATION HUB'
+    : isStrategicConcept ? 'RETURN TO CONCEPT DIRECTORY' : 'RETURN TO FSD UNIVERSE';
   const modules = (page.modules || []).map((moduleTitle, index) =>
     renderPageModule(page, moduleTitle, index)).join('');
   const action = page.actionHref
@@ -337,15 +368,20 @@ function renderPage(page) {
         ${page.heroSubtitle ? `<p class="fsd-page-subtitle">${escapeHTML(page.heroSubtitle)}</p>` : ''}
         <p class="fsd-page-intro">${escapeHTML(page.summary)}</p>
         ${page.bioLabConcept && !page.initiative ? '<span class="fsd-page-status">DETAILS PENDING VERIFICATION</span>' : ''}
-        ${page.initiative ? '<span class="fsd-page-status">ACTIVE INITIATIVE · ROLLOUT UNDERWAY</span>' : ''}
+        ${page.statusLabel
+    ? `<span class="fsd-page-status">${escapeHTML(page.statusLabel)}</span>`
+    : page.initiative
+      ? '<span class="fsd-page-status">PROPOSED CONCEPT · NO LIVE SERVICE REPRESENTED</span>'
+      : ''}
         ${page.initiative ? '<p class="fsd-page-intro fsd-page-disclaimer">Related concepts and design prototypes are for exploration, not current products or commitments.</p>' : ''}
       </header>
       ${renderAssetSlot(
     `${page.title} / Editorial`,
     'hero',
-    isTacticalShieldPage
+    page.heroAssetDescription
+      || (isTacticalShieldPage
       ? 'Illustrative hero placeholder; no current membership service is represented.'
-      : undefined,
+      : undefined),
   )}
       ${isTacticalShieldPage
     ? renderTacticalShieldContent()
@@ -364,4 +400,9 @@ export function renderFlagshipPlaceholderPages() {
 
 export function renderBioLabPlaceholderPages() {
   return innovationHubPages.map(renderPage).join('');
+}
+
+export function renderStrategicConceptDetail(id) {
+  const page = flagshipPageDefinitions.find(record => record.id === id);
+  return page ? renderPage(page) : '';
 }

@@ -150,19 +150,19 @@ test('deferred VIP access cannot collect or pretend to submit personal data', ()
   assert.doesNotMatch(markup, /<form|<input|mailto:|action=|subscribe/i);
 });
 
-test('concept discovery groups retain approved rollout status and explicit availability boundaries', () => {
+test('concept discovery groups retain proposed status and explicit availability boundaries', () => {
   const markup = beyondProductSection();
   for (const group of ['TRAIN & BELONG', 'WEAR', 'BUILT CLOSER', 'TOGETHER & TOMORROW']) {
     assert.match(markup, new RegExp(group));
   }
   for (const concept of [
-    'Tactical Shield Membership', 'Community Co-Creation', 'Community Resilience',
+    'Tactical Shield Membership', 'Civic Response Auxiliary', 'Community Co-Creation', 'Community Resilience',
     'Smart Apparel', 'Adaptive Technical Fabrics', 'Circular Trade-In',
     'Autonomous Pop-Ups & Predictive Stock', 'FSD Pods', 'Mobile Testing Labs',
     'Local Micro-Manufacturing', 'Performance-Linked Partnerships',
     'Genetic & Microbiome Personalisation',
   ]) assert.ok(markup.includes(concept), `Missing concept: ${concept}`);
-  assert.match(markup, /PROPOSAL · REGISTRATION NOT OPEN/);
+  assert.match(markup, /PROPOSED CONCEPT · REGISTRATION NOT OPEN/);
   assert.match(markup, /OPERATING OR ROLLOUT UNDERWAY/);
   assert.match(markup, /no membership service or registration is available/i);
   assert.match(markup, /<button class="showroom-concepts__unavailable" type="button" disabled>[\s\S]*?Tactical Shield Membership[\s\S]*?<\/button>/);

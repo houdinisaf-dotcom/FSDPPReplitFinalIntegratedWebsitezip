@@ -8,7 +8,13 @@ import { mountClientBag } from './bag.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { CATALOGUE_COLLECTIONS } from './catalogue-collections.js';
 import { seoEntryForPath } from './site-seo.js';
-import { flagshipPageHashes, renderBioLabPlaceholderPages, renderInnovationHubIndex } from './flagship-pages.js';
+import {
+  flagshipPageHashes,
+  renderBioLabPlaceholderPages,
+  renderInnovationHubIndex,
+  renderStrategicConceptDetail,
+} from './flagship-pages.js';
+import { renderStrategicConceptIndex } from './strategic-concepts.js';
 import { mountStorefrontMotion } from './motion-runtime.js';
 import { installImageErrorFallbacks } from './image-placeholder.js';
 import { HOUSE_PAGE_REGISTRY } from './data/house-page-readiness.js';
@@ -97,6 +103,14 @@ export function renderStorefrontMarkup() {
     <div class="showroom-archive-content">
       ${renderInnovationHubIndex()}
       ${renderBioLabPlaceholderPages()}
+    </div>
+  </details>
+  <details class="showroom-archive showroom-archive--catalogue" id="fsd-strategic-concepts">
+    <summary>DISCOVER THE TWELVE FSD STRATEGIC CONCEPTS</summary>
+    <div class="showroom-archive-content">
+      ${renderStrategicConceptIndex()}
+      ${renderStrategicConceptDetail('civic-response-auxiliary')}
+      ${renderStrategicConceptDetail('tactical-shield-membership')}
     </div>
   </details>
   <details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">

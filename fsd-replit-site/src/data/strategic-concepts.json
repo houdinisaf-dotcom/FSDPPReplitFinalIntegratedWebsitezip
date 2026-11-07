@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "statusPolicy": "Strategic concept; no product, service, site, partner, or operating capability is represented as live unless separately verified.",
+  "concepts": [
+    {
+      "id": "autonomous-popups-predictive-stock",
+      "title": "Autonomous Pop-Ups & Predictive Stock",
+      "primaryDivision": "THE HOUSE",
+      "primarySection": "Flagships",
+      "crossLinks": [
+        { "division": "THE HOUSE", "section": "Global Vision & Operations" }
+      ],
+      "href": "/autonomous-popups.html",
+      "summary": "Flexible retail locations, inventory intelligence and connected customer experiences."
+    },
+    {
+      "id": "civic-response-auxiliary",
+      "title": "Civic Response Auxiliary",
+      "primaryDivision": "THE HOUSE",
+      "primarySection": "Community & Culture",
+      "crossLinks": [],
+      "href": "#civic-response-auxiliary",
+      "summary": "A proposed framework for community preparedness, volunteer learning, personal-safety awareness and potential professional partnerships. No service or partnership is represented as live."
+    },
+    {
+      "id": "adaptive-technical-fabrics",
+      "title": "Adaptive Technical Fabrics",
+      "primaryDivision": "BIO-LAB™",
+      "primarySection": "Materials & Engineering",
+      "crossLinks": [
+        { "division": "SHOP", "section": "Technical Innovation" }
+      ],
+      "href": "#adaptive-technical-fabrics",
+      "summary": "Textile research, performance testing, garment construction and potential intellectual property."
+    },
+    {
+      "id": "fsd-circular-trade-in",
+      "title": "FSD Circular Trade-In Programme",
+      "primaryDivision": "SHOP",
+      "primarySection": "Circularity",
+      "crossLinks": [
+        { "division": "THE HOUSE", "section": "Community & Culture" }
+      ],
+      "href": "/circular-trade-in.html",
+      "summary": "A proposed framework for reuse, repair, refurbishment and resale. Eligibility, collection and credit terms are not available."
+    },
+    {
+      "id": "community-co-creation",
+      "title": "Community Co-Creation",
+      "primaryDivision": "UNIVERSE",
+      "primarySection": "Community Development",
+      "crossLinks": [
+        { "division": "BIO-LAB™", "section": "INNOVATION HUB" }
+      ],
+      "href": "/community-co-creation.html",
+      "summary": "A framework for feedback, prototype evaluation and collaborative product-development insights. No sessions, trials or submissions are open."
+    },
+    {
+      "id": "genetic-microbiome-personalisation",
+      "title": "Genetic & Microbiome Personalisation",
+      "primaryDivision": "BIO-LAB™",
+      "primarySection": "Personalisation Research",
+      "crossLinks": [],
+      "href": "/genetic-microbiome.html",
+      "summary": "A research concept covering scientific validity, possible training and wellbeing applications, ethics, consent, privacy, regulation and a development pathway. No testing or clinical service is available."
+    },
+    {
+      "id": "local-micro-manufacturing",
+      "title": "Local Micro-Manufacturing Workshop",
+      "primaryDivision": "THE HOUSE",
+      "primarySection": "Global Vision & Operations",
+      "crossLinks": [],
+      "href": "/local-micro-manufacturing.html",
+      "summary": "A proposed model for localised production, customisation, shorter supply chains and manufacturing partnerships. No site or partner is confirmed."
+    },
+    {
+      "id": "mobile-testing-labs",
+      "title": "Mobile Testing Labs",
+      "primaryDivision": "BIO-LAB™",
+      "primarySection": "Field Research",
+      "crossLinks": [],
+      "href": "/mobile-testing-labs.html",
+      "summary": "A research framework for mobile product testing, consent-based feedback, community trials and innovation research. No unit, venue or test is live."
+    },
+    {
+      "id": "fsd-pods",
+      "title": "FSD Pods",
+      "primaryDivision": "THE HOUSE",
+      "primarySection": "Flagships",
+      "crossLinks": [],
+      "href": "/fsd-pods.html",
+      "summary": "A modular concept spanning fitness, retail, education and community spaces. No Pod, location or service is operational."
+    },
+    {
+      "id": "performance-linked-partnerships",
+      "title": "Performance-Linked Partnerships",
+      "primaryDivision": "THE HOUSE",
+      "primarySection": "Global Vision & Operations",
+      "crossLinks": [
+        { "division": "UNIVERSE", "section": "Community Development" }
+      ],
+      "href": "/performance-partnerships.html",
+      "summary": "A proposed framework for athlete, corporate, workplace-wellbeing and brand partnerships. No partner or programme is confirmed."
+    },
+    {
+      "id": "smart-apparel",
+      "title": "Smart Apparel",
+      "primaryDivision": "BIO-LAB™",
+      "primarySection": "Connected Performance",
+      "crossLinks": [
+        { "division": "SHOP", "section": "Technical Innovation" }
+      ],
+      "href": "#smart-apparel-nfc",
+      "summary": "A concept for NFC authentication, digital product experiences, training content and potential member access. No NFC garment or service is available."
+    },
+    {
+      "id": "tactical-shield-membership",
+      "title": "Tactical Shield Membership",
+      "primaryDivision": "PRIVATE ACCESS",
+      "primarySection": "Membership Concept",
+      "crossLinks": [
+        { "division": "THE HOUSE", "section": "Community & Culture" }
+      ],
+      "href": "#tactical-shield-membership",
+      "summary": "A proposed personal-safety education and community-support concept. Qualified instruction, terms and safeguards are unconfirmed; registration is not open."
+    }
+  ]
+}

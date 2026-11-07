@@ -64,33 +64,34 @@ export function beyondProductSection() {
     {
       group: 'TRAIN & BELONG',
       concepts: [
-        ['Tactical Shield Membership', 'PROPOSAL · REGISTRATION NOT OPEN', 'Proposal only; no membership service or registration is available.', null],
-        ['Community Co-Creation', 'OPERATING OR ROLLOUT UNDERWAY', 'No workshops, trials, portal, or submission channel is open.', '/community-co-creation.html'],
+        ['Tactical Shield Membership', 'PROPOSED CONCEPT · REGISTRATION NOT OPEN', 'Proposal only; no membership service or registration is available.', null],
+        ['Civic Response Auxiliary', 'PROPOSED CONCEPT · NO PROGRAMME AVAILABLE', 'No training schedule, emergency-response service, or professional partner is confirmed.', '#civic-response-auxiliary'],
+        ['Community Co-Creation', 'STRATEGIC CONCEPT', 'No workshops, trials, portal, or submission channel is open.', '/community-co-creation.html'],
         ['Community Resilience', 'OPERATING OR ROLLOUT UNDERWAY', 'No provider, venue, or training programme is confirmed.', '/community-first-aid.html'],
       ],
     },
     {
       group: 'WEAR',
       concepts: [
-        ['Smart Apparel', 'OPERATING OR ROLLOUT UNDERWAY', 'No live NFC authentication, content portal, rewards, or data collection.', '#smart-apparel-nfc'],
-        ['Adaptive Technical Fabrics', 'OPERATING OR ROLLOUT UNDERWAY', 'Material research only; no fabric product is represented as available.', '#adaptive-technical-fabrics'],
-        ['Circular Trade-In', 'OPERATING OR ROLLOUT UNDERWAY', 'No return service, eligibility, collection, or credit terms are available.', '/circular-trade-in.html'],
+        ['Smart Apparel', 'STRATEGIC CONCEPT', 'No live NFC authentication, content portal, rewards, or data collection.', '#smart-apparel-nfc'],
+        ['Adaptive Technical Fabrics', 'STRATEGIC CONCEPT', 'Material research only; no fabric product is represented as available.', '#adaptive-technical-fabrics'],
+        ['Circular Trade-In', 'STRATEGIC CONCEPT', 'No return service, eligibility, collection, or credit terms are available.', '/circular-trade-in.html'],
       ],
     },
     {
       group: 'BUILT CLOSER',
       concepts: [
-        ['Autonomous Pop-Ups & Predictive Stock', 'OPERATING OR ROLLOUT UNDERWAY', 'No venue, stock service, click-and-collect, or location availability is live.', '/autonomous-popups.html'],
-        ['FSD Pods', 'OPERATING OR ROLLOUT UNDERWAY', 'No Pod, site, or service is operational.', '/fsd-pods.html'],
-        ['Mobile Testing Labs', 'OPERATING OR ROLLOUT UNDERWAY', 'No unit, venue, test, or data collection is live.', '/mobile-testing-labs.html'],
-        ['Local Micro-Manufacturing', 'OPERATING OR ROLLOUT UNDERWAY', 'No hub, production site, partner, or custom service is live.', '/local-micro-manufacturing.html'],
+        ['Autonomous Pop-Ups & Predictive Stock', 'STRATEGIC CONCEPT', 'No venue, stock service, click-and-collect, or location availability is live.', '/autonomous-popups.html'],
+        ['FSD Pods', 'STRATEGIC CONCEPT', 'No Pod, site, or service is operational.', '/fsd-pods.html'],
+        ['Mobile Testing Labs', 'STRATEGIC CONCEPT', 'No unit, venue, test, or data collection is live.', '/mobile-testing-labs.html'],
+        ['Local Micro-Manufacturing', 'STRATEGIC CONCEPT', 'No hub, production site, partner, or custom service is live.', '/local-micro-manufacturing.html'],
       ],
     },
     {
       group: 'TOGETHER & TOMORROW',
       concepts: [
-        ['Performance-Linked Partnerships', 'OPERATING OR ROLLOUT UNDERWAY', 'No specific partner, live testing programme, or connected enquiry channel is represented.', '/performance-partnerships.html'],
-        ['Genetic & Microbiome Personalisation', 'OPERATING OR ROLLOUT UNDERWAY · RESEARCH ONLY', 'No testing, sample collection, analysis, or personalised health guidance is available.', '/genetic-microbiome.html'],
+        ['Performance-Linked Partnerships', 'STRATEGIC CONCEPT', 'No specific partner, live testing programme, or connected enquiry channel is represented.', '/performance-partnerships.html'],
+        ['Genetic & Microbiome Personalisation', 'STRATEGIC CONCEPT · RESEARCH FRAMEWORK', 'No testing, sample collection, analysis, or personalised health guidance is available.', '/genetic-microbiome.html'],
       ],
     },
   ];
