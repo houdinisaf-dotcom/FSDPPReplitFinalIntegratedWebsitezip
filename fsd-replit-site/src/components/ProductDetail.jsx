@@ -3,6 +3,7 @@ import { imageSwatchBackground, productImagesForDisplay } from '../data/products
 import { CLOTHING_LINES, productBelongsToLine } from '../clothing-lines.js';
 import { productColourwayImageIndex, productColourwayOptions } from '../product-card-media.js';
 import { productSizeOptions } from '../product-detail-page.js';
+import { productSizeGuidanceForProduct } from '../size-guide-data.js';
 import { ImagePlaceholder } from './ImagePlaceholder.jsx';
 import { SafeImage } from './SafeImage.jsx';
 import { animateAddButton } from '../motion-runtime.js';
@@ -40,6 +41,7 @@ export function ProductDetail({
   const images = productImagesForDisplay(product);
   const selectedImage = images.find(image => image.label === selectedAngle) || (selectedAngle ? images[0] : null);
   const colourways = productColourwayOptions(product);
+  const sizeGuidance = productSizeGuidanceForProduct(product);
   const breadcrumbLine = CLOTHING_LINES.find(line => productBelongsToLine(product, line.id));
 
   const chooseColourway = colourway => {
@@ -148,6 +150,17 @@ export function ProductDetail({
               </div>
             ))}
           </dl>
+
+          {sizeGuidance && (
+            <section className="fsd-catalog-detail__size-guidance" data-breeze-size-guidance aria-labelledby={`catalogue-size-guidance-${product.id}`}>
+              <p className="fsd-catalog-detail__size-kicker">FSD / SIZE GUIDE</p>
+              <h4 id={`catalogue-size-guidance-${product.id}`}>Confirmed size range</h4>
+              <ul className="fsd-catalog-detail__size-range" aria-label={`Listed sizes: ${sizeGuidance.sizes.join(', ')}`}>
+                {sizeGuidance.sizes.map(size => <li key={size}>{size}</li>)}
+              </ul>
+              <p>{sizeGuidance.note}</p>
+            </section>
+          )}
 
           {colourways.length > 1 && (
             <fieldset className="fsd-catalog-detail__colourways">

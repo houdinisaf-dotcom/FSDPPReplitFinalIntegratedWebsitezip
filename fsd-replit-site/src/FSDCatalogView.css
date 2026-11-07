@@ -440,6 +440,57 @@
   overflow-wrap: anywhere;
 }
 
+.fsd-catalog-detail__size-guidance {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  padding: clamp(14px, 2vw, 20px);
+  border: 1px solid rgba(200, 170, 114, .34);
+  background: linear-gradient(135deg, rgba(200, 170, 114, .09), rgba(17, 18, 19, .82));
+}
+
+.fsd-catalog-detail__size-kicker {
+  margin: 0;
+  color: #c8aa72;
+  font-size: 9px;
+  letter-spacing: .16em;
+}
+
+.fsd-catalog-detail__size-guidance h4 {
+  margin: 0;
+  color: #f1eee8;
+  font: 500 clamp(16px, 2vw, 21px)/1.2 Manrope, sans-serif;
+}
+
+.fsd-catalog-detail__size-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fsd-catalog-detail__size-range li {
+  display: grid;
+  min-width: 42px;
+  min-height: 38px;
+  place-items: center;
+  border: 1px solid rgba(200, 170, 114, .38);
+  background: rgba(8, 9, 10, .46);
+  color: #f0e6d3;
+  font-size: 11px;
+  letter-spacing: .05em;
+}
+
+.fsd-catalog-detail__size-guidance > p:last-child {
+  margin: 0;
+  color: #c7c2b9;
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
 .fsd-catalog-detail__colourways {
   min-width: 0;
   margin: 20px 0 0;

@@ -4,7 +4,10 @@ import {
   products,
   safe,
 } from './catalogue-data.js';
-import { productSizeGuideForProduct } from './size-guide-data.js';
+import {
+  productSizeGuideForProduct,
+  productSizeGuidanceForProduct,
+} from './size-guide-data.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
 import { productImagesForDisplay } from './data/products.js';
 import { rotationFramesForProduct } from './product-rotation-assets.js';
@@ -435,11 +438,12 @@ function renderDetails(product, sizes, hardwarePreview = false) {
       : '';
   }
   const verified = getVerifiedProductSpecifications(product.id);
+  const sizeGuidance = productSizeGuidanceForProduct(product);
   const technicalSpecs = verified?.technicalSpecs || {};
   const setContents = product.setContents
     ? `<p><strong>Set includes:</strong> ${safe(product.setContents)}</p>`
     : '';
-  const sizeSummary = sizes.length
+  const sizeSummary = sizes.length && !sizeGuidance
     ? `<p><strong>Sizes:</strong> ${safe(sizes.join(' / '))}</p>`
     : '';
   const alias = product.alias?.trim() && /^confirmed$/i.test(product.aliasStatus || '')
@@ -448,11 +452,22 @@ function renderDetails(product, sizes, hardwarePreview = false) {
   const sku = product.sku
     ? `<p><strong>Product code:</strong> ${safe(product.sku)}</p>`
     : '';
-  const fit = product.coverage
+  const fit = sizeGuidance
+    ? ''
+    : product.coverage
     ? `<p><strong>Coverage:</strong> ${safe(product.coverage)}</p>`
     : technicalSpecs.fit
       ? `<p><strong>Fit:</strong> ${safe(technicalSpecs.fit)}</p>`
       : '';
+  const sizeGuidanceMarkup = sizeGuidance
+    ? `<section class="product-size-guidance" data-breeze-size-guidance>
+        <h3>Confirmed size range</h3>
+        <ul class="product-size-guidance__range" aria-label="Listed sizes">
+          ${sizeGuidance.sizes.map(size => `<li>${safe(size)}</li>`).join('')}
+        </ul>
+        <p>${safe(sizeGuidance.note)}</p>
+      </section>`
+    : '';
   const features = verified?.benefits.length
     ? `<ul>${verified.benefits.map(feature => `<li>${safe(feature)}</li>`).join('')}</ul>`
     : '';
@@ -476,7 +491,7 @@ function renderDetails(product, sizes, hardwarePreview = false) {
     specifications ? `<p><strong>${specificationLabel}:</strong> ${specifications}</p>` : '',
     care ? `<p><strong>Care instructions:</strong> ${care}</p>` : '',
   ].join('');
-  const sizeAndFit = [sizeSummary, fit].join('');
+  const sizeAndFit = [sizeSummary, fit, sizeGuidanceMarkup].join('');
   return `<div class="product-detail-accordions">
     ${productDetails ? `<details class="product-detail-accordion">
       <summary>Product Details</summary>
@@ -624,6 +639,20 @@ export function renderProductDetailPage({
 }
 
 export function renderSizeGuideDialog(product) {
+  const sizeGuidance = productSizeGuidanceForProduct(product);
+  if (sizeGuidance) {
+    return `<div class="size-guide-dialog__shell" data-size-guide-status="CONTENT PENDING">
+      <header><div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
+        <button type="button" data-size-guide-close aria-label="Close size guide">×</button></header>
+      <section class="product-size-guidance product-size-guidance--dialog" data-breeze-size-guidance>
+        <h3>Confirmed size range</h3>
+        <ul class="product-size-guidance__range" aria-label="Listed sizes">
+          ${sizeGuidance.sizes.map(size => `<li>${safe(size)}</li>`).join('')}
+        </ul>
+        <p>${safe(sizeGuidance.note)}</p>
+      </section>
+    </div>`;
+  }
   const guide = productSizeGuideForProduct(product);
   if (!guide) {
     return `<div class="size-guide-dialog__shell" data-size-guide-status="CONTENT PENDING">

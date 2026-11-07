@@ -234,6 +234,7 @@ export const products = masterProducts
     shortDescription: p['Short description'] ?? '',
     setContents: p['Set contents'] ?? '',
     sizes: p.Sizes ?? '',
+    sizeGuideStatus: p['Size guide status'] ?? '',
     coverage: p.Coverage ?? '',
     specifications: p.Specifications ?? '',
     specificationStatus: p['Specification status'] ?? '',
@@ -284,19 +285,17 @@ export const verifiedProductSpecifications = Object.freeze({
   73: {
     approvalStatus: 'verified',
     materials: [
-      'Primary fabric: 88% Performance Polyester, 12% Elastane mechanical-stretch weave.',
+      'Primary fabric: 88% Performance Polyester, 12% Elastane.',
       'Panels: laser-etched geometric jacquard micro-mesh.',
       'Hardware: anodized matte-black and champagne-gold auto-lock zippers with FSD custom pullers.',
     ],
     benefits: [
-      'Four-way mechanical stretch engineered for dynamic combat sports and agility training.',
       'Breathable airflow zoning through laser-etched jacquard detailing.',
       'Extended hi-low hem and integrated hood structure for complete, distraction-free coverage.',
       'Premium matte technical fabric with moisture-wicking properties.',
     ],
     technicalSpecs: {
-      composition: '88% Performance Polyester and 12% Elastane mechanical-stretch weave, with laser-etched geometric jacquard micro-mesh panels.',
-      fit: 'Full-coverage set with a lightweight tactical overshirt, half-zip entry, side ventilation and engineered performance leggings.',
+      composition: '88% Performance Polyester and 12% Elastane, with laser-etched geometric jacquard micro-mesh panels.',
       care: 'Machine wash cold on delicate cycle inside out. Hang dry only. Do not tumble dry. Do not iron metallic hardware.',
     },
   },

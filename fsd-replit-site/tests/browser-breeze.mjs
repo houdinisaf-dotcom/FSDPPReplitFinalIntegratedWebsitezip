@@ -162,10 +162,11 @@ try {
   const detailText = await evaluate('document.querySelector("#catalogue-expanded-73").textContent');
   assert.ok(detailText.includes('£145.00'));
   assert.ok(detailText.includes('absolute confidence in motion'));
-  assert.ok(detailText.includes('XS / S / M / L / XL'));
+  assert.ok(detailText.includes('No approved body or garment measurements'));
+  assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-73 [data-breeze-size-guidance] .fsd-catalog-detail__size-range li").length'), 5);
   assert.ok(detailText.includes('88% Performance Polyester'));
-  assert.ok(detailText.includes('Four-way mechanical stretch'));
   assert.ok(detailText.includes('Machine wash cold on delicate cycle'));
+  assert.ok(!/mechanical[- ]stretch|four-way mechanical stretch|fit profile/i.test(detailText));
   assert.ok(!/(CONCEPT|DRAFT|PREVIEW|PENDING REVIEW|PRIVATE VIEWING|IN DEVELOPMENT)/i.test(detailText));
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-73 [data-catalogue-inline-colourway]").length'), 6);
   assert.equal(await evaluate('document.querySelectorAll("#catalogue-expanded-73 [data-catalogue-inline-view]").length'), 13);
@@ -243,16 +244,26 @@ try {
   const deepDiveText = await evaluate('document.querySelector("#product-dialog").textContent');
   assert.ok(deepDiveText.includes('£145.00'));
   assert.ok(deepDiveText.includes('One Lightweight Modest Training Overshirt'));
-  assert.ok(deepDiveText.includes('XS / S / M / L / XL'));
+  assert.ok(deepDiveText.includes('No approved body or garment measurements'));
+  assert.equal(await evaluate('document.querySelectorAll("#product-dialog [data-breeze-size-guidance] .product-size-guidance__range li").length'), 5);
   assert.ok(deepDiveText.includes('88% Performance Polyester'));
-  assert.ok(deepDiveText.includes('Four-way mechanical stretch'));
   assert.ok(deepDiveText.includes('Machine wash cold on delicate cycle'));
+  assert.ok(!/mechanical[- ]stretch|four-way mechanical stretch|Fit profile/i.test(deepDiveText));
   assert.equal(
     await evaluate('Boolean(document.querySelector(\'#product-dialog [data-bag-add="73"]\'))'),
     false,
     'The Breeze set has no confirmed SKU or stock, so its bag controls stay unavailable.',
   );
   assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Notify me when available")'));
+  await evaluate('document.querySelector("#product-dialog [data-size-guide]")?.click()');
+  await waitFor('document.querySelector("#fsd-size-guide-dialog")?.open');
+  const sizeGuideText = await evaluate('document.querySelector("#fsd-size-guide-dialog").textContent');
+  assert.ok(sizeGuideText.includes('XS'));
+  assert.ok(sizeGuideText.includes('XL'));
+  assert.ok(sizeGuideText.includes('No approved body or garment measurements'));
+  assert.equal(await evaluate('document.querySelectorAll("#fsd-size-guide-dialog table").length'), 0);
+  await evaluate('document.querySelector("#fsd-size-guide-dialog [data-size-guide-close]")?.click()');
+  await waitFor('!document.querySelector("#fsd-size-guide-dialog")?.open');
   const taupeImageIndex = await evaluate(`Number([...document.querySelectorAll('#product-dialog [data-catalogue-colourway-index]')]
     .find(input => input.value === 'Warm Taupe')?.dataset.catalogueColourwayImageIndex)`);
   assert.ok(taupeImageIndex >= 0);

@@ -253,6 +253,32 @@ test('product size guides do not expose generic or unconfirmed measurement table
   assert.doesNotMatch(guide, /\[TO CONFIRM\]|<table|View the full size guide/);
 });
 
+test('Breeze size guidance shows only the confirmed range and makes missing fit data clear', () => {
+  const product = products.find(item => item.id === 73);
+  const guide = renderSizeGuideDialog(product);
+  const markup = renderProductDetailPage({
+    product,
+    images: productImagesForDisplay(product),
+    initialImageIndex: 0,
+    galleryPlaceholders: [],
+    colourways: [],
+    colourwayImageIndexes: [],
+    sizes: productSizeOptions(product),
+    price: { label: '', value: '£145.00' },
+    canPurchase: false,
+  });
+
+  assert.equal(product.sizeGuideStatus, 'No approved measurement chart or fit notes confirmed');
+  assert.match(guide, /data-breeze-size-guidance/);
+  assert.match(guide, /XS[\s\S]*S[\s\S]*M[\s\S]*L[\s\S]*XL/);
+  assert.match(guide, /No approved body or garment measurements, fit classification, compression level or sizing recommendation are available/);
+  assert.doesNotMatch(guide, /<table|\d+\s?(?:cm|inches|in\b)|compression fit|size recommendation:|recommend (?:a )?size/i);
+  assert.doesNotMatch(guide, /mechanical[- ]stretch|four-way mechanical stretch|fit profile/i);
+  assert.match(markup, /<summary>Size &amp; Fit<\/summary>/);
+  assert.match(markup, /data-breeze-size-guidance/);
+  assert.match(markup, /Confirmed size range/);
+});
+
 test('products without confirmed sizes do not show a size guide control', () => {
   const product = { ...productFixture, sizes: '' };
   const markup = renderProductDetailPage({

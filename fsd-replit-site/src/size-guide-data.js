@@ -29,6 +29,19 @@ export const SIZE_GUIDE_MEASURE_NOTE =
 // Products without an entry remain CONTENT PENDING and never inherit a generic chart.
 export const PRODUCT_SIZE_GUIDES = Object.freeze({});
 
+export const BREEZE_SIZE_GUIDANCE_NOTE =
+  'No approved body or garment measurements, fit classification, compression level or sizing recommendation are available. No size recommendation is provided.';
+
+export function productSizeGuidanceForProduct(product) {
+  if (!String(product?.sizeGuideStatus || '').trim()) return null;
+  const sizes = String(product?.sizes || '')
+    .split(/[;,/]/)
+    .map(size => size.trim())
+    .filter(Boolean);
+  if (!sizes.length) return null;
+  return { sizes, note: BREEZE_SIZE_GUIDANCE_NOTE };
+}
+
 export function productSizeGuideForProduct(product) {
   const guide = PRODUCT_SIZE_GUIDES[Number(product?.id)];
   if (!guide || !guide.unit || !Array.isArray(guide.measurements) || !guide.measurements.length) return null;

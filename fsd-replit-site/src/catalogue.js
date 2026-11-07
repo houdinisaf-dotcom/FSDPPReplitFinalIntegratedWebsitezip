@@ -473,7 +473,7 @@ function renderResults() {
         : [
           ...(product.description ? [['Overview', product.description]] : []),
           ...(product.setContents ? [['Set includes', product.setContents]] : []),
-          ...(product.sizes ? [['Sizes', product.sizes.replaceAll(';', ' /')]] : []),
+          ...(product.sizes && !product.sizeGuideStatus ? [['Sizes', product.sizes.replaceAll(';', ' /')]] : []),
           ...(product.options?.length ? [['Sleeve options', product.options.join(' / ')]] : []),
           ['Colourways', product.colourways],
           ['Audience', product.audience],
