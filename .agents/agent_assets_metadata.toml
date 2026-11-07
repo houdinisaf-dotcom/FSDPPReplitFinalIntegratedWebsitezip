@@ -1988,3 +1988,171 @@ mtime_ms = 1794073416162
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/61ecfcb6-04b7-420f-ab82-be178dd45e67/c191cbcb-0cdf-4df2-a288-61b9f0b49b5c"
 storage_version_token = "1794073599607834"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "FiLgrDOoS2C7jQHiBQ07n"
+uri = "file://generated-artifacts/fsd-final-previews/homepage-desktop.jpg"
+type = "image"
+title = "FSD homepage — desktop"
+description = "Running website screenshot at 1440×900."
+logical_id = "ddeb72f9-b5ff-41ce-ae48-88adce537a3e"
+content_hash = "sha256:785b599d53204b86b97927d27e267d33785ec8aa93c869919eeaa7c967f608cd"
+size = 109630
+mtime_ms = 1794075979669
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/ddeb72f9-b5ff-41ce-ae48-88adce537a3e/542d0d2e-6613-4b84-847d-49f392044f1e"
+storage_version_token = "1794076739173458"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "sGSvb6DXP9sArpjLldmDO"
+uri = "file://generated-artifacts/fsd-final-previews/homepage-mobile.jpg"
+type = "image"
+title = "FSD homepage — mobile"
+description = "Running website screenshot at 393×844."
+logical_id = "e4b60872-b7b0-4e07-b9fb-6e9e7a790227"
+content_hash = "sha256:24801dd18f0dffa1eb7c2de55c5b2da2ffe8153e74989674c453735ffaf92aec"
+size = 43643
+mtime_ms = 1794075981427
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e4b60872-b7b0-4e07-b9fb-6e9e7a790227/633400ca-650f-4737-8369-9f3d13be3341"
+storage_version_token = "1794076739989487"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "qF62MhZ5Q_6v9mM7QX0s2"
+uri = "file://generated-artifacts/fsd-final-previews/shop-menu-flex-desktop.jpg"
+type = "image"
+title = "SHOP menu with FLEX — desktop"
+description = "Open SHOP menu with mapped approved FLEX image at 1440×900."
+logical_id = "640cf9d4-8f55-46f4-85b7-8fff3f672c7a"
+content_hash = "sha256:64d601a71f903001de50d381ed4a93e2bf8d7b23fa49634fcfc80f0657e81f08"
+size = 122775
+mtime_ms = 1794076515965
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/640cf9d4-8f55-46f4-85b7-8fff3f672c7a/3a29e7a9-4df5-4940-8e4b-03b006f68330"
+storage_version_token = "1794076740689046"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "4nwlUdXWSJAAkC3AcwLg9"
+uri = "file://generated-artifacts/fsd-final-previews/shop-menu-mobile-detail.jpg"
+type = "image"
+title = "SHOP menu — mobile detail"
+description = "Mobile SHOP subcategory view with mapped AEROFORGE image at 393×844."
+logical_id = "6d815300-b192-4758-b569-0e95a228f066"
+content_hash = "sha256:0336375c06822385f5ddc904ffd5fba6982ef7e2288fe95b6c6946129686cc45"
+size = 39858
+mtime_ms = 1794076634649
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/6d815300-b192-4758-b569-0e95a228f066/a01b5a8b-04a8-4666-9691-e23347ba525f"
+storage_version_token = "1794076741517001"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "KIQBkpem7nYfMDyYirbt1"
+uri = "file://generated-artifacts/fsd-final-previews/product-detail-desktop.jpg"
+type = "image"
+title = "Product gallery — desktop"
+description = "Actual product page with approved front/back views at 1440×900."
+logical_id = "3667deca-2bb4-4be0-993d-6c7bcbc3940c"
+content_hash = "sha256:7c4bc4df56bdadaa2c48a738ce4b81a9eb05b3d6adbd8ff107e922be0b7e1c0b"
+size = 158734
+mtime_ms = 1794076519525
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/3667deca-2bb4-4be0-993d-6c7bcbc3940c/23da2d69-1381-456f-802a-94b8c6478b6f"
+storage_version_token = "1794076742316804"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "C7UGc9uBooe-_dw8HnZ9D"
+uri = "file://generated-artifacts/fsd-final-previews/product-detail-mobile.jpg"
+type = "image"
+title = "Product gallery — mobile"
+description = "Actual product page with stacked approved front/back views at 393×844."
+logical_id = "f539a682-b0cb-43af-810f-a44d38607905"
+content_hash = "sha256:12f3d69273fedaf59fffc3d0ae08938f471332fe9c73c6730c6fda4b94f1bf5a"
+size = 64640
+mtime_ms = 1794076522629
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/f539a682-b0cb-43af-810f-a44d38607905/313ff289-16e4-49a0-a212-2400f3a49223"
+storage_version_token = "1794076743001769"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "BX4nd44xhwWWyRKcArDBz"
+uri = "file://generated-artifacts/fsd-final-previews/modest-flow-desktop.jpg"
+type = "image"
+title = "MODEST FLOW — desktop"
+description = "Private product presentation with matching-set list and approved image."
+logical_id = "aed7c297-9dec-457a-864c-a6d3047134b9"
+content_hash = "sha256:5e19f87ac4c37c7af7e56f4019cd73c432a4e54bcfe203fd600c4ba752249eda"
+size = 136419
+mtime_ms = 1794076666605
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/aed7c297-9dec-457a-864c-a6d3047134b9/0a3f2b50-d8bc-407b-869d-c7d596f1a573"
+storage_version_token = "1794076743886698"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "Ioa_FBdv_KXT2B3VlRBan"
+uri = "file://generated-artifacts/fsd-final-previews/modest-flow-mobile.jpg"
+type = "image"
+title = "MODEST FLOW — mobile"
+description = "Mobile private product presentation with matching-set details."
+logical_id = "b713a4fe-9d7a-46d7-8b44-f325179674f9"
+content_hash = "sha256:399328216e4b339d41ebb890bcf08dfc7eb366a35db8c4e814b62d2b39896944"
+size = 181068
+mtime_ms = 1794076666617
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/b713a4fe-9d7a-46d7-8b44-f325179674f9/dc17eb9e-2eca-4325-b1b9-f70991e05e7e"
+storage_version_token = "1794076744751929"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "tMfyw0sjFD2pHlLlImyon"
+uri = "file://generated-artifacts/fsd-final-previews/bio-lab-desktop.jpg"
+type = "image"
+title = "BIO-LAB Personalisation Research — desktop"
+description = "Research concept page with labeled pending-image treatment at 1440×1500."
+logical_id = "6a94d557-9ac6-4fa8-89ed-7f0dd50773db"
+content_hash = "sha256:d72d654dc58748efca21911f51ef4e7bfc4dc0b9df899f018a8aedd28ba578dc"
+size = 148599
+mtime_ms = 1794075983410
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/6a94d557-9ac6-4fa8-89ed-7f0dd50773db/878c2f3c-a5db-4521-a2c3-6911552a3e7d"
+storage_version_token = "1794076745711614"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "tChY9vsC6EMClCR2rrvai"
+uri = "file://generated-artifacts/fsd-final-previews/bio-lab-mobile.jpg"
+type = "image"
+title = "BIO-LAB Personalisation Research — mobile"
+description = "Research concept page at 393×844."
+logical_id = "eae78e0d-0f87-40ba-bbad-7716db0a1794"
+content_hash = "sha256:987d5b81ea6b1f5f5314dc1e27d4f69b87a9d9daae8e87b88d1e77e6190147b4"
+size = 45130
+mtime_ms = 1794075984805
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/eae78e0d-0f87-40ba-bbad-7716db0a1794/d049a693-d338-42ae-8bc3-25093f6cc2b9"
+storage_version_token = "1794076746375462"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "SeyH_zDVB-fW7STvS_dtP"
+uri = "file://generated-artifacts/fsd-final-previews/hardware-desktop.jpg"
+type = "image"
+title = "FSD Hardware — desktop"
+description = "Hardware editorial section with approved-imagery-pending treatment."
+logical_id = "eaac8d09-4fcc-4c01-aaa4-515263461c69"
+content_hash = "sha256:ea43fe3f4dd5073eaec761e8469045b92bf24fd4325eb4baead5677dbafb44c3"
+size = 77457
+mtime_ms = 1794075986509
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/eaac8d09-4fcc-4c01-aaa4-515263461c69/ffbbbb33-c5d5-42ee-8da2-4982230b9143"
+storage_version_token = "1794076747370496"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "f4qoupi2R4EJUun-MG_m_"
+uri = "file://generated-artifacts/fsd-final-previews/hardware-mobile.jpg"
+type = "image"
+title = "FSD Hardware — mobile"
+description = "Mobile hardware editorial section with asset-pending treatment."
+logical_id = "e42eaf4e-b102-4d3a-9e57-d48181520afe"
+content_hash = "sha256:01855af6a0f3f36e642fdd483e4818d7b073db20612f638a2d6ce09edfa9d456"
+size = 38590
+mtime_ms = 1794075988189
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e42eaf4e-b102-4d3a-9e57-d48181520afe/ebedb47c-233f-41dc-9c45-4a060ee292a2"
+storage_version_token = "1794076748123018"
+content_type = "image/jpeg"
