@@ -557,10 +557,15 @@ export function renderProductDetailPage({
   );
   const rotationMarkup = renderRotationViewer(product, images[0]);
   const sizeMarkup = renderSizeOptions(product, sizes);
+  const breezeCommercialDetailsUnconfirmed = /^pre[\s-]?launch$/i.test(
+    String(product.commercialStatus ?? '').trim(),
+  );
   const actionMarkup = canPurchase
     ? `<button class="catalogue-bag-add product-detail-add" type="button" data-bag-add="${product.id}"
         data-product-primary-add ${sizes.length ? 'disabled aria-disabled="true"' : ''}>ADD TO BAG</button>
        ${sizes.length ? '<p class="product-detail-size-help" data-size-help role="status">Choose a size to continue.</p>' : ''}`
+    : breezeCommercialDetailsUnconfirmed
+      ? ''
      : `<div class="product-detail-notify">
          <button class="product-detail-notify__button" type="button" data-product-notify-primary disabled aria-disabled="true"
           aria-describedby="product-notify-note-${product.id}">Notify me when available</button>
@@ -576,7 +581,9 @@ export function renderProductDetailPage({
     : '';
   const availability = hardwarePreview
     ? 'Not available for purchase.'
-    : '';
+    : breezeCommercialDetailsUnconfirmed
+      ? 'Pre-launch: availability is not confirmed. Stock by colourway and size, dispatch timing, delivery terms, and returns terms are not confirmed.'
+      : '';
   const priceMarkup = price.label || price.value
     ? `<p class="product-detail-price">${price.label ? `<span>${safe(price.label)}</span>` : ''}${price.value ? `<strong>${safe(price.value)}</strong>` : ''}</p>`
     : '';
@@ -602,7 +609,7 @@ export function renderProductDetailPage({
         ${summaryMarkup}
         ${renderColourwayOptions(product, colourways, colourwayImageIndexes)}
         ${sizeMarkup}
-        ${availability ? `<p class="product-detail-availability">${safe(availability)}</p>` : ''}
+        ${availability ? `<p class="product-detail-availability"${breezeCommercialDetailsUnconfirmed ? ' role="status"' : ''}>${safe(availability)}</p>` : ''}
         ${quantityMarkup}
         ${actionMarkup}
         ${quickView ? `<a class="product-detail-full-page" href="${safe(productSeoPath(product))}">VIEW FULL PRODUCT PAGE <span aria-hidden="true">↗</span></a>` : ''}
@@ -623,7 +630,7 @@ export function renderProductDetailPage({
           <h3>Customer reviews</h3><p>${safe(product.reviews.length)} verified reviews</p>
         </section>`
       : ''}
-    ${canPurchase ? `<div class="product-detail-sticky" data-sticky-add-bar hidden>
+    ${breezeCommercialDetailsUnconfirmed ? '' : canPurchase ? `<div class="product-detail-sticky" data-sticky-add-bar hidden>
       <strong>${safe(product.name)}${price.value ? ` · ${safe(price.value)}` : ''}</strong>
       <button class="catalogue-bag-add" type="button" data-bag-add="${product.id}" data-sticky-add ${sizes.length ? 'disabled aria-disabled="true"' : ''}>ADD TO BAG</button>
     </div>` : `<div class="product-detail-sticky product-detail-sticky--notify" data-sticky-add-bar hidden>

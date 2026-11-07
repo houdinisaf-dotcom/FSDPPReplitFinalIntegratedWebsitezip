@@ -227,6 +227,28 @@ test('notification state collects no email when no notification provider is conn
   assert.doesNotMatch(markup, /data-product-quantity/);
 });
 
+test('Breeze makes unconfirmed stock and fulfilment details explicit without availability actions', () => {
+  const product = products.find(item => item.id === 73);
+  const markup = renderProductDetailPage({
+    product,
+    images: productImagesForDisplay(product),
+    initialImageIndex: 0,
+    galleryPlaceholders: [],
+    colourways: product.colourways.split(';').map(value => value.trim()),
+    colourwayImageIndexes: [],
+    sizes: productSizeOptions(product),
+    price: { label: '', value: '£145.00' },
+    canPurchase: false,
+  });
+  const schemaText = markup.match(/<script type="application\/ld\+json" data-product-jsonld>([\s\S]*?)<\/script>/)?.[1];
+  const schema = JSON.parse(schemaText);
+
+  assert.match(markup, /Pre-launch: availability is not confirmed\. Stock by colourway and size, dispatch timing, delivery terms, and returns terms are not confirmed\./);
+  assert.doesNotMatch(markup, /Notify me when available|data-bag-add=|data-sticky-add-bar/);
+  assert.equal('sku' in schema, false);
+  assert.equal('offers' in schema, false);
+});
+
 test('related products stay within the same category and audience', () => {
   const product = products.find(item => item.id === 60);
   const markup = renderProductDetailPage({

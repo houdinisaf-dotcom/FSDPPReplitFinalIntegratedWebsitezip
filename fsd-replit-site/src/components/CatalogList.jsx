@@ -115,6 +115,9 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
             <span>{customerFacingCategory(product.category)}</span>{product.audience && <span>{product.audience}</span>}
           </span>
           <span className="product-row__name">{product.name}</span>
+          {/^pre[\s-]?launch$/i.test(product.commercialStatus || '') && (
+            <span className="product-row__meta">Pre-launch · Availability unconfirmed</span>
+          )}
           {product.rowSummary && <span className="product-row__summary">{product.rowSummary}</span>}
           {(product.rowPrice?.label || product.rowPrice?.value) && (
             <span className="product-row__price">

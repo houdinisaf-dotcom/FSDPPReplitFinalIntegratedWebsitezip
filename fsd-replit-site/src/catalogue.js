@@ -347,7 +347,7 @@ function card(product) {
       })}</span>
       <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
       <span class="product-row__copy">
-       <span class="product-row__meta"><span>${safe(customerFacingCategory(product.category))}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}${product.badge ? `<span class="product-row__badge">${safe(product.badge)}</span>` : ''}</span>
+        <span class="product-row__meta"><span>${safe(customerFacingCategory(product.category))}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}${product.badge ? `<span class="product-row__badge">${safe(product.badge)}</span>` : ''}${/^pre[\s-]?launch$/i.test(product.commercialStatus || '') ? '<span class="product-row__badge">Pre-launch · Availability unconfirmed</span>' : ''}</span>
         <h3>${safe(product.name)}</h3>
         ${summary ? `<span class="product-row__summary">${safe(summary)}</span>` : ''}
         ${colourways.length > 1 ? `<span class="product-row__selected-colourway" data-product-card-selected-colourway>${safe(initialColourway)}</span>` : ''}

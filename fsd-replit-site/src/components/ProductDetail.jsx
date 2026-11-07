@@ -142,6 +142,11 @@ export function ProductDetail({
             </ol>
           </nav>
           <h3 id={`catalogue-expanded-title-${product.id}`}>{product.name}</h3>
+          {/^pre[\s-]?launch$/i.test(product.commercialStatus || '') && (
+            <p className="fsd-catalog-detail__size-note" role="status">
+              Pre-launch: availability is not confirmed. Stock by colourway and size, dispatch timing, delivery terms, and returns terms are not confirmed.
+            </p>
+          )}
           <dl className="fsd-catalog-detail__facts">
             {(product.rowDetails || []).map(([label, value]) => (
               <div key={label}>

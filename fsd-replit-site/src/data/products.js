@@ -193,6 +193,7 @@ export const products = masterProducts
     alsoShowIn: p['Also show in'].split(';').map(s => s.trim()).filter(Boolean),
     audience: p.Audience,
     publicationStatus: p['Publication status'] ?? '',
+    commercialStatus: p['Commercial status'] ?? '',
     confirmedPrice: p['Price (£) confirmed'] === '' ? null : Number(p['Price (£) confirmed']),
     ...(Number.isFinite(normalizedStockQuantity)
       ? { stockQuantity: normalizedStockQuantity }

@@ -56,6 +56,9 @@ export function getBagEligibilityIssues(product) {
 
   if (!Number.isInteger(id) || id <= 0) issues.push('product identity');
   if (product?.publicationStatus !== 'Active') issues.push('active publication status');
+  if (/^pre[\s-]?launch$/i.test(String(product?.commercialStatus ?? '').trim())) {
+    issues.push('commercial release status');
+  }
   if (!Number.isFinite(price) || price <= 0 || /\b(?:reference only|not for sale)\b/i.test(priceNotes)) {
     issues.push('confirmed price');
   }

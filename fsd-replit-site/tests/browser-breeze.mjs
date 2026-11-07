@@ -149,6 +149,7 @@ try {
   await waitFor(productRowExists);
   assert.ok(await evaluate('!document.querySelector(".breeze-preview")'));
   assert.ok(await evaluate('!document.querySelector("[data-fsd-breeze-card]")'));
+  assert.ok(await evaluate('document.querySelector("#catalogue-grid button").textContent.includes("Pre-launch · Availability unconfirmed")'));
   assert.equal(await evaluate('document.querySelector("#catalogue-count").textContent'), 'Showing 1–1 of 1 product');
 
   await evaluate(`document.querySelector('#catalogue-grid button')?.scrollIntoView({ block: 'center', behavior: 'instant' })`);
@@ -254,7 +255,9 @@ try {
     false,
     'The Breeze set has no confirmed SKU or stock, so its bag controls stay unavailable.',
   );
-  assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Notify me when available")'));
+  assert.ok(await evaluate('document.querySelector("#product-dialog").textContent.includes("Pre-launch: availability is not confirmed. Stock by colourway and size, dispatch timing, delivery terms, and returns terms are not confirmed.")'));
+  assert.ok(await evaluate('!document.querySelector("#product-dialog").textContent.includes("Notify me when available")'));
+  assert.ok(await evaluate('!document.querySelector("#product-dialog [data-bag-add]")'));
   await evaluate('document.querySelector("#product-dialog [data-size-guide]")?.click()');
   await waitFor('document.querySelector("#fsd-size-guide-dialog")?.open');
   const sizeGuideText = await evaluate('document.querySelector("#fsd-size-guide-dialog").textContent');

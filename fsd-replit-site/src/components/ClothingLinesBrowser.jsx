@@ -544,6 +544,9 @@ export function ClothingLinesBrowser({ onProductSelect, standaloneLineId = null 
                               <span>{product.category}</span>
                               {product.audience && <span>{product.audience}</span>}
                             </span>
+                            {/^pre[\s-]?launch$/i.test(product.commercialStatus || '') && (
+                              <span className="fsd-clothing-product__meta">Pre-launch · Availability unconfirmed</span>
+                            )}
                             <strong className="fsd-clothing-product__name">{product.name}</strong>
                             {confirmedCollectionText(product.colourways) && <span className="fsd-clothing-product__meta">{confirmedCollectionText(product.colourways)}</span>}
                             {confirmedCollectionText(product.availability || product.stockStatus) && <span className="fsd-clothing-product__meta">{confirmedCollectionText(product.availability || product.stockStatus)}</span>}

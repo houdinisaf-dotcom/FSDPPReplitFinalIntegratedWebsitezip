@@ -7,10 +7,12 @@ The FSD Breeze Overshirt & Engineered Leggings Set is an approved public listing
 
 The existing overshirt master record remains standalone at its existing £64.99 value; do not merge or overwrite it. Keep Modest Flow separate as well.
 
-The approved size range is XS–XL. Stock levels, garment measurements, fulfilment, return terms, and checkout/payment readiness have not been approved as product claims. Do not invent them.
+The approved size range is XS–XL. Stock levels, garment measurements, fulfilment, return terms, and checkout/payment readiness have not been approved as product claims. Do not invent them. The source hierarchy for stock and policy facts is approved FSD inventory/policy documents, then verified operational records; website catalogue data is reference-only and does not establish stock or fulfilment readiness.
+
+The public listing may remain as a pre-launch collection with availability explicitly unconfirmed. Continue approved design and gallery work without waiting for inventory or policy confirmation, but keep purchasing and checkout disabled until readiness is verified.
 
 The user approved the new full-length colourway photos for the public set gallery, including images where the lower half reads as looser trousers. This approves image use only; it does not change the product's set contents or technical specifications.
 
-**Why:** The user superseded the earlier private-proof-only boundary for the combined set, explicitly approving public display and £145 while preserving the older overshirt as a separate product.
+**Why:** The user superseded the earlier private-proof-only boundary for the combined set, explicitly approving public display and £145 while preserving the older overshirt as a separate product. They later confirmed that no approved stock or fulfilment data exists and that the product master alone is not evidence of sale readiness.
 
-**How to apply:** Treat the approval as applying to the combined set only; preserve the existing master overshirt and Modest Flow records, leave unsupported commercial details unfilled, and don't infer product-specification changes from the approved gallery imagery.
+**How to apply:** Treat the approval as applying to the combined set only; preserve the existing master overshirt and Modest Flow records, leave unsupported commercial details unfilled, and don't infer product-specification changes from the approved gallery imagery. Use approved inventory/policy sources before changing availability or enabling purchases.

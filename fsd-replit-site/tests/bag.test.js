@@ -30,6 +30,19 @@ function createStorage(initial = null) {
 
 test('bag requires active status, confirmed price, SKU, stock, and approved standalone media', () => {
   assert.equal(products.some(canAddToBag), false);
+  const breeze = products.find(product => product.id === 73);
+  assert.equal(canAddToBag(breeze), false);
+  assert.deepEqual(getBagEligibilityIssues(breeze), [
+    'commercial release status',
+    'SKU',
+    'confirmed in-stock status',
+  ]);
+  assert.equal(canAddToBag({
+    ...breeze,
+    sku: 'FSD-BREEZE-ONYX-XS',
+    stockQuantity: 1,
+    stockStatus: 'In stock',
+  }), false, 'pre-launch status must block purchases even if stock fields are added');
   assert.deepEqual(
     getBagEligibilityIssues(products.find(product => product.id === 18)),
     ['active publication status', 'confirmed in-stock status'],
