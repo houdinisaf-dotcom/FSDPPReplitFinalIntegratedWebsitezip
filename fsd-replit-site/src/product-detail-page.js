@@ -592,9 +592,12 @@ export function renderProductDetailPage({
     : '';
   const schema = productStructuredData(product, { images, colourways, sizes });
 
-  return `<div class="product-detail-page${quickView ? ' product-detail-page--quick-view' : ''}">
+  return `<div class="product-detail-page product-detail-page--editorial${quickView ? ' product-detail-page--quick-view' : ''}">
     <div class="product-detail-layout" data-catalogue-has-secondary="${hasSecondaryImage}">
-      <section class="product-detail-media" aria-label="${safe(product.name)} product images">${imageMarkup}${rotationMarkup}</section>
+      <section class="product-detail-media" aria-label="${safe(product.name)} product images">
+        <div class="product-detail-media__masthead"><span>FSD / PRODUCT PHOTOGRAPHY</span><span>${images.length ? `${String(images.length).padStart(2, '0')} MAPPED VIEWS` : 'IMAGE TO BE ADDED'}</span></div>
+        ${imageMarkup}${rotationMarkup}
+      </section>
       <section class="product-detail-purchase" aria-labelledby="product-title">
         <nav class="catalogue-breadcrumbs" aria-label="Breadcrumb"><ol>
           <li><a href="#products" data-shop-breadcrumb>SHOP</a></li>

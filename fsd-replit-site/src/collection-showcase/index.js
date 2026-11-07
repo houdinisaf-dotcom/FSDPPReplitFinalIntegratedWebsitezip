@@ -106,7 +106,11 @@ export function renderCollectionShowcase(divisions, { editorial = false, product
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg>
           <span><strong>HARDWARE</strong><small>Training essentials.</small></span>
         </button>
-        <a class="fsd-division-link" href="/the-house.html">
+        <button class="fsd-division-link" type="button" data-division="global" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          <span><strong>FSD GLOBAL</strong><small>From the floor to the world stage.</small></span>
+        </button>
+        <a class="fsd-division-link fsd-division-link--house" href="/#fsd-house-archive">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1V10Z"/></svg>
           <span><strong>THE HOUSE</strong><small>Six divisions. One purpose.</small></span>
         </a>
@@ -116,7 +120,8 @@ export function renderCollectionShowcase(divisions, { editorial = false, product
         ${card(apparel, 1, '02', 'AEROFORGE / COMBAT / FLEX / BREEZE / MODEST FLOW', 'WOMEN’S COLLECTION', '', 'fsd-editorial-card--women', siteMedia.collectionCards.womens?.src || '')}
         ${card(bioLab, 0, '03', 'INNOVATION IN PERFORMANCE', 'BIO-LAB™', '', 'fsd-editorial-card--biolab', siteMedia.collectionCards.bioLab?.src || '')}
       </div>
-      <nav class="fsd-editorial-secondary" aria-label="Other FSD divisions">
+      <nav class="fsd-editorial-secondary" aria-label="Other FSD destinations">
+        <a href="/#fsd-strategic-concepts">Twelve concepts <span aria-hidden="true">↗</span></a>
         ${hardware ? `<button id="fsd-division-hardware" type="button" data-division="hardware" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog" aria-expanded="false">Explore Hardware <span aria-hidden="true">↗</span></button>` : ''}
         ${global ? `<button id="fsd-division-global" type="button" data-division="global" data-group-index="0" aria-haspopup="dialog" aria-controls="fsd-showcase-dialog" aria-expanded="false">Explore FSD Global <span aria-hidden="true">↗</span></button>` : ''}
       </nav>

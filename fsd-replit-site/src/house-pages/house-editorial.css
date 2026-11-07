@@ -452,6 +452,45 @@ body[data-fsd-house-editorial="true"] .fsd-house-review-slot strong {
   }
 }
 
+body[data-fsd-house-editorial="true"] [data-fsd-editorial-title]::before {
+  display: block;
+  margin-bottom: clamp(14px, 2vw, 24px);
+  color: var(--fsd-house-gold);
+  content: "FSD / CHAPTER " attr(data-fsd-editorial-title);
+  font: 500 9px/1.5 var(--fsd-house-mono);
+  letter-spacing: .18em;
+}
+
+body[data-fsd-house-editorial="true"] [data-fsd-house-chapter] {
+  position: relative;
+  isolation: isolate;
+}
+
+body[data-fsd-house-editorial="true"] [data-fsd-house-chapter]::before {
+  position: absolute;
+  z-index: -1;
+  top: 24px;
+  right: clamp(16px, 4vw, 56px);
+  color: rgba(200,170,114,.1);
+  content: attr(data-fsd-house-chapter);
+  font: 400 clamp(44px, 8vw, 112px)/.8 var(--fsd-house-serif);
+  letter-spacing: -.08em;
+  pointer-events: none;
+}
+
+body[data-fsd-house-editorial="true"] .fsd-house-media img {
+  transform: scale(1.005);
+  transition: transform 900ms cubic-bezier(.2,.7,.2,1);
+}
+
+body[data-fsd-house-editorial="true"] .hero:hover .fsd-house-media img {
+  transform: scale(1.025);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-fsd-house-editorial="true"] .fsd-house-media img { transition: none; transform: none; }
+}
+
 /* The House editorial layer aligns its bespoke surfaces with the flagship palette. */
 body[data-fsd-house-editorial="true"] {
   background-color: #090a0c;

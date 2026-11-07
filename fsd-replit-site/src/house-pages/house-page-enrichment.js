@@ -128,6 +128,7 @@ function makeExpansion(page, spec) {
   const list = element('div', 'fsd-house-expansion__points');
   spec.points.forEach((point, index) => {
     const item = element('article', 'fsd-house-expansion__point');
+    item.dataset.pointIndex = String(index + 1).padStart(2, '0');
     if (spec.format === 'field-notes') {
       item.append(element('span', 'fsd-house-expansion__index', point[0]));
       item.append(element('h3', '', point[1]), element('p', '', point[2]));

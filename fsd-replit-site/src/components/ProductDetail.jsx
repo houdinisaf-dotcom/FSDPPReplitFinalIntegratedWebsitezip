@@ -68,6 +68,10 @@ export function ProductDetail({
       aria-labelledby={`catalogue-expanded-title-${product.id}`}
     >
       <div className="fsd-catalog-detail__visual">
+        <div className="fsd-catalog-detail__visual-heading">
+          <span>FSD / CATALOGUE PHOTOGRAPHY</span>
+          <span>{images.length ? `${String(images.length).padStart(2, '0')} VIEWS` : 'IMAGE TO BE ADDED'}</span>
+        </div>
         {selectedImage ? (
           <figure className="fsd-catalog-detail__figure" aria-live="polite">
             <motion.div
@@ -201,7 +205,9 @@ export function ProductDetail({
           )}
         </div>
 
-        <div className="fsd-catalog-detail__actions">
+        <div className="fsd-catalog-detail__purchase-foot">
+          <p className="fsd-catalog-detail__purchase-note">FSD / PERFORMANCE EQUIPMENT &amp; APPAREL</p>
+          <div className="fsd-catalog-detail__actions">
           <a
             data-catalogue-deep-dive
             href={deepDiveHref(product.id)}
@@ -237,6 +243,7 @@ export function ProductDetail({
           >
             Collapse Row
           </button>
+          </div>
         </div>
       </div>
     </motion.section>

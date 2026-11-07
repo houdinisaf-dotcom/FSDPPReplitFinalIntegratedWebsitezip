@@ -157,6 +157,15 @@
       z-index: 1;
     }
 
+    .fsd .hero-asset-slot-index {
+      align-self: stretch;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgb(212 175 55 / 19%);
+    }
+
     .fsd .hero-asset-slot-mark {
       position: absolute;
       inset: 50% auto auto 50%;
@@ -417,6 +426,7 @@
     }
 
     .fsd .research-sequence__steps li {
+      position: relative;
       min-height: 126px;
       padding: 20px;
       background: #111315;
@@ -443,6 +453,80 @@
       font: 400 .72rem/1.6 "DM Sans", Arial, sans-serif;
     }
 
+    .fsd .research-sequence__steps li::after {
+      position: absolute;
+      top: 27px;
+      right: 20px;
+      width: 7px;
+      height: 7px;
+      border: 1px solid rgb(212 175 55 / 55%);
+      content: "";
+      transform: rotate(45deg);
+    }
+
+    .fsd .research-sequence__steps li:nth-child(2),
+    .fsd .research-sequence__steps li:nth-child(3) {
+      background: #151716;
+    }
+
+    .fsd .research-sequence__steps li:nth-child(3) {
+      border-top: 1px solid rgb(212 175 55 / 20%);
+    }
+
+    .fsd .research-sequence__steps li:nth-child(4) {
+      border-top: 1px solid rgb(212 175 55 / 20%);
+      background: #111416;
+    }
+
+    .fsd .research-map__centre {
+      border: 1px solid rgb(212 175 55 / 24%);
+      letter-spacing: .17em;
+    }
+
+    .fsd .hero-copy .tag {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fsd .hero-copy .tag::before {
+      width: 28px;
+      height: 1px;
+      background: #d4af37;
+      content: "";
+    }
+
+    .fsd .hero-copy h1 {
+      max-width: 11ch;
+      font-size: clamp(2.25rem, 5.9vw, 5.15rem);
+      letter-spacing: -.045em;
+      line-height: .94;
+    }
+
+    .fsd .hero {
+      width: min(calc(100% - 48px), 1320px);
+      grid-template-columns: minmax(0, 1.3fr) minmax(300px, .7fr);
+      align-items: end;
+    }
+
+    .fsd .status {
+      border: 1px solid rgb(212 175 55 / 19%);
+      border-left: 3px solid #8a6a44;
+      background: linear-gradient(110deg, rgb(212 175 55 / 5%), transparent 60%), #121514;
+    }
+
+    .fsd section > h2 {
+      max-width: 18ch;
+      font-size: clamp(1.5rem, 3.3vw, 2.65rem);
+      line-height: 1.04;
+    }
+
+    .fsd .capability-grid { gap: 1px; background: rgb(212 175 55 / 18%); }
+    .fsd .capability-card { border: 0; background: #111315; }
+    .fsd .capability-card:nth-child(2n) { background: #151716; }
+    .fsd .badge-grid { gap: 1px; background: rgb(212 175 55 / 17%); }
+    .fsd .badge { border: 0; background: #121516; }
+
     .fsd .related-links {
       width: min(calc(100% - 48px), 1160px);
     }
@@ -460,6 +544,9 @@
       .fsd .research-sequence__steps li {
         min-height: 0;
       }
+      .fsd .hero { width: min(calc(100% - 32px), 1000px); }
+      .fsd .hero-copy h1 { max-width: 10ch; font-size: clamp(2.5rem, 12vw, 4.2rem); }
+      .fsd .hero-asset-slot-index { flex-direction: column; align-items: flex-start; }
     }
 
     @media (max-width: 600px) {

@@ -296,10 +296,11 @@ function renderTacticalShieldContent() {
 }
 
 export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}) {
-  const conceptLinks = innovationHubPages.map(page => `<a class="fsd-innovation-card" href="#${escapeHTML(page.id)}">
+  const conceptLinks = innovationHubPages.map((page, index) => `<a class="fsd-innovation-card fsd-innovation-card--bio-lab" href="#${escapeHTML(page.id)}" data-concept-index="${index + 1}">
     <span class="fsd-innovation-card-index">${String(innovationHubPages.indexOf(page) + 1).padStart(2, '0')}</span>
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHTML(page.title)}</strong>
+      <span class="fsd-innovation-card-summary">${escapeHTML(page.summary)}</span>
       <small>${page.initiative ? 'PROPOSED BIO-LAB CONCEPT' : 'DETAILS PENDING VERIFICATION'}</small>
     </span>
     <span class="fsd-innovation-card-arrow" aria-hidden="true">↗</span>
@@ -315,7 +316,7 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
   return `<section class="fsd-innovation-hub" id="innovation-hub" aria-labelledby="fsd-innovation-hub-title">
     <div class="fsd-page-shell">
       <p class="fsd-page-eyebrow">FSD BIO-LAB™ <span aria-hidden="true">/</span> INNOVATION HUB</p>
-      <div class="fsd-hub-heading">
+      <div class="fsd-hub-heading fsd-hub-heading--research">
         <div>
           <h2 id="fsd-innovation-hub-title">Innovation Hub</h2>
           <p>Explore FSD Bio-Lab concepts in material science and connected apparel.</p>
@@ -323,7 +324,11 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
         </div>
         ${renderAssetSlot('Innovation Hub editorial image', 'hub')}
       </div>
-      <nav class="fsd-innovation-grid" aria-label="FSD Bio-Lab products">${conceptLinks}</nav>
+      <div class="fsd-biolab-register-heading">
+        <span>01—08 / RESEARCH REGISTER</span>
+        <p>Named concepts only. Technical evidence, specifications and availability remain unverified.</p>
+      </div>
+      <nav class="fsd-innovation-grid fsd-biolab-register" aria-label="FSD Bio-Lab concepts">${conceptLinks}</nav>
       ${privatePreviews}
     </div>
   </section>`;
@@ -331,7 +336,7 @@ export function renderInnovationHubIndex({ includePrivatePreviews = false } = {}
 
 function renderPageModule(page, moduleTitle, index) {
   const ratio = index === 0 ? 'editorial' : 'detail';
-  return `<article class="fsd-page-module">
+  return `<article class="fsd-page-module fsd-page-module--${index === 0 ? 'lead' : index % 2 ? 'scope' : 'gate'}">
     <div class="fsd-page-module-copy">
       <span class="fsd-page-module-index">${String(index + 1).padStart(2, '0')}</span>
       <h3>${escapeHTML(moduleTitle)}</h3>
@@ -362,8 +367,9 @@ function renderPage(page) {
 
   return `<section class="fsd-placeholder-page fsd-placeholder-page--${escapeHTML(page.id)}" id="${escapeHTML(page.id)}" data-page-id="${escapeHTML(page.id)}" aria-labelledby="${escapeHTML(page.id)}-title">
     <div class="fsd-page-shell">
-      <header class="fsd-placeholder-page-header">
+      <header class="fsd-placeholder-page-header fsd-research-page-header">
         <p class="fsd-page-eyebrow">${escapeHTML(page.eyebrow)}</p>
+        <span class="fsd-research-page-header__index">${isInnovationPage ? 'BIO-LAB / CONCEPT FILE' : 'FSD / INITIATIVE'}</span>
         <h2 id="${escapeHTML(page.id)}-title">${escapeHTML(page.title)}</h2>
         ${page.heroSubtitle ? `<p class="fsd-page-subtitle">${escapeHTML(page.heroSubtitle)}</p>` : ''}
         <p class="fsd-page-intro">${escapeHTML(page.summary)}</p>
@@ -375,6 +381,7 @@ function renderPage(page) {
       : ''}
         ${page.initiative ? '<p class="fsd-page-intro fsd-page-disclaimer">Related concepts and design prototypes are for exploration, not current products or commitments.</p>' : ''}
       </header>
+      <div class="fsd-research-feature">
       ${renderAssetSlot(
     `${page.title} / Editorial`,
     'hero',
@@ -382,10 +389,12 @@ function renderPage(page) {
       || (isTacticalShieldPage
       ? 'Illustrative hero placeholder; no current membership service is represented.'
       : undefined),
-  )}
+   )}
+      <p class="fsd-research-feature__caption">${siteMedia.pageMedia[`${page.title} / Editorial`]?.src ? 'FSD / APPROVED EDITORIAL MEDIA' : 'APPROVED EDITORIAL MEDIA / PENDING'}</p>
+      </div>
       ${isTacticalShieldPage
     ? renderTacticalShieldContent()
-    : `<div class="fsd-page-module-grid">${modules}</div>`}
+    : `<div class="fsd-page-module-grid" aria-label="Concept scope and verification gates">${modules}</div>`}
       <div class="fsd-page-actions">
         <a class="fsd-page-return" href="${returnHref}">${returnLabel} <span aria-hidden="true">↗</span></a>
         ${action}

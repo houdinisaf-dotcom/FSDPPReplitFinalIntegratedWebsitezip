@@ -14,7 +14,7 @@ body {
   margin: 0;
   background: #090a0c;
   color: #f1eee6;
-  font-family: "DM Sans", Helvetica, Arial, sans-serif;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
 }
 
 .header.fsd-header {
@@ -85,4 +85,13 @@ body {
 
 .fsd-nav-list > li > .fsd-nav-option {
   width: 100%;
+}
+
+.fsd-navigation-spacer { background: #090a0c; }
+.fsd-standalone-wordmark { font-size: 18px; letter-spacing: .19em; }
+.fsd-navigation-shell { backdrop-filter: blur(16px); }
+
+@media (max-width: 900px) {
+  .header.fsd-header .fsd-search-trigger,
+  .header.fsd-header .fsd-bag-toggle { min-height: 44px; }
 }

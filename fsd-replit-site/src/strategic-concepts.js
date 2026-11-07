@@ -31,7 +31,7 @@ export function conceptsForPlacement(division, section) {
 }
 
 export function renderStrategicConceptIndex() {
-  const cards = STRATEGIC_CONCEPTS.map((concept, index) => `<a class="fsd-innovation-card fsd-innovation-card--${escapeHtml(concept.id)}" href="${escapeHtml(concept.href)}" data-strategic-concept="${escapeHtml(concept.id)}" data-primary-division="${escapeHtml(concept.primaryDivision)}">
+  const cards = STRATEGIC_CONCEPTS.map((concept, index) => `<a class="fsd-innovation-card fsd-innovation-card--${escapeHtml(concept.id)}" href="${escapeHtml(concept.href)}" data-strategic-concept="${escapeHtml(concept.id)}" data-primary-division="${escapeHtml(concept.primaryDivision)}" data-register-index="${index + 1}">
     <span class="fsd-innovation-card-index">${String(index + 1).padStart(2, '0')}</span>
     <span class="fsd-innovation-card-copy">
       <strong>${escapeHtml(concept.title)}</strong>
@@ -52,7 +52,7 @@ export function renderStrategicConceptIndex() {
           <p class="fsd-page-intro fsd-page-disclaimer">${escapeHtml(STRATEGIC_CONCEPT_STATUS)}</p>
         </div>
       </div>
-      <nav class="fsd-innovation-grid" aria-label="Twelve FSD strategic concepts">${cards}</nav>
+       <nav class="fsd-innovation-grid fsd-concept-register" aria-label="Twelve FSD strategic concepts">${cards}</nav>
     </div>
   </section>`;
 }

@@ -1057,6 +1057,7 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
       ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>
       ${escapeHTML(entry.label)}<span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
   </button>`).join('')}`;
+  const stepIndex = mobileStep === 'primary' ? '01' : mobileStep === 'groups' ? '02' : '03';
 
   return `<div class="fsd-mega-inner">
     <div class="fsd-mega-heading menu-header-bar">
@@ -1070,9 +1071,10 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
     </div>
     <div class="fsd-mobile-stepbar">
       <button type="button" data-nav-back>${outlineIcon('arrowLeft', 'fsd-icon')} ${mobileStep === 'detail' ? 'BACK TO GROUPS' : 'ALL CATEGORIES'}</button>
-      <span>${escapeHTML(menu.label)}</span>
+      <span><i>${stepIndex}</i> / 03 · ${escapeHTML(menu.label)}</span>
     </div>
     <nav class="fsd-mobile-primary-list" aria-label="FSD sections">${mobilePrimaries}</nav>
+    <p class="fsd-mobile-menu-prompt">${mobileStep === 'primary' ? 'Choose a division to begin.' : mobileStep === 'groups' ? 'Select a collection group.' : 'Choose an item to preview its details.'}</p>
     <div class="fsd-nav-columns menu-grid">
       <section class="fsd-nav-column fsd-nav-column--groups menu-column" aria-labelledby="fsd-group-heading" data-nav-column="groups">
         <h3 class="menu-column-title" id="fsd-group-heading">COLLECTION GROUPS</h3>

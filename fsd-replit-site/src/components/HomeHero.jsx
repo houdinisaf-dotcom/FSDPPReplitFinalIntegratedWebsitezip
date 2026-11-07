@@ -47,6 +47,11 @@ export function HomeHero({ headingTag = 'h1' }) {
         <span className="fsd-phase3-hero__frame-line" />
         <span className="fsd-phase3-hero__frame-mark" />
       </div>
+      <div className="fsd-phase3-hero__campaign-mark" aria-hidden="true">
+        <span>FSD / CAMPAIGN</span>
+        <strong>{active.label}</strong>
+        <i>{String(activeExperience + 1).padStart(2, '0')}</i>
+      </div>
       <div className="fsd-home-hero__content">
         <p className="fsd-home-kicker"><span /> FITNESS &amp; SELF-DEFENCE</p>
         <p className="fsd-home-theme-label" aria-live="polite">
@@ -67,6 +72,7 @@ export function HomeHero({ headingTag = 'h1' }) {
         ref={switcherRef}
         role="group"
         aria-label="Choose a homepage experience"
+        data-sequence="campaigns"
         onKeyDown={handleSwitcherKeyDown}
       >
         {homeHeroExperiences.map((experience, index) => (

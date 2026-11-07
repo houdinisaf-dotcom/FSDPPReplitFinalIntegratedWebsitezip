@@ -512,6 +512,148 @@
   }
 }
 
+/* Bio-Lab reads as a research register: scope first, evidence gates always visible. */
+.fsd-innovation-hub .fsd-hub-heading--research {
+  grid-template-columns: minmax(0, .8fr) minmax(330px, 1.2fr);
+  align-items: stretch;
+  margin-block: clamp(28px, 4vw, 56px) clamp(36px, 5vw, 68px);
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research h2 {
+  max-width: 8ch;
+  font-size: clamp(46px, 7vw, 92px);
+  line-height: .88;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research .fsd-asset-slot {
+  min-height: 300px;
+  aspect-ratio: 16 / 10;
+}
+
+.fsd-biolab-register-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 12px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgba(200,170,114,.26);
+}
+
+.fsd-biolab-register-heading > span {
+  flex: 0 0 auto;
+  color: #c8aa72;
+  font: 600 8px/1.5 var(--fsd-mono, monospace);
+  letter-spacing: .18em;
+}
+
+.fsd-biolab-register-heading p {
+  max-width: 50ch;
+  margin: 0;
+  color: #9f9c94;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: right;
+}
+
+.fsd-innovation-grid.fsd-biolab-register {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  background: transparent;
+}
+
+.fsd-biolab-register .fsd-innovation-card {
+  min-height: 112px;
+  grid-template-columns: 44px minmax(0, 1fr) 28px;
+  padding: 21px 4px;
+  border-right: 0;
+  border-bottom-color: rgba(200,170,114,.16);
+  border-left: 0;
+  background: transparent;
+}
+
+.fsd-biolab-register .fsd-innovation-card-copy { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.fsd-biolab-register .fsd-innovation-card-copy strong { grid-column: 1; font-size: clamp(15px, 1.5vw, 19px); }
+.fsd-biolab-register .fsd-innovation-card-copy small { grid-column: 2; grid-row: 1; text-align: right; }
+.fsd-biolab-register .fsd-innovation-card-summary {
+  grid-column: 1 / -1;
+  max-width: 76ch;
+  color: #a8a69f;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.fsd-research-page-header {
+  display: grid;
+  grid-template-columns: minmax(130px, .3fr) minmax(0, 1.7fr);
+  align-items: start;
+  gap: 14px 36px;
+  max-width: none;
+  margin-bottom: clamp(26px, 4vw, 48px);
+  text-align: left;
+}
+
+.fsd-research-page-header .fsd-page-eyebrow { grid-column: 1 / -1; }
+.fsd-research-page-header__index {
+  grid-column: 1;
+  grid-row: 2 / span 4;
+  padding-top: 9px;
+  color: #c8aa72;
+  font: 600 8px/1.5 var(--fsd-mono, monospace);
+  letter-spacing: .15em;
+}
+
+.fsd-research-page-header h2 {
+  grid-column: 2;
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(38px, 7vw, 86px);
+  line-height: .94;
+}
+
+.fsd-research-page-header .fsd-page-subtitle,
+.fsd-research-page-header .fsd-page-intro { grid-column: 2; margin-inline: 0; }
+.fsd-research-page-header .fsd-page-status { grid-column: 2; justify-self: start; }
+.fsd-research-feature { position: relative; margin-bottom: clamp(24px, 4vw, 52px); }
+.fsd-research-feature .fsd-asset-slot--hero { min-height: clamp(230px, 39vw, 480px); aspect-ratio: 2.1 / 1; }
+.fsd-research-feature__caption {
+  position: absolute;
+  right: 15px;
+  bottom: 12px;
+  margin: 0;
+  color: #c8aa72;
+  font-size: 8px;
+  letter-spacing: .16em;
+}
+
+.fsd-page-module-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1px; background: rgba(200,170,114,.18); }
+.fsd-page-module { min-height: 290px; padding: clamp(19px, 2.4vw, 32px); background: #101315; }
+.fsd-page-module--lead { grid-column: span 6; }
+.fsd-page-module--scope { grid-column: span 3; }
+.fsd-page-module--gate { grid-column: span 3; background: #151719; }
+.fsd-page-module-copy { min-height: 130px; }
+.fsd-page-module .fsd-asset-slot { min-height: 120px; aspect-ratio: 16 / 8; border-color: rgba(200,170,114,.14); }
+.fsd-page-module--lead .fsd-asset-slot { min-height: 150px; }
+
+@media (max-width: 760px) {
+  .fsd-innovation-hub .fsd-hub-heading--research { grid-template-columns: 1fr; }
+  .fsd-innovation-hub .fsd-hub-heading--research h2 { max-width: none; }
+  .fsd-biolab-register-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .fsd-biolab-register-heading p { text-align: left; }
+  .fsd-biolab-register .fsd-innovation-card-copy { grid-template-columns: 1fr; gap: 8px; }
+  .fsd-biolab-register .fsd-innovation-card-copy small { grid-column: 1; grid-row: auto; text-align: left; }
+  .fsd-research-page-header { grid-template-columns: 1fr; gap: 11px; }
+  .fsd-research-page-header__index { grid-column: 1; grid-row: auto; }
+  .fsd-research-page-header h2,
+  .fsd-research-page-header .fsd-page-subtitle,
+  .fsd-research-page-header .fsd-page-intro,
+  .fsd-research-page-header .fsd-page-status { grid-column: 1; }
+  .fsd-page-module-grid { grid-template-columns: 1fr; }
+  .fsd-page-module--lead,
+  .fsd-page-module--scope,
+  .fsd-page-module--gate { grid-column: auto; }
+}
+
 /* Supporting flagship routes: one editorial hierarchy for Universe, Bio-Lab and access surfaces. */
 .fsd-innovation-hub,
 .fsd-placeholder-page {
@@ -678,8 +820,8 @@
 }
 
 .fsd-strategic-concept-index .fsd-innovation-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 clamp(22px, 4vw, 54px);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0 clamp(18px, 3vw, 42px);
   background: none;
   border-top: 1px solid rgb(255 255 255 / 18%);
 }
@@ -687,7 +829,8 @@
 .fsd-strategic-concept-index .fsd-innovation-card {
   position: relative;
   min-width: 0;
-  min-height: 172px;
+  grid-column: span 6;
+  min-height: 176px;
   grid-template-columns: 32px minmax(0, 1fr) 18px;
   align-items: start;
   gap: 14px;
@@ -697,6 +840,11 @@
   background: transparent;
   transition: opacity 180ms ease, transform 180ms ease;
 }
+
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n + 1) { grid-column: span 7; }
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n + 2) { grid-column: span 5; }
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n + 3) { grid-column: span 5; }
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n) { grid-column: span 7; }
 
 .fsd-strategic-concept-index .fsd-innovation-card:hover,
 .fsd-strategic-concept-index .fsd-innovation-card:focus-visible {
@@ -782,6 +930,7 @@
   }
 
   .fsd-strategic-concept-index .fsd-innovation-card {
+    grid-column: 1 / -1;
     min-height: 0;
     padding: 20px 0 22px;
   }

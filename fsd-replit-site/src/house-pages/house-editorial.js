@@ -43,6 +43,14 @@ function markEditorialStructures(host) {
       }
     });
   }
+
+  host.querySelectorAll('.hero h1, #hero h1').forEach((heading, index) => {
+    heading.setAttribute('data-fsd-editorial-title', String(index + 1).padStart(2, '0'));
+  });
+
+  host.querySelectorAll('main.fsd > section, main > section.content-section').forEach((section, index) => {
+    section.setAttribute('data-fsd-house-chapter', String(index + 1).padStart(2, '0'));
+  });
 }
 
 function mountDraftRibbon(host, document) {

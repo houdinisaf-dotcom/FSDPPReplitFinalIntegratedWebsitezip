@@ -709,3 +709,67 @@
   .showroom-vip::after { top: 12%; right: -5%; opacity: .6; }
   .showroom-vip h2 { font-size: clamp(43px,12vw,68px); }
 }
+
+.private-enquiries__hero-inner { max-width: 1360px; }
+.private-enquiries__hero h1 {
+  max-width: 12ch;
+  font-size: clamp(46px, 8vw, 112px);
+  line-height: .89;
+  text-transform: uppercase;
+}
+.private-enquiries__hero h1 span:last-child {
+  color: #d7c79f;
+  font-size: .72em;
+  letter-spacing: -.025em;
+}
+.private-enquiries__hero::after {
+  position: absolute;
+  right: clamp(22px, 5vw, 80px);
+  bottom: 10%;
+  color: rgba(200,170,114,.12);
+  content: "PRIVATE";
+  font: 700 clamp(36px, 8vw, 116px)/.8 "Newsreader", Georgia, serif;
+  letter-spacing: -.07em;
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
+
+.private-enquiries__progress { gap: 1px; background: rgba(200,170,114,.18); }
+.private-enquiries__progress li {
+  position: relative;
+  padding-inline: 16px;
+  border: 0;
+  background: #101214;
+}
+.private-enquiries__progress li + li { padding-left: 16px; }
+.private-enquiries__progress li.is-current { box-shadow: inset 0 2px #c8aa72; background: #171817; }
+.private-enquiries__workspace {
+  max-width: 1140px;
+  border: 0;
+  border-top: 1px solid rgba(200,170,114,.35);
+  background: linear-gradient(115deg, rgba(200,170,114,.055), transparent 44%), #111315;
+}
+.private-enquiries__category-grid { gap: 1px; background: rgba(229,219,199,.16); }
+.private-enquiries__category {
+  min-height: 154px;
+  border: 0;
+  background: #101214;
+}
+.private-enquiries__category.is-selected { background: #191a17; box-shadow: inset 2px 0 #c8aa72; }
+.private-enquiries__category-title { font-family: "Newsreader", Georgia, serif; font-size: 21px; }
+.private-enquiries__field input,
+.private-enquiries__field textarea { background: #0d0f10; }
+.private-enquiries__privacy-note { max-width: 760px; }
+
+@media (max-width: 760px) {
+  .private-enquiries__hero h1 { font-size: clamp(43px, 12vw, 70px); }
+  .private-enquiries__hero::after { right: 15px; bottom: 8%; font-size: 52px; }
+  .private-enquiries__progress { gap: 1px; }
+  .private-enquiries__progress li,
+  .private-enquiries__progress li + li { padding-inline: 9px; }
+  .private-enquiries__category { min-height: 124px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .private-enquiries__hero::after { writing-mode: initial; }
+}

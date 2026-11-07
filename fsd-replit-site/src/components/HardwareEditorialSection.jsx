@@ -33,7 +33,10 @@ function HardwareFeatureMedia() {
 export function HardwareEditorialSection({ onOpenHardware }) {
   return (
     <>
-      <div className="showroom-engineering-copy">
+      <section className="showroom-engineering-copy showroom-engineering-copy--hardware" aria-labelledby="hardware-editorial-title">
+        <div className="showroom-engineering-copy__masthead">
+          <span>FSD / DIVISION 03</span><span>LOAD · PRACTICE · RESET</span>
+        </div>
         <p className="section-kicker">03 / FSD HARDWARE <span className="period">/</span> COMBAT SYSTEMS</p>
         <h2 id="hardware-editorial-title">
           ENGINEERED FOR<br />THE DEMANDS OF<br /><span>PERFORMANCE.</span>
@@ -52,14 +55,18 @@ export function HardwareEditorialSection({ onOpenHardware }) {
         >
           EXPLORE HARDWARE <span aria-hidden="true">↗</span>
         </button>
+      <p className="showroom-engineering-copy__footnote">Product-specific approved imagery pending. Product details remain subject to the approved catalogue.</p>
+      </section>
+      <div className="showroom-engineering-media-wrap">
+        <figure className="showroom-engineering-media">
+          <HardwareFeatureMedia />
+          <figcaption>
+            <span>FSD HARDWARE / RANGE OVERVIEW</span>
+            <span>PRODUCT-SPECIFIC APPROVED IMAGERY PENDING</span>
+          </figcaption>
+        </figure>
+        <span className="showroom-engineering-media__index" aria-hidden="true">03 / 06</span>
       </div>
-      <figure className="showroom-engineering-media">
-        <HardwareFeatureMedia />
-        <figcaption>
-          <span>FSD HARDWARE / RANGE OVERVIEW</span>
-          <span>PRODUCT-SPECIFIC APPROVED IMAGERY PENDING</span>
-        </figcaption>
-      </figure>
     </>
   );
 }

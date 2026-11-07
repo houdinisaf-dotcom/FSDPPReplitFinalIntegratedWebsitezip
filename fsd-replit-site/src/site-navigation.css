@@ -1237,6 +1237,55 @@ body.fsd-mobile-nav-open {
   .fsd-mega-close { gap: 7px; font-size: 7px; }
 }
 
+/* A mobile route is a short guided sequence rather than a compressed desktop mega-menu. */
+.fsd-mobile-menu-prompt { display: none; }
+.fsd-mobile-stepbar > span { font-variant-numeric: tabular-nums; }
+.fsd-mobile-stepbar > span i {
+  margin-right: 5px;
+  color: #e4cf9f;
+  font-style: normal;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-nav-column--groups .fsd-nav-option {
+  min-height: 46px;
+  padding-block: 10px;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-card {
+  min-height: 264px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(170px, .92fr);
+  border-color: rgba(200,170,114,.24);
+  background: #101214;
+}
+
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-media { min-height: 264px; }
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy { padding: clamp(20px, 2.4vw, 34px); }
+.fsd-mega-menu[data-primary="collections"] .fsd-feature-copy h3 {
+  font-size: clamp(16px, 1.4vw, 22px);
+  letter-spacing: -.025em;
+}
+
+.fsd-feature-card:has(.fsd-feature-media--unmapped) .fsd-feature-media--unmapped {
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(200,170,114,.12) 50%, transparent calc(50% + .5px)),
+    linear-gradient(0deg, transparent calc(50% - .5px), rgba(200,170,114,.12) 50%, transparent calc(50% + .5px)),
+    #101214;
+}
+
+@media (max-width: 900px) {
+  .fsd-mobile-menu-prompt {
+    display: block;
+    margin: 0 0 12px;
+    color: #b8b5ad;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .fsd-mega-menu[data-step="primary"] .fsd-mobile-menu-prompt { margin-top: 14px; }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-card { grid-template-columns: minmax(0, 1fr); }
+  .fsd-mega-menu[data-primary="collections"] .fsd-feature-media { min-height: 210px; }
+  .fsd-mobile-public-links { justify-content: flex-start; padding-left: 18px; }
+}
+
 /* SHOP opens as a considered visual index, not a dense link dump. */
 .fsd-mega-menu[data-primary="collections"] .fsd-mega-heading {
   align-items: end;

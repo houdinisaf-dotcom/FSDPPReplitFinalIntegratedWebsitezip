@@ -145,6 +145,41 @@
   border-color: rgba(200, 170, 114, .25);
 }
 
+.showroom-engineering-copy--hardware .showroom-engineering-copy__masthead {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: clamp(28px, 4vw, 52px);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(200,170,114,.28);
+  color: #c8aa72;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .15em;
+}
+
+.showroom-engineering-copy--hardware .showroom-engineering-copy__footnote {
+  max-width: 48ch;
+  margin: 18px 0 0;
+  color: #8f908a;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.showroom-engineering-media-wrap { position: relative; min-width: 0; }
+.showroom-engineering-media__index {
+  position: absolute;
+  top: -13px;
+  right: 0;
+  color: #c8aa72;
+  font-size: 8px;
+  letter-spacing: .16em;
+}
+
+@media (max-width: 760px) {
+  .showroom-engineering-copy--hardware .showroom-engineering-copy__masthead { font-size: 7px; }
+}
+
 .showroom-engineering--campaign .showroom-engineering-media > img,
 .showroom-engineering--campaign .showroom-engineering-media > .fsd-image-placeholder {
   width: 100%;
@@ -1306,5 +1341,135 @@
   .fsd-phase3-hero .fsd-home-hero__asset {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Campaign identity is treated as a typographic plate, not another asset. */
+.fsd-phase3-hero__campaign-mark {
+  position: absolute;
+  z-index: 3;
+  top: clamp(110px, 17vh, 190px);
+  right: clamp(22px, 5vw, 76px);
+  display: grid;
+  justify-items: end;
+  gap: 9px;
+  max-width: 40vw;
+  color: rgba(255,255,255,.68);
+  text-align: right;
+  pointer-events: none;
+}
+
+.fsd-phase3-hero__campaign-mark > span {
+  font-size: 8px;
+  letter-spacing: .2em;
+}
+
+.fsd-phase3-hero__campaign-mark strong {
+  max-width: 8ch;
+  color: rgba(255,255,255,.18);
+  font: 800 clamp(38px, 7vw, 112px)/.78 "Barlow Condensed", sans-serif;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.fsd-phase3-hero__campaign-mark i {
+  color: var(--hero-signal);
+  font: normal 500 9px/1 "DM Sans", sans-serif;
+  letter-spacing: .18em;
+}
+
+.fsd-phase3-hero--heroes .fsd-phase3-hero__campaign-mark strong { transform: rotate(-5deg); }
+.fsd-phase3-hero--stronger .fsd-phase3-hero__campaign-mark { top: auto; right: 7%; bottom: 24%; }
+.fsd-phase3-hero--stronger .fsd-phase3-hero__campaign-mark strong { max-width: 6ch; font-style: italic; }
+.fsd-phase3-hero--disciplined .fsd-phase3-hero__campaign-mark { top: 22%; right: 4%; }
+.fsd-phase3-hero--disciplined .fsd-phase3-hero__campaign-mark strong {
+  max-width: 5ch;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(238,242,239,.28);
+  letter-spacing: .02em;
+}
+.fsd-phase3-hero--together .fsd-phase3-hero__campaign-mark { top: auto; right: 4%; bottom: 25%; }
+.fsd-phase3-hero--together .fsd-phase3-hero__campaign-mark strong {
+  max-width: 7ch;
+  color: rgba(228,207,159,.24);
+  font-weight: 600;
+  letter-spacing: -.08em;
+}
+
+.fsd-phase3-hero .fsd-home-hero__content { width: min(1440px, 88%); }
+.fsd-phase3-hero[data-hero-theme="stronger"] h1,
+.fsd-phase3-hero[data-hero-theme="stronger"] h2 { max-width: 720px; }
+.fsd-phase3-hero[data-hero-theme="disciplined"] h1,
+.fsd-phase3-hero[data-hero-theme="disciplined"] h2 {
+  max-width: 670px;
+  font-size: clamp(56px, 7.8vw, 108px);
+  letter-spacing: .005em;
+}
+.fsd-phase3-hero[data-hero-theme="together"] h1,
+.fsd-phase3-hero[data-hero-theme="together"] h2 { max-width: 910px; }
+.fsd-phase3-hero[data-hero-theme="together"] h1 em,
+.fsd-phase3-hero[data-hero-theme="together"] h2 em {
+  display: inline-block;
+  padding: .02em .12em .07em;
+  border: 1px solid rgba(228,207,159,.56);
+  transform: rotate(-2deg);
+}
+
+.fsd-phase3-hero .fsd-home-switcher { width: min(720px, 58vw); }
+.fsd-phase3-hero .fsd-home-switcher button[aria-pressed="true"] strong { color: var(--hero-signal); }
+.fsd-phase3-hero .fsd-home-theme-label { min-height: 1.4em; }
+.fsd-phase3-hero[data-hero-theme] .fsd-home-theme-label,
+.fsd-phase3-hero[data-hero-theme] .fsd-phase3-hero__campaign-mark strong {
+  animation: fsd-campaign-type-arrive 500ms cubic-bezier(.2,.75,.2,1) both;
+}
+
+@keyframes fsd-campaign-type-arrive {
+  from { opacity: .45; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fsd-division-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.fsd-division-link--house { text-decoration: none; }
+.fsd-editorial-secondary { display: flex; flex-wrap: wrap; }
+.fsd-editorial-secondary > a {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 17px;
+  border-bottom: 1px solid rgba(223,255,69,.45);
+  color: rgba(255,255,255,.78);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.fsd-editorial-secondary > a span { color: var(--fsd-campaign-volt); }
+.fsd-editorial-secondary > a:hover,
+.fsd-editorial-secondary > a:focus-visible { color: var(--fsd-campaign-volt); }
+
+@media (max-width: 760px) {
+  .fsd-phase3-hero__campaign-mark {
+    top: 16%;
+    right: 20px;
+    max-width: 36vw;
+    gap: 6px;
+  }
+  .fsd-phase3-hero__campaign-mark strong { font-size: clamp(34px, 10vw, 58px); }
+  .fsd-phase3-hero--stronger .fsd-phase3-hero__campaign-mark { bottom: 38%; }
+  .fsd-phase3-hero--together .fsd-phase3-hero__campaign-mark { bottom: 39%; }
+  .fsd-phase3-hero .fsd-home-switcher { width: calc(100% - 32px); }
+  .fsd-phase3-hero[data-hero-theme="disciplined"] h1,
+  .fsd-phase3-hero[data-hero-theme="disciplined"] h2 { font-size: clamp(47px, 12vw, 68px); }
+  .fsd-division-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fsd-division-link:last-child { grid-column: 1 / -1; }
+  .fsd-editorial-secondary { gap: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-phase3-hero[data-hero-theme] .fsd-home-theme-label,
+  .fsd-phase3-hero[data-hero-theme] .fsd-phase3-hero__campaign-mark strong {
+    animation: none;
   }
 }
