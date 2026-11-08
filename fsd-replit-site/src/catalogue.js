@@ -1021,7 +1021,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       gallery.dataset.selectedView = viewId;
     }
     if (caption) caption.textContent = `${viewLabel.toLocaleUpperCase('en-GB')} — IMAGE PENDING`;
-    updateEditorialGalleryLayout(false);
+    updateEditorialGalleryLayout(dialog?.dataset.presentation !== 'quick-view');
     dialogBody.querySelectorAll('[data-catalogue-gallery-view]').forEach(candidate => {
       const selected = candidate === button;
       candidate.setAttribute('aria-pressed', String(selected));

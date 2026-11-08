@@ -20,6 +20,15 @@ export const primaryNavigation = [
   { id: 'private-access', label: 'PRIVATE ACCESS' },
 ];
 
+export const divisionLandingPaths = Object.freeze({
+  collections: '/shop',
+  universe: '/universe',
+  'bio-lab': '/bio-lab',
+  hardware: '/hardware',
+  house: FSD_HOUSE_PAGE_PATH,
+  'private-access': '/private-access',
+});
+
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&': '&amp;',
   '<': '&lt;',
@@ -1099,6 +1108,9 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
       <span>Looking for something specific?</span>
       <button type="button" data-nav-catalogue>Browse the full catalogue ${outlineIcon('arrowUpRight')}</button>
     </div>` : ''}
+    <a class="fsd-nav-division-home" href="${escapeHTML(divisionLandingPaths[menu.id] || '/')}">
+      <span>${escapeHTML(menu.label)} / DIVISION OVERVIEW</span><span aria-hidden="true">↗</span>
+    </a>
   </div>`;
 }
 

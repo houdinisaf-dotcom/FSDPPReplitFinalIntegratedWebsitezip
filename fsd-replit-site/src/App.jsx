@@ -33,6 +33,7 @@ import './collection-route.css';
 import { CatalogueLoading, CatalogueErrorBoundary } from './components/CatalogueLoadState.jsx';
 import { LuxuryEntryOverlay } from './components/LuxuryEntryOverlay.jsx';
 import { HardwareEditorialSection } from './components/HardwareEditorialSection.jsx';
+import { DivisionHub } from './components/DivisionHub.jsx';
 import 'lenis/dist/lenis.css';
 
 const CatalogList = lazy(() => import('./components/CatalogList.jsx')
@@ -108,6 +109,16 @@ function AppRouter({ hardwareForgeExtension }) {
   const storefrontContentRef = useRef(null);
   const markup = useMemo(() => renderStorefrontMarkup(), []);
   const [route, setRoute] = useState(() => routeFromLocation(window.location));
+  const divisionLocation = `${window.location.pathname}${window.location.hash}`;
+  const divisionHubId = useMemo(() => {
+    const pathname = String(window.location.pathname || '/').replace(/\/+$/, '') || '/';
+    if (pathname === '/shop') return 'shop';
+    if (pathname === '/universe') return 'universe';
+    if (pathname === '/bio-lab') return 'bio-lab';
+    if (pathname === '/hardware') return 'hardware';
+    if (pathname === '/private-access') return 'private-access';
+    return null;
+  }, [divisionLocation, route.view, route.target]);
   const previousRouteKey = useRef('');
   const [featuredCarouselPortalTarget, setFeaturedCarouselPortalTarget] = useState(null);
   const [cataloguePortalTarget, setCataloguePortalTarget] = useState(null);
@@ -224,6 +235,9 @@ function AppRouter({ hardwareForgeExtension }) {
     if (initialRoute.view !== 'page' || !initialRoute.target) return;
     const target = storefrontContentRef.current?.querySelector(`#${initialRoute.target}`);
     if (!target) return;
+    for (let parent = target.parentElement; parent; parent = parent.parentElement) {
+      if (parent instanceof HTMLDetailsElement) parent.open = true;
+    }
     const frame = requestAnimationFrame(() => target.scrollIntoView({
       behavior: 'instant',
       block: 'start',
@@ -238,6 +252,9 @@ function AppRouter({ hardwareForgeExtension }) {
     if (!previousKey || previousKey === nextKey || route.view !== 'page' || !route.target) return;
     const target = document.getElementById(route.target);
     if (!target || !storefrontContentRef.current?.contains(target)) return;
+    for (let parent = target.parentElement; parent; parent = parent.parentElement) {
+      if (parent instanceof HTMLDetailsElement) parent.open = true;
+    }
     void animateElement(target, {
       opacity: [0.86, 1],
       y: [FSD_MOTION.distance, 0],
@@ -294,12 +311,14 @@ function AppRouter({ hardwareForgeExtension }) {
       data-current-view={route.view}
       data-active-target={route.target ?? ''}
       data-fsd-standalone-collection={standaloneCollectionType || undefined}
+      data-division-hub={divisionHubId || undefined}
     >
       <FsdNavigation
         onNavigate={handleNavigation}
         onReady={markNavigationReady}
         hardwareForgeExtension={hardwareForgeExtension}
       />
+      {divisionHubId && <DivisionHub divisionId={divisionHubId} />}
       <div ref={storefrontContentRef} data-storefront-content dangerouslySetInnerHTML={{ __html: markup }} />
       {homeHeroPortalTarget && createPortal(
         <HomeHero headingTag={hasRouteSpecificHeading ? 'h2' : 'h1'} />,

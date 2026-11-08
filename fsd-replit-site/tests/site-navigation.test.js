@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { categories, filterProducts, products } from '../src/catalogue-data.js';
 import {
+  divisionLandingPaths,
   createNavigationModel,
   getNavigationFeature,
   navigationAssetBindings,
@@ -42,6 +43,22 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
     'hardware',
     'house',
     'private-access',
+  ]);
+  assert.deepEqual(Object.keys(divisionLandingPaths), [
+    'collections',
+    'universe',
+    'bio-lab',
+    'hardware',
+    'house',
+    'private-access',
+  ]);
+  assert.deepEqual(Object.values(divisionLandingPaths), [
+    '/shop',
+    '/universe',
+    '/bio-lab',
+    '/hardware',
+    '/the-house.html',
+    '/private-access',
   ]);
 });
 
@@ -816,9 +833,8 @@ test('Genetic & Microbiome Personalisation is a research initiative, not a healt
   assert.match(page, /<title>FSD \| Genetic &amp; Microbiome Personalisation<\/title>/);
   assert.match(page, /data-fsd-division="BIO-LAB™" data-fsd-section="Personalisation Research"/);
   assert.match(page, /aria-label="Breadcrumb"/);
-  assert.match(page, /class="hero-asset-slot" role="img"/);
-  assert.match(page, /\[ASSET PENDING\]/);
-  assert.match(page, /Approved FSD research imagery is not yet mapped to this page\./);
+  assert.match(page, /class="hero-asset-slot" role="img" aria-label="Asset pending:/i);
+  assert.match(page, /RESEARCH CONCEPT \/ NOT ACTIVE/);
   const visualSlot = page.match(/<div class="hero-asset-slot"[\s\S]*?<\/div>\s*<\/header>/)?.[0];
   assert.ok(visualSlot);
   assert.doesNotMatch(visualSlot, /<img\b/);

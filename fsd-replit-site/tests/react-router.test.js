@@ -53,6 +53,37 @@ test('section destinations map to their existing FSD sections', () => {
   assert.deepEqual(routeFromHash('#line-scorpion-series'), { view: 'collection', target: 'line-scorpion-series' });
 });
 
+test('six division landing destinations resolve to direct division overviews', () => {
+  assert.deepEqual(routeFromLocation({ pathname: '/shop', hash: '' }), {
+    view: 'division-hub',
+    target: 'shop',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/universe', hash: '' }), {
+    view: 'division-hub',
+    target: 'universe',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/bio-lab', hash: '' }), {
+    view: 'division-hub',
+    target: 'bio-lab',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/hardware', hash: '' }), {
+    view: 'division-hub',
+    target: 'hardware',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/the-house.html', hash: '' }), {
+    view: 'house',
+    target: 'house-hub',
+  });
+  assert.deepEqual(routeFromLocation({ pathname: '/private-access', hash: '' }), {
+    view: 'division-hub',
+    target: 'private-access',
+  });
+  assert.deepEqual(resolveFsdRoute({
+    menu: { id: 'hardware' },
+    item: { href: '/hardware' },
+  }), { view: 'division-hub', target: 'hardware' });
+});
+
 test('Clothing Lines SHOP destinations resolve to dedicated collection routes', () => {
   assert.deepEqual(resolveFsdRoute({
     menu: { id: 'collections' },

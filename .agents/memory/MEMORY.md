@@ -11,7 +11,7 @@
 - [Breeze set and overshirt separation](breeze-public-set.md) — the combined set is approved at £145; keep the existing £64.99 overshirt and Modest Flow separate.
 - [Nested preview Escape behavior](nested-preview-escape.md) — Escape in a product proof must close only that layer and return focus without dismissing the collection viewer.
 - [Customer-facing terminology](customer-facing-terminology.md) — remove visible release/status labels and use neutral product names with existing catalogue values.
-- [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — managed Clerk naming, nested package installs, and exact managed artifact ports for preview verification.
+- [FSD Replit setup quirks](fsd-replit-setup-quirks.md) — preserve static `.html` routes, explicit SPA division paths, nested installs, and managed artifact ports.
 - [Innovation initiative status](initiative-rollout-status.md) — Keep the five-section House landing; group Investor inside House navigation and retain initiative route and safeguard boundaries.
 - [Tactical Shield proposal boundary](tactical-shield-membership.md) — keep services and sign-up unavailable until providers, safeguarding, legal scope, insurance, and terms are confirmed.
 - [Public SEO routing](public-seo-routing.md) — verify route-specific visible H1s and preserve shopping flows; withhold canonicals and sitemap until the production origin is verified.

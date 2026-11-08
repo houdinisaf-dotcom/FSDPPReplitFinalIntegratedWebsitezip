@@ -6,6 +6,14 @@ export const FSD_STORY_PATH = '/story';
 export const FSD_STORY_HASH = '#philosophy';
 export const FSD_HOUSE_PAGE_PATH = '/the-house.html';
 
+const divisionLandingRoutes = new Map([
+  ['/shop', 'shop'],
+  ['/universe', 'universe'],
+  ['/bio-lab', 'bio-lab'],
+  ['/hardware', 'hardware'],
+  ['/private-access', 'private-access'],
+]);
+
 const hashRoutes = new Map([
   ['#products', { view: 'collection', target: 'all-products' }],
   ['#universe', { view: 'universe', target: 'global' }],
@@ -37,9 +45,11 @@ export function routeFromHash(hash = '') {
 }
 
 function routeFromDestination(destination) {
-  if (destination?.split(/[?#]/, 1)[0] === FSD_HOUSE_PAGE_PATH) {
-    return { view: 'house', target: 'house-hub' };
+  const pathname = destination?.split(/[?#]/, 1)[0].replace(/\/+$/, '') || '/';
+  if (destination === pathname && divisionLandingRoutes.has(pathname)) {
+    return { view: 'division-hub', target: divisionLandingRoutes.get(pathname) };
   }
+  if (pathname === FSD_HOUSE_PAGE_PATH) return { view: 'house', target: 'house-hub' };
   if (destination?.startsWith('/__catalogue-preview/')) {
     return { view: 'preview', target: destination };
   }
@@ -58,8 +68,11 @@ export function routeFromLocation(location = {}) {
   if (location.hash) return routeFromHash(location.hash);
 
   const pathname = String(location.pathname || '/').replace(/\/+$/, '') || '/';
-  if (pathname === FSD_STORY_PATH) return { view: 'story', target: 'our-story' };
   if (pathname === FSD_HOUSE_PAGE_PATH) return { view: 'house', target: 'house-hub' };
+  if (divisionLandingRoutes.has(pathname)) {
+    return { view: 'division-hub', target: divisionLandingRoutes.get(pathname) };
+  }
+  if (pathname === FSD_STORY_PATH) return { view: 'story', target: 'our-story' };
   const entry = seoEntryForPath(pathname);
   if (entry) return entry.route;
   return routeFromHash('');

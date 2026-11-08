@@ -20,3 +20,9 @@ In this Vite storefront, legacy `.html` routes handled only through a `configure
 **Why:** The custom middleware was present but the Replit preview still returned the branded 404; the public HTML route loaded and its production build output was verifiable.
 
 **How to apply:** For public legacy `.html` routes, test the physical public source in dev and the generated `dist` file after a production build instead of relying on middleware interception alone.
+
+Direct SPA division paths must resolve to their overview before route hydration scrolls to a section hash. Keep explicit hash destinations mapped to the existing detailed sections. `/the-house.html` is a physical public page, so it bypasses the SPA route component and must remain the existing House corporate hub.
+
+**Why:** Previewing `/hardware` and `/bio-lab` initially showed their old hash-targeted sections instead of the intended overview; `/the-house.html` continued to serve its public HTML document independently of the SPA.
+
+**How to apply:** In `routeFromLocation`, prefer exact no-hash division paths for SPA overview routes; in `routeFromDestination`, resolve those same menu destinations consistently. Preserve hash routes for detail sections and verify `.html` paths in the running preview.

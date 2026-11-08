@@ -16,12 +16,14 @@ export const escapeSeo = value => String(value ?? '').replace(/[&<>"']/g, charac
 const byAudience = pattern => products.filter(product => pattern.test(product.audience));
 export const storefrontSeoRoutes = [
   { path: '/', title: `${SITE_NAME} | Performance Apparel & Training Hardware`, description: HOME_DESCRIPTION, route: { view: 'home', target: null } },
+  { path: '/shop', title: `SHOP | ${SITE_NAME}`, description: 'Browse the existing FSD catalogue, established clothing lines and product records.', route: { view: 'division-hub', target: 'shop' } },
   { path: '/story', title: `Our Story | ${SITE_NAME}`, description: 'Discover the people, purpose and discipline behind FSD, the British House of Performance.', route: { view: 'story', target: 'our-story' }, hash: '#philosophy' },
   ...[
     { path: '/hardware', title: 'Training Hardware', description: 'Explore FSD training hardware, strength equipment and accessories from the existing catalogue.', view: 'hardware', target: 'hardware', hash: '#hardware-editorial' },
     { path: '/universe', title: 'The FSD Universe', description: 'Discover FSD’s wider performance ecosystem, community and global vision.', view: 'universe', target: 'global', hash: '#universe' },
     { path: '/bio-lab', title: 'Bio-Lab™', description: 'Explore FSD Bio-Lab™ and its published material science, apparel and innovation initiatives.', view: 'bio-lab', target: 'bio-lab', hash: '#innovation-hub' },
   ].map(({ view, target, ...entry }) => ({ ...entry, title: `${entry.title} | FSD`, route: { view, target } })),
+  { path: '/private-access', title: `Private Access | ${SITE_NAME}`, description: 'Private enquiry information and access concepts. Registration and unconfigured submissions remain unavailable.', route: { view: 'division-hub', target: 'private-access' } },
   ...[
     { id: 'men', title: 'Men’s Collections', pattern: /^men/i },
     { id: 'women', title: 'Women’s Collections', pattern: /^women/i },
@@ -62,8 +64,24 @@ export function seoEntryForPath(pathname = '/') {
 export function seoForView(view = {}) {
   if (view.view === 'product') return storefrontSeoRoutes.find(entry => entry.product?.id === Number(view.target));
   if (view.view === 'collection') return storefrontSeoRoutes.find(entry => entry.route.view === 'collection' && entry.route.target === view.target);
+  if (view.view === 'division-hub') {
+    const landingPath = {
+      shop: '/shop',
+      universe: '/universe',
+      'bio-lab': '/bio-lab',
+      hardware: '/hardware',
+      'private-access': '/private-access',
+    }[view.target];
+    return seoEntryForPath(landingPath || '/shop');
+  }
   if (view.view === 'page' && view.target === 'innovation-hub') return seoEntryForPath('/bio-lab');
   if (view.view === 'story') return seoEntryForPath('/story');
+  if (view.view === 'house') return {
+    path: '/the-house.html',
+    title: `THE HOUSE | ${SITE_NAME}`,
+    description: 'Explore the FSD House, its existing destinations and mapped concepts.',
+    route: view,
+  };
   if (['hardware', 'universe', 'bio-lab'].includes(view.view)) return storefrontSeoRoutes.find(entry => entry.route.view === view.view);
   return null;
 }

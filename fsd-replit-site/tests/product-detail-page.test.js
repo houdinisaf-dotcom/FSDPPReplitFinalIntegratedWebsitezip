@@ -49,13 +49,28 @@ test('editorial product galleries pair approved front and rear photos for the se
   assert.match(markup, /GALLERY VIEWS/);
 });
 
-test('editorial gallery selection retains the mapped default when a same-variant front/rear pair is absent', () => {
+test('editorial detail gallery does not mislabel a non-front image as the front view', () => {
   const images = [
     { label: 'White / Green / Lifestyle hero', colourway: 'White / Green', src: '/hero.webp' },
     { label: 'All Black / Front product view', colourway: 'All Black', src: '/black-front.webp' },
   ];
 
-  assert.equal(editorialGalleryPrimaryImageIndex(images, 0, 'White / Green', true), 0);
+  assert.equal(editorialGalleryPrimaryImageIndex(images, 0, 'White / Green', true, true), -1);
+  const markup = renderProductDetailPage({
+    product: productFixture,
+    images,
+    initialImageIndex: -1,
+    galleryPlaceholders: [],
+    colourways: ['White / Green', 'All Black'],
+    colourwayImageIndexes: [0, 1],
+    sizes: productSizeOptions(productFixture),
+    price: { label: '', value: '' },
+    canPurchase: false,
+  });
+  assert.match(markup, /FRONT VIEW — IMAGE PENDING/);
+  assert.match(markup, /BACK VIEW — IMAGE PENDING/);
+  assert.match(markup, /data-catalogue-image-index="0"/);
+  assert.doesNotMatch(markup, /data-catalogue-main-caption[^>]*>White \/ Green \/ Lifestyle hero/);
 });
 
 test('detail pages pair exact front and back photos even when labels omit the word product', () => {
@@ -102,9 +117,41 @@ test('featured products without approved photos retain named front and back plac
     assert.equal((markup.match(/product-detail-image-stage|product-detail-gallery__secondary-stage/g) || []).length, 2);
     assert.match(markup, /FRONT VIEW — IMAGE PENDING/);
     assert.match(markup, /BACK VIEW — IMAGE PENDING/);
-    assert.match(markup, /data-catalogue-placeholder-view="front"/);
-    assert.match(markup, /data-catalogue-placeholder-view="back"/);
+    assert.match(markup, /data-catalogue-(?:view-label|placeholder-view)="Front view"/i);
+    assert.match(markup, /data-catalogue-(?:view-label|placeholder-view)="Back view"/i);
   }
+});
+
+test('every storefront product renders the shared front/back gallery and pending views without enabling checkout', () => {
+  for (const product of products) {
+    const images = productImagesForDisplay(product);
+    const initialImageIndex = editorialGalleryPrimaryImageIndex(
+      images,
+      images.length ? 0 : -1,
+      '',
+      false,
+      true,
+    );
+    const markup = renderProductDetailPage({
+      product,
+      images,
+      initialImageIndex,
+      galleryPlaceholders: product.galleryPlaceholders || [],
+      colourways: [],
+      colourwayImageIndexes: [],
+      sizes: productSizeOptions(product),
+      price: { label: '', value: '' },
+      canPurchase: false,
+    });
+
+    assert.match(markup, /product-detail-gallery__feature-grid[^"]*has-secondary/);
+    assert.match(markup, /data-catalogue-secondary-panel/);
+    assert.match(markup, /data-catalogue-view-label="front view"|data-catalogue-placeholder-view="front"/i);
+    assert.match(markup, /data-catalogue-view-label="back view"|data-catalogue-placeholder-view="back"/i);
+    assert.match(markup, /data-catalogue-thumbnail-rail/);
+    assert.doesNotMatch(markup, /data-bag-add=/);
+  }
+  assert.equal(products.length, 73, 'The storefront list stays separate from the 86-entry master register.');
 });
 
 test('Quick View keeps its original single-image fallback', () => {

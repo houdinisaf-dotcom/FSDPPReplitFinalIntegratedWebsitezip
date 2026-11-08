@@ -197,6 +197,7 @@ export function editorialGalleryPrimaryImageIndex(
 
   // Full-detail pages prioritize an exact variant-matched pair when available;
   // Quick View retains its curated source-selected order.
+  if (requireFrontBackPair) return frontIndex;
   return frontIndex >= 0 && rearIndex >= 0 ? frontIndex : fallbackIndex;
 }
 
@@ -425,46 +426,33 @@ function renderGalleryThumbnails(product, images, galleryPlaceholders, selectedI
 function renderGallery(product, images, initialImageIndex, galleryPlaceholders, initialVariant = '', hasMultipleColourways = false, quickView = false) {
   const safeImages = Array.isArray(images) ? images : [];
   const requireFrontBackPair = !quickView;
-  const activeInitialIndex = safeImages.length
-    ? Math.max(0, Math.min(safeImages.length - 1, Number.isInteger(initialImageIndex) ? initialImageIndex : 0))
-    : -1;
+  const requestedInitialIndex = Number.isInteger(initialImageIndex) ? initialImageIndex : 0;
+  const activeInitialIndex = !safeImages.length || requestedInitialIndex < 0
+    ? -1
+    : Math.max(0, Math.min(safeImages.length - 1, requestedInitialIndex));
   const selectedImage = safeImages[activeInitialIndex];
   const variantPlaceholder = renderMainImagePlaceholder(product, initialVariant, 'Front view', { hidden: true });
   if (!selectedImage) {
-    if (safeImages.length) {
-      const initialImage = safeImages[activeInitialIndex];
-      return `<div class="product-detail-gallery">
-        <div class="product-detail-gallery__feature-grid${requireFrontBackPair ? ' has-secondary' : ' is-single'}">
-          <figure class="catalogue-selector__main">
-            <div class="product-detail-image-stage">
-              <button type="button" class="product-detail-image-zoom" data-gallery-photo-open
-                aria-haspopup="dialog" aria-controls="fsd-product-viewer"
-                aria-label="Open full-screen product photograph" hidden>
-                <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
-                  data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
-                  data-fsd-image-variant="${safe(initialImage.colourway || initialImage.variant || initialImage.size || '')}" data-fsd-image-kind="detail"
-                  src="${safe(initialImage.src)}" alt="${safe(product.name)} — ${safe(initialImage.label)}"
-                  loading="eager" fetchpriority="high" decoding="async" />
-              </button>
-              ${renderMainImagePlaceholder(product, initialVariant, 'Front view')}
-            </div>
-            <figcaption data-catalogue-main-caption aria-live="polite">FRONT VIEW — IMAGE PENDING</figcaption>
-          </figure>
-          ${requireFrontBackPair
-            ? renderSecondaryGalleryPanel(product, null, initialVariant, { showPlaceholder: true, viewLabel: 'Back view' })
-            : ''}
-        </div>
-        ${renderGalleryThumbnails(product, safeImages, galleryPlaceholders, activeInitialIndex)}
-      </div>`;
-    }
-    return `<div class="product-detail-gallery product-detail-gallery--placeholders">
+    const backIndex = requireFrontBackPair
+      ? preferredGallerySideIndex(safeImages, 'rear', initialVariant, hasMultipleColourways, true)
+      : -1;
+    const backImage = backIndex >= 0 ? safeImages[backIndex] : null;
+    return `<div class="product-detail-gallery${safeImages.length ? '' : ' product-detail-gallery--placeholders'}">
       <div class="product-detail-gallery__feature-grid${requireFrontBackPair ? ' has-secondary' : ' is-single'}" role="group" aria-label="${safe(product.name)} image gallery">
         <figure class="catalogue-selector__main">
-          <div class="product-detail-image-stage">${renderMainImagePlaceholder(product, initialVariant, 'Front view')}</div>
+          <div class="product-detail-image-stage">
+            <button type="button" class="product-detail-image-zoom" data-gallery-photo-open
+              aria-haspopup="dialog" aria-controls="fsd-product-viewer"
+              aria-label="Open full-screen product photograph" hidden></button>
+            ${renderMainImagePlaceholder(product, initialVariant, 'Front view')}
+          </div>
           <figcaption data-catalogue-main-caption aria-live="polite">FRONT VIEW — IMAGE PENDING</figcaption>
         </figure>
         ${requireFrontBackPair
-          ? renderSecondaryGalleryPanel(product, null, initialVariant, { showPlaceholder: true, viewLabel: 'Back view', omitImageElement: true })
+          ? renderSecondaryGalleryPanel(product, backImage, initialVariant, {
+            showPlaceholder: !backImage,
+            viewLabel: 'Back view',
+          })
           : ''}
       </div>
       ${renderGalleryThumbnails(product, safeImages, galleryPlaceholders, -1, 'front')}
