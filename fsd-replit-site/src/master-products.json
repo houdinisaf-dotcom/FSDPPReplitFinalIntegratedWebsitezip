@@ -1365,7 +1365,7 @@
       { "name": "Obsidian & Gold", "primary": "#0A0A0A", "accent": "#D4AF37" }
     ],
     "Collection line": "",
-    "Image status": "Supplied composite board only; standalone gallery photos not confirmed",
+    "Image status": "Standalone product photos mapped; source composite board excluded",
     "Source": "User-supplied product metadata and image references",
     "Also appears as": "",
     "Alias status": "",
@@ -1374,12 +1374,7 @@
     "Badge": "Pro Gear",
     "Short description": "Elite utility and weather-resistant durability.",
     "Description": "The Apex Pro Backpack is built for people who carry their whole training day. High-density grid ripstop with a hydro-repellent coating is paired with custom Satin Champagne Gold dual zippers and a laser-etched FSD shield emblem. Padded ergonomic shoulder support and a breathable mesh back panel aid carrying comfort; dedicated compartments organise tech, shoes and training gear. Its Obsidian and Satin Gold finish follows the FSD master-brand palette.",
-    "Image placeholders": [
-      "Front Isometric View",
-      "Rear Ergonomic Straps",
-      "Water-Repellent Fabric Detail",
-      "Hardware & Crest Close-up"
-    ],
+    "Image placeholders": [],
     "Features": [
       "Weather-resistant grid ripstop fabric with advanced water-repellent finish",
       "Ergonomic breathable mesh back padding with adjustable sternum buckle",
@@ -1387,7 +1382,7 @@
       "Dedicated compartments for tech, shoes, and training gear"
     ],
     "Specification status": "User-supplied product details",
-    "Notes": "The uploaded backpack image is a composite board and is not mapped to the product gallery. The referenced standalone image files are not present; availability and manufacturing details remain unverified."
+    "Notes": "Individual front, rear, fabric, and hardware/crest photos from the supplied board are mapped to this product; the composite board itself remains excluded from the gallery. Availability and manufacturing details remain unverified."
   },
   {
     "id": 77,
@@ -1405,7 +1400,7 @@
       { "name": "Obsidian Black", "primary": "#0A0A0A", "accent": "#D4AF37" }
     ],
     "Collection line": "",
-    "Image status": "Supplied composite board only; standalone gallery photos not confirmed",
+    "Image status": "Standalone product photos mapped; source composite board excluded",
     "Source": "User-supplied product metadata and image references",
     "Also appears as": "",
     "Alias status": "",
@@ -1415,12 +1410,7 @@
     "Short description": "Statement styling meets tactical architecture.",
     "Description": "A layering piece with presence. Articulated spine plates take their shape from chitin architecture. Laser-perforated panels add ventilation, while dual chest cargo pockets carry small items and a gold scorpion insignia marks the Scorpion Series. A grid-weave water-repellent shell and adjustable side buckles let you fit it as you need. Training apparel; not personal protective equipment.",
     "Sizes": "S; M; L; XL; XXL",
-    "Image placeholders": [
-      "Front View with Cargo Pockets",
-      "Rear Chitin Spine Armor Detail",
-      "Water-Repellent Fabric Close-up",
-      "Scorpion Series Chest Crest & Zip"
-    ],
+    "Image placeholders": [],
     "Features": [
       "Articulated chitin-inspired spine plates with gold trim detailing",
       "Weather-resistant grid-weave shell with water-repellent treatment",
@@ -1430,7 +1420,7 @@
       "Adjustable side buckle straps for a custom tactical fit"
     ],
     "Specification status": "User-supplied product details",
-    "Notes": "The uploaded gilet image is a composite board and is not mapped to the product gallery. The referenced standalone image files are not present; availability and manufacturing details remain unverified."
+    "Notes": "Individual front, rear, fabric, and scorpion crest/zip photos from the supplied board are mapped to this product; the composite board itself remains excluded from the gallery. Availability and manufacturing details remain unverified."
   },
   {
     "id": 78,
@@ -1450,7 +1440,7 @@
       { "name": "Arctic White", "primary": "#F0F0F0" }
     ],
     "Collection line": "",
-    "Image status": "Supplied composite boards only; standalone gallery photos not confirmed",
+    "Image status": "Standalone colourway photos mapped; source composite board excluded",
     "Source": "User-supplied product metadata and image references",
     "Also appears as": "",
     "Alias status": "",
@@ -1460,11 +1450,7 @@
     "Short description": "Ultra-lightweight meteorological shielding.",
     "Description": "An ultra-lightweight, weather-resistant training shell for changeable conditions. Integrated thumbhole cuffs keep sleeves in place, reflective trim adds visibility, and a sculpted rear shield emblem carries the FSD identity. It packs light and moves with you, designed for high-mobility outdoor conditioning and transit.",
     "Sizes": "XS; S; M; L; XL",
-    "Image placeholders": [
-      "Orange, Black & White Front Views",
-      "Rear Sculpted Shield Views",
-      "Thumbhole Cuffs Detail"
-    ],
+    "Image placeholders": [],
     "Features": [
       "Weather-shield ripstop fabric for changeable conditions",
       "Integrated thumbhole cuffs keep sleeves in place",
@@ -1472,7 +1458,7 @@
       "Sculpted rear shield branding"
     ],
     "Specification status": "User-supplied product details",
-    "Notes": "The uploaded running-shell image is a composite colourway board and is not mapped to the product gallery. Referenced standalone photos are not present; availability and manufacturing details remain unverified."
+    "Notes": "Individual front, rear, and thumbhole-cuff photos are mapped to their matching Series 1 colourways; the source composite board remains excluded from the gallery. Availability and manufacturing details remain unverified."
   },
   {
     "id": 79,
@@ -1492,7 +1478,7 @@
       { "name": "Bone Cream", "primary": "#E8E4DF" }
     ],
     "Collection line": "",
-    "Image status": "Supplied composite boards only; standalone gallery photos not confirmed",
+    "Image status": "Standalone colourway photos mapped; source composite board excluded",
     "Source": "User-supplied product metadata and image references",
     "Also appears as": "",
     "Alias status": "",
@@ -1502,11 +1488,7 @@
     "Short description": "Ultra-lightweight meteorological shielding.",
     "Description": "The expanded colourway release of our ultra-lightweight running shell is designed for changeable conditions. Integrated thumbhole cuffs keep sleeves in place, reflective trim adds visibility, and a sculpted rear shield emblem carries the FSD identity. It packs light and moves with you, designed for high-mobility outdoor conditioning and transit.",
     "Sizes": "XS; S; M; L; XL",
-    "Image placeholders": [
-      "Charcoal, Navy & Cream Front Views",
-      "Rear Sculpted Shield Views",
-      "Thumbhole Cuffs Detail"
-    ],
+    "Image placeholders": [],
     "Features": [
       "Weather-shield ripstop fabric for changeable conditions",
       "Integrated thumbhole cuffs keep sleeves in place",
@@ -1514,6 +1496,6 @@
       "Sculpted rear shield branding"
     ],
     "Specification status": "User-supplied product details",
-    "Notes": "The uploaded running-shell image is a composite colourway board and is not mapped to the product gallery. Referenced standalone photos are not present; availability and manufacturing details remain unverified."
+    "Notes": "Individual front, rear, and thumbhole-cuff photos are mapped to their matching Series 2 colourways; the source composite board remains excluded from the gallery. Availability and manufacturing details remain unverified."
   }
 ]

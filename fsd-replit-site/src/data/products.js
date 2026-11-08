@@ -4,6 +4,40 @@ import { collectionDivisions } from '../collection-divisions.js';
 // Product image configuration. Each entry may include `colourway`, `size`, or
 // `variant` so variant-specific photography can be added without changing UI.
 const imageReferences = {
+  'FSD Apex Pro Tactical Gym Backpack': [
+    { src: '/assets/products/apex-pro-backpack/front-isometric.webp', label: 'Obsidian & Gold / Front Isometric View', colourway: 'Obsidian & Gold' },
+    { src: '/assets/products/apex-pro-backpack/rear-straps.webp', label: 'Obsidian & Gold / Rear Ergonomic Straps', colourway: 'Obsidian & Gold' },
+    { src: '/assets/products/apex-pro-backpack/water-resistant-fabric-detail.webp', label: 'Obsidian & Gold / Water-Repellent Fabric Detail', colourway: 'Obsidian & Gold' },
+    { src: '/assets/products/apex-pro-backpack/hardware-crest-detail.webp', label: 'Obsidian & Gold / Hardware & Crest Close-up', colourway: 'Obsidian & Gold' },
+  ],
+  'FSD Scorpion Chitin Tactical Gilet': [
+    { src: '/assets/products/scorpion-chitin-gilet/front.webp', label: 'Obsidian Black / Front View with Cargo Pockets', colourway: 'Obsidian Black' },
+    { src: '/assets/products/scorpion-chitin-gilet/rear-chitin-spine.webp', label: 'Obsidian Black / Rear Chitin Spine Detail', colourway: 'Obsidian Black' },
+    { src: '/assets/products/scorpion-chitin-gilet/water-repellent-fabric-detail.webp', label: 'Obsidian Black / Water-Repellent Fabric Close-up', colourway: 'Obsidian Black' },
+    { src: '/assets/products/scorpion-chitin-gilet/scorpion-crest-zip-detail.webp', label: 'Obsidian Black / Scorpion Crest & Zip Detail', colourway: 'Obsidian Black' },
+  ],
+  'FSD Velocity Element Running Shell (Series 1)': [
+    { src: '/assets/products/velocity-running-shell-series-1/orange-front.webp', label: 'Tactical Orange / Front View', colourway: 'Tactical Orange' },
+    { src: '/assets/products/velocity-running-shell-series-1/orange-rear.webp', label: 'Tactical Orange / Rear View', colourway: 'Tactical Orange' },
+    { src: '/assets/products/velocity-running-shell-series-1/orange-thumbhole-cuff-detail.webp', label: 'Tactical Orange / Thumbhole Cuff Detail', colourway: 'Tactical Orange' },
+    { src: '/assets/products/velocity-running-shell-series-1/black-front.webp', label: 'Obsidian Black / Front View', colourway: 'Obsidian Black' },
+    { src: '/assets/products/velocity-running-shell-series-1/black-rear.webp', label: 'Obsidian Black / Rear View', colourway: 'Obsidian Black' },
+    { src: '/assets/products/velocity-running-shell-series-1/black-thumbhole-cuff-detail.webp', label: 'Obsidian Black / Thumbhole Cuff Detail', colourway: 'Obsidian Black' },
+    { src: '/assets/products/velocity-running-shell-series-1/white-front.webp', label: 'Arctic White / Front View', colourway: 'Arctic White' },
+    { src: '/assets/products/velocity-running-shell-series-1/white-rear.webp', label: 'Arctic White / Rear View', colourway: 'Arctic White' },
+    { src: '/assets/products/velocity-running-shell-series-1/white-thumbhole-cuff-detail.webp', label: 'Arctic White / Thumbhole Cuff Detail', colourway: 'Arctic White' },
+  ],
+  'FSD Velocity Element Running Shell (Series 2)': [
+    { src: '/assets/products/velocity-running-shell-series-2/charcoal-front.webp', label: 'Charcoal Grey / Front View', colourway: 'Charcoal Grey' },
+    { src: '/assets/products/velocity-running-shell-series-2/charcoal-rear.webp', label: 'Charcoal Grey / Rear View', colourway: 'Charcoal Grey' },
+    { src: '/assets/products/velocity-running-shell-series-2/charcoal-thumbhole-cuff-detail.webp', label: 'Charcoal Grey / Thumbhole Cuff Detail', colourway: 'Charcoal Grey' },
+    { src: '/assets/products/velocity-running-shell-series-2/navy-front.webp', label: 'Deep Navy / Front View', colourway: 'Deep Navy' },
+    { src: '/assets/products/velocity-running-shell-series-2/navy-rear.webp', label: 'Deep Navy / Rear View', colourway: 'Deep Navy' },
+    { src: '/assets/products/velocity-running-shell-series-2/navy-thumbhole-cuff-detail.webp', label: 'Deep Navy / Thumbhole Cuff Detail', colourway: 'Deep Navy' },
+    { src: '/assets/products/velocity-running-shell-series-2/cream-front.webp', label: 'Bone Cream / Front View', colourway: 'Bone Cream' },
+    { src: '/assets/products/velocity-running-shell-series-2/cream-rear.webp', label: 'Bone Cream / Rear View', colourway: 'Bone Cream' },
+    { src: '/assets/products/velocity-running-shell-series-2/cream-thumbhole-cuff-detail.webp', label: 'Bone Cream / Thumbhole Cuff Detail', colourway: 'Bone Cream' },
+  ],
   'FSD Contrast-Panel Training Tee': [
     { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/front.webp', label: 'Luminous aqua / deep teal navy / white / Front view', colourway: 'Luminous aqua / deep teal navy / white' },
     { src: '/assets/products/contrast-panel-training-tee/luminous-aqua-deep-teal-navy-white/back.webp', label: 'Luminous aqua / deep teal navy / white / Back view', colourway: 'Luminous aqua / deep teal navy / white' },

@@ -85,7 +85,7 @@ test('product cards expose only recorded colourways and never reuse another colo
   assert.equal(productColourwayImageIndex(mappedImages, 'unrecorded colour'), -1);
 });
 
-test('four supplied tactical and running-shell records are listed without mapping composite boards', () => {
+test('four supplied tactical and running-shell records use only matching standalone photos', () => {
   const expected = [
     {
       id: 76,
@@ -96,10 +96,12 @@ test('four supplied tactical and running-shell records are listed without mappin
       sizes: '',
       colourways: ['Obsidian & Gold'],
       placeholders: [
-        'Front Isometric View',
-        'Rear Ergonomic Straps',
-        'Water-Repellent Fabric Detail',
-        'Hardware & Crest Close-up',
+      ],
+      images: [
+        { src: '/assets/products/apex-pro-backpack/front-isometric.webp', label: 'Obsidian & Gold / Front Isometric View', colourway: 'Obsidian & Gold' },
+        { src: '/assets/products/apex-pro-backpack/rear-straps.webp', label: 'Obsidian & Gold / Rear Ergonomic Straps', colourway: 'Obsidian & Gold' },
+        { src: '/assets/products/apex-pro-backpack/water-resistant-fabric-detail.webp', label: 'Obsidian & Gold / Water-Repellent Fabric Detail', colourway: 'Obsidian & Gold' },
+        { src: '/assets/products/apex-pro-backpack/hardware-crest-detail.webp', label: 'Obsidian & Gold / Hardware & Crest Close-up', colourway: 'Obsidian & Gold' },
       ],
     },
     {
@@ -111,10 +113,12 @@ test('four supplied tactical and running-shell records are listed without mappin
       sizes: 'S; M; L; XL; XXL',
       colourways: ['Obsidian Black'],
       placeholders: [
-        'Front View with Cargo Pockets',
-        'Rear Chitin Spine Armor Detail',
-        'Water-Repellent Fabric Close-up',
-        'Scorpion Series Chest Crest & Zip',
+      ],
+      images: [
+        { src: '/assets/products/scorpion-chitin-gilet/front.webp', label: 'Obsidian Black / Front View with Cargo Pockets', colourway: 'Obsidian Black' },
+        { src: '/assets/products/scorpion-chitin-gilet/rear-chitin-spine.webp', label: 'Obsidian Black / Rear Chitin Spine Detail', colourway: 'Obsidian Black' },
+        { src: '/assets/products/scorpion-chitin-gilet/water-repellent-fabric-detail.webp', label: 'Obsidian Black / Water-Repellent Fabric Close-up', colourway: 'Obsidian Black' },
+        { src: '/assets/products/scorpion-chitin-gilet/scorpion-crest-zip-detail.webp', label: 'Obsidian Black / Scorpion Crest & Zip Detail', colourway: 'Obsidian Black' },
       ],
     },
     {
@@ -126,9 +130,17 @@ test('four supplied tactical and running-shell records are listed without mappin
       sizes: 'XS; S; M; L; XL',
       colourways: ['Tactical Orange', 'Obsidian Black', 'Arctic White'],
       placeholders: [
-        'Orange, Black & White Front Views',
-        'Rear Sculpted Shield Views',
-        'Thumbhole Cuffs Detail',
+      ],
+      images: [
+        { src: '/assets/products/velocity-running-shell-series-1/orange-front.webp', label: 'Tactical Orange / Front View', colourway: 'Tactical Orange' },
+        { src: '/assets/products/velocity-running-shell-series-1/orange-rear.webp', label: 'Tactical Orange / Rear View', colourway: 'Tactical Orange' },
+        { src: '/assets/products/velocity-running-shell-series-1/orange-thumbhole-cuff-detail.webp', label: 'Tactical Orange / Thumbhole Cuff Detail', colourway: 'Tactical Orange' },
+        { src: '/assets/products/velocity-running-shell-series-1/black-front.webp', label: 'Obsidian Black / Front View', colourway: 'Obsidian Black' },
+        { src: '/assets/products/velocity-running-shell-series-1/black-rear.webp', label: 'Obsidian Black / Rear View', colourway: 'Obsidian Black' },
+        { src: '/assets/products/velocity-running-shell-series-1/black-thumbhole-cuff-detail.webp', label: 'Obsidian Black / Thumbhole Cuff Detail', colourway: 'Obsidian Black' },
+        { src: '/assets/products/velocity-running-shell-series-1/white-front.webp', label: 'Arctic White / Front View', colourway: 'Arctic White' },
+        { src: '/assets/products/velocity-running-shell-series-1/white-rear.webp', label: 'Arctic White / Rear View', colourway: 'Arctic White' },
+        { src: '/assets/products/velocity-running-shell-series-1/white-thumbhole-cuff-detail.webp', label: 'Arctic White / Thumbhole Cuff Detail', colourway: 'Arctic White' },
       ],
     },
     {
@@ -140,9 +152,17 @@ test('four supplied tactical and running-shell records are listed without mappin
       sizes: 'XS; S; M; L; XL',
       colourways: ['Charcoal Grey', 'Deep Navy', 'Bone Cream'],
       placeholders: [
-        'Charcoal, Navy & Cream Front Views',
-        'Rear Sculpted Shield Views',
-        'Thumbhole Cuffs Detail',
+      ],
+      images: [
+        { src: '/assets/products/velocity-running-shell-series-2/charcoal-front.webp', label: 'Charcoal Grey / Front View', colourway: 'Charcoal Grey' },
+        { src: '/assets/products/velocity-running-shell-series-2/charcoal-rear.webp', label: 'Charcoal Grey / Rear View', colourway: 'Charcoal Grey' },
+        { src: '/assets/products/velocity-running-shell-series-2/charcoal-thumbhole-cuff-detail.webp', label: 'Charcoal Grey / Thumbhole Cuff Detail', colourway: 'Charcoal Grey' },
+        { src: '/assets/products/velocity-running-shell-series-2/navy-front.webp', label: 'Deep Navy / Front View', colourway: 'Deep Navy' },
+        { src: '/assets/products/velocity-running-shell-series-2/navy-rear.webp', label: 'Deep Navy / Rear View', colourway: 'Deep Navy' },
+        { src: '/assets/products/velocity-running-shell-series-2/navy-thumbhole-cuff-detail.webp', label: 'Deep Navy / Thumbhole Cuff Detail', colourway: 'Deep Navy' },
+        { src: '/assets/products/velocity-running-shell-series-2/cream-front.webp', label: 'Bone Cream / Front View', colourway: 'Bone Cream' },
+        { src: '/assets/products/velocity-running-shell-series-2/cream-rear.webp', label: 'Bone Cream / Rear View', colourway: 'Bone Cream' },
+        { src: '/assets/products/velocity-running-shell-series-2/cream-thumbhole-cuff-detail.webp', label: 'Bone Cream / Thumbhole Cuff Detail', colourway: 'Bone Cream' },
       ],
     },
   ];
@@ -159,8 +179,20 @@ test('four supplied tactical and running-shell records are listed without mappin
     assert.equal(product.currency, 'GBP');
     assert.equal(product.sizes, expectedProduct.sizes);
     assert.deepEqual(product.colourways.split('; '), expectedProduct.colourways);
-    assert.deepEqual(product.images, []);
+    assert.deepEqual(product.images, expectedProduct.images);
     assert.deepEqual(product.galleryPlaceholders, expectedProduct.placeholders);
+    assert.equal(new Set(product.images.map(image => image.src)).size, product.images.length);
+    for (const image of product.images) {
+      assert.ok(image.src.startsWith(`/assets/products/${{
+        76: 'apex-pro-backpack',
+        77: 'scorpion-chitin-gilet',
+        78: 'velocity-running-shell-series-1',
+        79: 'velocity-running-shell-series-2',
+      }[product.id]}/`), `${image.src} should belong only to ${product.name}`);
+      assert.equal(expectedProduct.colourways.includes(image.colourway), true);
+      assert.equal(existsSync(new URL(`../public${image.src}`, import.meta.url)), true, `${image.src} should exist`);
+      assert.doesNotMatch(image.src, /board|composite/i);
+    }
     assert.ok(filterProducts(expectedProduct.category).some(item => item.id === product.id));
   }
 });
@@ -504,7 +536,7 @@ test('colourways share one record, verified image references exist, and unknown 
   assert.equal(products.filter(p => p.name === 'FSD Cheetah Windrunner').length, 1);
   assert.equal(products.find(p => p.id === 10).images.length, 3);
   assert.equal(products.find(p => p.id === 1).images.length, 2);
-  assert.equal(products.filter(p => p.images.length).length, 17);
+  assert.equal(products.filter(p => p.images.length).length, 21);
   for (const p of products) for (const image of p.images) {
     assert.ok(existsSync(new URL(`../public${image.src}`, import.meta.url)));
     if (p.id === 43) {
@@ -520,7 +552,7 @@ test('colourways share one record, verified image references exist, and unknown 
 });
 
 test('product images use only supplied assets explicitly mapped to products', () => {
-  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 2, 10, 18, 19, 26, 33, 34, 42, 43, 52, 56, 57, 70, 71, 73, 75]);
+  assert.deepEqual(products.filter(p => p.images.length).map(p => p.id), [1, 2, 10, 18, 19, 26, 33, 34, 42, 43, 52, 56, 57, 70, 71, 73, 75, 76, 77, 78, 79]);
   assert.deepEqual(products.find(p => p.id === 18).images.map(image => image.src), [
     '/assets/products/aeroforge-training-tee/aeroforge-white-green-lifestyle-hero.webp',
     '/assets/products/aeroforge-training-tee/aeroforge-white-green-front-fit.webp',
