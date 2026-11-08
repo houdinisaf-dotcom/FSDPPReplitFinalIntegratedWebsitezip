@@ -2156,3 +2156,31 @@ mtime_ms = 1794075988189
 storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/e42eaf4e-b102-4d3a-9e57-d48181520afe/ebedb47c-233f-41dc-9c45-4a060ee292a2"
 storage_version_token = "1794076748123018"
 content_type = "image/jpeg"
+
+[[outputs]]
+id = "QqSVMGoLMixq8_sPUjcgC"
+uri = "file://generated-artifacts/fsd-site-evidence/final-stronger-desktop.jpg"
+type = "image"
+title = "FSD campaign scene — desktop"
+description = "Captured from the running homepage at 1440×900 with the BE STRONGER™ scene active."
+logical_id = "d0fca240-45a9-407f-b5e3-d7588a9109ee"
+content_hash = "sha256:7c5525c798714cfbf8470434763c8c0ae0bc302a712e3d483d8c5239df8fe321"
+size = 151217
+mtime_ms = 1794132899032
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/d0fca240-45a9-407f-b5e3-d7588a9109ee/01bfed19-8bc4-479d-b5c7-a8a72b4175a5"
+storage_version_token = "1794133379353112"
+content_type = "image/jpeg"
+
+[[outputs]]
+id = "xyxIjYjrV7sSzI94Nur3p"
+uri = "file://generated-artifacts/fsd-site-evidence/final-disciplined-mobile.jpg"
+type = "image"
+title = "FSD campaign scene — mobile"
+description = "Captured from the running homepage at 393×844 with the BE DISCIPLINED™ scene selected in natural mobile flow."
+logical_id = "4950871e-a29f-4388-a5ba-752f2143fe64"
+content_hash = "sha256:9d7bcb4258e8c042f0e403bd122f1162510c4bb2cc4022c7342c54efe2c82cca"
+size = 52600
+mtime_ms = 1794132908976
+storage_uri = "gcs://replit-rams-assets-archer/rams/assets/repl:2e2e2ca0-efba-4fbf-b374-76dc397992ae/4950871e-a29f-4388-a5ba-752f2143fe64/a6856099-8892-4b0a-9f88-aca50cd1c98a"
+storage_version_token = "1794133380085747"
+content_type = "image/jpeg"

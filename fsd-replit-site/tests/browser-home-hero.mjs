@@ -54,6 +54,20 @@ try {
     if (index > 0) await capture(`fsd-home-hero-0${index + 1}-${experience.id}-desktop.jpg`);
   }
 
+  const pointerTarget = await evaluate(`(() => {
+    const rect = document.querySelector('.fsd-home-switcher [data-hero-theme="stronger"]').getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  })()`);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', ...pointerTarget });
+  await send('Input.dispatchMouseEvent', {
+    type: 'mousePressed', ...pointerTarget, button: 'left', clickCount: 1,
+  });
+  await send('Input.dispatchMouseEvent', {
+    type: 'mouseReleased', ...pointerTarget, button: 'left', clickCount: 1,
+  });
+  await wait(`document.documentElement.dataset.fsdLenisActive === 'true'`, 'Lenis activates from real pointer input');
+  await wait(`document.querySelector('#home-campaign-stronger')?.dataset.sceneActive === 'true'`, 'scene navigation stays synchronized with Lenis');
+
   await evaluate(`document.querySelector('.fsd-home-switcher [data-hero-theme="heroes"]').focus()`);
   await key('ArrowRight');
   await wait(`document.querySelector('.fsd-home-campaign-sequence__navigation [data-hero-theme="stronger"]')?.getAttribute('aria-current') === 'step'`, 'campaign navigator arrow-key navigation');

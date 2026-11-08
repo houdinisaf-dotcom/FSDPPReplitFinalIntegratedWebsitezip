@@ -54,10 +54,12 @@ export function HomeHero({ headingTag = 'h1' }) {
       if (disposed || !sequenceRef.current || !stageRef.current) return;
       media = gsap.matchMedia();
       media.add({
-        desktop: '(min-width: 1024px) and (pointer: fine)',
+        desktop: '(min-width: 1024px)',
         motion: '(prefers-reduced-motion: no-preference)',
       }, context => {
-        if (!context.conditions.desktop || !context.conditions.motion) return undefined;
+        if (!context.conditions.desktop || !context.conditions.motion || navigator.maxTouchPoints > 0) {
+          return undefined;
+        }
         const sequence = sequenceRef.current;
         const stage = stageRef.current;
         const scenes = homeHeroExperiences

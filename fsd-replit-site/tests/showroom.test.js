@@ -53,12 +53,12 @@ test('the homepage adds four BE HEROES experience panels with approved images or
   for (const title of ['Performance Apparel', 'Training Essentials', 'BIO-LAB™ Innovation', 'THE HOUSE &amp; Community']) {
     assert.ok(markup.includes(title));
   }
-  assert.match(markup, /href="#hardware-editorial"/);
-  assert.match(markup, /href="#innovation-hub"/);
-  assert.match(markup, /href="#brand-community"/);
-  assert.equal((markup.match(/<img\b/g) || []).length, 2);
-  assert.equal((markup.match(/fsd-image-placeholder--banner/g) || []).length, 2);
-  assert.equal((markup.match(/class="fsd-image-placeholder__note">\[ASSET PENDING\]<\/small>/g) || []).length, 2);
+  assert.match(markup, /href="\/hardware"/);
+  assert.match(markup, /href="\/bio-lab"/);
+  assert.match(markup, /href="\/the-house\.html"/);
+  assert.equal((markup.match(/<img\b/g) || []).length, 1);
+  assert.equal((markup.match(/fsd-image-placeholder--banner/g) || []).length, 3);
+  assert.equal((markup.match(/class="fsd-image-placeholder__note">\[ASSET PENDING\]<\/small>/g) || []).length, 3);
 });
 
 test('group filters constrain category, audience and terms rather than leaking unrelated products', () => {

@@ -2424,7 +2424,7 @@
   outline-offset: 4px;
 }
 
-@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   .fsd-home-campaign-sequence.is-pinned .fsd-home-campaign-sequence__stage {
     height: 100svh;
     min-height: 640px;
@@ -2461,7 +2461,7 @@
   }
 }
 
-@media (max-width: 1023px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+@media (max-width: 1023px), (prefers-reduced-motion: reduce) {
   .fsd-home-campaign-sequence__navigation {
     position: sticky;
     top: calc(var(--fsd-navigation-stack-height, 82px) + 5px);
