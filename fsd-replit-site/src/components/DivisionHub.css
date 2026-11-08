@@ -1,5 +1,13 @@
-[data-fsd-storefront][data-division-hub][data-current-view="division-hub"] [data-storefront-content] {
-  display: none;
+/* Division landing pages show only their own hub, the footer and dialogs.
+   Keyed on the hub attribute so a later hash/view change cannot re-expose
+   the homepage stack. */
+[data-fsd-storefront][data-division-hub] [data-storefront-content] > :not(.fsd-site-footer):not(dialog) {
+  display: none !important;
+}
+
+/* The House page shows only the House archive, the footer and dialogs. */
+[data-fsd-storefront][data-current-view="house"]:not([data-division-hub]) [data-storefront-content] > :not(#fsd-house-archive):not(.fsd-site-footer):not(dialog) {
+  display: none !important;
 }
 
 [data-fsd-storefront][data-division-hub] {
@@ -621,4 +629,11 @@
   .fsd-division-hub--shop .fsd-division-hub-card--visual {
     transition-duration: .01ms !important;
   }
+}
+
+/* Light division pages: keep the header on the site's dark surface so the
+   light navigation text stays legible (was transparent over #f4f2ed). */
+[data-fsd-storefront][data-division-hub] .fsd-navigation-shell .header.fsd-header {
+  background: #111318;
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
 }

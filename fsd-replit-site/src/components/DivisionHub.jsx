@@ -407,7 +407,7 @@ export function DivisionHub({ divisionId = 'shop' }) {
         <p>{current.intro}</p>
         <div className="fsd-division-hub__hero-meta">
           <span>FITNESS &amp; SELF DEFENCE</span>
-          <span>{current.id === 'private-access' ? 'INFORMATION / NO SIGN-UP' : 'EXISTING FSD CONTENT &amp; ROUTES'}</span>
+          <span>{current.id === 'private-access' ? 'INFORMATION / NO SIGN-UP' : 'EXISTING FSD CONTENT & ROUTES'}</span>
         </div>
       </header>
 
