@@ -162,6 +162,7 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
           <span aria-live="polite">{selectedColourway}</span>
         </div>
       )}
+      {!hasColourways && <div className="catalogue-card__swatches catalogue-card__swatches--empty" aria-hidden="true" />}
       {visibleImages.length > 1 && (
         <div className="catalogue-card__carousel" role="group" aria-label={`Image carousel for ${product.name}`}>
           <button
