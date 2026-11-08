@@ -7,9 +7,9 @@
 .fsd-photo-viewer button:disabled { opacity: .35; cursor: default; }
 .fsd-gallery-tools button:last-child { margin-left: auto; }
 .product-detail-image-stage { touch-action: pan-y pinch-zoom; }
-.fsd-photo-viewer { box-sizing: border-box; position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 18px clamp(14px, 3vw, 48px); border: 0; background: #fff; color: #0a0a0a; overflow: hidden; color-scheme: light; }
-.fsd-photo-viewer[open] { display: flex; flex-direction: column; gap: 12px; animation: fsd-viewer-in .22s ease-out; }
-.fsd-photo-viewer::backdrop { background: rgb(0 0 0 / 76%); }
+.fsd-photo-viewer { box-sizing: border-box; position: fixed; inset: 0; z-index: 3; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 18px clamp(14px, 3vw, 48px); border: 0; background: #fff; color: #0a0a0a; overflow: hidden; color-scheme: light; }
+.fsd-photo-viewer[hidden] { display: none !important; }
+.fsd-photo-viewer:not([hidden]) { display: flex; flex-direction: column; gap: 12px; animation: fsd-viewer-in .22s ease-out; }
 .fsd-photo-viewer__header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .fsd-photo-viewer__header span { color: #75663d; font: 8px/1.5 "Space Mono", monospace; letter-spacing: .18em; }
 .fsd-photo-viewer__header h2 { margin: 5px 0; font: 400 clamp(15px, 2vw, 24px)/1.3 "DM Sans", sans-serif; }
@@ -48,7 +48,7 @@
   .fsd-gallery-tools button { padding: 8px; font-size: 9px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fsd-photo-viewer[open], .fsd-photo-viewer__plane img,
+  .fsd-photo-viewer:not([hidden]), .fsd-photo-viewer__plane img,
   .fsd-photo-viewer__stage[aria-busy="true"]::before { animation: none; }
   .fsd-gallery-tools button, .fsd-photo-viewer button { transition: none; }
 }

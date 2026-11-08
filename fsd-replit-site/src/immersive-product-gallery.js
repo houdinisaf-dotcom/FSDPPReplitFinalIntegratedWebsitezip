@@ -243,7 +243,7 @@ export function mountImmersiveProductGallery({
       tools.innerHTML = `<button type="button" data-gallery-step="-1" aria-label="Previous selected-colourway view">←</button>
         <span data-gallery-count aria-live="polite"></span>
         <button type="button" data-gallery-step="1" aria-label="Next selected-colourway view">→</button>
-        <button type="button" data-gallery-fullscreen>FULL-SCREEN / INSPECT</button>`;
+        <button type="button" data-gallery-fullscreen aria-controls="fsd-product-viewer" aria-expanded="false">FULL-SCREEN / INSPECT</button>`;
       const thumbnailRail = gallery.querySelector('.product-detail-gallery__thumbnail-section');
       const featureGrid = gallery.querySelector('.product-detail-gallery__feature-grid');
       (thumbnailRail || featureGrid || gallery.querySelector('figure'))?.after(tools);

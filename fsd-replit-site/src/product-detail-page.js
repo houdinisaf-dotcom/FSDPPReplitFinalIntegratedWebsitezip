@@ -442,7 +442,7 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
         <figure class="catalogue-selector__main">
           <div class="product-detail-image-stage">
             <button type="button" class="product-detail-image-zoom" data-gallery-photo-open
-              aria-haspopup="dialog" aria-controls="fsd-product-viewer"
+              aria-controls="fsd-product-viewer" aria-expanded="false"
               aria-label="Open full-screen product photograph" hidden></button>
             ${renderMainImagePlaceholder(product, initialVariant, 'Front view')}
           </div>
@@ -471,7 +471,7 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
       <figure class="catalogue-selector__main">
         <div class="product-detail-image-stage">
           <button type="button" class="product-detail-image-zoom" data-gallery-photo-open
-            aria-haspopup="dialog" aria-controls="fsd-product-viewer"
+            aria-controls="fsd-product-viewer" aria-expanded="false"
             aria-label="Open full-screen product photograph">
             <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
               data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
