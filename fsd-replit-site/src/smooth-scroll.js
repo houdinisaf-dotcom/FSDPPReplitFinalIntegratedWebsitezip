@@ -1,3 +1,5 @@
+import { driveLenisWithGsap } from './campaign-scroll-runtime.js';
+
 function mediaMatches(view, query) {
   try {
     return Boolean(view?.matchMedia?.(query)?.matches);
@@ -19,11 +21,14 @@ export function mountSmoothScroll(documentRef = globalThis.document, view = docu
   let disposed = false;
   let generation = 0;
   let lenis = null;
+  let stopLenisDriver = null;
   let activationPending = false;
   let userIntentStarted = false;
   const sync = async () => {
     const requestGeneration = ++generation;
     if (!shouldEnableSmoothScroll(view)) {
+      stopLenisDriver?.();
+      stopLenisDriver = null;
       lenis?.destroy();
       lenis = null;
       delete documentRef.documentElement.dataset.fsdLenisActive;
@@ -35,12 +40,13 @@ export function mountSmoothScroll(documentRef = globalThis.document, view = docu
       const { default: Lenis } = await import('lenis');
       if (disposed || requestGeneration !== generation || !shouldEnableSmoothScroll(view)) return;
       lenis = new Lenis({
-        autoRaf: true,
+        autoRaf: false,
         anchors: true,
         smoothWheel: true,
         syncTouch: false,
         prevent: node => Boolean(node.closest?.('dialog[open], [data-lenis-prevent]')),
       });
+      stopLenisDriver = driveLenisWithGsap(lenis);
       documentRef.documentElement.dataset.fsdLenisActive = 'true';
     } catch (error) {
       globalThis.console?.error?.('FSD smooth scrolling could not load; native scrolling remains available.', error);
@@ -81,6 +87,8 @@ export function mountSmoothScroll(documentRef = globalThis.document, view = docu
     removeIntentListeners();
     preference?.removeEventListener?.('change', onPreferenceChange);
     coarsePointer?.removeEventListener?.('change', onPreferenceChange);
+    stopLenisDriver?.();
+    stopLenisDriver = null;
     lenis?.destroy();
     lenis = null;
     delete documentRef.documentElement.dataset.fsdLenisActive;

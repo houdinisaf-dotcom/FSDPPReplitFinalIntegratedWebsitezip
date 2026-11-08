@@ -1111,11 +1111,14 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(homepage, /data-home-hero-slot/);
     assert.doesNotMatch(homepage, /fsd-home-experience/);
     const homeHero = readFileSync(new URL('../src/components/HomeHero.jsx', import.meta.url), 'utf8');
-    assert.match(homeHero, /className=\{`fsd-home-hero fsd-phase3-hero/);
+    assert.match(homeHero, /className="fsd-home-hero fsd-phase3-hero fsd-phase3-hero--heroes"/);
     assert.match(homeHero, /Homepage campaign scene navigation/);
-    assert.match(homeHero, /animateElement\(headlineRef\.current/);
+    assert.match(homeHero, /loadCampaignScrollRuntime/);
+    assert.match(homeHero, /scrollTrigger:\s*\{/);
     assert.match(homeHero, /id=\{sceneIdFor\(experience\)\}/);
     assert.match(homeHero, /target\.scrollIntoView/);
+    assert.match(homeHero, /className="fsd-home-campaign-sequence__navigation fsd-home-switcher"/);
+    assert.match(homeHero, /setActiveExperience\(0\)/);
     assert.deepEqual(
       homeHeroExperiences.map(experience => experience.label),
       ['BE HEROES™', 'BE STRONGER™', 'BE DISCIPLINED™', 'BE PART OF FSD™'],

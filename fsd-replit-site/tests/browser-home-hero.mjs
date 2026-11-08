@@ -38,12 +38,11 @@ try {
   for (const [index, experience] of experiences.entries()) {
     const selector = `.fsd-home-switcher [data-hero-theme="${experience.id}"]`;
     await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
-    await wait(`(() => {
-      const target = document.querySelector(${JSON.stringify(`#home-campaign-${experience.id}`)});
-      const top = target.getBoundingClientRect().top;
-      return top > 0 && top < innerHeight * .4;
-    })()`, `${experience.id} campaign scene reached`);
-    await wait(`document.querySelector('.fsd-home-hero')?.dataset.heroTheme === ${JSON.stringify(experience.id)}`, `${experience.id} scene navigation state`);
+    await wait(`document.querySelector('.fsd-home-campaign-sequence')?.classList.contains('is-pinned')
+      && document.querySelector(${JSON.stringify(`#home-campaign-${experience.id}`)})?.dataset.sceneActive === 'true'
+      && document.querySelector(${JSON.stringify(selector)})?.getAttribute('aria-current') === 'step'`,
+    `${experience.id} campaign scene reached and synchronized`);
+    assert.equal(await evaluate(`document.querySelector('.fsd-home-hero')?.dataset.heroTheme`), 'heroes');
     assert.equal(await evaluate(`document.querySelectorAll('.fsd-home-switcher button[aria-pressed="true"]').length`), 1);
     const sceneSelector = `#home-campaign-${experience.id}`;
     const action = await evaluate(`(() => {
@@ -57,8 +56,13 @@ try {
 
   await evaluate(`document.querySelector('.fsd-home-switcher [data-hero-theme="heroes"]').focus()`);
   await key('ArrowRight');
-  await wait(`document.querySelector('.fsd-home-hero')?.dataset.heroTheme === 'stronger'`, 'hero switcher arrow-key navigation');
+  await wait(`document.querySelector('.fsd-home-campaign-sequence__navigation [data-hero-theme="stronger"]')?.getAttribute('aria-current') === 'step'`, 'campaign navigator arrow-key navigation');
   assert.equal(await evaluate(`document.activeElement?.dataset.heroTheme`), 'stronger');
+
+  await evaluate('window.scrollTo({ top: 0, behavior: "auto" })');
+  await wait(`document.querySelector('.fsd-home-hero')?.dataset.heroTheme === 'heroes'
+    && document.querySelector('.fsd-home-switcher [data-hero-theme="heroes"]')?.getAttribute('aria-current') === 'step'`,
+  'returning to page top restores BE HEROES 01');
 
   await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await send('Page.navigate', { url: `https://${domain}/?hero-switch-mobile-check=1` });
@@ -73,20 +77,20 @@ try {
       controlsVisible: controls.width > 0 && controls.height > 0,
       controlsInside: controls.left >= 0 && controls.right <= innerWidth,
       ctaInside: cta.left >= 0 && cta.right <= innerWidth,
-      overlap: cta.bottom > controls.top && cta.top < controls.bottom,
+      overlap: cta.bottom > controls.top && cta.top < controls.bottom && controls.top < innerHeight,
       heroTheme: hero.dataset.heroTheme,
       minControlHeight: Math.min(...[...document.querySelectorAll('.fsd-home-switcher button')].map(button => button.getBoundingClientRect().height)),
     };
   })()`);
   assert.ok(mobileLayout.width <= mobileLayout.viewport + 1, `Mobile homepage has no horizontal overflow: ${JSON.stringify(mobileLayout)}`);
-  assert.ok(mobileLayout.controlsVisible && mobileLayout.controlsInside && mobileLayout.ctaInside, `Mobile theme controls and CTA remain visible: ${JSON.stringify(mobileLayout)}`);
-  assert.equal(mobileLayout.overlap, false, `Mobile CTA and switcher do not overlap: ${JSON.stringify(mobileLayout)}`);
+  assert.ok(mobileLayout.controlsVisible && mobileLayout.controlsInside && mobileLayout.ctaInside, `Mobile scene controls and CTA remain within the viewport width: ${JSON.stringify(mobileLayout)}`);
+  assert.equal(mobileLayout.overlap, false, `Mobile CTA and persistent scene navigator do not overlap: ${JSON.stringify(mobileLayout)}`);
   assert.ok(mobileLayout.minControlHeight >= 44, 'Mobile hero switcher controls meet the touch-target minimum.');
   assert.equal(await evaluate(`document.querySelector('#fsd-home-title').textContent.trim().replace(/\\s+/g, ' ')`), 'MADE TO MOVE,MADE TO BELONG.');
   await capture('fsd-home-hero-mobile-390.jpg');
 
   assert.deepEqual(browser.errors, [], 'homepage hero interactions do not throw browser exceptions');
-  console.log('Homepage hero browser checks passed: four themes, approved headline and image, CTA destinations, arrow-key selection, mobile touch targets and overflow.');
+  console.log('Homepage campaign browser checks passed: four synchronized scenes, approved headline and image, CTA destinations, scene navigation, BE HEROES top reset, mobile touch targets and overflow.');
 } finally {
   await browser.close();
 }
