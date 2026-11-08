@@ -1,13 +1,15 @@
+import { useState } from 'react';
 import {
   collectionDivisions,
 } from '../collection-divisions.js';
-import { CLOTHING_LINES } from '../clothing-lines.js';
+import { CLOTHING_LINES, deriveClothingLineMembership } from '../clothing-lines.js';
 import { STRATEGIC_CONCEPTS } from '../strategic-concepts.js';
 import { HOUSE_PAGE_REGISTRY, shouldDisableHouseHref } from '../data/house-page-readiness.js';
 import { flagshipPageDefinitions } from '../flagship-pages.js';
-import { products } from '../data/products.js';
+import { customerFacingCategory, priceInfo, products, productImagesForDisplay } from '../data/products.js';
 import { productSeoPath } from '../product-structured-data.js';
-import { productImagesForDisplay } from '../data/products.js';
+import { ImagePlaceholder } from './ImagePlaceholder.jsx';
+import { SafeImage } from './SafeImage.jsx';
 import './DivisionHub.css';
 
 const divisions = [
@@ -28,40 +30,143 @@ const divisionPaths = Object.freeze({
   'private-access': '/private-access',
 });
 
+const clothingLinesWithProducts = deriveClothingLineMembership(products).lines;
+
+function representativeImageFor(productList) {
+  const images = productList.flatMap(product => productImagesForDisplay(product).map(image => ({
+    ...image,
+    productName: product.name,
+  })));
+  const image = images.find(item => /\b(lifestyle|hero|campaign|action|training)\b/i.test(item.label || ''))
+    || images.find(item => /\bfront\b/i.test(item.label || ''))
+    || images[0];
+  if (!image) return null;
+  return {
+    ...image,
+    fit: /\b(lifestyle|hero|campaign|action|training)\b/i.test(image.label || '') ? 'cover' : 'contain',
+  };
+}
+
 function linkForConcept(concept) {
   return concept.href || '#fsd-strategic-concepts';
 }
 
+function ShopCardMedia({ card }) {
+  const [failedSource, setFailedSource] = useState('');
+  const pending = !card.image?.src || failedSource === card.image.src;
+  const mediaClass = `fsd-division-hub-card__media${card.image?.fit ? ` is-${card.image.fit}` : ''}`;
+
+  return (
+    <span className={mediaClass}>
+      {pending ? (
+        <ImagePlaceholder
+          title={card.title}
+          kind={card.mediaKind || 'collection'}
+          viewLabel={card.mediaViewLabel || 'Collection image'}
+          pendingLabel="IMAGE PENDING"
+          className="fsd-shop-card__placeholder"
+        />
+      ) : (
+        <>
+          <SafeImage
+            src={card.image.src}
+            alt={`${card.image.productName || card.title} — ${card.image.label}`}
+            placeholderTitle={card.title}
+            placeholderKind={card.mediaKind || 'collection'}
+            className="fsd-division-hub-card__image"
+            onError={() => setFailedSource(card.image.src)}
+          />
+          <span className="fsd-division-hub-card__image-note" aria-hidden="true">
+            FSD / APPROVED PRODUCT IMAGE
+          </span>
+        </>
+      )}
+    </span>
+  );
+}
+
 function getDivisionSections(id) {
   if (id === 'shop') {
+    const audienceCollections = [
+      {
+        title: 'Women’s collections',
+        href: '/collections/women',
+        description: 'Browse the catalogued women’s products.',
+        meta: 'WOMEN’S COLLECTIONS',
+        products: products.filter(product => /^women/i.test(product.audience || '')),
+      },
+      {
+        title: 'Men’s collections',
+        href: '/collections/men',
+        description: 'Browse the catalogued men’s products.',
+        meta: 'MEN’S COLLECTIONS',
+        products: products.filter(product => /^men/i.test(product.audience || '')),
+      },
+      {
+        title: 'Training accessories',
+        href: '/collections/accessories',
+        description: 'Browse accessories in the current catalogue.',
+        meta: 'TRAINING ACCESSORIES',
+        products: products.filter(product => /accessor/i.test(
+          [product.category, ...(product.alsoShowIn || [])].join(' '),
+        )),
+      },
+      {
+        title: 'Full catalogue',
+        href: '/#products',
+        description: 'Open the full catalogue and its existing filters.',
+        meta: 'ALL PRODUCTS',
+        products,
+      },
+    ];
     return [
       {
         label: 'Shop by audience',
-        description: 'Use the existing audience collection routes.',
-        cards: [
-          { title: 'Women’s collections', href: '/collections/women', description: 'Browse the catalogued women’s products.' },
-          { title: 'Men’s collections', href: '/collections/men', description: 'Browse the catalogued men’s products.' },
-          { title: 'Training accessories', href: '/collections/accessories', description: 'Browse accessories in the current catalogue.' },
-          { title: 'Full catalogue', href: '/#products', description: 'Open the existing catalogue, filters and product grid.' },
-        ],
-      },
-      {
-        label: 'Established clothing lines',
-        description: 'Existing collection routes and product records.',
-        cards: CLOTHING_LINES.map(line => ({
-          title: line.title,
-          href: `/collections/${line.id}`,
-          description: `${line.audience === 'WOMEN' ? 'Women’s' : 'Men’s'} collection`,
+        description: 'Shop the existing catalogue through its established audience routes.',
+        gridClass: 'fsd-shop-grid--audiences',
+        cards: audienceCollections.map(collection => ({
+          title: collection.title,
+          href: collection.href,
+          description: collection.description,
+          meta: collection.meta,
+          image: representativeImageFor(collection.products),
+          visual: true,
+          mediaKind: 'collection',
+          mediaViewLabel: 'Collection image',
         })),
       },
       {
+        label: 'Established clothing lines',
+        description: 'Seven established lines, shown with mapped product imagery where available.',
+        gridClass: 'fsd-shop-grid--lines',
+        cards: CLOTHING_LINES.map(line => {
+          const lineProducts = clothingLinesWithProducts.find(item => item.id === line.id)?.products || [];
+          return {
+            title: line.title,
+            href: `/collections/${line.id}`,
+            description: line.eyebrow,
+            meta: line.audience,
+            image: representativeImageFor(lineProducts),
+            visual: true,
+            mediaKind: 'collection',
+            mediaViewLabel: 'Clothing-line image',
+          };
+        }),
+      },
+      {
         label: 'Product records',
-        description: `${products.length} existing storefront products. Product data, prices, mapped imagery and transaction safeguards are unchanged.`,
+        description: 'A focused selection from the existing product register. Prices appear only where already confirmed.',
+        gridClass: 'fsd-shop-grid--products',
         cards: products.slice(0, 8).map(product => ({
           title: product.name,
           href: productSeoPath(product),
-          description: product.rowPrice?.value || product.price || product.category || 'View catalogued details',
-          image: productImagesForDisplay(product)[0],
+          description: product.audience || '',
+          meta: customerFacingCategory(product.category),
+          price: priceInfo(product).value,
+          image: representativeImageFor([product]),
+          visual: true,
+          mediaKind: 'product',
+          mediaViewLabel: 'Product image',
         })),
       },
     ];
@@ -259,19 +364,18 @@ function getDivisionSections(id) {
 }
 
 function DivisionCard({ card, index }) {
+  const cardClassName = `fsd-division-hub-card${card.visual ? ' fsd-division-hub-card--visual' : ''}`;
   const content = (
     <>
       <span className="fsd-division-hub-card__index">{String(index + 1).padStart(2, '0')}</span>
-      {card.image?.src && (
-        <span className="fsd-division-hub-card__media">
-          <img src={card.image.src} alt="" loading="lazy" />
-          <span>{card.image.label}</span>
-        </span>
+      {card.visual && (
+        <ShopCardMedia key={card.image?.src || card.title} card={card} />
       )}
       <span className="fsd-division-hub-card__copy">
         {card.meta && <small className="fsd-division-hub-card__meta">{card.meta}</small>}
         <strong>{card.title}</strong>
         {card.description && <span>{card.description}</span>}
+        {card.price && <span className="fsd-division-hub-card__price">{card.price}</span>}
         {card.crossLinks?.length > 0 && (
           <small className="fsd-division-hub-card__crosslinks">
             {card.crossLinks.map(link => `${link.division} / ${link.section}`).join(' · ')}
@@ -283,9 +387,9 @@ function DivisionCard({ card, index }) {
   );
 
   if (card.disabled) {
-    return <li><div className="fsd-division-hub-card is-disabled" aria-disabled="true">{content}</div></li>;
+    return <li><div className={`${cardClassName} is-disabled`} aria-disabled="true">{content}</div></li>;
   }
-  return <li><a className="fsd-division-hub-card" href={card.href}>{content}</a></li>;
+  return <li><a className={cardClassName} href={card.href}>{content}</a></li>;
 }
 
 export function DivisionHub({ divisionId = 'shop' }) {
@@ -293,7 +397,10 @@ export function DivisionHub({ divisionId = 'shop' }) {
   const sections = getDivisionSections(current.id);
 
   return (
-    <main className="fsd-division-hub" data-division-hub-page={current.id}>
+    <main
+      className={`fsd-division-hub${current.id === 'shop' ? ' fsd-division-hub--shop' : ''}`}
+      data-division-hub-page={current.id}
+    >
       <header className="fsd-division-hub__hero">
         <p className="fsd-division-hub__eyebrow">FSD / SIX DIVISIONS <span>·</span> {current.label}</p>
         <h1>{current.label}</h1>
@@ -304,13 +411,15 @@ export function DivisionHub({ divisionId = 'shop' }) {
         </div>
       </header>
 
-      <nav className="fsd-division-hub__division-nav" aria-label="FSD divisions">
-        {divisions.map(item => (
-          <a key={item.id} href={item.href} aria-current={item.id === current.id ? 'page' : undefined}>
-            <span>{item.label}</span><span aria-hidden="true">↗</span>
-          </a>
-        ))}
-      </nav>
+      {current.id !== 'shop' && (
+        <nav className="fsd-division-hub__division-nav" aria-label="FSD divisions">
+          {divisions.map(item => (
+            <a key={item.id} href={item.href} aria-current={item.id === current.id ? 'page' : undefined}>
+              <span>{item.label}</span><span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </nav>
+      )}
 
       <div className="fsd-division-hub__sections">
         {sections.map((section, sectionIndex) => (
@@ -324,7 +433,7 @@ export function DivisionHub({ divisionId = 'shop' }) {
               <h2 id={`division-hub-${current.id}-${sectionIndex}`}>{section.label}</h2>
               {section.description && <span>{section.description}</span>}
             </header>
-            <ul className="fsd-division-hub__grid">
+            <ul className={`fsd-division-hub__grid${section.gridClass ? ` ${section.gridClass}` : ''}`}>
               {section.cards.map((card, index) => (
                 <DivisionCard key={`${card.title}-${index}`} card={card} index={index} />
               ))}
