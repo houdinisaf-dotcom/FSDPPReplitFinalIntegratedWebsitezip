@@ -2,8 +2,8 @@ import { catalogueSection, initCatalogue, navigateCatalogue, showProduct } from 
 import { products } from './catalogue-data.js';
 import { collectionDivisions } from './collection-divisions.js';
 import { renderCollectionShowcase, mountCollectionShowcase } from './collection-showcase/index.js';
-import { beyondProductSection, featuredInnovationsSection, homeHeroExperiencesSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation, mountGarmentStudies } from './showroom-sections.js';
-import { renderNavigationHeader } from './site-navigation.js';
+import { beyondProductSection, featuredInnovationsSection, houseConnectionSection, vipAccessSection, initCatalogueNavigation, mountGarmentStudies } from './showroom-sections.js';
+import { divisionLandingPaths, primaryNavigation, renderNavigationHeader } from './site-navigation.js';
 import { mountClientBag } from './bag.js';
 import { FSD_HOUSE_PAGE_PATH, FSD_STORY_PATH, resolveFsdRoute } from './react-router.js';
 import { CATALOGUE_COLLECTIONS } from './catalogue-collections.js';
@@ -43,6 +43,40 @@ import './premium-visual-refinement.css';
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 
 const housePagePaths = new Set(HOUSE_PAGE_REGISTRY.map(page => page.path));
+const homeDivisionNotes = Object.freeze({
+  collections: 'Established collections and product records',
+  universe: 'The wider FSD vision and community',
+  'bio-lab': 'Research concepts and material exploration',
+  hardware: 'Catalogued training equipment',
+  house: 'The FSD story and its divisions',
+  'private-access': 'Enquiry information; access remains unavailable',
+});
+
+function renderHomeDivisionGateway() {
+  const cards = primaryNavigation.map((division, index) => {
+    const href = divisionLandingPaths[division.id];
+    if (!href) throw new Error(`Missing destination for the ${division.label} division.`);
+    return `<a class="fsd-home-division-card" href="${href}">
+      <span class="fsd-home-division-card__index">${String(index + 1).padStart(2, '0')}</span>
+      <span class="fsd-home-division-card__copy">
+        <strong>${division.label}</strong>
+        <small>${homeDivisionNotes[division.id]}</small>
+      </span>
+      <span class="fsd-home-division-card__arrow" aria-hidden="true">↗</span>
+    </a>`;
+  }).join('');
+
+  return `<section class="fsd-home-division-gateway" aria-labelledby="fsd-home-division-title">
+    <div class="fsd-home-division-gateway__heading">
+      <p>FSD / SIX DIVISIONS</p>
+      <h2 id="fsd-home-division-title">Choose your<br/><em>next direction.</em></h2>
+      <span>01 — 06</span>
+    </div>
+    <nav class="fsd-home-division-grid" aria-label="Explore the six FSD divisions">
+      ${cards}
+    </nav>
+  </section>`;
+}
 
 export function renderStorefrontHeader() {
   const currentBrandMarkup = '<span data-fsd-logo-slot="header"></span>';
@@ -62,14 +96,15 @@ export function renderStorefrontMarkup() {
 
   return `<main id="home">
   <div data-home-hero-slot></div>
-  ${homeHeroExperiencesSection()}
-  <div id="collections">
-    ${renderCollectionShowcase(collectionDivisions, { editorial: true, products })}
-    <div class="fsd-clothing-discover">
-      <span>THE APPAREL ARCHIVE / SEVEN ESTABLISHED LINES</span>
-      <a href="#clothing-lines">DISCOVER THE CLOTHING LINES <span aria-hidden="true">↗</span></a>
-    </div>
+  ${renderHomeDivisionGateway()}
+</main>
+<div id="collections">
+  ${renderCollectionShowcase(collectionDivisions, { editorial: true, products })}
+  <div class="fsd-clothing-discover">
+    <span>THE APPAREL ARCHIVE / SEVEN ESTABLISHED LINES</span>
+    <a href="#clothing-lines">DISCOVER THE CLOTHING LINES <span aria-hidden="true">↗</span></a>
   </div>
+</div>
   <section
     class="showroom-engineering showroom-engineering--campaign"
     id="hardware-editorial"
@@ -83,7 +118,6 @@ export function renderStorefrontMarkup() {
   ${beyondProductSection()}
   ${houseConnectionSection()}
   ${renderHomepageFaq()}
-  </main>
   <div data-fsd-clothing-lines-slot></div>
   ${ourStorySection()}
   <details class="showroom-archive showroom-archive--discover" id="fsd-house-archive">

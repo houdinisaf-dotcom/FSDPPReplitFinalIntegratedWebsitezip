@@ -522,3 +522,161 @@ body[data-fsd-house-editorial="true"] :where(a, button):focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* The homepage is a focused campaign sequence, not a second copy of every
+   division page. Existing route content remains available on its own routes. */
+[data-fsd-storefront][data-current-view="home"] [data-storefront-content] > :not(#home):not(.fsd-site-footer):not(dialog) {
+  display: none !important;
+}
+
+[data-fsd-storefront][data-current-view="home"] #home > :not([data-home-hero-slot]):not(.fsd-home-division-gateway) {
+  display: none !important;
+}
+
+.fsd-home-division-gateway {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(54px, 7.5vw, 104px) max(5vw, calc((100vw - 1440px) / 2));
+  border-top: 1px solid rgb(17 19 24 / 12%);
+  background:
+    radial-gradient(ellipse at 0 100%, rgb(212 175 55 / 8%), transparent 35%),
+    #f2f0eb;
+  color: #111318;
+}
+
+.fsd-home-division-gateway__heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px 24px;
+  margin-bottom: clamp(24px, 3.8vw, 48px);
+}
+
+.fsd-home-division-gateway__heading > p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #7d672f;
+  font: 700 9px/1.4 "DM Sans", sans-serif;
+  letter-spacing: .2em;
+}
+
+.fsd-home-division-gateway__heading h2 {
+  margin: 0;
+  color: #111318;
+  font: 700 clamp(42px, 6.7vw, 88px)/.88 "Barlow Condensed", sans-serif;
+  letter-spacing: -.04em;
+  text-transform: uppercase;
+}
+
+.fsd-home-division-gateway__heading h2 em {
+  color: #8a6a1c;
+  font-style: italic;
+}
+
+.fsd-home-division-gateway__heading > span {
+  padding-bottom: 5px;
+  color: #74736c;
+  font: 400 9px/1 "DM Sans", sans-serif;
+  letter-spacing: .16em;
+}
+
+.fsd-home-division-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgb(17 19 24 / 17%);
+  border-left: 1px solid rgb(17 19 24 / 17%);
+}
+
+.fsd-home-division-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 120px;
+  grid-template-columns: 28px minmax(0, 1fr) 20px;
+  align-items: start;
+  gap: 15px;
+  padding: clamp(19px, 2.4vw, 31px);
+  border-right: 1px solid rgb(17 19 24 / 17%);
+  border-bottom: 1px solid rgb(17 19 24 / 17%);
+  color: #111318;
+  text-decoration: none;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.fsd-home-division-card:hover,
+.fsd-home-division-card:focus-visible {
+  background: #fff;
+  color: #111318;
+}
+
+.fsd-home-division-card:focus-visible {
+  z-index: 1;
+  outline: 2px solid #a4832d;
+  outline-offset: -4px;
+}
+
+.fsd-home-division-card__index {
+  padding-top: 3px;
+  color: #8a6a1c;
+  font: 500 9px/1.2 "DM Sans", sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.fsd-home-division-card__copy {
+  display: grid;
+  min-width: 0;
+  gap: 9px;
+}
+
+.fsd-home-division-card__copy strong {
+  font: 700 clamp(14px, 1.35vw, 18px)/1.1 "DM Sans", sans-serif;
+  letter-spacing: .015em;
+}
+
+.fsd-home-division-card__copy small {
+  max-width: 34ch;
+  color: #55564f;
+  font: 400 11px/1.5 "DM Sans", sans-serif;
+}
+
+.fsd-home-division-card__arrow {
+  color: #8a6a1c;
+  font-size: 17px;
+  line-height: 1;
+  transition: transform 220ms ease;
+}
+
+.fsd-home-division-card:hover .fsd-home-division-card__arrow,
+.fsd-home-division-card:focus-visible .fsd-home-division-card__arrow {
+  transform: translate(2px, -2px);
+}
+
+.fsd-phase3-hero .fsd-home-hero__headline-wrap {
+  will-change: opacity, transform;
+}
+
+.fsd-phase3-hero .fsd-home-switcher button[aria-current="step"] strong {
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .fsd-home-division-gateway { padding-inline: 24px; }
+  .fsd-home-division-card { min-height: 110px; padding: 20px 17px; }
+}
+
+@media (max-width: 560px) {
+  .fsd-home-division-gateway { padding: 48px 18px 54px; }
+  .fsd-home-division-gateway__heading h2 { font-size: clamp(42px, 13vw, 64px); }
+  .fsd-home-division-grid { grid-template-columns: minmax(0, 1fr); }
+  .fsd-home-division-card { min-height: 84px; padding: 18px 16px; }
+  .fsd-home-division-card__copy strong { font-size: 15px; }
+  .fsd-home-division-card__copy small { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-home-division-card,
+  .fsd-home-division-card__arrow {
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -1238,6 +1238,10 @@ export function mountNavigation({
   const currentNavigationId = () => {
     if (window.location.hash) return hashNavigation.get(window.location.hash) || '';
     const pathname = window.location.pathname.replace(/\/+$/, '');
+    const divisionPath = Object.entries(divisionLandingPaths)
+      .find(([, destination]) => destination === pathname);
+    if (divisionPath) return divisionPath[0];
+    if (pathname.startsWith('/collections/')) return 'collections';
     return pathname === FSD_STORY_PATH
       || pathname === FSD_HOUSE_PAGE_PATH
       || pathname === '/investor.html'

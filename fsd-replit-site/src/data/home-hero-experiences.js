@@ -2,7 +2,7 @@ export const homeHeroExperiences = Object.freeze([
   Object.freeze({
     id: 'heroes',
     label: 'BE HEROES™',
-    href: '#universe',
+    href: '/shop',
     action: 'EXPLORE THE COLLECTIONS',
     panelTitle: 'Performance Apparel',
     assetKey: 'women',
@@ -10,7 +10,7 @@ export const homeHeroExperiences = Object.freeze([
   Object.freeze({
     id: 'stronger',
     label: 'BE STRONGER™',
-    href: '#hardware-editorial',
+    href: '/hardware',
     action: 'EXPLORE HARDWARE',
     panelTitle: 'Training Essentials',
     assetKey: 'hardware',
@@ -18,7 +18,7 @@ export const homeHeroExperiences = Object.freeze([
   Object.freeze({
     id: 'disciplined',
     label: 'BE DISCIPLINED™',
-    href: '#innovation-hub',
+    href: '/bio-lab',
     action: 'EXPLORE BIO-LAB™',
     panelTitle: 'BIO-LAB™ Innovation',
     assetKey: null,
@@ -26,7 +26,7 @@ export const homeHeroExperiences = Object.freeze([
   Object.freeze({
     id: 'together',
     label: 'BE PART OF FSD™',
-    href: '#brand-community',
+    href: '/the-house.html',
     action: 'DISCOVER COMMUNITY & CULTURE',
     panelTitle: 'THE HOUSE & Community',
     assetKey: null,

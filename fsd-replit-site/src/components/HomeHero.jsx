@@ -1,14 +1,27 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SafeImage } from './SafeImage.jsx';
 import { siteMedia } from '../data/site-media.js';
 import { homeHeroExperiences } from '../data/home-hero-experiences.js';
 import approvedFsdShield from '../../brand-review/shield-refined-matte/assets/website-shield-lockup-defence.png';
+import { animateElement } from '../motion-runtime.js';
 
 export function HomeHero({ headingTag = 'h1' }) {
   const Heading = headingTag === 'h2' ? 'h2' : 'h1';
   const [activeExperience, setActiveExperience] = useState(0);
   const switcherRef = useRef(null);
+  const headlineRef = useRef(null);
+  const previousScene = useRef(homeHeroExperiences[0]?.id);
   const active = homeHeroExperiences[activeExperience];
+
+  useEffect(() => {
+    if (previousScene.current === active.id) return;
+    previousScene.current = active.id;
+    void animateElement(headlineRef.current, {
+      opacity: [0.68, 1],
+      y: [12, 0],
+      filter: ['blur(3px)', 'blur(0px)'],
+    }, { duration: 0.42 });
+  }, [active.id]);
 
   const handleSwitcherKeyDown = event => {
     const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
@@ -72,7 +85,7 @@ export function HomeHero({ headingTag = 'h1' }) {
           <span>{String(activeExperience + 1).padStart(2, '0')}</span>
           {active.label}
         </p>
-        <div className="fsd-home-hero__headline-wrap" key={active.id}>
+        <div className="fsd-home-hero__headline-wrap" ref={headlineRef}>
           <Heading id="fsd-home-title">MADE TO MOVE,<br />MADE TO <em>BELONG.</em></Heading>
           <span className="fsd-home-hero__headline-index" aria-hidden="true">{String(activeExperience + 1).padStart(2, '0')}</span>
         </div>
@@ -88,7 +101,7 @@ export function HomeHero({ headingTag = 'h1' }) {
         className="fsd-home-switcher"
         ref={switcherRef}
         role="group"
-        aria-label="Choose a homepage experience"
+        aria-label="Homepage campaign scene navigation"
         data-sequence="campaigns"
         onKeyDown={handleSwitcherKeyDown}
       >
@@ -98,6 +111,7 @@ export function HomeHero({ headingTag = 'h1' }) {
             key={experience.id}
             data-hero-theme={experience.id}
             aria-pressed={activeExperience === index}
+            aria-current={activeExperience === index ? 'step' : undefined}
             aria-label={`Show ${experience.label} homepage experience`}
             onClick={() => setActiveExperience(index)}
           >

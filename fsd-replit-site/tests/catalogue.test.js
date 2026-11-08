@@ -17,7 +17,7 @@ import { crossfadeMappedImage } from '../src/catalogue-image-gallery.js';
 import { collectionDivisions } from '../src/collection-divisions.js';
 import { renderCollectionShowcase } from '../src/collection-showcase/index.js';
 import { beyondProductSection, featuredInnovationsSection, homeHeroExperiencesSection, houseConnectionSection, vipAccessSection } from '../src/showroom-sections.js';
-import { renderNavigationHeader } from '../src/site-navigation.js';
+import { divisionLandingPaths, primaryNavigation, renderNavigationHeader } from '../src/site-navigation.js';
 import { renderSiteFooter } from '../src/site-footer.js';
 import { siteMedia } from '../src/data/site-media.js';
 import { HOUSE_PAGE_REGISTRY, shouldDisableHouseHref } from '../src/data/house-page-readiness.js';
@@ -1082,7 +1082,8 @@ test('the complete public page excludes held imagery while retaining internal so
       installImageErrorFallbacks,
       catalogueSection, initCatalogue, navigateCatalogue, products,
       collectionDivisions, renderCollectionShowcase, beyondProductSection, featuredInnovationsSection, homeHeroExperiencesSection, houseConnectionSection, vipAccessSection,
-      renderNavigationHeader, approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
+      renderNavigationHeader, divisionLandingPaths, primaryNavigation,
+      approvedFsdHeaderLogo: '/assets/website-shield-lockup-defence.png',
       renderSiteFooter,
       FSD_STORY_PATH: '/story',
       ourStorySection, flagshipPageHashes, renderFlagshipPlaceholderPages,
@@ -1107,33 +1108,32 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.doesNotMatch(homepage, /SHOP \/ ALL PRODUCTS|id="catalogue-grid"|id="catalogue-archive"|id="search"|id="fsd-house-archive"|id="philosophy"|id="contact"/);
     assert.doesNotMatch(homepage, /Browse the catalogue/i);
     assert.match(homepage, /data-home-hero-slot/);
+    assert.doesNotMatch(homepage, /fsd-home-experience/);
     const homeHero = readFileSync(new URL('../src/components/HomeHero.jsx', import.meta.url), 'utf8');
-    assert.match(homeHero, /className="fsd-home-hero fsd-phase3-hero"/);
+    assert.match(homeHero, /className=\{`fsd-home-hero fsd-phase3-hero/);
+    assert.match(homeHero, /Homepage campaign scene navigation/);
+    assert.match(homeHero, /animateElement\(headlineRef\.current/);
     const womensBanner = readFileSync(new URL('../src/components/WomensBanner.jsx', import.meta.url), 'utf8');
     assert.match(womensBanner, /className="fsd-modal-hero fsd-modal-hero--womens"/);
     assert.match(womensBanner, /siteMedia\.womensBanner/);
     assert.match(siteMedia.womensBanner.src, /womens-activewear-hero\.png/);
-    assert.match(homepage, /class="fsd-showcase fsd-showcase--editorial"/);
-    assert.match(homepage, /id="innovations"/);
-    assert.match(homepage, /data-fsd-featured-carousel-slot/);
-    assert.match(homepage, /id="beyond-fsd"/);
-    assert.match(homepage, /id="brand-community"/);
-    assert.doesNotMatch(homepage, /weighted skipping ropes/i);
-    const sectionOrder = [
-      homepage.indexOf('class="fsd-showcase fsd-showcase--editorial"'),
-      homepage.indexOf('id="hardware-editorial"'),
-      homepage.indexOf('id="innovations"'),
-      homepage.indexOf('id="beyond-fsd"'),
-      homepage.indexOf('id="brand-community"'),
-    ];
-    assert.ok(sectionOrder.every((position, index) => position >= 0 && (index === 0 || position > sectionOrder[index - 1])));
-    assert.equal((homepage.match(/class="fsd-editorial-card /g) || []).length, 3);
-    assert.match(homepage, /class="fsd-editorial-divider"/);
+    assert.match(homepage, /class="fsd-home-division-gateway"/);
+    assert.match(homepage, /aria-label="Explore the six FSD divisions"/);
+    assert.deepEqual(
+      [...homepage.matchAll(/class="fsd-home-division-card" href="([^"]+)"/g)].map(([, href]) => href),
+      Object.values(divisionLandingPaths),
+    );
+    assert.doesNotMatch(homepage, /class="fsd-showcase fsd-showcase--editorial"|id="catalogue-grid"|id="hardware-editorial"|id="innovations"|id="beyond-fsd"|id="brand-community"/);
+    assert.match(page, /class="fsd-showcase fsd-showcase--editorial"/);
+    assert.match(page, /id="innovations"/);
+    assert.match(page, /id="hardware-editorial"/);
+    assert.match(page, /id="beyond-fsd"/);
+    assert.match(page, /id="brand-community"/);
     const hardwareEditorial = readFileSync(new URL('../src/components/HardwareEditorialSection.jsx', import.meta.url), 'utf8');
     assert.match(hardwareEditorial, /data-open-hardware/);
     assert.match(hardwareEditorial, /onClick={onOpenHardware}/);
     assert.match(hardwareEditorial, /siteMedia\.hardwareFeature/);
-    assert.match(homepage, /id="hardware-editorial"[^>]*data-fsd-react-section="hardware-editorial"/);
+    assert.match(page, /id="hardware-editorial"[^>]*data-fsd-react-section="hardware-editorial"/);
     assert.match(page, /<details class="showroom-archive showroom-archive--catalogue" id="catalogue-archive">[\s\S]*?<section class="shop" id="products"/);
     assert.doesNotMatch(page, /id="gallery-archive"|id="full-gallery"|DESIGN LIBRARY|IMAGE ARCHIVE/i);
     assert.doesNotMatch(page, /FSD PRODUCT DESIGN LIBRARY|THE FULL VISUAL EDIT|74 designs/i);
