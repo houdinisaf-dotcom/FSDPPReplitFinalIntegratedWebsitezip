@@ -1063,12 +1063,16 @@ function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
 function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId = '') {
   const group = menu.groups[activeGroupIndex] || menu.groups[0];
   const item = group?.items?.[activeItemIndex] || group?.items?.[0];
-  const mobilePrimaries = `${primaryNavigation.map(entry => `<button type="button"
-      class="fsd-mobile-primary${entry.id === menu.id ? ' is-active' : ''}"
-      data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}"
-      ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>
-      ${escapeHTML(entry.label)}<span aria-hidden="true">${outlineIcon('arrowUpRight', 'fsd-icon')}</span>
-  </button>`).join('')}`;
+  const mobilePrimaries = `${primaryNavigation.map(entry => `<div class="fsd-mobile-primary-row">
+      <button type="button"
+        class="fsd-mobile-primary${entry.id === menu.id ? ' is-active' : ''}"
+        data-nav-primary="${entry.id}" aria-expanded="${entry.id === menu.id}">
+        ${escapeHTML(entry.label)}<span aria-hidden="true">⌄</span>
+      </button>
+      <a class="fsd-mobile-primary-overview" href="${escapeHTML(divisionLandingPaths[entry.id])}"
+        aria-label="Open ${escapeHTML(entry.label)} division overview"
+        ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>↗</a>
+  </div>`).join('')}`;
   const stepIndex = mobileStep === 'primary' ? '01' : mobileStep === 'groups' ? '02' : '03';
 
   return `<div class="fsd-mega-inner">
@@ -1116,10 +1120,14 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
 
 export function renderNavigationHeader(brandMarkup) {
   const primaryItems = primaryNavigation.map(item => {
-    const trigger = `<button type="button"
-      class="fsd-primary-trigger" data-nav-primary="${item.id}" aria-controls="fsd-mega-menu"
-      aria-expanded="false">${escapeHTML(item.label)}</button>`;
-    return trigger;
+    const destination = divisionLandingPaths[item.id];
+    if (!destination) throw new Error(`Missing destination for the ${item.label} navigation item.`);
+    return `<div class="fsd-primary-item">
+      <a class="fsd-primary-link" data-nav-destination="${item.id}" href="${escapeHTML(destination)}">${escapeHTML(item.label)}</a>
+      <button type="button" class="fsd-primary-trigger fsd-primary-menu-toggle"
+        data-nav-primary="${item.id}" aria-controls="fsd-mega-menu" aria-expanded="false"
+        aria-label="Open ${escapeHTML(item.label)} menu"><span aria-hidden="true">⌄</span></button>
+    </div>`;
   }).join('');
   return `<div class="announcement fsd-announcement">FSD / THE HOUSE OF PERFORMANCE <span>·</span> INVESTOR RELATIONS</div>
     <div class="fsd-navigation-shell" data-navigation-shell>
@@ -1211,6 +1219,16 @@ export function mountNavigation({
       trigger.classList.toggle('is-current', trigger.dataset.navPrimary === currentPrimaryId);
       if (trigger.dataset.navPrimary === currentPrimaryId) trigger.setAttribute('aria-current', 'page');
       else trigger.removeAttribute('aria-current');
+    }
+    for (const link of root.querySelectorAll('[data-nav-destination]')) {
+      if (link.dataset.navDestination === currentPrimaryId) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    }
+    for (const link of root.querySelectorAll('.fsd-mobile-primary-overview')) {
+      const destinationId = primaryNavigation.find(entry =>
+        link.getAttribute('href') === divisionLandingPaths[entry.id])?.id;
+      if (destinationId === currentPrimaryId) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
     }
     mobileToggle.setAttribute('aria-expanded', String(isOpen));
     mobileToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');

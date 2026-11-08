@@ -20,6 +20,7 @@ import { beyondProductSection, featuredInnovationsSection, homeHeroExperiencesSe
 import { divisionLandingPaths, primaryNavigation, renderNavigationHeader } from '../src/site-navigation.js';
 import { renderSiteFooter } from '../src/site-footer.js';
 import { siteMedia } from '../src/data/site-media.js';
+import { homeHeroExperiences } from '../src/data/home-hero-experiences.js';
 import { HOUSE_PAGE_REGISTRY, shouldDisableHouseHref } from '../src/data/house-page-readiness.js';
 import { imagePlaceholderMarkup, installImageErrorFallbacks } from '../src/image-placeholder.js';
 import {
@@ -1113,6 +1114,14 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.match(homeHero, /className=\{`fsd-home-hero fsd-phase3-hero/);
     assert.match(homeHero, /Homepage campaign scene navigation/);
     assert.match(homeHero, /animateElement\(headlineRef\.current/);
+    assert.match(homeHero, /id=\{sceneIdFor\(experience\)\}/);
+    assert.match(homeHero, /target\.scrollIntoView/);
+    assert.deepEqual(
+      homeHeroExperiences.map(experience => experience.label),
+      ['BE HEROES™', 'BE STRONGER™', 'BE DISCIPLINED™', 'BE PART OF FSD™'],
+    );
+    assert.match(homeHero, /className=\{`fsd-home-campaign-scene fsd-home-campaign-scene--\$\{experience\.id\}`\}/);
+    assert.equal((homeHero.match(/src=\{siteMedia\.homeHero\?\.src\}/g) || []).length, 2);
     const womensBanner = readFileSync(new URL('../src/components/WomensBanner.jsx', import.meta.url), 'utf8');
     assert.match(womensBanner, /className="fsd-modal-hero fsd-modal-hero--womens"/);
     assert.match(womensBanner, /siteMedia\.womensBanner/);

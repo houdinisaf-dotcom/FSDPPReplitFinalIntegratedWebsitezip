@@ -8,10 +8,10 @@ const { send, evaluate, wait, key } = browser;
 const domain = process.env.REPLIT_DEV_DOMAIN;
 assert.ok(domain, 'REPLIT_DEV_DOMAIN must identify the running FSD preview.');
 const experiences = [
-  { id: 'heroes', href: '#universe', action: 'EXPLORE THE COLLECTIONS' },
-  { id: 'stronger', href: '#hardware-editorial', action: 'EXPLORE HARDWARE' },
-  { id: 'disciplined', href: '#innovation-hub', action: 'EXPLORE BIO-LAB™' },
-  { id: 'together', href: '#brand-community', action: 'DISCOVER COMMUNITY & CULTURE' },
+  { id: 'heroes', href: '/shop', action: 'EXPLORE THE COLLECTIONS' },
+  { id: 'stronger', href: '/hardware', action: 'EXPLORE HARDWARE' },
+  { id: 'disciplined', href: '/bio-lab', action: 'EXPLORE BIO-LAB™' },
+  { id: 'together', href: '/the-house.html', action: 'DISCOVER COMMUNITY & CULTURE' },
 ];
 const captureDir = resolve(process.cwd(), '../generated-artifacts/fsd-site-evidence');
 
@@ -32,16 +32,26 @@ try {
 
   assert.equal(await evaluate(`document.querySelector('#fsd-home-title').textContent.trim().replace(/\\s+/g, ' ')`), 'MADE TO MOVE,MADE TO BELONG.');
   assert.equal(await evaluate(`document.querySelector('.fsd-home-intro').textContent.trim().replace(/\\s+/g, ' ')`), 'Fitness & Self-Defence.A house for those who train with purpose.');
-  assert.equal(await evaluate(`document.querySelectorAll('#home-experiences [data-home-experience]').length`), 4);
+  assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('.fsd-home-campaign-scene')).map(scene => scene.dataset.campaignScene)`), experiences.map(item => item.id));
   await capture('fsd-home-hero-01-be-heroes-desktop.jpg');
 
   for (const [index, experience] of experiences.entries()) {
     const selector = `.fsd-home-switcher [data-hero-theme="${experience.id}"]`;
     await evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`);
-    await wait(`document.querySelector('.fsd-home-hero')?.dataset.heroTheme === ${JSON.stringify(experience.id)}`, `${experience.id} state selected`);
+    await wait(`(() => {
+      const target = document.querySelector(${JSON.stringify(`#home-campaign-${experience.id}`)});
+      const top = target.getBoundingClientRect().top;
+      return top > 0 && top < innerHeight * .4;
+    })()`, `${experience.id} campaign scene reached`);
+    await wait(`document.querySelector('.fsd-home-hero')?.dataset.heroTheme === ${JSON.stringify(experience.id)}`, `${experience.id} scene navigation state`);
     assert.equal(await evaluate(`document.querySelectorAll('.fsd-home-switcher button[aria-pressed="true"]').length`), 1);
-    assert.equal(await evaluate(`document.querySelector('[data-hero-primary-action]')?.getAttribute('href')`), experience.href);
-    assert.equal(await evaluate(`document.querySelector('[data-hero-primary-action]')?.textContent.trim().replace(/\\s+/g, ' ')`), `${experience.action} ↗`);
+    const sceneSelector = `#home-campaign-${experience.id}`;
+    const action = await evaluate(`(() => {
+      const link = document.querySelector(${JSON.stringify(`${sceneSelector} .fsd-home-campaign-scene__action`)});
+      return { href: link?.getAttribute('href'), text: link?.textContent.trim().replace(/\\s+/g, ' ') };
+    })()`);
+    assert.equal(action.href, experience.href);
+    assert.equal(action.text, `${experience.action}↗`);
     if (index > 0) await capture(`fsd-home-hero-0${index + 1}-${experience.id}-desktop.jpg`);
   }
 

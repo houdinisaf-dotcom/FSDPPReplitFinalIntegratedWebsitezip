@@ -66,11 +66,15 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   const header = renderNavigationHeader('<span>FSD</span>');
   const investorPage = readFileSync(new URL('../public/investor.html', import.meta.url), 'utf8');
 
-  assert.match(header, /<button type="button"\s+class="fsd-primary-trigger" data-nav-primary="house" aria-controls="fsd-mega-menu"/);
+  assert.match(header, /<a class="fsd-primary-link" data-nav-destination="house" href="\/the-house\.html">THE HOUSE<\/a>/);
+  assert.match(header, /<button type="button" class="fsd-primary-trigger fsd-primary-menu-toggle"\s+data-nav-primary="house" aria-controls="fsd-mega-menu"/);
   assert.match(header, /FSD \/ THE HOUSE OF PERFORMANCE <span>·<\/span> INVESTOR RELATIONS/);
   assert.doesNotMatch(header, /href="\/investor\.html"|data-nav-investor/);
   assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Quick navigation">/);
-  assert.match(header, /data-nav-primary="house" aria-controls="fsd-mega-menu" aria-expanded="false">THE HOUSE<\/button>/);
+  assert.match(
+    readFileSync(new URL('../src/site-navigation.js', import.meta.url), 'utf8'),
+    /class="fsd-mobile-primary-overview" href="\$\{escapeHTML\(divisionLandingPaths\[entry\.id\]\)\}"/,
+  );
   assert.match(investorPage, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
   assert.match(investorPage, /<div data-fsd-standalone-navigation><\/div>/);
   assert.match(investorPage, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
@@ -86,6 +90,17 @@ test('Investor Relations uses the selected shorter public dossier and working ro
   assert.doesNotMatch(investorPage, /Staged Capital Pathway|£25,000|£175,000 – £225,000/);
   assert.doesNotMatch(investorPage, /href="(?:universe|biolab|hardware|private)\.html"/);
   assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
+});
+
+test('each top-level division has a direct destination link and a separate menu control', () => {
+  const header = renderNavigationHeader('<span>FSD</span>');
+  const destinations = [...header.matchAll(/data-nav-destination="([^"]+)" href="([^"]+)"/g)]
+    .map(([, id, href]) => [id, href]);
+
+  assert.deepEqual(destinations, Object.entries(divisionLandingPaths));
+  assert.equal((header.match(/class="fsd-primary-trigger fsd-primary-menu-toggle"/g) || []).length, 6);
+  const source = readFileSync(new URL('../src/site-navigation.js', import.meta.url), 'utf8');
+  assert.match(source, /class="fsd-mobile-primary-overview" href="\$\{escapeHTML\(divisionLandingPaths\[entry\.id\]\)\}"/);
 });
 
 test('Cryo-Zero has a separate information page without unconfirmed booking or service claims', () => {

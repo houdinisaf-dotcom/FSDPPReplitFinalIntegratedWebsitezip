@@ -106,9 +106,44 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(16px, 2.2vw, 36px);
+  gap: clamp(10px, 1.55vw, 24px);
   height: 100%;
   margin: 0 auto;
+}
+
+.fsd-primary-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.fsd-primary-menu-toggle {
+  min-width: 19px;
+  min-height: 40px;
+  justify-content: center;
+  padding: 0;
+  color: #a69a80;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.fsd-primary-menu-toggle::after {
+  display: none;
+}
+
+.fsd-primary-menu-toggle:hover,
+.fsd-primary-menu-toggle:focus-visible,
+.fsd-primary-menu-toggle.is-active {
+  color: #e5c99a;
+}
+
+.fsd-primary-menu-toggle span {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+.fsd-primary-menu-toggle[aria-expanded="true"] span {
+  transform: rotate(180deg);
 }
 
 .fsd-primary-house-group {
@@ -805,7 +840,7 @@ body.fsd-mobile-nav-open {
   }
 
   .header.fsd-header .fsd-primary-nav {
-    gap: clamp(13px, 1.65vw, 22px);
+    gap: clamp(8px, 1.05vw, 14px);
   }
 
   .fsd-primary-trigger {
@@ -955,8 +990,15 @@ body.fsd-mobile-nav-open {
     gap: 7px;
   }
 
+  .fsd-mobile-primary-row {
+    display: flex;
+    min-width: 0;
+    gap: 4px;
+  }
+
   .fsd-mobile-primary {
     display: flex;
+    flex: 1 1 auto;
     min-height: 53px;
     align-items: center;
     justify-content: space-between;
@@ -975,6 +1017,28 @@ body.fsd-mobile-nav-open {
   .fsd-mobile-primary--link {
     color: #d8d4cb;
     text-decoration: none;
+  }
+
+  .fsd-mobile-primary-overview {
+    display: inline-flex;
+    width: 45px;
+    min-height: 53px;
+    flex: 0 0 45px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(231, 223, 206, .13);
+    background: rgba(255, 255, 255, .018);
+    color: #c5aa71;
+    font-size: 17px;
+    text-decoration: none;
+  }
+
+  .fsd-mobile-primary-overview:hover,
+  .fsd-mobile-primary-overview:focus-visible,
+  .fsd-mobile-primary-overview[aria-current="page"] {
+    border-color: rgba(200, 170, 114, .53);
+    background: rgba(200, 170, 114, .08);
+    color: #e7cb98;
   }
 
   .fsd-mobile-primary.is-active,
