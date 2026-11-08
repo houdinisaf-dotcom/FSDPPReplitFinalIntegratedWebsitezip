@@ -1,17 +1,24 @@
-const EXPLORE_LINKS = [
-  ['Collections', '/#collections'],
-  ['Full catalogue', '/#products'],
-  ['The House', '/the-house.html'],
-  ['Our Story', '/story'],
-  ['Fight Promotions', '/fight-promotions.html'],
-  ['Investor Relations', '/investor.html'],
-  ['FSD Global', '/#fsd-division-global'],
-  ['FSD Universe', '/#fsd-house-archive'],
-  ['Bio-Lab™', '/#bio-lab-archive'],
-  ['Hardware', '/#hardware-editorial'],
-  ['VIP Access', '/#contact'],
-  ['BEGIN AN ENQUIRY', '/enquiries.html'],
-  ['Private Enquiries', '/enquiries.html'],
+// Explore is grouped into three short lists so the footer reads as a wide,
+// compact band instead of one long vertical column.
+const EXPLORE_GROUPS = [
+  ['Shop', [
+    ['Collections', '/#collections'],
+    ['Full catalogue', '/#products'],
+    ['Hardware', '/#hardware-editorial'],
+    ['Bio-Lab™', '/#bio-lab-archive'],
+  ]],
+  ['The House', [
+    ['The House', '/the-house.html'],
+    ['Our Story', '/story'],
+    ['Fight Promotions', '/fight-promotions.html'],
+    ['FSD Universe', '/#fsd-house-archive'],
+  ]],
+  ['Business', [
+    ['Investor Relations', '/investor.html'],
+    ['FSD Global', '/#fsd-division-global'],
+    ['VIP Access', '/#contact'],
+    ['Private Enquiries', '/enquiries.html'],
+  ]],
 ];
 
 const SUPPORT_LINKS = [
@@ -31,7 +38,7 @@ const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({
 })[character]);
 
 export function renderSiteFooter({
-  storyLinkMarkup = '<a href="/story">THE HOUSE / OUR STORY</a>',
+  storyLinkMarkup = '<a href="/story">Our Story</a>',
   homeHref = '#home',
   year = new Date().getFullYear(),
 } = {}) {
@@ -47,11 +54,16 @@ export function renderSiteFooter({
           <a class="fsd-site-footer__logo" href="/" aria-label="FSD home">
             <span data-fsd-logo-slot="footer"></span>
           </a>
-          <p class="fsd-site-footer__tagline">Made to Move, Made to Belong.</p>
-          <p class="fsd-site-footer__name">FITNESS &amp; SELF-DEFENCE</p>
+          <div class="fsd-site-footer__brand-copy">
+            <p class="fsd-site-footer__tagline">Made to Move, Made to Belong.</p>
+            <p class="fsd-site-footer__name">FITNESS &amp; SELF-DEFENCE</p>
+            <a class="fsd-site-footer__cta" href="/enquiries.html">BEGIN AN ENQUIRY <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
-        <nav class="fsd-site-footer__column fsd-site-footer__group" aria-label="Explore FSD">
-          <h3>EXPLORE</h3><ul>${renderLinks(EXPLORE_LINKS)}</ul>
+        <nav class="fsd-site-footer__column fsd-site-footer__group fsd-site-footer__explore" aria-label="Explore FSD">
+          ${EXPLORE_GROUPS.map(([title, links]) => `<div class="fsd-site-footer__subgroup">
+            <h3>${escapeHtml(title)}</h3><ul>${renderLinks(links)}</ul>
+          </div>`).join('')}
         </nav>
         <nav class="fsd-site-footer__column fsd-site-footer__group" aria-label="Support">
           <h3>SUPPORT</h3><ul>${renderLinks(SUPPORT_LINKS)}</ul>
@@ -70,9 +82,9 @@ export function renderSiteFooter({
           </p>
         </section>
       </div>
-      <div id="fsd-react-footer-utilities"></div>
       <div class="fsd-site-footer__bottom">
         <small>© ${escapeHtml(year)} FSD. Fitness &amp; Self-Defence.</small>
+        <div id="fsd-react-footer-utilities"></div>
         <a href="${escapeHtml(homeHref)}">BACK TO TOP <span aria-hidden="true">↑</span></a>
       </div>
     </div>

@@ -12,7 +12,7 @@ import { flagshipPageHashes, renderBioLabPlaceholderPages, renderInnovationHubIn
 import { renderStrategicConceptIndex } from './strategic-concepts.js';
 import { mountStorefrontMotion } from './motion-runtime.js';
 import { installImageErrorFallbacks } from './image-placeholder.js';
-import { HOUSE_PAGE_REGISTRY } from './data/house-page-readiness.js';
+import { HOUSE_PAGE_REGISTRY, shouldDisableHouseHref } from './data/house-page-readiness.js';
 import { renderHouseDestinationIndex } from './house-pages/house-destination-index.js';
 import { ourStorySection } from './story-section.js';
 import { renderSiteFooter } from './site-footer.js';
@@ -90,10 +90,9 @@ function openProduct(id, onRouteChange = () => {}, returnFocus = null, initialVa
 }
 
 export function renderStorefrontMarkup() {
-  const storyFooterLink = housePagePaths.has(FSD_STORY_PATH)
-    && import.meta.env.PROD
-    ? '<a aria-disabled="true" tabindex="-1">THE HOUSE / OUR STORY</a>'
-    : `<a href="${FSD_STORY_PATH}">THE HOUSE / OUR STORY</a>`;
+  const storyFooterLink = shouldDisableHouseHref(FSD_STORY_PATH)
+    ? '<a aria-disabled="true" tabindex="-1">Our Story</a>'
+    : `<a href="${FSD_STORY_PATH}">Our Story</a>`;
 
   return `<main id="home">
   <div data-home-hero-slot></div>
