@@ -18,10 +18,13 @@ export function mountImmersiveProductGallery({
 }) {
   const doc = dialog?.ownerDocument;
   if (!doc?.defaultView?.MutationObserver || !doc.body) return () => {};
-  const viewer = doc.createElement('dialog');
+  const viewer = doc.createElement('section');
   viewer.id = 'fsd-product-viewer';
   viewer.className = 'fsd-photo-viewer';
+  viewer.setAttribute('role', 'region');
+  viewer.setAttribute('aria-label', 'FSD product photo inspection');
   viewer.setAttribute('aria-labelledby', 'fsd-photo-viewer-title');
+  viewer.hidden = true;
   viewer.innerHTML = `
     <header class="fsd-photo-viewer__header">
       <div><span>FSD / PRODUCT PHOTOGRAPHY</span><h2 id="fsd-photo-viewer-title"></h2></div>
@@ -43,7 +46,7 @@ export function mountImmersiveProductGallery({
     </div>
     <div class="fsd-photo-viewer__thumbs" role="group" aria-label="Views of the selected colourway"></div>
     <p class="fsd-photo-viewer__hint">Original catalogue photographs · Arrow keys to browse · Escape to return · Zoom and drag to inspect</p>`;
-  doc.body.append(viewer);
+  dialog.append(viewer);
   const stage = viewer.querySelector('[data-viewer-stage]');
   const plane = viewer.querySelector('.fsd-photo-viewer__plane');
   const photo = viewer.querySelector('[data-viewer-photo]');
@@ -56,12 +59,29 @@ export function mountImmersiveProductGallery({
   let returnFocus = null;
   let currentIndex = -1;
   let viewerProduct = null;
+  let dialogWasModal = false;
   let zoom = 1;
   let maxZoom = 1;
   let resizeFrame = 0;
   let suppressClickUntil = 0;
   let gesture = null;
   const pointers = new Set();
+  const isViewerOpen = () => !viewer.hidden;
+  const dialogIsModal = () => typeof dialog.matches === 'function'
+    ? dialog.matches(':modal')
+    : dialog.dataset.presentation === 'quick-view';
+  const setDialogModalState = modal => {
+    if (!dialog.open || dialogIsModal() === modal) return;
+    const scrollTop = dialog.scrollTop;
+    dialog.dataset.photoModeSwitching = 'true';
+    dialog.close();
+    if (modal) dialog.showModal();
+    else dialog.show();
+    dialog.scrollTop = scrollTop;
+    doc.defaultView.setTimeout(() => {
+      delete dialog.dataset.photoModeSwitching;
+    }, 0);
+  };
 
   const model = () => {
     const product = getProduct();
@@ -136,14 +156,14 @@ export function mountImmersiveProductGallery({
       });
     }
     ready.then(() => {
-      if (generation !== token || !viewer.open) return;
+      if (generation !== token || !isViewerOpen()) return;
       updateZoomLimit(incoming.naturalWidth, incoming.naturalHeight);
       photo.src = image.src;
       photo.alt = `${state.product.name} — ${image.label || 'Product view'}`;
       photo.hidden = false;
       stage.removeAttribute('aria-busy');
     }).catch(() => {
-      if (generation !== token || !viewer.open) return;
+      if (generation !== token || !isViewerOpen()) return;
       errorMessage.textContent = `${state.product.name} — this photograph could not load. Retry or choose another view.`;
       error.hidden = false;
       stage.removeAttribute('aria-busy');
@@ -151,7 +171,7 @@ export function mountImmersiveProductGallery({
   };
   const step = direction => {
     const state = model();
-    if (viewer.open) {
+    if (isViewerOpen()) {
       if (state.indexes.length < 2) return;
       const position = Math.max(0, state.indexes.indexOf(currentIndex));
       const next = state.indexes[(position + direction + state.indexes.length) % state.indexes.length];
@@ -180,6 +200,7 @@ export function mountImmersiveProductGallery({
     if (!state.indexes.length || !body.querySelector('[data-catalogue-main-image]:not([hidden])')) return;
     returnFocus = opener;
     viewerProduct = state.product.id;
+    dialogWasModal = dialogIsModal();
     thumbs.replaceChildren();
     if (state.indexes.length > 1) state.indexes.forEach(index => {
       const image = state.images[index];
@@ -195,14 +216,22 @@ export function mountImmersiveProductGallery({
       button.addEventListener('click', () => paint(index));
       thumbs.append(button);
     });
-    viewer.showModal();
+    body.inert = true;
+    const productClose = dialog.querySelector('#close-dialog');
+    if (productClose) productClose.hidden = true;
+    opener?.setAttribute('aria-expanded', 'true');
+    viewer.hidden = false;
+    dialog.dataset.photoInspecting = 'true';
+    setDialogModalState(true);
     paint(state.selected);
     viewer.querySelector('[data-viewer-close]').focus({ preventScroll: true });
   };
   const refresh = () => {
     if (!dialog.open) return;
     const state = model();
-    if (viewer.open && (viewerProduct !== state.product?.id || !state.indexes.includes(currentIndex))) viewer.close();
+    if (isViewerOpen() && (viewerProduct !== state.product?.id || !state.indexes.includes(currentIndex))) {
+      closeViewer();
+    }
     const gallery = body.querySelector('.product-detail-gallery');
     const main = gallery?.querySelector('[data-catalogue-main-image]');
     if (!gallery) return;
@@ -257,21 +286,21 @@ export function mountImmersiveProductGallery({
   const onVariantChange = () => queueMicrotask(refresh);
   const onKey = event => {
     if (event.target.closest('input, select, textarea')) return;
-    if (!viewer.open && !event.target.closest('.product-detail-gallery')) return;
+    if (!isViewerOpen() && !event.target.closest('.product-detail-gallery')) return;
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault(); event.stopPropagation();
       step(event.key === 'ArrowLeft' ? -1 : 1);
       queueMicrotask(refresh);
-    } else if (viewer.open && ['+', '=', '-', '0'].includes(event.key)) {
+    } else if (isViewerOpen() && ['+', '=', '-', '0'].includes(event.key)) {
       event.preventDefault(); setZoom(event.key === '0' ? 1 : zoom + (event.key === '-' ? -.25 : .25));
     }
   };
   const onPointerDown = event => {
-    if (!viewer.open && !event.target.closest('.product-detail-image-stage')) return;
+    if (!isViewerOpen() && !event.target.closest('.product-detail-image-stage')) return;
     pointers.add(event.pointerId);
     if (pointers.size !== 1) { gesture = null; return; }
     gesture = { id: event.pointerId, x: event.clientX, y: event.clientY,
-      left: stage.scrollLeft, top: stage.scrollTop, pan: viewer.open && zoom > 1 && event.pointerType === 'mouse' };
+      left: stage.scrollLeft, top: stage.scrollTop, pan: isViewerOpen() && zoom > 1 && event.pointerType === 'mouse' };
     if (gesture.pan) { event.preventDefault(); stage.setPointerCapture(event.pointerId); }
   };
   const onPointerMove = event => {
@@ -291,26 +320,43 @@ export function mountImmersiveProductGallery({
     }
     gesture = null;
   };
-  const closeViewer = () => { if (viewer.open) viewer.close(); };
-  const onProductClose = () => { if (!dialog.open) closeViewer(); };
-  const onViewerClose = () => {
+  const closeViewer = ({ restoreDialogMode = true, restoreFocus = true } = {}) => {
+    if (!isViewerOpen()) return;
+    viewer.hidden = true;
+    body.inert = false;
+    delete dialog.dataset.photoInspecting;
+    const productClose = dialog.querySelector('#close-dialog');
+    if (productClose) productClose.hidden = false;
+    returnFocus?.setAttribute('aria-expanded', 'false');
     setZoom(1);
     maxZoom = 1;
     generation++;
     gesture = null;
     pointers.clear();
-    if (returnFocus?.isConnected && dialog.open) returnFocus.focus({ preventScroll: true });
+    const opener = returnFocus;
+    returnFocus = null;
+    if (dialog.open && restoreDialogMode && !dialogWasModal) setDialogModalState(false);
+    if (restoreFocus && opener?.isConnected && dialog.open) opener.focus({ preventScroll: true });
+    delete dialog.dataset.photoWasModal;
   };
-  const onCancel = event => { event.preventDefault(); closeViewer(); };
+  const onProductClose = () => {
+    if (dialog.dataset.photoModeSwitching === 'true') return;
+    if (!dialog.open) closeViewer({ restoreDialogMode: false, restoreFocus: false });
+  };
+  const onDocumentKey = event => {
+    if (!isViewerOpen() || event.key !== 'Escape') return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    closeViewer();
+  };
   body.addEventListener('click', onBodyClick, true);
   body.addEventListener('change', onVariantChange);
   body.addEventListener('keydown', onKey);
   body.addEventListener('pointerdown', onPointerDown);
   body.addEventListener('pointerup', onPointerEnd);
   body.addEventListener('pointercancel', onPointerEnd);
+  doc.addEventListener('keydown', onDocumentKey, true);
   viewer.addEventListener('keydown', onKey);
-  viewer.addEventListener('close', onViewerClose);
-  viewer.addEventListener('cancel', onCancel);
   stage.addEventListener('pointerdown', onPointerDown);
   stage.addEventListener('pointermove', onPointerMove);
   stage.addEventListener('pointerup', onPointerEnd);
@@ -324,7 +370,7 @@ export function mountImmersiveProductGallery({
     if (currentIndex >= 0) paint(currentIndex);
   });
   const onResize = () => {
-    if (!viewer.open || !photo.naturalWidth || !photo.naturalHeight) return;
+    if (!isViewerOpen() || !photo.naturalWidth || !photo.naturalHeight) return;
     if (resizeFrame) doc.defaultView.cancelAnimationFrame(resizeFrame);
     resizeFrame = doc.defaultView.requestAnimationFrame(() => {
       resizeFrame = 0;
@@ -342,6 +388,7 @@ export function mountImmersiveProductGallery({
     body.removeEventListener('pointerdown', onPointerDown);
     body.removeEventListener('pointerup', onPointerEnd);
     body.removeEventListener('pointercancel', onPointerEnd);
+    doc.removeEventListener('keydown', onDocumentKey, true);
     doc.defaultView.removeEventListener('resize', onResize);
     if (resizeFrame) doc.defaultView.cancelAnimationFrame(resizeFrame);
     dialog.removeEventListener('close', onProductClose);
