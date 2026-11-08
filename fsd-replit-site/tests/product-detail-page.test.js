@@ -44,6 +44,9 @@ test('editorial product galleries pair approved front and rear photos for the se
   assert.match(images[frontIndex].label, /Front product view/);
   assert.match(markup, /data-catalogue-main-caption[^>]*>White \/ Green \/ Front product view/);
   assert.match(markup, /data-catalogue-secondary-caption[^>]*>White \/ Green \/ Rear product view/);
+  assert.match(markup, /product-detail-gallery__thumbnail-section/);
+  assert.match(markup, /data-catalogue-thumbnail-rail[^>]*aria-label="Choose a product image view"/);
+  assert.match(markup, /GALLERY VIEWS/);
 });
 
 test('editorial gallery selection retains the mapped default when a same-variant front/rear pair is absent', () => {
@@ -99,6 +102,8 @@ test('featured products without approved photos retain named front and back plac
     assert.equal((markup.match(/product-detail-image-stage|product-detail-gallery__secondary-stage/g) || []).length, 2);
     assert.match(markup, /FRONT VIEW — IMAGE PENDING/);
     assert.match(markup, /BACK VIEW — IMAGE PENDING/);
+    assert.match(markup, /data-catalogue-placeholder-view="front"/);
+    assert.match(markup, /data-catalogue-placeholder-view="back"/);
   }
 });
 

@@ -381,8 +381,10 @@ function renderSecondaryGalleryPanel(product, image, variantLabel = '', {
 
 function renderGalleryThumbnails(product, images, galleryPlaceholders, selectedImageIndex = -1, selectedPlaceholderView = '') {
   const slots = galleryViewSlots(images, galleryPlaceholders);
-  return `<div class="catalogue-selector__thumbs" role="group" aria-label="Choose a product image view">
-    ${slots.map(slot => {
+  return `<div class="product-detail-gallery__thumbnail-section">
+    <p class="product-detail-gallery__thumbnail-heading"><span>GALLERY VIEWS</span><span>SELECT A VIEW</span></p>
+    <div class="catalogue-selector__thumbs" data-catalogue-thumbnail-rail role="group" aria-label="Choose a product image view">
+      ${slots.map(slot => {
       const selected = slot.kind === 'image'
         ? slot.imageIndex === selectedImageIndex
         : slot.viewId === selectedPlaceholderView;
@@ -415,7 +417,8 @@ function renderGalleryThumbnails(product, images, galleryPlaceholders, selectedI
         </span>
         <span class="catalogue-selector__thumb-label">${safe(thumbnailLabel.toLocaleUpperCase('en-GB'))}</span>
       </button>`;
-    }).join('')}
+      }).join('')}
+    </div>
   </div>`;
 }
 

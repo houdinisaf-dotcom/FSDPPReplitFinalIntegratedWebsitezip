@@ -35,6 +35,7 @@ try {
   const desktop = await evaluate(`(() => {
     const dialog = document.querySelector('#product-dialog');
     const shell = document.querySelector('.fsd-navigation-shell');
+    const masthead = dialog.querySelector('.product-detail-media__masthead').getBoundingClientRect();
     const main = dialog.querySelector('.product-detail-image-stage').getBoundingClientRect();
     const secondary = dialog.querySelector('.product-detail-gallery__secondary-stage').getBoundingClientRect();
     const media = dialog.querySelector('.product-detail-media').getBoundingClientRect();
@@ -46,6 +47,7 @@ try {
     return {
       modal: dialog.matches(':modal'),
       headerBottom: shell.getBoundingClientRect().bottom,
+      mastheadBottom: masthead.bottom,
       titleTop: title.top,
       mainTop: main.top,
       mainHeight: main.height,
@@ -65,9 +67,10 @@ try {
 
   assert.equal(desktop.modal, false, 'a product detail route is non-modal beneath the shared header');
   assert.ok(desktop.mainTop >= desktop.headerBottom, 'gallery begins below the shared header');
-  assert.ok(desktop.mainTop - desktop.headerBottom <= 4, 'gallery begins immediately below the header');
+  assert.ok(desktop.mainTop >= desktop.mastheadBottom, 'gallery begins below its media masthead');
+  assert.ok(desktop.mainTop - desktop.mastheadBottom <= 4, 'gallery begins immediately below its media masthead');
   assert.ok(desktop.titleTop - desktop.headerBottom < 190, 'product title sits close to the top of the purchase panel');
-  assert.ok(desktop.mainHeight >= 0.85 * (1000 - desktop.headerBottom), 'desktop product images fill nearly the full visible page height');
+  assert.ok(desktop.mainHeight >= 0.55 * (1000 - desktop.mastheadBottom), 'desktop product images remain substantial beside the information rail');
   assert.equal(desktop.mainHeight, desktop.secondaryHeight, 'desktop front and back stages share a full-height row');
   assert.ok(desktop.galleryHeight >= desktop.mainHeight, 'gallery stage fills the available desktop height');
   assert.equal(desktop.secondaryTop, desktop.mainTop, 'front and back images share the same row');
@@ -105,6 +108,8 @@ try {
     const secondary = dialog.querySelector('.product-detail-gallery__secondary-stage').getBoundingClientRect();
     const purchase = dialog.querySelector('.product-detail-purchase').getBoundingClientRect();
     const gallery = dialog.querySelector('.product-detail-gallery').getBoundingClientRect();
+    const thumbnailRail = dialog.querySelector('[data-catalogue-thumbnail-rail]').getBoundingClientRect();
+    const sticky = dialog.querySelector('[data-sticky-add-bar]').getBoundingClientRect();
     return {
       mainWidth: main.width,
       mainHeight: main.height,
@@ -114,16 +119,20 @@ try {
       secondaryBottom: secondary.bottom,
       secondaryDisplay: getComputedStyle(dialog.querySelector('.product-detail-gallery__secondary')).display,
       galleryBottom: gallery.bottom,
+      thumbnailRailBottom: thumbnailRail.bottom,
+      stickyTop: sticky.top,
+      stickyHidden: dialog.querySelector('[data-sticky-add-bar]').hidden,
       purchaseTop: purchase.top,
       viewportWidth: innerWidth,
       documentWidth: document.documentElement.scrollWidth,
       thumbnailCount: dialog.querySelectorAll('[data-catalogue-gallery-view]').length,
     };
   })()`);
-  assert.ok(mobile.mainHeight >= mobile.mainWidth, 'mobile front image remains large and portrait-proportioned');
+  assert.ok(mobile.mainHeight >= 0.9 * mobile.mainWidth, 'mobile front image remains a large square gallery frame');
   assert.equal(mobile.secondaryDisplay, 'none', 'mobile shows one main image, not a duplicate secondary panel');
   assert.equal(mobile.secondaryHeight, 0, 'the hidden secondary panel occupies no mobile layout space');
   assert.ok(mobile.purchaseTop >= mobile.galleryBottom - 1, 'mobile purchase details follow the gallery and thumbnail rail');
+  assert.ok(mobile.stickyHidden || mobile.thumbnailRailBottom <= mobile.stickyTop, 'mobile sticky action does not cover gallery thumbnails');
   assert.ok(mobile.thumbnailCount >= 3, 'front, back and other mapped views remain selectable below the main image');
   assert.equal(mobile.documentWidth, mobile.viewportWidth, 'mobile product page has no horizontal overflow');
 
@@ -217,9 +226,9 @@ try {
   assert.equal(ombre.imageCount, 0, 'missing approved photos do not create broken or concept-board images');
   assert.equal(ombre.frontTop, ombre.backTop);
   assert.ok(ombre.mediaRatio > 1.8, 'placeholder pair uses the same desktop two-thirds layout');
-  assert.ok(ombre.frontHeight >= 0.85 * (1000 - desktop.headerBottom), 'missing photos retain full-height desktop placeholders');
+  assert.ok(ombre.frontHeight >= 0.55 * (1000 - desktop.mastheadBottom), 'missing photos retain substantial desktop placeholder panels');
   assert.equal(ombre.frontHeight, ombre.backHeight, 'front and back placeholders have matching proportions');
-  assert.equal(ombre.placeholderBackground, 'rgb(242, 240, 235)', 'PDP placeholders keep the white editorial gallery surface');
+  assert.equal(ombre.placeholderBackground, 'rgb(239, 237, 230)', 'PDP placeholders keep the warm-neutral editorial gallery surface');
   assert.equal(ombre.notifyButtonDisabled, true, 'notification remains disabled without a provider');
   assert.equal(ombre.notifyButtonBackground, 'rgb(17, 19, 24)', 'notification action follows the black CTA design');
   assert.match(ombre.placeholderText, /FRONT VIEW/);
