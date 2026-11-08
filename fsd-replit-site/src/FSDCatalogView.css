@@ -863,6 +863,67 @@
   overflow: hidden;
 }
 
+#catalogue-grid.product-grid[data-view="visual"] .product-card--visual .catalogue-card__media.catalogue-card__media--pending,
+#catalogue-grid.product-grid[data-view="visual"] .product-card--visual .catalogue-card__media:has(.fsd-safe-image-fallback) {
+  background: #f2f0eb;
+}
+
+#catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty {
+  position: relative;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid #d8d4ca;
+  background: #f2f0eb;
+  color: #66551f;
+}
+
+#catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty .fsd-product-view-placeholder__graphic {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: min(72%, 260px);
+  height: auto;
+  color: #b99a38;
+  opacity: .14;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty .fsd-product-view-placeholder__brand {
+  position: relative;
+  color: #625738;
+  font: 8px/1.4 "Space Mono", monospace;
+  letter-spacing: .13em;
+}
+
+#catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty .fsd-product-view-placeholder__view {
+  position: relative;
+  max-width: 24ch;
+  color: #171713;
+  font: 500 clamp(14px, 1.2vw, 17px)/1.25 "DM Sans", sans-serif;
+  letter-spacing: .04em;
+}
+
+#catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty .fsd-product-view-placeholder__status {
+  position: relative;
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 6px 9px;
+  background: #111318;
+  color: #e5d295;
+  font: 8px/1.2 "Space Mono", monospace;
+  letter-spacing: .12em;
+}
+
+#catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty .fsd-product-view-placeholder__variant {
+  position: relative;
+  max-width: 100%;
+  color: #555149;
+  font: 9px/1.4 "DM Sans", sans-serif;
+  letter-spacing: .02em;
+  overflow-wrap: anywhere;
+}
+
 #catalogue-grid.product-grid[data-view="visual"] .product-row__trigger:focus-visible {
   outline: 2px solid #d4af37;
   outline-offset: -3px;
@@ -906,6 +967,11 @@
   #catalogue-grid.product-grid[data-view="visual"] .catalogue-card__swatches--empty {
     height: 44px;
     min-height: 44px;
+  }
+
+  #catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty {
+    gap: 8px;
+    padding: 12px;
   }
 }
 

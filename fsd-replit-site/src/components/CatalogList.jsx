@@ -78,7 +78,7 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
         aria-label={`${isOpen ? 'Collapse' : 'View details for'} ${product.name}`}
         onClick={event => onToggle(event, selectedColourway)}
       >
-        <span className="catalogue-card__media" aria-live="polite">
+        <span className={`catalogue-card__media${activeImage ? '' : ' catalogue-card__media--pending'}`} aria-live="polite">
           {activeImage ? (
               <motion.span layoutId={`catalogue-product-image-${product.id}`} className="catalogue-card__shared-image">
                 <SafeImage
@@ -94,6 +94,7 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
               title={product.name}
               variantLabel={hasColourways ? selectedColourway : product.galleryPlaceholders?.[0] || colourways[0] || ''}
               kind="product"
+              viewLabel="Product image"
               className="catalogue-card__image-empty"
             />
           )}

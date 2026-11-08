@@ -1,5 +1,5 @@
 - [Catalogue approval boundaries](catalogue-approval-boundaries.md) — existing values remain the default; explicitly approved record updates are narrow exceptions, and missing fields stay blank.
-- [Missing imagery policy](image-placeholder-policy.md) — keep all products and sections visible with named black/charcoal placeholders, using the current approved accent.
+- [Missing imagery policy](image-placeholder-policy.md) — keep product-card and PDP fallbacks light-neutral and clearly labelled; preserve all content without unrelated media.
 - [Browser verification caveats](browser-verification.md) — dialog timing, Chromium viewport limitations, and forcing off-screen lazy-image errors in fallback tests.
 - [Official logo boundaries](official-logo-boundaries.md) — preserve source artwork; the website lockup may use the authorized British “Defence” spelling without product rebranding.
 - [House of Performance approvals](house-of-performance-approvals.md) — keep House as a route index; isolate each destination and gate unapproved routes.

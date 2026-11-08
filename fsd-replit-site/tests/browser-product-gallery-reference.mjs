@@ -33,6 +33,10 @@ try {
   const catalogueDesktop = await evaluate(`(() => {
     const grid = document.querySelector('#catalogue-grid');
     const cards = [...grid.querySelectorAll(':scope > .product-card--visual:not(.product-card--visual-open)')].slice(0, 4);
+    const pendingCard = [...grid.querySelectorAll(':scope > .product-card--visual')]
+      .find(card => card.querySelector('[data-product="1"]'));
+    const pendingMedia = pendingCard?.querySelector('.catalogue-card__media');
+    const pendingPlaceholder = pendingMedia?.querySelector('.catalogue-card__image-empty');
     const boxes = cards.map(card => ({
       card: card.getBoundingClientRect(),
       media: card.querySelector('.catalogue-card__media').getBoundingClientRect(),
@@ -46,6 +50,13 @@ try {
       imageRatios: boxes.map(item => item.media.width / item.media.height),
       copyHeights: boxes.map(item => item.copy.height),
       swatchHeights: boxes.map(item => item.swatches.height),
+      pendingCard: {
+        mediaClass: pendingMedia?.className,
+        mediaBackground: pendingMedia && getComputedStyle(pendingMedia).backgroundColor,
+        background: pendingPlaceholder && getComputedStyle(pendingPlaceholder).backgroundColor,
+        text: pendingPlaceholder?.innerText,
+        accessibleLabel: pendingPlaceholder?.getAttribute('aria-label'),
+      },
     };
   })()`);
   assert.ok(catalogueDesktop.count >= 8, 'SHOP shows a useful set of catalogue cards');
@@ -54,6 +65,12 @@ try {
   assert.ok(catalogueDesktop.imageRatios.every(ratio => Math.abs(ratio - .8) < .01), 'product cards share the 4:5 media ratio');
   assert.ok(catalogueDesktop.copyHeights.every(height => Math.abs(height - catalogueDesktop.copyHeights[0]) <= 1), 'card copy regions align');
   assert.ok(catalogueDesktop.swatchHeights.every(height => height >= 48), 'cards reserve a consistent swatch row');
+  assert.match(catalogueDesktop.pendingCard.mediaClass, /catalogue-card__media--pending/);
+  assert.equal(catalogueDesktop.pendingCard.mediaBackground, 'rgb(242, 240, 235)', 'unmapped card media uses a light-neutral canvas');
+  assert.equal(catalogueDesktop.pendingCard.background, 'rgb(242, 240, 235)');
+  assert.match(catalogueDesktop.pendingCard.text, /PRODUCT IMAGE/);
+  assert.match(catalogueDesktop.pendingCard.text, /IMAGE PENDING/);
+  assert.match(catalogueDesktop.pendingCard.accessibleLabel, /IMAGE PENDING/);
 
   await openProduct(18);
   await wait(
