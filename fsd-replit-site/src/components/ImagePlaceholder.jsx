@@ -7,18 +7,19 @@ export function ImagePlaceholder({
   className = '',
   compact = false,
   viewLabel = '',
+  pendingLabel = '',
+  showTitle = false,
   style,
 }) {
   const safeKind = PLACEHOLDER_KINDS.has(kind) ? kind : 'product';
   const accessibleTitle = [title, viewLabel, variantLabel].filter(Boolean).join(' — ');
+  const accessiblePendingLabel = pendingLabel || (viewLabel ? 'IMAGE PENDING' : '[ASSET PENDING]');
 
   return (
     <span
       className={`fsd-image-placeholder fsd-image-placeholder--${safeKind}${viewLabel ? ' fsd-product-view-placeholder' : ''}${compact ? ' fsd-image-placeholder--compact' : ''}${className ? ` ${className}` : ''}`}
       role="img"
-      aria-label={viewLabel
-        ? `${accessibleTitle} — IMAGE PENDING`
-        : `${accessibleTitle} [ASSET PENDING]`}
+      aria-label={`${accessibleTitle} ${accessiblePendingLabel}`}
       style={style}
     >
       {viewLabel ? (
@@ -32,7 +33,8 @@ export function ImagePlaceholder({
           </svg>
           <span className="fsd-product-view-placeholder__brand">FSD / PRODUCT IMAGE</span>
           <strong className="fsd-product-view-placeholder__view">{viewLabel.toLocaleUpperCase('en-GB')}</strong>
-          <small className="fsd-product-view-placeholder__status">IMAGE PENDING</small>
+          {showTitle && <span className="fsd-product-view-placeholder__product">{title}</span>}
+          <small className="fsd-product-view-placeholder__status">{accessiblePendingLabel}</small>
           {variantLabel && <span className="fsd-product-view-placeholder__variant">{variantLabel}</span>}
         </>
       ) : (

@@ -55,6 +55,7 @@ try {
         mediaBackground: pendingMedia && getComputedStyle(pendingMedia).backgroundColor,
         background: pendingPlaceholder && getComputedStyle(pendingPlaceholder).backgroundColor,
         text: pendingPlaceholder?.innerText,
+        productName: pendingPlaceholder?.querySelector('.fsd-product-view-placeholder__product')?.textContent,
         accessibleLabel: pendingPlaceholder?.getAttribute('aria-label'),
       },
     };
@@ -69,8 +70,10 @@ try {
   assert.equal(catalogueDesktop.pendingCard.mediaBackground, 'rgb(242, 240, 235)', 'unmapped card media uses a light-neutral canvas');
   assert.equal(catalogueDesktop.pendingCard.background, 'rgb(242, 240, 235)');
   assert.match(catalogueDesktop.pendingCard.text, /PRODUCT IMAGE/);
-  assert.match(catalogueDesktop.pendingCard.text, /IMAGE PENDING/);
-  assert.match(catalogueDesktop.pendingCard.accessibleLabel, /IMAGE PENDING/);
+  assert.match(catalogueDesktop.pendingCard.text, /PRODUCT VIEW/);
+  assert.ok(catalogueDesktop.pendingCard.productName?.trim(), 'pending card displays its product name');
+  assert.match(catalogueDesktop.pendingCard.text, /\[ASSET PENDING\]/);
+  assert.match(catalogueDesktop.pendingCard.accessibleLabel, /\[ASSET PENDING\]/);
 
   await openProduct(18);
   await wait(

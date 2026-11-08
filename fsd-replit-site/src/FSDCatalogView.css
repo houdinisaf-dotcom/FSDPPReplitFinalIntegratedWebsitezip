@@ -903,6 +903,15 @@
   letter-spacing: .04em;
 }
 
+#catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty .fsd-product-view-placeholder__product {
+  position: relative;
+  max-width: 24ch;
+  color: #292821;
+  font: 500 clamp(12px, 1vw, 14px)/1.4 "DM Sans", sans-serif;
+  letter-spacing: .01em;
+  overflow-wrap: anywhere;
+}
+
 #catalogue-grid.product-grid[data-view="visual"] .catalogue-card__image-empty .fsd-product-view-placeholder__status {
   position: relative;
   display: inline-flex;

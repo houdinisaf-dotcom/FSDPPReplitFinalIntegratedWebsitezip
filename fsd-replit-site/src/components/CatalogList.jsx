@@ -94,7 +94,9 @@ function VisualProductCard({ product, isOpen, selectedColor, onColourChange, onT
               title={product.name}
               variantLabel={hasColourways ? selectedColourway : product.galleryPlaceholders?.[0] || colourways[0] || ''}
               kind="product"
-              viewLabel="Product image"
+              viewLabel="Product view"
+              pendingLabel="[ASSET PENDING]"
+              showTitle
               className="catalogue-card__image-empty"
             />
           )}
