@@ -3,7 +3,7 @@
   position: relative;
   overflow: hidden;
   border-top: 1px solid #d4af37;
-  padding: clamp(50px, 7vw, 92px) clamp(22px, 6vw, 88px) 24px;
+  padding: clamp(36px, 4vw, 56px) clamp(22px, 6vw, 88px) 0;
   background: #0a0a0a;
   color: rgb(255 255 255 / 78%);
   text-align: left;
@@ -16,9 +16,10 @@
 
 .fsd-site-footer__top {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.15fr) minmax(0, .8fr) minmax(220px, 1.2fr);
-  gap: clamp(24px, 3.4vw, 52px);
-  padding-bottom: clamp(42px, 6vw, 76px);
+  grid-template-columns: minmax(180px, .9fr) minmax(0, 2.3fr) minmax(0, .75fr) minmax(240px, 1.15fr);
+  align-items: start;
+  gap: clamp(24px, 3vw, 48px);
+  padding-bottom: clamp(28px, 3.4vw, 44px);
 }
 
 .fsd-site-footer__column { min-width: 0; }
@@ -38,7 +39,7 @@
 }
 
 .fsd-site-footer__tagline {
-  margin: 22px 0 8px;
+  margin: 14px 0 6px;
   color: rgb(255 255 255 / 86%);
   font-size: clamp(15px, 1.25vw, 19px);
   font-weight: 500;
@@ -54,7 +55,7 @@
 }
 
 .fsd-site-footer__group h3 {
-  margin: 0 0 20px;
+  margin: 0 0 14px;
   color: #d4af37;
   font-size: 9px;
   font-weight: 700;
@@ -64,7 +65,7 @@
 
 .fsd-site-footer__group ul {
   display: grid;
-  gap: 12px;
+  gap: 9px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -104,6 +105,41 @@
 .fsd-site-footer__newsletter button:focus-visible {
   outline: 2px solid #f0d888;
   outline-offset: 4px;
+}
+
+.fsd-site-footer__explore {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 36px);
+}
+
+.fsd-site-footer__subgroup { min-width: 0; }
+
+.fsd-site-footer__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgb(212 175 55 / 55%);
+  color: #e5d5b4;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-decoration: none;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.fsd-site-footer__cta:hover { color: #f0d888; border-color: #f0d888; }
+.fsd-site-footer__cta:focus-visible { outline: 2px solid #f0d888; outline-offset: 4px; }
+
+.fsd-site-footer__newsletter h3 {
+  margin: 0 0 14px;
+  color: #d4af37;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
 }
 
 .fsd-site-footer__newsletter > p {
@@ -176,9 +212,14 @@
   clip-path: inset(50%);
 }
 
+.fsd-site-footer__bottom #fsd-react-footer-utilities { margin-left: auto; }
+.fsd-site-footer__bottom .fsd-footer-tools { margin-top: 0; }
+.fsd-site-footer__bottom .fsd-react-control { min-height: 32px; padding: 0 12px; font-size: 9px; }
+
 .fsd-site-footer__bottom {
   display: flex;
-  min-height: 58px;
+  min-height: 64px;
+  padding: 12px 0;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
@@ -201,30 +242,46 @@
   color: #d4af37;
 }
 
+@media (max-width: 1180px) and (min-width: 941px) {
+  .fsd-site-footer__top {
+    grid-template-columns: minmax(150px, .8fr) minmax(0, 2.2fr) minmax(0, .8fr) minmax(210px, 1fr);
+  }
+}
+
 @media (max-width: 940px) {
   .fsd-site-footer__top {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 40px 32px;
+    gap: 32px 32px;
   }
+
+  /* Brand and newsletter share the first row; the grouped links span the
+     full width below so they stay side by side instead of stacking. */
+  .fsd-site-footer__explore { grid-column: 1 / -1; order: 2; }
+  .fsd-site-footer__top > nav[aria-label="Support"] { grid-column: 1 / -1; order: 3; }
+  .fsd-site-footer__top > nav[aria-label="Support"] ul { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+  .fsd-site-footer__newsletter { order: 1; }
 }
 
 @media (max-width: 600px) {
   .fsd-site-footer {
-    padding: 45px 20px 18px;
+    padding: 32px 20px 8px;
   }
 
   .fsd-site-footer__top {
     grid-template-columns: minmax(0, 1fr);
-    gap: 34px;
+    gap: 26px;
   }
 
+  .fsd-site-footer__explore { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 18px; }
+  .fsd-site-footer__top > nav[aria-label="Support"] ul { gap: 10px 22px; }
+
   .fsd-site-footer__bottom {
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    padding: 18px 0 4px;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    padding: 16px 0 10px;
   }
+
+  .fsd-site-footer__bottom #fsd-react-footer-utilities { order: -1; width: 100%; margin-left: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

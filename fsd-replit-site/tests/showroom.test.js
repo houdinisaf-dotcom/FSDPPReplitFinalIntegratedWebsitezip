@@ -57,7 +57,7 @@ test('the homepage adds four BE HEROES experience panels with approved images or
   assert.match(markup, /href="\/bio-lab"/);
   assert.match(markup, /href="\/the-house\.html"/);
   assert.equal((markup.match(/<img\b/g) || []).length, 4);
-  for (const id of ['stronger', 'disciplined', 'together']) {
+  for (const id of ['heroes', 'stronger', 'disciplined', 'together']) {
     assert.ok(markup.includes(`/fsd-assets/campaigns/${id}.webp`));
   }
   assert.equal((markup.match(/fsd-image-placeholder--banner/g) || []).length, 0);
@@ -191,4 +191,13 @@ test('garment studies are accessible non-purchasable concepts with real research
   const vision = houseConnectionSection();
   assert.match(vision, /Train\. Wear\. Belong\.<br\/><em>Be Stronger Together\.<\/em>/);
   assert.match(vision, /id="brand-community"/);
+});
+
+test('every homepage campaign scene has its own image, none reusing the lead boxer hero', async () => {
+  const { siteMedia } = await import('../src/data/site-media.js');
+  const { homeHeroExperiences } = await import('../src/data/home-hero-experiences.js');
+  const sources = homeHeroExperiences.map(experience => siteMedia.campaigns[experience.id]?.src);
+  assert.ok(sources.every(Boolean), 'Each campaign needs a mapped image.');
+  assert.equal(new Set(sources).size, sources.length, 'Campaign images must be distinct.');
+  assert.ok(!sources.includes(siteMedia.homeHero.src), 'Campaign scenes must not repeat the lead hero photo.');
 });

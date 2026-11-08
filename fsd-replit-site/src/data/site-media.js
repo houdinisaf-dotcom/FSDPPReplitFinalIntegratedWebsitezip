@@ -12,10 +12,15 @@ export const siteMedia = Object.freeze({
     alt: 'FSD women’s activewear collection',
   }),
   // Homepage campaign scenes, keyed by the id in home-hero-experiences.js.
-  // 'heroes' uses the approved homeHero photo. The other three are original
-  // AI-generated concept images (no real people, no third-party marks); swap
-  // them for commissioned photography before launch.
+  // The approved boxer photo (homeHero) opens the page, so each campaign
+  // scene has its own image. All four are original AI-generated concept
+  // images (no real people, no third-party marks); swap them for
+  // commissioned photography before launch.
   campaigns: Object.freeze({
+    heroes: Object.freeze({
+      src: '/fsd-assets/campaigns/heroes.webp',
+      alt: 'Kickboxer in FSD black and gold kit at full extension of a high kick',
+    }),
     stronger: Object.freeze({
       src: '/fsd-assets/campaigns/stronger.webp',
       alt: 'Athlete in FSD black and gold kit locking out a barbell overhead',
