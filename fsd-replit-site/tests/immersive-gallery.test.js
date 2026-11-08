@@ -34,7 +34,8 @@ test('gallery navigation keeps every mapped view inside the selected colourway',
   assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'Sage Green' }), [1, 2, 5]);
   assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'Sage Green', size: 'M' }), [1, 2, 4, 5]);
   assert.equal(imageColourwayIndex(product, images[2]), 1, 'rear view must update the colourway, not only the first image');
-  assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'No approved image' }), []);
+  assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'No approved image' }), [5],
+    'explicitly neutral imagery remains available when no variant-specific photograph is mapped');
   assert.equal(isColourNeutralProductDetail(product, images[5]), true);
   assert.equal(isColourNeutralProductDetail(product, { label: 'Technical Detail / Side Phone Pocket' }), false,
     'an unassigned detail image is not assumed to be neutral across colourways');
@@ -73,7 +74,22 @@ test('FLEX detail gallery exposes only its selected colour and colour-neutral de
   assert.doesNotMatch(sageGallery, /flex-leggings-detail-/,
     'unassigned black-looking detail photography is not reused across colourways');
   assert.doesNotMatch(sageGallery, /flex-leggings-(?:obsidian|dusty-rose|espresso|teal)-/);
-  assert.match(sageGallery, /DETAIL VIEW — IMAGE PENDING/);
+  assert.match(sageGallery, /data-catalogue-view-title>DETAIL VIEW/);
+  assert.match(sageGallery, /fsd-product-view-placeholder__status">IMAGE PENDING/);
+});
+
+test('FLEX Espresso front asset is recognized from its approved mapped filename', () => {
+  const product = products.find(value => value.id === 75);
+  const gallery = renderProductGalleryForVariant(
+    product,
+    productImagesForDisplay(product),
+    product.galleryPlaceholders || [],
+    'Espresso Brown',
+  );
+  assert.match(gallery, /data-catalogue-main-image[\s\S]{0,500}src="\/assets\/products\/flex-leggings-espresso-front\.webp"/);
+  assert.match(gallery, /data-catalogue-view-label="Front view"[\s\S]{0,500}flex-leggings-espresso-front\.webp/);
+  assert.match(gallery, /class="fsd-product-view-placeholder[^"]*" hidden[^>]*data-catalogue-view-placeholder="front"/,
+    'the fallback stays hidden while the mapped Espresso front is available');
 });
 
 function imageFixture() {

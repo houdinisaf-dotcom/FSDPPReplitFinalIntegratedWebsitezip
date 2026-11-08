@@ -149,11 +149,19 @@ function normalizedGalleryLabel(image) {
     .trim();
 }
 
+function normalizedGalleryImageText(image) {
+  const source = String(image?.src || image || '')
+    .toLocaleLowerCase('en-GB')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  return `${normalizedGalleryLabel(image)} ${source}`.trim();
+}
+
 function gallerySide(image, side) {
-  const label = normalizedGalleryLabel(image);
+  const label = normalizedGalleryImageText(image);
   return side === 'front'
     ? /\bfront\b/.test(label)
-    : /\b(?:rear|back)\b/.test(label);
+    : /\b(?:rear|back|reverse)\b/.test(label);
 }
 
 function galleryProductViewRank(image) {
@@ -261,7 +269,7 @@ const productGalleryViewTypes = Object.freeze([
 ]);
 
 function galleryViewType(image) {
-  const label = String(image?.label || image || '').toLocaleLowerCase('en-GB');
+  const label = normalizedGalleryImageText(image);
   if (/\bfront\b/.test(label)) return 'front';
   if (/\b(back|rear|reverse)\b/.test(label)) return 'back';
   if (/\b(detail|close.?up|fabric|texture|branding|logo|crest|panel|seam|pocket|hardware)\b/.test(label)) return 'detail';
