@@ -24,7 +24,37 @@ async function openProduct(id) {
 }
 
 try {
-  await setViewport(1440, 1000);
+  await setViewport(1440, 960);
+  await send('Page.navigate', { url: `${base}/#catalogue-grid` });
+  await wait(
+    `document.querySelectorAll('#catalogue-grid > .product-card--visual').length >= 8`,
+    'SHOP catalogue cards render',
+  );
+  const catalogueDesktop = await evaluate(`(() => {
+    const grid = document.querySelector('#catalogue-grid');
+    const cards = [...grid.querySelectorAll(':scope > .product-card--visual:not(.product-card--visual-open)')].slice(0, 4);
+    const boxes = cards.map(card => ({
+      card: card.getBoundingClientRect(),
+      media: card.querySelector('.catalogue-card__media').getBoundingClientRect(),
+      copy: card.querySelector('.catalogue-card__copy').getBoundingClientRect(),
+      swatches: card.querySelector('.catalogue-card__swatches').getBoundingClientRect(),
+    }));
+    return {
+      count: grid.querySelectorAll(':scope > .product-card--visual').length,
+      columns: getComputedStyle(grid).gridTemplateColumns.split(' ').length,
+      cardHeights: boxes.map(item => item.card.height),
+      imageRatios: boxes.map(item => item.media.width / item.media.height),
+      copyHeights: boxes.map(item => item.copy.height),
+      swatchHeights: boxes.map(item => item.swatches.height),
+    };
+  })()`);
+  assert.ok(catalogueDesktop.count >= 8, 'SHOP shows a useful set of catalogue cards');
+  assert.equal(catalogueDesktop.columns, 4, 'desktop SHOP grid uses four aligned columns');
+  assert.ok(Math.max(...catalogueDesktop.cardHeights) - Math.min(...catalogueDesktop.cardHeights) <= 1, 'first-row cards have equal heights');
+  assert.ok(catalogueDesktop.imageRatios.every(ratio => Math.abs(ratio - .8) < .01), 'product cards share the 4:5 media ratio');
+  assert.ok(catalogueDesktop.copyHeights.every(height => Math.abs(height - catalogueDesktop.copyHeights[0]) <= 1), 'card copy regions align');
+  assert.ok(catalogueDesktop.swatchHeights.every(height => height >= 48), 'cards reserve a consistent swatch row');
+
   await openProduct(18);
   await wait(
     `document.querySelector('#product-dialog [data-catalogue-main-image]')?.naturalWidth > 0 &&
@@ -70,7 +100,7 @@ try {
   assert.ok(desktop.mainTop >= desktop.mastheadBottom, 'gallery begins below its media masthead');
   assert.ok(desktop.mainTop - desktop.mastheadBottom <= 4, 'gallery begins immediately below its media masthead');
   assert.ok(desktop.titleTop - desktop.headerBottom < 190, 'product title sits close to the top of the purchase panel');
-  assert.ok(desktop.mainHeight >= 0.55 * (1000 - desktop.mastheadBottom), 'desktop product images remain substantial beside the information rail');
+  assert.ok(desktop.mainHeight >= 0.55 * (960 - desktop.mastheadBottom), 'desktop product images remain substantial beside the information rail');
   assert.equal(desktop.mainHeight, desktop.secondaryHeight, 'desktop front and back stages share a full-height row');
   assert.ok(desktop.galleryHeight >= desktop.mainHeight, 'gallery stage fills the available desktop height');
   assert.equal(desktop.secondaryTop, desktop.mainTop, 'front and back images share the same row');
@@ -101,7 +131,7 @@ try {
   await wait(`!document.querySelector('.fsd-navigation-shell')?.classList.contains('is-open')`, 'header menu closes from its trigger');
   assert.equal(await evaluate(`document.querySelector('#product-dialog')?.open`), true);
 
-  await setViewport(402, 874);
+  await setViewport(393, 844);
   const mobile = await evaluate(`(() => {
     const dialog = document.querySelector('#product-dialog');
     const main = dialog.querySelector('.product-detail-image-stage').getBoundingClientRect();
@@ -162,6 +192,97 @@ try {
   assert.equal(mobileBackSelection.selected, true, 'the selected back view has a visible selected state');
   assert.equal(mobileBackSelection.secondaryDisplay, 'none', 'selecting a back view does not restore the duplicate panel');
 
+  await setViewport(1440, 960);
+  const photoOpener = await evaluate(`(() => {
+    const dialog = document.querySelector('#product-dialog');
+    const opener = dialog.querySelector('[data-gallery-photo-open]');
+    opener.focus();
+    opener.click();
+    return opener;
+  })()`);
+  await wait(
+    `document.querySelector('#product-dialog')?.matches(':modal') &&
+      document.querySelector('#fsd-product-viewer')?.hidden === false &&
+      document.activeElement.matches('[data-viewer-close]')`,
+    'photo viewer opens as the sole modal layer',
+  );
+  const viewerOpen = await evaluate(`(() => {
+    const dialog = document.querySelector('#product-dialog');
+    const viewer = document.querySelector('#fsd-product-viewer');
+    const closeButtons = [...dialog.querySelectorAll('#close-dialog, [data-viewer-close]')]
+      .filter(button => !button.hidden && getComputedStyle(button).display !== 'none');
+    return {
+      tag: viewer.tagName,
+      role: viewer.getAttribute('role'),
+      nativeDialogs: document.querySelectorAll('dialog[open]').length,
+      closeCount: closeButtons.length,
+      productCloseHidden: dialog.querySelector('#close-dialog').hidden,
+      bodyDisplay: getComputedStyle(dialog.querySelector('#dialog-body')).display,
+      bodyInert: dialog.querySelector('#dialog-body').inert,
+      fullViewport: viewer.getBoundingClientRect().width === innerWidth &&
+        viewer.getBoundingClientRect().height === innerHeight,
+      photoLoaded: viewer.querySelector('[data-viewer-photo]').naturalWidth > 0,
+      labelledBy: dialog.getAttribute('aria-labelledby'),
+    };
+  })()`);
+  assert.equal(viewerOpen.tag, 'SECTION', 'photo viewer is a region inside the product dialog, not a nested dialog');
+  assert.equal(viewerOpen.role, 'region');
+  assert.equal(viewerOpen.nativeDialogs, 1, 'only the existing product dialog is open');
+  assert.equal(viewerOpen.closeCount, 1, 'the photo viewer has one visible close control');
+  assert.equal(viewerOpen.productCloseHidden, true, 'the product close button is hidden during inspection');
+  assert.equal(viewerOpen.bodyDisplay, 'none', 'the product sheet does not compete with the image viewer');
+  assert.equal(viewerOpen.bodyInert, true, 'the product sheet is inert while its image viewer is active');
+  assert.equal(viewerOpen.fullViewport, true, 'photo viewer fills the viewport');
+  assert.equal(viewerOpen.photoLoaded, true, 'the enlarged approved photo loads');
+  assert.equal(viewerOpen.labelledBy, 'fsd-photo-viewer-title', 'the modal has a visible accessible name');
+  const zoomControlDisabled = await evaluate(`document.querySelector('#fsd-product-viewer [data-viewer-zoom]').disabled`);
+  assert.equal(zoomControlDisabled, false, 'mapped gallery photo supports enlargement');
+  await evaluate(`document.querySelector('#fsd-product-viewer [data-viewer-zoom]').click()`);
+  await wait(`document.querySelector('#fsd-product-viewer [data-viewer-stage]').dataset.zoomed === 'true'`,
+    'photo zoom enlarges the image');
+  await evaluate(`document.querySelector('#fsd-product-viewer [data-viewer-zoom]').click()`);
+  await wait(`document.querySelector('#fsd-product-viewer [data-viewer-stage]').dataset.zoomed === 'false'`,
+    'photo zoom resets to natural fit');
+  const viewerImage = await evaluate(`document.querySelector('#fsd-product-viewer [data-viewer-photo]').src`);
+  await key('ArrowRight');
+  await wait(
+    `document.querySelector('#fsd-product-viewer [data-viewer-photo]').src !== ${JSON.stringify(viewerImage)}`,
+    'photo viewer arrow keys change the image',
+  );
+  await key('Escape');
+  await wait(
+    `document.querySelector('#fsd-product-viewer').hidden &&
+      document.querySelector('#product-dialog')?.open &&
+      !document.querySelector('#product-dialog').matches(':modal')`,
+    'Escape closes only the photo viewer',
+  );
+  const viewerEscape = await evaluate(`(() => {
+    const dialog = document.querySelector('#product-dialog');
+    const opener = dialog.querySelector('[data-gallery-photo-open]');
+    return {
+      focusReturned: document.activeElement === opener,
+      expanded: opener.getAttribute('aria-expanded'),
+      productCloseVisible: !dialog.querySelector('#close-dialog').hidden,
+      bodyInert: dialog.querySelector('#dialog-body').inert,
+      labelledBy: dialog.getAttribute('aria-labelledby'),
+    };
+  })()`);
+  assert.equal(viewerEscape.focusReturned, true, 'Escape returns focus to the image opener');
+  assert.equal(viewerEscape.expanded, 'false');
+  assert.equal(viewerEscape.productCloseVisible, true);
+  assert.equal(viewerEscape.bodyInert, false);
+  assert.equal(viewerEscape.labelledBy, 'product-title');
+
+  await evaluate(`document.querySelector('#product-dialog [data-gallery-fullscreen]').click()`);
+  await wait(`!document.querySelector('#fsd-product-viewer').hidden`, 'full-screen inspect button opens the viewer');
+  await evaluate(`document.querySelector('#fsd-product-viewer [data-viewer-close]').click()`);
+  await wait(`document.querySelector('#fsd-product-viewer').hidden`, 'viewer close button closes the viewer');
+  assert.equal(
+    await evaluate(`document.activeElement.matches('[data-gallery-fullscreen]')`),
+    true,
+    'close button returns focus to the full-screen opener',
+  );
+
   await evaluate(`(async () => {
     const { showProduct } = await import('/src/catalogue.js');
     showProduct(18, { quickView: true });
@@ -172,7 +293,7 @@ try {
   await key('Escape');
   await wait(`!document.querySelector('#product-dialog')?.open`, 'Quick View closes with Escape');
 
-  await setViewport(1440, 1000);
+  await setViewport(1440, 960);
   await openProduct(2);
   const second = await evaluate(`(() => ({
     title: document.querySelector('#product-dialog #product-title')?.textContent,
@@ -209,7 +330,8 @@ try {
     return {
       title: dialog.querySelector('#product-title')?.textContent,
       slots: dialog.querySelectorAll('.product-detail-image-stage, .product-detail-gallery__secondary-stage').length,
-      imageCount: dialog.querySelector('.product-detail-media').querySelectorAll('img').length,
+      visibleMappedImageCount: [...dialog.querySelectorAll('.product-detail-media img')]
+        .filter(image => !image.hidden && image.currentSrc).length,
       frontTop: front.top,
       backTop: back.top,
       frontHeight: front.height,
@@ -223,10 +345,10 @@ try {
   })()`);
   assert.equal(ombre.title, 'FSD Ombré Slash Tee');
   assert.equal(ombre.slots, 2);
-  assert.equal(ombre.imageCount, 0, 'missing approved photos do not create broken or concept-board images');
+  assert.equal(ombre.visibleMappedImageCount, 0, 'missing approved photos do not render a mapped garment image');
   assert.equal(ombre.frontTop, ombre.backTop);
   assert.ok(ombre.mediaRatio > 1.8, 'placeholder pair uses the same desktop two-thirds layout');
-  assert.ok(ombre.frontHeight >= 0.55 * (1000 - desktop.mastheadBottom), 'missing photos retain substantial desktop placeholder panels');
+  assert.ok(ombre.frontHeight >= 0.55 * (960 - desktop.mastheadBottom), 'missing photos retain substantial desktop placeholder panels');
   assert.equal(ombre.frontHeight, ombre.backHeight, 'front and back placeholders have matching proportions');
   assert.equal(ombre.placeholderBackground, 'rgb(239, 237, 230)', 'PDP placeholders keep the warm-neutral editorial gallery surface');
   assert.equal(ombre.notifyButtonDisabled, true, 'notification remains disabled without a provider');
@@ -239,13 +361,52 @@ try {
   const cheetah = await evaluate(`(() => ({
     title: document.querySelector('#product-dialog #product-title')?.textContent,
     slots: document.querySelectorAll('#product-dialog .product-detail-image-stage, #product-dialog .product-detail-gallery__secondary-stage').length,
-    imageCount: document.querySelector('#product-dialog .product-detail-media')?.querySelectorAll('img').length,
+    visibleMappedImageCount: [...document.querySelectorAll('#product-dialog .product-detail-media img')]
+      .filter(image => !image.hidden && image.currentSrc).length,
   }))()`);
   assert.equal(cheetah.title, 'FSD Cheetah Windrunner');
   assert.equal(cheetah.slots, 2);
-  assert.equal(cheetah.imageCount, 0);
+  assert.equal(cheetah.visibleMappedImageCount, 0);
 
-  console.log('Product gallery reference checks passed at desktop and mobile widths; front/back mapping, placeholders, header interaction, wishlist persistence, and Quick View were verified.');
+  await setViewport(393, 844);
+  await openProduct(1);
+  const ombreMobile = await evaluate(`(() => {
+    const dialog = document.querySelector('#product-dialog');
+    const back = [...dialog.querySelectorAll('[data-catalogue-gallery-view]')].find(button =>
+      /back|rear/i.test([button.dataset.catalogueViewLabel, button.getAttribute('aria-label')].filter(Boolean).join(' ')));
+    const secondary = dialog.querySelector('.product-detail-gallery__secondary');
+    return {
+      main: dialog.querySelector('.product-detail-image-stage').innerText,
+      backLabel: back?.dataset.catalogueViewLabel || back?.getAttribute('aria-label'),
+      back,
+      secondaryDisplay: getComputedStyle(secondary).display,
+      thumbnailCount: dialog.querySelectorAll('[data-catalogue-gallery-view]').length,
+      visibleMappedImageCount: [...dialog.querySelectorAll('.product-detail-media img')]
+        .filter(image => !image.hidden && image.currentSrc).length,
+      notifyDisabled: dialog.querySelector('.product-detail-notify__button')?.disabled,
+      addButtons: dialog.querySelectorAll('[data-bag-add]').length,
+      overflow: document.documentElement.scrollWidth > innerWidth,
+    };
+  })()`);
+  assert.match(ombreMobile.main, /FRONT VIEW/);
+  assert.match(ombreMobile.main, /IMAGE PENDING/);
+  assert.equal(ombreMobile.secondaryDisplay, 'none', 'mobile does not duplicate the back placeholder panel');
+  assert.equal(ombreMobile.thumbnailCount, 3, 'mobile retains selectable front, back and detail placeholders');
+  assert.equal(ombreMobile.visibleMappedImageCount, 0);
+  assert.equal(ombreMobile.notifyDisabled, true);
+  assert.equal(ombreMobile.addButtons, 0, 'checkout stays disabled');
+  assert.equal(ombreMobile.overflow, false, 'mobile pending-media detail has no horizontal overflow');
+  await evaluate(`(() => {
+    const buttons = [...document.querySelectorAll('#product-dialog [data-catalogue-gallery-view]')];
+    const back = buttons.find(button =>
+      /back|rear/i.test([button.dataset.catalogueViewLabel, button.getAttribute('aria-label')].filter(Boolean).join(' ')));
+    if (!back) throw new Error('Back-view pending thumbnail was not found');
+    back.click();
+  })()`);
+  await wait(`document.querySelector('#product-dialog .product-detail-image-stage')?.innerText.includes('BACK VIEW')`,
+    'mobile placeholder thumbnail immediately selects the back-view treatment');
+
+  console.log('Product gallery reference checks passed: desktop SHOP grid, mapped and pending product media, exact desktop/mobile widths, immediate selection/swipe, viewer modality/focus/Escape/close, and disabled checkout.');
 } finally {
   await close();
 }
