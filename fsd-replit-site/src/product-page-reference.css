@@ -1,0 +1,659 @@
+/*
+  FSD product page — editorial reference layout.
+  Two large, edge-to-edge photographs (front and back) take two thirds of the
+  width; a calm, sticky purchase column takes the remaining third.
+  Scoped to the full product page only (quick view keeps its own layout).
+*/
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) {
+  --pdp-ink: #0b0b0c;
+  --pdp-muted: #6b6b6f;
+  --pdp-line: #e6e3dc;
+  --pdp-gold: #b8955a;
+  --pdp-header: 94px;
+  background: #fff;
+  color: var(--pdp-ink);
+}
+
+/* Layout: 2/3 photography, 1/3 purchase */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout[data-catalogue-has-secondary="true"] {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(340px, 1fr);
+  gap: 0;
+  align-items: start;
+  background: #fff;
+  padding: 0;
+  max-width: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout .product-detail-media,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-media {
+  grid-column: 1;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: #fff;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout .product-detail-purchase,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-purchase {
+  grid-column: 2;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: none;
+  padding: clamp(36px, 5vw, 64px) clamp(24px, 3vw, 48px) 48px;
+  background: #fff;
+  border: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Remove technical chrome around the photographs */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-media__masthead,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__thumbnail-heading,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) [data-gallery-count],
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb-label {
+  display: none !important;
+}
+
+/* Front and back photographs: tall, edge to edge, hairline divider */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: #fff;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: #fff;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid.is-single {
+  grid-template-columns: 1fr;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid figure {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #f3f1ec;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-image-stage,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__secondary-stage {
+  height: min(calc(100vh - var(--pdp-header)), 1040px);
+  min-height: 520px;
+  aspect-ratio: auto;
+  padding: 0;
+  border: 0;
+  background: #f3f1ec;
+  overflow: hidden;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-image-zoom {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-image-stage img,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__secondary-stage img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  object-position: center top;
+  padding: 0;
+  background: none;
+}
+/* Caption becomes a small tag in the corner, like "Model wearing size S" */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid figcaption {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  left: auto;
+  max-width: calc(100% - 28px);
+  margin: 0;
+  padding: 5px 9px;
+  border: 0;
+  background: rgba(255, 255, 255, .86);
+  color: var(--pdp-ink);
+  font: 500 10.5px/1.3 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: .02em;
+  text-transform: none;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid figcaption:empty {
+  display: none;
+}
+
+/* Remaining views: a slim strip of small photographs, no labels */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__thumbnail-section {
+  padding: 14px clamp(16px, 2vw, 28px) 0;
+  margin: 0;
+  border: 0;
+  background: #fff;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  overflow: visible;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb {
+  width: 64px;
+  min-width: 0;
+  height: 84px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: #f3f1ec;
+  overflow: hidden;
+  opacity: .62;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb:hover,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb:focus-visible {
+  opacity: 1;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb.is-selected,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb[aria-pressed="true"] {
+  opacity: 1;
+  border-color: var(--pdp-ink);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+/* Arrow and full-screen tools: quiet text controls */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .fsd-gallery-tools {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  padding: 12px clamp(16px, 2vw, 28px) 28px;
+  margin: 0;
+  border: 0;
+  background: #fff;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .fsd-gallery-tools button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--pdp-line);
+  border-radius: 0;
+  background: #fff;
+  color: var(--pdp-ink);
+  font: 500 11px/1 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: .06em;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .fsd-gallery-tools [data-gallery-fullscreen] {
+  margin-left: auto;
+}
+
+/* Purchase column typography */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .catalogue-breadcrumbs {
+  order: 0;
+  margin: 0 0 28px;
+  font: 400 11px/1.5 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: .02em;
+  text-transform: none;
+  color: var(--pdp-muted);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .catalogue-breadcrumbs a {
+  color: var(--pdp-muted);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-back {
+  display: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .section-kicker {
+  margin: 0 0 10px;
+  color: var(--pdp-gold);
+  font: 500 10.5px/1.4 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 14px;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-titlebar h1 {
+  margin: 0;
+  color: var(--pdp-ink);
+  font: 400 clamp(24px, 2.1vw, 31px)/1.18 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: -.01em;
+  text-transform: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-titlebar .product-detail-wishlist {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -4px -8px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pdp-ink);
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-titlebar .product-detail-wishlist [data-wishlist-label] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-titlebar .product-detail-wishlist[aria-pressed="true"] {
+  color: var(--pdp-gold);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-price {
+  margin: 0 0 30px;
+  padding: 0;
+  border: 0;
+  color: var(--pdp-ink);
+  font: 400 16px/1.4 "DM Sans", "Segoe UI", sans-serif;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-price strong {
+  font: inherit;
+  font-weight: 500;
+}
+
+/* Colour: small round swatches with the name beside the label */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-colourways,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-sizes {
+  position: relative;
+  display: grid;
+  margin: 0 0 26px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-colourways legend,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-sizes legend {
+  float: left;
+  width: auto;
+  margin: 0 0 10px;
+  padding: 0;
+  color: var(--pdp-ink);
+  font: 400 12px/1.4 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-colourways legend::after {
+  content: ":";
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-selected-colour {
+  order: -1;
+  position: absolute;
+  top: 0;
+  left: 52px;
+  margin: 0;
+  color: var(--pdp-ink);
+  font: 400 12px/1.4 "DM Sans", "Segoe UI", sans-serif;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-colourways .product-detail-options {
+  clear: both;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--colour {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid var(--pdp-line);
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--colour input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--colour > span:not(.product-detail-swatch) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--colour .product-detail-swatch {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--catalogue-swatch, #d8d4cc);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--colour:has(input:checked) {
+  border-color: var(--pdp-ink);
+  box-shadow: none;
+  background: #fff;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--colour:has(input:focus-visible) {
+  outline: 2px solid var(--pdp-gold);
+  outline-offset: 2px;
+}
+
+/* Size: flat boxes, black when selected, size guide on the right */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-sizes .product-detail-options {
+  clear: both;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--size {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 38px;
+  width: auto;
+  padding: 0 4px;
+  border: 1px solid var(--pdp-line);
+  border-radius: 0;
+  background: #fff;
+  color: var(--pdp-ink);
+  font: 400 12px/1 "DM Sans", "Segoe UI", sans-serif;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--size input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--size:hover {
+  border-color: var(--pdp-ink);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--size:has(input:checked) {
+  background: var(--pdp-ink);
+  border-color: var(--pdp-ink);
+  color: #fff;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--size:has(input:focus-visible) {
+  outline: 2px solid var(--pdp-gold);
+  outline-offset: 2px;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--size.is-out-of-stock {
+  color: #b3b0aa;
+  background: repeating-linear-gradient(135deg, #fff 0 6px, #f6f4ef 6px 7px);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-sizes .product-detail-text-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pdp-ink);
+  font: 400 11.5px/1.4 "DM Sans", "Segoe UI", sans-serif;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-sizes .product-detail-text-link::after {
+  content: " \203A";
+}
+
+/* Description and actions */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-summary {
+  margin: 4px 0 26px;
+  max-width: 46ch;
+  color: #2a2a2d;
+  font: 400 14px/1.6 "DM Sans", "Segoe UI", sans-serif;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-quantity {
+  margin: 0 0 12px;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-add,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-notify__button {
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  border: 1px solid var(--pdp-ink);
+  border-radius: 0;
+  background: var(--pdp-ink);
+  color: #fff;
+  font: 500 12px/1 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  box-shadow: none;
+  transition: background .2s ease, color .2s ease;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-add:not(:disabled):hover {
+  background: #222226;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-add:disabled {
+  background: var(--pdp-ink);
+  color: rgba(255, 255, 255, .72);
+  opacity: 1;
+  cursor: not-allowed;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-notify__button:disabled {
+  background: #f3f1ec;
+  border-color: var(--pdp-line);
+  color: var(--pdp-muted);
+  cursor: not-allowed;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-notify p,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-size-help,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-availability {
+  margin: 8px 0 0;
+  color: var(--pdp-muted);
+  font: 400 11.5px/1.5 "DM Sans", "Segoe UI", sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-delivery-summary {
+  margin: 14px 0 0;
+  font: 400 11.5px/1.5 "DM Sans", "Segoe UI", sans-serif;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-delivery-summary a {
+  color: var(--pdp-muted);
+}
+
+/* Accordions in the purchase column */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordions {
+  margin: 26px 0 0;
+  padding: 0;
+  max-width: none;
+  border-top: 1px solid var(--pdp-line);
+  background: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--pdp-line);
+  background: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 0;
+  list-style: none;
+  color: var(--pdp-ink);
+  font: 400 14px/1.3 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion summary::-webkit-details-marker {
+  display: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion summary::after {
+  content: "\203A";
+  font-size: 18px;
+  color: var(--pdp-muted);
+  transition: transform .2s ease;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion[open] summary::after {
+  transform: rotate(90deg);
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion > div {
+  padding: 0 0 18px;
+  color: #2a2a2d;
+  font: 400 13px/1.6 "DM Sans", "Segoe UI", sans-serif;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion > div p,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion > div ul {
+  margin: 0 0 8px;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion a {
+  color: var(--pdp-ink);
+}
+
+/* Tablet: photographs stay side by side, purchase column below */
+@media (max-width: 1080px) {
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout,
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout[data-catalogue-has-secondary="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout .product-detail-purchase,
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout[data-catalogue-has-secondary="true"] .product-detail-purchase {
+    grid-column: 1;
+    position: static;
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-image-stage,
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__secondary-stage {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 3 / 4;
+  }
+}
+
+/* Phone: one large photograph per row width, swipe-friendly pair */
+@media (max-width: 640px) {
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid {
+    grid-template-columns: 86% 86%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid::-webkit-scrollbar {
+    display: none;
+  }
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid figure {
+    scroll-snap-align: start;
+  }
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-layout .product-detail-purchase {
+    padding: 28px 20px 40px;
+  }
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb {
+    width: 52px;
+    height: 68px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) * {
+    transition: none !important;
+  }
+}
+
+/* Override fixed-height rules from earlier gallery layers. */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid {
+  height: auto !important;
+  max-height: none !important;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-gallery__feature-grid > figure {
+  height: auto !important;
+  grid-template-rows: auto;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb {
+  flex: none !important;
+  min-height: 0 !important;
+  grid-template-rows: 1fr;
+}
+
+/* Engineering and specifications: same calm, light treatment as the panel */
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-specifications {
+  margin: 28px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-specifications h3 {
+  margin: 0 0 12px;
+  color: var(--pdp-gold);
+  font: 500 10.5px/1.4 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-specifications__grid {
+  display: grid;
+  gap: 10px;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-specifications__card {
+  padding: 18px 20px;
+  border: 1px solid var(--pdp-line) !important;
+  border-radius: 0 !important;
+  background: #faf9f6 !important;
+  color: var(--pdp-ink) !important;
+  box-shadow: none !important;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-specifications__card h4 {
+  margin: 0 0 10px;
+  color: var(--pdp-ink) !important;
+  font: 500 12px/1.4 "DM Sans", "Segoe UI", sans-serif;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-specifications__list,
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-specifications__list li {
+  color: #2a2a2d !important;
+  font: 400 13px/1.55 "DM Sans", "Segoe UI", sans-serif;
+}
+#product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-sizes .product-detail-text-link::after {
+  content: "\203A";
+  display: inline-block;
+  margin-left: 5px;
+}

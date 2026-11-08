@@ -74,7 +74,8 @@ test('Aeroforge Training Tee maps approved photos to all six colourways without 
   assert.match(markup, /Targeted Ventilation/);
   assert.match(markup, /Machine wash cold at 30°C/);
   assert.doesNotMatch(markup, /Availability by size:/);
-  assert.equal((markup.match(/data-catalogue-image-index=/g) || []).length, 17);
+  // The gallery shows the selected colourway's photos (White / Green has 12).
+  assert.equal((markup.match(/data-catalogue-image-index=/g) || []).length, 12);
   assert.match(markup, /data-catalogue-main-image/);
   assert.doesNotMatch(markup, /Sample \/ Launch Development Tier|InStock/);
 });

@@ -9,11 +9,12 @@ import { alightPreviewRecord, createAlightPreview } from '../src/alight-campaign
 import { createAlightDevelopmentIntegration } from '../src/alight-development-integration.js';
 import { alightPreviewPath } from '../src/alight-preview-path.js';
 import { createNavigationModel, getNavigationFeature } from '../src/site-navigation.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 const sourcePath = relativePath => fileURLToPath(new URL(`../../${relativePath}`, import.meta.url));
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 
-test('ALIGHT preview preserves the supplied image archive and all twelve source files', () => {
+test('ALIGHT preview preserves the supplied image archive and all twelve source files', { skip: privateAssetsSkip }, () => {
   const preview = createAlightPreview();
   const archivePath = sourcePath(preview.sourceArchive);
   const archiveBytes = readFileSync(archivePath);

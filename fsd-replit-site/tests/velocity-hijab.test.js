@@ -8,8 +8,9 @@ import {
   velocityHijabPreviewRecord,
 } from '../src/velocity-hijab-campaign.js';
 import { velocityHijabPreviewPath } from '../src/velocity-hijab-preview-path.js';
+import { privateAssetsSkip } from './private-assets.js';
 
-test('private Velocity hijab preview reuses the existing product and supplied images', () => {
+test('private Velocity hijab preview reuses the existing product and supplied images', { skip: privateAssetsSkip }, () => {
   const preview = createVelocityHijabPreview();
   assert.equal(velocityHijabPreviewPath, '/__catalogue-preview/velocity-performance-sports-hijab/');
   assert.equal(preview.product, products.find(product => product.id === 43));

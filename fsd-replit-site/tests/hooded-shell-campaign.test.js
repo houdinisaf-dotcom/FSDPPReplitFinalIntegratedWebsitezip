@@ -9,6 +9,7 @@ import {
   hoodedShellCampaign,
   hoodedShellPreviewRecord,
 } from '../src/hooded-shell-campaign.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 const workspaceRoot = resolve(process.cwd(), '..');
 
@@ -30,7 +31,7 @@ test('the campaign proof reuses the existing shell record without mutating the c
   assert.deepEqual(masterProducts, before);
 });
 
-test('the campaign proof maps only the supplied clean hero file with its recorded hash and dimensions', async () => {
+test('the campaign proof maps only the supplied clean hero file with its recorded hash and dimensions', { skip: privateAssetsSkip }, async () => {
   const bytes = await readFile(resolve(workspaceRoot, hoodedShellCampaign.file));
   assert.equal(bytes.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
   assert.equal(createHash('sha256').update(bytes).digest('hex'), hoodedShellCampaign.sha256);

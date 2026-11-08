@@ -2,7 +2,9 @@ import { readFile, writeFile, readdir, mkdir, stat } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { applySeoToHtml, storefrontSeoRoutes, seoEntryForPath, escapeSeo, plainText, validatedProductionOrigin } from '../src/site-seo.js';
 import { productionOrigin } from '../site.config.js';
-import { isHouseDraftBuildFile, isHouseDraftRoute } from '../src/data/house-page-readiness.js';
+import { HOUSE_GENERATED_PAGES, isHouseDraftBuildFile, isHouseDraftRoute } from '../src/data/house-page-readiness.js';
+
+const generatedHousePaths = new Set(HOUSE_GENERATED_PAGES.map(page => page.path));
 
 const excluded = /(?:^|\/)(?:404|private|admin|cart|checkout)(?:[-/.]|$)/i;
 export function sitemapXml(entries, origin) {
@@ -18,7 +20,7 @@ function publicEntry(path, html) {
   const title = decode(plainText(html.match(/<title>([\s\S]*?)<\/title>/i)?.[1])) || 'FSD';
   const description = decode(html.match(/<meta\s+name=["']description["']\s+content=(["'])([\s\S]*?)\1/i)?.[2])
     || (path === '/the-house.html' ? 'Explore The House of Performance: FSD’s story, flagships, fight promotions and global vision.'
-      : path === '/investor.html' ? 'FSD Investor Relations: review the published investor information, metrics and dossiers.'
+      : path === '/investor.html' ? 'FSD Investor Relations: the FSD business concept, its divisions and growth horizons, and how to contact investor relations.'
         : `Explore ${title.replace(/^FSD\s*\|\s*/, '')} from FSD — Fitness & Self Defence.`);
   return { path, title, description };
 }
@@ -47,7 +49,7 @@ export function siteSeoPlugin(projectRoot) {
           const path = new URL(request.url || '/', 'http://fsd.local').pathname;
           if (!['GET', 'HEAD'].includes(request.method)) return next();
           if (path.startsWith('/__') || path.startsWith('/api/')) return next();
-          if (isHouseDraftRoute(path)) return next();
+          if (isHouseDraftRoute(path) || generatedHousePaths.has(path)) return next();
           const entry = seoEntryForPath(path);
           let html;
           if (path === '/enquiries.html') {
@@ -101,7 +103,15 @@ export function siteSeoPlugin(projectRoot) {
           entries.push(entry);
           await writeFile(destination, applySeoToHtml(html, entry));
         }
-        for (const entry of publicRoutes.filter(item => item.path !== '/')) {
+        for (const page of HOUSE_GENERATED_PAGES.filter(item => item.readiness === 'PUBLIC')) {
+          const destination = resolve(output, page.buildFile);
+          const html = await readFile(destination, 'utf8').catch(() => null);
+          if (!html) continue;
+          const entry = publicEntry(page.path, html);
+          entries.push(entry);
+          await writeFile(destination, applySeoToHtml(html, entry));
+        }
+        for (const entry of publicRoutes.filter(item => item.path !== '/' && !generatedHousePaths.has(item.path))) {
           const destination = resolve(output, `.${entry.path}`, 'index.html');
           await mkdir(dirname(destination), { recursive: true });
           await writeFile(destination, renderEntry(baseHtml.replace(/<noscript>[\s\S]*?<\/noscript>/i, ''), entry));

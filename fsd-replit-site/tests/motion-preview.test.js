@@ -8,10 +8,11 @@ import { createMotionPreview, motionPreviewManifest } from '../src/motion-campai
 import { motionPreviewPath, motionProductPath } from '../src/motion-preview-path.js';
 import { createMotionDevelopmentIntegration } from '../src/motion-development-integration.js';
 import { renderMotionPreview } from '../src/motion-preview-ui/motion-preview.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
-test('FSD MOTION is a private 15-image campaign reference, not catalogue data', () => {
+test('FSD MOTION is a private 15-image campaign reference, not catalogue data', { skip: privateAssetsSkip }, () => {
   assert.equal(motionPreviewManifest.sourceImageCount, 15);
   assert.equal(motionPreviewManifest.assets.length, 15);
   assert.equal(new Set(motionPreviewManifest.assets.map(asset => asset.id)).size, 15);

@@ -315,7 +315,7 @@ export function HomeHero({ headingTag = 'h1' }) {
             >
               <div className="fsd-home-campaign-scene__image" aria-hidden="true">
                 <SafeImage
-                  src={siteMedia.homeHero?.src}
+                  src={(siteMedia.campaigns?.[experience.id] || siteMedia.homeHero)?.src}
                   alt=""
                   placeholderTitle="FSD campaign photography"
                   placeholderKind="hero"

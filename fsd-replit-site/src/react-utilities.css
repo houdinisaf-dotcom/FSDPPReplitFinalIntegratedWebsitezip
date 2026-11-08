@@ -25,6 +25,14 @@
 }
 
 .fsd-react-control {
+  /* Unlayered global `button { font: inherit }` beats Tailwind's layered
+     utilities, so the control typography is declared here explicitly. */
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .16em;
+  text-transform: uppercase;
   min-height: 38px;
   border: 1px solid rgb(201 173 120 / 38%);
   background: #101113;

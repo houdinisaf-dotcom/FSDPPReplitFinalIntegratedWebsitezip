@@ -56,9 +56,11 @@ test('the homepage adds four BE HEROES experience panels with approved images or
   assert.match(markup, /href="\/hardware"/);
   assert.match(markup, /href="\/bio-lab"/);
   assert.match(markup, /href="\/the-house\.html"/);
-  assert.equal((markup.match(/<img\b/g) || []).length, 1);
-  assert.equal((markup.match(/fsd-image-placeholder--banner/g) || []).length, 3);
-  assert.equal((markup.match(/class="fsd-image-placeholder__note">\[ASSET PENDING\]<\/small>/g) || []).length, 3);
+  assert.equal((markup.match(/<img\b/g) || []).length, 4);
+  for (const id of ['stronger', 'disciplined', 'together']) {
+    assert.ok(markup.includes(`/fsd-assets/campaigns/${id}.webp`));
+  }
+  assert.equal((markup.match(/fsd-image-placeholder--banner/g) || []).length, 0);
 });
 
 test('group filters constrain category, audience and terms rather than leaking unrelated products', () => {

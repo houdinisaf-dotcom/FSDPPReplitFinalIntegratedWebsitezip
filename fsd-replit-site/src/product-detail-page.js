@@ -476,7 +476,12 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
           <div class="product-detail-image-stage">
             <button type="button" class="product-detail-image-zoom" data-gallery-photo-open
               aria-controls="fsd-product-viewer" aria-expanded="false"
-              aria-label="Open full-screen product photograph" hidden></button>
+              aria-label="Open full-screen product photograph" hidden>
+              <img class="mapped-gallery-image" data-mapped-gallery-active="true" data-catalogue-main-image
+                data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
+                data-fsd-image-variant="${safe(initialVariant || '')}" data-fsd-image-kind="detail"
+                alt="" decoding="async" hidden />
+            </button>
             ${renderMainImagePlaceholder(product, initialVariant, 'Front view')}
           </div>
           <figcaption data-catalogue-main-caption aria-live="polite">FRONT VIEW — IMAGE PENDING</figcaption>
@@ -734,11 +739,16 @@ export function renderProductDetailPage({
         </ol></nav>
         <button class="catalogue-back" type="button" data-catalogue-back>RETURN TO THE HOUSE</button>
         <p class="section-kicker">${safe(breadcrumbCategory)}</p>
-        <h1 id="product-title">${safe(product.name)}</h1>
+        <div class="product-detail-titlebar">
+          <h1 id="product-title">${safe(product.name)}</h1>
+          <button class="product-detail-wishlist" type="button" data-product-wishlist="${product.id}" aria-pressed="false">
+            <span aria-hidden="true">♡</span><span data-wishlist-label>Add to wishlist</span>
+          </button>
+        </div>
         ${priceMarkup}
-        ${summaryMarkup}
         ${renderColourwayOptions(product, colourways, colourwayImageIndexes)}
         ${sizeMarkup}
+        ${summaryMarkup}
         ${availability ? `<p class="product-detail-availability"${breezeCommercialDetailsUnconfirmed ? ' role="status"' : ''}>${safe(availability)}</p>` : ''}
         ${quantityMarkup}
         ${actionMarkup}
@@ -746,14 +756,11 @@ export function renderProductDetailPage({
         <p class="product-detail-delivery-summary">
           <a href="/delivery-returns.html">Delivery and returns</a>
         </p>
-        <button class="product-detail-wishlist" type="button" data-product-wishlist="${product.id}" aria-pressed="false">
-          <span aria-hidden="true">♡</span><span data-wishlist-label>Add to wishlist</span>
-        </button>
         <p class="product-detail-action-status" data-product-action-status role="status" aria-live="polite"></p>
+        ${renderDetails(product, sizes, hardwarePreview)}
         <div data-product-specifications-root data-product-id="${product.id}"></div>
       </section>
     </div>
-    ${renderDetails(product, sizes, hardwarePreview)}
     ${renderRelatedProducts(product)}
     ${Array.isArray(product.reviews) && product.reviews.length
       ? `<section class="product-detail-reviews" aria-label="Customer reviews">

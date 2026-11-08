@@ -18,6 +18,7 @@ export const featuredProducts = products.filter(product => {
 });
 
 function experienceMedia(experience) {
+  if (siteMedia.campaigns?.[experience.id]) return siteMedia.campaigns[experience.id];
   if (experience.assetKey === 'women') return siteMedia.collectionCards.womens;
   if (experience.assetKey === 'hardware') return siteMedia.hardwareFeature;
   return null;

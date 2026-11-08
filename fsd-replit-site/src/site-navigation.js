@@ -426,7 +426,7 @@ function makeHouseGroups(divisions) {
       kind: 'destination',
       href,
       navigationUnavailable: !href || shouldDisableHouseHref(href),
-      description: 'Location details are being prepared. No operating site or service is represented.',
+      description: 'Proposed FSD flagship concept: the location vision, franchise and partnership enquiries.',
     };
   });
   flagshipItems.push(...conceptsForPlacement('THE HOUSE', 'Flagships').map(conceptItem));
@@ -593,7 +593,7 @@ function makeHouseGroups(divisions) {
         },
       ]),
     staticGroup('investor-relations', 'INVESTOR RELATIONS', '/investor.html',
-      'Investor Relations; no public investor dossier is currently available.',
+      'Investor Relations: the FSD business concept and how to contact the investor team.',
       null, 0, { navigationUnavailable: shouldDisableHouseHref('/investor.html') }),
     initiativeGroup('community-culture', 'COMMUNITY & CULTURE',
       'Active House & Universe initiatives across co-creation, partnerships, reuse, and community safety.',

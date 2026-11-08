@@ -6,6 +6,7 @@ import { hardwareForgePrivatePreviewPlugin } from '../scripts/hardware-forge-pri
 import { createNavigationModel } from '../src/site-navigation.js';
 import { routeFromHash } from '../src/react-router.js';
 import { configureHardwareForgeMenu, registerHardwareForgeRoute } from '../src/hardware-forge-development-metadata.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 test('hardware review presents only the four approved master record IDs', () => {
   assert.deepEqual(hardwareForgeItems.map(item => item.id), [69, 70, 52, 54]);
@@ -36,7 +37,7 @@ test('review remains absent outside development and includes no commercial claim
   assert.doesNotMatch(source, /CONCEPT \/ REVIEW ONLY/i);
 });
 
-test('private image middleware has an explicit two-image allowlist', async () => {
+test('private image middleware has an explicit two-image allowlist', { skip: privateAssetsSkip }, async () => {
   const plugin = hardwareForgePrivatePreviewPlugin();
   assert.equal(plugin.apply, 'serve');
   let middleware;

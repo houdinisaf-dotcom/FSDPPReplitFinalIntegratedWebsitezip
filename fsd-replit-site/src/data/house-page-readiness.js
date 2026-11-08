@@ -10,7 +10,7 @@ const publicPages = [
   ['local-micro-manufacturing', '/local-micro-manufacturing.html', 'Local Micro-Manufacturing', 'Global Vision & Operations'],
   ['genetic-microbiome', '/genetic-microbiome.html', 'Genetic & Microbiome Personalisation', 'BIO-LAB™ / Personalisation Research'],
   ['security-vision', '/security-vision.html', 'Security Provisions', 'Global Vision & Operations'],
-  ['investor-relations', '/investor.html', 'Investor Relations', 'Investor Relations', 'NOT_READY'],
+  ['investor-relations', '/investor.html', 'Investor Relations', 'Investor Relations'],
   ['community-co-creation', '/community-co-creation.html', 'Community Co-Creation', 'Community & Culture'],
   ['performance-partnerships', '/performance-partnerships.html', 'Performance-Linked Partnerships', 'Community & Culture'],
   ['circular-trade-in', '/circular-trade-in.html', 'Circular Trade-In Programme', 'Community & Culture'],
@@ -25,8 +25,8 @@ const publicPages = [
   contentStatus: readiness === 'NOT_READY'
     ? 'CONTENT PENDING'
     : id === 'fight-promotions' ? 'Approved concept disclosure' : 'Approved public disclosure',
-  internalNote: readiness === 'NOT_READY'
-    ? 'UK legal review and proposed investor figures remain outstanding.'
+  internalNote: id === 'investor-relations'
+    ? 'Public overview only. Funding figures and valuation stay private (UK FSMA s21) until approved by an FCA-authorised person.'
     : '',
   heroMedia: 'CONTENT PENDING — no page-specific approved hero photograph is recorded; retain text-led abstract hero.',
   bannerMedia: 'CONTENT PENDING — no approved desktop, tablet, or mobile banner crop is recorded.',
@@ -43,24 +43,27 @@ export const HOUSE_FLAGSHIP_DRAFTS = Object.freeze([
   ...page,
   path: `/flagships/${page.id}.html`,
   division: 'Flagships',
-  readiness: 'NOT_READY',
-  contentStatus: 'CONTENT PENDING',
-  internalNote: 'No approved location, operator, or service details are available for public use.',
-  heroMedia: 'CONTENT PENDING — no page-specific approved hero photograph is recorded; retain text-led abstract hero.',
-  bannerMedia: 'CONTENT PENDING — no approved desktop, tablet, or mobile banner crop is recorded.',
+  readiness: 'PUBLIC',
+  contentStatus: 'Approved public disclosure',
+  internalNote: 'Design concept only. No address, lease, operator or opening date is claimed.',
+  heroMedia: '',
+  bannerMedia: '',
   responsiveStatus: 'Passed 12 viewport browser matrix (320–1920px).',
 })));
+
+// Alias with an accurate name; HOUSE_FLAGSHIP_DRAFTS is kept for existing imports.
+export const HOUSE_FLAGSHIP_PAGES = HOUSE_FLAGSHIP_DRAFTS;
 
 const founderStory = Object.freeze({
   id: 'founder-story',
   path: '/story',
   title: 'Founder Story',
   division: 'Our Story',
-  readiness: 'NOT_READY',
-  contentStatus: 'CONTENT PENDING',
-  internalNote: 'Founder biography and replacement copy require verification.',
-  heroMedia: 'CONTENT PENDING — no page-specific approved hero photograph is recorded; retain text-led abstract hero.',
-  bannerMedia: 'CONTENT PENDING — no approved desktop, tablet, or mobile banner crop is recorded.',
+  readiness: 'PUBLIC',
+  contentStatus: 'Approved public disclosure',
+  internalNote: 'Brand story only. Add a verified founder biography and photograph when approved.',
+  heroMedia: '',
+  bannerMedia: '',
   responsiveStatus: 'Passed 12 viewport browser matrix (320–1920px).',
 });
 
@@ -73,11 +76,28 @@ export const HOUSE_PAGE_REGISTRY = Object.freeze([
 const byPath = new Map(HOUSE_PAGE_REGISTRY.map(page => [page.path, page]));
 const byDirectPath = byPath;
 
-export const HOUSE_DRAFT_BUILD_FILES = Object.freeze([
-  'investor.html',
-  'story/index.html',
-  ...HOUSE_FLAGSHIP_DRAFTS.map(({ id }) => `flagships/${id}.html`),
+const buildFileForPath = path => (path === '/story' ? 'story/index.html' : path.replace(/^\//, ''));
+
+// House pages rendered by standalone-navigation-pages.js from house-public-content.js.
+export const HOUSE_GENERATED_PAGE_IDS = Object.freeze([
+  'founder-story',
+  'investor-relations',
+  ...HOUSE_FLAGSHIP_DRAFTS.map(({ id }) => id),
 ]);
+
+export const HOUSE_GENERATED_PAGES = Object.freeze(
+  HOUSE_PAGE_REGISTRY
+    .filter(page => HOUSE_GENERATED_PAGE_IDS.includes(page.id))
+    .map(page => Object.freeze({ ...page, buildFile: buildFileForPath(page.path) })),
+);
+
+// Pages still held back from production. Empty while every House page is public;
+// set a registry entry's readiness to 'NOT_READY' to hold it back again.
+export const HOUSE_DRAFT_BUILD_FILES = Object.freeze(
+  HOUSE_PAGE_REGISTRY
+    .filter(page => page.readiness === 'NOT_READY')
+    .map(page => buildFileForPath(page.path)),
+);
 
 const houseDraftPaths = new Set([
   ...HOUSE_PAGE_REGISTRY

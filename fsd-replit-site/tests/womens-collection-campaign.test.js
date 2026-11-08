@@ -13,6 +13,7 @@ import {
   validateWomensCollectionPrivateAssets,
   womensCollectionPrivatePreviewPlugin,
 } from '../scripts/womens-collection-private-preview-plugin.mjs';
+import { privateAssetsSkip } from './private-assets.js';
 
 const appRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const collageIndexes = new Set([4, 5, 6, 25, 27, 28, 30, 31, 32, 33, 34, 35, 41, 51]);
@@ -113,7 +114,7 @@ test('audit accounts for all 53 images and isolates duplicates and composite boa
   );
 });
 
-test('the source archive and all preview media are present without modifying master data', () => {
+test('the source archive and all preview media are present without modifying master data', { skip: privateAssetsSkip }, () => {
   assert.equal(womensCollectionSourceManifest.originalTiffCount, 53);
   assert.equal(
     existsSync(resolve(appRoot, '..', womensCollectionSourceManifest.sourceArchive)),

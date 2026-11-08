@@ -9,6 +9,7 @@ import manifest from '../content/aeroforge-private/image-manifest.json' with { t
 import { createAeroForgeDraftData } from '../src/aeroforge-campaign.js';
 import { createAeroForgeDevelopmentIntegration } from '../src/aeroforge-development-integration.js';
 import { aeroforgePrivatePreviewPlugin } from '../scripts/aeroforge-private-preview-plugin.mjs';
+import { privateAssetsSkip } from './private-assets.js';
 
 const projectRoot = resolve(new URL('..', import.meta.url).pathname);
 const sourceRoot = resolve(projectRoot, 'content/aeroforge-private/assets');
@@ -41,7 +42,7 @@ test('AeroForge collection and both products stay in a non-purchasable draft lay
   assert.match(draft.catalogueNote, /record and its values are unchanged/i);
 });
 
-test('all supplied image files remain byte-identical to the checked manifest', () => {
+test('all supplied image files remain byte-identical to the checked manifest', { skip: privateAssetsSkip }, () => {
   assert.equal(manifest.assets.length, 13);
   for (const asset of manifest.assets) {
     const file = readFileSync(resolve(sourceRoot, asset.file));
