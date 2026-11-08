@@ -39,6 +39,7 @@ import './site-footer.css';
 import './ui-interactions.css';
 import './flagship-redesign.css';
 import './premium-visual-refinement.css';
+import './product-page-reference.css';
 
 if (typeof document !== 'undefined') installImageErrorFallbacks(document);
 
