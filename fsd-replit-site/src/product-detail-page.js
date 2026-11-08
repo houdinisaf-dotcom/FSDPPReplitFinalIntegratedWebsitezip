@@ -10,6 +10,8 @@ import {
 } from './size-guide-data.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
 import { productImagesForDisplay } from './data/products.js';
+import { galleryIndexesForVariant } from './product-gallery-model.js';
+import { productColourwayOptions } from './product-card-media.js';
 import { rotationFramesForProduct } from './product-rotation-assets.js';
 import { productSeoPath, productStructuredData } from './product-structured-data.js';
 import { MAX_BAG_QUANTITY } from './bag.js';
@@ -266,11 +268,21 @@ function galleryViewType(image) {
   return '';
 }
 
-function galleryViewSlots(images = [], galleryPlaceholders = []) {
+function galleryViewSlots(images = [], galleryPlaceholders = [], visibleIndexes = null) {
   const firstImageByType = new Map();
+  const placeholderLabels = new Map();
+  const visibleIndexSet = visibleIndexes ? new Set(visibleIndexes) : null;
   images.forEach((image, index) => {
+    if (visibleIndexSet && !visibleIndexSet.has(index)) return;
     const type = galleryViewType(image);
     if (type && !firstImageByType.has(type)) firstImageByType.set(type, index);
+  });
+  galleryPlaceholders.forEach(value => {
+    const label = String(value || '').trim();
+    const type = galleryViewType(label);
+    if (type && !firstImageByType.has(type) && !placeholderLabels.has(type)) {
+      placeholderLabels.set(type, label);
+    }
   });
 
   const usedImageIndexes = new Set();
@@ -285,10 +297,15 @@ function galleryViewSlots(images = [], galleryPlaceholders = []) {
         imageIndex,
       };
     }
-    return { kind: 'placeholder', viewId: view.id, viewLabel: view.label };
+    return {
+      kind: 'placeholder',
+      viewId: view.id,
+      viewLabel: placeholderLabels.get(view.id) || view.label,
+    };
   });
 
   images.forEach((image, imageIndex) => {
+    if (visibleIndexSet && !visibleIndexSet.has(imageIndex)) return;
     if (usedImageIndexes.has(imageIndex)) return;
     slots.push({
       kind: 'image',
@@ -380,8 +397,16 @@ function renderSecondaryGalleryPanel(product, image, variantLabel = '', {
     </figure>`;
 }
 
-function renderGalleryThumbnails(product, images, galleryPlaceholders, selectedImageIndex = -1, selectedPlaceholderView = '') {
-  const slots = galleryViewSlots(images, galleryPlaceholders);
+function renderGalleryThumbnails(
+  product,
+  images,
+  galleryPlaceholders,
+  selectedImageIndex = -1,
+  selectedPlaceholderView = '',
+  selectedVariant = '',
+) {
+  const visibleIndexes = galleryIndexesForVariant(product, images, { colourway: selectedVariant });
+  const slots = galleryViewSlots(images, galleryPlaceholders, visibleIndexes);
   return `<div class="product-detail-gallery__thumbnail-section">
     <p class="product-detail-gallery__thumbnail-heading"><span>GALLERY VIEWS</span><span>SELECT A VIEW</span></p>
     <div class="catalogue-selector__thumbs" data-catalogue-thumbnail-rail role="group" aria-label="Choose a product image view">
@@ -455,7 +480,7 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
           })
           : ''}
       </div>
-      ${renderGalleryThumbnails(product, safeImages, galleryPlaceholders, -1, 'front')}
+      ${renderGalleryThumbnails(product, safeImages, galleryPlaceholders, -1, 'front', initialVariant)}
     </div>`;
   }
   const secondaryIndex = editorialGallerySecondaryImageIndex(
@@ -495,8 +520,32 @@ function renderGallery(product, images, initialImageIndex, galleryPlaceholders, 
         })
         : safeImages.length > 1 ? renderSecondaryGalleryPanel(product, secondaryImage, initialVariant) : ''}
     </div>
-    ${renderGalleryThumbnails(product, safeImages, galleryPlaceholders, activeInitialIndex)}
+    ${renderGalleryThumbnails(product, safeImages, galleryPlaceholders, activeInitialIndex, '', initialVariant)}
   </div>`;
+}
+
+export function renderProductGalleryForVariant(product, images, galleryPlaceholders, colourway, quickView = false) {
+  const safeImages = Array.isArray(images) ? images : [];
+  const colourways = productColourwayOptions(product);
+  const hasMultipleColourways = colourways.length > 1;
+  const preferredFront = preferredGallerySideIndex(
+    safeImages,
+    'front',
+    colourway,
+    hasMultipleColourways,
+    !quickView,
+  );
+  const eligibleIndexes = galleryIndexesForVariant(product, safeImages, { colourway });
+  const initialIndex = eligibleIndexes.includes(preferredFront) ? preferredFront : -1;
+  return renderGallery(
+    product,
+    safeImages,
+    initialIndex,
+    galleryPlaceholders,
+    colourway,
+    hasMultipleColourways,
+    quickView,
+  );
 }
 
 function renderDetails(product, sizes, hardwarePreview = false) {

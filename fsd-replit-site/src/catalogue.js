@@ -4,7 +4,12 @@ import { catalogueRelationshipFor } from './data/catalogue-relationships.js';
 import { canAddToBag } from './bag.js';
 import { crossfadeMappedImage, cancelMappedImageSwap } from './catalogue-image-gallery.js';
 import { mountImmersiveProductGallery } from './immersive-product-gallery.js';
-import { imageColourwayIndex, normaliseGalleryColourway } from './product-gallery-model.js';
+import {
+  galleryIndexesForVariant,
+  imageColourwayIndex,
+  isColourNeutralProductDetail,
+  normaliseGalleryColourway,
+} from './product-gallery-model.js';
 import { outlineIcon } from './brand/outline-icons.js';
 import { trackEvent } from './analytics.js';
 import { aegisGiletPreviewPath } from './aegis-gilet-preview-path.js';
@@ -12,6 +17,7 @@ import {
   editorialGalleryPrimaryImageIndex,
   editorialGallerySecondaryImageIndex,
   productSizeOptions,
+  renderProductGalleryForVariant,
   renderProductDetailPage,
   renderSizeGuideDialog,
 } from './product-detail-page.js';
@@ -919,13 +925,27 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     }
 
     const requireFrontBackPair = dialog?.dataset.presentation !== 'quick-view';
-    const secondaryIndex = editorialGallerySecondaryImageIndex(
+    let secondaryIndex = editorialGallerySecondaryImageIndex(
       activeDialogImages,
       primaryIndex,
       primaryImage.colourway || primaryImage.variant || activeDialogVariant.colourway || '',
       colourways.length > 1,
       requireFrontBackPair,
     );
+    const primaryLabel = String(primaryImage.label || '').toLocaleLowerCase('en-GB');
+    if (requireFrontBackPair && secondaryIndex < 0
+      && !/\b(front|back|rear|reverse)\b/.test(primaryLabel)) {
+      const eligibleIndexes = galleryIndexesForVariant(
+        activeDialogProduct,
+        activeDialogImages,
+        activeDialogVariant,
+      );
+      secondaryIndex = eligibleIndexes.find(index => index !== primaryIndex
+        && /\bfront\b/.test(String(activeDialogImages[index]?.label || '').toLocaleLowerCase('en-GB')))
+        ?? eligibleIndexes.find(index => index !== primaryIndex
+          && /\b(back|rear|reverse)\b/.test(String(activeDialogImages[index]?.label || '').toLocaleLowerCase('en-GB')))
+        ?? -1;
+    }
     if (secondaryIndex < 0) {
       updateEditorialGalleryLayout(requireFrontBackPair);
       if (requireFrontBackPair && placeholder) {
@@ -1035,7 +1055,9 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     const caption = dialogBody.querySelector('[data-catalogue-main-caption]');
     if (!image || !mainImage || !caption) return;
     const matchedColourway = imageColourwayIndex(activeDialogProduct, image);
-    if (productColourwayOptions(activeDialogProduct).length > 1 && matchedColourway < 0) {
+    if (productColourwayOptions(activeDialogProduct).length > 1
+      && matchedColourway < 0
+      && !isColourNeutralProductDetail(activeDialogProduct, image)) {
       showVariantImagePlaceholder(`${activeDialogVariant.colourway} · photograph needs colourway mapping`);
       return;
     }
@@ -1166,6 +1188,20 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       activeDialogVariant.colourway = colourway;
       const selectedColourway = dialogBody.querySelector('[data-catalogue-selected-colourway]');
       if (selectedColourway) selectedColourway.textContent = colourway;
+      const gallery = dialogBody.querySelector('.product-detail-gallery');
+      if (gallery) {
+        gallery.outerHTML = renderProductGalleryForVariant(
+          activeDialogProduct,
+          activeDialogImages,
+          activeDialogProduct.galleryPlaceholders || [],
+          colourway,
+          dialog?.dataset.presentation === 'quick-view',
+        );
+        return;
+      }
+      // Keep catalogue integrations that render the purchase panel without the
+      // editorial gallery host working; the normal SHOP modal always takes the
+      // complete gallery re-render path above.
       const imageIndex = Number(colourwayInput.dataset.catalogueColourwayImageIndex);
       if (imageIndex >= 0) {
         const requireFrontBackPair = dialog?.dataset.presentation !== 'quick-view';
@@ -1176,11 +1212,14 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
           productColourwayOptions(activeDialogProduct).length > 1,
           requireFrontBackPair,
         );
-        selectDialogImage(pairedImageIndex);
+        selectDialogImage(pairedImageIndex, { immediate: true });
+      } else if (productColourwayOptions(activeDialogProduct).length > 1) {
+        showVariantImagePlaceholder(colourway);
+      } else if (activeDialogImages.length) {
+        selectDialogImage(0, { immediate: true });
+      } else {
+        showVariantImagePlaceholder(colourway);
       }
-      else if (productColourwayOptions(activeDialogProduct).length > 1) showVariantImagePlaceholder(colourway);
-      else if (activeDialogImages.length) selectDialogImage(0);
-      else showVariantImagePlaceholder(colourway);
       return;
     }
     const sizeInput = event.target.closest?.('input[data-product-size]');

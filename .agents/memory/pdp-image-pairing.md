@@ -14,3 +14,9 @@ When an image is excluded only from product details, keep its catalogue mapping 
 **Why:** A global image filter can unintentionally remove existing imagery from listings, collection cards, and other surfaces when only a detail gallery is unsuitable.
 
 **How to apply:** Use a detail-specific image selector for narrow gallery holds, and retain the original product-image data until replacement assets are approved.
+
+For multi-colour products, an unlabelled product-detail photograph is not automatically colour-neutral. Only include a detail across variants when the source metadata explicitly marks it neutral; otherwise omit it from the selected gallery and retain a labelled pending slot.
+
+**Why:** An unassigned close-up may visibly show one colourway and misrepresent other variants if treated as generic.
+
+**How to apply:** Require an explicit neutral marker or an exact selected-colourway mapping for multi-colour galleries. Do not infer neutrality from a generic filename or description.

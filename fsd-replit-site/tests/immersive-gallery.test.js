@@ -1,9 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { galleryIndexesForVariant, imageColourwayIndex } from '../src/product-gallery-model.js';
+import {
+  galleryIndexesForVariant,
+  imageColourwayIndex,
+  isColourNeutralProductDetail,
+} from '../src/product-gallery-model.js';
 import { crossfadeMappedImage, cancelMappedImageSwap } from '../src/catalogue-image-gallery.js';
 import { products, productImagesForDisplay } from '../src/data/products.js';
-import { renderProductDetailPage } from '../src/product-detail-page.js';
+import {
+  renderProductDetailPage,
+  renderProductGalleryForVariant,
+} from '../src/product-detail-page.js';
 import { rotationFramesForProduct } from '../src/product-rotation-assets.js';
 import { maxZoomForSource } from '../src/immersive-product-gallery.js';
 
@@ -22,11 +29,15 @@ test('gallery navigation keeps every mapped view inside the selected colourway',
     { src: '/sage-rear', colourway: 'Sage Green', label: 'Rear' },
     { src: '/unknown', label: 'Unmapped view' },
     { src: '/sage-m', colourway: 'Sage Green', size: 'M' },
+    { src: '/neutral-fabric', label: 'Fabric detail', colourwayNeutral: true },
   ];
-  assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'Sage Green' }), [1, 2]);
-  assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'Sage Green', size: 'M' }), [1, 2, 4]);
+  assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'Sage Green' }), [1, 2, 5]);
+  assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'Sage Green', size: 'M' }), [1, 2, 4, 5]);
   assert.equal(imageColourwayIndex(product, images[2]), 1, 'rear view must update the colourway, not only the first image');
   assert.deepEqual(galleryIndexesForVariant(product, images, { colourway: 'No approved image' }), []);
+  assert.equal(isColourNeutralProductDetail(product, images[5]), true);
+  assert.equal(isColourNeutralProductDetail(product, { label: 'Technical Detail / Side Phone Pocket' }), false,
+    'an unassigned detail image is not assumed to be neutral across colourways');
   assert.deepEqual(galleryIndexesForVariant({ colourways: 'Black' }, images.slice(0, 1)), [0]);
 });
 
@@ -35,7 +46,9 @@ test('real FLEX mappings remain intact and missing rotation assets never produce
   const images = productImagesForDisplay(product);
   const indexes = galleryIndexesForVariant(product, images, { colourway: 'Sage Green' });
   assert.ok(indexes.length > 1);
+  assert.ok(indexes.some(index => images[index].colourway === 'Sage Green'));
   assert.ok(indexes.every(index => images[index].colourway === 'Sage Green'));
+  assert.ok(!indexes.some(index => images[index].colourway === 'Espresso Brown'));
   assert.deepEqual(rotationFramesForProduct(43), []);
   const velocity = products.find(value => value.id === 43);
   const html = renderProductDetailPage({
@@ -44,6 +57,23 @@ test('real FLEX mappings remain intact and missing rotation assets never produce
     sizes: [], price: { label: '', value: '£34.99' }, canPurchase: true,
   });
   assert.doesNotMatch(html, /data-product-rotation|360° product view|placeholder frames/i);
+});
+
+test('FLEX detail gallery exposes only its selected colour and colour-neutral details', () => {
+  const product = products.find(value => value.id === 75);
+  const images = productImagesForDisplay(product);
+  const sageGallery = renderProductGalleryForVariant(
+    product,
+    images,
+    product.galleryPlaceholders || [],
+    'Sage Green',
+  );
+  assert.match(sageGallery, /flex-leggings-sage-front/);
+  assert.match(sageGallery, /flex-leggings-sage-rear/);
+  assert.doesNotMatch(sageGallery, /flex-leggings-detail-/,
+    'unassigned black-looking detail photography is not reused across colourways');
+  assert.doesNotMatch(sageGallery, /flex-leggings-(?:obsidian|dusty-rose|espresso|teal)-/);
+  assert.match(sageGallery, /DETAIL VIEW — IMAGE PENDING/);
 });
 
 function imageFixture() {

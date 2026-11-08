@@ -817,7 +817,10 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     const dialogBody = element('#dialog-body');
     const mainImage = { dataset: {}, closest() { return null; }, getAttribute() { return ''; } };
     const mainCaption = {};
-    const selectorButtons = [0, 1, 2].map(() => ({ setAttribute() {} }));
+    const selectorButtons = [0, 1, 2].map(() => ({
+      setAttribute() {},
+      classList: { toggle() {} },
+    }));
     dialogBody.contains = () => true;
     const selectedColourway = { textContent: '' };
     const wishlistButton = { setAttribute() {}, querySelector() { return null; } };
@@ -847,8 +850,8 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     assert.ok(strikeProduct.images.length > 0, 'The mapped source assets remain intact.');
     assert.deepEqual(productDetailImagesForDisplay(strikeProduct), []);
     assert.match(strikeMarkup, /product-detail-gallery--placeholders/);
-    assert.match(strikeMarkup, /Front view — \[ASSET PENDING\]/);
-    assert.match(strikeMarkup, /Back view — \[ASSET PENDING\]/);
+    assert.match(strikeMarkup, /FRONT VIEW — IMAGE PENDING/);
+    assert.match(strikeMarkup, /BACK VIEW — IMAGE PENDING/);
     assert.deepEqual(
       [...strikeMarkup.matchAll(/value="([^"]+)" data-product-size/g)].map(([, size]) => size),
       ['S', 'M', 'L', 'XL', 'XXL'],
@@ -868,14 +871,15 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
     assert.match(apexMarkup, /class="product-detail-gallery[^"]*product-detail-gallery--placeholders"/);
     assert.match(apexMarkup, /FSD Apex High-Waisted Compression Leggings/);
     assert.match(apexMarkup, /£65\.00/);
-    assert.equal((apexMarkup.match(/\bcatalogue-gallery-placeholder(?=[ "])/g) ?? []).length, 3);
+    assert.equal((apexMarkup.match(/data-catalogue-placeholder-view=/g) ?? []).length, 3);
     assert.match(apexMarkup, /Front Full View/);
     assert.match(apexMarkup, /Rear Contour View/);
     assert.match(apexMarkup, /Detail \/ Gold Crest &amp; Waistband/);
     assert.doesNotMatch(apexMarkup, /apex-leggings-(?:front|rear|detail)\.png/);
     const apexGallery = apexMarkup.match(/<section class="product-detail-media"[\s\S]*?<\/section>/)?.[0];
     assert.ok(apexGallery);
-    assert.doesNotMatch(apexGallery, /<img\b/);
+    assert.doesNotMatch(apexGallery, /<img\b[^>]*\bsrc=/);
+    assert.match(apexGallery, /data-catalogue-secondary-image[^>]*hidden/);
 
     handlers.get('#close-dialog:click')();
     const closeDeadline = Date.now() + 2000;
@@ -899,17 +903,17 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
       if (id === 42) {
         assert.match(mediaSection, /catalogue-variant-image-placeholder/);
         assert.match(mediaSection, /Navy\/Cyan/);
-        assert.match(mediaSection, /src="\/products\/sports-hijab\/black-gold\/hero\.webp"/);
-        assert.equal((mediaSection.match(/data-catalogue-image-index=/g) ?? []).length, 9);
+        assert.doesNotMatch(mediaSection, /\/products\/sports-hijab\/black-gold\//);
+        assert.equal((mediaSection.match(/data-catalogue-image-index=/g) ?? []).length, 0);
         const coreHijab = products.find(product => product.id === 42);
         changeColourway(1, 0);
         const frontPortrait = coreHijab.images.find(image => /Front portrait/.test(image.label));
         assert.equal(mainImage.src, frontPortrait.src);
         assert.equal(mainCaption.textContent, frontPortrait.label);
-        assert.match(element('#dialog-body').innerHTML, /src="\/products\/sports-hijab\/black-gold\/rear\.webp"/);
         assert.equal(selectedColourway.textContent, 'Black/Gold');
       } else {
-        assert.doesNotMatch(mediaSection, /<img\b/);
+        assert.doesNotMatch(mediaSection, /<img\b[^>]*\bsrc=/);
+        assert.match(mediaSection, /data-catalogue-secondary-image[^>]*hidden/);
       }
     }
     click('[data-product]', { dataset: { product: '59' } });
