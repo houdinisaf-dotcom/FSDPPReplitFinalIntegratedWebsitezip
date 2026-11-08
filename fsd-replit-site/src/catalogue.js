@@ -1380,6 +1380,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
       || !dialog.open
       || dialog.dataset.presentation !== 'detail'
       || document.querySelector('#fsd-size-guide-dialog')?.open
+      || dialog.dataset.photoInspecting === 'true'
       || document.querySelector('#fsd-product-viewer')?.open
       || document.querySelector('.fsd-navigation-shell.is-open')
     ) return;
@@ -1396,12 +1397,12 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
     if (clickedOutsideCard) closeProductFromUI();
   });
   document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape') return;
+    if (event.key !== 'Escape' || event.defaultPrevented) return;
     const photoViewer = document.querySelector('#fsd-product-viewer');
-    if (photoViewer?.open) {
+    if (photoViewer && !photoViewer.hidden) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      photoViewer.close();
+      photoViewer.querySelector('[data-viewer-close]')?.click();
       return;
     }
     const sizeGuide = document.querySelector('#fsd-size-guide-dialog');
