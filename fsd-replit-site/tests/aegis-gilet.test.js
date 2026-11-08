@@ -9,6 +9,7 @@ import {
   aegisGiletSource,
   createAegisGiletPreview,
 } from '../src/aegis-gilet-campaign.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 test('private Aegis proof reuses the existing master product and keeps catalogue values unchanged', () => {
   const preview = createAegisGiletPreview();
@@ -24,7 +25,7 @@ test('private Aegis proof reuses the existing master product and keeps catalogue
   assert.equal(aegisGiletPreviewRecord.product, product);
 });
 
-test('Aegis gallery maps ten individual lossless crops and preserves its original composite', () => {
+test('Aegis gallery maps ten individual lossless crops and preserves its original composite', { skip: privateAssetsSkip }, () => {
   const preview = aegisGiletPreviewRecord;
   assert.equal(aegisGiletSource.width, 1536);
   assert.equal(aegisGiletSource.height, 1024);

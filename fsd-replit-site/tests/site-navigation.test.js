@@ -13,7 +13,7 @@ import {
 } from '../src/site-navigation.js';
 import {
   legacyHouseRedirectDestination,
-  renderHouseDraftPage,
+  renderHousePublicPage,
   renderLegacyHouseRedirect,
 } from '../src/standalone-navigation-pages.js';
 import { renderHouseDestinationIndex } from '../src/house-pages/house-destination-index.js';
@@ -62,34 +62,19 @@ test('primary navigation makes Shop and the FSD Universe clear destinations', ()
   ]);
 });
 
-test('Investor Relations uses the selected shorter public dossier and working routes', () => {
+test('Investor Relations is a public business overview that keeps confidential terms private', () => {
   const header = renderNavigationHeader('<span>FSD</span>');
-  const investorPage = readFileSync(new URL('../public/investor.html', import.meta.url), 'utf8');
+  const investorPage = renderHousePublicPage(HOUSE_PAGE_REGISTRY.find(page => page.id === 'investor-relations'));
 
+  assert.equal(existsSync(new URL('../public/investor.html', import.meta.url)), false);
   assert.match(header, /<a class="fsd-primary-link" data-nav-destination="house" href="\/the-house\.html">THE HOUSE<\/a>/);
-  assert.match(header, /<button type="button" class="fsd-primary-trigger fsd-primary-menu-toggle"\s+data-nav-primary="house" aria-controls="fsd-mega-menu"/);
   assert.match(header, /FSD \/ THE HOUSE OF PERFORMANCE <span>·<\/span> INVESTOR RELATIONS/);
-  assert.doesNotMatch(header, /href="\/investor\.html"|data-nav-investor/);
   assert.match(header, /<nav class="fsd-mobile-public-links" aria-label="Quick navigation">/);
-  assert.match(
-    readFileSync(new URL('../src/site-navigation.js', import.meta.url), 'utf8'),
-    /class="fsd-mobile-primary-overview" href="\$\{escapeHTML\(divisionLandingPaths\[entry\.id\]\)\}"/,
-  );
-  assert.match(investorPage, /<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg">/);
+  assert.equal((investorPage.match(/<main\b/g) || []).length, 1);
+  assert.equal((investorPage.match(/<h1\b/g) || []).length, 1);
   assert.match(investorPage, /<div data-fsd-standalone-navigation><\/div>/);
-  assert.match(investorPage, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
-  assert.doesNotMatch(investorPage, /<a[^>]+href="\/investor\.html"[^>]*>INVESTOR RELATIONS<\/a>/);
-  assert.match(investorPage, /Initial Pre-Seed \(Proposed\)/);
-  assert.match(investorPage, /50–100/);
-  assert.match(investorPage, /The Foundation/);
-  assert.match(investorPage, /Product Architecture/);
-  assert.match(investorPage, /Market &amp; Customer/);
-  assert.equal((investorPage.match(/<article class="investor-card">/g) ?? []).length, 3);
-  assert.match(investorPage, /Public FSD information/);
-  assert.doesNotMatch(investorPage, /Confidential discussion draft/i);
-  assert.doesNotMatch(investorPage, /Staged Capital Pathway|£25,000|£175,000 – £225,000/);
-  assert.doesNotMatch(investorPage, /href="(?:universe|biolab|hardware|private)\.html"/);
-  assert.doesNotMatch(investorPage, /<(?:details|summary)\b|role=["']tab["']/i);
+  assert.match(investorPage, /enquiries\.html\?category=investor-corporate-relations/);
+  assert.doesNotMatch(investorPage, /£\s?\d|valuation|pre-seed round of|Internal draft|CONTENT PENDING|not ready for publication/i);
 });
 
 test('each top-level division has a direct destination link and a separate menu control', () => {
@@ -249,40 +234,37 @@ test('Academy & Grassroots Programmes is an operating initiative page', () => {
   assert.doesNotMatch(page, /<form\b|BOOK NOW|BUY NOW|£\d/i);
 });
 
-test('House destinations use independent routes and preview only approved internal draft placeholders', () => {
+test('House destinations use independent routes and publish approved Founder Story and flagship pages', () => {
   const house = menu.find(section => section.id === 'house');
   const group = house?.groups.find(item => item.id === 'our-story');
   const flagships = house?.groups.find(item => item.id === 'flagships');
-  const founderPage = HOUSE_PAGE_REGISTRY.find(page => page.id === 'founder-story');
-  const founderHtml = renderHouseDraftPage(founderPage);
-  const flagshipHtml = renderHouseDraftPage(HOUSE_PAGE_REGISTRY.find(page => page.id === 'dublin'));
+  const founderHtml = renderHousePublicPage(HOUSE_PAGE_REGISTRY.find(page => page.id === 'founder-story'));
+  const flagshipHtml = renderHousePublicPage(HOUSE_PAGE_REGISTRY.find(page => page.id === 'dublin'));
   const storefront = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 
   assert.ok(group);
-  assert.deepEqual(group.items.map(item => item.title), [
-    'Founder Story',
-  ]);
+  assert.deepEqual(group.items.map(item => item.title), ['Founder Story']);
   assert.equal(group.items[0].href, '/story');
   assert.equal(group.items[0].kind, 'destination');
-  const flagshipDraftItems = flagships.items.filter(item =>
-    HOUSE_FLAGSHIP_DRAFTS.some(draft => draft.title === item.title));
-  assert.deepEqual(flagshipDraftItems.map(item => item.title), HOUSE_FLAGSHIP_DRAFTS.map(item => item.title));
-  assert.deepEqual(flagshipDraftItems.map(item => item.href), HOUSE_FLAGSHIP_DRAFTS.map(item => item.path));
-  assert.ok(flagshipDraftItems.every(item => /no operating site or service is represented/i.test(item.description)));
+  const flagshipItems = flagships.items.filter(item =>
+    HOUSE_FLAGSHIP_DRAFTS.some(page => page.title === item.title));
+  assert.deepEqual(flagshipItems.map(item => item.title), HOUSE_FLAGSHIP_DRAFTS.map(item => item.title));
+  assert.deepEqual(flagshipItems.map(item => item.href), HOUSE_FLAGSHIP_DRAFTS.map(item => item.path));
+  assert.ok(flagshipItems.every(item => /proposed fsd flagship concept/i.test(item.description)));
+  assert.ok(flagshipItems.every(item => !item.navigationUnavailable));
   assert.ok(flagships.items.some(item => item.title === 'Autonomous Pop-Ups & Predictive Stock'));
   assert.ok(flagships.items.some(item => item.title === 'FSD Pods'));
-  assert.equal((founderHtml.match(/<main\b/g) || []).length, 1);
-  assert.equal((founderHtml.match(/<h1\b/g) || []).length, 1);
-  assert.equal((founderHtml.match(/class="hero"/g) || []).length, 1);
-  assert.equal((founderHtml.match(/<footer\b/g) || []).length, 1);
-  assert.match(founderHtml, /name="robots" content="noindex,nofollow"/);
-  assert.match(founderHtml, /Founder Story is not ready for publication/);
+  for (const html of [founderHtml, flagshipHtml]) {
+    assert.equal((html.match(/<main\b/g) || []).length, 1);
+    assert.equal((html.match(/<h1\b/g) || []).length, 1);
+    assert.equal((html.match(/<footer\b/g) || []).length, 1);
+    assert.doesNotMatch(html, /Internal draft|CONTENT PENDING|not ready for publication|£\s?\d/i);
+  }
   assert.doesNotMatch(founderHtml, /lifelong athlete|countless hours in the gym/i);
-  assert.equal((flagshipHtml.match(/<main\b/g) || []).length, 1);
-  assert.equal((flagshipHtml.match(/<h1\b/g) || []).length, 1);
-  assert.equal((flagshipHtml.match(/class="hero"/g) || []).length, 1);
-  assert.equal((flagshipHtml.match(/<footer\b/g) || []).length, 1);
-  assert.match(flagshipHtml, /No approved location, operator, or service details are available/);
+  assert.match(founderHtml, /href="\/investor\.html"/);
+  assert.match(flagshipHtml, /Dublin/);
+  assert.match(flagshipHtml, /enquiries\.html\?category=flagship-property-opportunities/);
+  assert.match(flagshipHtml, /href="\/flagships\/manchester\.html"/);
   const houseArchiveStart = storefront.indexOf('id="fsd-house-archive"');
   const houseArchiveEnd = storefront.indexOf('</details>', houseArchiveStart);
   const houseArchive = storefront.slice(houseArchiveStart, houseArchiveEnd);
@@ -292,20 +274,20 @@ test('House destinations use independent routes and preview only approved intern
   assert.doesNotMatch(storefront, /function renderHousePreviewPages|window\.configureFSDInnovationRoutes/);
 });
 
-test('House publication policy previews drafts in development and disables their production links', () => {
+test('House publication policy keeps approved House pages linked in production', () => {
   assert.equal(HOUSE_PAGE_REGISTRY.length, 22);
-  assert.equal(shouldDisableHouseHref('/story', true), true);
-  assert.equal(shouldDisableHouseHref('/flagships/dublin.html', true), true);
-  assert.equal(shouldDisableHouseHref('/investor.html', true), true);
+  assert.equal(shouldDisableHouseHref('/story', true), false);
+  assert.equal(shouldDisableHouseHref('/flagships/dublin.html', true), false);
+  assert.equal(shouldDisableHouseHref('/investor.html', true), false);
   assert.equal(shouldDisableHouseHref('/security-vision.html', true), false);
   assert.equal(shouldDisableHouseHref('/story'), false);
   assert.equal(isHouseDraftBuildFile('the-house.html'), false);
   assert.equal(isHouseDraftRoute('/the-house.html'), false);
   assert.equal(HOUSE_PAGE_REGISTRY.find(page => page.id === 'genetic-microbiome')?.division,
     'BIO-LAB™ / Personalisation Research');
-  assert.equal(isHouseDraftBuildFile('investor.html'), true);
-  assert.equal(isHouseDraftBuildFile('story/index.html'), true);
-  assert.equal(isHouseDraftBuildFile('flagships/dublin.html'), true);
+  assert.equal(isHouseDraftBuildFile('investor.html'), false);
+  assert.equal(isHouseDraftBuildFile('story/index.html'), false);
+  assert.equal(isHouseDraftBuildFile('flagships/dublin.html'), false);
   assert.equal(isHouseDraftBuildFile('security-vision.html'), false);
 });
 
@@ -679,7 +661,7 @@ test('House navigation maps the public initiative homes and rollout details', ()
   assert.equal(story.description, 'Founder Story.');
   assert.ok(story.items.every(item => item.href === '/story'));
   assert.ok(flagships.items.filter(item => HOUSE_FLAGSHIP_DRAFTS.some(draft => draft.title === item.title))
-    .every(item => /no operating site or service is represented/i.test(item.description)));
+    .every(item => /proposed fsd flagship concept/i.test(item.description)));
   assert.equal(flagships.href, '');
   assert.equal(flagships.sourceDivisionId, 'global');
   assert.equal(flagships.sourceGroupIndex, 0);

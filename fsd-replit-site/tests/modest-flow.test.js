@@ -12,6 +12,7 @@ import {
 } from '../src/modest-flow-campaign.js';
 import { createModestFlowDevelopmentIntegration } from '../src/modest-flow-development-integration.js';
 import { modestFlowMediaPath } from '../src/modest-flow-preview-path.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const expected = [
@@ -54,7 +55,7 @@ test('Modest Flow is a six-colour, no-price private draft with a separate fixed 
   assert.ok(data.product.variants.every(variant => variant.imageSrc === modestFlowMediaPath(variant.assetId)));
 });
 
-test('each supplied image copy is byte-identical to its source and matches its manifest hash', () => {
+test('each supplied image copy is byte-identical to its source and matches its manifest hash', { skip: privateAssetsSkip }, () => {
   for (const asset of modestFlowImageManifest.assets) {
     const source = readFileSync(resolve(projectRoot, '..', asset.source));
     const copy = readFileSync(resolve(projectRoot, 'content/modest-flow-private/assets', asset.file));

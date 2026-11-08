@@ -97,7 +97,14 @@ function EnquiryFields({ values, errors, onChange }) {
 
 export function PrivateEnquiriesPage() {
   const [step, setStep] = useState(1);
-  const [values, setValues] = useState({ ...EMPTY_PRIVATE_ENQUIRY });
+  const [values, setValues] = useState(() => {
+    const initial = { ...EMPTY_PRIVATE_ENQUIRY };
+    if (typeof window !== 'undefined') {
+      const requested = new URLSearchParams(window.location.search).get('category');
+      if (requested && PRIVATE_ENQUIRY_CATEGORIES.some(category => category.id === requested)) initial.category = requested;
+    }
+    return initial;
+  });
   const [errors, setErrors] = useState({});
   const [started, setStarted] = useState(false);
   const [footerLogoTarget, setFooterLogoTarget] = useState(null);

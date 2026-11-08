@@ -9,10 +9,11 @@ import { createNexusPreview, getNexusAuditAsset, getNexusPreviewAsset, getNexusS
 import { nexusMediaPrefix, nexusPreviewPath } from '../src/nexus-preview-path.js';
 import { createNexusDevelopmentIntegration } from '../src/nexus-development-integration.js';
 import { renderNexusPreview } from '../src/nexus-preview-ui/nexus-preview.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
-test('NEXUS keeps approved presentation imagery separate from flagged audit references', () => {
+test('NEXUS keeps approved presentation imagery separate from flagged audit references', { skip: privateAssetsSkip }, () => {
   assert.equal(nexusPreviewManifest.assets.length, 3);
   assert.deepEqual(nexusPreviewManifest.assets.map(asset => asset.id), [
     'app-interface',
@@ -51,7 +52,7 @@ test('NEXUS keeps approved presentation imagery separate from flagged audit refe
     && /EXCLUDED/.test(entry.status)));
 });
 
-test('NEXUS source archives are identical and every copied image remains byte-for-byte unchanged', () => {
+test('NEXUS source archives are identical and every copied image remains byte-for-byte unchanged', { skip: privateAssetsSkip }, () => {
   const integrity = getNexusSourceIntegrity();
   const archiveBytes = readFileSync(resolve(workspaceRoot, integrity.archive));
   assert.equal(createHash('sha256').update(archiveBytes).digest('hex'), integrity.sha256);

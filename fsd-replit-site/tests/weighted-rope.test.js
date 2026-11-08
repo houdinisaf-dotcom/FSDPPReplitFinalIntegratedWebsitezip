@@ -9,6 +9,7 @@ import {
   weightedRopeManifest,
   weightedRopeRecord,
 } from '../src/draft-catalogue.js';
+import { privateAssetsSkip } from './private-assets.js';
 
 const workspaceRoot = resolve(process.cwd(), '..');
 
@@ -66,7 +67,7 @@ test('the fixed campaign and eight complete source boards map to the correct ord
   assert.equal(weightedRopeManifest.boardLayout.split, false);
 });
 
-test('the nine supplied PNG originals match their recorded hashes and dimensions', async () => {
+test('the nine supplied PNG originals match their recorded hashes and dimensions', { skip: privateAssetsSkip }, async () => {
   const sources = [
     weightedRopeManifest.campaign,
     ...weightedRopeManifest.variants,

@@ -53,7 +53,7 @@ test('pending media uses labeled responsive placeholders rather than unapproved 
 
 test('Innovation Hub links to all concepts and keeps private proofs out of production markup', () => {
   const publicHtml = renderInnovationHubIndex();
-  assert.equal((publicHtml.match(/class="fsd-innovation-card"/g) || []).length, 8);
+  assert.equal((publicHtml.match(/class="fsd-innovation-card(?:\s+[\w-]+)*"/g) || []).length, 8);
   assert.match(publicHtml, /PROPOSED BIO-LAB CONCEPT/);
   assert.match(publicHtml, /related concepts and design prototypes are for exploration, not current products or commitments/);
   assert.match(publicHtml, /href="#adaptive-technical-fabrics"/);
