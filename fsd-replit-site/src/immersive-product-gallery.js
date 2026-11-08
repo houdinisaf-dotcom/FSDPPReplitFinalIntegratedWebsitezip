@@ -57,6 +57,7 @@ export function mountImmersiveProductGallery({
   const thumbs = viewer.querySelector('.fsd-photo-viewer__thumbs');
   let generation = 0;
   let returnFocus = null;
+  let originalDialogLabelledby = null;
   let currentIndex = -1;
   let viewerProduct = null;
   let dialogWasModal = false;
@@ -216,6 +217,8 @@ export function mountImmersiveProductGallery({
       button.addEventListener('click', () => paint(index));
       thumbs.append(button);
     });
+    originalDialogLabelledby = dialog.getAttribute('aria-labelledby');
+    dialog.setAttribute('aria-labelledby', 'fsd-photo-viewer-title');
     body.inert = true;
     const productClose = dialog.querySelector('#close-dialog');
     if (productClose) productClose.hidden = true;
@@ -325,6 +328,9 @@ export function mountImmersiveProductGallery({
     viewer.hidden = true;
     body.inert = false;
     delete dialog.dataset.photoInspecting;
+    if (originalDialogLabelledby) dialog.setAttribute('aria-labelledby', originalDialogLabelledby);
+    else dialog.removeAttribute('aria-labelledby');
+    originalDialogLabelledby = null;
     const productClose = dialog.querySelector('#close-dialog');
     if (productClose) productClose.hidden = false;
     returnFocus?.setAttribute('aria-expanded', 'false');
@@ -337,7 +343,6 @@ export function mountImmersiveProductGallery({
     returnFocus = null;
     if (dialog.open && restoreDialogMode && !dialogWasModal) setDialogModalState(false);
     if (restoreFocus && opener?.isConnected && dialog.open) opener.focus({ preventScroll: true });
-    delete dialog.dataset.photoWasModal;
   };
   const onProductClose = () => {
     if (dialog.dataset.photoModeSwitching === 'true') return;

@@ -1420,7 +1420,7 @@ export function initCatalogue({ onProductSelect = showProduct, onAddToBag = () =
   }, true);
   dialog.addEventListener('close', () => {
     // Native close events can arrive after this shared dialog has reopened.
-    if (dialog.open) return;
+    if (dialog.open || dialog.dataset.photoModeSwitching === 'true') return;
     const productId = activeDialogProduct?.id;
     productStickyObserver?.disconnect();
     productStickyObserver = null;

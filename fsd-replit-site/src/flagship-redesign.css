@@ -1512,6 +1512,58 @@ html { scrollbar-color: #777b7e #111318; }
   outline-color: #80651f;
 }
 
+/* Photo inspection reuses the product dialog as the sole modal layer.
+   Hide the detail sheet and its close control while the viewer owns focus. */
+#product-dialog[data-photo-inspecting="true"] {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  border: 0;
+  background: #f4f2ed;
+}
+
+#product-dialog[data-photo-inspecting="true"]::backdrop {
+  background: rgb(10 10 10 / 74%);
+}
+
+#product-dialog[data-photo-inspecting="true"] #dialog-body,
+#product-dialog[data-photo-inspecting="true"] #close-dialog {
+  display: none !important;
+}
+
+#product-dialog[data-photo-inspecting="true"] .fsd-photo-viewer:not([hidden]) {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: clamp(14px, 2.5vw, 32px);
+  overflow: hidden;
+  background: #f4f2ed;
+}
+
+#product-dialog[data-photo-inspecting="true"] .fsd-photo-viewer__stage {
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 600px) {
+  #product-dialog[data-photo-inspecting="true"] .fsd-photo-viewer:not([hidden]) {
+    padding: 10px;
+    gap: 7px;
+  }
+}
+
 @media (hover: none), (pointer: coarse) {
   .catalogue-card__quick-view {
     min-height: 44px;
