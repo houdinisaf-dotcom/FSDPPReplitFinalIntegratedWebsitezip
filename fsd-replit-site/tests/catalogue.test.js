@@ -1124,7 +1124,8 @@ test('the complete public page excludes held imagery while retaining internal so
       ['BE HEROES™', 'BE STRONGER™', 'BE DISCIPLINED™', 'BE PART OF FSD™'],
     );
     assert.match(homeHero, /className=\{`fsd-home-campaign-scene fsd-home-campaign-scene--\$\{experience\.id\}`\}/);
-    assert.equal((homeHero.match(/src=\{siteMedia\.homeHero\?\.src\}/g) || []).length, 2);
+    assert.equal((homeHero.match(/src=\{siteMedia\.homeHero\?\.src\}/g) || []).length, 1);
+    assert.match(homeHero, /siteMedia\.campaigns\?\.\[experience\.id\]/);
     const womensBanner = readFileSync(new URL('../src/components/WomensBanner.jsx', import.meta.url), 'utf8');
     assert.match(womensBanner, /className="fsd-modal-hero fsd-modal-hero--womens"/);
     assert.match(womensBanner, /siteMedia\.womensBanner/);
