@@ -1693,9 +1693,22 @@ export function mountNavigation({
   document.addEventListener('fsd:navigation-active', onCurrentNavigation);
   window.addEventListener('hashchange', updateCurrentFromHash);
   window.addEventListener('popstate', updateCurrentFromHash);
-  const updateHeaderScrollState = () => {
-    root.classList.toggle('is-scrolled', windowRef.scrollY > 50);
+  // Hide the banner while scrolling down; bring it back as soon as the visitor scrolls up.
+  let lastScrollY = windowRef.scrollY;
+  const setHeaderHidden = hidden => {
+    root.classList.toggle('is-hidden-on-scroll', hidden);
+    root.ownerDocument.documentElement.classList.toggle('fsd-header-hidden', hidden);
   };
+  const updateHeaderScrollState = () => {
+    const y = Math.max(0, windowRef.scrollY);
+    root.classList.toggle('is-scrolled', y > 50);
+    const delta = y - lastScrollY;
+    if (Math.abs(delta) < 6) return;
+    const keepVisible = isOpen || y < 120 || root.contains(root.ownerDocument.activeElement);
+    setHeaderHidden(!keepVisible && delta > 0);
+    lastScrollY = y;
+  };
+  root.addEventListener('focusin', () => setHeaderHidden(false));
   updateHeaderScrollState();
   windowRef.addEventListener('scroll', updateHeaderScrollState, { passive: true });
   const sectionObserver = typeof IntersectionObserver === 'function'
