@@ -3,7 +3,7 @@ export const SIZE_GUIDE_SECTIONS = [
     id: 'mens',
     title: 'Men’s',
     measurements: ['Chest', 'Waist', 'Hip', 'Inseam'],
-    sizes: ['[TO CONFIRM]'],
+    sizes: ['Published before sale'],
   },
   {
     id: 'womens',
@@ -15,15 +15,15 @@ export const SIZE_GUIDE_SECTIONS = [
     id: 'headwear',
     title: 'Headwear',
     measurements: ['Head circumference'],
-    sizes: ['[TO CONFIRM]'],
+    sizes: ['Published before sale'],
   },
 ];
 
-export const SIZE_GUIDE_UNIT_NOTE = 'Centimetres · [TO CONFIRM]';
+export const SIZE_GUIDE_UNIT_NOTE = 'Measurements in centimetres. Garment-specific charts are published before each product goes on sale.';
 export const SIZE_GUIDE_FIT_NOTE =
-  'Body measurements describe the person; garment measurements describe the item. FSD’s sizing basis is [TO CONFIRM].';
+  'Body measurements describe the person; garment measurements describe the item. Women’s sizing follows UK sizes 6 to 14 (XS to XL); exact measurements are published per garment.';
 export const SIZE_GUIDE_MEASURE_NOTE =
-  'Use a flexible measuring tape and keep it level without pulling tight. Exact tape placement for each measurement is [TO CONFIRM].';
+  'Use a flexible measuring tape and keep it level without pulling tight. Measure over light clothing and compare with the chart for the specific garment.';
 
 // Add only complete, product-specific charts backed by approved measurements.
 // Products without an entry remain CONTENT PENDING and never inherit a generic chart.
@@ -74,8 +74,8 @@ export function sizeGuideSectionForProduct(product) {
 
 export function renderSizeGuideTable(section, sizes = section?.sizes || []) {
   if (!section) return '';
-  const rows = (sizes.length ? sizes : ['[TO CONFIRM]'])
-    .map(size => `<tr><th scope="row">${escapeHtml(size)}</th>${section.measurements.map(measurement => `<td data-label="${escapeHtml(measurement)}">[TO CONFIRM]</td>`).join('')}</tr>`)
+  const rows = (sizes.length ? sizes : ['Published before sale'])
+    .map(size => `<tr><th scope="row">${escapeHtml(size)}</th>${section.measurements.map(measurement => `<td data-label="${escapeHtml(measurement)}">Pending</td>`).join('')}</tr>`)
     .join('');
   return `<div class="size-guide-table-wrap"><table>
     <caption>Measurements in ${SIZE_GUIDE_UNIT_NOTE}</caption>

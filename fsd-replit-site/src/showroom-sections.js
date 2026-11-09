@@ -245,10 +245,10 @@ export function houseConnectionSection() {
 
 export function vipAccessSection() {
   return `<section class="showroom-vip" id="contact" aria-labelledby="vip-title">
-    <p class="section-kicker">VIP ACCESS</p><h2 id="vip-title">BE PART OF<br/><em>WHAT COMES NEXT.</em></h2>
-    <p>Discover FSD collections, innovation and exclusive brand announcements.</p>
-    <button class="primary-btn" type="button" disabled aria-describedby="vip-status">REQUEST VIP ACCESS <span aria-hidden="true">↗</span></button>
-    <p class="showroom-vip-status" id="vip-status">Registration is not collecting sign-ups yet. It will open once the sign-up destination and approved privacy and consent details are ready.</p>
+    <p class="section-kicker">MEMBERS AREA · COMING SOON</p><h2 id="vip-title">BE PART OF<br/><em>WHAT COMES NEXT.</em></h2>
+    <p>The FSD members area opens after launch. Join the waitlist to hear first about collections, innovation and members news.</p>
+    <a class="primary-btn" href="/#prelaunch-signup" aria-describedby="vip-status">JOIN THE WAITLIST <span aria-hidden="true">→</span></a>
+    <p class="showroom-vip-status" id="vip-status">Members registration is not open yet. The waitlist only stores your email and consent; see the <a href="/privacy.html">privacy notice</a>.</p>
   </section>`;
 }
 

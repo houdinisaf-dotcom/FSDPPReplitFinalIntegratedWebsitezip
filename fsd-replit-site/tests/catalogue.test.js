@@ -679,7 +679,7 @@ test('Velocity update retains its own Black / Gold variant and stays separate fr
     'Branding / Gold Crest Detail',
   ]);
   assert.ok(velocity?.images.every(image => image.colourway === 'Black / Gold'));
-  assert.equal(core?.colourways, 'Navy/Cyan, Black/Gold, Black/White, Olive/Lime, Dark Grey/Silver, Black/Magenta, Burgundy/Pink');
+  assert.equal(core?.colourways, 'Black/Gold, Charcoal/Gold, Navy/Gold, Stone Grey/Bronze, Ivory/Bronze, Burgundy/Gold, Olive/Gold, Sand/Bronze');
   assert.equal(core?.confirmedPrice, 29.99);
   assert.deepEqual(getVerifiedProductSpecifications(43)?.benefits, velocity?.features);
   assert.ok(filterProducts("Women's / Performance Headwear").some(product => product.id === 43));
@@ -902,16 +902,9 @@ test('catalogue UI handlers filter, reset, open details and close the dialog', a
         .match(/<section class="product-detail-media"[\s\S]*?<\/section>/)?.[0];
       assert.ok(mediaSection);
       if (id === 42) {
-        assert.match(mediaSection, /catalogue-variant-image-placeholder/);
-        assert.match(mediaSection, /Navy\/Cyan/);
-        assert.doesNotMatch(mediaSection, /\/products\/sports-hijab\/black-gold\//);
-        assert.equal((mediaSection.match(/data-catalogue-image-index=/g) ?? []).length, 0);
-        const coreHijab = products.find(product => product.id === 42);
-        changeColourway(1, 0);
-        const frontPortrait = coreHijab.images.find(image => /Front portrait/.test(image.label));
-        assert.equal(mainImage.src, frontPortrait.src);
-        assert.equal(mainCaption.textContent, frontPortrait.label);
-        assert.equal(selectedColourway.textContent, 'Black/Gold');
+        // Black/Gold is now the first colourway and has the approved photography.
+        assert.match(mediaSection, /\/products\/sports-hijab\/black-gold\//);
+        assert.match(mediaSection, /Black\/Gold/);
       } else {
         assert.doesNotMatch(mediaSection, /<img\b[^>]*\bsrc=/);
         assert.match(mediaSection, /data-catalogue-secondary-image[^>]*hidden/);
@@ -1160,8 +1153,8 @@ test('the complete public page excludes held imagery while retaining internal so
     assert.doesNotMatch(page, /IN DEVELOPMENT|PRE-LAUNCH|FSD DEVELOPMENT ROADMAP/i);
     assert.doesNotMatch(page, /Sign up today/i);
     assert.doesNotMatch(page, /<form\b/i);
-    assert.match(page, /<input id="fsd-newsletter-email"[^>]*type="email"[^>]*disabled aria-disabled="true"/i);
-    assert.match(page, /<button type="button" disabled aria-disabled="true">JOIN<\/button>/i);
+    assert.doesNotMatch(page, /id="fsd-newsletter-email"/i);
+    assert.match(page, /href="\/#prelaunch-signup"[^>]*>JOIN THE WAITLIST/i);
     assert.ok(page.indexOf('data-home-hero-slot') < page.indexOf('class="fsd-showcase fsd-showcase--editorial"'));
     assert.ok(page.indexOf('class="fsd-showcase"') < page.indexOf('id="innovations"'));
     assert.ok(page.indexOf('id="innovations"') < page.indexOf('id="philosophy"'));

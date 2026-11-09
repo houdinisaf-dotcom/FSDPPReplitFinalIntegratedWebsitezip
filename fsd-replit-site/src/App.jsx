@@ -301,8 +301,10 @@ function AppRouter({ hardwareForgeExtension }) {
     else if (entry?.filter) {
       navigateCatalogue({ ...readStateFromURL(), ...entry.filter, historyMode: 'replace' });
     }
-    else if (entry?.hash && !window.location.hash) window.location.hash = entry.hash;
-  }, [cataloguePortalTarget, route.view, route.target]);
+    // Division landing pages (/universe, /bio-lab, /hardware) render their own hub;
+    // jumping to the legacy homepage anchor would re-expose the full homepage stack.
+    else if (entry?.hash && !window.location.hash && !divisionHubId) window.location.hash = entry.hash;
+  }, [cataloguePortalTarget, route.view, route.target, divisionHubId]);
 
   return (
     <div

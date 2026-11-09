@@ -20,9 +20,9 @@ test('CORE Sports Hijab gallery maps all nine supplied views only to existing Bl
   assert.equal(product.name, 'CORE Sports Hijab');
   assert.equal(source['Price (£) confirmed'], '29.99');
   assert.equal(source['Image status'], 'Approved product photography — Black/Gold only');
-  assert.equal(source.Colourways, 'Navy/Cyan, Black/Gold, Black/White, Olive/Lime, Dark Grey/Silver, Black/Magenta, Burgundy/Pink');
-  assert.deepEqual(colourways, ['Navy/Cyan', 'Black/Gold', 'Black/White', 'Olive/Lime', 'Dark Grey/Silver', 'Black/Magenta', 'Burgundy/Pink']);
-  assert.deepEqual(imageIndexes, [-1, 0, -1, -1, -1, -1, -1]);
+  assert.equal(source.Colourways, 'Black/Gold, Charcoal/Gold, Navy/Gold, Stone Grey/Bronze, Ivory/Bronze, Burgundy/Gold, Olive/Gold, Sand/Bronze');
+  assert.deepEqual(colourways, ['Black/Gold', 'Charcoal/Gold', 'Navy/Gold', 'Stone Grey/Bronze', 'Ivory/Bronze', 'Burgundy/Gold', 'Olive/Gold', 'Sand/Bronze']);
+  assert.deepEqual(imageIndexes, [0, -1, -1, -1, -1, -1, -1, -1]);
   assert.equal(product.images.length, 9);
   assert.deepEqual(product.images.at(-1), {
     src: '/products/sports-hijab/black-gold/editorial-portrait.webp',
@@ -50,10 +50,10 @@ test('CORE Sports Hijab gallery maps all nine supplied views only to existing Bl
     price: { label: '', value: '£29.99' },
     canPurchase: true,
   });
-  assert.equal((detail.match(/data-catalogue-colourway-index=/g) || []).length, 7);
-  assert.match(detail, /value="Navy\/Cyan"[^>]*checked/);
-  assert.match(detail, /data-catalogue-selected-colourway aria-live="polite">Navy\/Cyan/);
-  assert.match(detail, /data-catalogue-variant-placeholder/);
+  assert.equal((detail.match(/data-catalogue-colourway-index=/g) || []).length, 8);
+  assert.match(detail, /value="Black\/Gold"[^>]*checked/);
+  assert.match(detail, /data-catalogue-selected-colourway aria-live="polite">Black\/Gold/);
+  assert.match(detail, /\/products\/sports-hijab\/black-gold\//);
 
   assert.equal(velocity.colourways, 'Black / Gold');
   assert.equal(velocity.images.length, 5);

@@ -144,11 +144,11 @@ test('featured carousel uses only catalogue records with a public RRP and mapped
   assert.doesNotMatch(markup, /STRIDE|Shilajit|checkout/i);
 });
 
-test('deferred VIP access cannot collect or pretend to submit personal data', () => {
+test('members area teaser links to the working waitlist and collects nothing itself', () => {
   const markup = vipAccessSection();
-  assert.match(markup, /REQUEST VIP ACCESS/);
-  assert.match(markup, /disabled aria-describedby="vip-status"/);
-  assert.match(markup, /not collecting sign-ups yet/);
+  assert.match(markup, /MEMBERS AREA · COMING SOON/);
+  assert.match(markup, /href="\/#prelaunch-signup"[^>]*>JOIN THE WAITLIST/);
+  assert.doesNotMatch(markup, /disabled/);
   assert.doesNotMatch(markup, /<form|<input|mailto:|action=|subscribe/i);
 });
 

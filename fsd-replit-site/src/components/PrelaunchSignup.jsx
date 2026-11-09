@@ -52,10 +52,10 @@ export function PrelaunchSignup() {
   return (
     <section className="fsd-prelaunch-signup" aria-labelledby="fsd-prelaunch-title">
       <div className="fsd-prelaunch-copy">
-        <p className="fsd-prelaunch-kicker">FSD / FIRST ACCESS</p>
-        <h2 id="fsd-prelaunch-title">Get pre-launch updates</h2>
-        <p>Register your interest in FSD launch news.</p>
-        <p className="fsd-prelaunch-note">This form records your sign-up only; email updates are not connected yet.</p>
+        <p className="fsd-prelaunch-kicker">FSD / LAUNCH WAITLIST</p>
+        <h2 id="fsd-prelaunch-title">Engineered for the Work. Be first to know.</h2>
+        <p>Join the waitlist for the FSD launch, the AEROFORGE reveal and members area news.</p>
+        <p className="fsd-prelaunch-note">We will only email you about the FSD launch. You can ask to be removed at any time.</p>
       </div>
       <form className="fsd-prelaunch-form" onSubmit={handleSubmit} noValidate>
         <label htmlFor="fsd-prelaunch-email">Email address</label>

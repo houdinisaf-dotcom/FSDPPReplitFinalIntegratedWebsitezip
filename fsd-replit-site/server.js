@@ -9,6 +9,15 @@ import { createPrelaunchSignupMiddleware } from './src/server/prelaunch-signups.
 const projectRoot = fileURLToPath(new URL('.', import.meta.url));
 const publicRoot = resolve(projectRoot, 'dist');
 const pool = createDatabasePool();
+// Make sure the pre-launch waitlist table exists (safe to run repeatedly).
+if (process.env.DATABASE_URL) {
+  pool.query(`CREATE TABLE IF NOT EXISTS public.fsd_prelaunch_signups (
+    id BIGSERIAL PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    consent_text TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`).catch(error => console.warn('Waitlist table check failed:', error.message));
+}
 const signupApi = createPrelaunchSignupMiddleware({
   query: (sql, params) => pool.query(sql, params),
 });

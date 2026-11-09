@@ -18,7 +18,7 @@ const divisions = [
   { id: 'bio-lab', label: 'BIO-LAB™', href: '/bio-lab', intro: 'Research-led concepts in materials, connected apparel and personalisation.' },
   { id: 'hardware', label: 'HARDWARE', href: '/hardware', intro: 'Explore existing training equipment records and the FSD hardware division.' },
   { id: 'house', label: 'THE HOUSE', href: '/the-house.html', intro: 'The FSD story, its six established House divisions and mapped strategic concepts.' },
-  { id: 'private-access', label: 'PRIVATE ACCESS', href: '/private-access', intro: 'Private enquiry information and access concepts. Registration and unconfigured submissions remain unavailable.' },
+  { id: 'private-access', label: 'PRIVATE ACCESS', href: '/private-access', intro: 'Members area coming soon. A members-only space for the FSD community will open after launch.' },
 ];
 
 const divisionPaths = Object.freeze({
@@ -342,22 +342,32 @@ function getDivisionSections(id) {
   return [
     {
       label: 'Private enquiries',
-      description: 'Private enquiries are available for information only. The submission destination is not configured; no message is collected or sent.',
+      description: 'For investor, franchise and partnership conversations ahead of the members area opening.',
       cards: [{
         title: enquiryPage?.title || 'Private Enquiries',
         href: enquiryPage?.path || '/enquiries.html',
-        description: 'View the existing enquiry information and its current submission safeguards.',
-        meta: 'SUBMISSION NOT CONNECTED',
+        description: 'How to approach FSD about investment, franchise and partnership opportunities.',
+        meta: 'ENQUIRIES',
       }],
     },
     {
-      label: 'Access concepts',
-      description: 'Registration remains closed and no member account or sign-up data is collected.',
+      label: 'Launch waitlist',
+      description: 'Be first to hear when the members area opens.',
+      cards: [{
+        title: 'Join the FSD waitlist',
+        href: '/#prelaunch-signup',
+        description: 'Leave your email for launch news, the AEROFORGE reveal and members area updates.',
+        meta: 'MEMBERS AREA / COMING SOON',
+      }],
+    },
+    {
+      label: 'Members area',
+      description: 'Coming soon. Membership registration is not open yet, and no account details are collected.',
       cards: tacticalShield ? [{
         title: tacticalShield.title,
         href: linkForConcept(tacticalShield),
         description: tacticalShield.summary,
-        meta: `${tacticalShield.primaryDivision} / ${tacticalShield.primarySection} · REGISTRATION NOT OPEN`,
+        meta: `${tacticalShield.primaryDivision} / ${tacticalShield.primarySection} · COMING SOON`,
       }] : [],
     },
   ];
@@ -407,7 +417,7 @@ export function DivisionHub({ divisionId = 'shop' }) {
         <p>{current.intro}</p>
         <div className="fsd-division-hub__hero-meta">
           <span>FITNESS &amp; SELF DEFENCE</span>
-          <span>{current.id === 'private-access' ? 'INFORMATION / NO SIGN-UP' : 'EXISTING FSD CONTENT &amp; ROUTES'}</span>
+          <span>{current.id === 'private-access' ? 'MEMBERS AREA / COMING SOON' : 'EXISTING FSD CONTENT & ROUTES'}</span>
         </div>
       </header>
 
