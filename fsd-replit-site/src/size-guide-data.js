@@ -30,7 +30,7 @@ export const SIZE_GUIDE_MEASURE_NOTE =
 export const PRODUCT_SIZE_GUIDES = Object.freeze({});
 
 export const BREEZE_SIZE_GUIDANCE_NOTE =
-  'No approved body or garment measurements, fit classification, compression level or sizing recommendation are available. No size recommendation is provided.';
+  'Garment measurements, fit classification and compression level are confirmed with the manufacturer before sale. The size finder gives general guidance based on standard UK body measurements.';
 
 export function productSizeGuidanceForProduct(product) {
   if (!String(product?.sizeGuideStatus || '').trim()) return null;

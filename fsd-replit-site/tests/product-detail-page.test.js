@@ -320,14 +320,31 @@ test('related products stay within the same category and audience', () => {
   assert.doesNotMatch(markup, /data-related-product="1"/);
 });
 
-test('product size guides do not expose generic or unconfirmed measurement tables', () => {
+test('size guides offer a clearly labelled general size finder, never a garment claim', () => {
   const guide = renderSizeGuideDialog(productFixture, productSizeOptions(productFixture));
-  assert.match(guide, /data-size-guide-status="CONTENT PENDING"/);
-  assert.match(guide, /Product-specific measurements are not available for this item yet\./);
-  assert.doesNotMatch(guide, /\[TO CONFIRM\]|<table|View the full size guide/);
+  assert.match(guide, /data-size-guide-status="GENERAL GUIDANCE"/);
+  assert.match(guide, /data-size-finder/);
+  assert.match(guide, /General UK body-measurement guidance\. Garment measurements for this product are confirmed with the manufacturer before sale\./);
+  assert.match(guide, /UK 6 \(XS\)[\s\S]*UK 16 \(XXL\)/);
+  assert.match(guide, /Click outside this panel to close/);
+  assert.doesNotMatch(guide, /×|\[TO CONFIRM\]/);
+
+  const unsized = renderSizeGuideDialog({ ...productFixture, sizes: 'One size' }, ['One size']);
+  assert.match(unsized, /data-size-guide-status="CONTENT PENDING"/);
+  assert.match(unsized, /Product-specific measurements are not available for this item yet\./);
+  assert.doesNotMatch(unsized, /<table/);
 });
 
-test('Breeze size guidance shows only the confirmed range and makes missing fit data clear', () => {
+test('the size finder recommends the smallest listed size that covers every measurement', async () => {
+  const { recommendSize, WOMENS_BODY_GUIDE } = await import('../src/size-finder.js');
+  assert.equal(recommendSize(WOMENS_BODY_GUIDE, { Bust: 84 }).size, 'S');
+  assert.equal(recommendSize(WOMENS_BODY_GUIDE, { Bust: 86, Waist: 70, Hip: 95 }).size, 'M');
+  assert.equal(recommendSize(WOMENS_BODY_GUIDE, { Bust: 34 }, 'in').size, 'M');
+  assert.equal(recommendSize(WOMENS_BODY_GUIDE, { Hip: 130 }).outOfRange, 'above');
+  assert.equal(recommendSize(WOMENS_BODY_GUIDE, {}), null);
+});
+
+test('Breeze size guidance shows the confirmed range and points to the general size finder', () => {
   const product = products.find(item => item.id === 73);
   const guide = renderSizeGuideDialog(product);
   const markup = renderProductDetailPage({
@@ -343,14 +360,14 @@ test('Breeze size guidance shows only the confirmed range and makes missing fit 
   });
 
   assert.equal(product.sizeGuideStatus, 'No approved measurement chart or fit notes confirmed');
-  assert.match(guide, /data-breeze-size-guidance/);
-  assert.match(guide, /XS[\s\S]*S[\s\S]*M[\s\S]*L[\s\S]*XL/);
-  assert.match(guide, /No approved body or garment measurements, fit classification, compression level or sizing recommendation are available/);
-  assert.doesNotMatch(guide, /<table|\d+\s?(?:cm|inches|in\b)|compression fit|size recommendation:|recommend (?:a )?size/i);
-  assert.doesNotMatch(guide, /mechanical[- ]stretch|four-way mechanical stretch|fit profile/i);
+  assert.match(guide, /data-size-finder/);
+  assert.match(guide, /General UK body-measurement guidance/);
+  assert.doesNotMatch(guide, /compression fit|mechanical[- ]stretch|four-way mechanical stretch|fit profile/i);
   assert.match(markup, /<summary>Size &amp; Fit<\/summary>/);
   assert.match(markup, /data-breeze-size-guidance/);
   assert.match(markup, /Confirmed size range/);
+  assert.match(markup, /data-product-specification/);
+  assert.match(markup, /Confirmed by the manufacturer before sale/);
 });
 
 test('products without confirmed sizes do not show a size guide control', () => {

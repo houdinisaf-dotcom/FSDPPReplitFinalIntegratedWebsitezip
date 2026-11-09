@@ -312,3 +312,35 @@
   background: transparent;
   color: #c6a36a;
 }
+
+/* Social channels. Pending icons are deliberately quieter and not links. */
+.fsd-site-footer__social { margin-top: 22px; }
+.fsd-site-footer__social ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.fsd-social-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgb(201 173 120 / 34%);
+  border-radius: 50%;
+  color: #d5c29a;
+  transition: border-color 180ms ease, color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+a.fsd-social-icon:hover,
+a.fsd-social-icon:focus-visible {
+  border-color: #c8aa72;
+  background: rgb(200 170 114 / 10%);
+  color: #fff8e9;
+  box-shadow: 0 0 18px rgb(255 214 140 / 22%);
+  outline: none;
+}
+.fsd-social-icon.is-pending { opacity: .62; cursor: default; }
+.fsd-site-footer__social-note {
+  margin: 10px 0 0;
+  color: rgb(213 194 154 / 62%);
+  font: 500 9px/1.5 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+html[data-theme="light"] .fsd-social-icon { color: #6b5428; border-color: rgb(107 84 40 / 34%); }
+html[data-theme="light"] .fsd-site-footer__social-note { color: #6b5f4a; }

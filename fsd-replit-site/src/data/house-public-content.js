@@ -200,6 +200,37 @@ const FLAGSHIPS = {
   },
 };
 
+
+// Concept visualisations for the proposed flagships. These are design
+// visualisations, not photographs of open sites, and every caption says so.
+const FLAGSHIP_MEDIA = {
+  manchester: {
+    hero: ['/images/flagships/manchester-exterior.webp', 'Concept visualisation of the proposed FSD Manchester flagship at dusk, with the shield mark above a glazed entrance.'],
+    gallery: [
+      ['/images/flagships/manchester-training-floor.webp', 'Strength and conditioning floor with a sprint track, boxing ring and city view.', 'Training floor'],
+      ['/images/flagships/manchester-boxing-hall.webp', 'Boxing hall with a central ring, heavy bags and a mezzanine.', 'Boxing and MMA'],
+      ['/images/flagships/manchester-lounge.webp', 'Members’ lounge, reception and nutrition bar.', 'Lounge and nutrition bar'],
+      ['/images/flagships/manchester-recovery-suite.webp', 'Recovery suite with plunge pools and a sauna.', 'Recovery suite'],
+    ],
+  },
+  dublin: {
+    hero: ['/images/flagships/dublin-exterior.webp', 'Concept visualisation of the proposed FSD Dublin flagship on the Docklands at dusk.'],
+    gallery: [
+      ['/images/flagships/ireland-training-floor.webp', 'Steel-framed training floor with turf lane and tall windows.', 'Training floor'],
+      ['/images/flagships/ireland-boxing.webp', 'Boxing ring and heavy-bag zone.', 'Boxing and combat'],
+    ],
+  },
+  belfast: {
+    hero: ['/images/flagships/belfast-exterior.webp', 'Concept visualisation of the proposed FSD Belfast flagship on the waterfront at dusk.'],
+    gallery: [
+      ['/images/flagships/ireland-boxing.webp', 'Boxing ring and heavy-bag zone.', 'Boxing and combat'],
+      ['/images/flagships/ireland-training-floor.webp', 'Steel-framed training floor with turf lane and tall windows.', 'Training floor'],
+    ],
+  },
+};
+
+export const FLAGSHIP_IMAGE_CAPTION = 'Concept visualisation';
+
 const FLAGSHIP_STEPS = [
   ['01', 'Local demand', 'Demand assessment and research with the local training community.'],
   ['02', 'The right partner', 'Partner research and, where appropriate, a controlled partner or franchise model.'],
@@ -211,8 +242,10 @@ export function flagshipPublicContent(id) {
   const flagship = FLAGSHIPS[id];
   if (!flagship) return null;
   const isMarketPage = id === 'islamabad' || id === 'future-global-locations';
+  const media = FLAGSHIP_MEDIA[id];
   return {
     eyebrow: flagship.eyebrow,
+    heroImage: media ? { src: media.hero[0], alt: media.hero[1], caption: FLAGSHIP_IMAGE_CAPTION } : null,
     title: flagship.title,
     summary: flagship.summary,
     description: `FSD ${flagship.title}: ${flagship.summary} ${flagship.role}.`,
@@ -226,6 +259,14 @@ export function flagshipPublicContent(id) {
         architecture: flagship.architecture,
         palette: flagship.palette,
       },
+      ...(media ? [{
+        kind: 'gallery',
+        number: 'Inside the concept',
+        heading: `How FSD ${flagship.title} could look inside.`,
+        caption: FLAGSHIP_IMAGE_CAPTION,
+        note: 'Design visualisations to show intent. Final layout, finishes and facilities depend on the building, planning and partners.',
+        items: media.gallery.map(([src, alt, label]) => ({ src, alt, label })),
+      }] : []),
       {
         kind: 'zones',
         number: 'The academy format',

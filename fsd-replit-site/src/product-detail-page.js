@@ -9,6 +9,7 @@ import {
   productSizeGuidanceForProduct,
 } from './size-guide-data.js';
 import { imagePlaceholderMarkup } from './image-placeholder.js';
+import { bodyGuideForProduct, renderSizeFinder, SIZE_FINDER_DISCLAIMER } from './size-finder.js';
 import { productImagesForDisplay } from './data/products.js';
 import { galleryIndexesForVariant } from './product-gallery-model.js';
 import { productColourwayOptions } from './product-card-media.js';
@@ -131,7 +132,7 @@ function renderSizeOptions(product, sizes) {
       </label>`;
       }).join('')}
     </div>
-    <button class="product-detail-text-link" type="button" data-size-guide>Size guide</button>
+    <button class="product-detail-text-link" type="button" data-size-guide>Size guide &amp; size finder</button>
   </fieldset>`;
 }
 
@@ -561,6 +562,53 @@ export function renderProductGalleryForVariant(product, images, galleryPlacehold
   );
 }
 
+
+const WOMENS_UK_SIZE = Object.freeze({ XS: '6', S: '8', M: '10', L: '12', XL: '14', XXL: '16' });
+const PENDING_SPEC = 'Confirmed by the manufacturer before sale';
+
+function productListValue(value) {
+  if (Array.isArray(value)) return value.map(entry => String(entry ?? '').trim()).filter(Boolean);
+  return String(value ?? '').split(/[;,]/).map(entry => entry.trim()).filter(Boolean);
+}
+
+/**
+ * The structured specification panel. Only confirmed data is shown as fact;
+ * anything the manufacturer has not yet confirmed says so plainly, so the page
+ * never implies a fabric, weight or care claim that has not been approved.
+ */
+export function renderProductSpecification(product, sizes = []) {
+  const verified = getVerifiedProductSpecifications(product.id);
+  const technical = verified?.technicalSpecs || {};
+  const isWomens = /women/i.test(`${product.audience || ''}`) || /hijab|modest/i.test(product.name || '');
+  const composition = verified?.materials?.length
+    ? verified.materials.join(' ')
+    : technical.composition || '';
+  const features = (verified?.benefits?.length ? verified.benefits : productListValue(product.features))
+    .filter(feature => !/^women[’']s uk sizes/i.test(feature));
+  const colourways = productListValue(product.rowColourways?.length ? product.rowColourways : product.colourways);
+  const sizeText = sizes.length
+    ? sizes.map(size => (isWomens && WOMENS_UK_SIZE[size] ? `${size} (UK ${WOMENS_UK_SIZE[size]})` : size)).join(' · ')
+    : '';
+  const rows = [
+    ['Composition', composition || PENDING_SPEC, !composition],
+    ['Fabric weight', technical.fabricWeight || PENDING_SPEC, !technical.fabricWeight],
+    ['Fit', technical.fit || product.coverage || PENDING_SPEC, !(technical.fit || product.coverage)],
+    ['Sizes', sizeText || 'Size range confirmed before sale', !sizeText],
+    ['Colourways', colourways.length ? `${colourways.length} · ${colourways.join(', ')}` : PENDING_SPEC, !colourways.length],
+    ['Care', technical.care || 'Care label confirmed before sale', !technical.care],
+  ];
+  if (product.sku) rows.push(['Product code', product.sku, false]);
+  return `<section class="product-spec" data-product-specification aria-labelledby="product-spec-title-${safe(product.id)}">
+    <h2 class="product-spec__title" id="product-spec-title-${safe(product.id)}">Specification</h2>
+    <dl class="product-spec__list">
+      ${rows.map(([label, value, pending]) => `<div class="product-spec__row${pending ? ' is-pending' : ''}"><dt>${safe(label)}</dt><dd>${safe(value)}</dd></div>`).join('')}
+    </dl>
+    ${features.length ? `<div class="product-spec__features"><h3>Construction &amp; features</h3><ul>${features.map(feature => `<li>${safe(feature)}</li>`).join('')}</ul></div>` : ''}
+    ${sizes.length ? '<button class="product-spec__size-link" type="button" data-size-guide>Open the size guide and size finder <span aria-hidden="true">→</span></button>' : ''}
+    <p class="product-spec__note">Fabric composition, weight and care details are published once confirmed by the manufacturer. Nothing on this page is a claim until it is confirmed.</p>
+  </section>`;
+}
+
 function renderDetails(product, sizes, hardwarePreview = false) {
   if (hardwarePreview) {
     return product.category
@@ -757,6 +805,7 @@ export function renderProductDetailPage({
           <a href="/delivery-returns.html">Delivery and returns</a>
         </p>
         <p class="product-detail-action-status" data-product-action-status role="status" aria-live="polite"></p>
+        ${hardwarePreview ? '' : renderProductSpecification(product, sizes)}
         ${renderDetails(product, sizes, hardwarePreview)}
         <div data-product-specifications-root data-product-id="${product.id}"></div>
       </section>
@@ -782,34 +831,31 @@ export function renderProductDetailPage({
   </div>`;
 }
 
-export function renderSizeGuideDialog(product) {
-  const sizeGuidance = productSizeGuidanceForProduct(product);
-  if (sizeGuidance) {
-    return `<div class="size-guide-dialog__shell" data-size-guide-status="CONTENT PENDING">
-      <header><div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
-        <button type="button" data-size-guide-close aria-label="Close size guide">×</button></header>
-      <section class="product-size-guidance product-size-guidance--dialog" data-breeze-size-guidance>
-        <h3>Confirmed size range</h3>
-        <ul class="product-size-guidance__range" aria-label="Listed sizes">
-          ${sizeGuidance.sizes.map(size => `<li>${safe(size)}</li>`).join('')}
-        </ul>
-        <p>${safe(sizeGuidance.note)}</p>
-      </section>
-    </div>`;
-  }
+export function renderSizeGuideDialog(product, sizes = productSizeOptions(product)) {
+  const header = `<header class="size-guide-drawer__header">
+      <div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
+      <p class="size-guide-drawer__hint">Click outside this panel to close</p>
+    </header>`;
   const guide = productSizeGuideForProduct(product);
-  if (!guide) {
-    return `<div class="size-guide-dialog__shell" data-size-guide-status="CONTENT PENDING">
-      <header><div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
-        <button type="button" data-size-guide-close aria-label="Close size guide">×</button></header>
-      <p class="size-guide-pending" role="status">Product-specific measurements are not available for this item yet.</p>
-    </div>`;
-  }
-  return `<div class="size-guide-dialog__shell">
-    <header><div><p class="section-kicker">FSD / SIZE GUIDE</p><h2 id="size-guide-title">${safe(product.name)}</h2></div>
-      <button type="button" data-size-guide-close aria-label="Close size guide">×</button></header>
+  if (guide) {
+    return `<div class="size-guide-dialog__shell" tabindex="-1">
+    ${header}
     ${guide.fitNote ? `<p>${safe(guide.fitNote)}</p>` : ''}
     ${renderVerifiedSizeGuideTable(guide)}
     <a class="size-guide-full-link" href="/size-guide.html">View the full size guide</a>
   </div>`;
+  }
+  const bodyGuide = bodyGuideForProduct(product, sizes);
+  if (bodyGuide) {
+    return `<div class="size-guide-dialog__shell" tabindex="-1" data-size-guide-status="GENERAL GUIDANCE">
+    ${header}
+    ${renderSizeFinder(product, bodyGuide)}
+  </div>`;
+  }
+  return `<div class="size-guide-dialog__shell" tabindex="-1" data-size-guide-status="CONTENT PENDING">
+    ${header}
+    <p class="size-guide-pending" role="status">Product-specific measurements are not available for this item yet.</p>
+  </div>`;
 }
+
+export { bodyGuideForProduct, SIZE_FINDER_DISCLAIMER };
