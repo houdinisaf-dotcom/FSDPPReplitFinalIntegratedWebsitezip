@@ -1643,3 +1643,20 @@ body.fsd-mobile-nav-open {
     transition: none;
   }
 }
+
+/* Hide-on-scroll banner: slides away while scrolling down, returns on scroll up. */
+.fsd-navigation-shell,
+.announcement.fsd-announcement {
+  transition: transform 320ms cubic-bezier(.2, .7, .2, 1), background-color 300ms ease-in-out;
+  will-change: transform;
+}
+html.fsd-header-hidden .fsd-navigation-shell.is-hidden-on-scroll {
+  transform: translateY(calc(-100% - var(--fsd-navigation-announcement-height, 0px) - 2px));
+}
+html.fsd-header-hidden .announcement.fsd-announcement {
+  transform: translateY(-100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fsd-navigation-shell,
+  .announcement.fsd-announcement { transition: none; }
+}
