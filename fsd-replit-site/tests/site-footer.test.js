@@ -20,7 +20,8 @@ test('shared footer uses existing destinations and the private enquiry route', (
     '/#fsd-house-archive',
     '/#bio-lab-archive',
     '/#hardware-editorial',
-    '/#contact',
+    '/private-access',
+    '/cookies.html',
     '/enquiries.html',
     '/contact.html',
     '/delivery-returns.html',
@@ -33,9 +34,10 @@ test('shared footer uses existing destinations and the private enquiry route', (
   assert.match(footer, /data-fsd-logo-slot="footer"/);
   assert.match(footer, /BEGIN AN ENQUIRY/);
   assert.match(footer, /Made to Move, Made to Belong\./);
-  assert.match(footer, /id="fsd-newsletter-email"[^>]*disabled aria-disabled="true"/);
-  assert.match(footer, /<button type="button" disabled aria-disabled="true">JOIN<\/button>/);
-  assert.match(footer, /Sign-up is unavailable until email delivery and privacy details are in place\./);
+  // No disabled look-alike form: the footer links to the working waitlist.
+  assert.doesNotMatch(footer, /disabled aria-disabled="true"/);
+  assert.match(footer, /href="\/#prelaunch-signup"[^>]*>JOIN THE WAITLIST/);
+  assert.match(footer, /href="\/cookies\.html"/);
   assert.match(footer, /© 2026 FSD/);
   assert.doesNotMatch(footer, /\[TO CONFIRM|Facebook|Instagram|TikTok|YouTube|LinkedIn/);
 });

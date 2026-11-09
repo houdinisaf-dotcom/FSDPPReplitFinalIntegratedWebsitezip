@@ -50,7 +50,7 @@ const homeDivisionNotes = Object.freeze({
   'bio-lab': 'Research concepts and material exploration',
   hardware: 'Catalogued training equipment',
   house: 'The FSD story and its divisions',
-  'private-access': 'Enquiry information; access remains unavailable',
+  'private-access': 'Members area coming soon',
 });
 
 function renderHomeDivisionGateway() {

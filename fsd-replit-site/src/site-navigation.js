@@ -742,7 +742,7 @@ export function createNavigationModel({
       id: 'private-access',
       label: 'PRIVATE ACCESS',
       title: 'PRIVATE ACCESS',
-      description: 'VIP Access information. Sign-ups remain deferred.',
+      description: 'Members area coming soon.',
       divisionId: '',
       groups: makePrivateGroups(),
     },

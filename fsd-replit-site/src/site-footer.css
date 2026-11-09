@@ -290,3 +290,25 @@
     transition: none;
   }
 }
+
+.fsd-site-footer__newsletter-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 0 16px;
+  border: 1px solid #c6a36a;
+  background: #c6a36a;
+  color: #0b0c0e;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-decoration: none;
+  transition: background-color .18s ease, color .18s ease;
+}
+.fsd-site-footer__newsletter-link:hover,
+.fsd-site-footer__newsletter-link:focus-visible {
+  background: transparent;
+  color: #c6a36a;
+}

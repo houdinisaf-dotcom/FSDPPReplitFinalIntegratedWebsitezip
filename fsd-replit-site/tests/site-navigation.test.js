@@ -96,9 +96,11 @@ test('Cryo-Zero has a separate information page without unconfirmed booking or s
   assert.match(page, /<title>FSD \| Cryo-Zero Recovery Chambers<\/title>/);
   assert.match(page, /<div data-fsd-standalone-navigation><\/div>/);
   assert.match(page, /<script type="module" src="\/src\/standalone-navigation\.js"><\/script>/);
-  assert.match(page, /Information in preparation/);
-  assert.match(page, /No bookings or enquiries are accepted through this page/);
-  assert.match(page, /To be confirmed/);
+  assert.match(page, /Coming to FSD/);
+  assert.match(page, /Bookings are not open yet/);
+  assert.match(page, /Published on approval/);
+  // Specs and pricing stay unpublished until approved; no internal drafting language.
+  assert.doesNotMatch(page, /£\s?\d|uploaded draft|supplied draft/i);
   assert.match(page, /Georgia, "Times New Roman", serif/);
   assert.doesNotMatch(page, /\[(?:YOUR-|PRICE|AREA|TOWN|CONFIRM|HOURS|@HANDLE)/i);
   assert.doesNotMatch(page, /<form\b|href="(?:tel:|https:\/\/wa\.me\/|#enquire)/i);
@@ -961,7 +963,7 @@ test('Community First Aid & Safety Skills does not claim an unconfirmed training
 test('Private Access keeps sign-ups closed and routes private enquiries to the standalone page', () => {
   const access = menu.find(item => item.id === 'private-access');
   assert.equal(access.groups.length, 4);
-  assert.ok(access.description.includes('deferred'));
+  assert.ok(access.description.includes('coming soon'));
   assert.equal(access.groups[0].href, '#tactical-shield-membership');
   assert.equal(access.groups[0].navigationUnavailable, false);
   assert.equal(access.groups[0].items[0].href, '#tactical-shield-membership');

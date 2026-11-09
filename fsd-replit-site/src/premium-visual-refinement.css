@@ -525,7 +525,7 @@ body[data-fsd-house-editorial="true"] :where(a, button):focus-visible {
 
 /* The homepage is a focused campaign sequence, not a second copy of every
    division page. Existing route content remains available on its own routes. */
-[data-fsd-storefront][data-current-view="home"] [data-storefront-content] > :not(#home):not(.fsd-site-footer):not(dialog) {
+[data-fsd-storefront][data-current-view="home"] [data-storefront-content] > :not(#home):not(#prelaunch-signup):not(.fsd-site-footer):not(dialog) {
   display: none !important;
 }
 

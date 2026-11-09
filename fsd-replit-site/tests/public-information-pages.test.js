@@ -7,12 +7,14 @@ import {
 } from '../src/size-guide-data.js';
 
 test('delivery, privacy, terms, and contact pages are public root assets with placeholders', async () => {
-  const files = ['delivery-returns.html', 'privacy.html', 'terms.html', 'contact.html'];
+  const files = ['delivery-returns.html', 'privacy.html', 'terms.html', 'contact.html', 'cookies.html'];
   const pages = await Promise.all(files.map(file => readFile(new URL(`../public/${file}`, import.meta.url), 'utf8')));
   for (const html of pages) {
     assert.match(html, /lang="en-GB"/u);
     assert.match(html, /policy-pages\.css/u);
-    assert.match(html, /Website design prototype/u);
+    assert.doesNotMatch(html, /\[TO CONFIRM/u);
+    assert.match(html, /Manchester/u);
+    assert.match(html, /href="\/cookies\.html"/u);
     assert.match(html, /href="\/privacy\.html"/u);
     assert.match(html, /href="\/terms\.html"/u);
     assert.match(html, /href="\/contact\.html"/u);
@@ -20,8 +22,11 @@ test('delivery, privacy, terms, and contact pages are public root assets with pl
   assert.match(pages[0], /International delivery/u);
   assert.match(pages[0], /Damaged or faulty items/u);
   assert.match(pages[0], /statutory consumer rights/u);
-  assert.match(pages[1], /\[TO CONFIRM - LEGAL REVIEW\]/u);
-  assert.match(pages[2], /\[TO CONFIRM - LEGAL REVIEW\]/u);
+  assert.match(pages[1], /legal review/u);
+  assert.match(pages[1], /Stripe/u);
+  assert.match(pages[2], /not taking orders or payments yet/u);
+  // Email is shown as plain text only until the mailbox is live.
+  for (const html of pages) assert.doesNotMatch(html, /mailto:/u);
 });
 
 test('size guide shares labelled sections and keeps unapproved measurements blank', async () => {
@@ -30,5 +35,6 @@ test('size guide shares labelled sections and keeps unapproved measurements blan
   assert.deepEqual(SIZE_GUIDE_SECTIONS[1].sizes, ['XS', 'S', 'M', 'L', 'XL', 'XXL']);
   assert.match(page, /data-size-guide-content/u);
   assert.match(page, /size-guide-page\.js/u);
-  assert.match(renderSizeGuideTable(SIZE_GUIDE_SECTIONS[1]), /\[TO CONFIRM\]/u);
+  assert.match(renderSizeGuideTable(SIZE_GUIDE_SECTIONS[1]), /Pending/u);
+  assert.doesNotMatch(renderSizeGuideTable(SIZE_GUIDE_SECTIONS[1]), /\[TO CONFIRM\]/u);
 });

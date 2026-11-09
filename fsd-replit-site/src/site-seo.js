@@ -23,7 +23,7 @@ export const storefrontSeoRoutes = [
     { path: '/universe', title: 'The FSD Universe', description: 'Discover FSD’s wider performance ecosystem, community and global vision.', view: 'universe', target: 'global', hash: '#universe' },
     { path: '/bio-lab', title: 'Bio-Lab™', description: 'Explore FSD Bio-Lab™ and its published material science, apparel and innovation initiatives.', view: 'bio-lab', target: 'bio-lab', hash: '#innovation-hub' },
   ].map(({ view, target, ...entry }) => ({ ...entry, title: `${entry.title} | FSD`, route: { view, target } })),
-  { path: '/private-access', title: `Private Access | ${SITE_NAME}`, description: 'Private enquiry information and access concepts. Registration and unconfigured submissions remain unavailable.', route: { view: 'division-hub', target: 'private-access' } },
+  { path: '/private-access', title: `Private Access | ${SITE_NAME}`, description: 'FSD members area, coming soon. Investor, franchise and partnership enquiries.', route: { view: 'division-hub', target: 'private-access' } },
   ...[
     { id: 'men', title: 'Men’s Collections', pattern: /^men/i },
     { id: 'women', title: 'Women’s Collections', pattern: /^women/i },

@@ -190,8 +190,7 @@
 
 #fsd-house-archive .house-destination-index__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
 #fsd-house-archive .house-destination-index__division { grid-column: span 4; min-height: 290px; }
-#fsd-house-archive .house-destination-index__division--1,
-#fsd-house-archive .house-destination-index__division--4 { grid-column: span 6; }
+/* Six chapters sit in two balanced rows of three (no empty grid cells). */
 
 #fsd-house-archive .house-destination-index__chapter {
   display: flex;

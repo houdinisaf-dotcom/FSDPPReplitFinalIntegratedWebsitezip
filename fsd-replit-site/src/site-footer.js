@@ -16,7 +16,7 @@ const EXPLORE_GROUPS = [
   ['Business', [
     ['Investor Relations', '/investor.html'],
     ['FSD Global', '/#fsd-division-global'],
-    ['VIP Access', '/#contact'],
+    ['Members Area (coming soon)', '/private-access'],
     ['Private Enquiries', '/enquiries.html'],
   ]],
 ];
@@ -26,6 +26,7 @@ const SUPPORT_LINKS = [
   ['Delivery & Returns', '/delivery-returns.html'],
   ['Size Guide', '/size-guide.html'],
   ['Privacy', '/privacy.html'],
+  ['Cookies', '/cookies.html'],
   ['Terms', '/terms.html'],
 ];
 
@@ -69,17 +70,11 @@ export function renderSiteFooter({
           <h3>SUPPORT</h3><ul>${renderLinks(SUPPORT_LINKS)}</ul>
         </nav>
         <section class="fsd-site-footer__column fsd-site-footer__newsletter" aria-labelledby="fsd-newsletter-title">
-          <h3 id="fsd-newsletter-title">NEWSLETTER</h3>
-          <div class="fsd-site-footer__newsletter-controls" role="group"
-            aria-label="Newsletter sign-up" aria-describedby="fsd-newsletter-status">
-            <label class="fsd-site-footer__sr-only" for="fsd-newsletter-email">Email address</label>
-            <input id="fsd-newsletter-email" name="newsletter-email" type="email" autocomplete="email"
-              placeholder="Email address" disabled aria-disabled="true"/>
-            <button type="button" disabled aria-disabled="true">JOIN</button>
-          </div>
+          <h3 id="fsd-newsletter-title">LAUNCH WAITLIST</h3>
           <p class="fsd-site-footer__newsletter-status" id="fsd-newsletter-status">
-            Sign-up is unavailable until email delivery and privacy details are in place.
+            Join the launch waitlist for FSD news and the AEROFORGE reveal.
           </p>
+          <a class="fsd-site-footer__newsletter-link" href="/#prelaunch-signup">JOIN THE WAITLIST <span aria-hidden="true">→</span></a>
         </section>
       </div>
       <div class="fsd-site-footer__bottom">

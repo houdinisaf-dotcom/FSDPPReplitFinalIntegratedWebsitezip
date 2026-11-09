@@ -2527,3 +2527,21 @@
     transform: none !important;
   }
 }
+
+/* Members area teaser: centred heading and a real waitlist link (was a disabled button). */
+section.showroom-vip h2 { margin-inline: auto; }
+section.showroom-vip > p:not(.section-kicker) { margin-inline: auto; }
+section.showroom-vip a.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 22px;
+  border: 1px solid #c6a36a;
+  background: #c6a36a;
+  color: #0b0c0e;
+  text-decoration: none;
+  transition: background-color .18s ease, color .18s ease;
+}
+section.showroom-vip a.primary-btn:hover,
+section.showroom-vip a.primary-btn:focus-visible { background: transparent; color: #c6a36a; }
+section.showroom-vip .showroom-vip-status a { color: #c6a36a; text-decoration: underline; }

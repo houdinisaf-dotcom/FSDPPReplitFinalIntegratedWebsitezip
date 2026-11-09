@@ -712,13 +712,29 @@
     "Audience": "Women’s",
     "Price (£) confirmed": "29.99",
     "Suggested price (£) – to confirm": "",
-    "Colourways": "Navy/Cyan, Black/Gold, Black/White, Olive/Lime, Dark Grey/Silver, Black/Magenta, Burgundy/Pink",
+    "Colourways": "Black/Gold, Charcoal/Gold, Navy/Gold, Stone Grey/Bronze, Ivory/Bronze, Burgundy/Gold, Olive/Gold, Sand/Bronze",
     "Collection line": "Standard / Core",
     "Image status": "Approved product photography — Black/Gold only",
     "Source": "Both",
     "Also appears as": "FSD CORE Everyday Sports Hijab; FSD Performance Sports Hijab",
     "Alias status": "Confirmed",
-    "Notes": "Confirmed as one product. Seven approved colourways retained. Eight supplied photos map to Black/Gold only; the other six colourways remain unphotographed. Provisional swatch hex values are not used."
+    "Notes": "Owner update Nov 2026: colourways replaced with the eight-colour sheet; sizes XS to XL = UK 6 to 14. Nine supplied photos map to Black/Gold only. Fabric composition and performance claims await manufacturer confirmation.",
+    "Sizes": "XS; S; M; L; XL",
+    "Size guide status": "Women's UK sizes 6 to 14: XS = 6, S = 8, M = 10, L = 12, XL = 14. Garment measurements are published before sale.",
+    "Short description": "A pull-on sports hijab with extended neck coverage and the gold FSD monogram, made for training without readjusting.",
+    "Description": "The CORE Sports Hijab is FSD’s everyday training hijab: a pull-on, one-piece design with extended neck coverage, perforated panel detailing and the signature gold FSD monogram. Sized in women’s UK 6 to 14 and offered across eight colourways.",
+    "Features": ["Pull-on, one-piece design with no pins needed", "Extended neck coverage that sits under training tops", "Perforated panel detailing", "Gold FSD monogram at the temple", "Women’s UK sizes 6 to 14 (XS to XL)"],
+    "Materials": "Fabric composition published once confirmed by the manufacturer.",
+    "Colourway palette": [
+      { "name": "Black/Gold", "primary": "#0A0A0A", "accent": "#C9A24A" },
+      { "name": "Charcoal/Gold", "primary": "#36383B", "accent": "#C9A24A" },
+      { "name": "Navy/Gold", "primary": "#1B2A44", "accent": "#C9A24A" },
+      { "name": "Stone Grey/Bronze", "primary": "#8D8C88", "accent": "#A8743F" },
+      { "name": "Ivory/Bronze", "primary": "#EDE6D6", "accent": "#A8743F" },
+      { "name": "Burgundy/Gold", "primary": "#5A1A26", "accent": "#C9A24A" },
+      { "name": "Olive/Gold", "primary": "#4B5132", "accent": "#C9A24A" },
+      { "name": "Sand/Bronze", "primary": "#C8B28E", "accent": "#A8743F" }
+    ]
   },
   {
     "id": 43,

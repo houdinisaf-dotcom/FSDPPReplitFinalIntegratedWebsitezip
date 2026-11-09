@@ -27,3 +27,16 @@ test('division pages keep a dark, legible header', () => {
 test('division hub copy does not double-escape ampersands', () => {
   assert.doesNotMatch(hub, /'[^'\n]*&amp;[^'\n]*'/);
 });
+
+test('the circle emblem (logo concept 3) is not used anywhere on the site', async () => {
+  const { readdirSync } = await import('node:fs');
+  const crops = readdirSync(new URL('../public/brand/logo-panel-crops/', import.meta.url));
+  assert.ok(!crops.some(name => /concept-3|circle/i.test(name)), 'circle emblem asset must not be shipped');
+  const config = readFileSync(new URL('../src/config/priority-three.json', import.meta.url), 'utf8');
+  assert.doesNotMatch(config, /concept-3|circle emblem/i);
+});
+
+test('homepage shows the launch waitlist', () => {
+  const refinement = readFileSync(new URL('../src/premium-visual-refinement.css', import.meta.url), 'utf8');
+  assert.match(refinement, /:not\(#home\):not\(#prelaunch-signup\)/);
+});
