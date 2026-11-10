@@ -21,6 +21,7 @@ import {
   renderProductDetailPage,
   renderSizeGuideDialog,
 } from './product-detail-page.js';
+import { bindSizeFinder, bodyGuideForProduct } from './size-finder.js';
 import { animateAddButton, animateElement, animateWishlistHeart, setStickyAddBarVisible } from './motion-runtime.js';
 import { FSD_MOTION } from './motion-config.js';
 import { productImagesForDisplay } from './data/products.js';
@@ -621,16 +622,22 @@ function updateProductJsonLd(dialogBody) {
   dialogBody.querySelector('[data-product-jsonld]')?.remove();
 }
 
+let sizeFinderCleanup = null;
+
 function openProductSizeGuide(product) {
   let guide = document.querySelector('#fsd-size-guide-dialog');
   if (!guide) {
     guide = document.createElement('dialog');
     guide.id = 'fsd-size-guide-dialog';
-    guide.className = 'size-guide-dialog';
+    guide.className = 'size-guide-dialog size-guide-dialog--drawer';
     guide.setAttribute('aria-labelledby', 'size-guide-title');
     document.body.append(guide);
     guide.addEventListener('click', event => {
-      if (event.target === guide || event.target.closest('[data-size-guide-close]')) guide.close();
+      // The drawer closes from anywhere outside the panel (the product image
+      // included) rather than from a small corner button.
+      const shell = guide.querySelector('.size-guide-dialog__shell');
+      const outside = event.target === guide || (shell && !shell.contains(event.target));
+      if (outside || event.target.closest('[data-size-guide-close], .size-guide-drawer__hint')) guide.close();
     });
     guide.addEventListener('cancel', event => {
       event.preventDefault();
@@ -641,10 +648,13 @@ function openProductSizeGuide(product) {
       sizeGuideReturnFocus = null;
     });
   }
-  guide.innerHTML = renderSizeGuideDialog(product, productSizeOptions(product));
+  const sizes = productSizeOptions(product);
+  sizeFinderCleanup?.();
+  guide.innerHTML = renderSizeGuideDialog(product, sizes);
+  sizeFinderCleanup = bindSizeFinder(guide, bodyGuideForProduct(product, sizes));
   sizeGuideReturnFocus = document.activeElement;
   if (!guide.open) guide.showModal();
-  guide.querySelector('[data-size-guide-close]')?.focus({ preventScroll: true });
+  guide.querySelector('.size-guide-dialog__shell')?.focus({ preventScroll: true });
 }
 
 function readWishlist() {

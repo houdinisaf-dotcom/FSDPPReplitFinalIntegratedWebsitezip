@@ -917,152 +917,128 @@ function hasVerifiedDestination({
   );
 }
 
-function featureMetadataText(value, fallback = 'To be confirmed') {
-  if (Array.isArray(value)) {
-    const joined = value.filter(Boolean).map(String).join(' / ');
-    return joined || fallback;
-  }
-  if (value !== null && value !== undefined && String(value).trim()) {
-    return String(value).trim();
-  }
-  return fallback;
-}
+const MENU_GROUP_IMAGES = Object.freeze({
+  'mens-luxury-performance': ['/fsd-assets/menu-mens-luxury-performance.webp', 'Athlete in an all-black FSD training tee resting on a bench in a low-lit strength gym.'],
+  'womens-modest-combat': ['/fsd-assets/8ffe2fd45a06.webp', 'FSD women’s modest combat training in boxing gloves.'],
+  'womens-collections': ['/fsd-assets/breeze-set-onyx-black-full-length.webp', 'FSD Breeze Onyx Black set, full-length product photo.'],
+  'mens-collections': ['/fsd-assets/a50d3dd41dd5.webp', 'FSD black and gold performance tee.'],
+  'limited-collections': ['/fsd-assets/3e7e5e1e2217.webp', 'Black and gold detail from an FSD limited capsule.'],
+  'new-featured-concepts': ['/fsd-assets/694b62506e9f.webp', 'FSD men’s combat training concept.'],
+  'clothing-lines': ['/fsd-assets/4037f5843793.webp', 'The FSD clothing range laid out by colourway.'],
+  'catalogue-collections': ['/fsd-assets/menu-strength-equipment.webp', 'Chalked hand lifting an FSD black and gold dumbbell from the rack.'],
+  'shop-circularity': ['/fsd-assets/07abc61fc7ed.webp', 'Close detail of FSD technical fabric.'],
+  'shop-technical-innovation': ['/fsd-assets/1eeba2ae57b0.webp', 'FSD adaptive technical fabric with shield mark.'],
+  'universe-apparel': ['/fsd-assets/4037f5843793.webp', 'The FSD clothing range laid out by colourway.'],
+  'universe-bio-lab': ['/fsd-assets/3daa9883cec9.webp', 'FSD Nexus smart ring concept in golden shadows.'],
+  'universe-hardware': ['/fsd-assets/menu-strength-equipment.webp', 'FSD black and gold dumbbells on the rack.'],
+  'universe-global': ['/images/flagships/manchester-exterior.webp', 'Concept visualisation of the proposed FSD Manchester flagship at dusk.'],
+  'universe-community-development': ['/fsd-assets/694b62506e9f.webp', 'FSD community training concept.'],
+  'universe-strategic-concepts': ['/fsd-assets/c2b7a4ef8b29.webp', 'The FSD shield and wordmark.'],
+  'bio-lab-concepts': ['/fsd-assets/3daa9883cec9.webp', 'FSD Nexus smart ring concept in golden shadows.'],
+  'innovation-hub': ['/fsd-assets/1eeba2ae57b0.webp', 'FSD adaptive technical fabric with shield mark.'],
+  'bio-lab-strategic-concepts': ['/fsd-assets/07abc61fc7ed.webp', 'Close detail of FSD technical fabric.'],
+  'strength-equipment': ['/fsd-assets/menu-strength-equipment.webp', 'Chalked hand lifting an FSD black and gold dumbbell from the rack.'],
+  'combat-equipment': ['/fsd-assets/ac7d82c01281.webp', 'FSD black and gold boxing gloves.'],
+  'recovery-technology': ['/images/flagships/manchester-recovery-suite.webp', 'Concept visualisation of an FSD recovery and hydrotherapy suite.'],
+  'performance-accessories': ['/fsd-assets/12f56716e1e4.webp', 'FSD performance gym bag.'],
+  'our-story': ['/fsd-assets/c2b7a4ef8b29.webp', 'The FSD shield and wordmark.'],
+  flagships: ['/images/flagships/manchester-exterior.webp', 'Concept visualisation of the proposed FSD Manchester flagship at dusk.'],
+  'fight-promotions': ['/images/flagships/manchester-boxing-hall.webp', 'Concept visualisation of an FSD boxing hall.'],
+  'global-vision-operations': ['/images/flagships/ireland-training-floor.webp', 'Concept visualisation of an FSD flagship training floor.'],
+  'investor-relations': ['/images/flagships/manchester-lounge.webp', 'Concept visualisation of the FSD Manchester members’ lounge.'],
+  'community-culture': ['/fsd-assets/8ffe2fd45a06.webp', 'FSD women’s combat training session.'],
+  'tactical-shield-membership': ['/images/flagships/manchester-lounge.webp', 'Concept visualisation of the FSD members’ lounge.'],
+  'vip-registration': ['/images/flagships/manchester-training-floor.webp', 'Concept visualisation of the FSD Manchester training floor.'],
+  'collection-announcements': ['/fsd-assets/3e7e5e1e2217.webp', 'Black and gold detail from an FSD capsule.'],
+  'private-enquiries': ['/images/flagships/manchester-lounge.webp', 'Concept visualisation of the FSD members’ lounge.'],
+});
 
-function renderFeature(menu, group, item, canNavigate) {
-  const isStoryFeature = menu.id === 'house' && item?.href === FSD_STORY_PATH;
-  const image = featureImageForItem(item);
-  const exactItemImage = Boolean(image);
-  const featureTitle = isStoryFeature
-    ? 'THE FSD STORY & ARCHIVE'
-    : item?.record?.name || item?.title || group?.title || 'FSD';
-  const description = item?.description ||
-    item?.record?.coverage ||
-    item?.record?.priceBasis ||
-    group?.description ||
-    '';
-  const available = canNavigate({ menu, group, item });
-  const colourways = featureMetadataText(
-    item?.record?.colourways ?? item?.record?.colorways ?? item?.colourways ??
-      item?.source?.colourways ?? item?.source?.colorways ??
-      item?.sourceGroup?.colourways ?? group?.colourways,
-    '—',
-  );
-  const audience = featureMetadataText(
-    item?.record?.audience ?? item?.audience ??
-      item?.source?.audiences ?? item?.sourceGroup?.audiences ?? group?.audiences,
-    '—',
-  );
-  const metadataRows = isStoryFeature
-    ? [
-      ['Chapters', item?.chapterCount || '04 FOUNDATIONAL CHAPTERS'],
-      ['House Codes', item?.houseCodeCount || '05 WORKING PRINCIPLES'],
-    ]
-    : menu.id === 'house'
-      ? [['Collection group', group?.title || '—'], ...(item?.status ? [['Status', item.status]] : [])]
-    : [
-       ['Colourways', colourways],
-      ['Audience', audience],
-    ];
+const MENU_POPULAR_LIMIT = 4;
+const MENU_KEEP_UPPER = new Set(['FSD', 'MMA', 'PPV', 'VIP', 'NFC', 'UK', 'BIO-LAB™', 'II', 'III']);
+const MENU_KEEP_LOWER = new Set(['and', 'of', 'the', 'for', 'in', 'to', '&']);
 
-  const mediaTreatment = image?.presentation === 'product' ? ' fsd-feature-media--product' : '';
-  const media = isStoryFeature
-    ? `<div class="fsd-feature-media fsd-feature-media--story">
-        <span>FSD / THE HOUSE</span>
-        <strong>Capability is not a costume.<br/><em>It is a practice.</em></strong>
-        <small>Four foundational chapters · Five House Codes</small>
-      </div>`
-    : image
-     ? `<div class="fsd-feature-media fsd-feature-media--1${mediaTreatment}" data-feature-image="${escapeHTML(image.src)}">
-         <span class="fsd-feature-media__division">${escapeHTML(menu.label || 'FSD')}</span>
-        <img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}"
-          data-fsd-image-fallback="true" data-fsd-image-title="${escapeHTML(featureTitle)}" data-fsd-image-kind="collection"
-          loading="eager" fetchpriority="auto" decoding="async">
-          <span class="fsd-feature-media__caption">${escapeHTML(group?.title || 'FSD / IMAGE RECORD')}</span>
-      </div>`
-    : imagePlaceholderMarkup({ title: featureTitle, kind: 'collection', className: 'fsd-feature-media fsd-feature-media--unmapped' });
-  const mediaAction = available
-    ? `<button type="button" class="fsd-feature-media-action" data-nav-destination
-        aria-label="Open ${escapeHTML(featureTitle)}">
-        ${media}
-      </button>`
-    : media;
-
-  const actionLabel = !available ? 'DESTINATION UNAVAILABLE'
-    : isStoryFeature ? 'READ THE STORY & ARCHIVE'
-    : menu.id === 'house' && group?.id === 'investor-relations' ? 'OPEN INVESTOR RELATIONS'
-      : menu.id === 'house' && group?.id === 'our-story' ? 'READ THE SECTION'
-        : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/fight-promotions.html' ? 'VIEW CONCEPT PAGE'
-          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/live-events.html' ? 'VIEW INITIATIVE'
-          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/broadcast-ppv.html' ? 'VIEW INITIATIVE'
-          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/athlete-development.html' ? 'VIEW INITIATIVE'
-          : menu.id === 'house' && group?.id === 'fight-promotions' && item?.href === '/academy-grassroots.html' ? 'VIEW INITIATIVE'
-        : menu.id === 'house' && ['community-culture', 'global-vision-operations'].includes(group?.id) ? 'VIEW INITIATIVE'
-      : item?.kind === 'draft-product' ? (item.previewActionLabel || 'EXPLORE PRODUCT')
-      : item?.kind === 'shop-all' ? 'SHOP ALL PRODUCTS'
-      : item?.kind === 'clothing-lines' ? 'BROWSE ALL CLOTHING LINES'
-        : item?.kind === 'clothing-line' ? 'VIEW THIS LINE'
-      : item?.record ? 'VIEW DETAILS'
-      : menu.id === 'private-access' ? 'VIEW ACCESS INFORMATION'
-        : item?.kind === 'concept' ? 'EXPLORE COLLECTION'
-            : item?.kind === 'subcategory' ? 'VIEW COLLECTION'
-            : item?.kind === 'category' ? 'VIEW CATEGORY'
-              : menu.id === 'house' ? 'EXPLORE THE HOUSE'
-                : 'EXPLORE COLLECTION';
-
-  return `<article class="fsd-feature-card feature-card fsd-feature-card--${escapeHTML(menu.id || 'division')}" data-feature-group="${escapeHTML(group?.id || '')}">
-    ${mediaAction}
-    <div class="fsd-feature-copy">
-      <p class="fsd-feature-kicker" id="modal-kicker">${item?.kind === 'draft-product' ? escapeHTML(item.previewKicker || 'FSD / COLLECTION') : exactItemImage ? 'FSD / SELECTED RECORD' : 'FSD / COLLECTION FEATURE'}</p>
-      <p class="fsd-feature-context">${escapeHTML(group?.title || menu.label || 'FSD / COLLECTIONS')}</p>
-      <h3 id="modal-title">${escapeHTML(featureTitle)}</h3>
-      <p id="modal-desc">${escapeHTML(description)}</p>
-      <dl class="fsd-feature-metadata" aria-label="Selected item details">
-        ${metadataRows.map(([label, value], index) => `<div><dt>${escapeHTML(label)}</dt><dd${index === 0 ? ' data-status' : ''}>${escapeHTML(value)}</dd></div>`).join('')}
-      </dl>
-      <button type="button" class="fsd-feature-cta feature-btn" id="modal-action-btn" data-nav-destination
-        ${available ? '' : 'disabled aria-disabled="true" title="No verified destination is available for this selection."'}>
-        ${actionLabel}<span aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon') : '—'}</span>
-      </button>
-    </div>
-  </article>`;
-}
-
-function renderGroupButtons(menu, activeGroupIndex, canNavigate) {
-  return menu.groups.map((group, index) => {
-    const available = canNavigate({ menu, group, item: null });
-    const status = menu.id === 'house'
-      ? 'Select this collection group to view its subcategories.'
-      : 'Open this collection group.';
-    return `<li><button type="button"
-      class="fsd-nav-option fsd-nav-group${index === activeGroupIndex ? ' is-active' : ''}"
-      data-nav-group="${index}" data-nav-available="${available}" aria-label="${escapeHTML(group.title)}. ${status}"
-      title="${status}" aria-pressed="${index === activeGroupIndex}">
-    <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
-    <span>${escapeHTML(group.title)}</span>
-      <span class="fsd-nav-arrow" aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon fsd-nav-arrow-icon') : '—'}</span>
-  </button></li>`;
+// Category names are stored in capitals for the header; the editorial menu
+// sets them in a serif, so present them in title case for readability.
+export function editorialTitle(value) {
+  return String(value ?? '').split(/(\s+)/).map((word, index) => {
+    if (!word.trim()) return word;
+    if (MENU_KEEP_UPPER.has(word)) return word;
+    const lower = word.toLocaleLowerCase('en-GB');
+    if (index > 0 && MENU_KEEP_LOWER.has(lower)) return lower;
+    return lower.replace(/(^|[-’'(])(\p{L})/gu, (match, lead, letter) => lead + letter.toLocaleUpperCase('en-GB'))
+      .replace(/’S\b/g, '’s');
   }).join('');
 }
 
-function renderItemButtons(menu, group, activeItemIndex, canNavigate) {
-  return group.items.map((item, index) => {
+export function imageForNavigationGroup(group) {
+  const mapped = MENU_GROUP_IMAGES[group?.id];
+  if (mapped) return { src: mapped[0], alt: mapped[1], presentation: 'editorial' };
+  for (const item of group?.items || []) {
+    const image = featureImageForItem(item);
+    if (image) return image;
+  }
+  return null;
+}
+
+function editorialActionLabel(menu, group, item, available) {
+  if (!available) return 'COMING SOON';
+  if (menu.id === 'house' && item?.href === FSD_STORY_PATH) return 'READ THE STORY';
+  if (menu.id === 'house' && group?.id === 'investor-relations') return 'OPEN INVESTOR RELATIONS';
+  if (menu.id === 'house') return 'OPEN PAGE';
+  if (menu.id === 'private-access') return 'VIEW ACCESS INFORMATION';
+  if (item?.kind === 'draft-product') return item.previewActionLabel || 'EXPLORE PRODUCT';
+  if (item?.kind === 'shop-all') return 'SHOP ALL PRODUCTS';
+  if (item?.kind === 'clothing-lines') return 'BROWSE ALL CLOTHING LINES';
+  if (item?.kind === 'clothing-line') return 'VIEW THIS LINE';
+  if (item?.record) return 'VIEW DETAILS';
+  return 'EXPLORE COLLECTION';
+}
+
+function editorialMedia(menu, group, item, { tag = 'div', available = false } = {}) {
+  const image = featureImageForItem(item) || imageForNavigationGroup(group);
+  const title = item?.record?.name || item?.title || group?.title || 'FSD';
+  const productTreatment = image?.presentation === 'product' ? ' fsd-feature-media--product' : '';
+  const inner = image
+    ? `<img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}" data-fsd-image-fallback="true"
+        data-fsd-image-title="${escapeHTML(title)}" data-fsd-image-kind="collection" loading="eager" decoding="async">`
+    : '';
+  const mediaClass = image ? `fsd-feature-media fsd-feature-media--1 fsd-ed-media${productTreatment}` : 'fsd-feature-media fsd-feature-media--unmapped fsd-ed-media';
+  const caption = `<span class="fsd-ed-media__caption"><b>${escapeHTML(group?.title || menu.label)}</b>${item && item.title !== group?.title ? `<i>${escapeHTML(item.title)}</i>` : ''}</span>`;
+  if (!image) return imagePlaceholderMarkup({ title, kind: 'collection', className: mediaClass });
+  if (tag === 'button' && available) {
+    return `<button type="button" class="fsd-ed-media-action" data-nav-destination aria-label="Open ${escapeHTML(title)}">
+      <span class="${mediaClass}" data-feature-image="${escapeHTML(image.src)}">${inner}${caption}</span></button>`;
+  }
+  return `<div class="${mediaClass}" data-feature-image="${escapeHTML(image.src)}">${inner}${caption}</div>`;
+}
+
+function editorialItemRows(menu, group, activeItemIndex, canNavigate, { expanded = false, thumbnails = false } = {}) {
+  const showAll = expanded || activeItemIndex >= MENU_POPULAR_LIMIT;
+  const items = showAll ? group.items : group.items.slice(0, MENU_POPULAR_LIMIT);
+  return items.map((item, index) => {
     const available = canNavigate({ menu, group, item });
-    const status = menu.id === 'house' ? 'Preview this section.' : 'Open this collection item.';
-    return `<li><button type="button"
-      class="fsd-nav-option fsd-nav-item${index === activeItemIndex ? ' is-active' : ''}"
-      data-nav-item="${index}" data-nav-available="${available}"
-      aria-label="${escapeHTML(item.title)}. ${status}" title="${status}"
-      aria-pressed="${index === activeItemIndex}">
-    <span class="fsd-nav-index">${String(index + 1).padStart(2, '0')}</span>
-    <span>${escapeHTML(item.title)}</span>
-      <span class="fsd-nav-arrow" aria-hidden="true">${available ? outlineIcon('arrowUpRight', 'fsd-icon fsd-nav-arrow-icon') : '—'}</span>
-  </button></li>`;
+    const thumb = thumbnails ? featureImageForItem(item) || imageForNavigationGroup(group) : null;
+    return `<li><button type="button" class="fsd-nav-item fsd-ed-item${index === activeItemIndex ? ' is-active' : ''}"
+      data-nav-item="${index}" data-nav-available="${available}" aria-pressed="${index === activeItemIndex}">
+      ${thumb ? `<span class="fsd-ed-thumb"><img src="${escapeHTML(thumb.src)}" alt="" loading="lazy" decoding="async"></span>` : ''}
+      <span class="fsd-ed-item__title">${escapeHTML(item.title)}</span>
+      <span class="fsd-ed-item__arrow" aria-hidden="true">${available ? '→' : '·'}</span>
+    </button></li>`;
   }).join('');
 }
 
-function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId = '') {
+function editorialViewAll(group, expanded) {
+  if (group.items.length <= MENU_POPULAR_LIMIT) return '';
+  return `<button type="button" class="fsd-ed-viewall" data-nav-viewall aria-expanded="${expanded}">
+    ${expanded ? 'SHOW MOST POPULAR' : `VIEW ALL ${group.items.length}`} <span aria-hidden="true">${expanded ? '↑' : '→'}</span></button>`;
+}
+
+function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId = '', { expanded = false } = {}) {
   const group = menu.groups[activeGroupIndex] || menu.groups[0];
   const item = group?.items?.[activeItemIndex] || group?.items?.[0];
+  const isMobileStep = mobileStep !== 'desktop';
+  const available = group ? canNavigate({ menu, group, item }) : false;
+  const listLabel = group && group.items.length > MENU_POPULAR_LIMIT ? 'MOST POPULAR' : 'IN THIS CATEGORY';
   const mobilePrimaries = `${primaryNavigation.map(entry => `<div class="fsd-mobile-primary-row">
       <button type="button"
         class="fsd-mobile-primary${entry.id === menu.id ? ' is-active' : ''}"
@@ -1073,48 +1049,67 @@ function renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, produc
         aria-label="Open ${escapeHTML(entry.label)} division overview"
         ${entry.id === currentPrimaryId ? 'aria-current="page"' : ''}>↗</a>
   </div>`).join('')}`;
-  const stepIndex = mobileStep === 'primary' ? '01' : mobileStep === 'groups' ? '02' : '03';
 
-  return `<div class="fsd-mega-inner">
-    <div class="fsd-mega-heading menu-header-bar">
-      <div>
-        <p class="fsd-mega-eyebrow">${escapeHTML(menu.label)} <span>/</span> DIVISIONS</p>
-        <h2 id="menu-section-title">${escapeHTML(menu.title)}</h2>
-      </div>
-      <button type="button" class="fsd-mega-close close-menu" id="close-menu-btn" data-nav-close aria-label="Close navigation">
-        CLOSE ${outlineIcon('close', 'fsd-icon fsd-mega-close-icon')}
+  const groupRows = menu.groups.map((entry, index) => {
+    const isActive = index === activeGroupIndex;
+    const groupAvailable = canNavigate({ menu, group: entry, item: null });
+    const thumb = imageForNavigationGroup(entry);
+    const sub = isActive && !isMobileStep ? `<div class="fsd-ed-sub">
+        <p class="fsd-ed-sub__label">${listLabel}</p>
+        <ul class="fsd-ed-sub__list" role="group" aria-label="${escapeHTML(entry.title)}">${editorialItemRows(menu, entry, activeItemIndex, canNavigate, { expanded })}</ul>
+        ${editorialViewAll(entry, expanded)}
+      </div>` : '';
+    return `<li class="fsd-ed-group${isActive ? ' is-active' : ''}">
+      <button type="button" class="fsd-nav-group fsd-ed-group__button${isActive ? ' is-active' : ''}"
+        data-nav-group="${index}" data-nav-available="${groupAvailable}" aria-pressed="${isActive}"
+        aria-label="${escapeHTML(entry.title)}, ${entry.items.length} ${entry.items.length === 1 ? 'range' : 'ranges'}">
+        ${thumb ? `<span class="fsd-ed-thumb fsd-ed-thumb--group"><img src="${escapeHTML(thumb.src)}" alt="" loading="lazy" decoding="async"></span>` : '<span class="fsd-ed-thumb fsd-ed-thumb--group fsd-ed-thumb--empty"></span>'}
+        <span class="fsd-ed-group__index">${String(index + 1).padStart(2, '0')}</span>
+        <span class="fsd-ed-group__title">${escapeHTML(editorialTitle(entry.title))}</span>
+        <span class="fsd-ed-group__count">${entry.items.length}</span>
       </button>
-    </div>
-    <div class="fsd-mobile-stepbar">
-      <button type="button" data-nav-back>${outlineIcon('arrowLeft', 'fsd-icon')} ${mobileStep === 'detail' ? 'BACK TO GROUPS' : 'ALL CATEGORIES'}</button>
-      <span><i>${stepIndex}</i> / 03 · ${escapeHTML(menu.label)}</span>
-    </div>
-    <nav class="fsd-mobile-primary-list" aria-label="FSD sections">${mobilePrimaries}</nav>
-    <p class="fsd-mobile-menu-prompt">${mobileStep === 'primary' ? 'Choose a division to begin.' : mobileStep === 'groups' ? 'Select a collection group.' : 'Choose an item to preview its details.'}</p>
-    <div class="fsd-nav-columns menu-grid">
-      <section class="fsd-nav-column fsd-nav-column--groups menu-column" aria-labelledby="fsd-group-heading" data-nav-column="groups">
-        <h3 class="menu-column-title" id="fsd-group-heading">COLLECTION GROUPS</h3>
-        <ul class="fsd-nav-list menu-item-list" id="primary-group-list" role="group" aria-label="Collection groups">
-          ${renderGroupButtons(menu, activeGroupIndex, canNavigate)}
-        </ul>
-      </section>
-      <section class="fsd-nav-column fsd-nav-column--items menu-column" aria-labelledby="fsd-item-heading" data-nav-column="items">
-        <h3 class="menu-column-title" id="fsd-item-heading">SUBCATEGORIES</h3>
-        <ul class="fsd-nav-list menu-item-list" id="sub-category-list" role="group" aria-label="Subcategories">
-          ${group ? renderItemButtons(menu, group, activeItemIndex, canNavigate) : '<li><p class="fsd-nav-empty">Select a collection group.</p></li>'}
-        </ul>
-      </section>
-      <section class="fsd-nav-column fsd-nav-column--feature menu-column" aria-label="Featured collection">
-        ${group ? renderFeature(menu, group, item, canNavigate) : ''}
-      </section>
-    </div>
-    ${menu.id === 'collections' ? `<div class="fsd-nav-catalogue">
-      <span>Looking for something specific?</span>
-      <button type="button" data-nav-catalogue>Browse the full catalogue ${outlineIcon('arrowUpRight')}</button>
-    </div>` : ''}
-    <a class="fsd-nav-division-home" href="${escapeHTML(divisionLandingPaths[menu.id] || '/')}">
-      <span>${escapeHTML(menu.label)} / DIVISION OVERVIEW</span><span aria-hidden="true">↗</span>
-    </a>
+      ${sub}
+    </li>`;
+  }).join('');
+
+  const feature = group ? `<article class="fsd-ed-feature" data-feature-group="${escapeHTML(group.id)}">
+      ${editorialMedia(menu, group, item, { tag: 'button', available })}
+      <div class="fsd-ed-feature__copy">
+        <p class="fsd-ed-kicker">${escapeHTML(menu.label)} <span>/</span> ${escapeHTML(group.title)}</p>
+        <h3 id="modal-title">${escapeHTML(item?.record?.name || item?.title || group.title)}</h3>
+        ${(() => {
+          const description = item?.description || group.description || '';
+          const heading = item?.record?.name || item?.title || group.title;
+          return description && description !== heading ? `<p class="fsd-ed-feature__desc">${escapeHTML(description)}</p>` : '';
+        })()}
+        <button type="button" class="fsd-ed-cta" id="modal-action-btn" data-nav-destination
+          ${available ? '' : 'disabled aria-disabled="true"'}>${editorialActionLabel(menu, group, item, available)} <span aria-hidden="true">→</span></button>
+      </div>
+    </article>` : '';
+
+  const mobileDetail = group && mobileStep === 'detail' ? `<section class="fsd-ed-detail" aria-label="${escapeHTML(group.title)}">
+      ${editorialMedia(menu, group, null, { tag: 'button', available: canNavigate({ menu, group, item: null }) || available })}
+      <h3 class="fsd-ed-detail__title">${escapeHTML(editorialTitle(group.title))}</h3>
+      <p class="fsd-ed-sub__label">${listLabel}</p>
+      <ul class="fsd-ed-sub__list fsd-ed-sub__list--thumbs" role="group" aria-label="${escapeHTML(group.title)}">${editorialItemRows(menu, group, activeItemIndex, canNavigate, { expanded, thumbnails: true })}</ul>
+      ${editorialViewAll(group, expanded)}
+    </section>` : '';
+
+  return `<div class="fsd-mega-inner fsd-ed" data-ed-step="${escapeHTML(mobileStep)}">
+    <h2 class="fsd-ed-sr" id="menu-section-title">${escapeHTML(menu.title)}</h2>
+    ${isMobileStep ? `<div class="fsd-ed-sheet-handle" aria-hidden="true"></div>
+    <nav class="fsd-mobile-primary-list fsd-ed-chips" aria-label="FSD sections">${mobilePrimaries}</nav>
+    ${mobileStep === 'detail' ? `<div class="fsd-mobile-stepbar fsd-ed-backbar"><button type="button" data-nav-back>← ${escapeHTML(menu.label)}</button><span>${escapeHTML(group?.title || '')}</span></div>` : ''}` : ''}
+    ${mobileDetail || `<div class="fsd-ed-grid">
+      <div class="fsd-ed-index">
+        <p class="fsd-ed-kicker">${escapeHTML(menu.label)} <span>/</span> ${menu.groups.length} ${menu.groups.length === 1 ? 'CATEGORY' : 'CATEGORIES'}</p>
+        <ul class="fsd-ed-groups" id="primary-group-list" role="group" aria-label="${escapeHTML(menu.label)} categories">${groupRows}</ul>
+        ${menu.id === 'collections' ? '<button type="button" class="fsd-ed-catalogue" data-nav-catalogue>Browse the full catalogue <span aria-hidden="true">→</span></button>' : ''}
+        <a class="fsd-ed-all" href="${escapeHTML(divisionLandingPaths[menu.id] || '/')}">VIEW ALL OF ${escapeHTML(menu.label)} <span aria-hidden="true">→</span></a>
+      </div>
+      ${isMobileStep ? '' : feature}
+    </div>`}
+    <p class="fsd-ed-hint">${isMobileStep ? 'Tap outside the menu to close' : 'Click outside or press Esc to close'}</p>
   </div>`;
 }
 
@@ -1188,6 +1183,18 @@ export function mountNavigation({
   const model = createNavigationModel({ divisions, products, includeDraftPreviews, draftMenuItems, configureMenus });
   const triggers = [...root.querySelectorAll('.fsd-primary-trigger')];
   if (!panel || !content || !mobileToggle) throw new TypeError('The FSD navigation markup is incomplete.');
+  // A page-level scrim sits behind the open menu. It lives outside the
+  // navigation shell, so a click on it counts as an outside click and closes
+  // the menu without activating anything on the page underneath.
+  const ownerDocument = root.ownerDocument || document;
+  let scrim = ownerDocument.querySelector('[data-nav-scrim]');
+  if (!scrim) {
+    scrim = ownerDocument.createElement('div');
+    scrim.className = 'fsd-nav-scrim';
+    scrim.setAttribute('data-nav-scrim', '');
+    scrim.setAttribute('aria-hidden', 'true');
+    ownerDocument.body.append(scrim);
+  }
   const canNavigate = selection => hasVerifiedDestination(selection, {
     root,
     divisions,
@@ -1200,6 +1207,7 @@ export function mountNavigation({
   let activeGroupIndex = 0;
   let activeItemIndex = 0;
   let mobileStep = 'primary';
+  let expandedList = false;
   let isOpen = false;
   let hoverOpened = false;
   let closeTimer = 0;
@@ -1278,7 +1286,7 @@ export function mountNavigation({
     const menu = currentMenu();
     panel.dataset.primary = menu.id;
     panel.dataset.step = mobileStep;
-    content.innerHTML = renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId);
+    content.innerHTML = renderPanel(menu, activeGroupIndex, activeItemIndex, mobileStep, products, canNavigate, currentPrimaryId, { expanded: expandedList });
     const media = content.querySelector('.fsd-feature-media');
     const incomingImage = media?.querySelector('img');
     const incomingSource = incomingImage?.getAttribute('src') || '';
@@ -1380,11 +1388,13 @@ export function mountNavigation({
     activePrimaryId = menu.id;
     activeGroupIndex = 0;
     activeItemIndex = defaultItemIndex(menu);
+    expandedList = false;
     mobileStep = step === 'mobile' ? 'primary' : 'desktop';
     hoverOpened = hover;
     isOpen = true;
     panel.hidden = false;
     root.classList.add('is-open');
+    scrim.classList.add('is-visible');
     document.body.classList.toggle('fsd-mobile-nav-open', isMobile());
     render();
   };
@@ -1395,6 +1405,7 @@ export function mountNavigation({
     hoverOpened = false;
     clearTimeout(pointerTimer);
     root.classList.remove('is-open');
+    scrim.classList.remove('is-visible');
     document.body.classList.remove('fsd-mobile-nav-open');
     syncExpanded();
     const shouldRestore = restoreFocus || panel.contains(document.activeElement);
@@ -1413,10 +1424,12 @@ export function mountNavigation({
     activePrimaryId = menuId;
     activeGroupIndex = 0;
     activeItemIndex = defaultItemIndex(menu);
+    expandedList = false;
     mobileStep = mobile ? 'groups' : 'desktop';
     isOpen = true;
     panel.hidden = false;
     root.classList.add('is-open');
+    scrim.classList.add('is-visible');
     document.body.classList.toggle('fsd-mobile-nav-open', isMobile());
     render();
   };
@@ -1432,6 +1445,7 @@ export function mountNavigation({
     }
     activeGroupIndex = index;
     activeItemIndex = 0;
+    if (groupChanged) expandedList = false;
     if (mobile) mobileStep = 'detail';
     const selector = focus
       ? mobile ? '[data-nav-item="0"]' : `[data-nav-group="${index}"]`
@@ -1499,17 +1513,24 @@ export function mountNavigation({
       else openMenu(model[0].id, { step: 'mobile' });
       return;
     }
+    if (event.target === panel || event.target.closest('.fsd-ed-hint')) {
+      closeMenu({ restoreFocus: true });
+      return;
+    }
     if (event.target.closest('[data-nav-close]')) {
       closeMenu({ restoreFocus: true });
       return;
     }
     if (event.target.closest('[data-nav-back]')) {
-      mobileStep = mobileStep === 'detail' ? 'groups' : 'primary';
+      mobileStep = 'groups';
+      expandedList = false;
       render();
-      const focusSelector = mobileStep === 'primary'
-        ? '.fsd-mobile-primary-list [data-nav-primary]'
-        : '[data-nav-group="0"]';
-      panel.querySelector(focusSelector)?.focus({ preventScroll: true });
+      panel.querySelector(`[data-nav-group="${activeGroupIndex}"]`)?.focus({ preventScroll: true });
+      return;
+    }
+    if (event.target.closest('[data-nav-viewall]')) {
+      expandedList = !expandedList;
+      renderPreservingFocus('[data-nav-viewall]');
       return;
     }
     if (event.target.closest('[data-nav-catalogue]')) {
@@ -1585,7 +1606,9 @@ export function mountNavigation({
   };
 
   const onPanelFocusIn = event => {
-    if (!isOpen || suppressFocusPreview) return;
+    // On touch layouts the tap itself chooses the row; previewing on focus
+    // would re-render the row before its click lands.
+    if (!isOpen || suppressFocusPreview || isMobile()) return;
     const row = event.target.closest('[data-nav-group], [data-nav-item]');
     if (!row || !panel.contains(row)) return;
     if (row.hasAttribute('data-nav-group')) {
@@ -1674,7 +1697,8 @@ export function mountNavigation({
   const onRootPointerLeave = event => {
     if (event.pointerType !== 'mouse' || isMobile()) return;
     pointerInside = false;
-    schedulePointerClose();
+    // The editorial overlay stays open until the visitor clicks outside it or
+    // presses Escape, so a small pointer drift never snaps it shut.
   };
 
   for (const trigger of triggers) {
@@ -1751,6 +1775,7 @@ export function mountNavigation({
     window.removeEventListener('popstate', updateCurrentFromHash);
     windowRef.removeEventListener('scroll', updateHeaderScrollState);
     sectionObserver?.disconnect();
+    scrim.remove();
     document.body.classList.remove('fsd-mobile-nav-open');
   };
 }

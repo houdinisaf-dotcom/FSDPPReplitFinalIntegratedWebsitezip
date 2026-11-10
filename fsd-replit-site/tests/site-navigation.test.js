@@ -986,3 +986,19 @@ test('building the navigation model does not mutate product or division data', (
   assert.deepEqual(collectionDivisions, beforeDivisions);
   assert.deepEqual(products, beforeProducts);
 });
+
+test('flagship pages show labelled concept visualisations from local assets', () => {
+  for (const id of ['manchester', 'dublin', 'belfast']) {
+    const html = renderHousePublicPage(HOUSE_PAGE_REGISTRY.find(page => page.id === id));
+    assert.match(html, /class="hero has-image"/);
+    assert.match(html, /<p class="hero-caption">Concept visualisation<\/p>/);
+    const images = [...html.matchAll(/<img src="([^"]+)" alt="([^"]+)"/g)];
+    assert.ok(images.length >= 3, `${id} needs a hero and gallery`);
+    for (const [, src, alt] of images) {
+      assert.match(src, /^\/images\/flagships\/[a-z-]+\.webp$/);
+      assert.ok(existsSync(new URL(`../public${src}`, import.meta.url)), `${src} must exist`);
+      assert.ok(alt.length > 20);
+    }
+    assert.equal((html.match(/<span>Concept visualisation<\/span>/g) || []).length, images.length - 1);
+  }
+});

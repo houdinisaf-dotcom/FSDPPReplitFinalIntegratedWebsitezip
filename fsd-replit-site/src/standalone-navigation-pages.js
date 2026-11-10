@@ -194,6 +194,19 @@ const HOUSE_PUBLIC_STYLES = `
     .fsd-reading-progress span{display:block;width:100%;height:100%;background:#c8aa72;transform:scaleX(var(--fsd-reading-progress,0));transform-origin:left center}
     .fsd-house-public a{color:inherit}
     .fsd-house-public .hero{position:relative;isolation:isolate;display:flex;min-height:clamp(420px,58vw,720px);flex-direction:column;justify-content:flex-end;overflow:hidden;padding:clamp(4rem,11vw,9rem) max(24px,calc((100% - 1200px)/2)) clamp(3rem,7vw,6rem);background:linear-gradient(90deg,#0b0c0e 0%,rgb(11 12 14 / 94%) 48%,rgb(11 12 14 / 58%) 100%),repeating-linear-gradient(90deg,transparent 0 118px,rgb(200 170 114 / 5%) 119px),radial-gradient(ellipse at 82% 25%,rgb(200 170 114 / 16%),transparent 38%),#121417}
+    body[data-fsd-house-editorial="true"] main.fsd-house-public:has(> .hero.has-image){width:100%;max-width:none;padding-top:0}
+    .fsd-house-public .hero.has-image{background:#0b0c0e;min-height:clamp(460px,calc(100svh - 112px),760px);padding-inline:max(24px,calc((100% - 1200px)/2))}
+    .fsd-house-public .hp-hero-media img{object-position:center 42%;filter:saturate(.9)}
+    .fsd-house-public .hero > .hero-caption{position:absolute;z-index:1;top:auto;left:auto;right:max(24px,calc((100% - 1200px)/2));bottom:22px;margin:0;color:rgb(244 239 228 / 62%);font:500 9.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.18em;text-transform:uppercase}
+    .hp-gallery{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+    .hp-gallery.is-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .hp-gallery__item{position:relative;margin:0;overflow:hidden;border-radius:3px;background:#15171a;aspect-ratio:4/3;box-shadow:0 0 0 1px rgb(255 232 180 / 18%)}
+    .hp-gallery__item.is-wide{grid-column:1/-1;aspect-ratio:21/9}
+    .hp-gallery__item img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+    .hp-gallery__item:hover img{transform:scale(1.025)}
+    .hp-gallery__item figcaption{position:absolute;inset:auto 0 0;display:flex;justify-content:space-between;gap:12px;padding:30px 16px 13px;background:linear-gradient(transparent,rgb(0 0 0 / 72%));color:#f4efe4;font:500 12px/1.4 "DM Sans",sans-serif}
+    .hp-gallery__item figcaption span{color:rgb(244 239 228 / 62%);font:500 9.5px/1.6 "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+    @media(max-width:700px){.hp-gallery,.hp-gallery.is-grid{grid-template-columns:1fr}.hp-gallery__item.is-wide{aspect-ratio:4/3}.fsd-house-public .hero > .hero-caption{right:22px;bottom:14px}}
     .fsd-house-public .hero::after{position:absolute;z-index:-1;inset:auto 8% 0 auto;width:1px;height:46%;content:"";background:linear-gradient(transparent,rgb(200 170 114 / 60%))}
     .fsd-house-public .hero .tag{margin:0 0 1.2rem;color:#c8aa72;font:500 10px/1.6 "IBM Plex Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
     .fsd-house-public h1{max-width:980px;margin:0;color:#f0eee8;font:400 clamp(2.8rem,8vw,7.2rem)/.95 "Newsreader",Georgia,serif;letter-spacing:-.04em;overflow-wrap:anywhere}
@@ -320,6 +333,14 @@ function renderPublicSection(section) {
         <div class="hp-zones">${section.items.map(([title, text]) =>
           `<article><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></article>`).join('')}</div>
       </section>`;
+    case 'gallery':
+      return `<section class="hp-block hp-gallery-block" data-hp-reveal>
+        <header><p class="hp-eyebrow">${escapeHtml(section.number)}</p><div><h2>${escapeHtml(section.heading)}</h2><p>${escapeHtml(section.note)}</p></div></header>
+        <div class="hp-gallery${section.items.length > 2 ? ' is-grid' : ''}">${section.items.map((item, index) => `<figure class="hp-gallery__item${index === 0 && section.items.length > 2 ? ' is-wide' : ''}">
+          <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">
+          <figcaption><b>${escapeHtml(item.label)}</b><span>${escapeHtml(section.caption)}</span></figcaption>
+        </figure>`).join('')}</div>
+      </section>`;
     case 'cta':
       return `<section class="hp-cta" data-hp-reveal>
         <h2>${escapeHtml(section.heading)}</h2><p>${escapeHtml(section.body)}</p>${renderActions(section.actions)}
@@ -360,7 +381,9 @@ export function renderHousePublicPage(page) {
   <div class="fsd-reading-progress" aria-hidden="true"><span></span></div>
   <div data-fsd-standalone-navigation></div>
   <main class="fsd-house-public" data-fsd-house-destination="${pageId}">
-    <header class="hero" aria-labelledby="house-page-title">
+    <header class="hero${content.heroImage ? ' has-image' : ''}" aria-labelledby="house-page-title">
+      ${content.heroImage ? `<div class="fsd-house-media hp-hero-media"><img src="${escapeHtml(content.heroImage.src)}" alt="${escapeHtml(content.heroImage.alt)}" fetchpriority="high" decoding="async"></div>
+      <p class="hero-caption">${escapeHtml(content.heroImage.caption)}</p>` : ''}
       <p class="tag"><span data-hp-rise="1">${escapeHtml(content.eyebrow)}</span></p>
       <h1 id="house-page-title"><span data-hp-rise="2">${escapeHtml(content.title)}</span></h1>
       <p class="hero-summary"><span data-hp-rise="3">${escapeHtml(content.summary)}</span></p>
