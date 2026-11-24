@@ -15,7 +15,7 @@
 
 #fsd-showcase-dialog::backdrop {
   opacity: 1;
-  transition: opacity var(--fsd-motion-overlay) var(--fsd-motion-ease);
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 #fsd-showcase-dialog:is([data-motion-opening], [data-motion-closing])::backdrop {
@@ -38,7 +38,7 @@
   content: "";
   opacity: 0;
   pointer-events: none;
-  transition: opacity 150ms var(--fsd-motion-ease);
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card) > * {
@@ -116,16 +116,16 @@ a[data-motion-hovered] {
   object-fit: cover;
   opacity: 0;
   transform: scale(1);
-  transition: opacity 300ms var(--fsd-motion-ease), transform 300ms var(--fsd-motion-ease);
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .product-card .product-row__image {
-  transition: opacity 300ms var(--fsd-motion-ease), transform 300ms var(--fsd-motion-ease);
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .product-card .product-row__action {
     opacity: 0;
     transform: translateY(4px);
-    transition: opacity var(--fsd-motion-base) var(--fsd-motion-ease), transform var(--fsd-motion-base) var(--fsd-motion-ease);
+    transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   }
   .product-card:is(:hover, :focus-within) .product-row__action {
     opacity: 1;
