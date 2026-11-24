@@ -357,7 +357,7 @@ function card(product) {
       data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
       <span class="product-row__media" data-product-card-image-slot data-content-status="${contentStatus}">${productCardImageMarkup(product, {
         colourway: initialColourway,
-        className: 'product-row__image',
+        className: 'product-row__image product-row__image--primary',
       })}${secondaryImageMarkup}</span>
       <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
       <span class="product-row__copy">
