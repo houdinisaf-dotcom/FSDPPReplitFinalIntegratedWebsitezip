@@ -2000,7 +2000,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   .header.fsd-header {
     transform: scaleY(1);
     transform-origin: top center;
-    transition: transform 300ms ease-in-out, background-color 300ms ease-in-out, border-color 300ms ease-in-out;
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), background-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), border-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   }
   .fsd-navigation-shell.is-scrolled .header.fsd-header {
     transform: scaleY(.7273);
@@ -2013,7 +2013,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   #fsd-mega-menu {
     opacity: 0;
     transform: translateX(16px);
-    transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   }
   .fsd-navigation-shell.is-open #fsd-mega-menu {
     opacity: 1;
