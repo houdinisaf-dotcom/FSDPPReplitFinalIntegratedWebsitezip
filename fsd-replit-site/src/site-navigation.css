@@ -139,7 +139,7 @@
 
 .fsd-primary-menu-toggle span {
   display: inline-block;
-  transition: transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-primary-menu-toggle[aria-expanded="true"] span {
@@ -256,7 +256,7 @@
   height: 1px;
   background: #C8AA72;
   transform-origin: right center;
-  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1));
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
  .fsd-mobile-toggle i:last-child {
@@ -285,7 +285,7 @@
   opacity: 0;
   pointer-events: none;
   transform: translateY(-8px);
-  transition: opacity 210ms ease, transform 210ms ease;
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   overscroll-behavior: contain;
 }
 
@@ -427,7 +427,7 @@
   line-height: 1.45;
   text-align: left;
   transform: translateX(0);
-  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1));
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-nav-option:hover,
@@ -474,7 +474,7 @@
   justify-content: center;
   color: #D4AF37;
   opacity: 0;
-  transition: opacity 180ms ease;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .fsd-nav-arrow-icon { width: 14px; height: 14px; }
 
@@ -629,7 +629,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  transition: opacity 200ms ease;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-feature-image--incoming {
@@ -1513,7 +1513,7 @@ body.fsd-mobile-nav-open {
   min-height: 0;
   padding: 0;
   object-position: center 36%;
-  transition: transform 520ms cubic-bezier(.2,.7,.2,1);
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-mega-menu[data-primary="collections"] .fsd-feature-media--product img {
@@ -1677,7 +1677,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   backdrop-filter: blur(6px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 240ms ease;
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .fsd-nav-scrim.is-visible { opacity: 1; pointer-events: auto; cursor: pointer; }
 
@@ -1836,7 +1836,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   object-fit: cover;
   object-position: center 40%;
   filter: none;
-  transition: transform 900ms cubic-bezier(.2, .7, .2, 1), opacity 200ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 #fsd-mega-menu .fsd-ed-media.fsd-feature-media--product img { object-fit: cover; object-position: center 22%; }
 #fsd-mega-menu .fsd-ed-media-action:hover .fsd-ed-media img { transform: scale(1.025); }
