@@ -348,6 +348,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   const hoveredCards = new WeakSet();
   const hoveredControls = new WeakSet();
   const pressedControls = new Set();
+  let lastPointerType = '';
   const setCardHovered = (card, active) => {
     if (!card?.isConnected || prefersReducedMotion(documentRef.defaultView)) return;
     if (active) {
@@ -388,6 +389,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   };
   const onPointerOver = event => {
     if (event.pointerType === 'touch') return;
+    lastPointerType = event.pointerType || 'mouse';
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !card.contains(event.relatedTarget) && !hoveredCards.has(card)) {
       setCardHovered(card, true);
@@ -398,6 +400,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   };
   const onPointerOut = event => {
+    if (event.pointerType === 'touch') return;
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !card.contains(event.relatedTarget)) {
       const stillActive = card.matches(':hover') || card.contains(documentRef.activeElement);
@@ -410,12 +413,14 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   };
   const onFocusIn = event => {
+    if (lastPointerType === 'touch') return;
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !hoveredCards.has(card)) setCardHovered(card, true);
     const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
     if (control && !hoveredControls.has(control)) setControlHovered(control, true);
   };
   const onFocusOut = event => {
+    if (lastPointerType === 'touch') return;
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !card.contains(event.relatedTarget) && !card.matches(':hover')) setCardHovered(card, false);
     const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
@@ -439,10 +444,13 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   };
   const onPointerDown = event => {
+    lastPointerType = event.pointerType || 'mouse';
     pressControl(event.target.closest?.('button, a[role="button"]'));
   };
   const onKeyDown = event => {
+    if (event.key === 'Tab') lastPointerType = 'keyboard';
     if (event.repeat || !['Enter', ' '].includes(event.key)) return;
+    lastPointerType = 'keyboard';
     pressControl(event.target.closest?.('button, a[role="button"]'));
   };
   documentRef.addEventListener('pointerover', onPointerOver);
