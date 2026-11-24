@@ -59,7 +59,7 @@
   padding: 17px 34px 16px 16px;
   color: #eeeae1;
   text-decoration: none;
-  transition: transform 180ms ease, opacity 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .showroom-concepts__group li .showroom-concepts__unavailable {
   box-sizing: border-box;
@@ -213,7 +213,7 @@
   color: #aaa69e;
   text-align: left;
   cursor: pointer;
-  transition: transform 180ms ease, opacity 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .showroom-garment-study__choice:hover { transform: translateX(3px); }
 .showroom-garment-study__choice[aria-pressed="true"] { color: #f1e8d6; }
@@ -304,7 +304,7 @@
 .showroom-concepts__group li :is(a, .showroom-concepts__unavailable) {
   min-height: 138px;
   padding: 19px 38px 17px 18px;
-  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .showroom-concepts__group li a:hover,
