@@ -2002,6 +2002,11 @@ html.fsd-header-hidden .announcement.fsd-announcement {
     transform-origin: top center;
     transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), background-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), border-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   }
+  .fsd-navigation-shell.is-scrolled {
+    background: rgba(10, 10, 10, .78);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
   .fsd-navigation-shell.is-scrolled .header.fsd-header {
     transform: scaleY(.7273);
     -webkit-backdrop-filter: blur(14px);
