@@ -46,7 +46,7 @@
   line-height: 1.4;
   text-align: left;
   cursor: pointer;
-  transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease;
+  transition: none;
 }
 .catalogue-card-swatches button:hover,
 .catalogue-card-swatches button[aria-pressed="true"] {
@@ -429,7 +429,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 }
 
 #catalogue-grid.product-grid[data-view="visual"] .product-card--visual .catalogue-card__media > img {
-  transition: transform 400ms ease-out;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -448,7 +448,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
   inset: 0;
   display: grid;
   place-items: center;
-  transition: opacity 200ms ease-in-out;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 #catalogue-grid.product-grid[data-view="visual"] .fsd-catalog-detail__image-fade > img,
@@ -473,7 +473,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 }
 
 #catalogue-grid.product-grid[data-view="visual"] > .product-card:not(.product-card--visual) .product-row__media > img {
-  transition: transform 400ms ease-out;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -682,7 +682,7 @@ main h2[id] { scroll-margin-block-start: 96px; }
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color 180ms ease, padding-inline 180ms ease;
+  transition: none;
 }
 .product-grid[data-view="list"] .product-row__trigger:hover {
   padding-inline: 14px;
@@ -776,7 +776,7 @@ main h2[id] { scroll-margin-block-start: 96px; }
   font-size: 10px;
   text-align: left;
   cursor: pointer;
-  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  transition: none;
 }
 .catalogue-colourway-selector__options button:hover,
 .catalogue-colourway-selector__options button[aria-pressed="true"] {
@@ -913,7 +913,7 @@ main h2[id] { scroll-margin-block-start: 96px; }
   overflow: hidden;
   border: 1px solid rgba(200, 170, 114, .2);
   background: #111213;
-  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 #catalogue-grid.product-grid[data-view="visual"] > .product-card:not(.product-card--visual):hover,
 #catalogue-grid.product-grid[data-view="visual"] > .product-card:not(.product-card--visual):focus-within {
@@ -1020,7 +1020,7 @@ main h2[id] { scroll-margin-block-start: 96px; }
   background: #0a0a0a;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 250ms ease;
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 #catalogue-grid.product-grid[data-view="visual"] .catalogue-card__hover-action img,
