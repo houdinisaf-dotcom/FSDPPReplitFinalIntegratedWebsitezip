@@ -1,7 +1,16 @@
 :root {
-  --fsd-motion-duration: 300ms;
+  --fsd-motion-fast: 150ms;
+  --fsd-motion-base: 300ms;
+  --fsd-motion-slow: 600ms;
+  --fsd-motion-hero: 900ms;
+  --fsd-motion-underline: 200ms;
+  --fsd-motion-stagger: 80ms;
+  --fsd-motion-distance: 16px;
+  --fsd-motion-image-scale: 1.04;
+  --fsd-motion-duration: var(--fsd-motion-base);
   --fsd-motion-overlay: 250ms;
   --fsd-motion-ease: cubic-bezier(.22, 1, .36, 1);
+  --fsd-motion-ease-in-out: ease-in-out;
 }
 
 #fsd-showcase-dialog::backdrop {
@@ -123,7 +132,7 @@ a[data-motion-hovered] {
     transform: translateY(0);
   }
   .product-card:is(:hover, :focus-within) .product-row__image--secondary { opacity: 1; }
-  .product-card:is(:hover, :focus-within) .product-row__image:not(.product-row__image--secondary):has(+ .product-row__image--secondary) {
+  .product-card:is(:hover, :focus-within) .product-row__image--primary:has(+ .product-row__image--secondary) {
     opacity: 0;
   }
 }
