@@ -1,7 +1,7 @@
 :root {
   --fsd-navigation-announcement-height: 25px;
-  --fsd-navigation-shell-height: 80px;
-  --fsd-navigation-stack-height: 105px;
+  --fsd-navigation-shell-height: 88px;
+  --fsd-navigation-stack-height: 113px;
 }
 
 .announcement.fsd-announcement {
@@ -57,7 +57,7 @@
   position: relative;
   top: auto;
   z-index: 2;
-  height: 80px;
+  height: 88px;
   padding: 0 clamp(20px, 5vw, 76px);
   border-bottom: 1px solid rgba(215, 207, 189, 0.12);
   background: transparent;
@@ -197,7 +197,7 @@
   content: "";
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 210ms ease;
+  transition: transform 200ms ease;
 }
 
 .fsd-primary-trigger:hover,
@@ -1992,4 +1992,37 @@ html.fsd-header-hidden .announcement.fsd-announcement {
 @media (prefers-reduced-motion: reduce) {
   #fsd-mega-menu .fsd-ed-sub, #fsd-mega-menu .fsd-ed-detail { animation: none; }
   .fsd-nav-scrim { transition: none; }
+}
+
+
+/* Desktop header contracts visually after 80px without changing document flow. */
+@media (min-width: 901px) {
+  .header.fsd-header {
+    transform: scaleY(1);
+    transform-origin: top center;
+    transition: transform 300ms ease-in-out, background-color 300ms ease-in-out, border-color 300ms ease-in-out;
+  }
+  .fsd-navigation-shell.is-scrolled .header.fsd-header {
+    transform: scaleY(.7273);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    background: rgba(10, 10, 10, .9);
+  }
+}
+@media (max-width: 900px) {
+  #fsd-mega-menu {
+    opacity: 0;
+    transform: translateX(16px);
+    transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+  }
+  .fsd-navigation-shell.is-open #fsd-mega-menu {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header.fsd-header,
+  #fsd-mega-menu {
+    transition-duration: 0.01ms !important;
+  }
 }
