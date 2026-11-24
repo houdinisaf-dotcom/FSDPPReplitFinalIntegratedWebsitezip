@@ -365,7 +365,7 @@ html, body { overflow-x: clip; }
   font-weight: 800;
   letter-spacing: .12em;
   text-transform: uppercase;
-  transition: background-color 180ms ease, color 180ms ease;
+  transition: none;
 }
 .fsd-home-primary:hover { background: #e2cea5; }
 .fsd-home-primary span { font-size: 15px; }
@@ -461,7 +461,7 @@ html, body { overflow-x: clip; }
   color: #f0ede6;
   text-align: left;
   cursor: pointer;
-  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .fsd-editorial-card::before {
   position: absolute;
@@ -482,7 +482,7 @@ html, body { overflow-x: clip; }
   object-fit: cover;
   object-position: center 32%;
   opacity: .68;
-  transition: transform 450ms ease, opacity 250ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .fsd-editorial-card--women .fsd-editorial-card__image {
   object-position: 69% 32%;
