@@ -1725,7 +1725,7 @@ export function mountNavigation({
   };
   const updateHeaderScrollState = () => {
     const y = Math.max(0, windowRef.scrollY);
-    root.classList.toggle('is-scrolled', y > 50);
+    root.classList.toggle('is-scrolled', y > 80);
     const delta = y - lastScrollY;
     if (Math.abs(delta) < 6) return;
     const keepVisible = isOpen || y < 120 || root.contains(root.ownerDocument.activeElement);

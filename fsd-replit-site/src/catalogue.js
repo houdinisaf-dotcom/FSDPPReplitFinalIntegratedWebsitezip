@@ -339,6 +339,13 @@ function card(product) {
   const hasUnmappedColourway = colourways.some(colourway => imageIndexForColourway(publicImages, colourway) < 0);
   const contentStatus = publicImages.length && !hasUnmappedColourway ? 'APPROVED' : 'CONTENT PENDING';
   const initialColourway = colourways[0] || '';
+  const secondaryCardImage = !hardwarePreview && colourways.length <= 1 ? publicImages[1] : null;
+  const secondaryImageMarkup = secondaryCardImage
+    ? `<img class="product-row__image product-row__image--secondary" src="${safe(secondaryCardImage.src)}"
+      alt="" aria-hidden="true" data-fsd-image-fallback="true" data-fsd-image-title="${safe(product.name)}"
+      data-fsd-image-variant="${safe(secondaryCardImage.colourway || secondaryCardImage.variant || '')}"
+      loading="lazy" decoding="async"/>`
+    : '';
   const summary = !hardwarePreview
     ? product.colourways || product.priceBasis || product.coverage
     : '';
@@ -348,10 +355,10 @@ function card(product) {
   return `<article class="product-card" data-content-status="${contentStatus}">
     <button class="product-row__trigger" type="button" data-product="${product.id}"
       data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
-      <span class="product-row__media" data-product-card-image-slot data-content-status="${contentStatus}">${productCardImageMarkup(product, {
+      <span class="product-row__media" data-product-card-image-slot data-content-status="${contentStatus}" data-has-secondary-image="${secondaryCardImage ? 'true' : 'false'}">${productCardImageMarkup(product, {
         colourway: initialColourway,
-        className: 'product-row__image',
-      })}</span>
+        className: 'product-row__image product-row__image--primary',
+      })}${secondaryImageMarkup}</span>
       <span class="product-row__index" aria-hidden="true">${String(product.id).padStart(2, '0')}</span>
       <span class="product-row__copy">
         <span class="product-row__meta"><span>${safe(customerFacingCategory(product.category))}</span>${product.audience ? `<span>${safe(product.audience)}</span>` : ''}${product.badge ? `<span class="product-row__badge">${safe(product.badge)}</span>` : ''}${/^pre[\s-]?launch$/i.test(product.commercialStatus || '') ? '<span class="product-row__badge">Pre-launch · Availability unconfirmed</span>' : ''}</span>

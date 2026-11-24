@@ -1,7 +1,7 @@
 :root {
   --fsd-navigation-announcement-height: 25px;
-  --fsd-navigation-shell-height: 80px;
-  --fsd-navigation-stack-height: 105px;
+  --fsd-navigation-shell-height: 88px;
+  --fsd-navigation-stack-height: 113px;
 }
 
 .announcement.fsd-announcement {
@@ -28,7 +28,7 @@
   font-size: 9px;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: color 180ms ease;
+
 }
 .fsd-collection-return:hover { color: #f1e5c5; }
 .fsd-collection-return:focus-visible { outline: 2px solid #e7d3a8; outline-offset: 4px; }
@@ -45,7 +45,7 @@
   z-index: 60;
   width: 100%;
   background: transparent;
-  transition: background-color 300ms ease-in-out;
+
 }
 
 .fsd-navigation-spacer {
@@ -57,11 +57,11 @@
   position: relative;
   top: auto;
   z-index: 2;
-  height: 80px;
+  height: 88px;
   padding: 0 clamp(20px, 5vw, 76px);
   border-bottom: 1px solid rgba(215, 207, 189, 0.12);
   background: transparent;
-  transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out;
+
 }
 
 .fsd-navigation-shell.is-scrolled {
@@ -139,7 +139,7 @@
 
 .fsd-primary-menu-toggle span {
   display: inline-block;
-  transition: transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-primary-menu-toggle[aria-expanded="true"] span {
@@ -179,7 +179,7 @@
   line-height: 1.2;
   letter-spacing: 0.17em;
   text-transform: uppercase;
-  transition: color 180ms ease;
+
 }
 
 .fsd-primary-link {
@@ -197,7 +197,7 @@
   content: "";
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 210ms ease;
+  transition: transform var(--fsd-motion-underline, 200ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-primary-trigger:hover,
@@ -255,15 +255,17 @@
   width: 25px;
   height: 1px;
   background: #C8AA72;
-  transition: width 200ms ease, transform 200ms ease;
+  transform-origin: right center;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
-.fsd-mobile-toggle i:last-child {
-  width: 18px;
+ .fsd-mobile-toggle i:last-child {
+  width: 25px;
+  transform: scaleX(.72);
 }
 
 .fsd-mobile-toggle.is-active i:last-child {
-  width: 25px;
+  transform: scaleX(1);
 }
 
 .fsd-mega-menu {
@@ -283,7 +285,7 @@
   opacity: 0;
   pointer-events: none;
   transform: translateY(-8px);
-  transition: opacity 210ms ease, transform 210ms ease;
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   overscroll-behavior: contain;
 }
 
@@ -424,13 +426,14 @@
   letter-spacing: 0.045em;
   line-height: 1.45;
   text-align: left;
-  transition: color 180ms ease, padding-left 180ms ease;
+  transform: translateX(0);
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-nav-option:hover,
 .fsd-nav-option:focus-visible,
 .fsd-nav-option.is-active {
-  padding-left: 5px;
+  transform: translateX(5px);
   color: #e8cf9f;
 }
 
@@ -471,7 +474,7 @@
   justify-content: center;
   color: #D4AF37;
   opacity: 0;
-  transition: opacity 180ms ease;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .fsd-nav-arrow-icon { width: 14px; height: 14px; }
 
@@ -626,7 +629,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  transition: opacity 200ms ease;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-feature-image--incoming {
@@ -728,7 +731,7 @@
   font-size: 8px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: background 180ms ease, color 180ms ease;
+
 }
 
 .fsd-feature-cta:hover,
@@ -766,7 +769,7 @@
   border-radius: 0;
   background: #0a0a0a;
   color: #d4af37;
-  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+
 }
 
 .fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:hover,
@@ -1081,7 +1084,7 @@ body.fsd-mobile-nav-open {
   .fsd-nav-option:hover,
   .fsd-nav-option:focus-visible,
   .fsd-nav-option.is-active {
-    padding-left: 5px;
+    transform: translateX(5px);
   }
 
   .fsd-nav-index {
@@ -1510,7 +1513,7 @@ body.fsd-mobile-nav-open {
   min-height: 0;
   padding: 0;
   object-position: center 36%;
-  transition: transform 520ms cubic-bezier(.2,.7,.2,1);
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-mega-menu[data-primary="collections"] .fsd-feature-media--product img {
@@ -1647,7 +1650,7 @@ body.fsd-mobile-nav-open {
 /* Hide-on-scroll banner: slides away while scrolling down, returns on scroll up. */
 .fsd-navigation-shell,
 .announcement.fsd-announcement {
-  transition: transform 320ms cubic-bezier(.2, .7, .2, 1), background-color 300ms ease-in-out;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   will-change: transform;
 }
 html.fsd-header-hidden .fsd-navigation-shell.is-hidden-on-scroll {
@@ -1674,7 +1677,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   backdrop-filter: blur(6px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 240ms ease;
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 .fsd-nav-scrim.is-visible { opacity: 1; pointer-events: auto; cursor: pointer; }
 
@@ -1722,7 +1725,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   color: rgba(239, 237, 232, .62);
   text-align: left;
   cursor: pointer;
-  transition: color 180ms ease;
+
 }
 #fsd-mega-menu .fsd-ed-thumb--group { display: none; }
 #fsd-mega-menu .fsd-ed-group__button,
@@ -1776,7 +1779,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   cursor: pointer;
 }
 #fsd-mega-menu .fsd-ed-item__title { flex: 1 1 auto; }
-#fsd-mega-menu .fsd-ed-item__arrow { color: rgba(200, 170, 114, .0); transition: color 160ms ease, transform 160ms ease; }
+#fsd-mega-menu .fsd-ed-item__arrow { color: rgba(200, 170, 114, .0); transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out); }
 #fsd-mega-menu .fsd-ed-item:hover,
 #fsd-mega-menu .fsd-ed-item:focus-visible,
 #fsd-mega-menu .fsd-ed-item.is-active { color: #fff; background: none; }
@@ -1833,7 +1836,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   object-fit: cover;
   object-position: center 40%;
   filter: none;
-  transition: transform 900ms cubic-bezier(.2, .7, .2, 1), opacity 200ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 #fsd-mega-menu .fsd-ed-media.fsd-feature-media--product img { object-fit: cover; object-position: center 22%; }
 #fsd-mega-menu .fsd-ed-media-action:hover .fsd-ed-media img { transform: scale(1.025); }
@@ -1992,4 +1995,53 @@ html.fsd-header-hidden .announcement.fsd-announcement {
 @media (prefers-reduced-motion: reduce) {
   #fsd-mega-menu .fsd-ed-sub, #fsd-mega-menu .fsd-ed-detail { animation: none; }
   .fsd-nav-scrim { transition: none; }
+}
+
+
+/* Desktop header contracts visually after 80px without changing document flow. */
+@media (min-width: 901px) {
+  .header.fsd-header {
+    transform: scaleY(1);
+    transform-origin: top center;
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
+  }
+  .fsd-navigation-shell.is-scrolled {
+    background: rgba(10, 10, 10, .78);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+  .fsd-navigation-shell.is-scrolled .header.fsd-header {
+    transform: scaleY(.7273);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    background: rgba(10, 10, 10, .9);
+  }
+}
+@media (max-width: 900px) {
+  #fsd-mega-menu {
+    opacity: 0;
+    transform: translateX(16px);
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
+  }
+  .fsd-navigation-shell.is-open #fsd-mega-menu {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header.fsd-header,
+  #fsd-mega-menu {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .header.fsd-header {
+    transform: scaleY(1);
+    transform-origin: top center;
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
+  }
+  .fsd-navigation-shell.is-scrolled .header.fsd-header {
+    transform: scaleY(.9143);
+  }
 }

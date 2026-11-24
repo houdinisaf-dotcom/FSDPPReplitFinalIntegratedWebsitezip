@@ -193,7 +193,7 @@ function rowStaggerDelay(row) {
   if (!container) return 0;
   const siblings = [...container.children].filter(element => element.matches(ROW_SELECTOR));
   const index = siblings.indexOf(row);
-  return Math.max(0, index) * FSD_MOTION.rowStagger;
+  return Math.min(Math.max(0, index), FSD_MOTION.maxStaggerItems - 1) * FSD_MOTION.rowStagger;
 }
 
 function mountRevealObserver(documentRef, onReveal) {
@@ -317,20 +317,14 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
         return;
       }
       details.dataset.motionTransition = 'true';
-      const height = panel.getBoundingClientRect().height;
-      panel.style.height = `${height}px`;
-      panel.style.overflow = 'hidden';
       void Promise.all([
         animateElement(panel, {
-          height: [height, 0],
           opacity: [1, 0],
           y: [0, -8],
         }, { duration: FSD_MOTION.shortDuration }),
         chevron && animateElement(chevron, { rotate: [90, 0] }, { duration: FSD_MOTION.shortDuration }),
       ]).finally(() => {
         details.open = false;
-        panel.style.removeProperty('height');
-        panel.style.removeProperty('overflow');
         delete details.dataset.motionTransition;
       });
       return;
@@ -339,19 +333,13 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     details.open = true;
     if (reducedMotion) return;
     details.dataset.motionTransition = 'true';
-    panel.style.height = '0px';
-    panel.style.overflow = 'hidden';
-    const height = panel.scrollHeight;
     void Promise.all([
       animateElement(panel, {
-        height: [0, height],
         opacity: [0, 1],
         y: [8, 0],
       }, { duration: FSD_MOTION.shortDuration }),
       chevron && animateElement(chevron, { rotate: [0, 90] }, { duration: FSD_MOTION.shortDuration }),
     ]).finally(() => {
-      panel.style.removeProperty('height');
-      panel.style.removeProperty('overflow');
       delete details.dataset.motionTransition;
     });
   };
@@ -360,6 +348,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   const hoveredCards = new WeakSet();
   const hoveredControls = new WeakSet();
   const pressedControls = new Set();
+  let lastPointerType = '';
   const setCardHovered = (card, active) => {
     if (!card?.isConnected || prefersReducedMotion(documentRef.defaultView)) return;
     if (active) {
@@ -369,11 +358,13 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
       hoveredCards.delete(card);
       delete card.dataset.motionHovered;
     }
-    void animateElement(card, {
-      scale: active ? [1, 1.02] : [1.02, 1],
-    }, {
-      duration: FSD_MOTION.microDuration,
-      ease: active ? FSD_MOTION.ease : FSD_MOTION.stateEase,
+    card.querySelectorAll('.product-row__image, [data-card-image]').forEach(cardImage => {
+      void animateElement(cardImage, {
+        scale: active ? [1, FSD_MOTION.imageHoverScale] : [FSD_MOTION.imageHoverScale, 1],
+      }, {
+        duration: FSD_MOTION.baseDuration,
+        ease: active ? FSD_MOTION.ease : FSD_MOTION.stateEase,
+      });
     });
     const arrow = card.querySelector(ARROW_SELECTOR);
     if (arrow) {
@@ -398,6 +389,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
   };
   const onPointerOver = event => {
     if (event.pointerType === 'touch') return;
+    lastPointerType = event.pointerType || 'mouse';
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !card.contains(event.relatedTarget) && !hoveredCards.has(card)) {
       setCardHovered(card, true);
@@ -408,6 +400,7 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   };
   const onPointerOut = event => {
+    if (event.pointerType === 'touch') return;
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !card.contains(event.relatedTarget)) {
       const stillActive = card.matches(':hover') || card.contains(documentRef.activeElement);
@@ -420,12 +413,14 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   };
   const onFocusIn = event => {
+    if (lastPointerType === 'touch') return;
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !hoveredCards.has(card)) setCardHovered(card, true);
     const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
     if (control && !hoveredControls.has(control)) setControlHovered(control, true);
   };
   const onFocusOut = event => {
+    if (lastPointerType === 'touch') return;
     const card = event.target.closest?.(CARD_SELECTOR);
     if (card && !card.contains(event.relatedTarget) && !card.matches(':hover')) setCardHovered(card, false);
     const control = event.target.closest?.('button, a[role="button"], .fsd-primary-link, .fsd-primary-trigger');
@@ -449,10 +444,13 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
     }
   };
   const onPointerDown = event => {
+    lastPointerType = event.pointerType || 'mouse';
     pressControl(event.target.closest?.('button, a[role="button"]'));
   };
   const onKeyDown = event => {
+    if (event.key === 'Tab') lastPointerType = 'keyboard';
     if (event.repeat || !['Enter', ' '].includes(event.key)) return;
+    lastPointerType = 'keyboard';
     pressControl(event.target.closest?.('button, a[role="button"]'));
   };
   documentRef.addEventListener('pointerover', onPointerOver);

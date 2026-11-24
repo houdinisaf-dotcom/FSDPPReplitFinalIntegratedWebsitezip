@@ -14,7 +14,7 @@
   font: inherit;
   font-size: 8px;
   letter-spacing: .14em;
-  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+  transition: none;
 }
 .fsd-bag-toggle:hover,
 .fsd-bag-toggle:focus-visible {
@@ -29,7 +29,7 @@
   flex: 0 0 18px;
   overflow: visible;
   color: rgba(212, 175, 55, .9);
-  transition: color 160ms ease, filter 160ms ease;
+  transition: none;
 }
 .fsd-boxing-bag-icon path {
   stroke: currentColor;
@@ -187,7 +187,7 @@
   font-size: 9px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  transition: background-color 180ms ease, color 180ms ease;
+  transition: none;
 }
 .fsd-bag-checkout:hover,
 .fsd-bag-checkout:focus-visible { background: #D4AF37; color: #0A0A0A; }

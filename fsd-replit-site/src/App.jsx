@@ -249,15 +249,20 @@ function AppRouter({ hardwareForgeExtension }) {
     const nextKey = `${route.view}:${route.target ?? ''}`;
     const previousKey = previousRouteKey.current;
     previousRouteKey.current = nextKey;
-    if (!previousKey || previousKey === nextKey || route.view !== 'page' || !route.target) return;
-    const target = document.getElementById(route.target);
+    if (!previousKey || previousKey === nextKey) return;
+
+    const isPageAnchor = route.view === 'page' && Boolean(route.target);
+    const target = isPageAnchor
+      ? document.getElementById(route.target)
+      : storefrontContentRef.current;
     if (!target || !storefrontContentRef.current?.contains(target)) return;
-    for (let parent = target.parentElement; parent; parent = parent.parentElement) {
-      if (parent instanceof HTMLDetailsElement) parent.open = true;
+    if (isPageAnchor) {
+      for (let parent = target.parentElement; parent; parent = parent.parentElement) {
+        if (parent instanceof HTMLDetailsElement) parent.open = true;
+      }
     }
     void animateElement(target, {
-      opacity: [0.86, 1],
-      y: [FSD_MOTION.distance, 0],
+      opacity: [0.72, 1],
     }, { duration: FSD_MOTION.routeDuration });
   }, [route.view, route.target]);
 

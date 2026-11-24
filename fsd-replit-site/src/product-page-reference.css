@@ -161,7 +161,7 @@
   background: #f3f1ec;
   overflow: hidden;
   opacity: .62;
-  transition: opacity .2s ease, border-color .2s ease;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb:hover,
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .catalogue-selector__thumb:focus-visible {
@@ -392,7 +392,7 @@
   color: var(--pdp-ink);
   font: 400 12px/1 "DM Sans", "Segoe UI", sans-serif;
   cursor: pointer;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
+  transition: none;
 }
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-option--size input {
   position: absolute;
@@ -461,7 +461,7 @@
   letter-spacing: .14em;
   text-transform: uppercase;
   box-shadow: none;
-  transition: background .2s ease, color .2s ease;
+  transition: none;
 }
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-add:not(:disabled):hover {
   background: #222226;
@@ -530,7 +530,7 @@
   content: "\203A";
   font-size: 18px;
   color: var(--pdp-muted);
-  transition: transform .2s ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 #product-dialog[data-presentation="detail"] #dialog-body .product-detail-page--editorial:not(.product-detail-page--quick-view) .product-detail-purchase .product-detail-accordion[open] summary::after {
   transform: rotate(90deg);
