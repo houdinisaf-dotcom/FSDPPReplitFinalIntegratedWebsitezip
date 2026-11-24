@@ -1,5 +1,5 @@
 :root {
-  --fsd-motion-duration: 360ms;
+  --fsd-motion-duration: 300ms;
   --fsd-motion-overlay: 250ms;
   --fsd-motion-ease: cubic-bezier(.22, 1, .36, 1);
 }
@@ -29,7 +29,7 @@
   content: "";
   opacity: 0;
   pointer-events: none;
-  transition: opacity 180ms var(--fsd-motion-ease);
+  transition: opacity 150ms var(--fsd-motion-ease);
 }
 
 :where(.fsd-editorial-card, .fsd-featured-card, .fsd-product-card, .product-card) > * {
@@ -93,5 +93,48 @@ a[data-motion-hovered] {
   a[data-motion-hovered] {
     transform: none;
     filter: none;
+  }
+}
+
+
+/* Product card media and calls to action use opacity and transform only. */
+.product-card .product-row__media { position: relative; overflow: hidden; }
+.product-card .product-row__image--secondary {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 300ms var(--fsd-motion-ease), transform 300ms var(--fsd-motion-ease);
+}
+.product-card .product-row__image {
+  transition: opacity 300ms var(--fsd-motion-ease), transform 300ms var(--fsd-motion-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .product-card .product-row__action {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 200ms var(--fsd-motion-ease), transform 200ms var(--fsd-motion-ease);
+  }
+  .product-card:is(:hover, :focus-within) .product-row__action {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .product-card:is(:hover, :focus-within) .product-row__image--secondary { opacity: 1; }
+  .product-card:is(:hover, :focus-within) .product-row__image:not(.product-row__image--secondary):has(+ .product-row__image--secondary) {
+    opacity: 0;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .product-card .product-row__action { opacity: 1; transform: none; }
+  .product-card .product-row__image--secondary { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-card .product-row__action,
+  .product-card .product-row__image,
+  .product-card .product-row__image--secondary {
+    transition-duration: 0.01ms !important;
   }
 }
