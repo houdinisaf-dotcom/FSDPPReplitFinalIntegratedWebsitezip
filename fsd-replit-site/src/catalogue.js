@@ -355,7 +355,7 @@ function card(product) {
   return `<article class="product-card" data-content-status="${contentStatus}">
     <button class="product-row__trigger" type="button" data-product="${product.id}"
       data-can-add-to-bag="${canShowBagAction(product)}" aria-label="View details for ${safe(product.name)}">
-      <span class="product-row__media" data-product-card-image-slot data-content-status="${contentStatus}">${productCardImageMarkup(product, {
+      <span class="product-row__media" data-product-card-image-slot data-content-status="${contentStatus}" data-has-secondary-image="${secondaryCardImage ? 'true' : 'false'}">${productCardImageMarkup(product, {
         colourway: initialColourway,
         className: 'product-row__image product-row__image--primary',
       })}${secondaryImageMarkup}</span>
