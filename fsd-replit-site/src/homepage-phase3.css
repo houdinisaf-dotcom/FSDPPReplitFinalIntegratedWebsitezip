@@ -91,12 +91,12 @@
   gap: 36px;
   padding-inline: 21px;
   box-shadow: 0 9px 24px rgba(0, 0, 0, .2);
-  transition: background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-primary span {
   display: inline-block;
-  transition: transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-primary:hover {
@@ -189,7 +189,7 @@
 }
 
 .showroom-engineering--campaign .showroom-engineering-media > img {
-  transition: transform 700ms var(--fsd-ease-out);
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .showroom-engineering--campaign .showroom-engineering-media:hover > img {
@@ -257,7 +257,7 @@
   font-weight: 700;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: border-color var(--fsd-motion-fast), color var(--fsd-motion-fast), background-color var(--fsd-motion-fast);
+  transition: none;
 }
 
 .showroom-beyond__hub:hover,
@@ -285,7 +285,7 @@
   border-bottom: 1px solid var(--fsd-rule);
   color: inherit;
   text-decoration: none;
-  transition: padding var(--fsd-motion-standard) var(--fsd-ease-out), background-color var(--fsd-motion-standard);
+  transition: none;
 }
 
 .showroom-beyond__path:hover,
@@ -545,7 +545,7 @@
   box-shadow: none;
   color: var(--fsd-campaign-ink, #111318);
   font-size: 10px;
-  transition: background-color 180ms ease, transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-primary:hover {
@@ -565,7 +565,7 @@
   font-weight: 700;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  transition: none;
 }
 
 .fsd-phase3-hero .fsd-home-secondary:hover,
@@ -614,7 +614,7 @@
   text-align: left;
   text-decoration: none;
   cursor: pointer;
-  transition: color 180ms ease, background-color 180ms ease;
+  transition: none;
 }
 
 .fsd-division-link:first-child { border-left: 1px solid rgba(255,255,255,.2); }
@@ -659,7 +659,7 @@
   border: 0;
   border-radius: 0;
   background-color: #24262a;
-  transition: transform 220ms ease;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-editorial-card::before { display: none; }
@@ -671,7 +671,7 @@
 .fsd-editorial-card__image {
   opacity: .9;
   object-position: center 30%;
-  transition: transform 650ms cubic-bezier(.2,.65,.2,1), opacity 250ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-editorial-card--women .fsd-editorial-card__image { object-position: 69% 34%; }
@@ -815,7 +815,7 @@
   .fsd-editorial-card__image,
   .fsd-division-link {
     animation: none !important;
-    transition: none !important;
+    transition: none;
     transform: none !important;
   }
 }
@@ -833,7 +833,7 @@
   letter-spacing: .2em;
   line-height: 1.4;
   text-transform: uppercase;
-  transition: color 220ms ease, opacity 220ms ease;
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-theme-label span {
@@ -866,7 +866,7 @@
   cursor: pointer;
   font: inherit;
   text-align: left;
-  transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease;
+  transition: none;
 }
 
 .fsd-phase3-hero .fsd-home-switcher button > span {
@@ -969,7 +969,7 @@
   .fsd-phase3-hero .fsd-home-theme-label,
   .fsd-phase3-hero[data-hero-theme] .fsd-home-hero__asset,
   .fsd-phase3-hero[data-hero-theme] .fsd-home-hero__shade {
-    transition: none !important;
+    transition: none;
     animation: none !important;
   }
 }
@@ -1000,13 +1000,13 @@
   opacity: .93;
   transform: scale(1.01);
   transform-origin: var(--hero-cover);
-  transition: transform 550ms cubic-bezier(.2,.7,.2,1), opacity 320ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-hero__asset {
   object-position: var(--hero-cover);
   filter: saturate(.8) contrast(1.04);
-  transition: transform 420ms cubic-bezier(.2,.7,.2,1), opacity 320ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-hero__shade {
@@ -1449,7 +1449,7 @@
 
 .fsd-phase3-hero .fsd-home-hero__asset {
   object-position: var(--hero-image-focus);
-  transition: object-position 500ms ease, filter 380ms ease, opacity 380ms ease;
+  transition: opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-theme-label { color: var(--hero-signal); }
@@ -1667,7 +1667,7 @@
 .fsd-home-experience__media > img:not(.fsd-image-placeholder) {
   display: block;
   object-fit: cover;
-  transition: transform 420ms cubic-bezier(.2,.7,.2,1), filter 320ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-home-experience__media > .fsd-image-placeholder {
@@ -1725,7 +1725,7 @@
 .fsd-home-experience__action b {
   color: var(--fsd-campaign-volt, #dfff45);
   font-size: 14px;
-  transition: transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-home-experience:hover .fsd-home-experience__media > img:not(.fsd-image-placeholder),
@@ -1773,7 +1773,7 @@
   .fsd-home-experience,
   .fsd-home-experience__media > img:not(.fsd-image-placeholder),
   .fsd-home-experience__action b {
-    transition: none !important;
+    transition: none;
     animation: none !important;
     transform: none !important;
   }
@@ -1789,7 +1789,7 @@
   opacity: .055;
   mix-blend-mode: screen;
   pointer-events: none;
-  transition: background-color 620ms ease, opacity 620ms ease;
+  transition: opacity var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero[data-hero-theme="stronger"] { --fsd-hero-tone: #b9c7cf; }
@@ -1799,14 +1799,14 @@
 .fsd-phase3-hero[data-hero-theme="together"] .fsd-home-hero__shade::after { opacity: .065; }
 
 .fsd-phase3-hero .fsd-home-hero__asset {
-  transition: filter 620ms ease;
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fsd-phase3-hero .fsd-home-hero__shade::after,
   .fsd-phase3-hero .fsd-home-hero__asset {
     animation: none !important;
-    transition: none !important;
+    transition: none;
   }
 }
 
@@ -1947,7 +1947,7 @@
 .fsd-phase3-hero .fsd-home-hero__asset {
   object-position: var(--hero-cover);
   filter: saturate(.8) contrast(1.04);
-  transition: transform 420ms cubic-bezier(.2,.7,.2,1), opacity 320ms ease;
+  transition: transform var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-phase3-hero .fsd-home-hero__content { width: min(1450px, 90%); }
@@ -2070,7 +2070,7 @@
   font: 700 9px/1 "DM Sans", sans-serif;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+  transition: none;
 }
 
 .fsd-home-campaign-scene__action:hover,
@@ -2145,7 +2145,7 @@
   color: rgb(245 244 240 / 68%);
   cursor: pointer;
   text-align: left;
-  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  transition: none;
 }
 
 .fsd-home-campaign-scene__controls button > span,
@@ -2370,7 +2370,7 @@
   color: rgb(245 244 240 / 68%);
   cursor: pointer;
   text-align: left;
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  transition: none;
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
@@ -2399,7 +2399,7 @@
   background: #dfff45;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 200ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-home-campaign-sequence__navigation button:hover,
@@ -2540,7 +2540,7 @@ section.showroom-vip a.primary-btn {
   background: #c6a36a;
   color: #0b0c0e;
   text-decoration: none;
-  transition: background-color .18s ease, color .18s ease;
+  transition: none;
 }
 section.showroom-vip a.primary-btn:hover,
 section.showroom-vip a.primary-btn:focus-visible { background: transparent; color: #c6a36a; }
