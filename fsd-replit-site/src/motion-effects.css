@@ -132,7 +132,7 @@ a[data-motion-hovered] {
     transform: translateY(0);
   }
   .product-card:is(:hover, :focus-within) .product-row__image--secondary { opacity: 1; }
-  .product-card:is(:hover, :focus-within) .product-row__image--primary:has(+ .product-row__image--secondary) {
+  .product-card:is(:hover, :focus-within) .product-row__media[data-has-secondary-image="true"] .product-row__image--primary {
     opacity: 0;
   }
 }
