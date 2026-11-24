@@ -83,7 +83,7 @@
   min-height: 0;
   max-height: min(70vh, 760px);
   object-fit: contain;
-  transition: transform 220ms ease, opacity 200ms ease-in-out;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 #dialog-body .product-detail-image-zoom img.mapped-gallery-image--incoming { opacity: 0; }
@@ -129,7 +129,7 @@
   height: auto;
   max-height: min(70vh, 760px);
   object-fit: contain;
-  transition: transform 220ms ease, opacity 180ms ease;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 #dialog-body .product-detail-gallery__secondary-stage > img:hover { transform: scale(1.025); }
@@ -1014,7 +1014,7 @@
 }
 
 #dialog-body .product-detail-related__item {
-  transition: border-color 180ms ease, transform 180ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 #dialog-body .product-detail-related__item:hover {
@@ -1508,7 +1508,7 @@
   color: #0a0a0a;
   cursor: pointer;
   scroll-snap-align: start;
-  transition: border-color .18s ease, transform .18s ease, background-color .18s ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 #dialog-body .catalogue-selector__thumb:hover {
