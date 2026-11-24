@@ -2545,3 +2545,30 @@ section.showroom-vip a.primary-btn {
 section.showroom-vip a.primary-btn:hover,
 section.showroom-vip a.primary-btn:focus-visible { background: transparent; color: #c6a36a; }
 section.showroom-vip .showroom-vip-status a { color: #c6a36a; text-decoration: underline; }
+
+
+/* Shared motion system: hero copy enters without changing layout. */
+@keyframes fsd-hero-content-reveal {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.fsd-home-hero__image[data-fsd-parallax] {
+  translate: 0 var(--fsd-parallax-y, 0px);
+}
+.fsd-phase3-hero [data-motion-hero="headline"] {
+  animation: fsd-hero-content-reveal 900ms cubic-bezier(.22, 1, .36, 1) both;
+}
+.fsd-phase3-hero [data-motion-hero="subtext"] {
+  animation: fsd-hero-content-reveal 600ms cubic-bezier(.22, 1, .36, 1) 150ms both;
+}
+.fsd-phase3-hero [data-motion-hero="cta"] {
+  animation: fsd-hero-content-reveal 600ms cubic-bezier(.22, 1, .36, 1) 300ms both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fsd-phase3-hero [data-motion-hero] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .fsd-home-hero__image[data-fsd-parallax] { translate: none; }
+}
