@@ -28,7 +28,7 @@
   font-size: 9px;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: color 180ms ease;
+
 }
 .fsd-collection-return:hover { color: #f1e5c5; }
 .fsd-collection-return:focus-visible { outline: 2px solid #e7d3a8; outline-offset: 4px; }
@@ -45,7 +45,7 @@
   z-index: 60;
   width: 100%;
   background: transparent;
-  transition: background-color 300ms ease-in-out;
+
 }
 
 .fsd-navigation-spacer {
@@ -61,7 +61,7 @@
   padding: 0 clamp(20px, 5vw, 76px);
   border-bottom: 1px solid rgba(215, 207, 189, 0.12);
   background: transparent;
-  transition: background-color 300ms ease-in-out, border-color 300ms ease-in-out;
+
 }
 
 .fsd-navigation-shell.is-scrolled {
@@ -179,7 +179,7 @@
   line-height: 1.2;
   letter-spacing: 0.17em;
   text-transform: uppercase;
-  transition: color 180ms ease;
+
 }
 
 .fsd-primary-link {
@@ -255,15 +255,17 @@
   width: 25px;
   height: 1px;
   background: #C8AA72;
-  transition: width 200ms ease, transform 200ms ease;
+  transform-origin: right center;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1));
 }
 
-.fsd-mobile-toggle i:last-child {
-  width: 18px;
+ .fsd-mobile-toggle i:last-child {
+  width: 25px;
+  transform: scaleX(.72);
 }
 
 .fsd-mobile-toggle.is-active i:last-child {
-  width: 25px;
+  transform: scaleX(1);
 }
 
 .fsd-mega-menu {
@@ -424,13 +426,14 @@
   letter-spacing: 0.045em;
   line-height: 1.45;
   text-align: left;
-  transition: color 180ms ease, padding-left 180ms ease;
+  transform: translateX(0);
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1));
 }
 
 .fsd-nav-option:hover,
 .fsd-nav-option:focus-visible,
 .fsd-nav-option.is-active {
-  padding-left: 5px;
+  transform: translateX(5px);
   color: #e8cf9f;
 }
 
@@ -728,7 +731,7 @@
   font-size: 8px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: background 180ms ease, color 180ms ease;
+
 }
 
 .fsd-feature-cta:hover,
@@ -766,7 +769,7 @@
   border-radius: 0;
   background: #0a0a0a;
   color: #d4af37;
-  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+
 }
 
 .fsd-mega-menu[data-primary="collections"] .fsd-feature-cta:hover,
@@ -1081,7 +1084,7 @@ body.fsd-mobile-nav-open {
   .fsd-nav-option:hover,
   .fsd-nav-option:focus-visible,
   .fsd-nav-option.is-active {
-    padding-left: 5px;
+    transform: translateX(5px);
   }
 
   .fsd-nav-index {
@@ -1647,7 +1650,7 @@ body.fsd-mobile-nav-open {
 /* Hide-on-scroll banner: slides away while scrolling down, returns on scroll up. */
 .fsd-navigation-shell,
 .announcement.fsd-announcement {
-  transition: transform 320ms cubic-bezier(.2, .7, .2, 1), background-color 300ms ease-in-out;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   will-change: transform;
 }
 html.fsd-header-hidden .fsd-navigation-shell.is-hidden-on-scroll {
@@ -1722,7 +1725,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   color: rgba(239, 237, 232, .62);
   text-align: left;
   cursor: pointer;
-  transition: color 180ms ease;
+
 }
 #fsd-mega-menu .fsd-ed-thumb--group { display: none; }
 #fsd-mega-menu .fsd-ed-group__button,
@@ -1776,7 +1779,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   cursor: pointer;
 }
 #fsd-mega-menu .fsd-ed-item__title { flex: 1 1 auto; }
-#fsd-mega-menu .fsd-ed-item__arrow { color: rgba(200, 170, 114, .0); transition: color 160ms ease, transform 160ms ease; }
+#fsd-mega-menu .fsd-ed-item__arrow { color: rgba(200, 170, 114, .0); transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1)); }
 #fsd-mega-menu .fsd-ed-item:hover,
 #fsd-mega-menu .fsd-ed-item:focus-visible,
 #fsd-mega-menu .fsd-ed-item.is-active { color: #fff; background: none; }
@@ -2000,7 +2003,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   .header.fsd-header {
     transform: scaleY(1);
     transform-origin: top center;
-    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), background-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), border-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   }
   .fsd-navigation-shell.is-scrolled {
     background: rgba(10, 10, 10, .78);
@@ -2036,7 +2039,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   .header.fsd-header {
     transform: scaleY(1);
     transform-origin: top center;
-    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), background-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), border-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
   }
   .fsd-navigation-shell.is-scrolled .header.fsd-header {
     transform: scaleY(.9143);
