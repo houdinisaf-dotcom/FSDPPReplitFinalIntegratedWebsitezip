@@ -2556,13 +2556,13 @@ section.showroom-vip .showroom-vip-status a { color: #c6a36a; text-decoration: u
   translate: 0 var(--fsd-parallax-y, 0px);
 }
 .fsd-phase3-hero [data-motion-hero="headline"] {
-  animation: fsd-hero-content-reveal 900ms cubic-bezier(.22, 1, .36, 1) both;
+  animation: fsd-hero-content-reveal var(--fsd-motion-hero, 900ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1)) both;
 }
 .fsd-phase3-hero [data-motion-hero="subtext"] {
-  animation: fsd-hero-content-reveal 600ms cubic-bezier(.22, 1, .36, 1) 150ms both;
+  animation: fsd-hero-content-reveal var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1)) var(--fsd-motion-fast, 150ms) both;
 }
 .fsd-phase3-hero [data-motion-hero="cta"] {
-  animation: fsd-hero-content-reveal 600ms cubic-bezier(.22, 1, .36, 1) 300ms both;
+  animation: fsd-hero-content-reveal var(--fsd-motion-slow, 600ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1)) calc(var(--fsd-motion-fast, 150ms) * 2) both;
 }
 @media (prefers-reduced-motion: reduce) {
   .fsd-phase3-hero [data-motion-hero] {
