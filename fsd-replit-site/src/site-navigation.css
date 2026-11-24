@@ -197,7 +197,7 @@
   content: "";
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
+  transition: transform var(--fsd-motion-underline, 200ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-primary-trigger:hover,
