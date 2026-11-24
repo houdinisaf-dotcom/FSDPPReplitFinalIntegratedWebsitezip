@@ -37,9 +37,7 @@
   letter-spacing: var(--fsd-campaign-title-track);
   line-height: .91;
   text-wrap: balance;
-  transition:
-    letter-spacing 300ms cubic-bezier(.2, .7, .2, 1),
-    font-weight 300ms cubic-bezier(.2, .7, .2, 1);
+  transition: none;
 }
 
 .fsd-phase3-hero #fsd-home-title em {
@@ -65,7 +63,7 @@
 }
 
 .fsd-feature-media-action .fsd-feature-media img {
-  transition: transform 200ms ease;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -600,7 +598,7 @@ body[data-fsd-house-editorial="true"] :where(a, button):focus-visible {
   border-bottom: 1px solid rgb(17 19 24 / 17%);
   color: #111318;
   text-decoration: none;
-  transition: background-color 220ms ease, color 220ms ease;
+  transition: none;
 }
 
 .fsd-home-division-card:hover,
@@ -643,7 +641,7 @@ body[data-fsd-house-editorial="true"] :where(a, button):focus-visible {
   color: #8a6a1c;
   font-size: 17px;
   line-height: 1;
-  transition: transform 220ms ease;
+  transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-home-division-card:hover .fsd-home-division-card__arrow,
