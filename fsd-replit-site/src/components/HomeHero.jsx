@@ -283,12 +283,12 @@ export function HomeHero({ headingTag = 'h1' }) {
             <span>01</span>
             {homeHeroExperiences[0].label}
           </p>
-          <div className="fsd-home-hero__headline-wrap">
+          <div className="fsd-home-hero__headline-wrap" data-motion-hero="headline">
             <Heading id="fsd-home-title">MADE TO MOVE,<br />MADE TO <em>BELONG.</em></Heading>
             <span className="fsd-home-hero__headline-index" aria-hidden="true">01</span>
           </div>
-          <p className="fsd-home-intro">Fitness &amp; Self-Defence.<br />A house for those who train with purpose.</p>
-          <div className="fsd-home-actions">
+          <p className="fsd-home-intro" data-motion-hero="subtext">Fitness &amp; Self-Defence.<br />A house for those who train with purpose.</p>
+          <div className="fsd-home-actions" data-motion-hero="cta">
             <a className="fsd-home-primary" href={homeHeroExperiences[0].href} data-hero-primary-action>
               {homeHeroExperiences[0].action} <span aria-hidden="true">↗</span>
             </a>
