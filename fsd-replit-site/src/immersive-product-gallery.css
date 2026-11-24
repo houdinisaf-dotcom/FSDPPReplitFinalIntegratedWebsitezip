@@ -1,6 +1,6 @@
 .fsd-gallery-tools { display: flex; align-items: center; gap: 10px; margin: 12px 0; color: #51482e; font: 9px/1.5 "Space Mono", monospace; letter-spacing: .08em; }
 .fsd-gallery-tools button,
-.fsd-photo-viewer button { min-height: 44px; padding: 9px 14px; border: 1px solid rgb(10 10 10 / 24%); background: #fff; color: #0a0a0a; font: 10px/1.4 "Space Mono", monospace; letter-spacing: .08em; cursor: pointer; transition: border-color .18s, background-color .18s, color .18s; }
+.fsd-photo-viewer button { min-height: 44px; padding: 9px 14px; border: 1px solid rgb(10 10 10 / 24%); background: #fff; color: #0a0a0a; font: 10px/1.4 "Space Mono", monospace; letter-spacing: .08em; cursor: pointer; transition: none; }
 .fsd-gallery-tools button:hover,
 .fsd-photo-viewer button:hover { border-color: #d4af37; background: #f6f3e9; color: #0a0a0a; }
 .fsd-gallery-tools button:disabled,
