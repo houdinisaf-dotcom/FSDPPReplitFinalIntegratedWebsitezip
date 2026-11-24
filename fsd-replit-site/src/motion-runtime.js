@@ -357,15 +357,14 @@ export function mountStorefrontMotion(documentRef = globalThis.document) {
       hoveredCards.delete(card);
       delete card.dataset.motionHovered;
     }
-    const cardImage = card.querySelector('.product-row__image, [data-card-image]');
-    if (cardImage) {
+    card.querySelectorAll('.product-row__image, [data-card-image]').forEach(cardImage => {
       void animateElement(cardImage, {
         scale: active ? [1, FSD_MOTION.imageHoverScale] : [FSD_MOTION.imageHoverScale, 1],
       }, {
         duration: FSD_MOTION.baseDuration,
         ease: active ? FSD_MOTION.ease : FSD_MOTION.stateEase,
       });
-    }
+    });
     const arrow = card.querySelector(ARROW_SELECTOR);
     if (arrow) {
       void animateElement(arrow, {
