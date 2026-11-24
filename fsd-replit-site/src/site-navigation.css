@@ -197,7 +197,7 @@
   content: "";
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 200ms ease;
+  transition: transform var(--fsd-motion-underline, 200ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-primary-trigger:hover,
@@ -2029,5 +2029,16 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   .header.fsd-header,
   #fsd-mega-menu {
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .header.fsd-header {
+    transform: scaleY(1);
+    transform-origin: top center;
+    transition: transform var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), background-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out), border-color var(--fsd-motion-base, 300ms) var(--fsd-motion-ease-in-out, ease-in-out);
+  }
+  .fsd-navigation-shell.is-scrolled .header.fsd-header {
+    transform: scaleY(.9143);
   }
 }
