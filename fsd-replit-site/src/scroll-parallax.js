@@ -1,5 +1,5 @@
 const PARALLAX_SELECTOR = '[data-fsd-parallax]';
-const MAX_PARALLAX_OFFSET = 18;
+const MAX_PARALLAX_RATIO = 0.08;
 
 export function mountScrollParallax(root, windowRef = globalThis.window) {
   if (!root || !windowRef) return () => {};
@@ -29,7 +29,8 @@ export function mountScrollParallax(root, windowRef = globalThis.window) {
         return;
       }
       const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
-      const offset = (0.5 - progress) * MAX_PARALLAX_OFFSET * 2;
+      const maxOffset = Math.max(1, rect.height) * MAX_PARALLAX_RATIO;
+      const offset = (0.5 - progress) * maxOffset * 2;
       layer.style.setProperty('--fsd-parallax-y', `${offset.toFixed(2)}px`);
     });
   };
