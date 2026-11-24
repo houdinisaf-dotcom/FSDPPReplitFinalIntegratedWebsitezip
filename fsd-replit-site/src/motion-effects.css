@@ -8,7 +8,7 @@
   --fsd-motion-distance: 16px;
   --fsd-motion-image-scale: 1.04;
   --fsd-motion-duration: var(--fsd-motion-base);
-  --fsd-motion-overlay: 250ms;
+  --fsd-motion-overlay: var(--fsd-motion-base);
   --fsd-motion-ease: cubic-bezier(.22, 1, .36, 1);
   --fsd-motion-ease-in-out: ease-in-out;
 }
@@ -125,7 +125,7 @@ a[data-motion-hovered] {
   .product-card .product-row__action {
     opacity: 0;
     transform: translateY(4px);
-    transition: opacity 200ms var(--fsd-motion-ease), transform 200ms var(--fsd-motion-ease);
+    transition: opacity var(--fsd-motion-base) var(--fsd-motion-ease), transform var(--fsd-motion-base) var(--fsd-motion-ease);
   }
   .product-card:is(:hover, :focus-within) .product-row__action {
     opacity: 1;
