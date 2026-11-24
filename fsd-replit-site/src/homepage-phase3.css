@@ -257,7 +257,7 @@
   font-weight: 700;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: none;
+  transition: none !important;
 }
 
 .showroom-beyond__hub:hover,
@@ -285,7 +285,7 @@
   border-bottom: 1px solid var(--fsd-rule);
   color: inherit;
   text-decoration: none;
-  transition: none;
+  transition: none !important;
 }
 
 .showroom-beyond__path:hover,
@@ -404,14 +404,14 @@
   .fsd-phase3-hero .fsd-home-hero__image,
   .showroom-engineering--campaign .showroom-engineering-media > img {
     animation: none;
-    transition: none;
+    transition: none !important;
   }
 
   .fsd-phase3-hero .fsd-home-primary,
   .showroom-beyond__path,
   .showroom-beyond__hub,
   .showroom-house-connection__copy a {
-    transition: none;
+    transition: none !important;
   }
 }
 
@@ -565,7 +565,7 @@
   font-weight: 700;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: none;
+  transition: none !important;
 }
 
 .fsd-phase3-hero .fsd-home-secondary:hover,
@@ -614,7 +614,7 @@
   text-align: left;
   text-decoration: none;
   cursor: pointer;
-  transition: none;
+  transition: none !important;
 }
 
 .fsd-division-link:first-child { border-left: 1px solid rgba(255,255,255,.2); }
@@ -815,7 +815,7 @@
   .fsd-editorial-card__image,
   .fsd-division-link {
     animation: none !important;
-    transition: none;
+    transition: none !important;
     transform: none !important;
   }
 }
@@ -866,7 +866,7 @@
   cursor: pointer;
   font: inherit;
   text-align: left;
-  transition: none;
+  transition: none !important;
 }
 
 .fsd-phase3-hero .fsd-home-switcher button > span {
@@ -969,7 +969,7 @@
   .fsd-phase3-hero .fsd-home-theme-label,
   .fsd-phase3-hero[data-hero-theme] .fsd-home-hero__asset,
   .fsd-phase3-hero[data-hero-theme] .fsd-home-hero__shade {
-    transition: none;
+    transition: none !important;
     animation: none !important;
   }
 }
@@ -1327,7 +1327,7 @@
 @media (prefers-reduced-motion: reduce) {
   .fsd-home-hero__headline-wrap { animation: none; }
   .fsd-phase3-hero .fsd-home-hero__image,
-  .fsd-phase3-hero .fsd-home-hero__asset { transition: none; }
+  .fsd-phase3-hero .fsd-home-hero__asset { transition: none !important; }
 }
 
 .showroom-vip {
@@ -1587,7 +1587,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fsd-phase3-hero .fsd-home-hero__asset { transition: none; }
+  .fsd-phase3-hero .fsd-home-hero__asset { transition: none !important; }
 }
 
 .fsd-home-experiences {
@@ -1773,7 +1773,7 @@
   .fsd-home-experience,
   .fsd-home-experience__media > img:not(.fsd-image-placeholder),
   .fsd-home-experience__action b {
-    transition: none;
+    transition: none !important;
     animation: none !important;
     transform: none !important;
   }
@@ -1799,14 +1799,14 @@
 .fsd-phase3-hero[data-hero-theme="together"] .fsd-home-hero__shade::after { opacity: .065; }
 
 .fsd-phase3-hero .fsd-home-hero__asset {
-  transition: none;
+  transition: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fsd-phase3-hero .fsd-home-hero__shade::after,
   .fsd-phase3-hero .fsd-home-hero__asset {
     animation: none !important;
-    transition: none;
+    transition: none !important;
   }
 }
 
@@ -1972,7 +1972,7 @@
 @media (prefers-reduced-motion: reduce) {
   .fsd-phase3-hero .fsd-home-hero__asset,
   .fsd-phase3-hero .fsd-home-hero__image,
-  .fsd-phase3-hero .fsd-home-hero__headline-wrap { transition: none; animation: none; }
+  .fsd-phase3-hero .fsd-home-hero__headline-wrap { transition: none !important; animation: none; }
 }
 
 /* Four additional campaign scenes follow the approved lead hero in normal
@@ -2070,7 +2070,7 @@
   font: 700 9px/1 "DM Sans", sans-serif;
   letter-spacing: .14em;
   text-decoration: none;
-  transition: none;
+  transition: none !important;
 }
 
 .fsd-home-campaign-scene__action:hover,
@@ -2145,7 +2145,7 @@
   color: rgb(245 244 240 / 68%);
   cursor: pointer;
   text-align: left;
-  transition: none;
+  transition: none !important;
 }
 
 .fsd-home-campaign-scene__controls button > span,
@@ -2370,7 +2370,7 @@
   color: rgb(245 244 240 / 68%);
   cursor: pointer;
   text-align: left;
-  transition: none;
+  transition: none !important;
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
@@ -2540,7 +2540,7 @@ section.showroom-vip a.primary-btn {
   background: #c6a36a;
   color: #0b0c0e;
   text-decoration: none;
-  transition: none;
+  transition: none !important;
 }
 section.showroom-vip a.primary-btn:hover,
 section.showroom-vip a.primary-btn:focus-visible { background: transparent; color: #c6a36a; }
