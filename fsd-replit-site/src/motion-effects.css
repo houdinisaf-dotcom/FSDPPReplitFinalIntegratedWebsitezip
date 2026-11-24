@@ -144,6 +144,7 @@ a[data-motion-hovered] {
   .product-card .product-row__action,
   .product-card .product-row__image,
   .product-card .product-row__image--secondary {
+    display: none;
     transition-duration: 0.01ms !important;
   }
 }
