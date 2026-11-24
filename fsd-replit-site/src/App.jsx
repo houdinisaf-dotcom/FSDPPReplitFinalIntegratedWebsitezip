@@ -256,8 +256,7 @@ function AppRouter({ hardwareForgeExtension }) {
       if (parent instanceof HTMLDetailsElement) parent.open = true;
     }
     void animateElement(target, {
-      opacity: [0.86, 1],
-      y: [FSD_MOTION.distance, 0],
+      opacity: [0.72, 1],
     }, { duration: FSD_MOTION.routeDuration });
   }, [route.view, route.target]);
 
