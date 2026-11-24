@@ -1,0 +1,1132 @@
+.fsd-innovation-hub,
+.fsd-placeholder-page {
+  scroll-margin-top: 96px;
+  color: #f7f7f5;
+  background: #090a0c;
+}
+
+.fsd-innovation-hub {
+  padding: clamp(58px, 8vw, 112px) clamp(20px, 5.8vw, 88px);
+  border-top: 1px solid rgba(200, 170, 114, 0.16);
+}
+
+.fsd-page-shell {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+.fsd-page-eyebrow,
+.fsd-placeholder-label {
+  margin: 0;
+  color: #c8aa72;
+  font: 700 10px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.fsd-page-eyebrow > span {
+  padding: 0 7px;
+  color: rgba(200, 170, 114, 0.48);
+}
+
+.fsd-hub-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(260px, 1.12fr);
+  align-items: end;
+  gap: clamp(28px, 5vw, 72px);
+  margin: 22px 0 30px;
+}
+
+.fsd-hub-heading h1,
+.fsd-hub-heading h2,
+.fsd-placeholder-page-header h2 {
+  margin: 0;
+  color: #f7f7f5;
+  font: 800 clamp(32px, 5vw, 62px)/1.02 Manrope, sans-serif;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.fsd-hub-heading > div > p:not(.fsd-page-eyebrow),
+.fsd-page-intro {
+  max-width: 680px;
+  margin: 18px 0 0;
+  color: #a7a9ad;
+  font: 400 14px/1.8 "DM Sans", sans-serif;
+}
+
+.fsd-innovation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fsd-innovation-card {
+  display: grid;
+  min-height: 88px;
+  grid-template-columns: 34px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 20px;
+  border: 1px solid rgba(138, 146, 156, 0.24);
+  background: linear-gradient(120deg, rgba(25, 28, 32, 0.92), rgba(12, 14, 16, 0.96));
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
+}
+
+.fsd-innovation-card:hover,
+.fsd-innovation-card:focus-visible {
+  border-color: rgba(200, 170, 114, 0.72);
+  background: linear-gradient(120deg, rgba(35, 32, 26, 0.96), rgba(15, 16, 18, 0.98));
+  transform: translateY(-1px);
+}
+
+.fsd-innovation-card:focus-visible,
+.fsd-page-return:focus-visible,
+.fsd-private-preview-links a:focus-visible {
+  outline: 2px solid #c8aa72;
+  outline-offset: 3px;
+}
+
+.fsd-innovation-card-index {
+  color: #c8aa72;
+  font: 500 11px/1 Manrope, sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.fsd-innovation-card-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.fsd-innovation-card-copy strong {
+  color: #f1f0ec;
+  font: 700 13px/1.45 Manrope, sans-serif;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.fsd-innovation-card-copy small {
+  color: #8e939a;
+  font: 500 9px/1.4 Manrope, sans-serif;
+  letter-spacing: 0.14em;
+}
+
+.fsd-innovation-card-arrow {
+  color: #c8aa72;
+  font-size: 16px;
+}
+
+.fsd-private-preview-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(138, 146, 156, 0.18);
+}
+
+.fsd-private-preview-links .fsd-placeholder-label {
+  flex-basis: 100%;
+}
+
+.fsd-private-preview-links a {
+  display: grid;
+  min-width: 190px;
+  gap: 5px;
+  padding: 12px 14px;
+  border: 1px solid rgba(138, 146, 156, 0.2);
+  color: #f0eee9;
+  font: 700 10px/1.4 Manrope, sans-serif;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+
+.fsd-private-preview-links a span {
+  color: #c8aa72;
+  font-size: 8px;
+}
+
+.fsd-placeholder-page {
+  padding: clamp(60px, 8vw, 112px) clamp(20px, 5.8vw, 88px);
+  border-top: 1px solid rgba(200, 170, 114, 0.12);
+}
+
+.fsd-placeholder-page-header {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  text-align: center;
+}
+
+.fsd-placeholder-page-header h2 {
+  margin-top: 15px;
+}
+
+.fsd-page-intro {
+  margin: 18px auto 0;
+}
+
+.fsd-page-subtitle {
+  margin: 18px auto 0;
+  color: #e9e7e1;
+  font: 500 clamp(15px, 2vw, 20px)/1.6 Manrope, sans-serif;
+  letter-spacing: 0.07em;
+}
+
+.fsd-asset-slot {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  aspect-ratio: 4 / 3;
+  place-items: center;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(150, 158, 168, 0.38);
+  background:
+    linear-gradient(135deg, rgba(200, 170, 114, 0.04), transparent 42%),
+    repeating-linear-gradient(135deg, rgba(200, 170, 114, 0.025) 0 1px, transparent 1px 14px),
+    #111417;
+}
+
+.fsd-asset-slot::before {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(200, 170, 114, 0.16);
+  content: "";
+  pointer-events: none;
+}
+
+.fsd-asset-slot-content {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  max-width: 78%;
+  padding: 18px;
+  text-align: center;
+}
+
+.fsd-asset-slot-kicker {
+  color: #c8aa72;
+  font: 700 8px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.2em;
+}
+
+.fsd-asset-slot-content strong {
+  color: #e9e7e1;
+  font: 700 clamp(12px, 1.5vw, 17px)/1.45 Manrope, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fsd-asset-slot-content small {
+  color: #868c94;
+  font: 400 10px/1.5 "DM Sans", sans-serif;
+}
+
+.fsd-asset-slot--hub {
+  aspect-ratio: 16 / 9;
+  border-color: rgba(200, 170, 114, 0.36);
+}
+
+.fsd-asset-slot--hero {
+  aspect-ratio: 16 / 9;
+}
+
+.fsd-page-module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.fsd-page-module {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid rgba(138, 146, 156, 0.23);
+  background: #0d0f11;
+}
+
+.fsd-page-module-copy {
+  position: relative;
+  min-height: 102px;
+  padding-left: 34px;
+}
+
+.fsd-page-module-index {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  color: #c8aa72;
+  font: 500 10px/1.4 Manrope, sans-serif;
+  letter-spacing: 0.12em;
+}
+
+.fsd-page-module h3 {
+  margin: 0;
+  color: #f1f0ec;
+  font: 700 13px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.fsd-page-module p {
+  margin: 9px 0 14px;
+  color: #8d929b;
+  font: 400 11px/1.65 "DM Sans", sans-serif;
+}
+
+.fsd-page-module .fsd-asset-slot {
+  aspect-ratio: 4 / 3;
+}
+
+.fsd-page-verification-note {
+  margin: 20px 0 0;
+  padding: 15px 18px;
+  border-left: 2px solid #c8aa72;
+  background: rgba(200, 170, 114, 0.06);
+  color: #a9a9a8;
+  font: 400 11px/1.7 "DM Sans", sans-serif;
+}
+
+.fsd-shield-content {
+  display: grid;
+  gap: clamp(30px, 5vw, 64px);
+  margin-top: clamp(30px, 5vw, 64px);
+}
+
+.fsd-shield-section {
+  margin: 0;
+  padding-top: clamp(22px, 3vw, 36px);
+  border-top: 1px solid rgba(200, 170, 114, 0.2);
+}
+
+.fsd-shield-kicker {
+  margin: 0 0 12px;
+  color: #c8aa72;
+  font: 700 9px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.fsd-shield-section > h3 {
+  margin: 0;
+  color: #f1f0ec;
+  font: 700 clamp(18px, 2.3vw, 25px)/1.3 Manrope, sans-serif;
+  letter-spacing: 0.015em;
+}
+
+.fsd-shield-section > p:not(.fsd-shield-kicker) {
+  max-width: 880px;
+  margin: 16px 0 0;
+  color: #a7a9ad;
+  font: 400 14px/1.8 "DM Sans", sans-serif;
+}
+
+.fsd-shield-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.fsd-shield-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid rgba(138, 146, 156, 0.23);
+  background: linear-gradient(145deg, rgba(25, 28, 32, 0.92), rgba(12, 14, 16, 0.96));
+}
+
+.fsd-shield-card h4 {
+  margin: 0;
+  color: #c8aa72;
+  font: 700 12px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.fsd-shield-card p {
+  margin: 12px 0 0;
+  color: #a7a9ad;
+  font: 400 12px/1.75 "DM Sans", sans-serif;
+}
+
+.fsd-shield-visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fsd-shield-visual-grid .fsd-asset-slot {
+  aspect-ratio: 16 / 9;
+}
+
+.fsd-shield-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fsd-shield-badge {
+  display: grid;
+  min-height: 76px;
+  place-items: center;
+  padding: 16px;
+  border: 1px solid rgba(138, 146, 156, 0.2);
+  background: #0d0f11;
+  color: #e9e7e1;
+  font: 600 10px/1.6 Manrope, sans-serif;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.fsd-shield-notice {
+  padding: clamp(20px, 3vw, 34px);
+  border-left: 2px solid #c8aa72;
+  background: rgba(200, 170, 114, 0.06);
+}
+
+.fsd-shield-notice > p:not(.fsd-shield-kicker) {
+  margin: 0;
+  color: #b5b6b8;
+  font: 400 12px/1.8 "DM Sans", sans-serif;
+}
+
+.fsd-shield-notice > p + p {
+  margin-top: 12px !important;
+}
+
+.fsd-shield-notice strong {
+  color: #e9e7e1;
+}
+
+.fsd-shield-footer {
+  padding-top: 24px;
+  border-top: 1px solid rgba(138, 146, 156, 0.18);
+  color: #8e939a;
+  font: 600 9px/1.5 Manrope, sans-serif;
+  letter-spacing: 0.17em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.fsd-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.fsd-page-return,
+.fsd-page-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid rgba(200, 170, 114, 0.4);
+  color: #f0eee9;
+  font: 700 9px/1.4 Manrope, sans-serif;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+}
+
+.fsd-page-return span {
+  color: #c8aa72;
+}
+
+.fsd-page-status {
+  border-color: rgba(138, 146, 156, 0.25);
+  color: #848a92;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .fsd-hub-heading {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.82fr);
+  }
+
+  .fsd-page-module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fsd-shield-card-grid,
+  .fsd-shield-badge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .fsd-hub-heading {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .fsd-hub-heading .fsd-asset-slot {
+    aspect-ratio: 16 / 9;
+  }
+
+  .fsd-innovation-grid,
+  .fsd-page-module-grid,
+  .fsd-shield-card-grid,
+  .fsd-shield-badge-grid,
+  .fsd-shield-visual-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fsd-innovation-card {
+    min-height: 78px;
+    padding: 15px;
+  }
+
+  .fsd-asset-slot--hero {
+    aspect-ratio: 4 / 3;
+  }
+
+  .fsd-page-module-copy {
+    min-height: 82px;
+  }
+
+  .fsd-page-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .fsd-page-return,
+  .fsd-page-status {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-innovation-card {
+    transition: none;
+  }
+}
+
+/* Bio-Lab reads as a research register: scope first, evidence gates always visible. */
+.fsd-innovation-hub .fsd-hub-heading--research {
+  grid-template-columns: minmax(0, .8fr) minmax(330px, 1.2fr);
+  align-items: stretch;
+  margin-block: clamp(28px, 4vw, 56px) clamp(36px, 5vw, 68px);
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research h2 {
+  max-width: 8ch;
+  font-size: clamp(46px, 7vw, 92px);
+  line-height: .88;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research .fsd-asset-slot {
+  min-height: 300px;
+  aspect-ratio: 16 / 10;
+}
+
+.fsd-biolab-register-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 12px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgba(200,170,114,.26);
+}
+
+.fsd-biolab-register-heading > span {
+  flex: 0 0 auto;
+  color: #c8aa72;
+  font: 600 8px/1.5 var(--fsd-mono, monospace);
+  letter-spacing: .18em;
+}
+
+.fsd-biolab-register-heading p {
+  max-width: 50ch;
+  margin: 0;
+  color: #9f9c94;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: right;
+}
+
+.fsd-innovation-grid.fsd-biolab-register {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  background: transparent;
+}
+
+.fsd-biolab-register .fsd-innovation-card {
+  min-height: 112px;
+  grid-template-columns: 44px minmax(0, 1fr) 28px;
+  padding: 21px 4px;
+  border-right: 0;
+  border-bottom-color: rgba(200,170,114,.16);
+  border-left: 0;
+  background: transparent;
+}
+
+.fsd-biolab-register .fsd-innovation-card-copy { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.fsd-biolab-register .fsd-innovation-card-copy strong { grid-column: 1; font-size: clamp(15px, 1.5vw, 19px); }
+.fsd-biolab-register .fsd-innovation-card-copy small { grid-column: 2; grid-row: 1; text-align: right; }
+.fsd-biolab-register .fsd-innovation-card-summary {
+  grid-column: 1 / -1;
+  max-width: 76ch;
+  color: #a8a69f;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.fsd-research-page-header {
+  display: grid;
+  grid-template-columns: minmax(130px, .3fr) minmax(0, 1.7fr);
+  align-items: start;
+  gap: 14px 36px;
+  max-width: none;
+  margin-bottom: clamp(26px, 4vw, 48px);
+  text-align: left;
+}
+
+.fsd-research-page-header .fsd-page-eyebrow { grid-column: 1 / -1; }
+.fsd-research-page-header__index {
+  grid-column: 1;
+  grid-row: 2 / span 4;
+  padding-top: 9px;
+  color: #c8aa72;
+  font: 600 8px/1.5 var(--fsd-mono, monospace);
+  letter-spacing: .15em;
+}
+
+.fsd-research-page-header h2 {
+  grid-column: 2;
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(38px, 7vw, 86px);
+  line-height: .94;
+}
+
+.fsd-research-page-header .fsd-page-subtitle,
+.fsd-research-page-header .fsd-page-intro { grid-column: 2; margin-inline: 0; }
+.fsd-research-page-header .fsd-page-status { grid-column: 2; justify-self: start; }
+.fsd-research-feature { position: relative; margin-bottom: clamp(24px, 4vw, 52px); }
+.fsd-research-feature .fsd-asset-slot--hero { min-height: clamp(230px, 39vw, 480px); aspect-ratio: 2.1 / 1; }
+.fsd-research-feature__caption {
+  position: absolute;
+  right: 15px;
+  bottom: 12px;
+  margin: 0;
+  color: #c8aa72;
+  font-size: 8px;
+  letter-spacing: .16em;
+}
+
+.fsd-page-module-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1px; background: rgba(200,170,114,.18); }
+.fsd-page-module { min-height: 290px; padding: clamp(19px, 2.4vw, 32px); background: #101315; }
+.fsd-page-module--lead { grid-column: span 6; }
+.fsd-page-module--scope { grid-column: span 3; }
+.fsd-page-module--gate { grid-column: span 3; background: #151719; }
+.fsd-page-module-copy { min-height: 130px; }
+.fsd-page-module .fsd-asset-slot { min-height: 120px; aspect-ratio: 16 / 8; border-color: rgba(200,170,114,.14); }
+.fsd-page-module--lead .fsd-asset-slot { min-height: 150px; }
+
+@media (max-width: 760px) {
+  .fsd-innovation-hub .fsd-hub-heading--research { grid-template-columns: 1fr; }
+  .fsd-innovation-hub .fsd-hub-heading--research h2 { max-width: none; }
+  .fsd-biolab-register-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .fsd-biolab-register-heading p { text-align: left; }
+  .fsd-biolab-register .fsd-innovation-card-copy { grid-template-columns: 1fr; gap: 8px; }
+  .fsd-biolab-register .fsd-innovation-card-copy small { grid-column: 1; grid-row: auto; text-align: left; }
+  .fsd-research-page-header { grid-template-columns: 1fr; gap: 11px; }
+  .fsd-research-page-header__index { grid-column: 1; grid-row: auto; }
+  .fsd-research-page-header h2,
+  .fsd-research-page-header .fsd-page-subtitle,
+  .fsd-research-page-header .fsd-page-intro,
+  .fsd-research-page-header .fsd-page-status { grid-column: 1; }
+  .fsd-page-module-grid { grid-template-columns: 1fr; }
+  .fsd-page-module--lead,
+  .fsd-page-module--scope,
+  .fsd-page-module--gate { grid-column: auto; }
+}
+
+/* Supporting flagship routes: one editorial hierarchy for Universe, Bio-Lab and access surfaces. */
+.fsd-innovation-hub,
+.fsd-placeholder-page {
+  color: var(--fsd-porcelain, #f1eee6);
+  background:
+    radial-gradient(ellipse at 78% 0%, rgba(200, 170, 114, .045), transparent 38%),
+    #090a0c;
+}
+
+.fsd-innovation-hub { border-top-color: rgba(200, 170, 114, .2); }
+
+.fsd-page-eyebrow,
+.fsd-placeholder-label { color: #c8aa72; }
+
+.fsd-hub-heading {
+  gap: clamp(30px, 6vw, 88px);
+  margin-bottom: clamp(34px, 4.2vw, 54px);
+}
+
+.fsd-hub-heading h1,
+.fsd-hub-heading h2,
+.fsd-placeholder-page-header h2 {
+  font-family: var(--fsd-display, Manrope, sans-serif);
+  font-weight: 500;
+  letter-spacing: -.065em;
+}
+
+.fsd-hub-heading > div > p:not(.fsd-page-eyebrow),
+.fsd-page-intro {
+  color: #b3b0a8;
+  line-height: 1.8;
+}
+
+.fsd-innovation-grid { gap: 1px; background: rgba(200, 170, 114, .16); }
+
+.fsd-innovation-card {
+  min-height: 98px;
+  border-color: rgba(200, 170, 114, .13);
+  background: linear-gradient(125deg, rgba(255, 255, 255, .025), transparent 58%), #111315;
+}
+
+.fsd-innovation-card:hover,
+.fsd-innovation-card:focus-visible {
+  border-color: rgba(200, 170, 114, .64);
+  background: linear-gradient(125deg, rgba(200, 170, 114, .07), transparent 58%), #151719;
+}
+
+.fsd-innovation-card-index,
+.fsd-innovation-card-arrow { color: #c8aa72; }
+.fsd-innovation-card-copy strong { font-weight: 600; letter-spacing: .025em; }
+.fsd-innovation-card-copy small { color: #a19c90; }
+
+.fsd-private-preview-links { border-top-color: rgba(200, 170, 114, .17); }
+.fsd-private-preview-links a {
+  border-color: rgba(200, 170, 114, .18);
+  background: rgba(255, 255, 255, .015);
+}
+.fsd-private-preview-links a:hover { border-color: rgba(200, 170, 114, .58); }
+
+.fsd-placeholder-page { border-top-color: rgba(200, 170, 114, .16); }
+.fsd-page-subtitle { color: #d8d2c5; }
+
+.fsd-asset-slot {
+  border-color: rgba(200, 170, 114, .23);
+  background:
+    linear-gradient(135deg, rgba(200, 170, 114, .045), transparent 42%),
+    repeating-linear-gradient(135deg, rgba(200, 170, 114, .022) 0 1px, transparent 1px 16px),
+    #111315;
+}
+
+.fsd-asset-slot::before { border-color: rgba(200, 170, 114, .2); }
+.fsd-asset-slot-kicker { color: #c8aa72; }
+.fsd-asset-slot-content small { color: #a19c90; }
+.fsd-asset-slot--hub { border-color: rgba(200, 170, 114, .36); }
+
+.fsd-page-module,
+.fsd-shield-card,
+.fsd-shield-badge {
+  border-color: rgba(200, 170, 114, .16);
+  background: #111315;
+}
+
+.fsd-page-module h3,
+.fsd-shield-section > h3 { font-family: var(--fsd-display, Manrope, sans-serif); }
+.fsd-page-module p,
+.fsd-shield-section > p:not(.fsd-shield-kicker),
+.fsd-shield-card p { color: #aaa69d; }
+.fsd-page-module-index,
+.fsd-shield-kicker,
+.fsd-shield-card h4 { color: #c8aa72; }
+
+.fsd-page-verification-note,
+.fsd-shield-notice {
+  border-left-color: #c8aa72;
+  background: rgba(200, 170, 114, .055);
+  color: #c2bdb2;
+}
+
+.fsd-page-return { border-color: rgba(200, 170, 114, .42); }
+.fsd-page-return:hover { border-color: #c8aa72; background: rgba(200, 170, 114, .09); }
+
+@media (max-width: 640px) {
+  .fsd-innovation-hub,
+  .fsd-placeholder-page { padding-top: 54px; padding-bottom: 58px; }
+  .fsd-hub-heading { gap: 18px; }
+  .fsd-innovation-card { min-height: 82px; }
+}
+
+/* Strategic concept directory: a compact editorial index within the FSD system. */
+.fsd-strategic-concept-index {
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(64px, 8.5vw, 116px);
+  padding-bottom: clamp(68px, 9vw, 124px);
+  border-top: 1px solid rgb(255 255 255 / 12%);
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgb(255 255 255 / 3%) 50%, transparent calc(50% + .5px)),
+    #111318;
+}
+
+.fsd-strategic-concept-index .fsd-page-shell {
+  width: min(1180px, 100%);
+}
+
+.fsd-strategic-concept-index .fsd-page-eyebrow {
+  color: #dfff45;
+  font-size: 9px;
+  letter-spacing: .24em;
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading {
+  display: block;
+  max-width: 850px;
+  margin: clamp(20px, 3vw, 38px) 0 clamp(30px, 4vw, 50px);
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading h2 {
+  max-width: 780px;
+  color: #f2f0eb;
+  font-family: var(--fsd-display, "Barlow Condensed", sans-serif);
+  font-size: clamp(40px, 7vw, 82px);
+  font-weight: 600;
+  line-height: .96;
+  letter-spacing: -.018em;
+  text-transform: uppercase;
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading > div > p:not(.fsd-page-eyebrow) {
+  max-width: 590px;
+  margin-top: 20px;
+  color: #c0c1bc;
+  font: 400 14px/1.75 var(--fsd-body, "DM Sans", sans-serif);
+}
+
+.fsd-strategic-concept-index .fsd-hub-heading > div > .fsd-page-disclaimer {
+  max-width: 680px;
+  margin-top: 22px;
+  padding: 12px 16px;
+  border-left: 2px solid #dfff45;
+  background: rgb(223 255 69 / 4%);
+  color: #aeb0a9;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0 clamp(18px, 3vw, 42px);
+  background: none;
+  border-top: 1px solid rgb(255 255 255 / 18%);
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card {
+  position: relative;
+  min-width: 0;
+  grid-column: span 6;
+  min-height: 176px;
+  grid-template-columns: 32px minmax(0, 1fr) 18px;
+  align-items: start;
+  gap: 14px;
+  padding: 23px 2px 24px;
+  border: 0;
+  border-bottom: 1px solid rgb(255 255 255 / 15%);
+  background: transparent;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out), transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n + 1) { grid-column: span 7; }
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n + 2) { grid-column: span 5; }
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n + 3) { grid-column: span 5; }
+.fsd-strategic-concept-index .fsd-innovation-card:nth-child(4n) { grid-column: span 7; }
+
+.fsd-strategic-concept-index .fsd-innovation-card:hover,
+.fsd-strategic-concept-index .fsd-innovation-card:focus-visible {
+  border-color: rgb(255 255 255 / 15%);
+  background: transparent;
+  transform: translateY(-2px);
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card:focus-visible {
+  outline-color: #dfff45;
+  outline-offset: 3px;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-index {
+  padding-top: 4px;
+  color: #dfff45;
+  font: 500 10px/1.2 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .14em;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy {
+  min-width: 0;
+  gap: 9px;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy strong {
+  color: #f2f0eb;
+  font: 600 clamp(15px, 1.35vw, 18px)/1.3 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .005em;
+  text-transform: none;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy small {
+  color: #aeb0a9;
+  font: 500 9px/1.55 var(--fsd-body, "DM Sans", sans-serif);
+  letter-spacing: .1em;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy small:first-of-type {
+  color: #dfff45;
+  font-weight: 600;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy .fsd-innovation-card-crosslink {
+  color: #999c96;
+  font-size: 8px;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-copy small:last-child {
+  max-width: 52ch;
+  margin-top: 2px;
+  color: #b8bab5;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.65;
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card-arrow {
+  align-self: start;
+  padding-top: 1px;
+  color: #dfff45;
+  font-size: 14px;
+  opacity: .75;
+  transition: opacity var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out), transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
+}
+
+.fsd-strategic-concept-index .fsd-innovation-card:hover .fsd-innovation-card-arrow,
+.fsd-strategic-concept-index .fsd-innovation-card:focus-visible .fsd-innovation-card-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 760px) {
+  .fsd-strategic-concept-index {
+    background: #111318;
+  }
+
+  .fsd-strategic-concept-index .fsd-innovation-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fsd-strategic-concept-index .fsd-innovation-card {
+    grid-column: 1 / -1;
+    min-height: 0;
+    padding: 20px 0 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fsd-strategic-concept-index .fsd-innovation-card,
+  .fsd-strategic-concept-index .fsd-innovation-card-arrow {
+    transition: none;
+  }
+
+  .fsd-strategic-concept-index .fsd-innovation-card:hover,
+  .fsd-strategic-concept-index .fsd-innovation-card:focus-visible,
+  .fsd-strategic-concept-index .fsd-innovation-card:hover .fsd-innovation-card-arrow,
+  .fsd-strategic-concept-index .fsd-innovation-card:focus-visible .fsd-innovation-card-arrow {
+    transform: none;
+  }
+}
+
+/* Division pages use the same archival visual grammar as the homepage:
+   numbered records, open margins and a single metallic signal. */
+.fsd-innovation-hub {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(200,170,114,.035) 50%, transparent calc(50% + .5px)),
+    radial-gradient(ellipse at 7% 0%, rgba(200,170,114,.08), transparent 32%),
+    #0c0e10;
+}
+
+.fsd-innovation-hub::after {
+  position: absolute;
+  z-index: -1;
+  top: 7%;
+  right: -8vw;
+  width: clamp(250px, 39vw, 560px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(200,170,114,.13);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 28px rgba(200,170,114,.018), inset 0 0 0 68px rgba(200,170,114,.018);
+  content: "";
+  pointer-events: none;
+}
+
+.fsd-innovation-hub .fsd-page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 600 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+  letter-spacing: .18em;
+}
+
+.fsd-innovation-hub .fsd-page-eyebrow::before {
+  width: 27px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research {
+  position: relative;
+  align-items: end;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research h2 {
+  max-width: 7ch;
+  color: #f0eee8;
+  font: 500 clamp(54px, 8vw, 104px)/.83 var(--fsd-display, "Newsreader", Georgia, serif);
+  letter-spacing: -.065em;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research > div > p:not(.fsd-page-eyebrow) {
+  max-width: 37ch;
+  color: #c2c1bb;
+}
+
+.fsd-innovation-hub .fsd-hub-heading--research .fsd-page-disclaimer {
+  padding: 12px 14px;
+  border-left: 1px solid #c8aa72;
+  background: rgba(200,170,114,.05);
+  color: #9e9b93;
+  font-size: 11px;
+}
+
+.fsd-innovation-hub .fsd-biolab-register-heading {
+  align-items: center;
+  margin-top: clamp(44px, 6vw, 80px);
+  padding: 13px 0;
+  border-top: 1px solid rgba(200,170,114,.27);
+  border-bottom: 1px solid rgba(200,170,114,.2);
+}
+
+.fsd-innovation-hub .fsd-biolab-register-heading > span {
+  color: #d0b77e;
+  font: 500 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+}
+
+.fsd-innovation-hub .fsd-biolab-register-heading p {
+  color: #96968e;
+  font-size: 9px;
+}
+
+.fsd-biolab-register .fsd-innovation-card {
+  position: relative;
+  min-height: 112px;
+  grid-template-columns: 52px minmax(0,1fr) 26px;
+  padding-inline: 0;
+  border-bottom-color: rgba(229,219,199,.12);
+  background: transparent;
+}
+
+.fsd-biolab-register .fsd-innovation-card-index {
+  color: #c8aa72;
+  font: 400 22px/1 var(--fsd-display, "Newsreader", Georgia, serif);
+}
+
+.fsd-biolab-register .fsd-innovation-card-copy strong {
+  color: #f0eee8;
+  font-size: clamp(14px,1.4vw,18px);
+  letter-spacing: .01em;
+}
+
+.fsd-biolab-register .fsd-innovation-card-copy small {
+  color: #a19988;
+  font: 500 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+  letter-spacing: .08em;
+}
+
+.fsd-biolab-register .fsd-innovation-card-summary { color: #aaa9a2; }
+.fsd-biolab-register .fsd-innovation-card-arrow { color: #d3bb89; }
+
+.fsd-placeholder-page {
+  background:
+    linear-gradient(90deg, transparent calc(50% - .5px), rgba(200,170,114,.025) 50%, transparent calc(50% + .5px)),
+    #0c0e10;
+}
+
+.fsd-research-page-header {
+  padding-bottom: clamp(20px, 3vw, 38px);
+  border-bottom: 1px solid rgba(200,170,114,.2);
+}
+
+.fsd-research-page-header__index {
+  color: #c8aa72;
+  font: 500 8px/1.6 var(--fsd-mono, "Space Mono", monospace);
+  letter-spacing: .16em;
+}
+
+.fsd-research-page-header h2 {
+  max-width: 11ch;
+  font-family: var(--fsd-display, "Newsreader", Georgia, serif);
+  font-size: clamp(46px,7vw,92px);
+  font-weight: 500;
+  letter-spacing: -.07em;
+  line-height: .9;
+  text-transform: none;
+}
+
+.fsd-research-feature .fsd-asset-slot--hero {
+  min-height: clamp(250px, 34vw, 430px);
+  aspect-ratio: 2.05 / 1;
+}
+
+.fsd-page-module-grid {
+  background: rgba(200,170,114,.15);
+}
+
+.fsd-page-module {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.025), transparent 55%),
+    #111416;
+}
+
+.fsd-page-module--lead { background: #151719; }
+.fsd-page-module-copy { min-height: 148px; }
+
+.fsd-page-module-index {
+  color: #d0b77e;
+  font: 500 8px/1.5 var(--fsd-mono, "Space Mono", monospace);
+}
+
+.fsd-page-module h3 {
+  font-family: var(--fsd-display, "Newsreader", Georgia, serif);
+  font-size: clamp(17px,2vw,24px);
+  font-weight: 400;
+  letter-spacing: -.02em;
+  text-transform: none;
+}
+
+.fsd-page-module p { color: #aaa9a2; }
+
+@media (max-width: 760px) {
+  .fsd-innovation-hub .fsd-hub-heading--research h2 { max-width: 8ch; }
+  .fsd-innovation-hub .fsd-hub-heading--research .fsd-asset-slot { min-height: 230px; }
+  .fsd-biolab-register .fsd-innovation-card { grid-template-columns: 38px minmax(0,1fr) 18px; }
+  .fsd-research-page-header h2 { max-width: 12ch; }
+  .fsd-page-module-copy { min-height: 0; }
+}
