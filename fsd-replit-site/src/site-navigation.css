@@ -197,7 +197,7 @@
   content: "";
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform var(--fsd-motion-underline, 200ms) var(--fsd-motion-ease-in-out, ease-in-out);
+  transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out);
 }
 
 .fsd-primary-trigger:hover,
@@ -1779,7 +1779,7 @@ html.fsd-header-hidden .announcement.fsd-announcement {
   cursor: pointer;
 }
 #fsd-mega-menu .fsd-ed-item__title { flex: 1 1 auto; }
-#fsd-mega-menu .fsd-ed-item__arrow { color: rgba(200, 170, 114, .0); transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease, cubic-bezier(.22, 1, .36, 1)); }
+#fsd-mega-menu .fsd-ed-item__arrow { color: rgba(200, 170, 114, .0); transition: transform var(--fsd-motion-fast, 150ms) var(--fsd-motion-ease-in-out, ease-in-out); }
 #fsd-mega-menu .fsd-ed-item:hover,
 #fsd-mega-menu .fsd-ed-item:focus-visible,
 #fsd-mega-menu .fsd-ed-item.is-active { color: #fff; background: none; }
